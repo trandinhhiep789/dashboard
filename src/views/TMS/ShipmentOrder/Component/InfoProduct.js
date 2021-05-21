@@ -372,7 +372,7 @@ class InfoProductCom extends Component {
                                 <label className="col-form-label bold">Tổng tiền phải thu:</label>
                             </div>
                             <div className="form-group col-md-4">
-                                <label className="col-form-label lbl-currency-total" >{formatMoney((this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD) - this.state.ShipmentOrder.TotalReturnPrice, 0)}đ</label>
+                                <label className="col-form-label lbl-currency-total" >{(this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD - this.state.ShipmentOrder.TotalReturnPrice)>0?formatMoney((this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD) - this.state.ShipmentOrder.TotalReturnPrice, 0):0}đ</label>
                             </div>
                             <div className="form-group col-md-2">
                                 <label className="col-form-label bold">Thời gian xuất:</label>
@@ -400,10 +400,16 @@ class InfoProductCom extends Component {
                         </div>
 
                         <div className="form-row">
+                        <div className="form-group col-md-2">
+                                <label className="col-form-label bold"> Thời gian nộp tiền:</label>
+                            </div>
+                            <div className="form-group col-md-4">
+                                {formatDate(this.state.ShipmentOrder.PaidInTime)} 
+                            </div>
                             <div className="form-group col-md-2">
                                 <label className="col-form-label bold"> Thông tin xuất:</label>
                             </div>
-                            <div className="form-group col-md-2">
+                            <div className="form-group col-md-4">
                                 {this.state.ShipmentOrder.IsOutputGoods == true ? <span className="badge badge-success">Đã xuất hàng</span> : <span className="badge badge-danger">Chưa xuất hàng </span>}
                             </div>
                         </div>
