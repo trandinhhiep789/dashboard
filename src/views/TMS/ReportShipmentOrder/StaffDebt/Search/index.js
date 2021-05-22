@@ -33,6 +33,7 @@ import DataGirdStaffDebt from "../DataGirdStaffDebt";
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 import DataGirdHistoryStaffDebt from "../DataGirdHistoryStaffDebt";
+import ChangeActiveModal from '../ChangeActiveModal';
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -42,6 +43,7 @@ class SearchCom extends React.Component {
         this.callDataFirstPage = this.callDataFirstPage.bind(this);
         this.callDataThroughtPage = this.callDataThroughtPage.bind(this);
         this.handleExportCSV = this.handleExportCSV.bind(this);
+        this.updateStaffDebtStatus = this.updateStaffDebtStatus.bind(this);
 
         this.state = {
             IsCallAPIError: false,
@@ -272,25 +274,26 @@ class SearchCom extends React.Component {
         });
     }
 
-    onhandleUpdateItem(objId) {
-        const { gridDataSource } = this.state;
-        const objDataRequest = JSON.parse(Base64.decode(objId[0].value));
-        const dataFind = gridDataSource.find(n => {
-            return n.StaffDebtID == objId[0].value
-        });
-
-        if (dataFind.iSunLockDelivery) {
-            objDataRequest.IsLockDelivery = 1
-            objDataRequest.IsUnLockDelivery = 0
-        }
-        else {
-            objDataRequest.IsLockDelivery = 0
-            objDataRequest.IsUnLockDelivery = 1
-        }
-
+    updateStaffDebtStatus(objDataRequest) {
         this.props.callFetchAPI(APIHostName, UpdateUnlockAPIPath, objDataRequest).then(apiResult => {
-            this.addNotification(apiResult.Message, apiResult.IsError)
-            this.callDataFirstPage(this.state.SearchData)
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            this.callDataFirstPage(this.state.SearchData);
+        });
+    }
+
+    onhandleUpdateItem(objId) {
+        const { gridDataSource, widthPercent } = this.state;
+
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: "Mô tả lý do thay đổi trạng thái",
+            content: {
+                text: <ChangeActiveModal
+                    dataSource={gridDataSource}
+                    objId={objId}
+                    ObjDataRequest={this.updateStaffDebtStatus}
+                />
+            },
+            maxWidth: widthPercent + 'px'
         });
     }
 
