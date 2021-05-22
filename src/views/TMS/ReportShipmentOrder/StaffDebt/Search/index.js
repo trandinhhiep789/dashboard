@@ -293,7 +293,7 @@ class SearchCom extends React.Component {
                     ObjDataRequest={this.updateStaffDebtStatus}
                 />
             },
-            maxWidth: widthPercent + 'px'
+            maxWidth: '800px'
         });
     }
 
