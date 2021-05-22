@@ -1158,6 +1158,13 @@ const AppMenu = [
                 LinkTo: '/OverdueOrderReport',
                 MenuIcon: '',
                 SubMenu: []
+            },
+            {
+                MenuName: 'OverdueStaffDebt',
+                MenuTitle: 'Báo cáo thống kê công nợ quá hạn',
+                LinkTo: '/OverdueStaffDebt',
+                MenuIcon: '',
+                SubMenu: []
             }
         ]
     },
