@@ -26,6 +26,7 @@ export class Search extends Component {
         this.searchref = React.createRef();
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.showMessage = this.showMessage.bind(this);
+        this.callSearchData = this.callSearchData.bind(this);
     };
 
     componentDidMount() {
@@ -41,7 +42,7 @@ export class Search extends Component {
     };
 
     callSearchData(searchData) {
-      
+
         // this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
         //     if (!apiResult.IsError) {
         //         this.setState({
@@ -63,8 +64,6 @@ export class Search extends Component {
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
-
-                {/* {this.showMessage("Tính năng đang phát triển")} */}
 
                 <SearchForm
                     FormName="Tìm kiếm báo cáo đơn hàng"
