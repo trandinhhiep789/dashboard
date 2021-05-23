@@ -138,12 +138,14 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            // console.log("object", apiResult,searchData )
             if (!apiResult.IsError) {
                 const result = apiResult.ResultObject.map((item) => {
                     item.SenderStoreNameLable = item.SenderStoreID + " - " + item.SenderStoreName;
                     item.StoreNameLable = item.StoreID + " - " + item.StoreName
                     item.PartnerLable = item.PartnerID + " - " + item.PartnerName
                     item.ShipmentOrderTypeLable = item.ShipmentOrderTypeID + " - " + item.ShipmentOrderTypeName
+                    item.UpdatedUserFullName = item.UpdatedUser != "" ? item.UpdatedUserFullName : '' 
                     return item;
                 })
 

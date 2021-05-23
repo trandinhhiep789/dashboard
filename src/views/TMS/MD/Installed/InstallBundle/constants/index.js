@@ -539,6 +539,18 @@ export const GridInstallBundle_Materia = [
         DataSourceMember: "IsAllowAdvance"
     },
     {
+        Name: "IsCanMultiAdvance",
+        DefaultValue: false,
+        BindControlName: "IsCanMultiAdvance",
+        DataSourceMember: "IsCanMultiAdvance"
+    },
+    {
+        Name: "IsCanMultiUsage",
+        DefaultValue: false,
+        BindControlName: "IsCanMultiUsage",
+        DataSourceMember: "IsCanMultiUsage"
+    },
+    {
         Name: "CreatedUser",
         DefaultValue: "",
         BindControlName: "",
@@ -839,12 +851,32 @@ export const InstallBundle_MateriaColumnList = [
         OrderIndex:22
     },
     {
+        name: "IsCanMultiAdvance",
+        Type: "checkbox",
+        label:"Tạm ứng nhiều sản phẩm trong một nhóm",
+        Caption: "Tạm ứng nhiều sản phẩm trong một nhóm",
+        datasourcemember: "IsCanMultiAdvance",
+        hideInput: false,
+        Width: 70,
+        OrderIndex:23
+    },
+    {
+        name: "IsCanMultiUsage",
+        Type: "checkbox",
+        label:"Sử dụng nhiều sản phẩm trong một nhóm",
+        Caption: "Sử dụng nhiều sản phẩm trong một nhóm",
+        datasourcemember: "IsCanMultiUsage",
+        hideInput: false,
+        Width: 70,
+        OrderIndex:24
+    },
+    {
         name: "Note",
         Type: "TextArea",
         label:"Ghi chú",
         Caption: "Ghi chú",
         datasourcemember: "Note",
-        OrderIndex:23,
+        OrderIndex:25,
         Colmd:12,
         hideInput: false,
         labelcolspan:2,
@@ -1143,12 +1175,32 @@ export const InstallBundle_MateriaColumnListEdit = [
         OrderIndex:22
     },
     {
+        name: "IsCanMultiAdvance",
+        Type: "checkbox",
+        label:"Tạm ứng nhiều sản phẩm trong một nhóm",
+        Caption: "Tạm ứng nhiều sản phẩm trong một nhóm",
+        datasourcemember: "IsCanMultiAdvance",
+        hideInput: false,
+        Width: 70,
+        OrderIndex:23
+    },
+    {
+        name: "IsCanMultiUsage",
+        Type: "checkbox",
+        label:"Sử dụng nhiều sản phẩm trong một nhóm",
+        Caption: "Sử dụng nhiều sản phẩm trong một nhóm",
+        datasourcemember: "IsCanMultiUsage",
+        hideInput: false,
+        Width: 70,
+        OrderIndex:24
+    },
+    {
         name: "Note",
         Type: "TextArea",
         label:"Ghi chú",
         Caption: "Ghi chú",
         datasourcemember: "Note",
-        OrderIndex:23,
+        OrderIndex:25,
         Colmd:12,
         hideInput: false,
         labelcolspan:2,
