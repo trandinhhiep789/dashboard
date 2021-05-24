@@ -7,7 +7,8 @@ import { updatePagePath } from "../../../../../actions/pageAction";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import {
     APIHostName, PagePath, SearchElementList,
-    SearchMLObjectDefinition, SearchAPIPath
+    SearchMLObjectDefinition, SearchAPIPath,
+    GridColumnList
 } from '../constants';
 import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
 import DataGrid from "../../../../../common/components/DataGrid";
@@ -17,15 +18,20 @@ class Search extends React.Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            gridDataSource: [],
+            dataExport: []
+        }
+
         this.searchref = React.createRef();
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.showMessage = this.showMessage.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
+        this.handleExportFile = this.handleExportFile.bind(this);
     }
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
-        this.showMessage("Tính năng đang phát triển");
     };
 
     showMessage(message) {
@@ -51,23 +57,51 @@ class Search extends React.Component {
     handleSearchSubmit(formData, MLObject) {
         const postData = [];
         this.callSearchData(postData);
+        this.showMessage("Tính năng đang phát triển");
     };
 
+    handleExportFile() {
+        this.showMessage("Tính năng đang phát triển");
+    }
+
     render() {
+        const { gridDataSource } = this.state;
+
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
 
-                {/* <SearchForm
-                    FormName="Tìm kiếm báo cáo đơn hàng"
+                <SearchForm
+                    FormName="Tìm kiếm chi tiết vận đơn quá hạn"
                     listelement={SearchElementList}
                     MLObjectDefinition={SearchMLObjectDefinition}
                     onSubmit={this.handleSearchSubmit}
                     ref={this.searchref}
                     className="multiple multiple-custom"
-                /> */}
+                />
 
-
+                <DataGrid
+                    fileName="Danh sách chi tiết vận đơn quá hạn"
+                    listColumn={GridColumnList}
+                    dataSource={gridDataSource}
+                    IsFixheaderTable={true}
+                    IDSelectColumnName={''}
+                    PKColumnName={''}
+                    isHideHeaderToolbar={false}
+                    IsShowButtonAdd={false}
+                    IsShowButtonDelete={false}
+                    IsShowButtonPrint={false}
+                    IsPrint={false}
+                    IsAutoPaging={true}
+                    RowsPerPage={30}
+                    ref={this.gridref}
+                    IsExportFile={true}
+                    DataExport={this.state.dataExport}
+                    onExportFile={this.handleExportFile}
+                // RequirePermission={SHIPMENTORDER_REPORT_VIEW}
+                // ExportPermission={SHIPMENTORDER_REPORT_EXPORT}
+                // onShowModal={this.onShowModalDetail.bind(this)}
+                />
             </React.Fragment>
         );
     }
