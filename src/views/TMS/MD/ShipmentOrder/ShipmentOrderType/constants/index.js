@@ -1,3 +1,5 @@
+import { ERPUSERCACHE_PAYABLETYPE } from "../../../../../../constants/keyCache";
+
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/ShipmentOrderType/Search";
 export const LoadAPIPath = "api/ShipmentOrderType/Load";
@@ -156,6 +158,18 @@ export const AddModalColumnList = [
         validatonList: [],
         value: false
     },
+     {
+        Name: "MTOuputPayableTypeID",
+        type: "select",
+        label: "Hình thức thanh toán của yêu cầu xuất dịch vụ",
+        DataSourceMember: "MTOuputPayableTypeID",
+        readonly: false,
+        validatonList: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: ERPUSERCACHE_PAYABLETYPE,
+        ValueMember: "PayableTypeID",
+        NameMember: "PayableTypeName",
+    },
     //  {
     //     Name: "PartnerID",
     //     type: "select",
@@ -304,6 +318,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "IsCheckDuplicateSaleOrderID",
         DataSourceMember: "IsCheckDuplicateSaleOrderID"
+    },
+    {
+        Name: "MTOuputPayableTypeID",
+        DefaultValue: "",
+        BindControlName: "MTOuputPayableTypeID",
+        DataSourceMember: "MTOuputPayableTypeID"
     },
     {
         Name: "Description",

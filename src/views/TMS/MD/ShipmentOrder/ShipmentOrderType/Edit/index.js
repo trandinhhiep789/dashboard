@@ -28,7 +28,7 @@ import { convertNodeToElement } from "react-html-parser";
 import Collapsible from 'react-collapsible';
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 import {
-    ERPCOMMONCACHE_SHIPMENTORDERTYPE, ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE, ERPCOMMONCACHE_SERVICEGROUP
+    ERPCOMMONCACHE_SHIPMENTORDERTYPE, ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE, ERPCOMMONCACHE_SERVICEGROUP, ERPUSERCACHE_PAYABLETYPE
 } from "../../../../../../constants/keyCache";
 
 import FixShipmentFee from "../../FixShipmentFee/";
@@ -264,6 +264,7 @@ class EditCom extends React.Component {
                 ListServiceGroup: this.state.ServiceGroupList
             });
         param.AddFunctionID = param.AddFunctionID && Array.isArray(param.AddFunctionID) ? param.AddFunctionID[0] : param.AddFunctionID;
+        param.MTOuputPayableTypeID = param.MTOuputPayableTypeID && Array.isArray(param.MTOuputPayableTypeID) ? param.MTOuputPayableTypeID[0] : param.MTOuputPayableTypeID;
         param.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         param.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         if (param.ShipmentOrderTypeWorkflow) {
@@ -731,6 +732,32 @@ class EditCom extends React.Component {
                                 SelectedOption={this.state.SelectedServiceGroupList ? this.state.SelectedServiceGroupList : []}
                                 onValueChangeCus={this.changeSelectServiceGroup}
                             />
+
+
+                            <FormControl.MultiSelectComboBox name="MTOuputPayableTypeID" label="Hình thức thanh toán của yêu cầu xuất dịch vụ"
+                                labelcolspan={4} colspan={8} rowspan={8}
+                                IsLabelDiv={true} controltype="InputControl"
+                                isautoloaditemfromcache={true} loaditemcachekeyid={ERPUSERCACHE_PAYABLETYPE} valuemember="PayableTypeID" nameMember="PayableTypeName"
+                                listoption={[]} datasourcemember="MTOuputPayableTypeID"
+                                isMulti={false}
+                            //SelectedOption={this.state.SelectedServiceGroupList ? this.state.SelectedServiceGroupList : []}
+                            //onValueChangeCus={this.changeSelectServiceGroup}
+                            />
+
+
+                            {/* <FormControl.ComboBox
+                                name="MTOuputPayableTypeID"
+                                type="select"
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid={ERPUSERCACHE_PAYABLETYPE}
+                                valuemember="PayableTypeID"
+                                nameMember="PayableTypeName"
+                                label="Hình thức thanh toán của yêu cầu xuất dịch vụ"
+                                controltype="InputControl"
+                                listoption={[]}
+                                datasourcemember="MTOuputPayableTypeID"
+                                labelcolspan={4} colspan={8} rowspan={8}
+                            /> */}
 
                             {/* ------------------------------------------------------------------ */}
 
