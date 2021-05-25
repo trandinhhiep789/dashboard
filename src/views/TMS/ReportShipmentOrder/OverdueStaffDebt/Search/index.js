@@ -13,6 +13,8 @@ import SearchForm from "../../../../../common/components/FormContainer/SearchFor
 import DataGrid from "../../../../../common/components/DataGrid";
 import { MessageModal } from "../../../../../common/components/Modal";
 import { toIsoStringCus } from '../../../../../utils/function';
+import { SHIPMENTORDER_REPORT_EXPORT, SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
+import "react-notifications-component/dist/theme.css";
 
 class Search extends React.Component {
     constructor(props) {
@@ -27,6 +29,7 @@ class Search extends React.Component {
             gridDataSource: [],
             dataExport: []
         };
+        this.notificationDOMRef = React.createRef();
     }
 
     componentDidMount() {
@@ -45,7 +48,20 @@ class Search extends React.Component {
         this.props.callFetchAPI(APIHostName, "api/StaffDebt/SearchOverdueStaffDebt", searchData).then(apiResult => {
             console.log("aa",searchData, apiResult)
             if (!apiResult.IsError) {
+                const exelData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Kho điều phối": item.StoreName,
+                        "Tổng tiền phải thu hộ": item.TotalCOD,
+                        "Tổng tiền phải thu vật tư": item.TotalSaleMaterialMoney,
+                        "Tổng tiền còn nợ": item.TotalMoneyDebt,
+                        "Tổng vận đơn còn nợ": item.TotalDebtOrders,
+                        "Tổng vận đơn nợ quá hạn": item.TotALoverDueDebtOrders,
+                    };
+                    return element;
+
+                })
                 this.setState({
+                    dataExport: exelData,
                     gridDataSource: apiResult.ResultObject
                 });
             }
@@ -78,9 +94,40 @@ class Search extends React.Component {
         this.callSearchData(postData);
     };
 
-    handleExportFile(){
-
+    handleExportFile(result) {
+        this.addNotification(result.Message, result.IsError);
     }
+
+    addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
+        if (!IsError) {
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
+        } else {
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
+
 
     render() {
         return (
@@ -112,11 +159,11 @@ class Search extends React.Component {
                     IsAutoPaging={true}
                     RowsPerPage={30}
                     ref={this.gridref}
-                    // RequirePermission={SHIPMENTORDER_REPORT_VIEW}
-                    // ExportPermission={SHIPMENTORDER_REPORT_EXPORT}
+                    RequirePermission={SHIPMENTORDER_REPORT_VIEW}
+                    ExportPermission={SHIPMENTORDER_REPORT_EXPORT}
                     IsExportFile={true}
                     DataExport={this.state.dataExport}
-                    fileName="Danh sách thống kê công nợ quá hạn"
+                    fileName="Danh sách báo cáo thống kê công nợ quá hạn"
                     onExportFile={this.handleExportFile.bind(this)}
                 />
 
