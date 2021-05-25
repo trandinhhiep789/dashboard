@@ -28,7 +28,7 @@ import { convertNodeToElement } from "react-html-parser";
 import Collapsible from 'react-collapsible';
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 import {
-    ERPCOMMONCACHE_SHIPMENTORDERTYPE, ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE, ERPCOMMONCACHE_SERVICEGROUP, ERPUSERCACHE_PAYABLETYPE
+    ERPCOMMONCACHE_SHIPMENTORDERTYPE, ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE, ERPCOMMONCACHE_SERVICEGROUP, ERPUSERCACHE_PAYABLETYPE, ERPCOMMONCACHE_SHIPMENTORDERTYPE_WF, ERPCOMMONCACHE_SHIPMENTOT_WF_NEXT
 } from "../../../../../../constants/keyCache";
 
 import FixShipmentFee from "../../FixShipmentFee/";
@@ -189,6 +189,10 @@ class EditCom extends React.Component {
             this.callLoadData();
             this.showMessage(apiResult.Message);
             this.checkValidStep();
+            if (!apiResult.IsError) {
+                this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTORDERTYPE_WF);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTOT_WF_NEXT);
+            }
         });
     }
 

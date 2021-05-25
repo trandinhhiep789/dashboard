@@ -15,7 +15,7 @@ import { APIHostName, AddAPIPath, UpdateAPIPath } from './constants';
 import { ModalManager } from 'react-dynamic-modal/lib';
 import { MessageModal } from "../../../../../common/components/Modal";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_USERGROUP, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_SHIPMENTORDERSTEP, ERPCOMMONCACHE_SHIPMENTSETUPTYPE } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_USERGROUP, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_SHIPMENTORDERSTEP, ERPCOMMONCACHE_SHIPMENTSETUPTYPE, ERPCOMMONCACHE_SHIPMENTORDERTYPE_WF, ERPCOMMONCACHE_SHIPMENTOT_WF_NEXT } from "../../../../../constants/keyCache";
 import { intervalToDuration } from "date-fns";
 import ShipmentOrderTypeWorkflowImage from "../ShipmentOrderTypeWorkflowImage";
 
@@ -399,6 +399,8 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                     if (this.props.onAddShipmentOrderTypeWorkflowComplete) {
                         this.props.onAddShipmentOrderTypeWorkflowComplete(newFormData);
                     }
+                    this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTORDERTYPE_WF);
+                    this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTOT_WF_NEXT);
                     this.props.hideModal();
                 }
             });
