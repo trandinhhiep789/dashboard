@@ -42,10 +42,11 @@ class Search extends React.Component {
     };
 
     callSearchData(searchData) {
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, "api/StaffDebt/SearchOverdueStaffDebt", searchData).then(apiResult => {
+            console.log("aa",searchData, apiResult)
             if (!apiResult.IsError) {
                 this.setState({
-                    dataSource: apiResult.ResultObject
+                    gridDataSource: apiResult.ResultObject
                 });
             }
             else {
@@ -70,11 +71,11 @@ class Search extends React.Component {
             },
 
         ];
-        this.showMessage("Tính năng đang phát triển");
+        // this.showMessage("Tính năng đang phát triển");
         console.log("param", formData, MLObject)
         console.log("postData", postData)
 
-        //this.callSearchData(postData);
+        this.callSearchData(postData);
     };
 
     handleExportFile(){

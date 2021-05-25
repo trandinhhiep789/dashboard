@@ -7,14 +7,14 @@ export const PagePath = [
 
 export const SearchMLObjectDefinition = [
     {
-        Name: "StartDate",
+        Name: "FromDate",
         DefaultValue: "",
-        BindControlName: "cbStartDate"
+        BindControlName: "cbFromDate"
     },
     {
-        Name: "EndDate",
+        Name: "ToDate",
         DefaultValue: "",
-        BindControlName: "cbEndDate"
+        BindControlName: "cbToDate"
     },
     {
         Name: "ShipmentOrderStatusGroupID",
@@ -22,14 +22,19 @@ export const SearchMLObjectDefinition = [
         BindControlName: "cbShipmentOrderStatusGroupID"
     },
     {
-        Name: "AreaID",
+        Name: "COD",
         DefaultValue: "",
-        BindControlName: "cbAreaID"
+        BindControlName: "cbCOD"
     },
     {
-        Name: "User",
+        Name: "Keyword",
         DefaultValue: "",
-        BindControlName: "cbUser"
+        BindControlName: "txtKeyword"
+    },
+    {
+        Name: "Typename",
+        DefaultValue: "",
+        BindControlName: "txtTypename"
     }
 ];
 
@@ -37,8 +42,8 @@ export const SearchElementList = [
     {
         type: "Datetime",
         label: "Từ ngày",
-        name: "cbStartDate",
-        DataSourceMember: "StartDate",
+        name: "cbFromDate",
+        DataSourceMember: "FromDate",
         placeholder: "Từ ngày",
         value: new Date(),
         timeFormat: false,
@@ -49,8 +54,8 @@ export const SearchElementList = [
     {
         type: "Datetime",
         label: "Đến ngày",
-        name: "cbEndDate",
-        DataSourceMember: "EndDate",
+        name: "cbToDate",
+        DataSourceMember: "ToDate",
         placeholder: "Đến ngày",
         value: new Date(),
         timeFormat: false,
@@ -117,73 +122,73 @@ export const SearchElementList = [
 
 export const GridColumnList = [
     {
-        Name: "fulNameStore",
+        Name: "PartnerSaleOrderID",
         Type: "text",
         Caption: "Mã đơn hàng",
-        DataSourceMember: "fulNameStore",
+        DataSourceMember: "PartnerSaleOrderID",
         Width: "9.09%"
     },
     {
-        Name: "1",
+        Name: "ShipmentOrderID",
         Type: "text",
         Caption: "Mã vận đơn",
-        DataSourceMember: "1",
+        DataSourceMember: "ShipmentOrderID",
         Width: "9.09%"
     },
     {
-        Name: "2",
-        Type: "text",
+        Name: "HandOverGoodsDate",
+        Type: "date",
         Caption: "Thời gian xuất hàng",
-        DataSourceMember: "2",
+        DataSourceMember: "HandOverGoodsDate",
         Width: "9.09%"
     },
     {
-        Name: "3",
-        Type: "text",
+        Name: "TotalCOD",
+        Type: "textCurrency",
         Caption: "Số tiền COD",
-        DataSourceMember: "3",
+        DataSourceMember: "TotalCOD",
         Width: "9.09%"
     },
     {
-        Name: "4",
-        Type: "text",
+        Name: "TotalReturnPrice",
+        Type: "textCurrency",
         Caption: "Số tiền phải thu vật tư",
-        DataSourceMember: "4",
+        DataSourceMember: "TotalReturnPrice",
         Width: "9.09%"
     },
     {
-        Name: "5",
+        Name: "CollectedTotalMoney",
         Type: "text",
         Caption: "Tổng tiền phải thu của vận đơn",
-        DataSourceMember: "5",
+        DataSourceMember: "CollectedTotalMoney",
         Width: "9.09%"
     },
     {
-        Name: "6",
+        Name: "DeliverUserFullNameList",
         Type: "text",
         Caption: "Nhân viên giao",
-        DataSourceMember: "6",
+        DataSourceMember: "DeliverUserFullNameList",
         Width: "9.09%"
     },
     {
-        Name: "7",
+        Name: "CoordinatorUserName",
         Type: "text",
         Caption: "TN điều phối",
-        DataSourceMember: "7",
+        DataSourceMember: "CoordinatorUserName",
         Width: "9.09%"
     },
     {
-        Name: "8",
+        Name: "CoordinatorStoreName",
         Type: "text",
         Caption: "Kho điều phối",
-        DataSourceMember: "8",
+        DataSourceMember: "CoordinatorStoreName",
         Width: "9.09%"
     },
     {
-        Name: "9",
+        Name: "ShipmentOrderStatusName",
         Type: "text",
         Caption: "Trạng thái vận đơn",
-        DataSourceMember: "9",
+        DataSourceMember: "ShipmentOrderStatusName",
         Width: "9.09%"
     },
     {

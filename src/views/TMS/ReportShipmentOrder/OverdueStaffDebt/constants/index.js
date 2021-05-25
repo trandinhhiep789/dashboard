@@ -74,45 +74,45 @@ export const SearchElementList = [
 
 export const GridColumnList  = [
     {
-        Name: "fulNameStore",
+        Name: "StoreName",
         Type: "text",
         Caption: "Kho điều phối",
-        DataSourceMember: "fulNameStore",
+        DataSourceMember: "StoreName",
         Width: "10%"
     },
     {
-        Name: "fulNameStore5",
-        Type: "text",
+        Name: "TotalCOD",
+        Type: "textCurrency",
         Caption: "Tổng tiền phải thu hộ",
-        DataSourceMember: "fulNameStore5",
+        DataSourceMember: "TotalCOD",
         Width: "10%"
     },
     {
-        Name: "fulNameStore4",
-        Type: "text",
+        Name: "TotalSaleMaterialMoney",
+        Type: "textCurrency",
         Caption: "Tổng tiền phải thu vật tư",
-        DataSourceMember: "fulNameStore4",
+        DataSourceMember: "TotalSaleMaterialMoney",
         Width: "10%"
     },
     {
-        Name: "fulNameStore3",
-        Type: "text",
+        Name: "TotalMoneyDebt",
+        Type: "textCurrency",
         Caption: "Tổng tiền còn nợ",
-        DataSourceMember: "fulNameStore3",
+        DataSourceMember: "TotalMoneyDebt",
         Width: "10%"
     },
     {
-        Name: "fulNameStore2",
-        Type: "text",
+        Name: "TotalDebtOrders",
+        Type: "textCurrency",
         Caption: "Tổng vận đơn còn nợ",
-        DataSourceMember: "fulNameStore2",
+        DataSourceMember: "TotalDebtOrders",
         Width: "10%"
     },
     {
-        Name: "fulNameStore1",
-        Type: "text",
+        Name: "TotALoverDueDebtOrders",
+        Type: "textCurrency",
         Caption: "Tổng vận đơn nợ quá hạn",
-        DataSourceMember: "fulNameStore1",
+        DataSourceMember: "TotALoverDueDebtOrders",
         Width: "10%"
     },
     

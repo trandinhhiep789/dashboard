@@ -20,7 +20,8 @@ class Search extends React.Component {
 
         this.state = {
             gridDataSource: [],
-            dataExport: []
+            dataExport: [],
+            PageNumber: 1,
         }
 
         this.searchref = React.createRef();
@@ -42,26 +43,75 @@ class Search extends React.Component {
     };
 
     callSearchData(searchData) {
-        // this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-        //     if (!apiResult.IsError) {
-        //         this.setState({
-        //             dataSource: apiResult.ResultObject
-        //         });
-        //     }
-        //     else {
-        //         this.showMessage(apiResult.Message, apiResult.IsError);
-        //     }
-        // });
+        this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/OverdueOrderReport", searchData).then(apiResult => {
+            console.log("search", searchData, apiResult)
+            if (!apiResult.IsError) {
+                this.setState({
+                    gridDataSource: apiResult.ResultObject
+                });
+            }
+            else {
+                this.showMessage(apiResult.Message, apiResult.IsError);
+            }
+        });
     };
 
     handleSearchSubmit(formData, MLObject) {
-        const postData = [];
+        console.log("param",formData, MLObject )
+        const postData = [
+        
+            {
+                SearchKey: "@FromDate",
+                SearchValue: MLObject.FromDate
+            },
+            {
+                SearchKey: "@ToDate",
+                SearchValue: MLObject.ToDate
+            },
+            {
+                SearchKey: "@TYPECOD",
+                SearchValue: MLObject.COD
+            },
+            {
+                SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
+                SearchValue: MLObject.ShipmentOrderStatusGroupID
+            },
+            {
+                SearchKey: "@Keyword",
+                SearchValue: MLObject.Keyword
+            },
+            {
+                SearchKey: "@Typename",
+                SearchValue: MLObject.Typename
+            },
+            {
+                SearchKey: "@PAGESIZE",
+                SearchValue: 50
+            },
+            {
+                SearchKey: "@PAGEINDEX",
+                SearchValue: 0
+            }
+          
+        ];
+        console.log("postData", postData )
+
         this.callSearchData(postData);
-        this.showMessage("Tính năng đang phát triển");
     };
 
     handleExportFile() {
         this.showMessage("Tính năng đang phát triển");
+    }
+
+    handleonChangePage(pageNum) {
+        let listMLObject = [];
+        const aa = { SearchKey: "@PAGEINDEX", SearchValue: pageNum - 1 };
+        listMLObject = Object.assign([], this.state.SearchData, { [3]: aa });
+        // console.log(this.state.SearchData,listMLObject)
+        this.callSearchData(listMLObject)
+        this.setState({
+            PageNumber: pageNum
+        });
     }
 
     render() {
@@ -85,19 +135,22 @@ class Search extends React.Component {
                     listColumn={GridColumnList}
                     dataSource={gridDataSource}
                     IsFixheaderTable={true}
-                    IDSelectColumnName={''}
-                    PKColumnName={''}
+                    IDSelectColumnName={'ShipmentOrderID'}
+                    PKColumnName={'ShipmentOrderID'}
                     isHideHeaderToolbar={false}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
                     IsShowButtonPrint={false}
                     IsPrint={false}
                     IsAutoPaging={true}
-                    RowsPerPage={30}
+                    RowsPerPage={50}
                     ref={this.gridref}
-                    IsExportFile={true}
+                    IsExportFile={false}
                     DataExport={this.state.dataExport}
                     onExportFile={this.handleExportFile}
+                    isPaginationServer={true}
+                    PageNumber={this.state.PageNumber}
+                    onChangePage={this.handleonChangePage.bind(this)}
                 // RequirePermission={SHIPMENTORDER_REPORT_VIEW}
                 // ExportPermission={SHIPMENTORDER_REPORT_EXPORT}
                 // onShowModal={this.onShowModalDetail.bind(this)}
