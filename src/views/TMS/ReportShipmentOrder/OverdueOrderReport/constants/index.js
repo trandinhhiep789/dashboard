@@ -17,9 +17,9 @@ export const SearchMLObjectDefinition = [
         BindControlName: "cbEndDate"
     },
     {
-        Name: "Store",
+        Name: "ShipmentOrderStatusGroupID",
         DefaultValue: "",
-        BindControlName: "cbStore"
+        BindControlName: "cbShipmentOrderStatusGroupID"
     },
     {
         Name: "AreaID",
@@ -80,34 +80,117 @@ export const SearchElementList = [
     },
     {
         type: "ComboBox",
-        name: "cbAreaID",
-        DataSourceMember: "AreaID",
-        label: "Khu vực",
+        name: "cbCOD",
+        DataSourceMember: "COD",
+        label: "COD",
         colspan: 2,
         value: -1,
         isMultiSelect: false,
         placeholder: "---Vui lòng chọn---",
-        listoption: [],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.AREA",
-        ValueMember: "AreaID",
-        NameMember: "AreaName"
+        listoption: [
+            { value: -1, label: "---Vui lòng chọn---" },
+            { value: 0, label: "COD bằng 0" },
+            { value: 1, label: "COD khác 0" },
+        ]
     },
     {
-        type: "MultiSelectUser",
-        name: "cbUser",
-        DataSourceMember: "User",
-        label: "Nhân viên",
-        colspan: 12,
-        rowspan: 3,
-        labelcolspan: 12,
-        IsLabelDiv: true,
-        value: -1,
-        placeholder: "---Chọn nhân viên---",
-        listoption: [],
-        IsAutoLoadItemFromCache: false,
-        isMultiSelect: true,
-        IsPermission: false,
-        // PermissionKey:
-    },
+        type: "textdropdownNew",
+        label: "Đơn hàng/ Vận đơn",
+        dropdownName: "txtTypename",
+        name: "txtKeyword",
+        colspan: 4,
+        value: "",
+        placeholder: "Từ khóa",
+        icon: "",
+        nameOption: "txtTypename",
+        labelOption: "--Vui lòng chọn--",
+        valueOption: -1,
+        classNameCol: "col-custom",
+        classNameDropdown: "dropdown-custom",
+        listoption: [
+            { value: -1, label: "--Vui lòng chọn--" },
+            { value: 1, label: "Mã đơn hàng" },
+            { value: 2, label: "Mã vận đơn" }
+        ]
+    }
 ];
+
+export const GridColumnList = [
+    {
+        Name: "fulNameStore",
+        Type: "text",
+        Caption: "Mã đơn hàng",
+        DataSourceMember: "fulNameStore",
+        Width: "9.09%"
+    },
+    {
+        Name: "1",
+        Type: "text",
+        Caption: "Mã vận đơn",
+        DataSourceMember: "1",
+        Width: "9.09%"
+    },
+    {
+        Name: "2",
+        Type: "text",
+        Caption: "Thời gian xuất hàng",
+        DataSourceMember: "2",
+        Width: "9.09%"
+    },
+    {
+        Name: "3",
+        Type: "text",
+        Caption: "Số tiền COD",
+        DataSourceMember: "3",
+        Width: "9.09%"
+    },
+    {
+        Name: "4",
+        Type: "text",
+        Caption: "Số tiền phải thu vật tư",
+        DataSourceMember: "4",
+        Width: "9.09%"
+    },
+    {
+        Name: "5",
+        Type: "text",
+        Caption: "Tổng tiền phải thu của vận đơn",
+        DataSourceMember: "5",
+        Width: "9.09%"
+    },
+    {
+        Name: "6",
+        Type: "text",
+        Caption: "Nhân viên giao",
+        DataSourceMember: "6",
+        Width: "9.09%"
+    },
+    {
+        Name: "7",
+        Type: "text",
+        Caption: "TN điều phối",
+        DataSourceMember: "7",
+        Width: "9.09%"
+    },
+    {
+        Name: "8",
+        Type: "text",
+        Caption: "Kho điều phối",
+        DataSourceMember: "8",
+        Width: "9.09%"
+    },
+    {
+        Name: "9",
+        Type: "text",
+        Caption: "Trạng thái vận đơn",
+        DataSourceMember: "9",
+        Width: "9.09%"
+    },
+    {
+        Name: "10",
+        Type: "text",
+        Caption: "Số ngày trễ so với ngày xuất hàng",
+        DataSourceMember: "10",
+        Width: "9.09%"
+    }
+]
