@@ -13,7 +13,7 @@ import SearchForm from "../../../../../common/components/FormContainer/SearchFor
 import DataGrid from "../../../../../common/components/DataGrid";
 import { MessageModal } from "../../../../../common/components/Modal";
 import { toIsoStringCus } from '../../../../../utils/function';
-import { SHIPMENTORDER_REPORT_EXPORT, SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
+import { SHIPMENTORDER_REPORT_EXPORT, TMS_STAFFDEBT_REPORT_VIEW } from "../../../../../constants/functionLists";
 import "react-notifications-component/dist/theme.css";
 
 class Search extends React.Component {
@@ -159,7 +159,7 @@ class Search extends React.Component {
                     IsAutoPaging={true}
                     RowsPerPage={30}
                     ref={this.gridref}
-                    RequirePermission={SHIPMENTORDER_REPORT_VIEW}
+                    RequirePermission={TMS_STAFFDEBT_REPORT_VIEW}
                     ExportPermission={SHIPMENTORDER_REPORT_EXPORT}
                     IsExportFile={true}
                     DataExport={this.state.dataExport}
