@@ -60,11 +60,11 @@ class Search extends React.Component {
         const postData = [
 
             {
-                SearchKey: "@FromDate",
+                SearchKey: "@FROMDATE",
                 SearchValue: MLObject.FromDate
             },
             {
-                SearchKey: "@ToDate",
+                SearchKey: "@TODATE",
                 SearchValue: MLObject.ToDate
             },
             {
@@ -80,7 +80,7 @@ class Search extends React.Component {
                 SearchValue: MLObject.Keyword
             },
             {
-                SearchKey: "@Typename",
+                SearchKey: "@TYPENAME",
                 SearchValue: MLObject.Typename
             },
             {
@@ -123,7 +123,7 @@ class Search extends React.Component {
             }
         });
 
-        console.log(listMLObject)
+        console.log("aa",listMLObject)
 
         this.callSearchData(listMLObject);
         this.setState({
