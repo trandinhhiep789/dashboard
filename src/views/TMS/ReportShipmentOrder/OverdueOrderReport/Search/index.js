@@ -29,6 +29,7 @@ class Search extends React.Component {
         this.showMessage = this.showMessage.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
         this.handleExportFile = this.handleExportFile.bind(this);
+        this.handleExportFileFormSearch = this.handleExportFileFormSearch.bind(this);
     }
 
     componentDidMount() {
@@ -44,7 +45,6 @@ class Search extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/OverdueOrderReport", searchData).then(apiResult => {
-            console.log("search", searchData, apiResult)
             if (!apiResult.IsError) {
                 this.setState({
                     gridDataSource: apiResult.ResultObject
@@ -57,9 +57,8 @@ class Search extends React.Component {
     };
 
     handleSearchSubmit(formData, MLObject) {
-        console.log("param",formData, MLObject )
         const postData = [
-        
+
             {
                 SearchKey: "@FromDate",
                 SearchValue: MLObject.FromDate
@@ -92,23 +91,41 @@ class Search extends React.Component {
                 SearchKey: "@PAGEINDEX",
                 SearchValue: 0
             }
-          
+
         ];
-        console.log("postData", postData )
+
+        this.setState({
+            SearchData: postData
+        });
 
         this.callSearchData(postData);
     };
 
     handleExportFile() {
-        this.showMessage("Tính năng đang phát triển");
-    }
+
+    };
+
+    handleExportFileFormSearch(FormData, MLObject) {
+        console.log(FormData, MLObject)
+    };
 
     handleonChangePage(pageNum) {
-        let listMLObject = [];
-        const aa = { SearchKey: "@PAGEINDEX", SearchValue: pageNum - 1 };
-        listMLObject = Object.assign([], this.state.SearchData, { [3]: aa });
-        // console.log(this.state.SearchData,listMLObject)
-        this.callSearchData(listMLObject)
+        const { SearchData } = this.state;
+
+        const listMLObject = SearchData.map(item => {
+            if (item.SearchKey == "@PAGEINDEX") {
+                return {
+                    SearchKey: "@PAGEINDEX",
+                    SearchValue: pageNum - 1
+                };
+            } else {
+                return item;
+            }
+        });
+
+        console.log(listMLObject)
+
+        this.callSearchData(listMLObject);
         this.setState({
             PageNumber: pageNum
         });
@@ -125,9 +142,11 @@ class Search extends React.Component {
                     FormName="Tìm kiếm chi tiết vận đơn quá hạn"
                     listelement={SearchElementList}
                     MLObjectDefinition={SearchMLObjectDefinition}
-                    onSubmit={this.handleSearchSubmit}
                     ref={this.searchref}
                     className="multiple multiple-custom"
+                    IsButtonExport={true}
+                    onExportSubmit={this.handleExportFileFormSearch}
+                    onSubmit={this.handleSearchSubmit}
                 />
 
                 <DataGrid
@@ -147,10 +166,10 @@ class Search extends React.Component {
                     ref={this.gridref}
                     IsExportFile={false}
                     DataExport={this.state.dataExport}
-                    onExportFile={this.handleExportFile}
                     isPaginationServer={true}
                     PageNumber={this.state.PageNumber}
                     onChangePage={this.handleonChangePage.bind(this)}
+                    onExportFile={this.handleExportFile}
                 // RequirePermission={SHIPMENTORDER_REPORT_VIEW}
                 // ExportPermission={SHIPMENTORDER_REPORT_EXPORT}
                 // onShowModal={this.onShowModalDetail.bind(this)}
