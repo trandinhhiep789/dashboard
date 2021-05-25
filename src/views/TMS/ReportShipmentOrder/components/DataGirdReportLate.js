@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 import { formatMoney } from '../../../../utils/function';
 import GridPage from "../../../../common/components/DataGrid/GridPage";
@@ -21,7 +21,6 @@ class DataGirdReportLateCom extends Component {
                 dataSource: nextProps.dataSource
             })
         }
-
     }
 
     _genCommentTime(dates) {
@@ -90,6 +89,18 @@ class DataGirdReportLateCom extends Component {
         return resultData;
     }
 
+    handleTotalLateSubmit()
+    {
+        const win = window.open("/ShipmentOrder/Detail/210521000000202", "_blank");
+        win.focus();
+
+        // const history = useHistory();
+        //    history.push("/ShipmentOrder", {
+        //     ShipmentOrderStatusGroupID: 1
+        // })
+
+    }
+
     render() {
         const { PageNumber } = this.state;
         const pageCount = this.getPageCount(this.props.dataSource);
@@ -122,53 +133,12 @@ class DataGirdReportLateCom extends Component {
                         <tbody>
                             {
                                 dataSource.length > 0 ?
-
-
                                     dataSource.map((rowItem, rowIndex) => {
                                         return (<tr key={rowIndex}>
-                                            {/* <td style={{ width: '20%' }}>
-
-                                                <div className="group-info-row">
-                                                    <label className="item fullName-receiver">
-                                                        <Link target="_blank" className="txtlink" to={"/ShipmentOrder/Detail/" + rowItem.ShipmentOrderID}>{rowItem.ShipmentOrderID}</Link>
-                                                    </label>
-                                                    <label className="item address-receiver">
-                                                        <span>{rowItem.ShipmentOrderTypeName}</span>
-                                                    </label>
-                                                </div>
-                                            </td> */}
-                                            {/* <td className="group-address" style={{ width: '25%' }}>
-                                                <div className="group-info-row">
-                                                    <label className="item fullName-receiver">
-                                                        <span>{rowItem.StoreID}</span>
-                                                    </label>
-                                                    <label className="item address-receiver">
-                                                        <span>{rowItem.StoreName}</span>
-                                                    </label>
-                                                </div>
-                                            </td> */}
-                                            {/* <td className="group-productlist" style={{ width: '20%' }}>
-                                                <div className="group-info-row">
-                                                    <label className="item product">
-                                                        <span >{rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(';', '<br/>'))}</span>
-                                                    </label>
-                                                </div>
-                                            </td> */}
-                                            {/* <td className="group-address" style={{ width: '15%' }}>
-                                                <div className="group-info-row">
-                                                    <label className="item fullName-receiver">
-                                                        <span>{rowItem.ExpectedDeliveryDate != null ? this._genCommentTime(rowItem.ExpectedDeliveryDate) : ""}</span>
-                                                    </label>
-                                                    <label className="item address-receiver">
-                                                        <span>{rowItem.CarrierTypeName}</span>
-                                                    </label>
-                                                </div>
-                                            </td> */}
-                                            {/* <td style={{ width: '10%' }}>{formatMoney(rowItem.CollectedTotalMoney, 0)}</td> */}
                                             <td style={{ width: '25%' }}>{rowItem.StoreID}</td>
                                             <td style={{ width: '25%' }}>{rowItem.StoreName}</td>
-                                            <td style={{ width: '25%' }}>{rowItem.TotalLate}</td>
-                                            <td style={{ width: '25%' }}>{rowItem.TotalLate30}</td>
+                                            <td style={{ width: '25%' }}> <a className="nav-link text-primary hover-primary cursor-pointer" onClick={() => this.handleTotalLateSubmit(rowItem.StoreID)}>{rowItem.TotalLate}</a></td>
+                                            <td style={{ width: '25%' }}> <a className="nav-link text-primary hover-primary cursor-pointer" onClick={() => this.handleTotalLateSubmit(rowItem.StoreID)}>{rowItem.TotalLate30}</a></td>
                                         </tr>)
                                     })
                                     :

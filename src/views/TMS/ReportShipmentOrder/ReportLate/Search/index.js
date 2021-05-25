@@ -27,9 +27,9 @@ import { toIsoStringCus } from '../../../../../utils/function'
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
-        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
-
+        this.handleShowModal = this.handleShowModal.bind(this);
+        
         this.state = {
             IsCallAPIError: false,
             gridDataSource: [],
@@ -51,8 +51,6 @@ class SearchCom extends React.Component {
                 SearchKey: "@FROMDATE",
                 SearchValue: ""
             },
-
-
         ];
         this.callSearchData(postData);
         this.props.updatePagePath(PagePath);
@@ -70,55 +68,7 @@ class SearchCom extends React.Component {
         })
     };
 
-    handleSearchSubmit(formData, MLObject) {
-        let result, result2;
-        if (MLObject.ShipmentOrderType != -1 && MLObject.ShipmentOrderType != null && MLObject.ShipmentOrderType != "") {
-            result = MLObject.ShipmentOrderType.reduce((data, item, index) => {
-                const comma = data.length ? "," : "";
-                return data + comma + item;
-            }, '');
-        }
-        else {
-            result = ""
-        }
-
-        if (MLObject.CoordinatorStore != -1 && MLObject.CoordinatorStore != null && MLObject.CoordinatorStore != "") {
-            result2 = MLObject.CoordinatorStore.reduce((data, item, index) => {
-                const comma = data.length ? "," : "";
-                return data + comma + item;
-            }, '');
-        }
-        else {
-            result2 = ""
-        }
-
-        this.setState({
-            shipmentOrderTypeID: result,
-            coordinatorStoreID: result2
-        })
-
-        const postData = [
-            {
-                SearchKey: "@FROMDATE",
-                SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString()) //MLObject.FromDate
-            },
-            {
-                SearchKey: "@TODATE",
-                SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString()) //MLObject.ToDate
-            },
-            {
-                SearchKey: "@SHIPMENTORDERTYPEIDLIST",
-                SearchValue: result  //MLObject.ShipmentOrderType
-            },
-            {
-                SearchKey: "@COORDINATORSTOREIDLIST",
-                SearchValue: result2  //MLObject.CoordinatorStoreID
-            },
-
-        ];
-        this.callSearchData(postData);
-    }
-
+  
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             if (!apiResult.IsError) {
@@ -211,19 +161,11 @@ class SearchCom extends React.Component {
     }
 
     onShowModalDetail(objValue, name) {
-        console.log("modal", objValue, name);
+   
         const { shipmentOrderTypeID, coordinatorStoreID } = this.state;
         const status = this.getStatusDelivery(name);
         const areaID = objValue[0].value
-
-        // const objData = {
-        //     CreatedOrderTime: dtmCreatedOrderTime,
-        //     StatusDelivery: status,
-        //     ShipmentOrderTypeID: shipmentOrderTypeID,
-        //     CoordinatorStoreID: coordinatorStoreID
-        // }
         this.props.callFetchAPI(APIHostName, SearchReportLateDetailAPIPath, areaID).then(apiResult => {
-            console.log("detail", apiResult);
             if (!apiResult.IsError) {
                 this.handleShowModal(apiResult.ResultObject, status)
             }
@@ -245,16 +187,6 @@ class SearchCom extends React.Component {
         }
 
         titleModal = "Danh sách vận đơn trễ" + areaName;
-        // if (status == 1) {
-        //     titleModal = "Danh sách vận đơn trễ" + areaName;
-        // }
-            
-        
-        // if (status == 2) {
-        //     titleModal = "Danh sách vận đơn trễ dưới 30 phút" + areaName;
-        // }
-
-
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: titleModal,
             content: {
@@ -274,15 +206,6 @@ class SearchCom extends React.Component {
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
-                {/* <SearchForm
-                    FormName="Tìm kiếm danh sách thống kê vận đơn theo ngày"
-                    MLObjectDefinition={SearchMLObjectDefinition}
-                    listelement={SearchElementList}
-                    onSubmit={this.handleSearchSubmit}
-                    ref={this.searchref}
-                    className="multiple"
-                /> */}
-
                 <DataGrid
                     listColumn={GridColumnList}
                     dataSource={this.state.gridDataSource}
@@ -326,9 +249,6 @@ const mapDispatchToProps = dispatch => {
         },
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
-        },
-        callGetCache: (cacheKeyID) => {
-            return dispatch(callGetCache(cacheKeyID));
         },
         showModal: (type, props) => {
             dispatch(showModal(type, props));
