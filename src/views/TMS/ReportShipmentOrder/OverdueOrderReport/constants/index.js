@@ -192,10 +192,10 @@ export const GridColumnList = [
         Width: "9.09%"
     },
     {
-        Name: "10",
-        Type: "text",
+        Name: "TotalDebtDate",
+        Type: "textCurrency",
         Caption: "Số ngày trễ so với ngày xuất hàng",
-        DataSourceMember: "10",
+        DataSourceMember: "TotalDebtDate",
         Width: "9.09%"
     }
 ]
