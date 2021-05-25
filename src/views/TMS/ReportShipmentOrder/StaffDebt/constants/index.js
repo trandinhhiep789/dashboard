@@ -374,6 +374,13 @@ export const DataGirdStaffDebtHistoryColumnList = [
         DataSourceMember: "unLockDeliveryDate",
         Width: "10%"
     },
+    {
+        Name: "UnLockDeliveryNote",
+        Type: "text",
+        Caption: "Ghi chú",
+        DataSourceMember: "UnLockDeliveryNote",
+        Width: "10%"
+    },
 ];
 
 export const MLObjectChangeActiveModal = [
