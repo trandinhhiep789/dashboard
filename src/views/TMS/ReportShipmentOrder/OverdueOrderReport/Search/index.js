@@ -13,6 +13,7 @@ import {
 import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
 import DataGrid from "../../../../../common/components/DataGrid";
 import { MessageModal } from "../../../../../common/components/Modal";
+import { SHIPMENTORDER_REPORT_EXPORT, SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
 
 class Search extends React.Component {
     constructor(props) {
@@ -123,7 +124,7 @@ class Search extends React.Component {
             }
         });
 
-        console.log("aa",listMLObject)
+        console.log("aa", listMLObject)
 
         this.callSearchData(listMLObject);
         this.setState({
@@ -170,8 +171,8 @@ class Search extends React.Component {
                     PageNumber={this.state.PageNumber}
                     onChangePage={this.handleonChangePage.bind(this)}
                     onExportFile={this.handleExportFile}
-                // RequirePermission={SHIPMENTORDER_REPORT_VIEW}
-                // ExportPermission={SHIPMENTORDER_REPORT_EXPORT}
+                    RequirePermission={SHIPMENTORDER_REPORT_VIEW}
+                    ExportPermission={SHIPMENTORDER_REPORT_EXPORT}
                 // onShowModal={this.onShowModalDetail.bind(this)}
                 />
             </React.Fragment>
