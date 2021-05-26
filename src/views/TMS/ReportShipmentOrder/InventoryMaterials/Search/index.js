@@ -28,6 +28,7 @@ import { showModal, hideModal } from '../../../../../actions/modal';
 import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../../constants/keyCache";
 import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
 import ModalBox from "../components/ModalBox";
+import ModalDownloadFile from "../components/ModalDownloadFile";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -104,7 +105,7 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-       
+
         const objData = {
             UserName: MLObject.UserName == -1 ? "" : MLObject.UserName.value,
             Month: MLObject.Month
@@ -130,7 +131,7 @@ class SearchCom extends React.Component {
 
 
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("apiResult", apiResult)
+            console.log("apiResult", searchData, apiResult)
             if (apiResult && !apiResult.IsError && apiResult.ResultObject) {
 
                 const tempData = apiResult.ResultObject.filter(a => a.MaterialGroupID.trim() == this.state.ConfigValue);
@@ -468,6 +469,41 @@ class SearchCom extends React.Component {
 
     }
 
+    onShowModalDownloadFile(data) {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: "Tải file",
+            content: {
+                text: <ModalDownloadFile
+
+                    URLDownloadFile={data}
+
+                />
+            },
+            maxWidth:  '300px'
+        });
+    }
+
+    handleExportFileFormSearch(FormData, MLObject) {
+        console.log("aa", FormData, MLObject)
+        const objData = {
+            UserName: MLObject.UserName == -1 ? "" : MLObject.UserName.value,
+            Month: MLObject.Month
+
+        }
+        console.log("objData", objData)
+        // this.onShowModalDownloadFile("aaa")
+
+        this.props.callFetchAPI(APIHostName, "api/BeginTermAdvanceDebt/LoadInStockExport", objData).then(apiResult => {
+            console.log("export", objData, apiResult)
+            if (!apiResult.IsError) {
+                this.onShowModalDownloadFile(apiResult.message)
+            }
+            else{
+                this.showMessage(apiResult.message)
+            }
+        });
+    };
+
 
     render() {
         return (
@@ -480,6 +516,8 @@ class SearchCom extends React.Component {
                     onSubmit={this.handleSearchSubmit.bind(this)}
                     ref={this.searchref}
                     className="multiple"
+                    IsButtonExport={true}
+                    onExportSubmit={this.handleExportFileFormSearch.bind(this)}
                 />
 
                 <DataGrid
