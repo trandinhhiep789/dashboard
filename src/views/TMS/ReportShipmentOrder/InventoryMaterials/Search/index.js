@@ -496,10 +496,10 @@ class SearchCom extends React.Component {
         this.props.callFetchAPI(APIHostName, "api/BeginTermAdvanceDebt/LoadInStockExport", objData).then(apiResult => {
             console.log("export", objData, apiResult)
             if (!apiResult.IsError) {
-                this.onShowModalDownloadFile(apiResult.message)
+                this.onShowModalDownloadFile(apiResult.Message)
             }
             else{
-                this.showMessage(apiResult.message)
+                this.showMessage(apiResult.Message)
             }
         });
     };

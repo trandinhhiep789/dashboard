@@ -28,10 +28,10 @@ export default class ModalDownloadFile extends Component {
                     <img className="item" src="/src/img/icon/icon-down.gif" alt="download file icon" />
                     <span className="item" >[Link File]</span>
                 </a> */}
-                <a className="btn-download-file" href={CDN_DOWNLOAD_FILE+thí.props.URLDownloadFile} data-url="">
+                <a className="btn-download-file" href={CDN_DOWNLOAD_FILE + this.props.URLDownloadFile} data-url={CDN_DOWNLOAD_FILE + this.props.URLDownloadFile}>
                     <img className="item" src="/src/img/icon/icon-down.gif" alt="download file icon" />
                     <span className="item" >[Link File]</span>
-                </a> 
+                </a>
             </React.Fragment >
         )
     }
