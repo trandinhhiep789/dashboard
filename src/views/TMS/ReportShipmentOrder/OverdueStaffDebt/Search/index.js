@@ -156,7 +156,7 @@ class Search extends React.Component {
                     IsShowButtonDelete={false}
                     IsShowButtonPrint={false}
                     IsPrint={false}
-                    IsAutoPaging={true}
+                    IsAutoPaging={false}
                     RowsPerPage={30}
                     ref={this.gridref}
                     RequirePermission={TMS_STAFFDEBT_REPORT_VIEW}
