@@ -83,7 +83,7 @@ class Search extends React.Component {
     }
 
     callSearchData(searchData) {
-        this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/ControlStatusReport", searchData).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/OverdueOrderReport", searchData).then(apiResult => {
             console.log("aa", searchData, apiResult)
             if (!apiResult.IsError) {
                 this.setState({
@@ -165,6 +165,7 @@ class Search extends React.Component {
     };
 
     handleExportFileFormSearch(FormData, MLObject) {
+        console.log("a1", FormData, MLObject)
         const postData = [
 
             {
@@ -193,6 +194,8 @@ class Search extends React.Component {
             }
 
         ];
+
+        console.log("postData", postData)
 
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/OverdueOrderReportExport", postData).then(apiResult => {
             if (!apiResult.IsError) {
