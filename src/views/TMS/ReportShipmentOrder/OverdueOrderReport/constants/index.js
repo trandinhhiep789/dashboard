@@ -126,14 +126,14 @@ export const GridColumnList = [
         Type: "text",
         Caption: "Mã đơn hàng",
         DataSourceMember: "PartnerSaleOrderID",
-        Width: "8%"
+        Width: "11`%"
     },
     {
         Name: "ShipmentOrderID",
         Type: "text",
         Caption: "Mã vận đơn",
         DataSourceMember: "ShipmentOrderID",
-        Width: "8%"
+        Width: "11%"
     },
     {
         Name: "HandOverGoodsDate",
@@ -147,35 +147,35 @@ export const GridColumnList = [
         Type: "textCurrency",
         Caption: "Số tiền COD",
         DataSourceMember: "TotalCOD",
-        Width: "8%"
+        Width: "7%"
     },
     {
         Name: "TotalReturnPrice",
         Type: "textCurrency",
         Caption: "Tổng tiền nhập trả",
         DataSourceMember: "TotalReturnPrice",
-        Width: "8%"
+        Width: "7%"
     },
     {
         Name: "CollectedTotalMoney",
         Type: "textCurrency",
         Caption: "Tổng tiền phải thu của vận đơn",
         DataSourceMember: "CollectedTotalMoney",
-        Width: "8%"
+        Width: "7%"
     },
     {
         Name: "TotalSaleMaterialMoney",
         Type: "textCurrency",
         Caption: "Tiền vật tư",
         DataSourceMember: "TotalSaleMaterialMoney",
-        Width: "8%"
+        Width: "7%"
     },
     {
         Name: "DeliverUserFullNameList",
         Type: "text",
         Caption: "Nhân viên giao",
         DataSourceMember: "DeliverUserFullNameList",
-        Width: "8%"
+        Width: "1%"
     },
     {
         Name: "CoordinatorUserName",
@@ -196,7 +196,7 @@ export const GridColumnList = [
         Type: "text",
         Caption: "Trạng thái vận đơn",
         DataSourceMember: "ShipmentOrderStatusName",
-        Width: "8%"
+        Width: "7%"
     },
     {
         Name: "TotalDebtDate",
