@@ -16,6 +16,8 @@ import SearchForm from "../../../../../common/components/FormContainer/SearchFor
 import DataGrid from "../../../../../common/components/DataGrid";
 import { MessageModal } from "../../../../../common/components/Modal";
 import { SHIPMENTORDER_REPORT_EXPORT, SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
+import { showModal } from '../../../../../actions/modal';
+import { MODAL_TYPE_DOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
 
 class Search extends React.Component {
     constructor(props) {
@@ -82,7 +84,7 @@ class Search extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/ControlStatusReport", searchData).then(apiResult => {
-            console.log("aa",searchData, apiResult)
+            console.log("aa", searchData, apiResult)
             if (!apiResult.IsError) {
                 this.setState({
                     gridDataSource: apiResult.ResultObject
@@ -194,22 +196,14 @@ class Search extends React.Component {
 
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/OverdueOrderReportExport", postData).then(apiResult => {
             if (!apiResult.IsError) {
-                const { ResultObject } = apiResult;
-
-                const dataExport = ResultObject.map(item => {
-                    const result = GridColumnList.reduce((acc, val) => {
-                        return {
-                            ...acc,
-                            [val.Caption]: item[val.DataSourceMember]
-                        }
-                    }, {});
-
-                    return result;
+                this.props.showModal(MODAL_TYPE_DOWNLOAD_EXCEL, {
+                    title: "Tải file",
+                    URLDownloadFile: apiResult.Message,
+                    maxWidth: '300px'
                 });
-
-                this.handleExportExcel(dataExport, "Báo cáo chi tiết vận đơn quá hạn");
-            } else {
-                this.addNotification(apiResult.Message, apiResult.IsError);
+            }
+            else {
+                this.showMessage(apiResult.Message)
             }
         });
     };
@@ -297,6 +291,9 @@ const mapDispatchToProps = dispatch => {
         },
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
         },
     };
 };

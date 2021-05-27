@@ -7,12 +7,17 @@ import Modal from '../Modal';
 import { CDN_DOWNLOAD_FILE } from '../../../../constants/systemVars';
 
 const DownloadFile = (props) => {
+    const onClose = () => {
+        props.hideModal();
+    };
+
     return (
-        <Modal title={props.title} onClose={props.onClose} maxWidth={props.maxWidth}>
+        <Modal title={props.title} onClose={onClose} maxWidth={props.maxWidth}>
             <a
                 className="btn-download-file"
                 href={CDN_DOWNLOAD_FILE + props.URLDownloadFile}
                 data-url={CDN_DOWNLOAD_FILE + props.URLDownloadFile}
+                onClick={onClose}
             >
                 <img className="item" src="/src/img/icon/icon-down.gif" alt="download file icon" />
                 <span className="item" >[Link File]</span>
