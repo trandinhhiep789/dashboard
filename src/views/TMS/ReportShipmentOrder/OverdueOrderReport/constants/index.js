@@ -126,7 +126,7 @@ export const GridColumnList = [
         Type: "text",
         Caption: "Mã đơn hàng",
         DataSourceMember: "PartnerSaleOrderID",
-        Width: "11`%"
+        Width: "11%"
     },
     {
         Name: "ShipmentOrderID",
