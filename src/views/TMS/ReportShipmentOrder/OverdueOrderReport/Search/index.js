@@ -82,6 +82,7 @@ class Search extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/OverdueOrderReport", searchData).then(apiResult => {
+            console.log("aa",searchData, apiResult)
             if (!apiResult.IsError) {
                 this.setState({
                     gridDataSource: apiResult.ResultObject

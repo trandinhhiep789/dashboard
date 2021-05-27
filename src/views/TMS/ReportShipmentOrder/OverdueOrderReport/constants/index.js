@@ -126,76 +126,84 @@ export const GridColumnList = [
         Type: "text",
         Caption: "Mã đơn hàng",
         DataSourceMember: "PartnerSaleOrderID",
-        Width: "9.09%"
+        Width: "8%"
     },
     {
         Name: "ShipmentOrderID",
         Type: "text",
         Caption: "Mã vận đơn",
         DataSourceMember: "ShipmentOrderID",
-        Width: "9.09%"
+        Width: "8%"
     },
     {
         Name: "HandOverGoodsDate",
         Type: "date",
         Caption: "Thời gian xuất hàng",
         DataSourceMember: "HandOverGoodsDate",
-        Width: "9.09%"
+        Width: "8%"
     },
     {
         Name: "TotalCOD",
         Type: "textCurrency",
         Caption: "Số tiền COD",
         DataSourceMember: "TotalCOD",
-        Width: "9.09%"
+        Width: "8%"
     },
     {
         Name: "TotalReturnPrice",
         Type: "textCurrency",
         Caption: "Số tiền phải thu vật tư",
         DataSourceMember: "TotalReturnPrice",
-        Width: "9.09%"
+        Width: "8%"
     },
     {
         Name: "CollectedTotalMoney",
-        Type: "text",
+        Type: "textCurrency",
         Caption: "Tổng tiền phải thu của vận đơn",
         DataSourceMember: "CollectedTotalMoney",
-        Width: "9.09%"
+        Width: "8%"
+    },
+    {
+        Name: "TotalSaleMaterialMoney",
+        Type: "textCurrency",
+        Caption: "Số tiền nhập trả",
+        DataSourceMember: "TotalSaleMaterialMoney",
+        Width: "8%"
     },
     {
         Name: "DeliverUserFullNameList",
         Type: "text",
         Caption: "Nhân viên giao",
         DataSourceMember: "DeliverUserFullNameList",
-        Width: "9.09%"
+        Width: "8%"
     },
     {
         Name: "CoordinatorUserName",
         Type: "text",
         Caption: "TN điều phối",
         DataSourceMember: "CoordinatorUserName",
-        Width: "9.09%"
+        Width: "10%"
     },
     {
         Name: "CoordinatorStoreName",
         Type: "text",
         Caption: "Kho điều phối",
         DataSourceMember: "CoordinatorStoreName",
-        Width: "9.09%"
+        Width: "10%"
     },
     {
         Name: "ShipmentOrderStatusName",
         Type: "text",
         Caption: "Trạng thái vận đơn",
         DataSourceMember: "ShipmentOrderStatusName",
-        Width: "9.09%"
+        Width: "8%"
     },
     {
         Name: "TotalDebtDate",
         Type: "textCurrency",
         Caption: "Số ngày trễ so với ngày xuất hàng",
         DataSourceMember: "TotalDebtDate",
-        Width: "9.09%"
-    }
+        Width: "8%"
+    },
+    
 ]
