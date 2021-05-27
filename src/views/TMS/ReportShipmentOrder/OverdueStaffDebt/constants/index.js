@@ -8,16 +8,16 @@ export const PagePath = [
 ];
 
 export const SearchMLObjectDefinition = [
-    {
-        Name: "FromDate",
-        DefaultValue: "",
-        BindControlName: "dtFromDate"
-    },
-    {
-        Name: "ToDate",
-        DefaultValue: "",
-        BindControlName: "dtToDate"
-    },
+    // {
+    //     Name: "FromDate",
+    //     DefaultValue: "",
+    //     BindControlName: "dtFromDate"
+    // },
+    // {
+    //     Name: "ToDate",
+    //     DefaultValue: "",
+    //     BindControlName: "dtToDate"
+    // },
     {
         Name: "CoordinatorStoreID",
         DefaultValue: "",
@@ -27,30 +27,30 @@ export const SearchMLObjectDefinition = [
 ];
 
 export const SearchElementList = [
-    {
-        type: "Datetime",
-        label: "Từ ngày",
-        name: "dtFromDate",
-        DataSourceMember: "FromDate",
-        placeholder: "Từ ngày",
-        value: new Date(),
-        timeFormat: false,
-        dateFormat: "DD/MM/YYYY",
-        colspan: 2,
-        classNameCol: "col-custom"
-    },
-    {
-        type: "Datetime",
-        label: "Đến ngày",
-        name: "dtToDate",
-        DataSourceMember: "ToDate",
-        placeholder: "Đến ngày",
-        value: new Date(),
-        timeFormat: false,
-        dateFormat: "DD/MM/YYYY",
-        colspan: 2,
-        classNameCol: "col-custom"
-    },
+    // {
+    //     type: "Datetime",
+    //     label: "Từ ngày",
+    //     name: "dtFromDate",
+    //     DataSourceMember: "FromDate",
+    //     placeholder: "Từ ngày",
+    //     value: new Date(),
+    //     timeFormat: false,
+    //     dateFormat: "DD/MM/YYYY",
+    //     colspan: 2,
+    //     classNameCol: "col-custom"
+    // },
+    // {
+    //     type: "Datetime",
+    //     label: "Đến ngày",
+    //     name: "dtToDate",
+    //     DataSourceMember: "ToDate",
+    //     placeholder: "Đến ngày",
+    //     value: new Date(),
+    //     timeFormat: false,
+    //     dateFormat: "DD/MM/YYYY",
+    //     colspan: 2,
+    //     classNameCol: "col-custom"
+    // },
     {
         type: "ComboBoxNewChange",
         name: "cbCoordinatorStoreID",
@@ -74,46 +74,127 @@ export const SearchElementList = [
 
 export const GridColumnList  = [
     {
-        Name: "fulNameStore",
+        Name: "StoreName",
         Type: "text",
         Caption: "Kho điều phối",
-        DataSourceMember: "fulNameStore",
+        DataSourceMember: "StoreName",
         Width: "10%"
     },
     {
-        Name: "fulNameStore5",
-        Type: "text",
+        Name: "TotalCOD",
+        Type: "textCurrency",
         Caption: "Tổng tiền phải thu hộ",
-        DataSourceMember: "fulNameStore5",
+        DataSourceMember: "TotalCOD",
         Width: "10%"
     },
     {
-        Name: "fulNameStore4",
-        Type: "text",
+        Name: "TotalSaleMaterialMoney",
+        Type: "textCurrency",
         Caption: "Tổng tiền phải thu vật tư",
-        DataSourceMember: "fulNameStore4",
+        DataSourceMember: "TotalSaleMaterialMoney",
         Width: "10%"
     },
     {
-        Name: "fulNameStore3",
-        Type: "text",
+        Name: "TotalMoneyDebt",
+        Type: "textCurrency",
         Caption: "Tổng tiền còn nợ",
-        DataSourceMember: "fulNameStore3",
+        DataSourceMember: "TotalMoneyDebt",
         Width: "10%"
     },
     {
-        Name: "fulNameStore2",
-        Type: "text",
+        Name: "TotalDebtOrders",
+        Type: "textCurrency",
         Caption: "Tổng vận đơn còn nợ",
-        DataSourceMember: "fulNameStore2",
+        DataSourceMember: "TotalDebtOrders",
         Width: "10%"
     },
     {
-        Name: "fulNameStore1",
-        Type: "text",
+        Name: "TotALoverDueDebtOrders",
+        Type: "textCurrency",
         Caption: "Tổng vận đơn nợ quá hạn",
-        DataSourceMember: "fulNameStore1",
+        DataSourceMember: "TotALoverDueDebtOrders",
         Width: "10%"
     },
-    
+    {
+        Name: "Detail",
+        Type: "popupNew",
+        Caption: "Chi tiết",
+        DataSourceMember: "Detail",
+        Width: "5%"
+    },
+]
+
+export const DataGirdStaffDebtColumnList = [
+    {
+        Name: "ShipmentOrderID",
+        Type: "texttolinkNewBlank",
+        Caption: "Mã vận đơn",
+        Link: "/ShipmentOrder/Detail/",
+        DataSourceMember: "ShipmentOrderID",
+        Width: "10%"
+    },
+
+    {
+        Name: "StoreName",
+        Type: "text",
+        Caption: "Kho điều phối",
+        DataSourceMember: "StoreName",
+        Width: "10%"
+    },
+    {
+        Name: "OutputDate",
+        Type: "date",
+        Caption: "Thời gian xuất hàng",
+        DataSourceMember: "OutputDate",
+        Width: "10%"
+    },
+    {
+        Name: "CollectedTime",
+        Type: "date",
+        Caption: "Thời gian thu",
+        DataSourceMember: "CollectedTime",
+        Width: "10%"
+    },
+    {
+        Name: "TotalCOD",
+        Type: "textCurrency",
+        Caption: "Tiền COD",
+        DataSourceMember: "TotalCOD",
+        Width: "10%"
+    },
+    {
+        Name: "TotalSaleMaterialMoney",
+        Type: "textCurrency",
+        Caption: "Tiền vật tư",
+        DataSourceMember: "TotalSaleMaterialMoney",
+        Width: "10%"
+    },
+    {
+        Name: "TotalMoney",
+        Type: "textCurrency",
+        Caption: "Tổng tiền phải thu",
+        DataSourceMember: "TotalMoney",
+        Width: "10%"
+    },
+    {
+        Name: "CollectedTotalMoney",
+        Type: "textCurrency",
+        Caption: "Tiền đã thu KH",
+        DataSourceMember: "CollectedTotalMoney",
+        Width: "10%"
+    },
+    {
+        Name: "DebtInterval",
+        Type: "text",
+        Caption: "Số giờ nợ",
+        DataSourceMember: "DebtInterval",
+        Width: "10%"
+    },
+    {
+        Name: "IsOverDueDebt",
+        Type: "checkicon",
+        Caption: "Đã quá hạn nộp tiền",
+        DataSourceMember: "IsOverDueDebt",
+        Width: "10%"
+    },
 ]

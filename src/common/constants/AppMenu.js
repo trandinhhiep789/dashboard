@@ -1108,6 +1108,36 @@ const AppMenu = [
                 ]
             },
             {
+                MenuName: 'Accountancy',
+                MenuTitle: 'Kế toán',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'ControlStatusReport',
+                        MenuTitle: 'Báo cáo kiểm soát trạng thái vận đơn',
+                        LinkTo: '/ControlStatusReport',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'OverdueOrderReport',
+                        MenuTitle: 'Báo cáo chi tiết vận đơn quá hạn',
+                        LinkTo: '/OverdueOrderReport',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'OverdueStaffDebt',
+                        MenuTitle: 'Báo cáo thống kê công nợ quá hạn',
+                        LinkTo: '/OverdueStaffDebt',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    
+                ]
+            },
+            {
                 MenuName: 'DebtByUser',
                 MenuTitle: 'Thống kê công nợ theo NV',
                 LinkTo: '/DebtByUser',
@@ -1145,6 +1175,7 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
+         
             {
                 MenuName: 'SaleSummaryReport',
                 MenuTitle: 'Báo cáo đơn hàng',
@@ -1152,20 +1183,8 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-            {
-                MenuName: 'OverdueOrderReport',
-                MenuTitle: 'Báo cáo chi tiết vận đơn quá hạn',
-                LinkTo: '/OverdueOrderReport',
-                MenuIcon: '',
-                SubMenu: []
-            },
-            {
-                MenuName: 'OverdueStaffDebt',
-                MenuTitle: 'Báo cáo thống kê công nợ quá hạn',
-                LinkTo: '/OverdueStaffDebt',
-                MenuIcon: '',
-                SubMenu: []
-            }
+           
+           
         ]
     },
     {

@@ -26,8 +26,9 @@ import { SHIPMENTORDER_REPORT_EXPORT, SHIPMENTORDER_REPORT_VIEW } from "../../..
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../../constants/keyCache";
-import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
+import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_DOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
 import ModalBox from "../components/ModalBox";
+// import ModalDownloadFile from "../components/ModalDownloadFile";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -104,7 +105,7 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-       
+
         const objData = {
             UserName: MLObject.UserName == -1 ? "" : MLObject.UserName.value,
             Month: MLObject.Month
@@ -130,7 +131,6 @@ class SearchCom extends React.Component {
 
 
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("apiResult", apiResult)
             if (apiResult && !apiResult.IsError && apiResult.ResultObject) {
 
                 const tempData = apiResult.ResultObject.filter(a => a.MaterialGroupID.trim() == this.state.ConfigValue);
@@ -403,7 +403,6 @@ class SearchCom extends React.Component {
                 IsHandOverMaterial: 1 // v_ISHANDOVERMATERIAL
             }
             this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/LoadByHandOverMaterial", objData).then(apiResult => {
-                console.log("nhan trong ky", apiResult)
                 if (!apiResult.IsError) {
                     this.onShowModal(apiResult.ResultObject, status);
                 }
@@ -421,7 +420,6 @@ class SearchCom extends React.Component {
                 IsHandOverMaterial: 0 // v_ISHANDOVERMATERIAL
             }
             this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/LoadByHandOverMaterial", objData).then(apiResult => {
-                console.log("n22", apiResult)
                 if (!apiResult.IsError) {
                     this.onShowModal(apiResult.ResultObject, status);
                 }
@@ -440,7 +438,6 @@ class SearchCom extends React.Component {
             }
             //this.showMessage("Tính năng đang phát triển.")
             this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/GetExchangeOrderByUser", objData).then(apiResult => {
-                console.log("33", apiResult)
                 if (!apiResult.IsError) {
                     this.onShowModal(apiResult.ResultObject, status);
                 }
@@ -456,7 +453,6 @@ class SearchCom extends React.Component {
                 ProductID: objValue[0].value
             }
             this.props.callFetchAPI(APIHostName, "api/AdvanceDebtFlow/LoadAdvanceDebtFlowUsing", objData).then(apiResult => {
-                console.log("44", apiResult)
                 if (!apiResult.IsError) {
                     this.onShowModal(apiResult.ResultObject, status);
                 }
@@ -467,6 +463,31 @@ class SearchCom extends React.Component {
         }
 
     }
+
+    onShowModalDownloadFile(data) {
+        this.props.showModal(MODAL_TYPE_DOWNLOAD_EXCEL, {
+            title: "Tải file",
+            URLDownloadFile: data,
+            maxWidth: '300px'
+        });
+    }
+
+    handleExportFileFormSearch(FormData, MLObject) {
+        const objData = {
+            UserName: MLObject.UserName == -1 ? "" : MLObject.UserName.value,
+            Month: MLObject.Month
+
+        }
+
+        this.props.callFetchAPI(APIHostName, "api/BeginTermAdvanceDebt/LoadInStockExport", objData).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.onShowModalDownloadFile(apiResult.Message)
+            }
+            else {
+                this.showMessage(apiResult.Message)
+            }
+        });
+    };
 
 
     render() {
@@ -480,6 +501,8 @@ class SearchCom extends React.Component {
                     onSubmit={this.handleSearchSubmit.bind(this)}
                     ref={this.searchref}
                     className="multiple"
+                    IsButtonExport={true}
+                    onExportSubmit={this.handleExportFileFormSearch.bind(this)}
                 />
 
                 <DataGrid
