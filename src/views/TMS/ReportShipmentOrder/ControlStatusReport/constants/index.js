@@ -2,7 +2,7 @@ export const APIHostName = "TMSAPI";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Báo cáo chi tiết vận đơn quá hạn" }
+    { Link: "", Title: "Báo cáo kiểm soát trạng thái vận đơn" }
 ];
 
 export const SearchMLObjectDefinition = [
@@ -136,10 +136,17 @@ export const GridColumnList = [
         Width: "8%"
     },
     {
-        Name: "HandOverGoodsDate",
+        Name: "OutputGoodsDate",
         Type: "date",
         Caption: "Thời gian xuất hàng",
-        DataSourceMember: "HandOverGoodsDate",
+        DataSourceMember: "OutputGoodsDate",
+        Width: "8%"
+    },
+    {
+        Name: "ExpectedDeliveryDate",
+        Type: "date",
+        Caption: "Thời gian hẹn giao hàng",
+        DataSourceMember: "ExpectedDeliveryDate",
         Width: "8%"
     },
     {
@@ -157,17 +164,17 @@ export const GridColumnList = [
         Width: "8%"
     },
     {
-        Name: "CollectedTotalMoney",
-        Type: "textCurrency",
-        Caption: "Tổng tiền phải thu của vận đơn",
-        DataSourceMember: "CollectedTotalMoney",
-        Width: "8%"
-    },
-    {
         Name: "TotalSaleMaterialMoney",
         Type: "textCurrency",
         Caption: "Tiền vật tư",
         DataSourceMember: "TotalSaleMaterialMoney",
+        Width: "8%"
+    },
+    {
+        Name: "CollectedTotalMoney",
+        Type: "textCurrency",
+        Caption: "Tổng tiền phải thu của vận đơn",
+        DataSourceMember: "CollectedTotalMoney",
         Width: "8%"
     },
     {
@@ -182,7 +189,7 @@ export const GridColumnList = [
         Type: "text",
         Caption: "TN điều phối",
         DataSourceMember: "CoordinatorUserName",
-        Width: "10%"
+        Width: "8%"
     },
     {
         Name: "CoordinatorStoreName",
@@ -196,14 +203,8 @@ export const GridColumnList = [
         Type: "text",
         Caption: "Trạng thái vận đơn",
         DataSourceMember: "ShipmentOrderStatusName",
-        Width: "8%"
+        Width: "10%"
     },
-    {
-        Name: "TotalDebtDate",
-        Type: "textCurrency",
-        Caption: "Số ngày trễ so với ngày xuất hàng",
-        DataSourceMember: "TotalDebtDate",
-        Width: "8%"
-    },
+   
     
 ]

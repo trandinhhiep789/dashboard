@@ -191,27 +191,28 @@ class Search extends React.Component {
             }
 
         ];
+        this.showMessage("Tính năng đang phát triển.")
 
-        this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/OverdueOrderReportExport", postData).then(apiResult => {
-            if (!apiResult.IsError) {
-                const { ResultObject } = apiResult;
+        // this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/OverdueOrderReportExport", postData).then(apiResult => {
+        //     if (!apiResult.IsError) {
+        //         const { ResultObject } = apiResult;
 
-                const dataExport = ResultObject.map(item => {
-                    const result = GridColumnList.reduce((acc, val) => {
-                        return {
-                            ...acc,
-                            [val.Caption]: item[val.DataSourceMember]
-                        }
-                    }, {});
+        //         const dataExport = ResultObject.map(item => {
+        //             const result = GridColumnList.reduce((acc, val) => {
+        //                 return {
+        //                     ...acc,
+        //                     [val.Caption]: item[val.DataSourceMember]
+        //                 }
+        //             }, {});
 
-                    return result;
-                });
+        //             return result;
+        //         });
 
-                this.handleExportExcel(dataExport, "Báo cáo chi tiết vận đơn quá hạn");
-            } else {
-                this.addNotification(apiResult.Message, apiResult.IsError);
-            }
-        });
+        //         this.handleExportExcel(dataExport, "Báo cáo chi tiết vận đơn quá hạn");
+        //     } else {
+        //         this.addNotification(apiResult.Message, apiResult.IsError);
+        //     }
+        // });
     };
 
     handleonChangePage(pageNum) {
