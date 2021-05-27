@@ -94,8 +94,8 @@ export const SearchElementList = [
         placeholder: "---Vui lòng chọn---",
         listoption: [
             { value: -1, label: "---Vui lòng chọn---" },
-            { value: 0, label: "COD bằng 0" },
-            { value: 1, label: "COD khác 0" },
+            { value: 1, label: "COD bằng 0" },
+            { value: 2, label: "COD khác 0" },
         ]
     },
     {
@@ -205,6 +205,6 @@ export const GridColumnList = [
         DataSourceMember: "ShipmentOrderStatusName",
         Width: "10%"
     },
-   
-    
+
+
 ]
