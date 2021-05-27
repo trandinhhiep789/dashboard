@@ -175,7 +175,7 @@ export const GridColumnList = [
         Type: "text",
         Caption: "Nhân viên giao",
         DataSourceMember: "DeliverUserFullNameList",
-        Width: "1%"
+        Width: "7%"
     },
     {
         Name: "CoordinatorUserName",
