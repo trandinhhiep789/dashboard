@@ -15,6 +15,9 @@ import { MessageModal } from "../../../../../common/components/Modal";
 import { toIsoStringCus } from '../../../../../utils/function';
 import { SHIPMENTORDER_REPORT_EXPORT, TMS_STAFFDEBT_REPORT_VIEW } from "../../../../../constants/functionLists";
 import "react-notifications-component/dist/theme.css";
+import DataGirdStaffDebt from '../DataGirdStaffDebt';
+import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
+import { showModal, hideModal } from '../../../../../actions/modal';
 
 class Search extends React.Component {
     constructor(props) {
@@ -60,9 +63,13 @@ class Search extends React.Component {
                     return element;
 
                 })
+                const tempData = apiResult.ResultObject.map((item, index) => {
+                    item.Detail = "Xem"
+                    return item;
+                })
                 this.setState({
                     dataExport: exelData,
-                    gridDataSource: apiResult.ResultObject
+                    gridDataSource: tempData
                 });
             }
             else {
@@ -73,14 +80,14 @@ class Search extends React.Component {
 
     handleSearchSubmit(formData, MLObject) {
         const postData = [
-            {
-                SearchKey: "@FROMDATE",
-                SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString())
-            },
-            {
-                SearchKey: "@TODATE",
-                SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString())
-            },
+            // {
+            //     SearchKey: "@FROMDATE",
+            //     SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString())
+            // },
+            // {
+            //     SearchKey: "@TODATE",
+            //     SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString())
+            // },
             {
                 SearchKey: "@STOREID",
                 SearchValue: MLObject.CoordinatorStoreID != "" ? MLObject.CoordinatorStoreID : -1
@@ -88,8 +95,8 @@ class Search extends React.Component {
 
         ];
         // this.showMessage("Tính năng đang phát triển");
-        console.log("param", formData, MLObject)
-        console.log("postData", postData)
+        // console.log("param", formData, MLObject)
+        // console.log("postData", postData)
 
         this.callSearchData(postData);
     };
@@ -128,6 +135,50 @@ class Search extends React.Component {
         });
     }
 
+    onShowModal(dataSource) {
+        const { widthPercent } = this.state;
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: "Chi tiết danh sách nợ tiền thu hộ theo nhân viên",
+            content: {
+                text: <DataGirdStaffDebt
+                    dataSource={dataSource}
+                />
+
+            },
+            maxWidth: widthPercent + 'px'
+        });
+    }
+
+
+    onShowModalDetail(objValue, name) {
+        console.log("aa",objValue, name )
+        // const { gridDataSource } = this.state;
+        // const tempItme = gridDataSource.find(n => {
+        //     return n.StaffDebtID == objValue[0].value
+        // });
+        // const obj = JSON.parse(Base64.decode(objValue[0].value));
+        const param = [
+            {
+                SearchKey: "@STOREID",
+                SearchValue: objValue[0].value
+            },
+
+        ]
+
+        this.props.callFetchAPI(APIHostName, "api/StaffDebtDetail/SearchDetailByStore", param).then(apiResult => {
+            console.log("apiResult",apiResult)
+            if (!apiResult.IsError) {
+               
+                this.onShowModal(apiResult.ResultObject)
+            }
+            else {
+                this.showMessage(apiResult.Message)
+            }
+        })
+
+    }
+
+
 
     render() {
         return (
@@ -148,9 +199,9 @@ class Search extends React.Component {
                     dataSource={this.state.gridDataSource}
                     // AddLink=""
                     IsFixheaderTable={true}
-                    IDSelectColumnName={''}
-                    PKColumnName={''}
-                    // onShowModal={this.onShowModalDetail.bind(this)}
+                    IDSelectColumnName={'StoreID'}
+                    PKColumnName={'StoreID'}
+                    onShowModal={this.onShowModalDetail.bind(this)}
                     isHideHeaderToolbar={false}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
@@ -188,6 +239,12 @@ const mapDispatchToProps = dispatch => {
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
         },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
+        },
+        hideModal: (type, props) => {
+            dispatch(hideModal(type, props));
+        }
     };
 };
 

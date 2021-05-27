@@ -193,6 +193,8 @@ class Search extends React.Component {
         ];
         this.showMessage("Tính năng đang phát triển.")
 
+        //TMS_SHIP_RCS_EXPORT
+
         // this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/OverdueOrderReportExport", postData).then(apiResult => {
         //     if (!apiResult.IsError) {
         //         const { ResultObject } = apiResult;
