@@ -14,6 +14,7 @@ const DownloadFile = (props) => {
     return (
         <Modal title={props.title} onClose={onClose} maxWidth={props.maxWidth}>
             <a
+            
                 className="btn-download-file"
                 href={CDN_LOGO_IMAGE + props.URLDownloadFile}
                 data-url={CDN_LOGO_IMAGE + props.URLDownloadFile}
