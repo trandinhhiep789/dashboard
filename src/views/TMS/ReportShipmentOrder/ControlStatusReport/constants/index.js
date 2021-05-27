@@ -94,8 +94,8 @@ export const SearchElementList = [
         placeholder: "---Vui lòng chọn---",
         listoption: [
             { value: -1, label: "---Vui lòng chọn---" },
-            { value: 1, label: "COD bằng 0" },
-            { value: 2, label: "COD khác 0" },
+            { value: 1, label: "Không thu COD" },
+            { value: 2, label: "Có thu COD" },
         ]
     },
     {
