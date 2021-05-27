@@ -86,12 +86,25 @@ class DataGirdReportLateCom extends Component {
         for (let i = startRowIndex; i < endRowIndex; i++) {
             resultData.push(dataSource[i]);
         }
+
+        //check duplicated data
+        // let result2 = [];
+        // let resulttemp = [];
+        // resultData.map((item,index)=>{
+        //     if(item.TotalLate >0){
+        //        let temp = result2.filter(item2 => item2.TotalLate == 0 && item2.StoreID == item.StoreId);
+        //        if(temp.length > 0){
+        //            temp
+        //        }
+        //     }
+        // })
+
         return resultData;
     }
 
-    handleTotalLateSubmit()
+    handleTotalLateSubmit(storeId)
     {
-        const win = window.open("/ShipmentOrder/Detail/210521000000202", "_blank");
+        const win = window.open("/ReportLate/ShipmentOrderLateInfo/" + storeId, "_blank");
         win.focus();
 
         // const history = useHistory();
@@ -101,11 +114,27 @@ class DataGirdReportLateCom extends Component {
 
     }
 
+    handleTotalLate30Submit(storeId)
+    {
+        const win = window.open("/ReportLate/ShipmentOrderLateInfo30/" + storeId, "_blank");
+        win.focus();
+
+        // const history = useHistory();
+        //    history.push("/ShipmentOrder", {
+        //     ShipmentOrderStatusGroupID: 1
+        // })
+
+    }
+
+
     render() {
         const { PageNumber } = this.state;
         const pageCount = this.getPageCount(this.props.dataSource);
         const dataSource = this.getDisplayData(this.props.dataSource);
         const countTotalMoney = this.props.dataSource.reduce((a, v) => a = a + v.CollectedTotalMoney, 0);
+
+
+
         return (
             <div className="col-12">
                 {this.props.Status != undefined && this.props.Status == 7 &&
@@ -138,7 +167,7 @@ class DataGirdReportLateCom extends Component {
                                             <td style={{ width: '25%' }}>{rowItem.StoreID}</td>
                                             <td style={{ width: '25%' }}>{rowItem.StoreName}</td>
                                             <td style={{ width: '25%' }}> <a className="nav-link text-primary hover-primary cursor-pointer" onClick={() => this.handleTotalLateSubmit(rowItem.StoreID)}>{rowItem.TotalLate}</a></td>
-                                            <td style={{ width: '25%' }}> <a className="nav-link text-primary hover-primary cursor-pointer" onClick={() => this.handleTotalLateSubmit(rowItem.StoreID)}>{rowItem.TotalLate30}</a></td>
+                                            <td style={{ width: '25%' }}> <a className="nav-link text-primary hover-primary cursor-pointer" onClick={() => this.handleTotalLate30Submit(rowItem.StoreID)}>{rowItem.TotalLate30}</a></td>
                                         </tr>)
                                     })
                                     :
