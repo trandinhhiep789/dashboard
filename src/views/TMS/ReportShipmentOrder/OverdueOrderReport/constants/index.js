@@ -72,7 +72,7 @@ export const SearchElementList = [
         DataSourceMember: "ShipmentOrderStatusGroupID",
         colspan: 10,
         rowspan: 2,
-        value: "1,2,3",
+        value: "",
         maxTagCount: 1,
         isMultiSelect: true,
         placeholder: "---Trạng thái---",
