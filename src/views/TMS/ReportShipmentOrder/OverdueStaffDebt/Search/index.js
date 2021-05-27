@@ -16,7 +16,7 @@ import { toIsoStringCus } from '../../../../../utils/function';
 import { SHIPMENTORDER_REPORT_EXPORT, TMS_STAFFDEBT_REPORT_VIEW } from "../../../../../constants/functionLists";
 import "react-notifications-component/dist/theme.css";
 import DataGirdStaffDebt from '../DataGirdStaffDebt';
-import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
+import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_DOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
 import { showModal, hideModal } from '../../../../../actions/modal';
 
 class Search extends React.Component {
@@ -27,6 +27,8 @@ class Search extends React.Component {
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.showMessage = this.showMessage.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
+        this.handleExportFileFormSearch = this.handleExportFileFormSearch.bind(this);
+
         this.state = {
             IsCallAPIError: false,
             gridDataSource: [],
@@ -49,7 +51,6 @@ class Search extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, "api/StaffDebt/SearchOverdueStaffDebt", searchData).then(apiResult => {
-            console.log("aa",searchData, apiResult)
             if (!apiResult.IsError) {
                 const exelData = apiResult.ResultObject.map((item, index) => {
                     let element = {
@@ -80,23 +81,12 @@ class Search extends React.Component {
 
     handleSearchSubmit(formData, MLObject) {
         const postData = [
-            // {
-            //     SearchKey: "@FROMDATE",
-            //     SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString())
-            // },
-            // {
-            //     SearchKey: "@TODATE",
-            //     SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString())
-            // },
             {
                 SearchKey: "@STOREID",
                 SearchValue: MLObject.CoordinatorStoreID != "" ? MLObject.CoordinatorStoreID : -1
             },
 
         ];
-        // this.showMessage("Tính năng đang phát triển");
-        // console.log("param", formData, MLObject)
-        // console.log("postData", postData)
 
         this.callSearchData(postData);
     };
@@ -151,12 +141,6 @@ class Search extends React.Component {
 
 
     onShowModalDetail(objValue, name) {
-        console.log("aa",objValue, name )
-        // const { gridDataSource } = this.state;
-        // const tempItme = gridDataSource.find(n => {
-        //     return n.StaffDebtID == objValue[0].value
-        // });
-        // const obj = JSON.parse(Base64.decode(objValue[0].value));
         const param = [
             {
                 SearchKey: "@STOREID",
@@ -166,9 +150,8 @@ class Search extends React.Component {
         ]
 
         this.props.callFetchAPI(APIHostName, "api/StaffDebtDetail/SearchDetailByStore", param).then(apiResult => {
-            console.log("apiResult",apiResult)
             if (!apiResult.IsError) {
-               
+
                 this.onShowModal(apiResult.ResultObject)
             }
             else {
@@ -178,7 +161,28 @@ class Search extends React.Component {
 
     }
 
+    handleExportFileFormSearch(FormData, MLObject) {
+        const postData = [
+            {
+                SearchKey: "@STOREID",
+                SearchValue: MLObject.CoordinatorStoreID != "" ? MLObject.CoordinatorStoreID : -1
+            },
 
+        ];
+
+        this.props.callFetchAPI(APIHostName, "api/StaffDebt/ExportOverdueStaffDebt", postData).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.props.showModal(MODAL_TYPE_DOWNLOAD_EXCEL, {
+                    title: "Tải file",
+                    URLDownloadFile: apiResult.Message,
+                    maxWidth: '300px'
+                });
+            }
+            else {
+                this.showMessage(apiResult.Message)
+            }
+        });
+    }
 
     render() {
         return (
@@ -192,6 +196,8 @@ class Search extends React.Component {
                     onSubmit={this.handleSearchSubmit}
                     ref={this.searchref}
                     className="multiple"
+                    IsButtonExport={true}
+                    onExportSubmit={this.handleExportFileFormSearch}
                 />
 
                 <DataGrid
@@ -212,10 +218,10 @@ class Search extends React.Component {
                     ref={this.gridref}
                     RequirePermission={TMS_STAFFDEBT_REPORT_VIEW}
                     ExportPermission={SHIPMENTORDER_REPORT_EXPORT}
-                    IsExportFile={true}
+                    IsExportFile={false}
                     DataExport={this.state.dataExport}
                     fileName="Danh sách báo cáo thống kê công nợ quá hạn"
-                    onExportFile={this.handleExportFile.bind(this)}
+                // onExportFile={this.handleExportFile.bind(this)}
                 />
 
 
