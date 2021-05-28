@@ -42,19 +42,19 @@ export const SearchElementList = [
 ];
 
 export const AddElementList = [
-    // {
-    //     type: "text",
-    //     name: "txtSMSTemplateID",
-    //     label: "mã loại",
-    //     value: "",
-    //     maxSize: "5",
-    //     placeholder: "",
-    //     icon: "",
-    //     listoption: {},
-    //     DataSourceMember: "SMSTemplateID",
-    //     readonly: false,
-    //     validatonList: ["required", "number"]
-    // },
+    {
+        type: "text",
+        name: "txtSMSTemplateID",
+        label: "mã template tin nhắn SMS",
+        value: "",
+        maxSize: "5",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "SMSTemplateID",
+        readonly: false,
+        validatonList: ["required", "number"]
+    },
     {
         type: "text",
         name: "txtSMSTemplateName",
