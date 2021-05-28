@@ -869,9 +869,12 @@ class DataGridShipmentOderCom extends Component {
                                                         <label className="item address-receiver">
                                                             <span>ĐP: <span className="coordinatorUser">{rowItem.CoordinatorUser + "-" + rowItem.CoordinatorUserName}</span></span>
                                                         </label>
-                                                        <label className="item address-receiver">
-                                                            <span>NV:{ReactHtmlParser(rowItem.DeliverUserFullNameList)}</span>
-                                                        </label>
+                                                         {rowItem.DeliverUserFullNameList!= ""?
+                                                       (<label className="item address-receiver">
+                                                            <span>{ReactHtmlParser(rowItem.DeliverUserFullNameList)}</span>
+                                                        </label>):""
+                                                           }
+
                                                         <label className="item address-receiver">
                                                             <span className="receiverred">{rowItem.CoordinatorNote != "" ? "Ghi chú: " + rowItem.CoordinatorNote : ""}</span>
                                                         </label>

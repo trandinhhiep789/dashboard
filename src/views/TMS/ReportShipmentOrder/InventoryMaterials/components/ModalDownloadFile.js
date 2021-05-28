@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link, Redirect, Switch } from "react-router-dom";
-import { CDN_DOWNLOAD_FILE } from '../../../../../constants/systemVars'
+import { CDN_LOGO_IMAGE } from '../../../../../constants/systemVars'
 
 export default class ModalDownloadFile extends Component {
     constructor(props) {
@@ -28,7 +28,7 @@ export default class ModalDownloadFile extends Component {
                     <img className="item" src="/src/img/icon/icon-down.gif" alt="download file icon" />
                     <span className="item" >[Link File]</span>
                 </a> */}
-                <a className="btn-download-file" href={CDN_DOWNLOAD_FILE + this.props.URLDownloadFile} data-url={CDN_DOWNLOAD_FILE + this.props.URLDownloadFile}>
+                <a className="btn-download-file" href={CDN_LOGO_IMAGE + this.props.URLDownloadFile} data-url={CDN_LOGO_IMAGE + this.props.URLDownloadFile}>
                     <img className="item" src="/src/img/icon/icon-down.gif" alt="download file icon" />
                     <span className="item" >[Link File]</span>
                 </a>

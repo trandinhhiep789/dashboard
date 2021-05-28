@@ -22,6 +22,8 @@ import { callGetCache } from "../../../../../actions/cacheAction";
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 import { toIsoStringCus } from '../../../../../utils/function'
+import { showModal, hideModal } from '../../../../../actions/modal';
+import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_DOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -98,34 +100,45 @@ class SearchCom extends React.Component {
         this.callSearchData(postData);
     }
 
+
+    onShowModalDownloadFile(data) {
+        this.props.showModal(MODAL_TYPE_DOWNLOAD_EXCEL, {
+            title: "Tải file",
+            URLDownloadFile: data,
+            maxWidth: '300px'
+        });
+    }
+
+
     callSearchData(searchData) {
 
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, "api/TMSRewardDetail/SearchExportRewardDetailNew", searchData).then(apiResult => {
             console.log("apiResult", apiResult, searchData)
             if (!apiResult.IsError) {
 
-                const tempDataExport = apiResult.ResultObject.map((item, index) => {
-                    let element = {
-                        "Mã nhân viên": item.RewardUser.trim(),
-                        "Tên nhân viên": item.FullName.trim(),
-                        "Mã vận đơn": item.ShipmentOrderID.trim(),
-                        "Mã đơn hàng": item.PartnerSaleOrderID.trim(),
-                        "Ngày thưởng": item.RewardDate.trim(),
-                        "Mã sản phẩm": item.ProductID.trim(),
-                        "Tên sản phẩm": item.ProductName.trim(),
-                        "Số lượng": item.Quantity,
-                        "Đơn giá thưởng": item.RewardPrice,
-                        "Tỷ lệ thưởng": item.RewardRatio,
-                        "Vị trí thưởng": item.RewardPositionID + "-" + item.RewardPositionName.trim(),
-                        "Loại thưởng": item.RewardTypeID + "-" + item.RewardTypeName.trim(),
-                        "Tổng thưởng": item.TotalReward,
+                // const tempDataExport = apiResult.ResultObject.map((item, index) => {
+                //     let element = {
+                //         "Mã nhân viên": item.RewardUser.trim(),
+                //         "Tên nhân viên": item.FullName.trim(),
+                //         "Mã vận đơn": item.ShipmentOrderID.trim(),
+                //         "Mã đơn hàng": item.PartnerSaleOrderID.trim(),
+                //         "Ngày thưởng": item.RewardDate.trim(),
+                //         "Mã sản phẩm": item.ProductID.trim(),
+                //         "Tên sản phẩm": item.ProductName.trim(),
+                //         "Số lượng": item.Quantity,
+                //         "Đơn giá thưởng": item.RewardPrice,
+                //         "Tỷ lệ thưởng": item.RewardRatio,
+                //         "Vị trí thưởng": item.RewardPositionID + "-" + item.RewardPositionName.trim(),
+                //         "Loại thưởng": item.RewardTypeID + "-" + item.RewardTypeName.trim(),
+                //         "Tổng thưởng": item.TotalReward,
 
-                    };
+                //     };
 
-                    return element;
+                //     return element;
 
-                })
-                this.handleExportCSV(tempDataExport)
+                // })
+                // this.handleExportCSV(tempDataExport)
+                this.onShowModalDownloadFile(apiResult.Message)
             }
             else {
                 this.showMessage(apiResult.Message)
@@ -207,6 +220,12 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
+        },
+        hideModal: (type, props) => {
+            dispatch(hideModal(type, props));
         }
     };
 };

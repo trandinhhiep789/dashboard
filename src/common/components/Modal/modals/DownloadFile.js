@@ -4,15 +4,21 @@ import PropTypes from 'prop-types';
 
 import { hideModal } from '../../../../actions/modal';
 import Modal from '../Modal';
-import { CDN_DOWNLOAD_FILE } from '../../../../constants/systemVars';
+import { CDN_LOGO_IMAGE } from '../../../../constants/systemVars';
 
 const DownloadFile = (props) => {
+    const onClose = () => {
+        props.hideModal();
+    };
+
     return (
-        <Modal title={props.title} onClose={props.onClose} maxWidth={props.maxWidth}>
+        <Modal title={props.title} onClose={onClose} maxWidth={props.maxWidth}>
             <a
+            
                 className="btn-download-file"
-                href={CDN_DOWNLOAD_FILE + props.URLDownloadFile}
-                data-url={CDN_DOWNLOAD_FILE + props.URLDownloadFile}
+                href={CDN_LOGO_IMAGE + props.URLDownloadFile}
+                data-url={CDN_LOGO_IMAGE + props.URLDownloadFile}
+                onClick={onClose}
             >
                 <img className="item" src="/src/img/icon/icon-down.gif" alt="download file icon" />
                 <span className="item" >[Link File]</span>
