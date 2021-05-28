@@ -59,6 +59,16 @@ export const ModalColumnList_Insert = [
         validatonList: []
     },
     {
+        Name: "IsAllowDecimal",
+        type: "checkbox",
+        label: "Cho phép nhập số lẻ",
+        colspan: 12,
+        value: true,
+        DataSourceMember: "IsAllowDecimal",
+        readonly: false,
+        validatonList: []
+    },
+    {
         Name: "MinQuality",
         type: "text",
         label: "số lượng nhỏ nhất",
@@ -132,6 +142,16 @@ export const ModalColumnList_Edit = [
         colspan: 12,
         value: false,
         DataSourceMember: "IsCheckMinMaxQuality",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        Name: "IsAllowDecimal",
+        type: "checkbox",
+        label: "Cho phép nhập số lẻ",
+        colspan: 12,
+        value: true,
+        DataSourceMember: "IsAllowDecimal",
         readonly: false,
         validatonList: []
     },
@@ -276,6 +296,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "IsCheckMinMaxQuality",
         DataSourceMember: "IsCheckMinMaxQuality"
+    },
+    {
+        Name: "IsAllowDecimal",
+        DefaultValue: "",
+        BindControlName: "IsAllowDecimal",
+        DataSourceMember: "IsAllowDecimal"
     },
     {
         Name: "MinQuality",

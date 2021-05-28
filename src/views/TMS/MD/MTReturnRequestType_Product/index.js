@@ -151,6 +151,7 @@ class MTReturnRequestType_ProductCom extends React.Component {
             var selector = document.getElementsByClassName("form-row");
             selector[5].style.display = elementValue ? "" : "none";
             selector[6].style.display = elementValue ? "" : "none";
+            selector[7].style.display = elementValue ? "" : "none";
         } else if (elementName == "MaterialGroupID" && this.state.IsInsert) {
             let options = [];
             this.props.MaterialProductDataSource.map((item, index) => {
@@ -223,16 +224,19 @@ class MTReturnRequestType_ProductCom extends React.Component {
                             } else if (parseFloat(MLObject.MaxQuality) < 0 || parseFloat(MLObject.MinQuality) < 0) {
                                 this.addNotification("Vui lòng nhập số dương", true);
                                 return;
+                            } else if (!MLObject.IsAllowDecimal && (!Number.isInteger(parseFloat(MLObject.MaxQuality)) || !Number.isInteger(parseFloat(MLObject.MinQuality)))) {
+                                this.addNotification("Vui lòng nhập số nguyên", true);
+                                return;
                             }
 
                         }
 
                         //số lượng chỉ được 1 số thập phân
-                        if (MLObject.MinQuality.toString().indexOf(".") != -1 && !(/^\d+(\.\d{1})$/).test(parseFloat(MLObject.MinQuality))) {
-                            this.addNotification("Số lượng nhỏ nhất chỉ được phép nhập 1 số thập phân", true);
+                        if (MLObject.MinQuality.toString().indexOf(".") != -1 && !(/^\d+(\.\d{3})$/).test(parseFloat(MLObject.MinQuality))) {
+                            this.addNotification("Số lượng nhỏ nhất chỉ được phép nhập 3 số thập phân", true);
                             return;
-                        } else if (MLObject.MaxQuality.toString().indexOf(".") != -1 && !(/^\d+(\.\d{1})$/).test(parseFloat(MLObject.MaxQuality))) {
-                            this.addNotification("Số lượng lớn nhất chỉ được phép nhập 1 số thập phân", true);
+                        } else if (MLObject.MaxQuality.toString().indexOf(".") != -1 && !(/^\d+(\.\d{3})$/).test(parseFloat(MLObject.MaxQuality))) {
+                            this.addNotification("Số lượng lớn nhất chỉ được phép nhập 3 số thập phân", true);
                             return;
                         }
 
@@ -312,17 +316,20 @@ class MTReturnRequestType_ProductCom extends React.Component {
                             } else if (parseFloat(MLObject.MaxQuality) < 0 || parseFloat(MLObject.MinQuality) < 0) {
                                 this.addNotification("Vui lòng nhập số dương", true);
                                 return;
+                            } else if (!MLObject.IsAllowDecimal && (!Number.isInteger(parseFloat(MLObject.MaxQuality)) || !Number.isInteger(parseFloat(MLObject.MinQuality)))) {
+                                this.addNotification("Vui lòng nhập số nguyên", true);
+                                return;
                             }
 
                         }
 
 
                         //số lượng chỉ được 1 số thập phân
-                        if (MLObject.MinQuality.toString().indexOf(".") != -1 && !(/^\d+(\.\d{1})$/).test(parseFloat(MLObject.MinQuality))) {
-                            this.addNotification("Số lượng nhỏ nhất chỉ được phép nhập 1 số thập phân", true);
+                        if (MLObject.MinQuality.toString().indexOf(".") != -1 && !(/^\d+(\.\d{3})$/).test(parseFloat(MLObject.MinQuality))) {
+                            this.addNotification("Số lượng nhỏ nhất chỉ được phép nhập 3 số thập phân", true);
                             return;
-                        } else if (MLObject.MaxQuality.toString().indexOf(".") != -1 && !(/^\d+(\.\d{1})$/).test(parseFloat(MLObject.MaxQuality))) {
-                            this.addNotification("Số lượng lớn nhất chỉ được phép nhập 1 số thập phân", true);
+                        } else if (MLObject.MaxQuality.toString().indexOf(".") != -1 && !(/^\d+(\.\d{3})$/).test(parseFloat(MLObject.MaxQuality))) {
+                            this.addNotification("Số lượng lớn nhất chỉ được phép nhập 3 số thập phân", true);
                             return;
                         }
 
