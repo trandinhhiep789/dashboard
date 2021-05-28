@@ -551,6 +551,30 @@ export const GridInstallBundle_Materia = [
         DataSourceMember: "IsCanMultiUsage"
     },
     {
+        Name: "IsShowTopWhenAdvance",
+        DefaultValue: false,
+        BindControlName: "IsShowTopWhenAdvance",
+        DataSourceMember: "IsShowTopWhenAdvance"
+    },
+    {
+        Name: "IsShowTopWhenUsage",
+        DefaultValue: false,
+        BindControlName: "IsShowTopWhenUsage",
+        DataSourceMember: "IsShowTopWhenUsage"
+    },
+    {
+        Name: "UsageShowOrderindex",
+        DefaultValue: 0,
+        BindControlName: "UsageShowOrderindex",
+        DataSourceMember: "UsageShowOrderindex"
+    },
+    {
+        Name: "AdvanceShowOrderindex",
+        DefaultValue: 0,
+        BindControlName: "AdvanceShowOrderindex",
+        DataSourceMember: "AdvanceShowOrderindex"
+    },
+    {
         Name: "CreatedUser",
         DefaultValue: "",
         BindControlName: "",
@@ -871,12 +895,54 @@ export const InstallBundle_MateriaColumnList = [
         OrderIndex: 24
     },
     {
+        name: "IsShowTopWhenAdvance",
+        Type: "checkbox",
+        label: "Hiển thị đầu tiên khi tạm ứng",
+        Caption: "Hiển thị đầu tiên khi tạm ứng",
+        datasourcemember: "IsShowTopWhenAdvance",
+        hideInput: false,
+        Width: 70,
+        OrderIndex: 25
+    },
+    {
+        name: "AdvanceShowOrderindex",
+        Type: "TextNumber",
+        Caption: "Thứ tự hiển thị khi tạm ứng",
+        label: "Thứ tự hiển thị khi tạm ứng",
+        datasourcemember: "AdvanceShowOrderindex",
+        OrderIndex: 26,
+        hideInput: false,
+        min: 0,
+        max: 9999
+    },
+    {
+        name: "IsShowTopWhenUsage",
+        Type: "checkbox",
+        label: "Hiển thị đầu tiên khi sử dụng",
+        Caption: "Hiển thị đầu tiên khi sử dụng",
+        datasourcemember: "IsShowTopWhenUsage",
+        hideInput: false,
+        Width: 70,
+        OrderIndex: 27
+    },
+    {
+        name: "UsageShowOrderindex",
+        Type: "TextNumber",
+        Caption: "Thứ tự hiển thị khi sử dụng",
+        label: "Thứ tự hiển thị khi sử dụng",
+        datasourcemember: "UsageShowOrderindex",
+        OrderIndex: 28,
+        hideInput: false,
+        min: 0,
+        max: 9999
+    },
+    {
         name: "Note",
         Type: "TextArea",
         label: "Ghi chú",
         Caption: "Ghi chú",
         datasourcemember: "Note",
-        OrderIndex: 25,
+        OrderIndex: 29,
         Colmd: 12,
         hideInput: false,
         labelcolspan: 2,
@@ -1195,12 +1261,54 @@ export const InstallBundle_MateriaColumnListEdit = [
         OrderIndex: 24
     },
     {
+        name: "IsShowTopWhenAdvance",
+        Type: "checkbox",
+        label: "Hiển thị đầu tiên khi tạm ứng",
+        Caption: "Hiển thị đầu tiên khi tạm ứng",
+        datasourcemember: "IsShowTopWhenAdvance",
+        hideInput: false,
+        Width: 70,
+        OrderIndex: 25
+    },
+    {
+        name: "AdvanceShowOrderindex",
+        Type: "TextNumber",
+        Caption: "Thứ tự hiển thị khi tạm ứng",
+        label: "Thứ tự hiển thị khi tạm ứng",
+        datasourcemember: "AdvanceShowOrderindex",
+        OrderIndex: 26,
+        hideInput: false,
+        min: 0,
+        max: 9999
+    },
+    {
+        name: "IsShowTopWhenUsage",
+        Type: "checkbox",
+        label: "Hiển thị đầu tiên khi sử dụng",
+        Caption: "Hiển thị đầu tiên khi sử dụng",
+        datasourcemember: "IsShowTopWhenUsage",
+        hideInput: false,
+        Width: 70,
+        OrderIndex: 27
+    },
+    {
+        name: "UsageShowOrderindex",
+        Type: "TextNumber",
+        Caption: "Thứ tự hiển thị khi sử dụng",
+        label: "Thứ tự hiển thị khi sử dụng",
+        datasourcemember: "UsageShowOrderindex",
+        OrderIndex: 28,
+        hideInput: false,
+        min: 0,
+        max: 9999
+    },
+    {
         name: "Note",
         Type: "TextArea",
         label: "Ghi chú",
         Caption: "Ghi chú",
         datasourcemember: "Note",
-        OrderIndex: 25,
+        OrderIndex: 29,
         Colmd: 12,
         hideInput: false,
         labelcolspan: 2,
