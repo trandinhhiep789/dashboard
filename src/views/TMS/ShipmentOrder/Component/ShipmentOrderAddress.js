@@ -1220,7 +1220,7 @@ class ShipmentOrderAddressCom extends Component {
                             <div className="card">
                                 <div className="card-title">
                                     <h4 className="title">Người gửi</h4>
-                                    <button className="btn btnEditCard" onClick={this.handleShowModalSender.bind(this)}>chỉnh sửa</button>
+                                    {/* <button className="btn btnEditCard" onClick={this.handleShowModalSender.bind(this)}>chỉnh sửa</button> */}
                                 </div>
                                 <div className="card-body">
                                     <div className="form-row">
@@ -1261,7 +1261,7 @@ class ShipmentOrderAddressCom extends Component {
                             <div className="card">
                                 <div className="card-title">
                                     <h4 className="title">Người liên hệ</h4>
-                                    <button className="btn btnEditCard" onClick={this.handleShowModalReceiver.bind(this)}>chỉnh sửa</button>
+                                    {/* <button className="btn btnEditCard" onClick={this.handleShowModalReceiver.bind(this)}>chỉnh sửa</button> */}
                                 </div>
                                 <div className="card-body">
                                     <div>
@@ -1289,7 +1289,7 @@ class ShipmentOrderAddressCom extends Component {
                                                 <label className="col-form-label">
                                                     {
                                                         (this.state.ShipmentOrder.ShipmentOrderTypeID == 1002 || this.state.ShipmentOrder.ShipmentOrderTypeID == 1003) && this.state.ShipmentOrder.TotalCOD > 0
-                                                            ? this.state.ShipmentOrder.CustomerPhone.substr(0, 7) + "***"
+                                                            ? this.state.ShipmentOrder.CustomerPhone.substr(0, 5) + "*****"
                                                             : <a href={`tel:${this.state.ShipmentOrder.CustomerPhone}`}>
                                                                 {this.state.ShipmentOrder.CustomerPhone}
                                                             </a>
@@ -1304,7 +1304,6 @@ class ShipmentOrderAddressCom extends Component {
                                     <div>
                                         Người nhận
                                     </div>
-
                                     <div className="row-contact-info">
                                         <div className="sub-row">
                                             <div className="form-group">
@@ -1327,7 +1326,7 @@ class ShipmentOrderAddressCom extends Component {
                                                 <label className="col-form-label" >
                                                     {
                                                         (this.state.ShipmentOrder.ShipmentOrderTypeID == 1002 || this.state.ShipmentOrder.ShipmentOrderTypeID == 1003) && this.state.ShipmentOrder.TotalCOD > 0
-                                                            ? this.state.ShipmentOrder.ReceiverPhoneNumber.substr(0, 7) + "***"
+                                                            ? this.state.ShipmentOrder.ReceiverPhoneNumber.substr(0, 5) + "*****"
                                                             : <a href={`tel:${this.state.ShipmentOrder.ReceiverPhoneNumber}`}>
                                                                 {this.state.ShipmentOrder.ReceiverPhoneNumber}
                                                             </a>

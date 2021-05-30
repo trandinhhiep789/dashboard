@@ -22,8 +22,8 @@ class ManagerShipmentOrderCom extends React.Component {
         return (
             <Switch>
                 <Route exact path="/ManagerShipmentOrder" component={Search} />
-                <Route exact path="/ManagerShipmentOrder/Edit/:id" component={Edit} /> 
-                <Route exact path="/ManagerShipmentOrder/Add" component={Add} /> 
+                {/* <Route exact path="/ManagerShipmentOrder/Edit/:id" component={Edit} /> 
+                <Route exact path="/ManagerShipmentOrder/Add" component={Add} />  */}
                 <Route path="*" component={NotFound} />
             </Switch>
         );

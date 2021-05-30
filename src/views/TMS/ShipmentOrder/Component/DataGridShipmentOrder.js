@@ -809,7 +809,7 @@ class DataGridShipmentOderCom extends Component {
                                                         {rowItem.ReceiverFullName}
                                                     </span>
                                                     <span className="line">-</span>
-                                                    <span className={rowItem.PhoneCount > 1 ? "phone  phonered" : "phone"}>({rowItem.ReceiverPhoneNumber.substr(0, 4)}****)</span>
+                                                    <span className={rowItem.PhoneCount > 1 ? "phone  phonered" : "phone"}>({rowItem.ReceiverPhoneNumber})</span>
                                                     {rowItem.PartnerSaleOrderID != "" ? <span className="line">-</span> : ""}
                                                     <span className="phone partner-sale-Order fw-600">{rowItem.PartnerSaleOrderID}</span>
                                                     <button className="btn-copy-clipboard" data-id={rowItem.PartnerSaleOrderID} onClick={this.copyToClipboard.bind(this)}>
