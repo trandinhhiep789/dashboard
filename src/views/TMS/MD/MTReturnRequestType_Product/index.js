@@ -232,10 +232,10 @@ class MTReturnRequestType_ProductCom extends React.Component {
                         }
 
                         //số lượng chỉ được 1 số thập phân
-                        if (MLObject.MinQuality.toString().indexOf(".") != -1 && !(/^\d+(\.\d{3})$/).test(parseFloat(MLObject.MinQuality))) {
+                        if (MLObject.MinQuality.toString().indexOf(".") != -1 && MLObject.MinQuality.toString().split(".")[1].length > 3) {
                             this.addNotification("Số lượng nhỏ nhất chỉ được phép nhập 3 số thập phân", true);
                             return;
-                        } else if (MLObject.MaxQuality.toString().indexOf(".") != -1 && !(/^\d+(\.\d{3})$/).test(parseFloat(MLObject.MaxQuality))) {
+                        } else if (MLObject.MaxQuality.toString().indexOf(".") != -1 && MLObject.MaxQuality.toString().split(".")[1].length > 3) {
                             this.addNotification("Số lượng lớn nhất chỉ được phép nhập 3 số thập phân", true);
                             return;
                         }
@@ -323,15 +323,24 @@ class MTReturnRequestType_ProductCom extends React.Component {
 
                         }
 
-
                         //số lượng chỉ được 1 số thập phân
-                        if (MLObject.MinQuality.toString().indexOf(".") != -1 && !(/^\d+(\.\d{3})$/).test(parseFloat(MLObject.MinQuality))) {
+                        if (MLObject.MinQuality.toString().indexOf(".") != -1 && MLObject.MinQuality.toString().split(".")[1].length > 3) {
                             this.addNotification("Số lượng nhỏ nhất chỉ được phép nhập 3 số thập phân", true);
                             return;
-                        } else if (MLObject.MaxQuality.toString().indexOf(".") != -1 && !(/^\d+(\.\d{3})$/).test(parseFloat(MLObject.MaxQuality))) {
+                        } else if (MLObject.MaxQuality.toString().indexOf(".") != -1 && MLObject.MaxQuality.toString().split(".")[1].length > 3) {
                             this.addNotification("Số lượng lớn nhất chỉ được phép nhập 3 số thập phân", true);
                             return;
                         }
+
+
+                        // //số lượng chỉ được 1 số thập phân
+                        // if (MLObject.MinQuality.toString().indexOf(".") != -1 && !(/^\d+(\.\d{3})$/).test(parseFloat(MLObject.MinQuality))) {
+                        //     this.addNotification("Số lượng nhỏ nhất chỉ được phép nhập 3 số thập phân", true);
+                        //     return;
+                        // } else if (MLObject.MaxQuality.toString().indexOf(".") != -1 && !(/^\d+(\.\d{3})$/).test(parseFloat(MLObject.MaxQuality))) {
+                        //     this.addNotification("Số lượng lớn nhất chỉ được phép nhập 3 số thập phân", true);
+                        //     return;
+                        // }
 
                         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
                             if (!apiResult.IsError) {
