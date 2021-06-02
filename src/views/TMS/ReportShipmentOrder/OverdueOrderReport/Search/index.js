@@ -38,8 +38,8 @@ class Search extends React.Component {
         this.callSearchData = this.callSearchData.bind(this);
         this.handleExportFile = this.handleExportFile.bind(this);
         this.handleExportFileFormSearch = this.handleExportFileFormSearch.bind(this);
-        this.handleExportExcel = this.handleExportExcel.bind(this);
-    }
+        this.handleExoprtExcel = this.handleExoprtExcel.bind(this);
+    }   
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
@@ -111,10 +111,10 @@ class Search extends React.Component {
                 SearchKey: "@TYPECOD",
                 SearchValue: MLObject.COD
             },
-            {
-                SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
-                SearchValue: MLObject.ShipmentOrderStatusGroupID
-            },
+            // {
+            //     SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
+            //     SearchValue: MLObject.ShipmentOrderStatusGroupID
+            // },
             {
                 SearchKey: "@Keyword",
                 SearchValue: MLObject.Keyword
@@ -141,23 +141,24 @@ class Search extends React.Component {
         this.callSearchData(postData);
     };
 
-    handleExportExcel(dataExport, fileName) {
+    handleExoprtExcel(DataExport, fileName) {
         const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
         const fileExtension = '.xlsx';
-
-        const ws = XLSX.utils.json_to_sheet(dataExport);
-        const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
-        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-        const data = new Blob([excelBuffer], { type: fileType });
-
-        FileSaver.saveAs(data, fileName + fileExtension);
-
-        const result = {
-            IsError: false,
-            Message: "Xuất file thành công!"
+        let result;
+        if (DataExport.length == 0) {
+            this.addNotification("Dữ liệu không tồn tại. Không thể xuất file!", true);
         }
+        else {
 
-        this.addNotification(result.Message, result.IsError);
+            const ws = XLSX.utils.json_to_sheet(DataExport);
+            const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+            const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+            const data = new Blob([excelBuffer], { type: fileType });
+            FileSaver.saveAs(data, "Báo-cáo-thống-kê-công-nợ-quá-hạn" + fileExtension);
+
+            this.addNotification("Xuất file thành công!", false);
+            
+        }
     }
 
     handleExportFile() {
@@ -181,10 +182,6 @@ class Search extends React.Component {
                 SearchValue: MLObject.COD
             },
             {
-                SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
-                SearchValue: MLObject.ShipmentOrderStatusGroupID
-            },
-            {
                 SearchKey: "@Keyword",
                 SearchValue: MLObject.Keyword
             },
@@ -195,15 +192,37 @@ class Search extends React.Component {
 
         ];
 
-        console.log("postData", postData)
 
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/OverdueOrderReportExport", postData).then(apiResult => {
+        console.log("a2", postData, apiResult)
+
             if (!apiResult.IsError) {
-                this.props.showModal(MODAL_TYPE_DOWNLOAD_EXCEL, {
-                    title: "Tải file",
-                    URLDownloadFile: apiResult.Message,
-                    maxWidth: '300px'
-                });
+                // this.props.showModal(MODAL_TYPE_DOWNLOAD_EXCEL, {
+                //     title: "Tải file",
+                //     URLDownloadFile: apiResult.Message,
+                //     maxWidth: '300px'
+                // });
+                const exelData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Mã đơn hàng": item.PartnerSaleOrderID,
+                        "Mã vận đơn": item.ShipmentOrderID,
+                        "Thời gian xuất hàng": item.HandOverGoodsDate,
+                        "Ngày hẹn giao": item.ExpectedDeliveryDate,
+                        "Số tiền COD": item.TotalCOD,
+                        "Tổng tiền nhập trả": item.TotalReturnPrice,
+                        "Tổng tiền phải thu của vận đơn": item.CollectedTotalMoney,
+                        "Tiền vật tư": item.TotalSaleMaterialMoney,
+                        "Nhân viên giao": item.DeliverUserFullNameList,
+
+                        "TN điều phối": item.CoordinatorUserName,
+                        "Kho điều phối": item.CoordinatorStoreName,
+                        "Trạng thái vận đơn": item.ShipmentOrderStatusName,
+                        "Số ngày trễ so với ngày xuất hàng": item.TotalDebtDate,
+                    };
+                    return element;
+
+                })
+                this.handleExoprtExcel(exelData, "Báo-cáo-chi-tiết-vận-đơn-quá-hạn");
             }
             else {
                 this.showMessage(apiResult.Message)
@@ -240,7 +259,7 @@ class Search extends React.Component {
 
                 <SearchForm
                     FormName="Tìm kiếm chi tiết vận đơn quá hạn"
-                    className="multiple multiple-custom"
+                    className="multiple"
                     classNamebtnSearch="groupAction"
                     listelement={SearchElementList}
                     MLObjectDefinition={SearchMLObjectDefinition}

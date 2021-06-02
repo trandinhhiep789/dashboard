@@ -16,11 +16,11 @@ export const SearchMLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "cbToDate"
     },
-    {
-        Name: "ShipmentOrderStatusGroupID",
-        DefaultValue: "",
-        BindControlName: "cbShipmentOrderStatusGroupID"
-    },
+    // {
+    //     Name: "ShipmentOrderStatusGroupID",
+    //     DefaultValue: "",
+    //     BindControlName: "cbShipmentOrderStatusGroupID"
+    // },
     {
         Name: "COD",
         DefaultValue: "",
@@ -63,26 +63,26 @@ export const SearchElementList = [
         colspan: 2,
         classNameCol: "col-custom"
     },
-    {
-        type: "MultiTreeSelect",
-        IsLabelDiv: true,
-        labelcolspan: 10,
-        label: 'Trạng thái vận đơn',
-        name: "cbShipmentOrderStatusGroupID",
-        DataSourceMember: "ShipmentOrderStatusGroupID",
-        colspan: 10,
-        rowspan: 2,
-        value: "",
-        maxTagCount: 1,
-        isMultiSelect: true,
-        placeholder: "---Trạng thái---",
-        listoption: [],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERSTATUSGR",
-        ValueMember: "ShipmentOrderStatusGroupID",
-        NameMember: "ShipmentOrderStatusGroupName",
-        classNameCol: "col-custom"
-    },
+    // {
+    //     type: "MultiTreeSelect",
+    //     IsLabelDiv: true,
+    //     labelcolspan: 10,
+    //     label: 'Trạng thái vận đơn',
+    //     name: "cbShipmentOrderStatusGroupID",
+    //     DataSourceMember: "ShipmentOrderStatusGroupID",
+    //     colspan: 10,
+    //     rowspan: 2,
+    //     value: "",
+    //     maxTagCount: 1,
+    //     isMultiSelect: true,
+    //     placeholder: "---Trạng thái---",
+    //     listoption: [],
+    //     IsAutoLoadItemFromCache: true,
+    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERSTATUSGR",
+    //     ValueMember: "ShipmentOrderStatusGroupID",
+    //     NameMember: "ShipmentOrderStatusGroupName",
+    //     classNameCol: "col-custom"
+    // },
     {
         type: "ComboBox",
         name: "cbCOD",
@@ -138,8 +138,15 @@ export const GridColumnList = [
     {
         Name: "HandOverGoodsDate",
         Type: "date",
-        Caption: "Thời gian xuất hàng",
+        Caption: "Ngày xuất hàng",
         DataSourceMember: "HandOverGoodsDate",
+        Width: "8%"
+    },
+    {
+        Name: "ExpectedDeliveryDate",
+        Type: "date",
+        Caption: "Ngày hẹn giao",
+        DataSourceMember: "ExpectedDeliveryDate",
         Width: "8%"
     },
     {
@@ -147,28 +154,28 @@ export const GridColumnList = [
         Type: "textCurrency",
         Caption: "Số tiền COD",
         DataSourceMember: "TotalCOD",
-        Width: "7%"
+        Width: "6%"
     },
     {
         Name: "TotalReturnPrice",
         Type: "textCurrency",
         Caption: "Tổng tiền nhập trả",
         DataSourceMember: "TotalReturnPrice",
-        Width: "7%"
+        Width: "6%"
     },
     {
         Name: "CollectedTotalMoney",
         Type: "textCurrency",
         Caption: "Tổng tiền phải thu của vận đơn",
         DataSourceMember: "CollectedTotalMoney",
-        Width: "7%"
+        Width: "6%"
     },
     {
         Name: "TotalSaleMaterialMoney",
         Type: "textCurrency",
         Caption: "Tiền vật tư",
         DataSourceMember: "TotalSaleMaterialMoney",
-        Width: "7%"
+        Width: "6%"
     },
     {
         Name: "DeliverUserFullNameList",
@@ -182,14 +189,14 @@ export const GridColumnList = [
         Type: "text",
         Caption: "TN điều phối",
         DataSourceMember: "CoordinatorUserName",
-        Width: "10%"
+        Width: "8%"
     },
     {
         Name: "CoordinatorStoreName",
         Type: "text",
         Caption: "Kho điều phối",
         DataSourceMember: "CoordinatorStoreName",
-        Width: "10%"
+        Width: "8%"
     },
     {
         Name: "ShipmentOrderStatusName",
