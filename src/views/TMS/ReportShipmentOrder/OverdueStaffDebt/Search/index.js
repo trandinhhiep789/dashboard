@@ -19,6 +19,9 @@ import DataGirdStaffDebt from '../DataGirdStaffDebt';
 import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_DOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
 import { showModal, hideModal } from '../../../../../actions/modal';
 
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+
 class Search extends React.Component {
     constructor(props) {
         super(props);
@@ -28,6 +31,7 @@ class Search extends React.Component {
         this.showMessage = this.showMessage.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
         this.handleExportFileFormSearch = this.handleExportFileFormSearch.bind(this);
+        this.handleExportCSV = this.handleExportCSV.bind(this);
 
         this.state = {
             IsCallAPIError: false,
@@ -51,25 +55,14 @@ class Search extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, "api/StaffDebt/SearchOverdueStaffDebt", searchData).then(apiResult => {
+            console.log("search", searchData, apiResult )
             if (!apiResult.IsError) {
-                const exelData = apiResult.ResultObject.map((item, index) => {
-                    let element = {
-                        "Kho điều phối": item.StoreName,
-                        "Tổng tiền phải thu hộ": item.TotalCOD,
-                        "Tổng tiền phải thu vật tư": item.TotalSaleMaterialMoney,
-                        "Tổng tiền còn nợ": item.TotalMoneyDebt,
-                        "Tổng vận đơn còn nợ": item.TotalDebtOrders,
-                        "Tổng vận đơn nợ quá hạn": item.TotALoverDueDebtOrders,
-                    };
-                    return element;
-
-                })
+           
                 const tempData = apiResult.ResultObject.map((item, index) => {
                     item.Detail = "Xem"
                     return item;
                 })
                 this.setState({
-                    dataExport: exelData,
                     gridDataSource: tempData
                 });
             }
@@ -161,6 +154,8 @@ class Search extends React.Component {
 
     }
 
+
+
     handleExportFileFormSearch(FormData, MLObject) {
         const postData = [
             {
@@ -171,18 +166,63 @@ class Search extends React.Component {
         ];
 
         this.props.callFetchAPI(APIHostName, "api/StaffDebt/ExportOverdueStaffDebt", postData).then(apiResult => {
+            console.log("export",postData, apiResult )
             if (!apiResult.IsError) {
-                this.props.showModal(MODAL_TYPE_DOWNLOAD_EXCEL, {
-                    title: "Tải file",
-                    URLDownloadFile: apiResult.Message,
-                    maxWidth: '300px'
-                });
+                const exelData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Kho điều phối": item.StoreName,
+                        "Tổng tiền phải thu hộ": item.TotalCOD,
+                        "Tổng tiền phải thu vật tư": item.TotalSaleMaterialMoney,
+                        "Tổng tiền còn nợ": item.TotalMoneyDebt,
+                        "Tổng vận đơn còn nợ": item.TotalDebtOrders,
+                        "Tổng vận đơn nợ quá hạn": item.TotALoverDueDebtOrders,
+                    };
+                    return element;
+
+                })
+                this.handleExportCSV(exelData);
             }
             else {
                 this.showMessage(apiResult.Message)
             }
         });
     }
+
+
+    handleExportCSV(DataExport) {
+        const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+        const fileExtension = '.xlsx';
+        let result;
+
+        if (DataExport.length == 0) {
+            // result = {
+            //     IsError: true,
+            //     Message: "Dữ liệu không tồn tại. Không thể xuất file!"
+            // };
+            this.addNotification("Dữ liệu không tồn tại. Không thể xuất file!", true);
+        }
+        else {
+
+            const ws = XLSX.utils.json_to_sheet(DataExport);
+            const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+            const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+            const data = new Blob([excelBuffer], { type: fileType });
+
+
+            FileSaver.saveAs(data, "Báo-cáo-thống-kê-công-nợ-quá-hạn" + fileExtension);
+
+            // result = {
+            //     IsError: false,
+            //     Message: "Xuất file thành công!"
+            // };
+
+            this.addNotification("Xuất file thành công!", false);
+            
+        }
+
+    }
+
+
 
     render() {
         return (
