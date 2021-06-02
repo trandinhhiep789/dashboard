@@ -18,6 +18,7 @@ import { MessageModal } from "../../../../../common/components/Modal";
 import { SHIPMENTORDER_REPORT_EXPORT, SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
 import { showModal } from '../../../../../actions/modal';
 import { MODAL_TYPE_DOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
+import { toIsoStringCus } from '../../../../../utils/function'
 
 class Search extends React.Component {
     constructor(props) {
@@ -97,11 +98,12 @@ class Search extends React.Component {
     };
 
     handleSearchSubmit(formData, MLObject) {
+
         const postData = [
 
             {
                 SearchKey: "@FROMDATE",
-                SearchValue: MLObject.FromDate
+                SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString()),  //MLObject.FromDate
             },
             {
                 SearchKey: "@TODATE",
