@@ -19,6 +19,22 @@ export const SearchElementList = [
         placeholder: "MM-YYYY",
     },
     {
+        type: "ComboBox",
+        name: "cbAreaID",
+        DataSourceMember: "AreaID",
+        label: "Khu vực",
+        colspan: 2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "---Vui lòng chọn---",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.AREA",
+        ValueMember: "AreaID",
+        NameMember: "AreaName"
+
+    },
+    {
         type: "MultiSelectUser",
         name: "cbUserName",
         DataSourceMember: "UserName",
@@ -43,6 +59,11 @@ export const SearchMLObjectDefinition = [
         Name: "Month",
         DefaultValue: "",
         BindControlName: "dtMonth"
+    },
+    {
+        Name: "AreaID",
+        DefaultValue: "",
+        BindControlName: "cbAreaID"
     },
     {
         Name: "UserName",

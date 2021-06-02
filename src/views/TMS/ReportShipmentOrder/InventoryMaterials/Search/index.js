@@ -105,10 +105,11 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-
+        console.log("param", formData, MLObject)
         const objData = {
             UserName: MLObject.UserName == -1 ? "" : MLObject.UserName.value,
-            Month: MLObject.Month
+            Month: MLObject.Month,
+            AreaID: MLObject.AreaID
 
         }
 
@@ -124,7 +125,7 @@ class SearchCom extends React.Component {
 
         }
 
-        this.callSearchData(objData);
+       this.callSearchData(objData);
     }
 
     callSearchData(searchData) {
