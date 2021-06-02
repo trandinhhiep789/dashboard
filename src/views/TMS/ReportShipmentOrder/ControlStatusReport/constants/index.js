@@ -17,9 +17,9 @@ export const SearchMLObjectDefinition = [
         BindControlName: "cbToDate"
     },
     {
-        Name: "ShipmentOrderStatusGroupID",
+        Name: "ShipmentOrderStatusID",
         DefaultValue: "",
-        BindControlName: "cbShipmentOrderStatusGroupID"
+        BindControlName: "cbShipmentOrderStatusID"
     },
     {
         Name: "COD",
@@ -68,8 +68,8 @@ export const SearchElementList = [
         IsLabelDiv: true,
         labelcolspan: 10,
         label: 'Trạng thái vận đơn',
-        name: "cbShipmentOrderStatusGroupID",
-        DataSourceMember: "ShipmentOrderStatusGroupID",
+        name: "cbShipmentOrderStatusID",
+        DataSourceMember: "ShipmentOrderStatusID",
         colspan: 10,
         rowspan: 2,
         value: "",
@@ -78,9 +78,9 @@ export const SearchElementList = [
         placeholder: "---Trạng thái---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERSTATUSGR",
-        ValueMember: "ShipmentOrderStatusGroupID",
-        NameMember: "ShipmentOrderStatusGroupName",
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERSTATUS",
+        ValueMember: "ShipmentOrderStatusID",
+        NameMember: "ShipmentOrderStatusName",
         classNameCol: "col-custom"
     },
     {

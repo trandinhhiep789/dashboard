@@ -97,6 +97,7 @@ class Search extends React.Component {
     };
 
     handleSearchSubmit(formData, MLObject) {
+        console.log("MLObject", formData, MLObject)
         const postData = [
 
             {
@@ -113,7 +114,7 @@ class Search extends React.Component {
             },
             {
                 SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
-                SearchValue: MLObject.ShipmentOrderStatusGroupID
+                SearchValue: MLObject.ShipmentOrderStatusID
             },
             {
                 SearchKey: "@Keyword",
@@ -243,7 +244,7 @@ class Search extends React.Component {
                     listelement={SearchElementList}
                     MLObjectDefinition={SearchMLObjectDefinition}
                     ref={this.searchref}
-                    IsButtonExport={true}
+                    IsButtonExport={false}
                     onExportSubmit={this.handleExportFileFormSearch}
                     onSubmit={this.handleSearchSubmit}
                 />
