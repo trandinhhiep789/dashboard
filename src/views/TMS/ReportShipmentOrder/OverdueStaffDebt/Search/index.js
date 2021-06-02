@@ -55,9 +55,9 @@ class Search extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, "api/StaffDebt/SearchOverdueStaffDebt", searchData).then(apiResult => {
-            console.log("search", searchData, apiResult )
+            console.log("search", searchData, apiResult)
             if (!apiResult.IsError) {
-           
+
                 const tempData = apiResult.ResultObject.map((item, index) => {
                     item.Detail = "Xem"
                     return item;
@@ -166,7 +166,7 @@ class Search extends React.Component {
         ];
 
         this.props.callFetchAPI(APIHostName, "api/StaffDebt/ExportOverdueStaffDebt", postData).then(apiResult => {
-            console.log("export",postData, apiResult )
+            console.log("export", postData, apiResult)
             if (!apiResult.IsError) {
                 const exelData = apiResult.ResultObject.map((item, index) => {
                     let element = {
@@ -217,7 +217,7 @@ class Search extends React.Component {
             // };
 
             this.addNotification("Xuất file thành công!", false);
-            
+
         }
 
     }
@@ -244,7 +244,7 @@ class Search extends React.Component {
                     listColumn={GridColumnList}
                     dataSource={this.state.gridDataSource}
                     // AddLink=""
-                    IsFixheaderTable={true}
+                    IsFixheaderTable={false}
                     IDSelectColumnName={'StoreID'}
                     PKColumnName={'StoreID'}
                     onShowModal={this.onShowModalDetail.bind(this)}
