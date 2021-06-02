@@ -165,19 +165,20 @@ export const GridColumnList = [
         Width: "6%"
     },
     {
-        Name: "CollectedTotalMoney",
-        Type: "textCurrency",
-        Caption: "Tổng tiền phải thu của vận đơn",
-        DataSourceMember: "CollectedTotalMoney",
-        Width: "6%"
-    },
-    {
         Name: "TotalSaleMaterialMoney",
         Type: "textCurrency",
         Caption: "Tiền vật tư",
         DataSourceMember: "TotalSaleMaterialMoney",
         Width: "6%"
     },
+    {
+        Name: "CollectedTotalMoney",
+        Type: "textCurrency",
+        Caption: "Tổng tiền phải thu của vận đơn",
+        DataSourceMember: "CollectedTotalMoney",
+        Width: "6%"
+    },
+  
     {
         Name: "DeliverUserFullNameList",
         Type: "text",
