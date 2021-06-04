@@ -200,6 +200,7 @@ class MultiSelectUserComboBoxCom extends React.Component {
                         isSearchable={true}
                         placeholder={"----Chọn -----"}
                         className={classNameselect}
+                        isClearable={this.props.isClearable}
                     />
                     <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
                 </div>
@@ -207,6 +208,11 @@ class MultiSelectUserComboBoxCom extends React.Component {
         );
     }
 }
+
+MultiSelectUserComboBoxCom.defaultProps = {
+    isClearable: false
+};
+
 const mapStateToProps = state => {
     return {
         AppInfo: state,

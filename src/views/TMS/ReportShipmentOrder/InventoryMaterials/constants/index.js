@@ -49,7 +49,8 @@ export const SearchElementList = [
         IsAutoLoadItemFromCache: false,
         isMultiSelect: false,
         IsPermission: true,
-        PermissionKey: USER_PERMISSION_VIEW
+        PermissionKey: USER_PERMISSION_VIEW,
+        isClearable: true
     },
 
 ]
