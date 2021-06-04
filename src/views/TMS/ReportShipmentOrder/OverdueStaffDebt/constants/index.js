@@ -72,7 +72,7 @@ export const SearchElementList = [
 
 ];
 
-export const GridColumnList  = [
+export const GridColumnList = [
     {
         Name: "StoreName",
         Type: "text",
@@ -143,14 +143,14 @@ export const DataGirdStaffDebtColumnList = [
     },
     {
         Name: "OutputDate",
-        Type: "date",
+        Type: "datetime",
         Caption: "Thời gian xuất hàng",
         DataSourceMember: "OutputDate",
         Width: "10%"
     },
     {
         Name: "CollectedTime",
-        Type: "date",
+        Type: "datetime",
         Caption: "Thời gian thu",
         DataSourceMember: "CollectedTime",
         Width: "10%"
