@@ -160,7 +160,7 @@ class ElementCheckboxCom extends Component {
 
         let labeldiv;
         if (label) {
-            labeldiv = <label className="custom-control-label" htmlFor="search-avd">{label}</label>;
+            labeldiv = <label className="custom-control-label" htmlFor="search-avd"><span>{label}</span></label>;
         }
         return (
             <div className={colspanClassName}  >
