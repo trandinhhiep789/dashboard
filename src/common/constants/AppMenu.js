@@ -1134,6 +1134,13 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    {
+                        MenuName: 'CrossCheckReport',
+                        MenuTitle: 'Báo cáo đối soát',
+                        LinkTo: '/CrossCheckReport',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
                     
                 ]
             },
