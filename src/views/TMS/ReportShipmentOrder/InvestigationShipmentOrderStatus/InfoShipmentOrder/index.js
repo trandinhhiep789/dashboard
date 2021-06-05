@@ -77,7 +77,7 @@ class InfoShipmentOrderCom extends React.Component {
                                 <label className="col-form-label bold">Điện thoại:</label>
                             </div>
                             <div className="form-group col-md-4">
-                                <label className="col-form-label">{dataSource.ReceiverPhoneNumber}</label>
+                                <label className="col-form-label">{dataSource.ReceiverPhoneNumber!=undefined?dataSource.ReceiverPhoneNumber.substr(0, 5):''}****</label>
                             </div>
                             <div className="form-group col-md-2">
                                 <label className="col-form-label bold">Ngày giao:</label>
