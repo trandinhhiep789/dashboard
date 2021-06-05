@@ -929,6 +929,13 @@ const AppMenu = [
                 LinkTo: '/DeliveryAbility',
                 MenuIcon: '',
                 SubMenu: []
+            },
+            {
+                MenuName: 'ShipmentQualityAssess',
+                MenuTitle: 'Đánh giá chất lượng giao hàng',
+                LinkTo: '/ShipmentQualityAssess',
+                MenuIcon: '',
+                SubMenu: []
             }
         ]
     },
@@ -1191,13 +1198,7 @@ const AppMenu = [
                 SubMenu: []
             },
 
-            {
-                MenuName: 'ShipmentQualityAssess',
-                MenuTitle: 'Báo cáo đánh giá chất lượng giao hàng',
-                LinkTo: '/ShipmentQualityAssess',
-                MenuIcon: '',
-                SubMenu: []
-            },
+
         ]
     },
     {
