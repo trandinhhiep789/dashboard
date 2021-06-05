@@ -16,6 +16,13 @@ export const listColumn = [
         Width: 150
     },
     {
+        Name: "PartnerSaleOrderID",
+        Type: "text",
+        Caption: "Mã đơn hàng đối tác",
+        DataSourceMember: "PartnerSaleOrderID",
+        Width: 100
+    },
+    {
         Name: "AssessDate",
         Type: "datetime",
         Caption: "Ngày đánh giá",
@@ -32,16 +39,9 @@ export const listColumn = [
     {
         Name: "CreatedUser",
         Type: "text",
-        Caption: "User yêu cầu",
+        Caption: "Nhân viên yêu cầu",
         DataSourceMember: "CreatedUser",
         Width: 250
-    },
-    {
-        Name: "PartnerSaleOrderID",
-        Type: "text",
-        Caption: "Mã đơn hàng đối tác",
-        DataSourceMember: "PartnerSaleOrderID",
-        Width: 100
     },
     {
         Name: "QualityAssessNote",
