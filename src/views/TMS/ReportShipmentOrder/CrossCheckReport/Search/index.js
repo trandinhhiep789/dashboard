@@ -47,26 +47,22 @@ class SearchCom extends React.Component {
 
 
     handleSearchSubmit(formData, MLObject) {
-        const objData = {
-            UserName: MLObject.UserName.value,
-            FromDate: toIsoStringCus(new Date(MLObject.FromDate).toISOString()), //MLObject.FromDate,
-            ToDate: toIsoStringCus(new Date(MLObject.ToDate).toISOString()) // MLObject.ToDate
+        console.log("aaa", formData, MLObject)
+        // const objData = {
+        //     FromDate: toIsoStringCus(new Date(MLObject.FromDate).toISOString()), //MLObject.FromDate,
+        //     ToDate: toIsoStringCus(new Date(MLObject.ToDate).toISOString()) // MLObject.ToDate
 
-        }
+        // }
 
-        const objParams = {
-            UserName: MLObject.UserName.value,
-            // FromDate:MLObject.FromDate,
-            // ToDate:  MLObject.ToDate,
-            FromDate: toIsoStringCus(new Date(MLObject.FromDate).toISOString()), //MLObject.FromDate,
-            ToDate: toIsoStringCus(new Date(MLObject.ToDate).toISOString()), // MLObject.ToDate
-            FullName: MLObject.UserName.label
-        }
+        // const objParams = {
+        //     FromDate: toIsoStringCus(new Date(MLObject.FromDate).toISOString()), //MLObject.FromDate,
+        //     ToDate: toIsoStringCus(new Date(MLObject.ToDate).toISOString()), // MLObject.ToDate
+        // }
 
-        this.setState({
-            params: objParams
-        })
-        this.callSearchData(objData)
+        // this.setState({
+        //     params: objParams
+        // })
+       // this.callSearchData(objData)
     }
 
     callSearchData(searchData) {
@@ -82,7 +78,7 @@ class SearchCom extends React.Component {
                 // xuất exel
                 const exelData = apiResult.ResultObject.map((item, index) => {
                     let element = {
-                        "Mã vật tư": item.ProductID,
+                        "Nghiệp vụ": item.ProductID,
                         "Tên vật tư": item.ProductName,
                         "Đơn vị tính": item.QuantityUnitName,
                         "Tồn đầu kỳ": item.BeginTermAdvanceDebt,

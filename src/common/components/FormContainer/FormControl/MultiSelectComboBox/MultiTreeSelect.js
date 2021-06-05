@@ -103,7 +103,7 @@ class MultiTreeSelectCom extends React.Component {
     }
 
     render() {
-
+        console.log("aa", this.props)
         let { placeholder, maxTagCount, name } = this.props;
         let formRowClassName = "form-row";
         if (this.props.rowspan)
@@ -149,24 +149,25 @@ class MultiTreeSelectCom extends React.Component {
         return (
             <div className={formRowClassName} >
                 {isLabelDiv &&
-                    <div className={labelDivClassName}>
-                        <label className="col-form-label 6">
-                            {this.props.label}<span className="text-danger"> {star}</span>
-                        </label>
-                    </div>
+                    <div className="form-group form-group-input-select-label">
+                        {/*  <div className={labelDivClassName}> */}
+                            <label className="col-form-label 6">
+                                {this.props.label}<span className="text-danger"> {star}</span>
+                            </label>
+                        </div>
                 }
                 <div className="form-group">
 
-                    <TreeSelect {...tProps} />
-                    <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
-                </div>
-            </div>
+                            <TreeSelect {...tProps} />
+                            <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
+                        </div>
+                    </div>
         );
     }
 }
 const mapStateToProps = state => {
     return {
-        AppInfo: state,
+                    AppInfo: state,
         FetchAPIInfo: state.FetchAPIInfo
     };
 };
@@ -174,7 +175,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        callGetCache: (cacheKeyID) => {
+                    callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
         },
         callFetchAPI: (hostname, hostURL, postData) => {

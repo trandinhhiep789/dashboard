@@ -7,7 +7,7 @@ export const LoadByProductIDAPIPath = "api/AdvanceDebtFlow/LoadBADByProductID";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách báo cáo công nợ theo nhân viên" }
+    { Link: "", Title: "Danh sách báo cáo đối soát" }
 ];
 
 
@@ -38,24 +38,38 @@ export const SearchElementList = [
         colspan: 2,
     },
     {
-        type: "MultiSelectUser",
-        name: "cbUserName",
-        DataSourceMember: "UserName",
-        label: "Nhân viên",
+        type: "MultiTreeSelect",
+        name: "cbBusinessID",
+        DataSourceMember: "BusinessID",
+        label: "Nghiệp vụ",
         colspan: 12,
-        rowspan: 3,
-        labelcolspan: 12,
         IsLabelDiv: true,
+        labelcolspan: 12,
+        rowspan: 2,
+        maxTagCount: 1,
         value: -1,
-        placeholder: "---Vui lòng chọn---",
-        listoption: [],
-        IsAutoLoadItemFromCache: false,
-        isMultiSelect: false,
-        // disabled: false,
-        // IsPermission: true,
-        // PermissionKey: USER_PERMISSION_VIEW
-    },
+        isMultiSelect: true,
+        placeholder: "--Tất cả--",
+        listoption: [
+            { value: 1, label: 'Tạm ứng vật tư' },
+            { value: 2, label: 'Nhập trả tạm ứng' },
+            { value: 3, label: 'Xuất tiêu hao vật tư' },
+            { value: 4, label: 'Xuất bán vật tư cho khách' },
+        ],
+        ValueMember: "BusinessID",
+        NameMember: "BusinessName",
+        classNameCol: "multiTreeSelectCustom"
 
+    },
+    {
+        type: "checkbox",
+        name: "ckDifference",
+        DataSourceMember: "Difference",
+        label: "Chênh lệch",
+        value: true,
+        colspan: 1,
+        classNameCol: "checkboxSelectCustom"
+    },
 ]
 
 export const SearchMLObjectDefinition = [
@@ -70,9 +84,14 @@ export const SearchMLObjectDefinition = [
         BindControlName: "dtToDate"
     },
     {
-        Name: "UserName",
+        Name: "BusinessID",
         DefaultValue: "",
-        BindControlName: "cbUserName"
+        BindControlName: "cbBusinessID"
+    },
+    {
+        Name: "Difference",
+        DefaultValue: "",
+        BindControlName: "ckDifference"
     },
 ]
 
@@ -80,65 +99,38 @@ export const GridColumnList = [
     {
         Name: "ProductID",
         Type: "text",
-        Caption: "Mã vật tư",
+        Caption: "Nghiệp vụ",
         DataSourceMember: "ProductID",
         Width: "10%"
     },
+
     {
-        Name: "ProductName",
-        Type: "texttolink",
-        Caption: "Tên vật tư",
-        Link: "/DebtByUser/Detail/",
-        DataSourceMember: "ProductName",
-        Width: "17%"
+        Name: "Date",
+        Type: "date",
+        Caption: "Ngày",
+        DataSourceMember: "Date",
+        Width: "20%"
     },
     {
-        Name: "QuantityUnitName",
+        Name: "TMS",
         Type: "text",
-        Caption: "Đơn vị tính",
-        DataSourceMember: "QuantityUnitName",
-        Width: "13%"
+        Caption: "TMS",
+        DataSourceMember: "TMS",
+        Width: "25%"
     },
     {
-        Name: "BeginTermAdvanceDebt",
+        Name: "ERP",
         Type: "text",
-        Caption: "Tồn đầu kỳ",
-        DataSourceMember: "BeginTermAdvanceDebt",
-        Width: "10%"
+        Caption: "ERP",
+        DataSourceMember: "ERP",
+        Width: "25%"
     },
     {
-        Name: "IncreaseAdvanceDebt",
+        Name: "Difference",
         Type: "text",
-        Caption: "Tăng trong kỳ",
-        DataSourceMember: "IncreaseAdvanceDebt",
-        Width: "10%"
+        Caption: "Chênh lệch",
+        DataSourceMember: "Difference",
+        Width: "20%"
     },
-    {
-        Name: "DecreaseAdvanceDebt",
-        Type: "text",
-        Caption: "Giảm trong kỳ",
-        DataSourceMember: "DecreaseAdvanceDebt",
-        Width: "10%"
-    },
-    {
-        Name: "EndTermAdvanceDebt",
-        Type: "text",
-        Caption: "Tồn cuối kỳ",
-        DataSourceMember: "EndTermAdvanceDebt",
-        Width: "10%"
-    },
-    {
-        Name: "Price",
-        Type: "textCurrency",
-        Caption: "Đơn giá",
-        DataSourceMember: "Price",
-        Width: "10%"
-    },
-    {
-        Name: "TotalAmount",
-        Type: "textCurrency",
-        Caption: "Thành tiền",
-        DataSourceMember: "TotalAmount",
-        Width: "10%"
-    },
+    
 ]
