@@ -138,14 +138,14 @@ export const GridColumnList = [
     },
     {
         Name: "HandOverGoodsDate",
-        Type: "date",
+        Type: "datetime",
         Caption: "Ngày xuất hàng",
         DataSourceMember: "HandOverGoodsDate",
         Width: "8%"
     },
     {
         Name: "ExpectedDeliveryDate",
-        Type: "date",
+        Type: "datetime",
         Caption: "Ngày hẹn giao",
         DataSourceMember: "ExpectedDeliveryDate",
         Width: "8%"
@@ -178,7 +178,7 @@ export const GridColumnList = [
         DataSourceMember: "CollectedTotalMoney",
         Width: "6%"
     },
-  
+
     {
         Name: "DeliverUserFullNameList",
         Type: "text",

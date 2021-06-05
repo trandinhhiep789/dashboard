@@ -369,7 +369,7 @@ export const DataGirdStaffDebtHistoryColumnList = [
     },
     {
         Name: "unLockDeliveryDate",
-        Type: "date",
+        Type: "datetime",
         Caption: "Ngày mở khóa",
         DataSourceMember: "unLockDeliveryDate",
         Width: "10%"

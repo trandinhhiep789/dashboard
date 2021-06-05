@@ -29,7 +29,7 @@ export const SearchElementList = [
         placeholder: "---Vui lòng chọn---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.AREA",
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.AREATT",
         ValueMember: "AreaID",
         NameMember: "AreaName"
 
@@ -49,7 +49,8 @@ export const SearchElementList = [
         IsAutoLoadItemFromCache: false,
         isMultiSelect: false,
         IsPermission: true,
-        PermissionKey: USER_PERMISSION_VIEW
+        PermissionKey: USER_PERMISSION_VIEW,
+        isClearable: true
     },
 
 ]
