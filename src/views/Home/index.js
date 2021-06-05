@@ -114,6 +114,7 @@ import ShipmentQualityAssess from "../TMS/ShipmentQualityAssess";
 import OverdueOrderReport from '../TMS/ReportShipmentOrder/OverdueOrderReport';
 import OverdueStaffDebt from '../TMS/ReportShipmentOrder/OverdueStaffDebt';
 import ControlStatusReport from '../TMS/ReportShipmentOrder/ControlStatusReport';
+import CrossCheckReport from '../TMS/ReportShipmentOrder/CrossCheckReport';
 
 import RewardShipmentOrderByType from "../TMS/Reward/RewardShipmentOrderByType";
 import RewardShipmentOrder from "../TMS/Reward/RewardShipmentOrder";
@@ -319,6 +320,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/OverdueOrderReport" component={OverdueOrderReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/OverdueStaffDebt" component={OverdueStaffDebt} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/ControlStatusReport" component={ControlStatusReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                <PrivateRoute path="/CrossCheckReport" component={CrossCheckReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
 
                                 <PrivateRoute path="/RewardShipmentOrderByType" component={RewardShipmentOrderByType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
