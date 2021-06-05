@@ -110,6 +110,7 @@ import InvestigationShipmentOrderStatus from "../TMS/ReportShipmentOrder/Investi
 import InventoryMaterials from "../TMS/ReportShipmentOrder/InventoryMaterials";
 import ComprehensiveReport from "../TMS/ReportShipmentOrder/ComprehensiveReport";
 import SaleSummaryReport from "../TMS/ReportShipmentOrder/SaleSummaryReport";
+import ShipmentQualityAssess from "../TMS/ShipmentQualityAssess";
 import OverdueOrderReport from '../TMS/ReportShipmentOrder/OverdueOrderReport';
 import OverdueStaffDebt from '../TMS/ReportShipmentOrder/OverdueStaffDebt';
 import ControlStatusReport from '../TMS/ReportShipmentOrder/ControlStatusReport';
@@ -314,6 +315,7 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/InventoryMaterials" component={InventoryMaterials} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/ComprehensiveReport" component={ComprehensiveReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/SaleSummaryReport" component={SaleSummaryReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                <PrivateRoute path="/ShipmentQualityAssess" component={ShipmentQualityAssess} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/OverdueOrderReport" component={OverdueOrderReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/OverdueStaffDebt" component={OverdueStaffDebt} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/ControlStatusReport" component={ControlStatusReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
