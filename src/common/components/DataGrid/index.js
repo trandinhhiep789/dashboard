@@ -358,7 +358,7 @@ class DataGridCom extends Component {
             if (this.props.DataExport.length == 0) {
                 result = {
                     IsError: true,
-                    Message: "Dữ liệu không tồn tại. Không thể xuất file!"
+                    Message: "Dữ liệu trong bảng không tồn tại. Không thể xuất file!"
                 };
             }
             else {
