@@ -6,22 +6,29 @@ import { ModalManager } from "react-dynamic-modal";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import {
-    PagePath, SearchAPIPath, APIHostName, listColumn
+    PagePath, SearchAPIPath, APIHostName, listColumn, LoadAPIPath
 } from "../constants";
 import { MessageModal } from "../../../../common/components/Modal";
-import DataGrid from "../../../../common/components/DataGrid/getdataserver";
+import DataGrid from "../../../../common/components/DataGrid";
+import ReactContext from '../ReactContext';
+import { showModal, hideModal } from '../../../../actions/modal';
+import { MODAL_TYPE_COMMONTMODALS } from "../../../../constants/actionTypes";
+import ShipmentQualityAssessDetail from '../ShipmentQualityAssessDetail'
 
 export class SearchCom extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            dataGrid: []
+            dataGrid: [],
         }
 
+        this.gridref = React.createRef();
         this.notificationDOMRef = React.createRef();
         this.callSearchData = this.callSearchData.bind(this);
         this.showMessage = this.showMessage.bind(this);
+        this.onShowModalDetail = this.onShowModalDetail.bind(this);
+        this.onUpdateClick = this.onUpdateClick.bind(this);
     }
 
     componentDidMount() {
@@ -49,15 +56,45 @@ export class SearchCom extends Component {
 
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             if (!apiResult.IsError) {
-                console.log("🚀 ~ file: index.js ~ line 34 ~ SearchCom ~ this.props.callFetchAPI ~ apiResult", apiResult)
+
+                apiResult.ResultObject[0].TotaLRows = apiResult.ResultObject.length;
+
                 this.setState({
                     dataGrid: apiResult.ResultObject
                 })
             } else {
-                console.log("🚀 ~ file: index.js ~ line 36 ~ SearchCom ~ this.props.callFetchAPI ~ apiResult", apiResult)
                 this.showMessage(apiResult.Message);
             }
         });
+    }
+
+
+
+    onShowModalDetail(objValue, name) {
+        const { key, value } = objValue[0];
+        const { dataGrid } = this.state;
+
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Chi tiết đánh giá chất lượng giao hàng',
+            content: {
+                text: <ReactContext.Provider
+                    value={{
+                        dataGrid: dataGrid,
+                        handleDataGrid: () => { },
+                    }}
+                >
+                    <ShipmentQualityAssessDetail
+                        ShipmentQualityAssessId={value}
+                    />
+                </ReactContext.Provider>
+            },
+            maxWidth: '1000px'
+        });
+
+    }
+
+    onUpdateClick() {
+        this.showMessage("Tính năng đang phát triển")
     }
 
     render() {
@@ -70,15 +107,23 @@ export class SearchCom extends Component {
                 <DataGrid
                     listColumn={listColumn}
                     dataSource={dataGrid}
-                    // AddLink={AddLink}
-                    // IDSelectColumnName={IDSelectColumnName}
-                    PKColumnName={"ShipmentOrderID"}
-                    // onDeleteClick={this.handleDelete}
-                    // onChangePage={this.handleonChangePage}
-                    isHideHeaderToolbar={true}
-                    // PageNumber={this.state.PageNumber}
+                    IsFixheaderTable={false}
+                    isHideHeaderToolbar={false}
+                    IsShowButtonAdd={false}
+                    IsShowButtonDelete={false}
+                    IsShowButtonPrint={false}
+                    IsPrint={false}
                     IsAutoPaging={true}
-                    RowsPerPage={10}
+                    RowsPerPage={20}
+                    ref={this.gridref}
+                    IsExportFile={false}
+                    DataExport={[]}
+                    fileName=""
+                    PKColumnName={'ShipmentQualityAssessID'}
+                    // RequirePermission={}
+                    // ExportPermission={}
+                    // onExportFile={this.handleExportFile.bind(this)}
+                    onShowModal={this.onShowModalDetail}
                 />
             </React.Fragment>
         )
@@ -99,6 +144,9 @@ const mapDispatchToProps = dispatch => {
         },
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
         }
     };
 };

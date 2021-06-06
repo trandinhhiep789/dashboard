@@ -6,7 +6,7 @@ import { DEFAULT_ROW_PER_PAGE } from "../../../constants/systemVars.js";
 import GridCell from "./GridCell";
 import GridPage from "./GridPage";
 import { connect } from 'react-redux';
-import { callGetCache,callGetUserCache } from "../../../actions/cacheAction";
+import { callGetCache, callGetUserCache } from "../../../actions/cacheAction";
 import { GET_CACHE_USER_FUNCTION_LIST } from "../../../constants/functionLists";
 import { hideModal } from '../../../actions/modal';
 import Media from "react-media";
@@ -34,7 +34,9 @@ class DataGridCom extends Component {
         this.state = {
             GridData: {},
             DataSource: this.props.dataSource,
-            IsCheckAll: false, PageNumber: this.props.PageNumber, ListPKColumnName: listPKColumnName
+            IsCheckAll: false,
+            PageNumber: this.props.PageNumber,
+            ListPKColumnName: listPKColumnName
         };
     }
 
@@ -578,7 +580,7 @@ class DataGridCom extends Component {
             <div className={classCustom}>
                 <div className="card">
                     <div className="card-title">
-                        { (this.props.title != undefined || this.props.title != '') ? <h4 className="title">{this.props.title}</h4> : '' }
+                        {(this.props.title != undefined || this.props.title != '') ? <h4 className="title">{this.props.title}</h4> : ''}
 
                         {hasHeaderToolbar &&
                             <div className="flexbox mb-10 ">
@@ -587,7 +589,7 @@ class DataGridCom extends Component {
                                     <div className="btn-group btn-group-sm">
                                         {(this.props.IsAdd == true || this.props.IsAdd == undefined) ?
                                             (!this.props.IsCustomAddLink == true ?
-                                                (<Link 
+                                                (<Link
                                                     to={{
                                                         pathname: this.props.AddLink,
                                                         state: {
