@@ -125,7 +125,7 @@ class SearchCom extends React.Component {
 
         }
 
-       this.callSearchData(objData);
+        this.callSearchData(objData);
     }
 
     callSearchData(searchData) {
@@ -502,7 +502,7 @@ class SearchCom extends React.Component {
                     onSubmit={this.handleSearchSubmit.bind(this)}
                     ref={this.searchref}
                     className="multiple"
-                    IsButtonExport={true}
+                    IsButtonExport={false}
                     onExportSubmit={this.handleExportFileFormSearch.bind(this)}
                 />
 
@@ -522,7 +522,7 @@ class SearchCom extends React.Component {
                     ref={this.gridref}
                     RequirePermission={SHIPMENTORDER_REPORT_VIEW}
                     ExportPermission={SHIPMENTORDER_REPORT_EXPORT}
-                    IsExportFile={true}
+                    IsExportFile={false}
                     DataExport={this.state.dataSimiliGroupExport}
                     fileName="Danh sách báo cáo tồn vật tư ống đồng"
                     onExportFile={this.handleExportFile.bind(this)}
@@ -545,7 +545,7 @@ class SearchCom extends React.Component {
                     ref={this.gridref}
                     RequirePermission={SHIPMENTORDER_REPORT_VIEW}
                     ExportPermission={SHIPMENTORDER_REPORT_EXPORT}
-                    IsExportFile={true}
+                    IsExportFile={false}
                     DataExport={this.state.dataMaterialGroupExport}
                     fileName="Danh sách báo cáo tồn vật tư khác"
                     onExportFile={this.handleExportFile.bind(this)}

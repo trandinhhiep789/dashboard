@@ -936,6 +936,13 @@ const AppMenu = [
                 LinkTo: '/DeliveryAbility',
                 MenuIcon: '',
                 SubMenu: []
+            },
+            {
+                MenuName: 'ShipmentQualityAssess',
+                MenuTitle: 'Đánh giá chất lượng giao hàng',
+                LinkTo: '/ShipmentQualityAssess',
+                MenuIcon: '',
+                SubMenu: []
             }
         ]
     },
@@ -1141,7 +1148,14 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
-                    
+                    {
+                        MenuName: 'CrossCheckReport',
+                        MenuTitle: 'Báo cáo đối soát',
+                        LinkTo: '/CrossCheckReport',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+
                 ]
             },
             {
@@ -1182,7 +1196,7 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-         
+
             {
                 MenuName: 'SaleSummaryReport',
                 MenuTitle: 'Báo cáo đơn hàng',
@@ -1190,8 +1204,8 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-           
-           
+
+
         ]
     },
     {

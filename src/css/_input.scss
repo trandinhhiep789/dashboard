@@ -298,3 +298,74 @@ textarea {
         background: #f2f2f2;
     }
 }
+
+.checkboxSelectCustom{
+    .form-group{
+        margin-bottom: 0rem !important;
+        &.form-group-input{
+            .custom-control{
+                min-height: 35px;
+                .custom-control-input{
+                    position: absolute;
+                    z-index: -1;
+                    opacity: 0;
+                    left: 0;
+                    width: 18px;
+                    height: 18px;
+                    bottom: 0;
+                }
+                .custom-control-label{
+                    color: #4d5259;
+                    font-weight: 300;
+                    margin-bottom: 0;
+                    position: static;
+                    line-height: 35px;
+                    span{
+                        position: absolute;
+                        bottom: -10px;
+                        top: auto;
+                    }
+                    &::before {
+                        position: absolute;
+                        left: 0;
+                        top: auto;
+                        bottom: 0;
+                        display: block;
+                        width: 18px;
+                        height: 18px;
+                        content: "";
+                        -webkit-user-select: none;
+                        -moz-user-select: none;
+                        -ms-user-select: none;
+                        user-select: none;
+                        border-radius: 0;
+                        background-color: #fcfdfe;
+                        border: 1px solid #ebebeb;
+                        pointer-events: initial;
+                    }
+                    &::after {
+                        content: "\E64C";
+                        line-height: 18px;
+                        top: auto;
+                        bottom: 0;
+                        left: 0px;
+                        height: 18px;
+                        width: 18px;
+                        font-family: themify;
+                        font-size: 11px;
+                        font-weight: bold;
+                        text-align: center;
+                        color: #0077ff;
+                        display: inline-block;
+                        -webkit-transform: scale(0);
+                        transform: scale(0);
+                        -webkit-transition: -webkit-transform .3s;
+                        transition: -webkit-transform .3s;
+                        transition: transform .3s;
+                        transition: transform .3s, -webkit-transform .3s;
+                    }
+                }
+            }
+        }
+    }
+}

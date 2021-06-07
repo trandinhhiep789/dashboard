@@ -19,6 +19,7 @@ import { SHIPMENTORDER_REPORT_EXPORT, SHIPMENTORDER_REPORT_VIEW } from "../../..
 import { showModal } from '../../../../../actions/modal';
 import { MODAL_TYPE_DOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
 import { toIsoStringCus } from '../../../../../utils/function'
+import { formatDate } from "../../../../../common/library/CommonLib";
 
 class Search extends React.Component {
     constructor(props) {
@@ -40,7 +41,7 @@ class Search extends React.Component {
         this.handleExportFile = this.handleExportFile.bind(this);
         this.handleExportFileFormSearch = this.handleExportFileFormSearch.bind(this);
         this.handleExoprtExcel = this.handleExoprtExcel.bind(this);
-    }   
+    }
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
@@ -159,7 +160,7 @@ class Search extends React.Component {
             FileSaver.saveAs(data, "Báo-cáo-thống-kê-công-nợ-quá-hạn" + fileExtension);
 
             this.addNotification("Xuất file thành công!", false);
-            
+
         }
     }
 
@@ -196,7 +197,7 @@ class Search extends React.Component {
 
 
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/OverdueOrderReportExport", postData).then(apiResult => {
-        console.log("a2", postData, apiResult)
+            console.log("a2", postData, apiResult)
 
             if (!apiResult.IsError) {
                 // this.props.showModal(MODAL_TYPE_DOWNLOAD_EXCEL, {
@@ -208,8 +209,8 @@ class Search extends React.Component {
                     let element = {
                         "Mã đơn hàng": item.PartnerSaleOrderID,
                         "Mã vận đơn": item.ShipmentOrderID,
-                        "Thời gian xuất hàng": item.HandOverGoodsDate,
-                        "Ngày hẹn giao": item.ExpectedDeliveryDate,
+                        "Thời gian xuất hàng": formatDate(item.HandOverGoodsDate, false),
+                        "Ngày hẹn giao": formatDate(item.ExpectedDeliveryDate, false),
                         "Số tiền COD": item.TotalCOD,
                         "Tổng tiền nhập trả": item.TotalReturnPrice,
                         "Tổng tiền phải thu của vận đơn": item.CollectedTotalMoney,
