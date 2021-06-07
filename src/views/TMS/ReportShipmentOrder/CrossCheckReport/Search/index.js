@@ -90,12 +90,13 @@ class SearchCom extends React.Component {
         this.setState({
             params: objParams
         })
-        // this.callSearchData(objData)
+        
+        this.callSearchData(objData)
     }
 
     callSearchData(searchData) {
 
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/CrossCheckReport", searchData).then(apiResult => {
             // console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
                 const tempData = apiResult.ResultObject.map((item, index) => {
