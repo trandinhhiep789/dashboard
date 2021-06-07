@@ -87,11 +87,29 @@ class SearchCom extends React.Component {
             Difference: MLObject.Difference
         }
 
+        const objDataNew =  [
+            {
+                "name": "V_FROMDATE",
+                "value": MLObject.FromDate,
+                "op": "timestamp"
+            },
+            {
+                "name": "V_TODATE",
+                "value": MLObject.ToDate,
+                "op": "timestamp"
+            },
+            {
+                "name": "V_OUTPUTTYPEIDLIST",
+                "value": MLObject.BusinessID,
+                "op": "array"
+            }
+        ]
+
         this.setState({
             params: objParams
         })
-        
-        this.callSearchData(objData)
+
+        this.callSearchData(objDataNew)
     }
 
     callSearchData(searchData) {
