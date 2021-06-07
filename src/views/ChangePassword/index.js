@@ -65,7 +65,8 @@ class ChangePasswordCom extends React.Component {
         }
 
         const hostname = "TMSAPI";
-        const apiPath = "api/PartnerUser/UpdatePassWordUserPartner";
+        //const apiPath = "api/PartnerUser/UpdatePassWordUserPartner";
+        const apiPath  = "api/PartnerUser/UpdatePassWordUserPartnerMobile";
         let userLogin = this.props.AppInfo.LoginInfo.Username;
         const postData = {
             Username: userLogin,
