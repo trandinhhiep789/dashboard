@@ -713,6 +713,13 @@ const AppMenu = [
                         LinkTo: '/Partner',
                         MenuIcon: '',
                         SubMenu: []
+                    },
+                    {
+                        MenuName: 'PartnerSaleChannel',
+                        MenuTitle: 'Kênh bán hàng của đối tác',
+                        LinkTo: '/PartnerSaleChannel',
+                        MenuIcon: '',
+                        SubMenu: []
                     }
 
 

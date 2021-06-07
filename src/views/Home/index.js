@@ -157,6 +157,7 @@ import ReportLate from "../TMS/ReportShipmentOrder/ReportLate";
 import SMSTemplate from "../TMS/MD/SMSTemplate";
 import ServiceGroup from "../TMS/MD/ServiceGroup";
 import ServicePriceApply from "../TMS/MD/ServicePriceApply";
+import PartnerSaleChannel from "../TMS/MD/PartnerSaleChannel";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -391,8 +392,8 @@ class HomeCom extends React.Component {
                                 <PrivateRoute path="/SMSTemplate" component={SMSTemplate} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/ServiceGroup" component={ServiceGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 <PrivateRoute path="/ServicePriceApply" component={ServicePriceApply} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
-
                                 <PrivateRoute path="/ServicePriceTable" component={ServicePriceTable} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                <PrivateRoute path="/PartnerSaleChannel" component={PartnerSaleChannel} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
 
 
