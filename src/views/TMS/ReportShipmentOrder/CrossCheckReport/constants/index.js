@@ -22,7 +22,7 @@ export const SearchElementList = [
         name: "dtFromDate",
         DataSourceMember: "FromDate",
         label: "Từ Ngày",
-        value: new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()),
+        value: new Date(),//new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()),
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
@@ -97,10 +97,10 @@ export const SearchMLObjectDefinition = [
 
 export const GridColumnList = [
     {
-        Name: "ProductID",
-        Type: "text",
+        Name: "BusinessID",
+        Type: "popupTextNumber",
         Caption: "Nghiệp vụ",
-        DataSourceMember: "ProductID",
+        DataSourceMember: "BusinessID",
         Width: "10%"
     },
 
@@ -133,4 +133,58 @@ export const GridColumnList = [
         Width: "20%"
     },
     
+]
+
+
+
+export const DataGridModalAdvanceMaterial= [
+    {
+        Name: "Date",
+        Type: "date",
+        Caption: "Ngày",
+        DataSourceMember: "Date",
+        Width: "10%"
+    },
+    {
+        Name: "AdvanceMaterial",
+        Type: "text",
+        Caption: "Mã Y/C tạm ứng VT",
+        DataSourceMember: "AdvanceMaterial",
+        Width: "10%"
+    },
+    {
+        Name: "AdvanceMaterial1",
+        Type: "text",
+        Caption: "Mã phiếu xuất (TMS)",
+        DataSourceMember: "AdvanceMaterial1",
+        Width: "20%"
+    },
+    {
+        Name: "AdvanceMaterial2",
+        Type: "text",
+        Caption: "Mã phiếu xuất (ERP)",
+        DataSourceMember: "AdvanceMaterial2",
+        Width: "20%"
+    },
+    {
+        Name: "AdvanceMaterial3",
+        Type: "text",
+        Caption: "Số lượng TMS",
+        DataSourceMember: "AdvanceMaterial3",
+        Width: "10%"
+    },
+    {
+        Name: "AdvanceMaterial4",
+        Type: "text",
+        Caption: "Số lượng ERP",
+        DataSourceMember: "AdvanceMaterial4",
+        Width: "10%"
+    },
+    {
+        Name: "AdvanceMaterial5",
+        Type: "text",
+        Caption: "Chênh lệch",
+        DataSourceMember: "AdvanceMaterial5",
+        Width: "10%"
+    },
 ]

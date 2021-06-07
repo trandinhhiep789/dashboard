@@ -219,7 +219,7 @@ class SearchCom extends React.Component {
                     RowsPerPage={10}
                     params={this.state.params}
                     totalCurrency={true}
-                    totalCurrencyColSpan={4}
+                    totalCurrencyColSpan={3}
                     totalCurrencyNumber={this.state.totalAmount}
                     RequirePermission={TMS_TMSREWARD_VIEW}
                     ExportPermission={TMS_TMSREWARD_EXPORT}

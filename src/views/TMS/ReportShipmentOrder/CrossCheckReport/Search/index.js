@@ -12,6 +12,7 @@ import {
     GridColumnList,
     APIHostName,
     SearchAPIPath,
+    DataGridModalAdvanceMaterial,
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -21,16 +22,30 @@ import { TMS_BEGINTERMADVANCEDEBT_EXPORT, TMS_BEGINTERMADVANCEDEBT_VIEW } from "
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { toIsoStringCus } from '../../../../../utils/function'
+import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_DOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
+import ModalDetail from '../components/ModalDetail'
 
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
-
+        this.onShowModal = this.onShowModal.bind(this);
+        
         this.state = {
             IsCallAPIError: false,
-            gridDataSource: [],
+            gridDataSource: [
+                {
+                    CrossCheckID: "00011",
+                    BusinessID: 1,
+                    Date: '2021-05-31T17:00:00.000Z',
+                    TMS: 0,
+                    ERP: 0,
+                    Difference: 0
+
+
+                },
+            ],
             IsLoadDataComplete: false,
             widthPercent: "",
             params: {},
@@ -43,6 +58,17 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
+        window.addEventListener("resize", this.updateWindowDimensions);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.updateWindowDimensions);
+    }
+
+    updateWindowDimensions = () => {
+        this.setState({
+            widthPercent: (window.innerWidth * 90) / 100
+        })
     }
 
 
@@ -54,15 +80,17 @@ class SearchCom extends React.Component {
 
         // }
 
-        // const objParams = {
-        //     FromDate: toIsoStringCus(new Date(MLObject.FromDate).toISOString()), //MLObject.FromDate,
-        //     ToDate: toIsoStringCus(new Date(MLObject.ToDate).toISOString()), // MLObject.ToDate
-        // }
+        const objParams = {
+            FromDate: MLObject.FromDate,
+            ToDate: MLObject.ToDate,
+            BusinessID: MLObject.BusinessID,
+            Difference: MLObject.Difference
+        }
 
-        // this.setState({
-        //     params: objParams
-        // })
-       // this.callSearchData(objData)
+        this.setState({
+            params: objParams
+        })
+        // this.callSearchData(objData)
     }
 
     callSearchData(searchData) {
@@ -157,8 +185,33 @@ class SearchCom extends React.Component {
         this.addNotification(result.Message, result.IsError);
     }
 
+    onShowModal(data, typeDataGrid) {
+        const { params, widthPercent } = this.state;
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: "Báo cáo chi tiết tạm ứng vật tư",
+            content: {
+                text: <ModalDetail
+                    param={params}
+                    listColumn={DataGridModalAdvanceMaterial}
+                    dataSource={data}
+                    fileName={"Báo cáo chi tiết tạm ứng vật tư"}
+                />
+            },
+            maxWidth: widthPercent + 'px'
+        });
+    }
+
+    onShowModalDetail(objValue, name) {
+        console.log("onShowModalDetail", objValue, name)
+        const { params } = this.state;
+        console.log("params", params)
+        this.onShowModal()
+
+    }
+
 
     render() {
+        console.log("state", this.state)
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -176,8 +229,8 @@ class SearchCom extends React.Component {
                     dataSource={this.state.gridDataSource}
                     // AddLink=""
                     IsFixheaderTable={true}
-                    IDSelectColumnName={'ProductID'}
-                    PKColumnName={'ProductID'}
+                    IDSelectColumnName={'CrossCheckID'}
+                    PKColumnName={'CrossCheckID'}
                     isHideHeaderToolbar={false}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
@@ -193,6 +246,7 @@ class SearchCom extends React.Component {
                     DataExport={this.state.dataExport}
                     fileName="Danh sách báo đối soát"
                     onExportFile={this.handleExportFile.bind(this)}
+                    onShowModal={this.onShowModalDetail.bind(this)}
                 />
             </React.Fragment>
         );
