@@ -68,18 +68,11 @@ class ChangePasswordCom extends React.Component {
         //const apiPath = "api/PartnerUser/UpdatePassWordUserPartner";
         const apiPath  = "api/PartnerUser/UpdatePassWordUserPartnerMobile";
         let userLogin = this.props.AppInfo.LoginInfo.Username;
-        // const postData = {
-        //     Username: userLogin,
-        //     Password: MD5Digest(MLObject.PassWord),
-        //     PasswordOld: MD5Digest(MLObject.OldPassWord),
-        //     UpdatedUser: userLogin
-        // }
-
         const postData = {
-            Username: "0042071",
-            Password: "1234567",
-            PasswordOld: "123456",
-            //UpdatedUser: userLogin
+            Username: userLogin,
+            Password: MD5Digest(MLObject.PassWord),
+            PasswordOld: MD5Digest(MLObject.OldPassWord),
+            UpdatedUser: userLogin
         }
 
         this.props.callFetchAPI(hostname, apiPath, postData).then((apiResult) => {
