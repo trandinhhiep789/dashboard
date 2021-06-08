@@ -22,7 +22,7 @@ export const SearchElementList = [
         name: "dtFromDate",
         DataSourceMember: "FromDate",
         label: "Từ Ngày",
-        value: new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()),
+        value: new Date(),//new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()),
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
@@ -48,7 +48,7 @@ export const SearchElementList = [
         rowspan: 2,
         maxTagCount: 1,
         value: -1,
-        isMultiSelect: true,
+        isMultiSelect: false,
         placeholder: "--Tất cả--",
         listoption: [
             { value: 1, label: 'Tạm ứng vật tư' },
@@ -61,6 +61,25 @@ export const SearchElementList = [
         classNameCol: "multiTreeSelectCustom"
 
     },
+    // {
+    //     type: "ComboBox",
+    //     name: "cbBusinessID",
+    //     DataSourceMember: "BusinessID",
+    //     label: "Nghiệp vụ",
+    //     colspan: 2,
+    //     value: -1,
+    //     isMultiSelect: false,
+    //     placeholder: "--Tất cả--",
+    //     listoption: [
+    //         { value: 1, label: 'Tạm ứng vật tư' },
+    //         { value: 2, label: 'Nhập trả tạm ứng' },
+    //         { value: 3, label: 'Xuất tiêu hao vật tư' },
+    //         { value: 4, label: 'Xuất bán vật tư cho khách' },
+    //     ],
+    //     ValueMember: "ServiceStatusID",
+    //     NameMember: "ServiceStatusName"
+
+    // },
     {
         type: "checkbox",
         name: "ckDifference",
@@ -90,25 +109,25 @@ export const SearchMLObjectDefinition = [
     },
     {
         Name: "Difference",
-        DefaultValue: "",
+        DefaultValue: false,
         BindControlName: "ckDifference"
     },
 ]
 
 export const GridColumnList = [
     {
-        Name: "ProductID",
-        Type: "text",
+        Name: "BusinessID",
+        Type: "popupTextNumber",
         Caption: "Nghiệp vụ",
-        DataSourceMember: "ProductID",
+        DataSourceMember: "BusinessID",
         Width: "10%"
     },
 
     {
-        Name: "Date",
+        Name: "DateData",
         Type: "date",
         Caption: "Ngày",
-        DataSourceMember: "Date",
+        DataSourceMember: "DateData",
         Width: "20%"
     },
     {
@@ -132,5 +151,59 @@ export const GridColumnList = [
         DataSourceMember: "Difference",
         Width: "20%"
     },
-    
+
+]
+
+
+
+export const DataGridModalAdvanceMaterial = [
+    {
+        Name: "Date",
+        Type: "date",
+        Caption: "Ngày",
+        DataSourceMember: "Date",
+        Width: "10%"
+    },
+    {
+        Name: "AdvanceMaterial",
+        Type: "text",
+        Caption: "Mã Y/C tạm ứng VT",
+        DataSourceMember: "AdvanceMaterial",
+        Width: "10%"
+    },
+    {
+        Name: "AdvanceMaterial1",
+        Type: "text",
+        Caption: "Mã phiếu xuất (TMS)",
+        DataSourceMember: "AdvanceMaterial1",
+        Width: "20%"
+    },
+    {
+        Name: "AdvanceMaterial2",
+        Type: "text",
+        Caption: "Mã phiếu xuất (ERP)",
+        DataSourceMember: "AdvanceMaterial2",
+        Width: "20%"
+    },
+    {
+        Name: "AdvanceMaterial3",
+        Type: "text",
+        Caption: "Số lượng TMS",
+        DataSourceMember: "AdvanceMaterial3",
+        Width: "10%"
+    },
+    {
+        Name: "AdvanceMaterial4",
+        Type: "text",
+        Caption: "Số lượng ERP",
+        DataSourceMember: "AdvanceMaterial4",
+        Width: "10%"
+    },
+    {
+        Name: "AdvanceMaterial5",
+        Type: "text",
+        Caption: "Chênh lệch",
+        DataSourceMember: "AdvanceMaterial5",
+        Width: "10%"
+    },
 ]

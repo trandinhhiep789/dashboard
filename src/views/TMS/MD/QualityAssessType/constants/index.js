@@ -29,6 +29,12 @@ export const AddPagePath = [
     { Link: "", Title: "Thêm" }
 ];
 
+export const DetailPagePath = [
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
+    { Link: "/QualityAssessType", Title: "Danh sách loại tiêu chí đánh giá chất lượng" },
+    { Link: "", Title: "Chi tiết loại tiêu chí đánh giá chất lượng" }
+];
+
 export const SearchElementList = [
     {
         type: "text",
@@ -361,7 +367,8 @@ export const DataGridColumnList = [
     },
     {
         Name: "QualityAssessTypeName",
-        Type: "text",
+        Type: "texttolink",
+        Link: "/QualityAssessType/Detail/",
         Caption: "Tên loại tiêu chí",
         DataSourceMember: "QualityAssessTypeName",
         Width: 200

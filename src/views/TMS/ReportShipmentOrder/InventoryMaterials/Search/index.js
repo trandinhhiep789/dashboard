@@ -107,7 +107,7 @@ class SearchCom extends React.Component {
     handleSearchSubmit(formData, MLObject) {
         console.log("param", formData, MLObject)
         const objData = {
-            UserName: MLObject.UserName == -1 ? "" : MLObject.UserName.value,
+            UserName: (MLObject.UserName == -1 || MLObject.UserName == null) ? "" : MLObject.UserName.value,
             Month: MLObject.Month,
             AreaID: MLObject.AreaID
 
@@ -125,6 +125,7 @@ class SearchCom extends React.Component {
 
         }
 
+        console.log("objData", objData)
         this.callSearchData(objData);
     }
 
@@ -290,7 +291,7 @@ class SearchCom extends React.Component {
                     title: "Nhận trong kỳ",
                     content: {
                         text: <ModalBox
-                            UserName={MLObject.UserName.label}
+                            UserName={(MLObject.UserName == -1 || MLObject.UserName == null) ? "" : MLObject.UserName.label}
                             Month={Month}
                             listColumn={DataGridModalQuantityHanOverDone}
                             dataSource={data}
@@ -318,7 +319,7 @@ class SearchCom extends React.Component {
                     title: "Chờ bàn giao",
                     content: {
                         text: <ModalBox
-                            UserName={MLObject.UserName.label}
+                            UserName={(MLObject.UserName == -1 || MLObject.UserName == null) ? "" : MLObject.UserName.label}
                             Month={Month}
                             listColumn={DataGridModalQuantityHanOverDoing}
                             dataSource={data}
@@ -346,7 +347,7 @@ class SearchCom extends React.Component {
                     title: "Nhập trả",
                     content: {
                         text: <ModalBox
-                            UserName={MLObject.UserName.label}
+                            UserName={(MLObject.UserName == -1 || MLObject.UserName == null) ? "" : MLObject.UserName.label}
                             Month={Month}
                             listColumn={DataGridModalQuantityReturn}
                             dataSource={data}
@@ -374,7 +375,7 @@ class SearchCom extends React.Component {
                     title: "Sử dụng trong kỳ",
                     content: {
                         text: <ModalBox
-                            UserName={MLObject.UserName.label}
+                            UserName={(MLObject.UserName == -1 || MLObject.UserName == null) ? "" : MLObject.UserName.label}
                             Month={Month}
                             listColumn={DataGridModalChangeTotalQuantity}
                             dataSource={data}
@@ -394,6 +395,8 @@ class SearchCom extends React.Component {
     onShowModalDetail(objValue, name) {
         const { UserName, Month, ConfigValueMTReturn } = this.state;
         const status = this.getStatusDelivery(name);
+
+        console.log("UserName", UserName)
 
         let objData = {};
         if (status == 1) { //	Nhận trong kỳ

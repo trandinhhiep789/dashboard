@@ -417,7 +417,6 @@ class ListShipCoordinatorCom extends Component {
             //     iputpop: false
             // }
         ];
-        console.log("this.state.ShipmentOrder",this.state.ShipmentOrder)
         return (
             <div className="card modalForm">
                 <ReactNotification ref={this.notificationDOMRef} />

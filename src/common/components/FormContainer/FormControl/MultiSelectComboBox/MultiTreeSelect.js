@@ -103,7 +103,6 @@ class MultiTreeSelectCom extends React.Component {
     }
 
     render() {
-        console.log("aa", this.props)
         let { placeholder, maxTagCount, name } = this.props;
         let formRowClassName = "form-row";
         if (this.props.rowspan)

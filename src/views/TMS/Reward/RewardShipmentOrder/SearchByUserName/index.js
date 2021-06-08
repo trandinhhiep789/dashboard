@@ -168,7 +168,7 @@ class SearchByUserNameCom extends React.Component {
                     IsAutoPaging={true}
                     RowsPerPage={31}
                     totalCurrency={true}
-                    totalCurrencyColSpan={3}
+                    totalCurrencyColSpan={2}
                     totalCurrencyNumber={this.state.totalAmount}
                     //RequirePermission={SHIPMENTORDER_REPORT_VIEW}
                     ref={this.gridref}
