@@ -109,7 +109,7 @@ export const SearchMLObjectDefinition = [
     },
     {
         Name: "Difference",
-        DefaultValue: "",
+        DefaultValue: false,
         BindControlName: "ckDifference"
     },
 ]
