@@ -87,23 +87,26 @@ class SearchCom extends React.Component {
             Difference: MLObject.Difference
         }
 
-        const objDataNew =  [
-            {
-                "name": "V_FROMDATE",
-                "value": MLObject.FromDate,
-                "op": "timestamp"
-            },
-            {
-                "name": "V_TODATE",
-                "value": MLObject.ToDate,
-                "op": "timestamp"
-            },
-            {
-                "name": "V_OUTPUTTYPEIDLIST",
-                "value": MLObject.BusinessID,
-                "op": "array"
-            }
-        ]
+        const objDataNew =  {
+            "storedName": "ERP_TMS_ADVANCEREQUEST",
+            "params": [
+                {
+                    "name": "V_FROMDATE",
+                    "value": 1617210000000.0,
+                    "op": "timestamp"
+                },
+                {
+                    "name": "V_TODATE",
+                    "value": 1619802000000.0,
+                    "op": "timestamp"
+                },
+                {
+                    "name": "V_OUTPUTTYPEIDLIST",
+                    "value": "2223,9,12",
+                    "op": "array"
+                }
+            ]
+        }
 
         this.setState({
             params: objParams
@@ -115,7 +118,7 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/CrossCheckReport", searchData).then(apiResult => {
-            // console.log("apiResult", apiResult)
+            console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
                 const tempData = apiResult.ResultObject.map((item, index) => {
                     item.TotalAmount = item.Price * item.EndTermAdvanceDebt;
