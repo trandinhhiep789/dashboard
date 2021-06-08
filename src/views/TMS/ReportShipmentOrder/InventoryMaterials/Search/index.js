@@ -396,6 +396,8 @@ class SearchCom extends React.Component {
         const { UserName, Month, ConfigValueMTReturn } = this.state;
         const status = this.getStatusDelivery(name);
 
+        console.log("UserName", UserName)
+
         let objData = {};
         if (status == 1) { //	Nhận trong kỳ
             objData = {
