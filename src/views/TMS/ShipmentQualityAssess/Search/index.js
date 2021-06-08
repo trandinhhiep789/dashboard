@@ -13,7 +13,8 @@ import DataGrid from "../../../../common/components/DataGrid";
 import ReactContext from '../ReactContext';
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from "../../../../constants/actionTypes";
-import ShipmentQualityAssessDetail from '../ShipmentQualityAssessDetail'
+import ShipmentQualityAssessDetail from '../ShipmentQualityAssessDetail';
+import Add from '../Add'
 
 export class SearchCom extends Component {
     constructor(props) {
@@ -29,6 +30,7 @@ export class SearchCom extends Component {
         this.showMessage = this.showMessage.bind(this);
         this.onShowModalDetail = this.onShowModalDetail.bind(this);
         this.onUpdateClick = this.onUpdateClick.bind(this);
+        this.onInsertClick = this.onInsertClick.bind(this);
     }
 
     componentDidMount() {
@@ -97,6 +99,23 @@ export class SearchCom extends Component {
         this.showMessage("Tính năng đang phát triển")
     }
 
+    onInsertClick(MLObjectDefinition, modalElementList, dataSource) {
+
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Thêm đánh giá chất lượng giao hàng',
+            content: {
+                text: <ReactContext.Provider
+                    value={{
+                        handleDataGrid: () => { }
+                    }}
+                >
+                    <Add />
+                </ReactContext.Provider>
+            },
+            maxWidth: '1000px'
+        });
+    }
+
     render() {
         const { dataGrid } = this.state;
 
@@ -110,6 +129,8 @@ export class SearchCom extends Component {
                     IsFixheaderTable={false}
                     isHideHeaderToolbar={false}
                     IsShowButtonAdd={false}
+                    IsCustomAddLink={true}
+                    onInsertClick={this.onInsertClick}
                     IsShowButtonDelete={false}
                     IsShowButtonPrint={false}
                     IsPrint={false}

@@ -70,14 +70,14 @@ export class ShipmentQualityAssessDetail extends Component {
                             {
                                 (Object.keys(data).length != 0 && data.constructor === Object) && <div className="container my-3 e-3">
                                     <div className="row mb-2">
-                                        <div class="col">
+                                        <div className="col">
                                             <div className="row">
                                                 <div className="col-5 d-flex d-flex">Mã đánh giá</div>
                                                 <div>{data.ShipmentQualityAssessID}</div>
                                             </div>
                                         </div>
 
-                                        <div class="col">
+                                        <div className="col">
                                             <div className="row">
                                                 <div className="col-5 d-flex">Mã vận đơn</div>
                                                 <div>
@@ -90,14 +90,14 @@ export class ShipmentQualityAssessDetail extends Component {
                                     </div>
 
                                     <div className="row mb-2">
-                                        <div class="col">
+                                        <div className="col">
                                             <div className="row">
                                                 <div className="col-5 d-flex">Ngày đánh giá</div>
                                                 <div>{formatDate(data.AssessDate, false)}</div>
                                             </div>
                                         </div>
 
-                                        <div class="col">
+                                        <div className="col">
                                             <div className="row">
                                                 <div className="col-5 d-flex">Mã đơn hàng đối tác</div>
                                                 <div>{data.PartnerSaleOrderID}</div>
@@ -106,13 +106,13 @@ export class ShipmentQualityAssessDetail extends Component {
                                     </div>
 
                                     <div className="row mb-2">
-                                        <div class="col">
+                                        <div className="col">
                                             <div className="row">
                                                 <div className="col-5 d-flex">Giá trị đánh giá</div>
                                                 <div>{data.QualityAssessValue}</div>
                                             </div>
                                         </div>
-                                        <div class="col">
+                                        <div className="col">
                                             <div className="row">
                                                 <div className="col-5 d-flex">Người tạo</div>
                                                 <div>{this.handleCreatedUser(AppInfo)}</div>
@@ -121,13 +121,13 @@ export class ShipmentQualityAssessDetail extends Component {
                                     </div>
 
                                     <div className="row mb-2">
-                                        <div class="col">
+                                        <div className="col">
                                             <div className="row">
                                                 <div className="col-5 d-flex">Loại tiêu chí đánh giá</div>
                                                 <div>{data.QualityAssessTypeID}</div>
                                             </div>
                                         </div>
-                                        <div class="col">
+                                        <div className="col">
                                             <div className="row">
                                                 <div className="col-5 d-flex">Ngày tạo</div>
                                                 <div>{formatDate(data.CreatedDate, false)}</div>
@@ -136,13 +136,13 @@ export class ShipmentQualityAssessDetail extends Component {
                                     </div>
 
                                     <div className="row mb-2">
-                                        <div class="col">
+                                        <div className="col">
                                             <div className="row">
                                                 <div className="col-5 d-flex">Ngày duyệt gỡ đánh giá</div>
                                                 <div>{data.RevokeAssessReviewDate}</div>
                                             </div>
                                         </div>
-                                        <div class="col">
+                                        <div className="col">
                                             <div className="row">
                                                 <div className="col-5 d-flex">Người cập nhập</div>
                                                 <div>{data.UpdatedUser}</div>
@@ -151,13 +151,13 @@ export class ShipmentQualityAssessDetail extends Component {
                                     </div>
 
                                     <div className="row mb-2">
-                                        <div class="col">
+                                        <div className="col">
                                             <div className="row">
                                                 <div className="col-5 d-flex">Người duyệt gỡ đánh giá</div>
                                                 <div>{data.RevokeAssessReviewUser}</div>
                                             </div>
                                         </div>
-                                        <div class="col">
+                                        <div className="col">
                                             <div className="row">
                                                 <div className="col-5 d-flex">Ngày cập nhật</div>
                                                 <div>{data.UpdatedDate}</div>
@@ -166,13 +166,13 @@ export class ShipmentQualityAssessDetail extends Component {
                                     </div>
 
                                     <div className="row mb-2">
-                                        <div class="col">
+                                        <div className="col">
                                             <div className="row">
                                                 <div className="col-5 d-flex">Đã duyệt gỡ đánh giá</div>
                                                 <div>{data.IsRevokeAssessReview}</div>
                                             </div>
                                         </div>
-                                        <div class="col">
+                                        <div className="col">
                                             <div className="row">
                                                 <div className="col-5 d-flex">Người xóa</div>
                                                 <div>{data.DeletedUser}</div>
@@ -181,7 +181,7 @@ export class ShipmentQualityAssessDetail extends Component {
                                     </div>
 
                                     <div className="row mb-2">
-                                        <div class="col">
+                                        <div className="col">
                                             <div className="row">
                                                 <div className="col-5 d-flex">Ghi chú đánh giá</div>
                                                 <div className="col-7 pl-0">
@@ -190,13 +190,12 @@ export class ShipmentQualityAssessDetail extends Component {
                                                         className='form-control'
                                                         rows={2}
                                                         disabled
-                                                    >
-                                                        {data.QualityAssessNote}
-                                                    </textarea>
+                                                        defaultValue={data.QualityAssessNote}
+                                                    />
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col">
+                                        <div className="col">
                                             <div className="row">
                                                 <div className="col-5 d-flex">Ngày xóa</div>
                                                 <div>{data.DeletedDate}</div>
@@ -205,11 +204,11 @@ export class ShipmentQualityAssessDetail extends Component {
                                     </div>
 
                                     <div className="row mb-2">
-                                        <div class="col">
+                                        <div className="col">
                                             <div className="row">
                                             </div>
                                         </div>
-                                        <div class="col">
+                                        <div className="col">
                                             <div className="row">
                                                 <div className="col-5 d-flex">Lý do xóa</div>
                                                 <div className="col-7 pl-0">
@@ -218,9 +217,8 @@ export class ShipmentQualityAssessDetail extends Component {
                                                         className='form-control'
                                                         rows={2}
                                                         disabled
-                                                    >
-                                                        {data.DeletedNote}
-                                                    </textarea>
+                                                        defaultValue={data.DeletedNote}
+                                                    />
                                                 </div>
                                             </div>
                                         </div>

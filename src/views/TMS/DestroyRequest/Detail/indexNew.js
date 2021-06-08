@@ -100,13 +100,13 @@ class DetailCom extends React.Component {
                         item.ReviewStatusLable = "Chưa duyệt";
                     }
                     else {
-                        if(item.ReviewStatus == 1){
+                        if (item.ReviewStatus == 1) {
                             item.ReviewStatusLable = "Đã duyệt";
                         }
-                        else{
+                        else {
                             item.ReviewStatusLable = "Từ chối duyệt";
                         }
-                        
+
                     }
                     return item;
                 })
@@ -128,29 +128,29 @@ class DetailCom extends React.Component {
                     }
 
                     const returnStatusDiffer = lstDestroyRequestReviewLevel.filter((item, index) => {
-                        if (item.ReviewStatus != 1 ) {
+                        if (item.ReviewStatus != 1) {
                             return item;
                         }
                     })
                     console.log("returnStatusDiffer", returnStatusDiffer)
                     const returnStatusReject = lstDestroyRequestReviewLevel.filter((item, index) => {
-                        if (item.ReviewStatus == 2 ) {
+                        if (item.ReviewStatus == 2) {
                             return item;
                         }
                     })
                     console.log("returnStatusReject", returnStatusReject)
-                    if(returnStatusReject.length > 0){
+                    if (returnStatusReject.length > 0) {
                         this.setState({
                             IsStatusReject: true
                         })
                     }
 
-                    if(returnStatusDiffer.length > 0){
+                    if (returnStatusDiffer.length > 0) {
                         this.setState({
                             IsStatus: true
                         })
                     }
-                   
+
 
                 }
 
@@ -266,7 +266,7 @@ class DetailCom extends React.Component {
     }
 
     handleInsertDRNoteRV(id) {
-        debugger
+        // debugger
         console.log(id)
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Thêm ghi chú cho mức duyệt',
@@ -287,9 +287,9 @@ class DetailCom extends React.Component {
         const { DataSource, DestroyRequestRL, CurrentReviewLevelID, DestroyRequestID, lastReviewLevelID } = this.state;
         MLObject.DestroyRequestID = DataSource.DestroyRequestID;
 
-        
 
-       
+
+
         MLObject.IsreViewed = 1;
         MLObject.ReviewStatus = objData.ReviewStatus;
         MLObject.reViewedNote = objData.reViewedNote;//Trạng thái duyệt;(0: Chưa duyệt, 1: Đồng ý, 2: Từ chối)
@@ -313,11 +313,11 @@ class DetailCom extends React.Component {
 
         const isLastList = CurrentReviewLevelID == lastReviewLevelID ? true : false
 
-        if(objData.ReviewStatus == 1 ){
+        if (objData.ReviewStatus == 1) {
             MLObject.IsreViewed = 1;
             MLObject.IsreViewedDestroyRequest = !!isLastList ? 1 : 0;
         }
-        else{
+        else {
             MLObject.IsreViewedDestroyRequest = 0;
         }
 
@@ -325,8 +325,8 @@ class DetailCom extends React.Component {
 
         MLObject.CurrentReviewLevelID = !!isLastList ? CurrentReviewLevelID : nextReviewLevelID[0].ReviewLevelID;
 
-         console.log("aa", MLObject);
-         
+
+
         this.props.callFetchAPI(APIHostName, UpdateCurrentReviewLevelAPIPath, MLObject).then((apiResult) => {
             // console.log("id",  apiResult)
             if (apiResult.IsError) {
@@ -432,45 +432,45 @@ class DetailCom extends React.Component {
         }
 
         let IsDisableButtonOutPut = false;
-        if(IsOutPut == false ){
-            IsDisableButtonOutPut= false
+        if (IsOutPut == false) {
+            IsDisableButtonOutPut = false
         }
-        else{
-            if(IsStatus == true || IsStatusReject ){
-                IsDisableButtonOutPut= true
+        else {
+            if (IsStatus == true || IsStatusReject) {
+                IsDisableButtonOutPut = true
             }
-            else{
-                IsDisableButtonOutPut= false
+            else {
+                IsDisableButtonOutPut = false
             }
-            
+
         }
 
-        // console.log('IsStatus', IsStatus, IsOutPut, IsDisableButtonOutPut)
 
-        
-        
+
+
+
 
         let IsExitBtnReview = false;
-        if (isUserNameReviewLevel == true ) {
-            if(isHiddenButtonRV){
+        if (isUserNameReviewLevel == true) {
+            if (isHiddenButtonRV) {
                 IsExitBtnReview = true;
             }
-            else{
-                if(IsStatusReject){
+            else {
+                if (IsStatusReject) {
                     IsExitBtnReview = true
                 }
-                else{
+                else {
                     IsExitBtnReview = false
                 }
             }
-            
+
         }
         else {
             IsExitBtnReview = true
         }
 
 
-        console.log('IsExitBtnReview',IsExitBtnReview, isHiddenButtonRV, isUserNameReviewLevel)
+        console.log('IsExitBtnReview', IsExitBtnReview, isHiddenButtonRV, isUserNameReviewLevel)
 
         if (this.state.IsLoadDataComplete) {
             return (
@@ -502,7 +502,7 @@ class DetailCom extends React.Component {
                                     />
                                 </div>
                             </div>
-                           
+
                             {IsAutoReview == false ?
                                 <div className="card">
                                     <div className="card-title group-card-title">
@@ -561,11 +561,11 @@ class DetailCom extends React.Component {
                                 : <div></div>
 
                             }
-                            {IsDisableButtonOutPut == false ? 
-                                <button  className="btn btn-primary mr-3" type="button" onClick={this.handleSubmitOutputDestroyRequest}>Tạo phiếu xuất</button>
+                            {IsDisableButtonOutPut == false ?
+                                <button className="btn btn-primary mr-3" type="button" onClick={this.handleSubmitOutputDestroyRequest}>Tạo phiếu xuất</button>
                                 : <button disabled={true} className="btn btn-primary mr-3" type="button">Tạo phiếu xuất</button>
                             }
-                            
+
                             <Link to="/DestroyRequest">
                                 <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button>
                             </Link>
