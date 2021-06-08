@@ -24,6 +24,7 @@ import { showModal, hideModal } from '../../../../../actions/modal';
 import { toIsoStringCus } from '../../../../../utils/function'
 import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_DOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
 import ModalDetail from '../components/ModalDetail'
+import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../../constants/keyCache";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -31,25 +32,16 @@ class SearchCom extends React.Component {
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
         this.onShowModal = this.onShowModal.bind(this);
-        
+        this.getCacheConfig = this.getCacheConfig.bind(this);
+
         this.state = {
             IsCallAPIError: false,
-            gridDataSource: [
-                {
-                    CrossCheckID: "00011",
-                    BusinessID: 1,
-                    Date: '2021-05-31T17:00:00.000Z',
-                    TMS: 0,
-                    ERP: 0,
-                    Difference: 0
-
-
-                },
-            ],
+            gridDataSource: [],
             IsLoadDataComplete: false,
             widthPercent: "",
             params: {},
-            dataExport: []
+            dataExport: [],
+            cacheConfig: []
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -59,6 +51,7 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(PagePath);
         window.addEventListener("resize", this.updateWindowDimensions);
+        this.getCacheConfig();
     }
 
     componentWillUnmount() {
@@ -71,8 +64,22 @@ class SearchCom extends React.Component {
         })
     }
 
+    getCacheConfig() {
+        //ERPCOMMONCACHE_TMSCONFIG\
+        this.props.callGetCache(ERPCOMMONCACHE_TMSCONFIG).then(result => {
+            console.log("cacheConfig", result)
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                this.setState({
+                    cacheConfig: result.ResultObject.CacheData
+                })
+            }
+        })
+    }
+
 
     handleSearchSubmit(formData, MLObject) {
+        const { cacheConfig } = this.state;
+
         console.log("aaa", formData, MLObject)
         // const objData = {
         //     FromDate: toIsoStringCus(new Date(MLObject.FromDate).toISOString()), //MLObject.FromDate,
@@ -80,50 +87,154 @@ class SearchCom extends React.Component {
 
         // }
 
-        const objParams = {
-            FromDate: MLObject.FromDate,
-            ToDate: MLObject.ToDate,
-            BusinessID: MLObject.BusinessID,
-            Difference: MLObject.Difference
+        //RECONCILIATION_ADVANCEOUTPUTTYPEIDLIST --  Danh sách hình thức xuất tạm ứng vật tư
+        //RECONCILIATION_ADVANCEINPUTTYPEIDLIST -- Đối soát - Danh sách hình thức nhập tạm ứng
+        //RECONCILIATION_SALEOUTPUTTYPEIDLIST --  Danh sách hình thức xuất bán vật tư
+        //RECONCILIATION_CONSUMPOUTPUTTYPEIDLIST -- Danh sách hình thức xuất tiêu hao
+
+        let listOption = [];
+        let strListOption ="";
+        if (MLObject.BusinessID < 0) {
+
+
+
+            // let arrTemp = cacheConfig.filter(item => item.TMSConfigID == "RECONCILIATION_ADVANCEOUTPUTTYPEIDLIST" || item.TMSConfigID == "RECONCILIATION_SALEOUTPUTTYPEIDLIST" || item.TMSConfigID == "RECONCILIATION_CONSUMPOUTPUTTYPEIDLIST" || item.TMSConfigID == "RECONCILIATION_ADVANCEINPUTTYPEIDLIST").map((keyItem) => {
+            //     listOption.push(keyItem.TMSConfigValue)
+            // })
+            // console.log("arrTemp", arrTemp, listOption)
+            this.showMessage("Vui lòng chọn nghiệp vụ cần tìm kiếm.")
+
+        }
+        else {
+            // const arrTempBusinessID = MLObject.BusinessID.split(',')
+            // console.log("Business", arrTempBusinessID)
+
+
+            // arrTempBusinessID.map((item) => {
+
+            //     switch (parseInt(item)) {
+            //         case 1:
+            //             cacheConfig.filter(item => item.TMSConfigID == "RECONCILIATION_ADVANCEOUTPUTTYPEIDLIST").map((keyItem) => {
+            //                 listOption.push(keyItem.TMSConfigValue);
+            //                 strListOption= keyItem.TMSConfigValue
+            //             })
+            //             break;
+            //         case 2:
+            //             cacheConfig.filter(item => item.TMSConfigID == "RECONCILIATION_ADVANCEINPUTTYPEIDLIST").map((keyItem) => {
+            //                 listOption.push(keyItem.TMSConfigValue)
+            //                 strListOption= keyItem.TMSConfigValue
+            //             })
+            //             break;
+            //         case 3:
+            //             cacheConfig.filter(item => item.TMSConfigID == "RECONCILIATION_CONSUMPOUTPUTTYPEIDLIST").map((keyItem) => {
+            //                 listOption.push(keyItem.TMSConfigValue)
+            //                 strListOption= keyItem.TMSConfigValue
+            //             })
+            //             break;
+            //         case 4:
+            //             cacheConfig.filter(item => item.TMSConfigID == "RECONCILIATION_SALEOUTPUTTYPEIDLIST").map((keyItem) => {
+            //                 listOption.push(keyItem.TMSConfigValue)
+            //                 strListOption= keyItem.TMSConfigValue
+            //             })
+            //             break;
+            //         default:
+            //             break;
+            //     }
+
+
+            // })
+
+            switch (parseInt(MLObject.BusinessID)) {
+                case 1:
+                    cacheConfig.filter(item => item.TMSConfigID == "RECONCILIATION_ADVANCEOUTPUTTYPEIDLIST").map((keyItem) => {
+                        strListOption= keyItem.TMSConfigValue
+                    })
+                    break;
+                case 2:
+                    cacheConfig.filter(item => item.TMSConfigID == "RECONCILIATION_ADVANCEINPUTTYPEIDLIST").map((keyItem) => {
+                        strListOption= keyItem.TMSConfigValue
+                    })
+                    break;
+                case 3:
+                    cacheConfig.filter(item => item.TMSConfigID == "RECONCILIATION_CONSUMPOUTPUTTYPEIDLIST").map((keyItem) => {
+                        strListOption= keyItem.TMSConfigValue
+                    })
+                    break;
+                case 4:
+                    cacheConfig.filter(item => item.TMSConfigID == "RECONCILIATION_SALEOUTPUTTYPEIDLIST").map((keyItem) => {
+                        strListOption= keyItem.TMSConfigValue
+                    })
+                    break;
+                default:
+                    break;
+            }
+
+            console.log("listOption",  strListOption)
+
+
+            const objParams = {
+                FromDate: Date.parse(MLObject.FromDate),
+                ToDate: Date.parse(MLObject.ToDate),
+                BusinessID: MLObject.BusinessID,
+                Difference: MLObject.Difference
+            }
+
+            console.log("objParams", objParams)
+            const objDataNew = {
+                "storedName": "TMS_ADVANCEREQUEST",// ERP_TMS_ADVANCEREQUES
+                "params": [
+                    {
+                        "name": "V_FROMDATE",
+                        "value": Date.parse(MLObject.FromDate), //1617210000000.0,
+                        "op": "timestamp"
+                    },
+                    {
+                        "name": "V_TODATE",
+                        "value": Date.parse(MLObject.ToDate), //1619802000000.0,
+                        "op": "timestamp"
+                    },
+                    {
+                        "name": "V_OUTPUTTYPEIDLIST",
+                        "value": strListOption, //listOption,//listOption,//,"2223,9,12"
+                        "op": "array"
+                    },
+                    // {
+                    //     "name": "V_ISCHECKVIEWDIFFERENCE",
+                    //     "value": MLObject.Difference == true ? 1 : 0,
+                    //     "op": "array"
+                    // }
+                ]
+            }
+
+           
+
+
+            console.log("objDataNew", objDataNew)
+
+            this.setState({
+                params: objParams
+            })
+
+
+            this.callSearchData(objDataNew)
+
+
         }
 
-        const objDataNew =  {
-            "storedName": "ERP_TMS_ADVANCEREQUEST",
-            "params": [
-                {
-                    "name": "V_FROMDATE",
-                    "value": 1617210000000.0,
-                    "op": "timestamp"
-                },
-                {
-                    "name": "V_TODATE",
-                    "value": 1619802000000.0,
-                    "op": "timestamp"
-                },
-                {
-                    "name": "V_OUTPUTTYPEIDLIST",
-                    "value": "2223,9,12",
-                    "op": "array"
-                }
-            ]
-        }
 
-        this.setState({
-            params: objParams
-        })
-
-        this.callSearchData(objDataNew)
+       
     }
 
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/CrossCheckReport", searchData).then(apiResult => {
-            console.log("apiResult", apiResult)
+            console.log("apiResult",searchData, apiResult)
             if (!apiResult.IsError) {
                 const tempData = apiResult.ResultObject.map((item, index) => {
-                    item.TotalAmount = item.Price * item.EndTermAdvanceDebt;
-                    return item;
+                   console.log("item", item)
+                   item.DateData = item.date
                 })
+                
 
                 // xuất exel
                 const exelData = apiResult.ResultObject.map((item, index) => {
@@ -143,7 +254,7 @@ class SearchCom extends React.Component {
                 })
 
                 this.setState({
-                    gridDataSource: tempData,
+                    //gridDataSource: tempData,
                     dataExport: exelData,
                     IsCallAPIError: apiResult.IsError,
                 });
@@ -233,7 +344,6 @@ class SearchCom extends React.Component {
 
 
     render() {
-        console.log("state", this.state)
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />

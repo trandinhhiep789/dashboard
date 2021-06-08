@@ -37,18 +37,38 @@ export const SearchElementList = [
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
     },
+    // {
+    //     type: "MultiTreeSelect",
+    //     name: "cbBusinessID",
+    //     DataSourceMember: "BusinessID",
+    //     label: "Nghiệp vụ",
+    //     colspan: 12,
+    //     IsLabelDiv: true,
+    //     labelcolspan: 12,
+    //     rowspan: 2,
+    //     maxTagCount: 1,
+    //     value: -1,
+    //     isMultiSelect: false,
+    //     placeholder: "--Tất cả--",
+    //     listoption: [
+    //         { value: 1, label: 'Tạm ứng vật tư' },
+    //         { value: 2, label: 'Nhập trả tạm ứng' },
+    //         { value: 3, label: 'Xuất tiêu hao vật tư' },
+    //         { value: 4, label: 'Xuất bán vật tư cho khách' },
+    //     ],
+    //     ValueMember: "BusinessID",
+    //     NameMember: "BusinessName",
+    //     classNameCol: "multiTreeSelectCustom"
+
+    // },
     {
-        type: "MultiTreeSelect",
+        type: "ComboBox",
         name: "cbBusinessID",
         DataSourceMember: "BusinessID",
         label: "Nghiệp vụ",
-        colspan: 12,
-        IsLabelDiv: true,
-        labelcolspan: 12,
-        rowspan: 2,
-        maxTagCount: 1,
+        colspan: 2,
         value: -1,
-        isMultiSelect: true,
+        isMultiSelect: false,
         placeholder: "--Tất cả--",
         listoption: [
             { value: 1, label: 'Tạm ứng vật tư' },
@@ -56,9 +76,8 @@ export const SearchElementList = [
             { value: 3, label: 'Xuất tiêu hao vật tư' },
             { value: 4, label: 'Xuất bán vật tư cho khách' },
         ],
-        ValueMember: "BusinessID",
-        NameMember: "BusinessName",
-        classNameCol: "multiTreeSelectCustom"
+        ValueMember: "ServiceStatusID",
+        NameMember: "ServiceStatusName"
 
     },
     {
@@ -105,10 +124,10 @@ export const GridColumnList = [
     },
 
     {
-        Name: "Date",
+        Name: "DateData",
         Type: "date",
         Caption: "Ngày",
-        DataSourceMember: "Date",
+        DataSourceMember: "DateData",
         Width: "20%"
     },
     {
@@ -132,12 +151,12 @@ export const GridColumnList = [
         DataSourceMember: "Difference",
         Width: "20%"
     },
-    
+
 ]
 
 
 
-export const DataGridModalAdvanceMaterial= [
+export const DataGridModalAdvanceMaterial = [
     {
         Name: "Date",
         Type: "date",
