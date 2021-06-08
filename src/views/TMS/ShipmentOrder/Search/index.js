@@ -94,7 +94,7 @@ class SearchCom extends React.Component {
 
     handleonSearchEvent(Keywordid) {
         if (Keywordid != "") {
-            if (Keywordid.length!=15) {
+            if (Keywordid.length.trim()!=15) {
                 this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByPartnerSaleOrderID", String(Keywordid).trim()).then(apiResult => {
                     if (!apiResult.IsError) {
                         this.setState({
