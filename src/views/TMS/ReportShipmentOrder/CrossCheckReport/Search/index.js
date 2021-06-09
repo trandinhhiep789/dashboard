@@ -49,7 +49,7 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(PagePath);
         window.addEventListener("resize", this.updateWindowDimensions);
-       // this.getCacheConfig();
+        // this.getCacheConfig();
     }
 
     componentWillUnmount() {
@@ -75,6 +75,7 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
+        console.log("MLObject", MLObject)
         const { cacheConfig } = this.state;
         if (MLObject.BusinessID < 0) {
 
@@ -138,6 +139,7 @@ class SearchCom extends React.Component {
 
                 ]
             }
+            console.log("objDataNewol", objDataNewol)
             this.callSearchData(objDataNewol)
         }
     }
@@ -145,6 +147,7 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/CrossCheckReport", searchData).then(apiResult => {
+            console.log("aa", searchData, apiResult)
             if (!apiResult.IsError) {
                 // const tempData = apiResult.ResultObject.map((item, index) => {
                 //     item.DateData = item.date
@@ -261,11 +264,10 @@ class SearchCom extends React.Component {
         this.onShowModal()
 
     }
-    handleTotalLateSubmit(reportid,date)
-    {
+    handleTotalLateSubmit(reportid, date) {
         const { params } = this.state;
-        console.log("params", params,reportid,date,Date.parse("06/06/2021"));
-        this.onShowModal(reportid,date)
+        console.log("params", params, reportid, date, Date.parse("06/06/2021"));
+        this.onShowModal(reportid, date)
 
     }
 
@@ -302,8 +304,8 @@ class SearchCom extends React.Component {
                                     this.state.gridDataSource
                                     && this.state.gridDataSource.map((item, index) => {
                                         return <tr >
-                                            <td > <a className="nav-link text-primary hover-primary cursor-pointer" onClick={() => this.handleTotalLateSubmit(item.reportid,item.date)}>{item.reportname}</a></td>
-                                            <td>{item.date.substr(6,2)+"-"+item.date.substr(4,2)+"-"+item.date.substr(0,4)}</td>
+                                            <td > <a className="nav-link text-primary hover-primary cursor-pointer" onClick={() => this.handleTotalLateSubmit(item.reportid, item.date)}>{item.reportname}</a></td>
+                                            <td>{item.date.substr(6, 2) + "-" + item.date.substr(4, 2) + "-" + item.date.substr(0, 4)}</td>
                                             <td>{item.quantitytms}</td>
                                             <td>{item.quantityerp}</td>
                                             <td>{item.differencequantity}</td>

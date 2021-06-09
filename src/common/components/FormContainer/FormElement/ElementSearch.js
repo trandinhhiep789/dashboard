@@ -56,6 +56,8 @@ class ElementTextCom extends Component {
                         onChange={this.handleValueChange}
                         readOnly={readonly}
                         defaultValue={value}
+                        value={value}
+                        defaultChecked={value}
                         placeholder={placeholder} />
                     <div className="invalid-feedback">{ValidatonErrorMessage}</div>
                 </div>
@@ -142,12 +144,14 @@ class ElementCheckboxCom extends Component {
         this.handleValueChange = this.handleValueChange.bind(this);
     }
     handleValueChange(e) {
+        debugger
         e.preventDefault();
         if (this.props.onValueChange != null)
             this.props.onValueChange(e.target.name, e.target.value);
     }
     render() {
         let { name, label, value, colspan, classNameCol } = this.props;
+        console.log("object", this.props)
         let colspanClassName = "col-md-1";
         if (colspan) {
             if (classNameCol) {
@@ -171,7 +175,18 @@ class ElementCheckboxCom extends Component {
                 <div className="form-group form-group-input">
                     <label>&nbsp;</label>
                     <div className="custom-control custom-checkbox">
-                        <input type="checkbox" id="search-avd" className="custom-control-input" defaultChecked />
+                        <input type="checkbox"
+                            id="search-avd"
+                            className="custom-control-input"
+                            value={value}
+                            name={name}
+                            checked={value}
+                            defaultChecked={value}
+                            onChange={this.handleValueChange}
+                            ref={this.props.inputRef}
+                            type={this.props.type}
+                            readOnly={this.props.readonly}
+                        />
                         {labeldiv}
                     </div>
                 </div>
