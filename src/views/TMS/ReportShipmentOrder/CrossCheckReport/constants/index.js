@@ -190,7 +190,7 @@ export const DataGridModalAdvanceMaterial = [
     {
         Name: "voucherconcern",
         Type: "text",
-        Caption: "Mã Y/C tạm ứng VT",
+        Caption: "Chứng từ liên quan",
         DataSourceMember: "voucherconcern",
         Width: "10%"
     },
