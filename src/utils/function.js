@@ -35,13 +35,13 @@ export const formatNumberNew = (num) => {
     const parNum = num.toString();
     let numSplt = parNum.split('.');
     if (num != undefined && num != '') {
-        if(numSplt.length > 1){
+        if (numSplt.length > 1) {
             return numSplt[0].toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "." + numSplt[1].substr(0, 2);;
         }
-        else{
+        else {
             return numSplt[0].toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
         }
-        
+
     }
     else {
         return num
@@ -92,6 +92,27 @@ export const toIsoStringCusNew = (dateTime, notGetTime) => {
             'T' + "00" +
             ':' + "00"
 
+    }
+}
+
+
+export const toIsoStringNew = (dateTime, notGetTime) => {
+    let dateTemp = dateTime.split('/');
+    const a = new Date();
+    if (notGetTime) {
+        return dateTemp[2] +
+            '-' + dateTemp[1] +
+            '-' + dateTemp[0] +
+            'T' + pad(a.getHours()) +
+            ':' + pad(a.getMinutes()) +
+            ':' + pad(a.getSeconds())
+    }
+    else {
+        return dateTemp[2] +
+            '-' + dateTemp[1] +
+            '-' + dateTemp[0] +
+            'T' + "00" +
+            ':' + "00"
     }
 }
 

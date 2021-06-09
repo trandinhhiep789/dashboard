@@ -7,6 +7,7 @@ import DataGrid from '../../../../../common/components/DataGrid'
 import { formatMonthYear } from "../../../../../common/library/CommonLib.js";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
+import { toIsoStringCus, toIsoStringCusNew, formatNumber, formatNumberNew, toIsoStringNew } from '../../../../../utils/function'
 
 class ModalDetailCom extends Component {
     constructor(props) {
@@ -14,7 +15,7 @@ class ModalDetailCom extends Component {
 
         this.state = {
             isExportFile: false,
-            date: this.props.date,
+            date: toIsoStringNew(this.props.date, false),
             dataSource: this.props.dataSource,
             DataSource: [],
             PageNumber: 1,
@@ -40,6 +41,7 @@ class ModalDetailCom extends Component {
     getParamSearchData(PageNumber) {
         const { date, typeDataGrid, Difference } = this.props;
         console.log("date", this.props, date, typeDataGrid)
+
         let searchData = "";
         if (typeDataGrid == 1) {
             searchData = {
@@ -47,12 +49,12 @@ class ModalDetailCom extends Component {
                 "params": [
                     {
                         "name": "V_FROMDATE",
-                        "value": Date.parse(date),
+                        "value": Date.parse(toIsoStringNew(this.props.date, false)),
                         "op": "timestamp"
                     },
                     {
                         "name": "V_TODATE",
-                        "value": Date.parse(date),
+                        "value": Date.parse(toIsoStringNew(this.props.date, false)),
                         "op": "timestamp"
                     },
                     {
@@ -86,12 +88,12 @@ class ModalDetailCom extends Component {
                 "params": [
                     {
                         "name": "V_FROMDATE",
-                        "value": Date.parse(date),
+                        "value": Date.parse(toIsoStringNew(this.props.date, false)),
                         "op": "timestamp"
                     },
                     {
                         "name": "V_TODATE",
-                        "value": Date.parse(date),
+                        "value": Date.parse(toIsoStringNew(this.props.date, false)),
                         "op": "timestamp"
                     },
                     {
@@ -126,12 +128,12 @@ class ModalDetailCom extends Component {
                 "params": [
                     {
                         "name": "V_FROMDATE",
-                        "value": Date.parse(date),
+                        "value": Date.parse(toIsoStringNew(this.props.date, false)),
                         "op": "timestamp"
                     },
                     {
                         "name": "V_TODATE",
-                        "value": Date.parse(date),
+                        "value": Date.parse(toIsoStringNew(this.props.date, false)),
                         "op": "timestamp"
                     },
                     {
@@ -165,12 +167,12 @@ class ModalDetailCom extends Component {
                 "params": [
                     {
                         "name": "V_FROMDATE",
-                        "value": Date.parse(date),
+                        "value": Date.parse(toIsoStringNew(this.props.date, false)),
                         "op": "timestamp"
                     },
                     {
                         "name": "V_TODATE",
-                        "value": Date.parse(date),
+                        "value": Date.parse(toIsoStringNew(this.props.date, false)),
                         "op": "timestamp"
                     },
                     {

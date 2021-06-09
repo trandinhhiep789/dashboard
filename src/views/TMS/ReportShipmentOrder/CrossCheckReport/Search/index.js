@@ -21,7 +21,7 @@ import "react-notifications-component/dist/theme.css";
 import { TMS_BEGINTERMADVANCEDEBT_EXPORT, TMS_BEGINTERMADVANCEDEBT_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
-import { toIsoStringCus, toIsoStringCusNew, formatNumber, formatNumberNew } from '../../../../../utils/function'
+import { toIsoStringCus, toIsoStringCusNew, formatNumber, formatNumberNew, toIsoStringNew } from '../../../../../utils/function'
 import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_DOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
 import ModalDetail from '../components/ModalDetail'
 import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../../constants/keyCache";
@@ -96,6 +96,7 @@ class SearchCom extends React.Component {
                 params: objParams,
                 Difference: MLObject.Difference == true ? 1 : 0,
             })
+            console.log("object", toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false))
             const objDataNewol = {
                 "storedName": "ERP_TMS_ADVANCEREQUEST",
                 "params": [
