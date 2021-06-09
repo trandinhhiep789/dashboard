@@ -1,13 +1,14 @@
-import React from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import ReactNotification from "react-notifications-component";
-import { SearchElementDetailList, SearchMLObjectDefinitionDetail } from '../constants'
+import { APIHostName,SearchElementDetailList, SearchMLObjectDefinitionDetail } from '../constants'
 import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
 import DataGrid from '../../../../../common/components/DataGrid'
 import { formatMonthYear } from "../../../../../common/library/CommonLib.js";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
-export default class ModalDetailCom extends Component {
+
+    class ModalDetailCom extends Component {
     constructor(props) {
         super(props);
 
@@ -25,53 +26,176 @@ export default class ModalDetailCom extends Component {
     }
 
     componentDidMount() {
-        const { dataSource } = this.props;
-        this.callSearchData(objDataNewol)
+        const { dataSource,date,typeDataGrid } = this.props;
+        const searchData="";
+        if(typeDataGrid==1)
+        {
+            searchData = {
+                "storedName": "ERP_TMS_RPTDETAILRETURNREQUEST",
+                "params": [
+                    {
+                        "name": "V_FROMDATE",
+                        "value": Date.parse(date),
+                        "op": "timestamp"
+                    },
+                    {
+                        "name": "V_TODATE",
+                        "value": Date.parse(date),
+                        "op": "timestamp"
+                    },
+                    {
+                        "name": "V_INPUTTYPEIDLIST",
+                        "value": "2064,7,13",
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_ISCHECKVIEWDIFFERENCE",
+                        "value": 0,
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_PAGEINDEX",
+                        "value": 1,
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_PAGESIZE",
+                        "value": 100,
+                        "op": "array"
+                    }
+    
+                ]
+            }
+
+        }
+        else if(typeDataGrid==2)
+        {
+            searchData =   {
+                "storedName": "ERP_TMS_RPTDETAILRETURNREQUEST",
+                "params": [
+                    {
+                        "name": "V_FROMDATE",
+                        "value": Date.parse(date),
+                        "op": "timestamp"
+                    },
+                    {
+                        "name": "V_TODATE",
+                        "value": Date.parse(date),
+                        "op": "timestamp"
+                    },
+                    {
+                        "name": "V_INPUTTYPEIDLIST",
+                        "value": "2064,7,13" ,
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_ISCHECKVIEWDIFFERENCE",
+                        "value": 0 ,
+                        "op": "array"
+                    }
+                    ,
+                    {
+                        "name": "V_PAGEINDEX",
+                        "value": 1,
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_PAGESIZE",
+                        "value": 100,
+                        "op": "array"
+                    }
+                    
+                ]
+            }
+
+        }
+        else if(typeDataGrid==3)
+        {
+            searchData =    {
+                "storedName": "ERP_TMS_RPTDETAIL_OUTPUTMARTERIAL",
+                "params": [
+                    {
+                        "name": "V_FROMDATE",
+                        "value": Date.parse(date),
+                        "op": "timestamp"
+                    },
+                    {
+                        "name": "V_TODATE",
+                        "value": Date.parse(date),
+                        "op": "timestamp"
+                    },
+                    {
+                        "name": "V_OUTPUTTYPEIDLIST",
+                        "value": "2503" ,
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_ISCHECKVIEWDIFFERENCE",
+                        "value": 0 ,
+                        "op": "array"
+                    } 
+                    ,
+                    {
+                        "name": "V_PAGEINDEX",
+                        "value": 1,
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_PAGESIZE",
+                        "value": 100,
+                        "op": "array"
+                    }
+                ]
+            }
+            
+        }
+        else if(typeDataGrid==4)
+        {
+            searchData =     {
+                "storedName": "ERP_TMS_RPTDETAIL_OUTPUTMARTERIALBYCUSTOMER",
+                "params": [
+                    {
+                        "name": "V_FROMDATE",
+                        "value": Date.parse(date),
+                        "op": "timestamp"
+                    },
+                    {
+                        "name": "V_TODATE",
+                        "value": Date.parse(date),
+                        "op": "timestamp"
+                    },
+                    {
+                        "name": "V_OUTPUTTYPEIDLIST",
+                        "value": "2503" ,
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_ISCHECKVIEWDIFFERENCE",
+                        "value": 0 ,
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_PAGEINDEX",
+                        "value": 1,
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_PAGESIZE",
+                        "value": 100,
+                        "op": "array"
+                    }
+                    
+                ]
+            }
+            
+        }
+
+       
+        this.callSearchData(searchData1)
     }
 
     callSearchData(searchData) {
-
-       let searchData = {
-            "storedName": "ERP_TMS_RPTDETAILRETURNREQUEST",
-            "params": [
-                {
-                    "name": "V_FROMDATE",
-                    "value": Date.parse(date),
-                    "op": "timestamp"
-                },
-                {
-                    "name": "V_TODATE",
-                    "value": Date.parse(date),
-                    "op": "timestamp"
-                },
-                {
-                    "name": "V_INPUTTYPEIDLIST",
-                    "value": "2064,7,13",
-                    "op": "array"
-                },
-                {
-                    "name": "V_ISCHECKVIEWDIFFERENCE",
-                    "value": 0,
-                    "op": "array"
-                },
-                {
-                    "name": "V_PAGEINDEX",
-                    "value": 1,
-                    "op": "array"
-                },
-                {
-                    "name": "V_PAGESIZE",
-                    "value": 100,
-                    "op": "array"
-                }
-
-            ]
-        }
-
-
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/CrossCheckReportDetail", searchData).then(apiResult => {
-           
-
             if (!apiResult.IsError) {
                 this.setState({
                     DataSource: apiResult.ResultObject,
@@ -158,15 +282,11 @@ export default class ModalDetailCom extends Component {
 
     render() {
         const { UserName, Month, listColumn, dataSource, fileName, dataExport } = this.props;
-        const {DataSource} = this.props;
-        const { isExportFile } = this.state;
+        const { isExportFile,DataSource} = this.state;
 
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
-
-
-
                 <SearchForm
                     FormName="Tìm kiếm danh sách báo đối soát chi tiết"
                     MLObjectDefinition={SearchMLObjectDefinitionDetail}
@@ -178,7 +298,7 @@ export default class ModalDetailCom extends Component {
 
                 <DataGrid
                     listColumn={listColumn}
-                    dataSource={this.state.DataSource}
+                    dataSource={DataSource}
                     IDSelectColumnName={""}
                     PKColumnName={""}
                     IsDelete={false}
@@ -204,15 +324,15 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
       
-        // callFetchAPI: (hostname, hostURL, postData) => {
-        //     return dispatch(callFetchAPI(hostname, hostURL, postData));
-        // },
-        // showModal: (type, props) => {
-        //     dispatch(showModal(type, props));
-        // },
-        // hideModal: (type, props) => {
-        //     dispatch(hideModal(type, props));
-        // }
+        callFetchAPI: (hostname, hostURL, postData) => {
+            return dispatch(callFetchAPI(hostname, hostURL, postData));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
+        },
+        hideModal: (type, props) => {
+            dispatch(hideModal(type, props));
+        }
     };
 };
 
