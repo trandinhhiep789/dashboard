@@ -263,11 +263,58 @@ class SearchCom extends React.Component {
     }
     handleTotalLateSubmit(reportid,date)
     {
+
+       let searchData= {
+            "storedName": "ERP_TMS_RPTDETAILRETURNREQUEST",
+            "params": [
+                {
+                    "name": "V_FROMDATE",
+                    "value": Date.parse(date),
+                    "op": "timestamp"
+                },
+                {
+                    "name": "V_TODATE",
+                    "value": Date.parse(date),
+                    "op": "timestamp"
+                },
+                {
+                    "name": "V_INPUTTYPEIDLIST",
+                    "value": "2064,7,13" ,
+                    "op": "array"
+                },
+                {
+                    "name": "V_ISCHECKVIEWDIFFERENCE",
+                    "value": 0 ,
+                    "op": "array"
+                },
+                {
+                    "name": "V_PAGEINDEX",
+                    "value": 1 ,
+                    "op": "array"
+                },
+                {
+                    "name": "V_PAGESIZE",
+                    "value": 100 ,
+                    "op": "array"
+                }
+        
+        
+                
+            ]
+        }
+
+
+        this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/CrossCheckReportDetail", searchData).then(apiResult => {
+            console.log("apiResult", apiResult);
+        });
+
         const { params } = this.state;
-        console.log("params", params,reportid,date,Date.parse("06/06/2021"));
-        this.onShowModal(reportid,date)
+        // this.onShowModal(reportid,date)
 
     }
+
+
+ 
 
     render() {
         return (
@@ -303,7 +350,7 @@ class SearchCom extends React.Component {
                                     && this.state.gridDataSource.map((item, index) => {
                                         return <tr >
                                             <td > <a className="nav-link text-primary hover-primary cursor-pointer" onClick={() => this.handleTotalLateSubmit(item.reportid,item.date)}>{item.reportname}</a></td>
-                                            <td>{item.date.substr(6,2)+"-"+item.date.substr(4,2)+"-"+item.date.substr(0,4)}</td>
+                                            <td>{item.date}</td>
                                             <td>{item.quantitytms}</td>
                                             <td>{item.quantityerp}</td>
                                             <td>{item.differencequantity}</td>
