@@ -21,9 +21,9 @@ export const SearchElementDetailList = [
         type: "checkbox",
         name: "ckDifferenceDetail",
         DataSourceMember: "DifferenceDetail",
-        label: "Chênh lệch",
+        label: "Chỉ xem dữ liệu chênh lệch",
         value: true,
-        colspan: 1,
+        colspan: 2,
         classNameCol: "checkboxSelectCustom"
     },
 ]
@@ -107,9 +107,9 @@ export const SearchElementList = [
         type: "checkbox",
         name: "ckDifference",
         DataSourceMember: "Difference",
-        label: "Chênh lệch",
+        label: "Chỉ xem dữ liệu chênh lệch",
         value: true,
-        colspan: 1,
+        colspan: 2,
         classNameCol: "checkboxSelectCustom"
     },
 ]

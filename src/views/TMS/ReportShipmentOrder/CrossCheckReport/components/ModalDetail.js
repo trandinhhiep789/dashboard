@@ -216,10 +216,22 @@ class ModalDetailCom extends Component {
                 });
             }
             else {
-
+                this.showMessage(apiResult.Message)
             }
         });
     }
+
+    showMessage(message) {
+        ModalManager.open(
+            <MessageModal
+                title="Thông báo"
+                message={message}
+                onRequestClose={() => true}
+                onCloseModal={this.handleCloseMessage}
+            />
+        );
+    }
+
 
     addNotification(message1, IsError) {
         let cssNotification, iconNotification;
