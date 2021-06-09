@@ -8,6 +8,7 @@ import { formatMonthYear } from "../../../../../common/library/CommonLib.js";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { toIsoStringCus, toIsoStringCusNew, formatNumber, formatNumberNew, toIsoStringNew } from '../../../../../utils/function'
+import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 
 class ModalDetailCom extends Component {
     constructor(props) {
