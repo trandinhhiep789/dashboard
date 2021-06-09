@@ -31,6 +31,24 @@ export const formatNumber = (num) => {
 
 }
 
+export const formatNumberNew = (num) => {
+    const parNum = num.toString();
+    let numSplt = parNum.split('.');
+    if (num != undefined && num != '') {
+        if(numSplt.length > 1){
+            return numSplt[0].toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "." + numSplt[1].substr(0, 2);;
+        }
+        else{
+            return numSplt[0].toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+        }
+        
+    }
+    else {
+        return num
+    }
+
+}
+
 export const toIsoStringCus = (dateTime) => {
     const dateTime1 = new Date(dateTime);
     const a = new Date();
@@ -70,9 +88,9 @@ export const toIsoStringCusNew = (dateTime, notGetTime) => {
     else {
         return dateTime1.getFullYear() +
             '-' + pad(dateTime1.getMonth() + 1) +
-            '-' + pad(dateTime1.getDate())+
+            '-' + pad(dateTime1.getDate()) +
             'T' + "00" +
-            ':' + "00" 
+            ':' + "00"
 
     }
 }

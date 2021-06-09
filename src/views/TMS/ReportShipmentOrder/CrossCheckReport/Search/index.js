@@ -21,7 +21,7 @@ import "react-notifications-component/dist/theme.css";
 import { TMS_BEGINTERMADVANCEDEBT_EXPORT, TMS_BEGINTERMADVANCEDEBT_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
-import { toIsoStringCus, toIsoStringCusNew, formatNumber } from '../../../../../utils/function'
+import { toIsoStringCus, toIsoStringCusNew, formatNumber, formatNumberNew } from '../../../../../utils/function'
 import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_DOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
 import ModalDetail from '../components/ModalDetail'
 import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../../constants/keyCache";
@@ -68,7 +68,6 @@ class SearchCom extends React.Component {
     getCacheConfig() {
         //ERPCOMMONCACHE_TMSCONFIG\
         this.props.callGetCache(ERPCOMMONCACHE_TMSCONFIG).then(result => {
-            console.log("cacheConfig", result)
             if (!result.IsError && result.ResultObject.CacheData != null) {
                 this.setState({
                     cacheConfig: result.ResultObject.CacheData
@@ -385,9 +384,9 @@ class SearchCom extends React.Component {
                                         return <tr  key ={index}>
                                             <td > <a className="nav-link text-primary hover-primary cursor-pointer" onClick={() => this.handleTotalLateSubmit(item.reportid, item.date)}>{item.reportname}</a></td>
                                             <td>{item.date}</td>
-                                            <td>{formatNumber(item.quantitytms)}</td>
-                                            <td>{formatNumber(item.quantityerp)}</td>
-                                            <td>{formatNumber(item.differencequantity)}</td>
+                                            <td>{formatNumberNew(item.quantitytms)}</td>
+                                            <td>{formatNumberNew(item.quantityerp)}</td>
+                                            <td>{formatNumberNew(item.differencequantity)}</td>
                                         </tr>
                                     })
                                 }
