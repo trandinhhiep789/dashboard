@@ -269,7 +269,7 @@ class SearchCom extends React.Component {
                 text: <ModalDetail
                     param={params}
                     listColumn={DataGridModalAdvanceMaterial}
-                    dataSource={data}
+                    dataSource={[]}
                     date={date}
                     typeDataGrid={typeDataGrid}
                     fileName={"Báo cáo chi tiết tạm ứng vật tư"}
@@ -289,55 +289,57 @@ class SearchCom extends React.Component {
 
     handleTotalLateSubmit(reportid, date) {
         const { params } = this.state;
-        console.log("detail", reportid, date)
-        let searchData = {
-            "storedName": "ERP_TMS_RPTDETAILRETURNREQUEST",
-            "params": [
-                {
-                    "name": "V_FROMDATE",
-                    "value": Date.parse(date),
-                    "op": "timestamp"
-                },
-                {
-                    "name": "V_TODATE",
-                    "value": Date.parse(date),
-                    "op": "timestamp"
-                },
-                {
-                    "name": "V_INPUTTYPEIDLIST",
-                    "value": "2064,7,13",
-                    "op": "array"
-                },
-                {
-                    "name": "V_ISCHECKVIEWDIFFERENCE",
-                    "value": 0,
-                    "op": "array"
-                },
-                {
-                    "name": "V_PAGEINDEX",
-                    "value": 1,
-                    "op": "array"
-                },
-                {
-                    "name": "V_PAGESIZE",
-                    "value": 100,
-                    "op": "array"
-                }
 
-            ]
-        }
+        this.onShowModal([], reportid, date);
+       
+        // let searchData = {
+        //     "storedName": "ERP_TMS_RPTDETAILRETURNREQUEST",
+        //     "params": [
+        //         {
+        //             "name": "V_FROMDATE",
+        //             "value": Date.parse(date),
+        //             "op": "timestamp"
+        //         },
+        //         {
+        //             "name": "V_TODATE",
+        //             "value": Date.parse(date),
+        //             "op": "timestamp"
+        //         },
+        //         {
+        //             "name": "V_INPUTTYPEIDLIST",
+        //             "value": "2064,7,13",
+        //             "op": "array"
+        //         },
+        //         {
+        //             "name": "V_ISCHECKVIEWDIFFERENCE",
+        //             "value": 0,
+        //             "op": "array"
+        //         },
+        //         {
+        //             "name": "V_PAGEINDEX",
+        //             "value": 1,
+        //             "op": "array"
+        //         },
+        //         {
+        //             "name": "V_PAGESIZE",
+        //             "value": 100,
+        //             "op": "array"
+        //         }
+
+        //     ]
+        // }
 
 
-        this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/CrossCheckReportDetail", searchData).then(apiResult => {
-            console.log("apiResult", apiResult);
+        // this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/CrossCheckReportDetail", searchData).then(apiResult => {
+           
 
-            if (!apiResult.IsError) {
-                this.onShowModal(apiResult.ResultObject, reportid, date);
-            }
-            else {
-                this.showMessage(apiResult.Message);
-            }
-        });
+        //     if (!apiResult.IsError) {
+        //         this.onShowModal([], reportid, date,params.Difference);
+        //     }
+        //     else {
+        //         this.showMessage(apiResult.Message);
+        //     }
+        // });
 
 
         // this.onShowModal(reportid,date)

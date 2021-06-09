@@ -1,11 +1,13 @@
-import React, { Component } from 'react';
+import React from "react";
+import { connect } from "react-redux";
 import ReactNotification from "react-notifications-component";
-
 import { SearchElementDetailList, SearchMLObjectDefinitionDetail } from '../constants'
 import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
 import DataGrid from '../../../../../common/components/DataGrid'
 import { formatMonthYear } from "../../../../../common/library/CommonLib.js";
-export default class ModalDetail extends Component {
+import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
+import { showModal, hideModal } from '../../../../../actions/modal';
+export default class ModalDetailCom extends Component {
     constructor(props) {
         super(props);
 
@@ -13,7 +15,7 @@ export default class ModalDetail extends Component {
             isExportFile: false,
             date: this.props.date,
             dataSource: this.props.dataSource,
-
+            DataSource: [],
         }
 
         this.handleExportFile = this.handleExportFile.bind(this);
@@ -24,8 +26,61 @@ export default class ModalDetail extends Component {
 
     componentDidMount() {
         const { dataSource } = this.props;
-        console.log("1111", this.props)
+        this.callSearchData(objDataNewol)
+    }
 
+    callSearchData(searchData) {
+
+       let searchData = {
+            "storedName": "ERP_TMS_RPTDETAILRETURNREQUEST",
+            "params": [
+                {
+                    "name": "V_FROMDATE",
+                    "value": Date.parse(date),
+                    "op": "timestamp"
+                },
+                {
+                    "name": "V_TODATE",
+                    "value": Date.parse(date),
+                    "op": "timestamp"
+                },
+                {
+                    "name": "V_INPUTTYPEIDLIST",
+                    "value": "2064,7,13",
+                    "op": "array"
+                },
+                {
+                    "name": "V_ISCHECKVIEWDIFFERENCE",
+                    "value": 0,
+                    "op": "array"
+                },
+                {
+                    "name": "V_PAGEINDEX",
+                    "value": 1,
+                    "op": "array"
+                },
+                {
+                    "name": "V_PAGESIZE",
+                    "value": 100,
+                    "op": "array"
+                }
+
+            ]
+        }
+
+
+        this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/CrossCheckReportDetail", searchData).then(apiResult => {
+           
+
+            if (!apiResult.IsError) {
+                this.setState({
+                    DataSource: apiResult.ResultObject,
+                });
+            }
+            else {
+              
+            }
+        });
     }
 
     addNotification(message1, IsError) {
@@ -103,7 +158,7 @@ export default class ModalDetail extends Component {
 
     render() {
         const { UserName, Month, listColumn, dataSource, fileName, dataExport } = this.props;
-
+        const {DataSource} = this.props;
         const { isExportFile } = this.state;
 
         return (
@@ -123,7 +178,7 @@ export default class ModalDetail extends Component {
 
                 <DataGrid
                     listColumn={listColumn}
-                    dataSource={dataSource}
+                    dataSource={this.state.DataSource}
                     IDSelectColumnName={""}
                     PKColumnName={""}
                     IsDelete={false}
@@ -140,3 +195,26 @@ export default class ModalDetail extends Component {
         )
     }
 }
+const mapStateToProps = state => {
+    return {
+        AppInfo: state,
+        FetchAPIInfo: state.FetchAPIInfo
+    };
+};
+const mapDispatchToProps = dispatch => {
+    return {
+      
+        // callFetchAPI: (hostname, hostURL, postData) => {
+        //     return dispatch(callFetchAPI(hostname, hostURL, postData));
+        // },
+        // showModal: (type, props) => {
+        //     dispatch(showModal(type, props));
+        // },
+        // hideModal: (type, props) => {
+        //     dispatch(hideModal(type, props));
+        // }
+    };
+};
+
+const ModalDetail = connect(mapStateToProps, mapDispatchToProps)(ModalDetailCom);
+export default ModalDetail;
