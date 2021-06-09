@@ -7,7 +7,7 @@ export const LoadByProductIDAPIPath = "api/AdvanceDebtFlow/LoadBADByProductID";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách báo cáo đối soát" }
+    { Link: "", Title: "Báo cáo đối soát" }
 ];
 
 
@@ -182,7 +182,7 @@ export const GridColumnList = [
 export const DataGridModalAdvanceMaterial = [
     {
         Name: "date",
-        Type: "date",
+        Type: "text",
         Caption: "Ngày",
         DataSourceMember: "date",
         Width: "10%"
@@ -190,7 +190,7 @@ export const DataGridModalAdvanceMaterial = [
     {
         Name: "voucherconcern",
         Type: "text",
-        Caption: "Mã Y/C tạm ứng VT",
+        Caption: "Chứng từ liên quan",
         DataSourceMember: "voucherconcern",
         Width: "10%"
     },
