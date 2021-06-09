@@ -16,6 +16,7 @@ export const AddAPIPath = "api/ShipmentQualityAssess/Add";
 export const CommentAPIPath = "api/ShipmentQualityAssess_cmt/Search";
 export const AddCommentAPIPath = "api/ShipmentQualityAssess_cmt/Add";
 export const QualityAssessType = "api/QualityAssessType/Search";
+export const LoadInfoRvkSQAssess = "api/ShipmentQualityAssess_rvk/LoadNew";
 
 export const listColumn = [
     {
@@ -71,6 +72,63 @@ export const listColumn = [
     }
 
 ];
+
+export const listElementSearch = [
+    {
+        type: "textdropdownNew",
+        label: "Đơn hàng/ Vận đơn",
+        dropdownName: "txtTypename",
+        name: "txtKeyword",
+        colspan: 4,
+        value: "",
+        placeholder: "Từ khóa",
+        icon: "",
+        nameOption: "txtTypename",
+        labelOption: "--Vui lòng chọn--",
+        valueOption: -1,
+        classNameCol: "col-custom",
+        classNameDropdown: "dropdown-custom",
+        listoption: [
+            { value: -1, label: "--Vui lòng chọn--" },
+            { value: 1, label: "Mã đơn hàng" },
+            { value: 2, label: "Mã vận đơn" }
+        ]
+    },
+    {
+        type: "MultiSelectUser",
+        name: "cbCreatedUser",
+        DataSourceMember: "CreatedUser",
+        label: "Nhân viên",
+        colspan: 12,
+        rowspan: 2,
+        labelcolspan: 12,
+        IsLabelDiv: true,
+        value: -1,
+        placeholder: "---Vui lòng chọn---",
+        listoption: [],
+        IsAutoLoadItemFromCache: false,
+        isMultiSelect: false,
+        isClearable: true
+    },
+]
+
+export const MLObjectDefinitionSearch = [
+    {
+        Name: "Typename",
+        DefaultValue: "",
+        BindControlName: "txtTypename"
+    },
+    {
+        Name: "Keyword",
+        DefaultValue: "",
+        BindControlName: "txtKeyword"
+    },
+    {
+        Name: "CreatedUser",
+        DefaultValue: "",
+        BindControlName: "cbCreatedUser",
+    }
+]
 
 export const MLObjectDefinitionAdd = [
     {
