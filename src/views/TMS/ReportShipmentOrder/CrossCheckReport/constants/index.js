@@ -7,7 +7,7 @@ export const LoadByProductIDAPIPath = "api/AdvanceDebtFlow/LoadBADByProductID";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách báo cáo đối soát" }
+    { Link: "", Title: "Báo cáo đối soát" }
 ];
 
 
