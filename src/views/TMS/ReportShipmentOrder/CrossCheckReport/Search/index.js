@@ -21,7 +21,7 @@ import "react-notifications-component/dist/theme.css";
 import { TMS_BEGINTERMADVANCEDEBT_EXPORT, TMS_BEGINTERMADVANCEDEBT_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
-import { toIsoStringCus } from '../../../../../utils/function'
+import { toIsoStringCus, toIsoStringCusNew, formatNumber, formatNumberNew } from '../../../../../utils/function'
 import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_DOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
 import ModalDetail from '../components/ModalDetail'
 import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../../constants/keyCache";
@@ -33,6 +33,8 @@ class SearchCom extends React.Component {
         this.callSearchData = this.callSearchData.bind(this);
         this.onShowModal = this.onShowModal.bind(this);
         this.getCacheConfig = this.getCacheConfig.bind(this);
+        this.handleTotalLateSubmit = this.handleTotalLateSubmit.bind(this);
+
 
         this.state = {
             IsCallAPIError: false,
@@ -41,7 +43,8 @@ class SearchCom extends React.Component {
             widthPercent: "",
             params: {},
             dataExport: [],
-            cacheConfig: []
+            cacheConfig: [],
+            Difference: 1
         };
         this.notificationDOMRef = React.createRef();
     }
@@ -65,7 +68,6 @@ class SearchCom extends React.Component {
     getCacheConfig() {
         //ERPCOMMONCACHE_TMSCONFIG\
         this.props.callGetCache(ERPCOMMONCACHE_TMSCONFIG).then(result => {
-            console.log("cacheConfig", result)
             if (!result.IsError && result.ResultObject.CacheData != null) {
                 this.setState({
                     cacheConfig: result.ResultObject.CacheData
@@ -75,7 +77,7 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        console.log("MLObject", MLObject)
+        console.log("MLObject", MLObject, toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false), Date.parse(toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false)))
         const { cacheConfig } = this.state;
         if (MLObject.BusinessID < 0) {
 
@@ -84,26 +86,27 @@ class SearchCom extends React.Component {
         else {
 
             const objParams = {
-                FromDate: Date.parse(MLObject.FromDate),
-                ToDate: Date.parse(MLObject.ToDate),
+                FromDate: Date.parse(toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false)),
+                ToDate: Date.parse(toIsoStringCusNew(new Date(MLObject.ToDate).toISOString(), false)), //Date.parse(MLObject.ToDate),
                 BusinessID: MLObject.BusinessID,
                 Difference: MLObject.Difference
             }
 
             this.setState({
-                params: objParams
+                params: objParams,
+                Difference: MLObject.Difference == true ? 1 : 0,
             })
             const objDataNewol = {
                 "storedName": "ERP_TMS_ADVANCEREQUEST",
                 "params": [
                     {
                         "name": "V_FROMDATE",
-                        "value": Date.parse(MLObject.FromDate),
+                        "value": Date.parse(toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false)),
                         "op": "timestamp"
                     },
                     {
                         "name": "V_TODATE",
-                        "value": Date.parse(MLObject.ToDate),
+                        "value": Date.parse(toIsoStringCusNew(new Date(MLObject.ToDate).toISOString(), false)),
                         "op": "timestamp"
                     },
                     {
@@ -241,15 +244,36 @@ class SearchCom extends React.Component {
         this.addNotification(result.Message, result.IsError);
     }
 
-    onShowModal(data, typeDataGrid) {
-        const { params, widthPercent } = this.state;
+    onShowModal(data, typeDataGrid, date) {
+        const { params, widthPercent, Difference } = this.state;
+        let titleName = "";
+        switch (typeDataGrid) {
+            case 1:
+                titleName = "Báo cáo chi tiết tạm ứng vật tư";
+                break
+            case 2:
+                titleName = "Báo cáo chi tiết nhập trả tạm ứng";
+                break
+            case 3:
+                titleName = "Báo cáo chi tiết xuất tiêu hao vật";
+                break
+            case 4:
+                titleName = "Báo cáo chi tiết xuất bán vật tư cho khác";
+                break
+            default:
+                titleName = "Báo cáo chi tiết tạm ứng vật tư";
+                break
+        }
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: "Báo cáo chi tiết tạm ứng vật tư",
+            title: titleName,
             content: {
                 text: <ModalDetail
                     param={params}
                     listColumn={DataGridModalAdvanceMaterial}
-                    dataSource={data}
+                    dataSource={[]}
+                    date={date}
+                    typeDataGrid={typeDataGrid}
+                    Difference={Difference}
                     fileName={"Báo cáo chi tiết tạm ứng vật tư"}
                 />
             },
@@ -264,10 +288,64 @@ class SearchCom extends React.Component {
         this.onShowModal()
 
     }
+
     handleTotalLateSubmit(reportid, date) {
         const { params } = this.state;
-        console.log("params", params, reportid, date, Date.parse("06/06/2021"));
-        this.onShowModal(reportid, date)
+
+        this.onShowModal([], reportid, date);
+       
+        // let searchData = {
+        //     "storedName": "ERP_TMS_RPTDETAILRETURNREQUEST",
+        //     "params": [
+        //         {
+        //             "name": "V_FROMDATE",
+        //             "value": Date.parse(date),
+        //             "op": "timestamp"
+        //         },
+        //         {
+        //             "name": "V_TODATE",
+        //             "value": Date.parse(date),
+        //             "op": "timestamp"
+        //         },
+        //         {
+        //             "name": "V_INPUTTYPEIDLIST",
+        //             "value": "2064,7,13",
+        //             "op": "array"
+        //         },
+        //         {
+        //             "name": "V_ISCHECKVIEWDIFFERENCE",
+        //             "value": 0,
+        //             "op": "array"
+        //         },
+        //         {
+        //             "name": "V_PAGEINDEX",
+        //             "value": 1,
+        //             "op": "array"
+        //         },
+        //         {
+        //             "name": "V_PAGESIZE",
+        //             "value": 100,
+        //             "op": "array"
+        //         }
+
+        //     ]
+        // }
+
+
+        // this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/CrossCheckReportDetail", searchData).then(apiResult => {
+           
+
+        //     if (!apiResult.IsError) {
+        //         this.onShowModal([], reportid, date,params.Difference);
+        //     }
+        //     else {
+        //         this.showMessage(apiResult.Message);
+        //     }
+        // });
+
+
+        // this.onShowModal(reportid,date)
+
 
     }
 
@@ -303,12 +381,12 @@ class SearchCom extends React.Component {
                                 {
                                     this.state.gridDataSource
                                     && this.state.gridDataSource.map((item, index) => {
-                                        return <tr >
+                                        return <tr  key ={index}>
                                             <td > <a className="nav-link text-primary hover-primary cursor-pointer" onClick={() => this.handleTotalLateSubmit(item.reportid, item.date)}>{item.reportname}</a></td>
-                                            <td>{item.date.substr(6, 2) + "-" + item.date.substr(4, 2) + "-" + item.date.substr(0, 4)}</td>
-                                            <td>{item.quantitytms}</td>
-                                            <td>{item.quantityerp}</td>
-                                            <td>{item.differencequantity}</td>
+                                            <td>{item.date}</td>
+                                            <td>{formatNumberNew(item.quantitytms)}</td>
+                                            <td>{formatNumberNew(item.quantityerp)}</td>
+                                            <td>{formatNumberNew(item.differencequantity)}</td>
                                         </tr>
                                     })
                                 }

@@ -144,14 +144,14 @@ class ElementCheckboxCom extends Component {
         this.handleValueChange = this.handleValueChange.bind(this);
     }
     handleValueChange(e) {
-        debugger
         e.preventDefault();
+        let inputvalue = e.target.type == 'checkbox' ? e.target.checked : e.target.value;
+        const inputname = e.target.name;
         if (this.props.onValueChange != null)
-            this.props.onValueChange(e.target.name, e.target.value);
+            this.props.onValueChange(inputname, inputvalue);
     }
     render() {
         let { name, label, value, colspan, classNameCol } = this.props;
-        console.log("object", this.props)
         let colspanClassName = "col-md-1";
         if (colspan) {
             if (classNameCol) {
@@ -164,7 +164,7 @@ class ElementCheckboxCom extends Component {
 
         let labeldiv;
         if (label) {
-            labeldiv = <label className="custom-control-label" htmlFor="search-avd"><span>{label}</span></label>;
+            labeldiv = <label className="custom-control-label" htmlFor={name + "-search-avd-check"}><span>{label}</span></label>;
         }
         return (
             <div className={colspanClassName}  >
@@ -173,18 +173,18 @@ class ElementCheckboxCom extends Component {
                     {labeldiv}
                 </div> */}
                 <div className="form-group form-group-input">
-                    <label>&nbsp;</label>
+                    <label className="lbl-title">&nbsp;</label>
                     <div className="custom-control custom-checkbox">
                         <input type="checkbox"
-                            id="search-avd"
+                            id={name + "-search-avd-check"}
                             className="custom-control-input"
                             value={value}
+                            defaultValue={value}
                             name={name}
                             checked={value}
                             defaultChecked={value}
                             onChange={this.handleValueChange}
                             ref={this.props.inputRef}
-                            type={this.props.type}
                             readOnly={this.props.readonly}
                         />
                         {labeldiv}

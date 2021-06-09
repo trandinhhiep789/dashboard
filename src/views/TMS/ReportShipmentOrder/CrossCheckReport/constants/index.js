@@ -15,6 +15,29 @@ const dtFromdate = new Date();
 dtFromdate.setDate(new Date().getDate() - 30);
 
 
+
+export const SearchElementDetailList = [
+    {
+        type: "checkbox",
+        name: "ckDifferenceDetail",
+        DataSourceMember: "DifferenceDetail",
+        label: "Chỉ xem dữ liệu chênh lệch",
+        value: true,
+        colspan: 2,
+        classNameCol: "checkboxSelectCustom"
+    },
+]
+
+export const SearchMLObjectDefinitionDetail = [
+
+    {
+        Name: "DifferenceDetail",
+        DefaultValue: false,
+        BindControlName: "ckDifferenceDetail"
+    },
+]
+
+
 export const SearchElementList = [
 
     {
@@ -84,9 +107,9 @@ export const SearchElementList = [
         type: "checkbox",
         name: "ckDifference",
         DataSourceMember: "Difference",
-        label: "Chênh lệch",
+        label: "Chỉ xem dữ liệu chênh lệch",
         value: true,
-        colspan: 1,
+        colspan: 2,
         classNameCol: "checkboxSelectCustom"
     },
 ]
@@ -158,52 +181,52 @@ export const GridColumnList = [
 
 export const DataGridModalAdvanceMaterial = [
     {
-        Name: "Date",
+        Name: "date",
         Type: "date",
         Caption: "Ngày",
-        DataSourceMember: "Date",
+        DataSourceMember: "date",
         Width: "10%"
     },
     {
-        Name: "AdvanceMaterial",
+        Name: "voucherconcern",
         Type: "text",
         Caption: "Mã Y/C tạm ứng VT",
-        DataSourceMember: "AdvanceMaterial",
+        DataSourceMember: "voucherconcern",
         Width: "10%"
     },
     {
-        Name: "AdvanceMaterial1",
+        Name: "ovtms",
         Type: "text",
         Caption: "Mã phiếu xuất (TMS)",
-        DataSourceMember: "AdvanceMaterial1",
+        DataSourceMember: "ovtms",
         Width: "20%"
     },
     {
-        Name: "AdvanceMaterial2",
+        Name: "overp",
         Type: "text",
         Caption: "Mã phiếu xuất (ERP)",
-        DataSourceMember: "AdvanceMaterial2",
+        DataSourceMember: "overp",
         Width: "20%"
     },
     {
-        Name: "AdvanceMaterial3",
+        Name: "quantitytms",
         Type: "text",
         Caption: "Số lượng TMS",
-        DataSourceMember: "AdvanceMaterial3",
+        DataSourceMember: "quantitytms",
         Width: "10%"
     },
     {
-        Name: "AdvanceMaterial4",
+        Name: "quantityerp",
         Type: "text",
         Caption: "Số lượng ERP",
-        DataSourceMember: "AdvanceMaterial4",
+        DataSourceMember: "quantityerp",
         Width: "10%"
     },
     {
-        Name: "AdvanceMaterial5",
+        Name: "differencequantity",
         Type: "text",
         Caption: "Chênh lệch",
-        DataSourceMember: "AdvanceMaterial5",
+        DataSourceMember: "differencequantity",
         Width: "10%"
     },
 ]
