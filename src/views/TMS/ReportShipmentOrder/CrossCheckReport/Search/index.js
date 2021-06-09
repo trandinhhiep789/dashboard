@@ -43,7 +43,8 @@ class SearchCom extends React.Component {
             widthPercent: "",
             params: {},
             dataExport: [],
-            cacheConfig: []
+            cacheConfig: [],
+            Difference: 1
         };
         this.notificationDOMRef = React.createRef();
     }
@@ -93,7 +94,8 @@ class SearchCom extends React.Component {
             }
 
             this.setState({
-                params: objParams
+                params: objParams,
+                Difference: MLObject.Difference == true ? 1 : 0,
             })
             const objDataNewol = {
                 "storedName": "ERP_TMS_ADVANCEREQUEST",
@@ -244,7 +246,7 @@ class SearchCom extends React.Component {
     }
 
     onShowModal(data, typeDataGrid, date) {
-        const { params, widthPercent } = this.state;
+        const { params, widthPercent, Difference } = this.state;
         let titleName = "";
         switch (typeDataGrid) {
             case 1:
@@ -272,6 +274,7 @@ class SearchCom extends React.Component {
                     dataSource={[]}
                     date={date}
                     typeDataGrid={typeDataGrid}
+                    Difference={Difference}
                     fileName={"Báo cáo chi tiết tạm ứng vật tư"}
                 />
             },
