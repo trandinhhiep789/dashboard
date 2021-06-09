@@ -56,6 +56,8 @@ class ElementTextCom extends Component {
                         onChange={this.handleValueChange}
                         readOnly={readonly}
                         defaultValue={value}
+                        value={value}
+                        defaultChecked={value}
                         placeholder={placeholder} />
                     <div className="invalid-feedback">{ValidatonErrorMessage}</div>
                 </div>
@@ -143,8 +145,10 @@ class ElementCheckboxCom extends Component {
     }
     handleValueChange(e) {
         e.preventDefault();
+        let inputvalue = e.target.type == 'checkbox' ? e.target.checked : e.target.value;
+        const inputname = e.target.name;
         if (this.props.onValueChange != null)
-            this.props.onValueChange(e.target.name, e.target.value);
+            this.props.onValueChange(inputname, inputvalue);
     }
     render() {
         let { name, label, value, colspan, classNameCol } = this.props;
@@ -160,7 +164,7 @@ class ElementCheckboxCom extends Component {
 
         let labeldiv;
         if (label) {
-            labeldiv = <label className="custom-control-label" htmlFor="search-avd"><span>{label}</span></label>;
+            labeldiv = <label className="custom-control-label" htmlFor="search-avd-check"><span>{label}</span></label>;
         }
         return (
             <div className={colspanClassName}  >
@@ -171,7 +175,18 @@ class ElementCheckboxCom extends Component {
                 <div className="form-group form-group-input">
                     <label>&nbsp;</label>
                     <div className="custom-control custom-checkbox">
-                        <input type="checkbox" id="search-avd" className="custom-control-input" defaultChecked />
+                        <input type="checkbox"
+                            id="search-avd-check"
+                            className="custom-control-input"
+                            value={value}
+                            defaultValue={value}
+                            name={name}
+                            checked={value}
+                            defaultChecked={value}
+                            onChange={this.handleValueChange}
+                            ref={this.props.inputRef}
+                            readOnly={this.props.readonly}
+                        />
                         {labeldiv}
                     </div>
                 </div>

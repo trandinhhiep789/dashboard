@@ -49,7 +49,7 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(PagePath);
         window.addEventListener("resize", this.updateWindowDimensions);
-       // this.getCacheConfig();
+        // this.getCacheConfig();
     }
 
     componentWillUnmount() {
@@ -75,6 +75,7 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
+        console.log("MLObject", MLObject)
         const { cacheConfig } = this.state;
         if (MLObject.BusinessID < 0) {
 
@@ -138,6 +139,7 @@ class SearchCom extends React.Component {
 
                 ]
             }
+            console.log("objDataNewol", objDataNewol)
             this.callSearchData(objDataNewol)
         }
     }
@@ -145,6 +147,7 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/CrossCheckReport", searchData).then(apiResult => {
+            console.log("aa", searchData, apiResult)
             if (!apiResult.IsError) {
                 // const tempData = apiResult.ResultObject.map((item, index) => {
                 //     item.DateData = item.date
@@ -261,6 +264,7 @@ class SearchCom extends React.Component {
         this.onShowModal()
 
     }
+
     handleTotalLateSubmit(reportid,date)
     {
 
@@ -311,10 +315,8 @@ class SearchCom extends React.Component {
         const { params } = this.state;
         // this.onShowModal(reportid,date)
 
+
     }
-
-
- 
 
     render() {
         return (
