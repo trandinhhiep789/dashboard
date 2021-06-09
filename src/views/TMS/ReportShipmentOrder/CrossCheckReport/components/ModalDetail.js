@@ -279,7 +279,7 @@ class ModalDetailCom extends Component {
         let searchData = "";
         if (typeDataGrid == 1) {
             searchData = {
-                "storedName": "ERP_TMS_RPTDETAILRETURNREQUEST",
+                "storedName": "ERP_TMS_RPTDETAIL_ADVANCEREQUEST",
                 "params": [
                     {
                         "name": "V_FROMDATE",
