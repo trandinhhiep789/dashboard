@@ -38,7 +38,6 @@ export default class SearchForm extends Component {
     }
 
     onValueChange(elementname, elementvalue, filterrest) {
-        console.log("change",elementname, elementvalue, filterrest );
         const FormDataContolLstd = this.state.FormData;
         FormDataContolLstd[elementname].value = elementvalue;
         
