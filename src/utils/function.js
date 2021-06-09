@@ -48,6 +48,35 @@ export const toIsoStringCus = (dateTime) => {
         ':' + pad(a.getSeconds())
 }
 
+export const toIsoStringCusNew = (dateTime, notGetTime) => {
+    const dateTime1 = new Date(dateTime);
+    const a = new Date();
+    const tzo = a.getTimezoneOffset();
+    const dif = tzo >= 0 ? '+' : '-';
+    const pad = function (num) {
+        var norm = Math.floor(Math.abs(num));
+        return (norm < 10 ? '0' : '') + norm;
+    };
+
+
+    if (notGetTime) {
+        return dateTime1.getFullYear() +
+            '-' + pad(dateTime1.getMonth() + 1) +
+            '-' + pad(dateTime1.getDate()) +
+            'T' + pad(a.getHours()) +
+            ':' + pad(a.getMinutes()) +
+            ':' + pad(a.getSeconds())
+    }
+    else {
+        return dateTime1.getFullYear() +
+            '-' + pad(dateTime1.getMonth() + 1) +
+            '-' + pad(dateTime1.getDate())+
+            'T' + "00" +
+            ':' + "00" 
+
+    }
+}
+
 export const dateToLocalISO = (date) => {
     const off = date.getTimezoneOffset()
     const absoff = Math.abs(off)

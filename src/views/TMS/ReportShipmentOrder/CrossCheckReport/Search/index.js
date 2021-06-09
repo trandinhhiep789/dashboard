@@ -21,7 +21,7 @@ import "react-notifications-component/dist/theme.css";
 import { TMS_BEGINTERMADVANCEDEBT_EXPORT, TMS_BEGINTERMADVANCEDEBT_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
-import { toIsoStringCus } from '../../../../../utils/function'
+import { toIsoStringCus, toIsoStringCusNew } from '../../../../../utils/function'
 import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_DOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
 import ModalDetail from '../components/ModalDetail'
 import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../../constants/keyCache";
@@ -77,7 +77,7 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        console.log("MLObject", MLObject)
+        console.log("MLObject", MLObject, toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false), Date.parse(toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false)))
         const { cacheConfig } = this.state;
         if (MLObject.BusinessID < 0) {
 
@@ -86,8 +86,8 @@ class SearchCom extends React.Component {
         else {
 
             const objParams = {
-                FromDate: Date.parse(MLObject.FromDate),
-                ToDate: Date.parse(MLObject.ToDate),
+                FromDate: Date.parse(toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false)),
+                ToDate: Date.parse(toIsoStringCusNew(new Date(MLObject.ToDate).toISOString(), false)), //Date.parse(MLObject.ToDate),
                 BusinessID: MLObject.BusinessID,
                 Difference: MLObject.Difference
             }
@@ -100,12 +100,12 @@ class SearchCom extends React.Component {
                 "params": [
                     {
                         "name": "V_FROMDATE",
-                        "value": Date.parse(MLObject.FromDate),
+                        "value": Date.parse(toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false)),
                         "op": "timestamp"
                     },
                     {
                         "name": "V_TODATE",
-                        "value": Date.parse(MLObject.ToDate),
+                        "value": Date.parse(toIsoStringCusNew(new Date(MLObject.ToDate).toISOString(), false)),
                         "op": "timestamp"
                     },
                     {
@@ -264,7 +264,7 @@ class SearchCom extends React.Component {
                 break
         }
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: "Báo cáo chi tiết tạm ứng vật tư",
+            title: titleName,
             content: {
                 text: <ModalDetail
                     param={params}
