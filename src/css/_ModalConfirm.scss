@@ -58,4 +58,37 @@
             }
         }
     }
+
+    .SearchForm{
+        margin-top: 10px;
+        .checkboxSelectCustom{
+            .form-group{
+                &.form-group-input{
+                    .custom-control{
+                        .custom-control-label{
+                            line-height: 0;
+                            &::before{
+                                top: 0;
+                                bottom: 0;
+                            }
+                            &::after{
+                                top: 0;
+                                bottom: 0;
+                            }
+                            span{
+                                width: 100%;
+                                left: 0;
+                                position: static;
+                                line-height: initial;
+                                
+                            }
+                        }
+                    }
+                    .lbl-title{
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
 }

@@ -33,6 +33,8 @@ class SearchCom extends React.Component {
         this.callSearchData = this.callSearchData.bind(this);
         this.onShowModal = this.onShowModal.bind(this);
         this.getCacheConfig = this.getCacheConfig.bind(this);
+        this.handleTotalLateSubmit = this.handleTotalLateSubmit.bind(this);
+
 
         this.state = {
             IsCallAPIError: false,
@@ -241,8 +243,26 @@ class SearchCom extends React.Component {
         this.addNotification(result.Message, result.IsError);
     }
 
-    onShowModal(data, typeDataGrid) {
+    onShowModal(data, typeDataGrid, date) {
         const { params, widthPercent } = this.state;
+        let titleName = "";
+        switch (typeDataGrid) {
+            case 1:
+                titleName = "Báo cáo chi tiết tạm ứng vật tư";
+                break
+            case 2:
+                titleName = "Báo cáo chi tiết nhập trả tạm ứng";
+                break
+            case 3:
+                titleName = "Báo cáo chi tiết xuất tiêu hao vật";
+                break
+            case 4:
+                titleName = "Báo cáo chi tiết xuất bán vật tư cho khác";
+                break
+            default:
+                titleName = "Báo cáo chi tiết tạm ứng vật tư";
+                break
+        }
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: "Báo cáo chi tiết tạm ứng vật tư",
             content: {
@@ -250,6 +270,8 @@ class SearchCom extends React.Component {
                     param={params}
                     listColumn={DataGridModalAdvanceMaterial}
                     dataSource={data}
+                    date={date}
+                    typeDataGrid={typeDataGrid}
                     fileName={"Báo cáo chi tiết tạm ứng vật tư"}
                 />
             },
@@ -265,10 +287,10 @@ class SearchCom extends React.Component {
 
     }
 
-    handleTotalLateSubmit(reportid,date)
-    {
-
-       let searchData= {
+    handleTotalLateSubmit(reportid, date) {
+        const { params } = this.state;
+        console.log("detail", reportid, date)
+        let searchData = {
             "storedName": "ERP_TMS_RPTDETAILRETURNREQUEST",
             "params": [
                 {
@@ -283,36 +305,41 @@ class SearchCom extends React.Component {
                 },
                 {
                     "name": "V_INPUTTYPEIDLIST",
-                    "value": "2064,7,13" ,
+                    "value": "2064,7,13",
                     "op": "array"
                 },
                 {
                     "name": "V_ISCHECKVIEWDIFFERENCE",
-                    "value": 0 ,
+                    "value": 0,
                     "op": "array"
                 },
                 {
                     "name": "V_PAGEINDEX",
-                    "value": 1 ,
+                    "value": 1,
                     "op": "array"
                 },
                 {
                     "name": "V_PAGESIZE",
-                    "value": 100 ,
+                    "value": 100,
                     "op": "array"
                 }
-        
-        
-                
+
             ]
         }
 
 
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/CrossCheckReportDetail", searchData).then(apiResult => {
             console.log("apiResult", apiResult);
+
+            if (!apiResult.IsError) {
+                this.onShowModal(apiResult.ResultObject, reportid, date);
+            }
+            else {
+                this.showMessage(apiResult.Message);
+            }
         });
 
-        const { params } = this.state;
+
         // this.onShowModal(reportid,date)
 
 
@@ -350,8 +377,8 @@ class SearchCom extends React.Component {
                                 {
                                     this.state.gridDataSource
                                     && this.state.gridDataSource.map((item, index) => {
-                                        return <tr >
-                                            <td > <a className="nav-link text-primary hover-primary cursor-pointer" onClick={() => this.handleTotalLateSubmit(item.reportid,item.date)}>{item.reportname}</a></td>
+                                        return <tr  key ={index}>
+                                            <td > <a className="nav-link text-primary hover-primary cursor-pointer" onClick={() => this.handleTotalLateSubmit(item.reportid, item.date)}>{item.reportname}</a></td>
                                             <td>{item.date}</td>
                                             <td>{item.quantitytms}</td>
                                             <td>{item.quantityerp}</td>

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import ReactNotification from "react-notifications-component";
 
-
+import { SearchElementDetailList, SearchMLObjectDefinitionDetail } from '../constants'
+import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
 import DataGrid from '../../../../../common/components/DataGrid'
 import { formatMonthYear } from "../../../../../common/library/CommonLib.js";
 export default class ModalDetail extends Component {
@@ -10,6 +11,9 @@ export default class ModalDetail extends Component {
 
         this.state = {
             isExportFile: false,
+            date: this.props.date,
+            dataSource: this.props.dataSource,
+
         }
 
         this.handleExportFile = this.handleExportFile.bind(this);
@@ -20,14 +24,8 @@ export default class ModalDetail extends Component {
 
     componentDidMount() {
         const { dataSource } = this.props;
+        console.log("1111", this.props)
 
-        try {
-            dataSource.length > 0 && this.setState({
-                isExportFile: true
-            })
-        } catch (error) {
-            console.log(error)
-        }
     }
 
     addNotification(message1, IsError) {
@@ -64,6 +62,45 @@ export default class ModalDetail extends Component {
         this.addNotification(result.Message, result.IsError);
     }
 
+    handleSearchSubmit(formData, MLObject) {
+        let searchData = {
+            "storedName": "ERP_TMS_RPTDETAILRETURNREQUEST",
+            "params": [
+                {
+                    "name": "V_FROMDATE",
+                    "value": Date.parse(date),
+                    "op": "timestamp"
+                },
+                {
+                    "name": "V_TODATE",
+                    "value": Date.parse(date),
+                    "op": "timestamp"
+                },
+                {
+                    "name": "V_INPUTTYPEIDLIST",
+                    "value": "2064,7,13",
+                    "op": "array"
+                },
+                {
+                    "name": "V_ISCHECKVIEWDIFFERENCE",
+                    "value": 0,
+                    "op": "array"
+                },
+                {
+                    "name": "V_PAGEINDEX",
+                    "value": 1,
+                    "op": "array"
+                },
+                {
+                    "name": "V_PAGESIZE",
+                    "value": 100,
+                    "op": "array"
+                }
+
+            ]
+        }
+    }
+
     render() {
         const { UserName, Month, listColumn, dataSource, fileName, dataExport } = this.props;
 
@@ -73,29 +110,16 @@ export default class ModalDetail extends Component {
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
 
-                <div className="col-12" style={{ textAlign: "initial" }}>
-                    <div className="row">
-                        <div className="col-md-2">
-                            <label className="col-form-label bold">Từ ngày:</label>
-                        </div>
-                        <div className="col-md-4">
-                            <label className="col-form-label"></label>
-                        </div>
 
-                        <div className="col-md-2">
-                            <label className="col-form-label bold">Đến ngày:</label>
-                        </div>
-                        <div className="col-md-4">
-                            <label className="col-form-label"></label>
-                        </div>
-                        <div className="col-md-2">
-                            <label className="col-form-label bold">Nghiệp vụ:</label>
-                        </div>
-                        <div className="col-md-4">
-                            <label className="col-form-label"></label>
-                        </div>
-                    </div>
-                </div>
+
+                <SearchForm
+                    FormName="Tìm kiếm danh sách báo đối soát chi tiết"
+                    MLObjectDefinition={SearchMLObjectDefinitionDetail}
+                    listelement={SearchElementDetailList}
+                    onSubmit={this.handleSearchSubmit.bind(this)}
+                    ref={this.searchref}
+                    className="multiple"
+                />
 
                 <DataGrid
                     listColumn={listColumn}

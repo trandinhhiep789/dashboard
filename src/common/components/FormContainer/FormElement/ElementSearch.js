@@ -164,7 +164,7 @@ class ElementCheckboxCom extends Component {
 
         let labeldiv;
         if (label) {
-            labeldiv = <label className="custom-control-label" htmlFor="search-avd-check"><span>{label}</span></label>;
+            labeldiv = <label className="custom-control-label" htmlFor={name + "-search-avd-check"}><span>{label}</span></label>;
         }
         return (
             <div className={colspanClassName}  >
@@ -173,10 +173,10 @@ class ElementCheckboxCom extends Component {
                     {labeldiv}
                 </div> */}
                 <div className="form-group form-group-input">
-                    <label>&nbsp;</label>
+                    <label className="lbl-title">&nbsp;</label>
                     <div className="custom-control custom-checkbox">
                         <input type="checkbox"
-                            id="search-avd-check"
+                            id={name + "-search-avd-check"}
                             className="custom-control-input"
                             value={value}
                             defaultValue={value}
