@@ -200,7 +200,7 @@ class MultiSelectUserComboBoxCom extends React.Component {
                         isSearchable={true}
                         placeholder={"----Chọn -----"}
                         className={classNameselect}
-                        isClearable={this.props.isClearable}
+                        {...this.props}
                     />
                     <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
                 </div>

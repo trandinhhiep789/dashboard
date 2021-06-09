@@ -8,8 +8,10 @@ import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MessageModal } from "../../../../common/components/Modal";
 import {
-    PagePath, SearchAPIPath, APIHostName, listColumn, LoadAPIPath, PagePathEdit,
-    MLObjectDefinitionEdit, CommentAPIPath, AddCommentAPIPath, QualityAssessType
+    PagePath, SearchAPIPath, APIHostName,
+    listColumn, LoadAPIPath, PagePathEdit,
+    MLObjectDefinitionEdit, CommentAPIPath, AddCommentAPIPath,
+    QualityAssessType, LoadInfoRvkSQAssess
 } from "../constants";
 import FormContainer from "../../../../common/components/FormContainer";
 import FormControl from "../../../../common/components/FormContainer/FormControl";
@@ -23,6 +25,7 @@ export class EditCom extends Component {
             dataSource: null,
             dataCmt: null,
             dataQualityAssessType: null,
+            dataRvkQualityAssess: null,
             optQualityAssessType: [],
             indexQualityAssessType: null
         }
@@ -33,7 +36,8 @@ export class EditCom extends Component {
         this.handleKeyPressSumit = this.handleKeyPressSumit.bind(this);
         this.initComment = this.initComment.bind(this);
         this.fetchQualityAssessType = this.fetchQualityAssessType.bind(this);
-        this.optQualityAssessType = this.optQualityAssessType.bind(this);
+        this.fetchRvkShipmentQualityAssess = this.fetchRvkShipmentQualityAssess.bind(this);
+        this.handleQualityAssessType = this.handleQualityAssessType.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -42,6 +46,7 @@ export class EditCom extends Component {
         this.initData();
         this.initComment();
         this.fetchQualityAssessType();
+        this.fetchRvkShipmentQualityAssess();
     }
 
     showMessage(message) {
@@ -74,7 +79,7 @@ export class EditCom extends Component {
         const dataFetch = [
             {
                 SearchKey: "@Keyword",
-                SearchValue: match.params.id
+                SearchValue: ""
             },
             {
                 SearchKey: "@SHIPMENTQUALITYASSESSID",
@@ -93,7 +98,28 @@ export class EditCom extends Component {
         });
     }
 
-    optQualityAssessType(dataQualityAssessType) {
+    fetchRvkShipmentQualityAssess() {
+        const { match, location, history } = this.props;
+
+        const dataFetch = [
+            {
+                SearchKey: "@SHIPMENTQUALITYASSESSID",
+                SearchValue: match.params.id
+            }
+        ];
+
+        this.props.callFetchAPI(APIHostName, LoadInfoRvkSQAssess, dataFetch).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.setState({
+                    dataRvkQualityAssess: apiResult.ResultObject
+                })
+            } else {
+                this.showMessage(apiResult.Message);
+            }
+        });
+    }
+
+    handleQualityAssessType(dataQualityAssessType) {
         try {
             const { dataSource } = this.state;
 
@@ -125,7 +151,7 @@ export class EditCom extends Component {
 
         this.props.callFetchAPI(APIHostName, QualityAssessType, dataFetch).then(apiResult => {
             if (!apiResult.IsError) {
-                this.optQualityAssessType(apiResult.ResultObject);
+                this.handleQualityAssessType(apiResult.ResultObject);
 
                 this.setState({
                     dataQualityAssessType: apiResult.ResultObject
@@ -165,13 +191,16 @@ export class EditCom extends Component {
 
     render() {
         const {
-            dataSource, dataCmt, dataQualityAssessType, optQualityAssessType,
-            indexQualityAssessType
+            dataSource, dataCmt, dataQualityAssessType,
+            optQualityAssessType, indexQualityAssessType, dataRvkQualityAssess
         } = this.state;
 
-        if (dataSource === null || dataCmt === null || dataQualityAssessType === null) {
+        if (dataSource === null
+            || dataCmt === null
+            || dataQualityAssessType === null
+            || dataRvkQualityAssess === null) {
             return (
-                <React.Fragment></React.Fragment>
+                <React.Fragment>Đang tải dữ liệu ...</React.Fragment>
             )
         } else {
             return (
@@ -457,6 +486,8 @@ export class EditCom extends Component {
                                 />
                             </div>
                         </div>
+
+
 
                         <Comment
                             DataComments={dataCmt}

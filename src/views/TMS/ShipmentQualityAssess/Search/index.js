@@ -6,7 +6,9 @@ import { ModalManager } from "react-dynamic-modal";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import {
-    PagePath, SearchAPIPath, APIHostName, listColumn, LoadAPIPath
+    PagePath, SearchAPIPath, APIHostName,
+    listColumn, LoadAPIPath, MLObjectDefinitionSearch,
+    listElementSearch
 } from "../constants";
 import { MessageModal } from "../../../../common/components/Modal";
 import DataGrid from "../../../../common/components/DataGrid";
@@ -15,6 +17,7 @@ import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from "../../../../constants/actionTypes";
 import ShipmentQualityAssessDetail from '../ShipmentQualityAssessDetail';
 import Add from '../Add'
+import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 
 export class SearchCom extends Component {
     constructor(props) {
@@ -24,6 +27,7 @@ export class SearchCom extends Component {
             dataGrid: [],
         }
 
+        this.searchref = React.createRef();
         this.gridref = React.createRef();
         this.notificationDOMRef = React.createRef();
         this.callSearchData = this.callSearchData.bind(this);
@@ -31,6 +35,7 @@ export class SearchCom extends Component {
         this.onShowModalDetail = this.onShowModalDetail.bind(this);
         this.onUpdateClick = this.onUpdateClick.bind(this);
         this.onInsertClick = this.onInsertClick.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
     }
 
     componentDidMount() {
@@ -53,13 +58,23 @@ export class SearchCom extends Component {
             {
                 SearchKey: "@Keyword",
                 SearchValue: ""
+            },
+            {
+                SearchKey: "@TYPENAME",
+                SearchValue: ""
+            },
+            {
+                SearchKey: "@CREATEDUSER",
+                SearchValue: ""
             }
         ];
 
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             if (!apiResult.IsError) {
 
-                apiResult.ResultObject[0].TotaLRows = apiResult.ResultObject.length;
+                if (apiResult.ResultObject.length > 0) {
+                    apiResult.ResultObject[0].TotaLRows = apiResult.ResultObject.length;
+                }
 
                 this.setState({
                     dataGrid: apiResult.ResultObject
@@ -116,12 +131,53 @@ export class SearchCom extends Component {
         });
     }
 
+    handleSearch(formData, MLObject) {
+        const searchData = [
+            {
+                SearchKey: "@Keyword",
+                SearchValue: MLObject.Keyword
+            },
+            {
+                SearchKey: "@TYPENAME",
+                SearchValue: MLObject.Typename
+            },
+            {
+                SearchKey: "@CREATEDUSER",
+                SearchValue: MLObject.CreatedUser ? MLObject.CreatedUser.value : ""
+            }
+        ];
+
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            if (!apiResult.IsError) {
+
+                if (apiResult.ResultObject.length > 0) {
+                    apiResult.ResultObject[0].TotaLRows = apiResult.ResultObject.length;
+                }
+
+                this.setState({
+                    dataGrid: apiResult.ResultObject
+                })
+            } else {
+                this.showMessage(apiResult.Message);
+            }
+        });
+    }
+
     render() {
         const { dataGrid } = this.state;
 
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
+
+                <SearchForm
+                    FormName="Tìm kiếm đánh giá chất lượng giao hàng"
+                    MLObjectDefinition={MLObjectDefinitionSearch}
+                    listelement={listElementSearch}
+                    onSubmit={this.handleSearch}
+                    ref={this.searchref}
+                    className="multiple"
+                />
 
                 <DataGrid
                     listColumn={listColumn}
