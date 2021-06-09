@@ -182,7 +182,7 @@ export const GridColumnList = [
 export const DataGridModalAdvanceMaterial = [
     {
         Name: "date",
-        Type: "date",
+        Type: "text",
         Caption: "Ngày",
         DataSourceMember: "date",
         Width: "10%"
