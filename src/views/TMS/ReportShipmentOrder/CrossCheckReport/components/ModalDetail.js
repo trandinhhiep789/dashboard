@@ -295,11 +295,10 @@ class ModalDetailCom extends Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-
         this.setState({
             IsLoadDataComplete: false
         })
-        const { date, typeDataGrid, } = this.props;
+        const { date, typeDataGrid,Difference } = this.props;
         const { PageNumber } = this.state;
         let searchData = "";
          if (typeDataGrid == 1) {
