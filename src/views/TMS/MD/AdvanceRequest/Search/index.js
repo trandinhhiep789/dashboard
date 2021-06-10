@@ -212,6 +212,7 @@ class SearchCom extends React.Component {
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
                         ref={this.searchref}
+                        proCNBtnSubmit={"search-forms-item item btnSearchSubmitCustom"}
                     />
                     <DataGrid
                         listColumn={DataGridColumnList}

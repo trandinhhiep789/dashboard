@@ -7,12 +7,14 @@ import { UploadModal } from "../../UploadModal/index";
 import { ModalManager } from 'react-dynamic-modal';
 import Datetime from 'react-datetime';
 import MultiSelectComboBox from "../AdvanceForm/FormControl/MultiSelectComboBox";
+import ElementSearch from '../../FormContainer/FormElement/ElementSearch';
 import ProductComboBox from "../../FormContainer/FormControl/MultiSelectComboBox/ProductComboBox";
 import "../../../../../node_modules/react-datetime/css/react-datetime.css";
 import JoditEditor from "jodit-react";
 
 import { TreeSelect } from "antd";
 import "antd/dist/antd.css";
+
 
 const singleFileUploadImage = {
     maxWidth: "100px",
@@ -483,6 +485,24 @@ class FormElementCom extends Component {
                 );
 
                 break;
+            case "ComboBox":
+                // if (typeof elementItem.filterName != "undefined") {
+                //     elementItem.filterValue = this.state.FormData[elementItem.filterName].value;
+                // }
+
+                return (
+                    <ElementSearch.ElementComboBox
+                        onValueChange={this.handleMultiSelectChange}
+                        ValidatonErrorMessage={this.props.validationErrorMessage}
+                        inputRef={this.props.inputRef}
+                        colspan={this.props.colspan}
+                        value={this.props.value}
+                        filterValue={this.props.ValueFilter}
+                        filterobj={this.props.KeyFilter}
+                        {...this.props}
+                        key={index}
+                    />
+                );
             case "productbox":
                 control = (
                     <ProductComboBox
