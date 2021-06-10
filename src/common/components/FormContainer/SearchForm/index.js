@@ -38,6 +38,7 @@ export default class SearchForm extends Component {
     }
 
     onValueChange(elementname, elementvalue, filterrest) {
+       
         const FormDataContolLstd = this.state.FormData;
         FormDataContolLstd[elementname].value = elementvalue;
         
@@ -56,6 +57,10 @@ export default class SearchForm extends Component {
         this.setState({
             FormData: FormDataContolLstd,
         });
+        if (this.props.onchange != null) {
+            this.props.onchange(FormDataContolLstd, this.props.MLObjectDefinition);
+        }
+
     }
 
 
