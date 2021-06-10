@@ -23,7 +23,8 @@ class ModalDetailCom extends Component {
             PageNumber: 1,
             IsLoadDataComplete: false,
             Difference: this.props.Difference,
-            cacheConfig: this.props.cacheConfig
+            cacheConfig: this.props.cacheConfig,
+            SearchElementDetailList: SearchElementDetailList
         }
 
         this.handleExportFile = this.handleExportFile.bind(this);
@@ -37,7 +38,11 @@ class ModalDetailCom extends Component {
     }
 
     componentDidMount() {
-        const { PageNumber } = this.state;
+        const { PageNumber, SearchElementDetailList } = this.state;
+        SearchElementDetailList[0].value = this.props.Difference == 1 ? true : false;
+
+        console.log("1111", SearchElementDetailList)
+
         this.getParamSearchData(PageNumber)
     }
 
@@ -46,16 +51,16 @@ class ModalDetailCom extends Component {
         const { cacheConfig } = this.state;
         let strListOption = "";
         cacheConfig.filter(item => item.TMSConfigID == key).map((keyItem) => {
-             strListOption = keyItem.TMSConfigValue;
+            strListOption = keyItem.TMSConfigValue;
         })
-        return  strListOption;
+        return strListOption;
     }
 
 
 
     getParamSearchData(PageNumber) {
         const { date, typeDataGrid, Difference } = this.props;
-       // const keyConfig =  this.getValueKeyConfig("RECONCILIATION_ADVANCEOUTPUTTYPEIDLIST").toString();
+        // const keyConfig =  this.getValueKeyConfig("RECONCILIATION_ADVANCEOUTPUTTYPEIDLIST").toString();
 
 
         console.log("date", this.props, date, typeDataGrid)
@@ -115,7 +120,7 @@ class ModalDetailCom extends Component {
                     },
                     {
                         "name": "V_INPUTTYPEIDLIST",
-                        "value":this.getValueKeyConfig("RECONCILIATION_ADVANCEINPUTTYPEIDLIST").toString(), //"2064,7,13"
+                        "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEINPUTTYPEIDLIST").toString(), //"2064,7,13"
                         "op": "array"
                     },
                     {
@@ -194,7 +199,7 @@ class ModalDetailCom extends Component {
                     },
                     {
                         "name": "V_OUTPUTTYPEIDLIST",
-                        "value":  this.getValueKeyConfig("RECONCILIATION_SALEOUTPUTTYPEIDLIST").toString(),//"3",
+                        "value": this.getValueKeyConfig("RECONCILIATION_SALEOUTPUTTYPEIDLIST").toString(),//"3",
                         "op": "array"
                     },
                     {
@@ -466,7 +471,7 @@ class ModalDetailCom extends Component {
 
     render() {
         const { UserName, Month, listColumn, dataSource, fileName, dataExport } = this.props;
-        const { isExportFile, DataSource, IsLoadDataComplete } = this.state;
+        const { isExportFile, DataSource, IsLoadDataComplete, SearchElementDetailList } = this.state;
         if (IsLoadDataComplete) {
             return (
                 <React.Fragment>
