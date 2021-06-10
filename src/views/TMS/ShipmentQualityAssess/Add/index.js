@@ -6,7 +6,7 @@ import ReactContext from '../ReactContext'
 import {
     APIHostName,
     MLObjectDefinitionAdd,
-    AddAPIPath
+    APIAdd
 } from '../constants'
 import FormContainer from "../../../../common/components/FormContainer";
 import FormControl from "../../../../common/components/FormContainer/FormControl";
@@ -70,7 +70,7 @@ export class AddCom extends Component {
             AssessDate: new Date()
         }
 
-        this.props.callFetchAPI(APIHostName, AddAPIPath, tempMLObject).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, APIAdd, tempMLObject).then(apiResult => {
             if (!apiResult.IsError) {
 
             } else {

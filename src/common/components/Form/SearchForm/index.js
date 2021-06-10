@@ -93,10 +93,11 @@ class SearchForm extends Component {
                                     nameOption={elementItem.nameOption}
                                     labelOption={elementItem.labelOption}
                                     iconOption={elementItem.iconOption}
-                                    labelOption={elementItem.labelOption}
+                                    //labelOption={elementItem.labelOption}
                                     valueOption={this.state.FormData[elementItem.valueOption]}
                                     KeyFilter={elementItem.KeyFilter}
                                     ValueFilter={elementItem.ValueFilter}
+                                    colspan={elementItem.colspan}
                                 />
 
                             </div>);

@@ -38,6 +38,7 @@ export default class SearchForm extends Component {
     }
 
     onValueChange(elementname, elementvalue, filterrest) {
+       
         const FormDataContolLstd = this.state.FormData;
         FormDataContolLstd[elementname].value = elementvalue;
         
@@ -56,6 +57,10 @@ export default class SearchForm extends Component {
         this.setState({
             FormData: FormDataContolLstd,
         });
+        if (this.props.onchange != null) {
+            this.props.onchange(FormDataContolLstd, this.props.MLObjectDefinition);
+        }
+
     }
 
 
@@ -343,7 +348,7 @@ export default class SearchForm extends Component {
                         {
                             this.props.IsButtonExport != undefined && this.props.IsButtonExport == true && <button className="btn btn-export ml-1" type="button" onClick={this.handleExportSubmit.bind(this)}>
                                 {
-                                    !!this.props.TitleButtonExport ? <span className="ti ti-export"> {this.props.TitleButtonExport}</span> : <span className="ti ti-export">Xuất dữ liệu</span>
+                                    !!this.props.TitleButtonExport ? <span className="ti ti-export"> {this.props.TitleButtonExport}</span> : <span className="ti ti-export"> Xuất dữ liệu</span>
                                 }
                             </button>
                         }

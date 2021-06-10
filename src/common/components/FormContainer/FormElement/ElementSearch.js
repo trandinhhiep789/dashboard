@@ -144,7 +144,7 @@ class ElementCheckboxCom extends Component {
         this.handleValueChange = this.handleValueChange.bind(this);
     }
     handleValueChange(e) {
-        e.preventDefault();
+        // e.preventDefault();
         let inputvalue = e.target.type == 'checkbox' ? e.target.checked : e.target.value;
         const inputname = e.target.name;
         if (this.props.onValueChange != null)
@@ -179,10 +179,10 @@ class ElementCheckboxCom extends Component {
                             id={name + "-search-avd-check"}
                             className="custom-control-input"
                             value={value}
-                            defaultValue={value}
+                            // defaultValue={value}
                             name={name}
                             checked={value}
-                            defaultChecked={value}
+                            // defaultChecked={value}
                             onChange={this.handleValueChange}
                             ref={this.props.inputRef}
                             readOnly={this.props.readonly}

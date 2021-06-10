@@ -10,13 +10,13 @@ export const PagePathEdit = [
 ];
 
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "api/ShipmentQualityAssess/Search";
-export const LoadAPIPath = "api/ShipmentQualityAssess/Load";
-export const AddAPIPath = "api/ShipmentQualityAssess/Add";
-export const CommentAPIPath = "api/ShipmentQualityAssess_cmt/Search";
-export const AddCommentAPIPath = "api/ShipmentQualityAssess_cmt/Add";
-export const QualityAssessType = "api/QualityAssessType/Search";
-export const LoadInfoRvkSQAssess = "api/ShipmentQualityAssess_rvk/LoadNew";
+export const APISearch = "api/ShipmentQualityAssess/Search";
+export const APILoad = "api/ShipmentQualityAssess/Load";
+export const APIAdd = "api/ShipmentQualityAssess/Add";
+export const APIComment = "api/ShipmentQualityAssess_cmt/Search";
+export const APICommentAdd = "api/ShipmentQualityAssess_cmt/Add";
+export const APIQualityAssessType = "api/QualityAssessType/Search";
+export const APIShipmentQualityAssessRvkLoadNew = "api/ShipmentQualityAssess_rvk/LoadNew";
 
 export const listColumn = [
     {
@@ -41,10 +41,10 @@ export const listColumn = [
         // Width: 130
     },
     {
-        Name: "CreatedUser",
+        Name: "FullName",
         Type: "text",
         Caption: "Người tạo",
-        DataSourceMember: "CreatedUser",
+        DataSourceMember: "FullName",
         // Width: 250
     },
     {
@@ -55,10 +55,10 @@ export const listColumn = [
         // Width: 250
     },
     {
-        Name: "IsRevokeAssessReview",
-        Type: "text",
+        Name: "IsRevokeAssessReviewStatus",
+        Type: "popupNew",
         Caption: "Đã duyệt gỡ đánh giá",
-        DataSourceMember: "IsRevokeAssessReview",
+        DataSourceMember: "IsRevokeAssessReviewStatus",
         // Width: 250
     },
     {

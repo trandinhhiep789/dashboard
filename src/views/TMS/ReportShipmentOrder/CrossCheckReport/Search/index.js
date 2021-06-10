@@ -52,6 +52,7 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(PagePath);
         window.addEventListener("resize", this.updateWindowDimensions);
+
          this.getCacheConfig();
     }
 
@@ -78,6 +79,7 @@ class SearchCom extends React.Component {
 
     handleSearchSubmit(formData, MLObject) {
         console.log("MLObject", MLObject, toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false), Date.parse(toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false)))
+
         const { cacheConfig } = this.state;
         if (MLObject.BusinessID < 0) {
 
@@ -144,7 +146,7 @@ class SearchCom extends React.Component {
                 ]
             }
             console.log("objDataNewol", objDataNewol)
-            this.callSearchData(objDataNewol)
+           this.callSearchData(objDataNewol)
         }
     }
 
