@@ -9,6 +9,7 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { toIsoStringCus, toIsoStringCusNew, formatNumber, formatNumberNew, toIsoStringNew } from '../../../../../utils/function'
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
+import { MessageModal } from "../../../../../common/components/Modal";
 
 class ModalDetailCom extends Component {
     constructor(props) {
@@ -21,32 +22,52 @@ class ModalDetailCom extends Component {
             DataSource: [],
             PageNumber: 1,
             IsLoadDataComplete: false,
-            Difference: this.props.Difference
+            Difference: this.props.Difference,
+            cacheConfig: this.props.cacheConfig,
+            SearchElementDetailList: SearchElementDetailList
         }
 
         this.handleExportFile = this.handleExportFile.bind(this);
         this.addNotification = this.addNotification.bind(this);
         this.getParamSearchData = this.getParamSearchData.bind(this);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+        this.getValueKeyConfig = this.getValueKeyConfig.bind(this);
 
 
         this.notificationDOMRef = React.createRef();
     }
 
     componentDidMount() {
-        const { PageNumber } = this.state;
+        const { PageNumber, SearchElementDetailList } = this.state;
+        SearchElementDetailList[0].value = this.props.Difference == 1 ? true : false;
+
+        console.log("1111", SearchElementDetailList)
+
         this.getParamSearchData(PageNumber)
     }
 
 
+    getValueKeyConfig(key) {
+        const { cacheConfig } = this.state;
+        let strListOption = "";
+        cacheConfig.filter(item => item.TMSConfigID == key).map((keyItem) => {
+            strListOption = keyItem.TMSConfigValue;
+        })
+        return strListOption;
+    }
+
+
+
     getParamSearchData(PageNumber) {
         const { date, typeDataGrid, Difference } = this.props;
-        console.log("date", this.props, date, typeDataGrid)
+        // const keyConfig =  this.getValueKeyConfig("RECONCILIATION_ADVANCEOUTPUTTYPEIDLIST").toString();
 
+
+        console.log("date", this.props, date, typeDataGrid)
         let searchData = "";
         if (typeDataGrid == 1) {
             searchData = {
-                "storedName": "ERP_TMS_RPTDETAILRETURNREQUEST",
+                "storedName": "ERP_TMS_RPTDETAIL_ADVANCEREQUEST",
                 "params": [
                     {
                         "name": "V_FROMDATE",
@@ -59,8 +80,8 @@ class ModalDetailCom extends Component {
                         "op": "timestamp"
                     },
                     {
-                        "name": "V_INPUTTYPEIDLIST",
-                        "value": "2064,7,13",
+                        "name": "V_OUTPUTTYPEIDLIST",
+                        "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEOUTPUTTYPEIDLIST").toString(), //"2223,9,12"
                         "op": "array"
                     },
                     {
@@ -99,7 +120,7 @@ class ModalDetailCom extends Component {
                     },
                     {
                         "name": "V_INPUTTYPEIDLIST",
-                        "value": "2064,7,13",
+                        "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEINPUTTYPEIDLIST").toString(), //"2064,7,13"
                         "op": "array"
                     },
                     {
@@ -139,7 +160,7 @@ class ModalDetailCom extends Component {
                     },
                     {
                         "name": "V_OUTPUTTYPEIDLIST",
-                        "value": "2503",
+                        "value": this.getValueKeyConfig("RECONCILIATION_CONSUMPOUTPUTTYPEIDLIST").toString(),//"2503",
                         "op": "array"
                     },
                     {
@@ -178,7 +199,7 @@ class ModalDetailCom extends Component {
                     },
                     {
                         "name": "V_OUTPUTTYPEIDLIST",
-                        "value": "2503",
+                        "value": this.getValueKeyConfig("RECONCILIATION_SALEOUTPUTTYPEIDLIST").toString(),//"3",
                         "op": "array"
                     },
                     {
@@ -207,7 +228,7 @@ class ModalDetailCom extends Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/CrossCheckReportDetail", searchData).then(apiResult => {
-            console.log("detail", searchData, apiResult.ResultObject)
+            console.log("detail", searchData, apiResult)
             if (!apiResult.IsError) {
                 apiResult.ResultObject.map((item) => {
                     item.TotaLRows = item.totalrow
@@ -450,7 +471,7 @@ class ModalDetailCom extends Component {
 
     render() {
         const { UserName, Month, listColumn, dataSource, fileName, dataExport } = this.props;
-        const { isExportFile, DataSource, IsLoadDataComplete } = this.state;
+        const { isExportFile, DataSource, IsLoadDataComplete, SearchElementDetailList } = this.state;
         if (IsLoadDataComplete) {
             return (
                 <React.Fragment>

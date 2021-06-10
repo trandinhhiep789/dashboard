@@ -197,14 +197,14 @@ export const DataGridModalAdvanceMaterial = [
     {
         Name: "ovtms",
         Type: "text",
-        Caption: "Mã phiếu xuất (TMS)",
+        Caption: "Mã phiếu TMS ",
         DataSourceMember: "ovtms",
         Width: "20%"
     },
     {
         Name: "overp",
         Type: "text",
-        Caption: "Mã phiếu xuất (ERP)",
+        Caption: "Mã phiếu ERP",
         DataSourceMember: "overp",
         Width: "20%"
     },

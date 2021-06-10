@@ -52,7 +52,8 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(PagePath);
         window.addEventListener("resize", this.updateWindowDimensions);
-        // this.getCacheConfig();
+
+         this.getCacheConfig();
     }
 
     componentWillUnmount() {
@@ -78,6 +79,7 @@ class SearchCom extends React.Component {
 
     handleSearchSubmit(formData, MLObject) {
         console.log("MLObject", MLObject, toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false), Date.parse(toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false)))
+
         const { cacheConfig } = this.state;
         if (MLObject.BusinessID < 0) {
 
@@ -144,7 +146,7 @@ class SearchCom extends React.Component {
                 ]
             }
             console.log("objDataNewol", objDataNewol)
-            this.callSearchData(objDataNewol)
+           this.callSearchData(objDataNewol)
         }
     }
 
@@ -246,7 +248,7 @@ class SearchCom extends React.Component {
     }
 
     onShowModal(data, typeDataGrid, date) {
-        const { params, widthPercent, Difference } = this.state;
+        const { params, widthPercent, Difference, cacheConfig } = this.state;
         let titleName = "";
         switch (typeDataGrid) {
             case 1:
@@ -275,6 +277,7 @@ class SearchCom extends React.Component {
                     date={date}
                     typeDataGrid={typeDataGrid}
                     Difference={Difference}
+                    cacheConfig= {cacheConfig}
                     fileName={"Báo cáo chi tiết tạm ứng vật tư"}
                 />
             },
