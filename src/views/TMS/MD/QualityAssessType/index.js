@@ -11,7 +11,7 @@ import Add from "./Add";
 import Edit from "./Edit";
 import Detail from "./Detail";
 import NotFound from '../../../NotFound'
-//import ReviewLevelDetail from "../QualityAssessType_ReviewLevel/Detail";
+import ReviewLevelDetail from "../QualityAssessType_ReviewLevel/Detail";
 
 class QualityAssessTypeCom extends React.Component {
     constructor(props) {
@@ -25,7 +25,7 @@ class QualityAssessTypeCom extends React.Component {
                 <Route exact path="/QualityAssessType/Add" component={Add} />
                 <Route exact path="/QualityAssessType/Edit/:id" component={Edit} />
                 <Route exact path="/QualityAssessType/Detail/:id" component={Detail} />
-                {/* <Route exact path="/QualityAssessType/ReviewLevelDetail/:id" component={ReviewLevelDetail} /> */}
+                <Route exact path="/QualityAssessType/ReviewLevelDetail/:id" component={ReviewLevelDetail} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );

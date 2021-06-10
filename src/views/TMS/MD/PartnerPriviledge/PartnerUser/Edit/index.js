@@ -565,15 +565,19 @@ class EditCom extends React.Component {
             let myDate = new Date(temp[1] + '/' + temp[0] + '/' + temp[2]);
             MLObject.Birthday = myDate;
         }
-        MLObject.Birthday = toIsoStringCus(new Date(MLObject.Birthday).toISOString());
+        
 
         ///kiểm tra người dùng đủ 18 tuổi
         let validYearOld = (new Date()).getFullYear() - (new Date(MLObject.Birthday)).getFullYear();
         if (validYearOld < 18) {
             this.addNotification("Yêu cầu người dùng trên 18 tuổi.", true);
             return;
+        }else if(validYearOld > 100){
+            this.addNotification("Yêu cầu người dùng dưới 100 tuổi.", true);
+            return;
         }
 
+        MLObject.Birthday = toIsoStringCus(new Date(MLObject.Birthday).toISOString());
         // try {
         //     MLObject.Birthday = toIsoStringCus(new Date(MLObject.Birthday).toISOString());
         // } catch (error) {

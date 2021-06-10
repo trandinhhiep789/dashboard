@@ -145,7 +145,7 @@ class SearchCom extends React.Component {
                     item.StoreNameLable = item.StoreID + " - " + item.StoreName
                     item.PartnerLable = item.PartnerID + " - " + item.PartnerName
                     item.ShipmentOrderTypeLable = item.ShipmentOrderTypeID + " - " + item.ShipmentOrderTypeName
-                    item.UpdatedUserFullName = item.UpdatedUser != "" ? item.UpdatedUserFullName : '' 
+                    //item.UpdatedUserFullName = item.UpdatedUser != "" ? item.UpdatedUserFullName : '' 
                     return item;
                 })
 

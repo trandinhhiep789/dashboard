@@ -149,7 +149,7 @@ class EditCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
-        MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
+        MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.CoordinatorStoreID = this.props.match.params.id.trim();
         this.props.callFetchAPI(APIHostName, UpdateNewAPIPath, MLObject).then(apiResult => {

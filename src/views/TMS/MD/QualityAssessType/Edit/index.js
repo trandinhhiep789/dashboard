@@ -18,7 +18,7 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_MTRETURNREQUESTTYPE, ERPCOMMONCACHE_SHIPMENTFEETYPE } from "../../../../../constants/keyCache";
-import { MTRETURNREQUESTTYPE_UPDATE } from "../../../../../constants/functionLists";
+import { MTRETURNREQUESTTYPE_UPDATE, QUALITYASSESSTYPE_UPDATE } from "../../../../../constants/functionLists";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -105,7 +105,7 @@ class EditCom extends React.Component {
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
-                    RequirePermission={MTRETURNREQUESTTYPE_UPDATE}
+                    RequirePermission={QUALITYASSESSTYPE_UPDATE}
                     ref={this.searchref}
                 />
             );

@@ -232,14 +232,6 @@ export const DataGridColumnList = [
         DataSourceMember: "LimitTypeName",
         Width: 300
     },
-
-    {
-        Name: "UpdatedUserFullName",
-        Type: "text",
-        Caption: "Người cập nhật",
-        DataSourceMember: "UpdatedUserFullName",
-        Width: 140
-    },
     {
         Name: "IsCheckRangeLimitValue",
         Type: "checkicon",
@@ -274,6 +266,13 @@ export const DataGridColumnList = [
         Caption: "Kích hoạt",
         DataSourceMember: "IsActived",
         Width: 80
+    },
+    {
+        Name: "UpdatedUserFullName",
+        Type: "text",
+        Caption: "Người cập nhật",
+        DataSourceMember: "UpdatedUserFullName",
+        Width: 140
     },
     {
         Name: "UpdatedDate",
