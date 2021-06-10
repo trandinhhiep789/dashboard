@@ -52,7 +52,7 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(PagePath);
         window.addEventListener("resize", this.updateWindowDimensions);
-        // this.getCacheConfig();
+         this.getCacheConfig();
     }
 
     componentWillUnmount() {
@@ -246,7 +246,7 @@ class SearchCom extends React.Component {
     }
 
     onShowModal(data, typeDataGrid, date) {
-        const { params, widthPercent, Difference } = this.state;
+        const { params, widthPercent, Difference, cacheConfig } = this.state;
         let titleName = "";
         switch (typeDataGrid) {
             case 1:
@@ -275,6 +275,7 @@ class SearchCom extends React.Component {
                     date={date}
                     typeDataGrid={typeDataGrid}
                     Difference={Difference}
+                    cacheConfig= {cacheConfig}
                     fileName={"Báo cáo chi tiết tạm ứng vật tư"}
                 />
             },
