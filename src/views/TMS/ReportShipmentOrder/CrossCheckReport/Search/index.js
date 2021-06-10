@@ -195,7 +195,7 @@ class SearchCom extends React.Component {
                     dataExport: [],
                     IsCallAPIError: apiResult.IsError,
                 })
-                this.showMessage(apiResult.MessageDetail)
+                this.showMessage("Lỗi hệ thống. Vui lòng liên hệ quản trị viên.")
             }
         });
     }
