@@ -38,13 +38,16 @@ class ModalDetailCom extends Component {
         this.handleExportData = this.handleExportData.bind(this);
         this.handleExportCSV = this.handleExportCSV.bind(this);
         this.handleonChangePage = this.handleonChangePage.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.notificationDOMRef = React.createRef();
+
     }
 
     componentDidMount() {
         const { PageNumber, SearchElementDetailList } = this.state;
-        SearchElementDetailList[0].value = this.props.Difference == 1 ? true : false;
 
+        SearchElementDetailList[0].value = this.props.Difference > 0 ? true : false;
+        // console.log("prop", SearchElementDetailList, this.props)
         this.getParamSearchData(PageNumber)
     }
 
@@ -297,10 +300,10 @@ class ModalDetailCom extends Component {
         this.setState({
             IsLoadDataComplete: false
         })
-        const { date, typeDataGrid,Difference } = this.props;
-        const { PageNumber } = this.state;
+        const { date, typeDataGrid } = this.props;
+        const { PageNumber, Difference } = this.state;
         let searchData = "";
-         if (typeDataGrid == 1) {
+        if (typeDataGrid == 1) {
             searchData = {
                 "storedName": "ERP_TMS_RPTDETAIL_ADVANCEREQUEST",
                 "params": [
@@ -466,12 +469,12 @@ class ModalDetailCom extends Component {
     handleonChangePage(PageNumber) {
         this.setState({
             PageNumber,
-            IsLoadDataComplete: false,
+            // IsLoadDataComplete: false,
             DataSource: []
         })
-        console.log("PageNumber", PageNumber)
+        // console.log("PageNumber", PageNumber)
         this.getParamSearchData(PageNumber)
-       
+
     }
 
     handleExportData(FormData, MLObject) {
@@ -546,7 +549,7 @@ class ModalDetailCom extends Component {
                     ,
                     {
                         "name": "V_PAGEINDEX",
-                        "value":  -1,
+                        "value": -1,
                         "op": "array"
                     },
                     {
@@ -717,10 +720,14 @@ class ModalDetailCom extends Component {
     }
 
     handleChange(FormData, MLObject) {
-        console.log("change", FormData, MLObject)
-
+        // console.log("change", FormData, MLObject)
+        const { PageNumber, SearchElementDetailList } = this.state;
+        SearchElementDetailList[0].value = FormData.ckDifferenceDetail.value;
         this.setState({
-            IsShowButtonExport: FormData.ckDifferenceDetail.value
+            IsShowButtonExport: FormData.ckDifferenceDetail.value,
+            SearchElementDetailList,
+            Difference: FormData.ckDifferenceDetail.value == true ? 1 : 0
+
         })
 
     }
@@ -728,15 +735,14 @@ class ModalDetailCom extends Component {
     render() {
         const { UserName, Month, listColumn, dataSource, fileName, dataExport } = this.props;
         const { isExportFile, DataSource, IsLoadDataComplete, SearchElementDetailList, IsShowButtonExport } = this.state;
-        console.log("this.state.PageNumber", this.state.PageNumber)
-        // if (IsLoadDataComplete) {
+        if (IsLoadDataComplete) {
             return (
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
                         FormName="Tìm kiếm danh sách báo đối soát chi tiết"
                         MLObjectDefinition={SearchMLObjectDefinitionDetail}
-                        listelement={SearchElementDetailList}
+                        listelement={this.state.SearchElementDetailList}
                         onSubmit={this.handleSearchSubmit}
                         ref={this.searchref}
                         IsButtonExport={IsShowButtonExport}
@@ -766,14 +772,14 @@ class ModalDetailCom extends Component {
                     />
                 </React.Fragment >
             )
-        // }
-        // else {
-        //     return (
-        //         <React.Fragment>
-        //             <p>Đang lấy dữ liệu...</p>
-        //         </React.Fragment >
-        //     )
-        // }
+        }
+        else {
+            return (
+                <React.Fragment>
+                    <p>Đang lấy dữ liệu...</p>
+                </React.Fragment >
+            )
+        }
     }
 
 }
