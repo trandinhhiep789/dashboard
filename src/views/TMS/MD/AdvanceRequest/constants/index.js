@@ -84,24 +84,45 @@ export const SearchElementList = [
         ValueMember: "AdvanceRequestTypeID",
         NameMember: "AdvanceRequestTypeName"
     },
+
     {
-        type: "select",
+        type: "ComboBox",
         name: "slReceiverStoreID",
-        label: "Kho",
-        value: -1,
-        placeholder: "",
-        icon: "",
-        listoption: [],
         DataSourceMember: "ReceiverStoreID",
-        readonly: false,
-        validatonList: [],
+        label: "Kho",
+        colspan: "x",
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "---Vui lòng chọn---",
+        listoption: [],
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
         ValueMember: "StoreID",
         NameMember: "StoreName",
         KeyFilter: "CompanyID",
-        ValueFilter: 10
+        ValueFilter: 10,
+
+
     },
+
+    // {
+    //     type: "select",
+    //     name: "slReceiverStoreID",
+    //     label: "Kho",
+    //     value: -1,
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: [],
+    //     DataSourceMember: "ReceiverStoreID",
+    //     readonly: false,
+    //     validatonList: [],
+    //     IsAutoLoadItemFromCache: true,
+    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
+    //     ValueMember: "StoreID",
+    //     NameMember: "StoreName",
+    //     KeyFilter: "CompanyID",
+    //     ValueFilter: 10
+    // },
     // {
     //     type: "select",
     //     name: "slPartnerID",
