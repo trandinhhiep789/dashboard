@@ -10,7 +10,8 @@ import { showModal, hideModal } from '../../../../../actions/modal';
 import { toIsoStringCus, toIsoStringCusNew, formatNumber, formatNumberNew, toIsoStringNew } from '../../../../../utils/function'
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 import { MessageModal } from "../../../../../common/components/Modal";
-
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
 class ModalDetailCom extends Component {
     constructor(props) {
         super(props);
@@ -24,7 +25,9 @@ class ModalDetailCom extends Component {
             IsLoadDataComplete: false,
             Difference: this.props.Difference,
             cacheConfig: this.props.cacheConfig,
-            SearchElementDetailList: SearchElementDetailList
+            SearchElementDetailList: SearchElementDetailList,
+            IsShowButtonExport: this.props.Difference
+
         }
 
         this.handleExportFile = this.handleExportFile.bind(this);
@@ -32,16 +35,15 @@ class ModalDetailCom extends Component {
         this.getParamSearchData = this.getParamSearchData.bind(this);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.getValueKeyConfig = this.getValueKeyConfig.bind(this);
-
-
+        this.handleExportData = this.handleExportData.bind(this);
+        this.handleExportCSV = this.handleExportCSV.bind(this);
+        this.handleonChangePage = this.handleonChangePage.bind(this);
         this.notificationDOMRef = React.createRef();
     }
 
     componentDidMount() {
         const { PageNumber, SearchElementDetailList } = this.state;
         SearchElementDetailList[0].value = this.props.Difference == 1 ? true : false;
-
-        console.log("1111", SearchElementDetailList)
 
         this.getParamSearchData(PageNumber)
     }
@@ -240,7 +242,7 @@ class ModalDetailCom extends Component {
                 });
             }
             else {
-                this.showMessage(apiResult.Message)
+                this.showMessage("Lỗi hệ thống. Vui lòng liên hệ quản trị viên.")
             }
         });
     }
@@ -292,35 +294,34 @@ class ModalDetailCom extends Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-
         this.setState({
             IsLoadDataComplete: false
         })
-        const { date, typeDataGrid, } = this.props;
+        const { date, typeDataGrid,Difference } = this.props;
         const { PageNumber } = this.state;
         let searchData = "";
-        if (typeDataGrid == 1) {
+         if (typeDataGrid == 1) {
             searchData = {
                 "storedName": "ERP_TMS_RPTDETAIL_ADVANCEREQUEST",
                 "params": [
                     {
                         "name": "V_FROMDATE",
-                        "value": Date.parse(date),
+                        "value": Date.parse(toIsoStringNew(this.props.date, false)),
                         "op": "timestamp"
                     },
                     {
                         "name": "V_TODATE",
-                        "value": Date.parse(date),
+                        "value": Date.parse(toIsoStringNew(this.props.date, false)),
                         "op": "timestamp"
                     },
                     {
-                        "name": "V_INPUTTYPEIDLIST",
-                        "value": "2064,7,13",
+                        "name": "V_OUTPUTTYPEIDLIST",
+                        "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEOUTPUTTYPEIDLIST").toString(), //"2223,9,12"
                         "op": "array"
                     },
                     {
                         "name": "V_ISCHECKVIEWDIFFERENCE",
-                        "value": MLObject.DifferenceDetail == true ? 1 : 0,
+                        "value": Difference,
                         "op": "array"
                     },
                     {
@@ -344,22 +345,22 @@ class ModalDetailCom extends Component {
                 "params": [
                     {
                         "name": "V_FROMDATE",
-                        "value": Date.parse(date),
+                        "value": Date.parse(toIsoStringNew(this.props.date, false)),
                         "op": "timestamp"
                     },
                     {
                         "name": "V_TODATE",
-                        "value": Date.parse(date),
+                        "value": Date.parse(toIsoStringNew(this.props.date, false)),
                         "op": "timestamp"
                     },
                     {
                         "name": "V_INPUTTYPEIDLIST",
-                        "value": "2064,7,13",
+                        "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEINPUTTYPEIDLIST").toString(), //"2064,7,13"
                         "op": "array"
                     },
                     {
                         "name": "V_ISCHECKVIEWDIFFERENCE",
-                        "value": MLObject.DifferenceDetail == true ? 1 : 0,
+                        "value": Difference,
                         "op": "array"
                     }
                     ,
@@ -384,22 +385,22 @@ class ModalDetailCom extends Component {
                 "params": [
                     {
                         "name": "V_FROMDATE",
-                        "value": Date.parse(date),
+                        "value": Date.parse(toIsoStringNew(this.props.date, false)),
                         "op": "timestamp"
                     },
                     {
                         "name": "V_TODATE",
-                        "value": Date.parse(date),
+                        "value": Date.parse(toIsoStringNew(this.props.date, false)),
                         "op": "timestamp"
                     },
                     {
                         "name": "V_OUTPUTTYPEIDLIST",
-                        "value": "2503",
+                        "value": this.getValueKeyConfig("RECONCILIATION_CONSUMPOUTPUTTYPEIDLIST").toString(),//"2503",
                         "op": "array"
                     },
                     {
                         "name": "V_ISCHECKVIEWDIFFERENCE",
-                        "value": MLObject.DifferenceDetail == true ? 1 : 0,
+                        "value": Difference,
                         "op": "array"
                     }
                     ,
@@ -423,22 +424,22 @@ class ModalDetailCom extends Component {
                 "params": [
                     {
                         "name": "V_FROMDATE",
-                        "value": Date.parse(date),
+                        "value": Date.parse(toIsoStringNew(this.props.date, false)),
                         "op": "timestamp"
                     },
                     {
                         "name": "V_TODATE",
-                        "value": Date.parse(date),
+                        "value": Date.parse(toIsoStringNew(this.props.date, false)),
                         "op": "timestamp"
                     },
                     {
                         "name": "V_OUTPUTTYPEIDLIST",
-                        "value": "2503",
+                        "value": this.getValueKeyConfig("RECONCILIATION_SALEOUTPUTTYPEIDLIST").toString(),//"3",
                         "op": "array"
                     },
                     {
                         "name": "V_ISCHECKVIEWDIFFERENCE",
-                        "value": MLObject.DifferenceDetail == true ? 1 : 0,
+                        "value": Difference,
                         "op": "array"
                     },
                     {
@@ -457,22 +458,278 @@ class ModalDetailCom extends Component {
 
         }
 
+
         this.callSearchData(searchData);
 
     }
 
     handleonChangePage(PageNumber) {
-        this.getParamSearchData(PageNumber)
         this.setState({
             PageNumber,
-            IsLoadDataComplete: false
+            IsLoadDataComplete: false,
+            DataSource: []
         })
+        console.log("PageNumber", PageNumber)
+        this.getParamSearchData(PageNumber)
+       
+    }
+
+    handleExportData(FormData, MLObject) {
+        console.log("export", FormData, MLObject)
+
+        const { typeDataGrid, } = this.props;
+
+        let searchData = "";
+        if (typeDataGrid == 1) {
+            searchData = {
+                "storedName": "ERP_TMS_RPTDETAIL_ADVANCEREQUEST",
+                "params": [
+                    {
+                        "name": "V_FROMDATE",
+                        "value": Date.parse(toIsoStringNew(this.props.date, false)),
+                        "op": "timestamp"
+                    },
+                    {
+                        "name": "V_TODATE",
+                        "value": Date.parse(toIsoStringNew(this.props.date, false)),
+                        "op": "timestamp"
+                    },
+                    {
+                        "name": "V_OUTPUTTYPEIDLIST",
+                        "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEOUTPUTTYPEIDLIST").toString(), //"2223,9,12"
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_ISCHECKVIEWDIFFERENCE",
+                        "value": 1,
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_PAGEINDEX",
+                        "value": -1,
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_PAGESIZE",
+                        "value": -1,
+                        "op": "array"
+                    }
+
+                ]
+            }
+
+        }
+        else if (typeDataGrid == 2) {
+            searchData = {
+                "storedName": "ERP_TMS_RPTDETAILRETURNREQUEST",
+                "params": [
+                    {
+                        "name": "V_FROMDATE",
+                        "value": Date.parse(toIsoStringNew(this.props.date, false)),
+                        "op": "timestamp"
+                    },
+                    {
+                        "name": "V_TODATE",
+                        "value": Date.parse(toIsoStringNew(this.props.date, false)),
+                        "op": "timestamp"
+                    },
+                    {
+                        "name": "V_INPUTTYPEIDLIST",
+                        "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEINPUTTYPEIDLIST").toString(), //"2064,7,13"
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_ISCHECKVIEWDIFFERENCE",
+                        "value": 1,
+                        "op": "array"
+                    }
+                    ,
+                    {
+                        "name": "V_PAGEINDEX",
+                        "value":  -1,
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_PAGESIZE",
+                        "value": -1,
+                        "op": "array"
+                    }
+
+                ]
+            }
+
+        }
+        else if (typeDataGrid == 3) {
+            searchData = {
+                "storedName": "ERP_TMS_RPTDETAIL_OUTPUTMARTERIAL",
+                "params": [
+                    {
+                        "name": "V_FROMDATE",
+                        "value": Date.parse(toIsoStringNew(this.props.date, false)),
+                        "op": "timestamp"
+                    },
+                    {
+                        "name": "V_TODATE",
+                        "value": Date.parse(toIsoStringNew(this.props.date, false)),
+                        "op": "timestamp"
+                    },
+                    {
+                        "name": "V_OUTPUTTYPEIDLIST",
+                        "value": this.getValueKeyConfig("RECONCILIATION_CONSUMPOUTPUTTYPEIDLIST").toString(),//"2503",
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_ISCHECKVIEWDIFFERENCE",
+                        "value": 1,
+                        "op": "array"
+                    }
+                    ,
+                    {
+                        "name": "V_PAGEINDEX",
+                        "value": -1,
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_PAGESIZE",
+                        "value": -1,
+                        "op": "array"
+                    }
+                ]
+            }
+
+        }
+        else if (typeDataGrid == 4) {
+            searchData = {
+                "storedName": "ERP_TMS_RPTDETAIL_OUTPUTMARTERIALBYCUSTOMER",
+                "params": [
+                    {
+                        "name": "V_FROMDATE",
+                        "value": Date.parse(toIsoStringNew(this.props.date, false)),
+                        "op": "timestamp"
+                    },
+                    {
+                        "name": "V_TODATE",
+                        "value": Date.parse(toIsoStringNew(this.props.date, false)),
+                        "op": "timestamp"
+                    },
+                    {
+                        "name": "V_OUTPUTTYPEIDLIST",
+                        "value": this.getValueKeyConfig("RECONCILIATION_SALEOUTPUTTYPEIDLIST").toString(),//"3",
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_ISCHECKVIEWDIFFERENCE",
+                        "value": 1,
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_PAGEINDEX",
+                        "value": -1,
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_PAGESIZE",
+                        "value": -1,
+                        "op": "array"
+                    }
+
+                ]
+            }
+
+        }
+
+
+        this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/CrossCheckReportDetail", searchData).then(apiResult => {
+            console.log("export api", searchData, apiResult)
+            if (!apiResult.IsError) {
+                const exelData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Ngày": item.date,
+                        "Chứng từ liên quan": item.voucherconcern,
+                        "Mã phiếu TMS": item.ovtms,
+                        "Mã phiếu ERP": item.overp,
+                        "Số lượng TMS": item.quantitytms,
+                        "Số lượng ERP": item.quantityerp,
+                        "Chênh lệch": item.differencequantity,
+                    };
+                    return element;
+
+                })
+                this.handleExportCSV(exelData);
+            }
+            else {
+                this.showMessage("Lỗi hệ thống. Vui lòng liên hệ quản trị viên.")
+            }
+        });
+
+    }
+
+    handleExportCSV(DataExport) {
+        const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+        const fileExtension = '.xlsx';
+        let result;
+        const { typeDataGrid, } = this.props;
+
+        let strFileName = "";
+        switch (typeDataGrid) {
+            case 1:
+                strFileName = "Báo cáo chi tiết tạm ứng vật tư";
+                break
+            case 2:
+                strFileName = "Báo cáo chi tiết nhập trả tạm ứng";
+                break
+            case 3:
+                strFileName = "Báo cáo chi tiết xuất tiêu hao vật";
+                break
+            case 4:
+                strFileName = "Báo cáo chi tiết xuất bán vật tư cho khác";
+                break
+            default:
+                FileNstrFileNameame = "Báo cáo chi tiết tạm ứng vật tư";
+                break
+        }
+
+
+        if (DataExport.length == 0) {
+            result = {
+                IsError: true,
+                Message: "Dữ liệu trong bảng không tồn tại. Không thể xuất file!"
+            };
+        }
+        else {
+
+            const ws = XLSX.utils.json_to_sheet(DataExport);
+            const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+            const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+            const data = new Blob([excelBuffer], { type: fileType });
+
+
+            FileSaver.saveAs(data, strFileName + fileExtension);
+
+            result = {
+                IsError: false,
+                Message: "Xuất file thành công!"
+            };
+        }
+        this.handleExportFile(result);
+
+
+    }
+
+    handleChange(FormData, MLObject) {
+        console.log("change", FormData, MLObject)
+
+        this.setState({
+            IsShowButtonExport: FormData.ckDifferenceDetail.value
+        })
+
     }
 
     render() {
         const { UserName, Month, listColumn, dataSource, fileName, dataExport } = this.props;
-        const { isExportFile, DataSource, IsLoadDataComplete, SearchElementDetailList } = this.state;
-        if (IsLoadDataComplete) {
+        const { isExportFile, DataSource, IsLoadDataComplete, SearchElementDetailList, IsShowButtonExport } = this.state;
+        console.log("this.state.PageNumber", this.state.PageNumber)
+        // if (IsLoadDataComplete) {
             return (
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
@@ -482,7 +739,10 @@ class ModalDetailCom extends Component {
                         listelement={SearchElementDetailList}
                         onSubmit={this.handleSearchSubmit}
                         ref={this.searchref}
+                        IsButtonExport={IsShowButtonExport}
+                        onExportSubmit={this.handleExportData}
                         className="multiple"
+                        onchange={this.handleChange.bind(this)}
                     />
 
                     <DataGrid
@@ -500,20 +760,20 @@ class ModalDetailCom extends Component {
                         // onExportFile={this.handleExportFile}
                         fileName={fileName}
                         isPaginationServer={true}
-                        onChangePage={this.handleonChangePage.bind(this)}
+                        onChangePage={this.handleonChangePage}
                         PageNumber={this.state.PageNumber}
                         isPaginationServerToModal={true}
                     />
                 </React.Fragment >
             )
-        }
-        else {
-            return (
-                <React.Fragment>
-                    <p>Đang lấy dữ liệu...</p>
-                </React.Fragment >
-            )
-        }
+        // }
+        // else {
+        //     return (
+        //         <React.Fragment>
+        //             <p>Đang lấy dữ liệu...</p>
+        //         </React.Fragment >
+        //     )
+        // }
     }
 
 }

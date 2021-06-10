@@ -53,7 +53,7 @@ class SearchCom extends React.Component {
         this.props.updatePagePath(PagePath);
         window.addEventListener("resize", this.updateWindowDimensions);
 
-         this.getCacheConfig();
+        this.getCacheConfig();
     }
 
     componentWillUnmount() {
@@ -81,73 +81,73 @@ class SearchCom extends React.Component {
         console.log("MLObject", MLObject, toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false), Date.parse(toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false)))
 
         const { cacheConfig } = this.state;
-        if (MLObject.BusinessID < 0) {
+        // if (MLObject.BusinessID < 0) {
 
-            this.showMessage("Vui lòng chọn nghiệp vụ cần tìm kiếm.")
+        //     this.showMessage("Vui lòng chọn nghiệp vụ cần tìm kiếm.")
+        // }
+        // else {
+
+        const objParams = {
+            FromDate: Date.parse(toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false)),
+            ToDate: Date.parse(toIsoStringCusNew(new Date(MLObject.ToDate).toISOString(), false)), //Date.parse(MLObject.ToDate),
+            BusinessID: MLObject.BusinessID,
+            Difference: MLObject.Difference
         }
-        else {
 
-            const objParams = {
-                FromDate: Date.parse(toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false)),
-                ToDate: Date.parse(toIsoStringCusNew(new Date(MLObject.ToDate).toISOString(), false)), //Date.parse(MLObject.ToDate),
-                BusinessID: MLObject.BusinessID,
-                Difference: MLObject.Difference
-            }
+        this.setState({
+            params: objParams,
+            Difference: MLObject.Difference == true ? 1 : 0,
+        })
+        console.log("object", toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false))
+        const objDataNewol = {
+            "storedName": "ERP_TMS_ADVANCEREQUEST",
+            "params": [
+                {
+                    "name": "V_FROMDATE",
+                    "value": Date.parse(toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false)),
+                    "op": "timestamp"
+                },
+                {
+                    "name": "V_TODATE",
+                    "value": Date.parse(toIsoStringCusNew(new Date(MLObject.ToDate).toISOString(), false)),
+                    "op": "timestamp"
+                },
+                {
+                    "name": "V_REPORTIDLIST",
+                    "value": (MLObject.BusinessID < 0 || MLObject.BusinessID == "") ? "1,2,3,4" : MLObject.BusinessID,
+                    "op": "array"
+                },
+                {
+                    "name": "V_OUTINPUTTYPEIDREPORT1LIST",
+                    "value": "2223,9,12",
+                    "op": "array"
+                },
+                {
+                    "name": "V_OUTINPUTTYPEIDREPORT2LIST",
+                    "value": "2064,7,13",
+                    "op": "array"
+                },
+                {
+                    "name": "V_OUTINPUTTYPEIDREPORT3LIST",
+                    "value": "2503",
+                    "op": "array"
+                },
+                {
+                    "name": "V_OUTINPUTTYPEIDREPORT4LIST",
+                    "value": "3",
+                    "op": "array"
+                },
+                {
+                    "name": "V_ISCHECKVIEWDIFFERENCE",
+                    "value": MLObject.Difference == true ? 1 : 0,
+                    "op": "array"
+                }
 
-            this.setState({
-                params: objParams,
-                Difference: MLObject.Difference == true ? 1 : 0,
-            })
-            console.log("object", toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false))
-            const objDataNewol = {
-                "storedName": "ERP_TMS_ADVANCEREQUEST",
-                "params": [
-                    {
-                        "name": "V_FROMDATE",
-                        "value": Date.parse(toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false)),
-                        "op": "timestamp"
-                    },
-                    {
-                        "name": "V_TODATE",
-                        "value": Date.parse(toIsoStringCusNew(new Date(MLObject.ToDate).toISOString(), false)),
-                        "op": "timestamp"
-                    },
-                    {
-                        "name": "V_REPORTIDLIST",
-                        "value": MLObject.BusinessID,
-                        "op": "array"
-                    },
-                    {
-                        "name": "V_OUTINPUTTYPEIDREPORT1LIST",
-                        "value": "2223,9,12",
-                        "op": "array"
-                    },
-                    {
-                        "name": "V_OUTINPUTTYPEIDREPORT2LIST",
-                        "value": "2064,7,13",
-                        "op": "array"
-                    },
-                    {
-                        "name": "V_OUTINPUTTYPEIDREPORT3LIST",
-                        "value": "2503",
-                        "op": "array"
-                    },
-                    {
-                        "name": "V_OUTINPUTTYPEIDREPORT4LIST",
-                        "value": "3",
-                        "op": "array"
-                    },
-                    {
-                        "name": "V_ISCHECKVIEWDIFFERENCE",
-                        "value": MLObject.Difference == true ? 1 : 0,
-                        "op": "array"
-                    }
-
-                ]
-            }
-            console.log("objDataNewol", objDataNewol)
-           this.callSearchData(objDataNewol)
+            ]
         }
+        console.log("objDataNewol", objDataNewol)
+        this.callSearchData(objDataNewol)
+        // }
     }
 
     callSearchData(searchData) {
@@ -277,7 +277,7 @@ class SearchCom extends React.Component {
                     date={date}
                     typeDataGrid={typeDataGrid}
                     Difference={Difference}
-                    cacheConfig= {cacheConfig}
+                    cacheConfig={cacheConfig}
                     fileName={"Báo cáo chi tiết tạm ứng vật tư"}
                 />
             },
@@ -297,7 +297,7 @@ class SearchCom extends React.Component {
         const { params } = this.state;
 
         this.onShowModal([], reportid, date);
-       
+
         // let searchData = {
         //     "storedName": "ERP_TMS_RPTDETAILRETURNREQUEST",
         //     "params": [
@@ -337,7 +337,7 @@ class SearchCom extends React.Component {
 
 
         // this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/CrossCheckReportDetail", searchData).then(apiResult => {
-           
+
 
         //     if (!apiResult.IsError) {
         //         this.onShowModal([], reportid, date,params.Difference);
@@ -385,7 +385,7 @@ class SearchCom extends React.Component {
                                 {
                                     this.state.gridDataSource
                                     && this.state.gridDataSource.map((item, index) => {
-                                        return <tr  key ={index}>
+                                        return <tr key={index}>
                                             <td > <a className="nav-link text-primary hover-primary cursor-pointer" onClick={() => this.handleTotalLateSubmit(item.reportid, item.date)}>{item.reportname}</a></td>
                                             <td>{item.date}</td>
                                             <td>{formatNumberNew(item.quantitytms)}</td>
