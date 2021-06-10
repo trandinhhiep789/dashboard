@@ -37,8 +37,7 @@ class ModalDetailCom extends Component {
         this.getValueKeyConfig = this.getValueKeyConfig.bind(this);
         this.handleExportData = this.handleExportData.bind(this);
         this.handleExportCSV = this.handleExportCSV.bind(this);
-        
-
+        this.handleonChangePage = this.handleonChangePage.bind(this);
         this.notificationDOMRef = React.createRef();
     }
 
@@ -465,11 +464,14 @@ class ModalDetailCom extends Component {
     }
 
     handleonChangePage(PageNumber) {
-        this.getParamSearchData(PageNumber)
         this.setState({
             PageNumber,
-            IsLoadDataComplete: false
+            IsLoadDataComplete: false,
+            DataSource: []
         })
+        console.log("PageNumber", PageNumber)
+        this.getParamSearchData(PageNumber)
+       
     }
 
     handleExportData(FormData, MLObject) {
@@ -726,7 +728,8 @@ class ModalDetailCom extends Component {
     render() {
         const { UserName, Month, listColumn, dataSource, fileName, dataExport } = this.props;
         const { isExportFile, DataSource, IsLoadDataComplete, SearchElementDetailList, IsShowButtonExport } = this.state;
-        if (IsLoadDataComplete) {
+        console.log("this.state.PageNumber", this.state.PageNumber)
+        // if (IsLoadDataComplete) {
             return (
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
@@ -757,20 +760,20 @@ class ModalDetailCom extends Component {
                         // onExportFile={this.handleExportFile}
                         fileName={fileName}
                         isPaginationServer={true}
-                        onChangePage={this.handleonChangePage.bind(this)}
+                        onChangePage={this.handleonChangePage}
                         PageNumber={this.state.PageNumber}
                         isPaginationServerToModal={true}
                     />
                 </React.Fragment >
             )
-        }
-        else {
-            return (
-                <React.Fragment>
-                    <p>Đang lấy dữ liệu...</p>
-                </React.Fragment >
-            )
-        }
+        // }
+        // else {
+        //     return (
+        //         <React.Fragment>
+        //             <p>Đang lấy dữ liệu...</p>
+        //         </React.Fragment >
+        //     )
+        // }
     }
 
 }
