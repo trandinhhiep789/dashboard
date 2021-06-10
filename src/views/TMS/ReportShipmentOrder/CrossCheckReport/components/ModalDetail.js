@@ -91,7 +91,7 @@ class ModalDetailCom extends Component {
                     },
                     {
                         "name": "V_ISCHECKVIEWDIFFERENCE",
-                        "value": Difference,
+                        "value": this.state.Difference,
                         "op": "array"
                     },
                     {
@@ -130,7 +130,7 @@ class ModalDetailCom extends Component {
                     },
                     {
                         "name": "V_ISCHECKVIEWDIFFERENCE",
-                        "value": Difference,
+                        "value": this.state.Difference,
                         "op": "array"
                     }
                     ,
@@ -170,7 +170,7 @@ class ModalDetailCom extends Component {
                     },
                     {
                         "name": "V_ISCHECKVIEWDIFFERENCE",
-                        "value": Difference,
+                        "value": this.state.Difference,
                         "op": "array"
                     }
                     ,
@@ -209,7 +209,7 @@ class ModalDetailCom extends Component {
                     },
                     {
                         "name": "V_ISCHECKVIEWDIFFERENCE",
-                        "value": Difference,
+                        "value": this.state.Difference,
                         "op": "array"
                     },
                     {
