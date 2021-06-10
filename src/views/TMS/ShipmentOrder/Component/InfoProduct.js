@@ -373,7 +373,7 @@ class InfoProductCom extends Component {
                                 <label className="col-form-label bold">Tổng tiền phải thu:</label>
                             </div>
                             <div className="form-group col-md-4">
-                                <label className="col-form-label lbl-currency-total" >{(this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD - this.state.ShipmentOrder.TotalReturnPrice)>0?formatMoney((this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD) - this.state.ShipmentOrder.TotalReturnPrice, 0):0}đ</label>
+                                <label className="col-form-label lbl-currency-total" >{(this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD - this.state.ShipmentOrder.TotalReturnPrice)>0?formatMoney((this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD) - this.state.ShipmentOrder.TotalReturnPrice, 0):formatMoney(this.state.ShipmentOrder.TotalSaleMaterialMoney)}đ</label>
                             </div>
                             <div className="form-group col-md-2">
                                 <label className="col-form-label bold">Thời gian xuất:</label>

@@ -92,7 +92,7 @@ class FormContainerCom extends Component {
         //"FormContainer handleInputChangeList: ", formDataList, tabNameList, tabMLObjectDefinitionList, IsSystem);
         let formDataTemp = this.state.FormData;
         //let formValidationTemp = this.state.FormValidation;
-        let formValidationTemp={};
+        let formValidationTemp = {};
         let isSystem = typeof (IsSystem) != "undefined" ? IsSystem : this.state.IsSystem;
         let _isFirstTimeLoad = isFirstTimeLoad != undefined ? isFirstTimeLoad : false;
         for (let i = 0; i < tabNameList.length; i++) {
@@ -496,7 +496,7 @@ class FormContainerCom extends Component {
     }
 
     handleSubmit(e) {
-        debugger;
+        // debugger;
         e.preventDefault();
         const mLObjectDefinition = this.props.MLObjectDefinition;
         //console.log("Submit Click formdata!", this.state.FormData,  this.props.listelement);
@@ -1166,4 +1166,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 const FormContainer = connect(mapStateToProps, mapDispatchToProps)(FormContainerCom);
-export default FormContainer; 
+export default FormContainer;

@@ -1824,6 +1824,7 @@ class ComboBoxNewCom extends Component {
                             isSearchable={true}
                             placeholder={placeholder}
                             className={className}
+                            {...this.props}
                         />
                         <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
                     </div>

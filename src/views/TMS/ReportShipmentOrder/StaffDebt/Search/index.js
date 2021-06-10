@@ -119,6 +119,7 @@ class SearchCom extends React.Component {
 
     callDataFirstPage(searchData) {
         this.props.callFetchAPI(APIHostName, SearchWithinPaginationAPI, searchData).then(apiResult => {
+            console.log("object", apiResult)
             if (!apiResult.IsError) {
                 let objStaffDebtID = {}
                 const tempData = apiResult.ResultObject.map((item, index) => {

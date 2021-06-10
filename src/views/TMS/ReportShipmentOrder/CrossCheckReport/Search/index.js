@@ -21,9 +21,10 @@ import "react-notifications-component/dist/theme.css";
 import { TMS_BEGINTERMADVANCEDEBT_EXPORT, TMS_BEGINTERMADVANCEDEBT_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
-import { toIsoStringCus } from '../../../../../utils/function'
+import { toIsoStringCus, toIsoStringCusNew, formatNumber, formatNumberNew, toIsoStringNew } from '../../../../../utils/function'
 import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_DOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
 import ModalDetail from '../components/ModalDetail'
+import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../../constants/keyCache";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -31,34 +32,27 @@ class SearchCom extends React.Component {
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
         this.onShowModal = this.onShowModal.bind(this);
-        
+        this.getCacheConfig = this.getCacheConfig.bind(this);
+        this.handleTotalLateSubmit = this.handleTotalLateSubmit.bind(this);
+
+
         this.state = {
             IsCallAPIError: false,
-            gridDataSource: [
-                {
-                    CrossCheckID: "00011",
-                    BusinessID: 1,
-                    Date: '2021-05-31T17:00:00.000Z',
-                    TMS: 0,
-                    ERP: 0,
-                    Difference: 0
-
-
-                },
-            ],
+            gridDataSource: [],
             IsLoadDataComplete: false,
             widthPercent: "",
             params: {},
-            dataExport: []
+            dataExport: [],
+            cacheConfig: [],
+            Difference: 1
         };
-        this.gridref = React.createRef();
-        this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
     }
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
         window.addEventListener("resize", this.updateWindowDimensions);
+        // this.getCacheConfig();
     }
 
     componentWillUnmount() {
@@ -71,56 +65,103 @@ class SearchCom extends React.Component {
         })
     }
 
+    getCacheConfig() {
+        //ERPCOMMONCACHE_TMSCONFIG\
+        this.props.callGetCache(ERPCOMMONCACHE_TMSCONFIG).then(result => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                this.setState({
+                    cacheConfig: result.ResultObject.CacheData
+                })
+            }
+        })
+    }
 
     handleSearchSubmit(formData, MLObject) {
-        console.log("aaa", formData, MLObject)
-        // const objData = {
-        //     FromDate: toIsoStringCus(new Date(MLObject.FromDate).toISOString()), //MLObject.FromDate,
-        //     ToDate: toIsoStringCus(new Date(MLObject.ToDate).toISOString()) // MLObject.ToDate
+        console.log("MLObject", MLObject, toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false), Date.parse(toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false)))
+        const { cacheConfig } = this.state;
+        if (MLObject.BusinessID < 0) {
 
-        // }
-
-        const objParams = {
-            FromDate: MLObject.FromDate,
-            ToDate: MLObject.ToDate,
-            BusinessID: MLObject.BusinessID,
-            Difference: MLObject.Difference
+            this.showMessage("Vui lòng chọn nghiệp vụ cần tìm kiếm.")
         }
+        else {
 
-        const objDataNew =  [
-            {
-                "name": "V_FROMDATE",
-                "value": MLObject.FromDate,
-                "op": "timestamp"
-            },
-            {
-                "name": "V_TODATE",
-                "value": MLObject.ToDate,
-                "op": "timestamp"
-            },
-            {
-                "name": "V_OUTPUTTYPEIDLIST",
-                "value": MLObject.BusinessID,
-                "op": "array"
+            const objParams = {
+                FromDate: Date.parse(toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false)),
+                ToDate: Date.parse(toIsoStringCusNew(new Date(MLObject.ToDate).toISOString(), false)), //Date.parse(MLObject.ToDate),
+                BusinessID: MLObject.BusinessID,
+                Difference: MLObject.Difference
             }
-        ]
 
-        this.setState({
-            params: objParams
-        })
+            this.setState({
+                params: objParams,
+                Difference: MLObject.Difference == true ? 1 : 0,
+            })
+            console.log("object", toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false))
+            const objDataNewol = {
+                "storedName": "ERP_TMS_ADVANCEREQUEST",
+                "params": [
+                    {
+                        "name": "V_FROMDATE",
+                        "value": Date.parse(toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false)),
+                        "op": "timestamp"
+                    },
+                    {
+                        "name": "V_TODATE",
+                        "value": Date.parse(toIsoStringCusNew(new Date(MLObject.ToDate).toISOString(), false)),
+                        "op": "timestamp"
+                    },
+                    {
+                        "name": "V_REPORTIDLIST",
+                        "value": MLObject.BusinessID,
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_OUTINPUTTYPEIDREPORT1LIST",
+                        "value": "2223,9,12",
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_OUTINPUTTYPEIDREPORT2LIST",
+                        "value": "2064,7,13",
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_OUTINPUTTYPEIDREPORT3LIST",
+                        "value": "2503",
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_OUTINPUTTYPEIDREPORT4LIST",
+                        "value": "3",
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_ISCHECKVIEWDIFFERENCE",
+                        "value": MLObject.Difference == true ? 1 : 0,
+                        "op": "array"
+                    }
 
-        this.callSearchData(objDataNew)
+                ]
+            }
+            console.log("objDataNewol", objDataNewol)
+            this.callSearchData(objDataNewol)
+        }
     }
 
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/CrossCheckReport", searchData).then(apiResult => {
-            // console.log("apiResult", apiResult)
+            console.log("aa", searchData, apiResult)
             if (!apiResult.IsError) {
-                const tempData = apiResult.ResultObject.map((item, index) => {
-                    item.TotalAmount = item.Price * item.EndTermAdvanceDebt;
-                    return item;
-                })
+                // const tempData = apiResult.ResultObject.map((item, index) => {
+                //     item.DateData = item.date
+                //     item.CrossCheckID = item.reportid
+                //     item.BusinessID = item.reportname
+                //     item.TMS = item.quantitytms
+                //     item.ERP = item.quantityerp
+                //     item.Difference = item.differencequantity
+                // })
+
 
                 // xuất exel
                 const exelData = apiResult.ResultObject.map((item, index) => {
@@ -140,7 +181,7 @@ class SearchCom extends React.Component {
                 })
 
                 this.setState({
-                    gridDataSource: tempData,
+                    gridDataSource: apiResult.ResultObject,
                     dataExport: exelData,
                     IsCallAPIError: apiResult.IsError,
                 });
@@ -204,15 +245,36 @@ class SearchCom extends React.Component {
         this.addNotification(result.Message, result.IsError);
     }
 
-    onShowModal(data, typeDataGrid) {
-        const { params, widthPercent } = this.state;
+    onShowModal(data, typeDataGrid, date) {
+        const { params, widthPercent, Difference } = this.state;
+        let titleName = "";
+        switch (typeDataGrid) {
+            case 1:
+                titleName = "Báo cáo chi tiết tạm ứng vật tư";
+                break
+            case 2:
+                titleName = "Báo cáo chi tiết nhập trả tạm ứng";
+                break
+            case 3:
+                titleName = "Báo cáo chi tiết xuất tiêu hao vật";
+                break
+            case 4:
+                titleName = "Báo cáo chi tiết xuất bán vật tư cho khác";
+                break
+            default:
+                titleName = "Báo cáo chi tiết tạm ứng vật tư";
+                break
+        }
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: "Báo cáo chi tiết tạm ứng vật tư",
+            title: titleName,
             content: {
                 text: <ModalDetail
                     param={params}
                     listColumn={DataGridModalAdvanceMaterial}
-                    dataSource={data}
+                    dataSource={[]}
+                    date={date}
+                    typeDataGrid={typeDataGrid}
+                    Difference={Difference}
                     fileName={"Báo cáo chi tiết tạm ứng vật tư"}
                 />
             },
@@ -228,9 +290,67 @@ class SearchCom extends React.Component {
 
     }
 
+    handleTotalLateSubmit(reportid, date) {
+        const { params } = this.state;
+
+        this.onShowModal([], reportid, date);
+       
+        // let searchData = {
+        //     "storedName": "ERP_TMS_RPTDETAILRETURNREQUEST",
+        //     "params": [
+        //         {
+        //             "name": "V_FROMDATE",
+        //             "value": Date.parse(date),
+        //             "op": "timestamp"
+        //         },
+        //         {
+        //             "name": "V_TODATE",
+        //             "value": Date.parse(date),
+        //             "op": "timestamp"
+        //         },
+        //         {
+        //             "name": "V_INPUTTYPEIDLIST",
+        //             "value": "2064,7,13",
+        //             "op": "array"
+        //         },
+        //         {
+        //             "name": "V_ISCHECKVIEWDIFFERENCE",
+        //             "value": 0,
+        //             "op": "array"
+        //         },
+        //         {
+        //             "name": "V_PAGEINDEX",
+        //             "value": 1,
+        //             "op": "array"
+        //         },
+        //         {
+        //             "name": "V_PAGESIZE",
+        //             "value": 100,
+        //             "op": "array"
+        //         }
+
+        //     ]
+        // }
+
+
+        // this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/CrossCheckReportDetail", searchData).then(apiResult => {
+           
+
+        //     if (!apiResult.IsError) {
+        //         this.onShowModal([], reportid, date,params.Difference);
+        //     }
+        //     else {
+        //         this.showMessage(apiResult.Message);
+        //     }
+        // });
+
+
+        // this.onShowModal(reportid,date)
+
+
+    }
 
     render() {
-        console.log("state", this.state)
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -243,7 +363,43 @@ class SearchCom extends React.Component {
                     className="multiple"
                 />
 
-                <DataGrid
+
+
+                <div className="card-body">
+                    <div className="table-responsive">
+                        <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                            <thead className="thead-light">
+                                <tr>
+                                    <th className="jsgrid-header-cell" style={{ width: "40%" }} >Nghiệp vụ</th>
+                                    <th className="jsgrid-header-cell" style={{ width: "30%" }} >Ngày</th>
+                                    <th className="jsgrid-header-cell" style={{ width: "10%" }} >TMS</th>
+                                    <th className="jsgrid-header-cell" style={{ width: "10%" }} >ERP</th>
+                                    <th className="jsgrid-header-cell" style={{ width: "10%" }} >Chênh lệch</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    this.state.gridDataSource
+                                    && this.state.gridDataSource.map((item, index) => {
+                                        return <tr  key ={index}>
+                                            <td > <a className="nav-link text-primary hover-primary cursor-pointer" onClick={() => this.handleTotalLateSubmit(item.reportid, item.date)}>{item.reportname}</a></td>
+                                            <td>{item.date}</td>
+                                            <td>{formatNumberNew(item.quantitytms)}</td>
+                                            <td>{formatNumberNew(item.quantityerp)}</td>
+                                            <td>{formatNumberNew(item.differencequantity)}</td>
+                                        </tr>
+                                    })
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+
+
+                {/* <DataGrid
                     listColumn={GridColumnList}
                     dataSource={this.state.gridDataSource}
                     // AddLink=""
@@ -258,15 +414,12 @@ class SearchCom extends React.Component {
                     IsAutoPaging={true}
                     params={this.state.params}
                     RowsPerPage={20}
-                    // RequirePermission={TMS_BEGINTERMADVANCEDEBT_VIEW}
-                    // ExportPermission={TMS_BEGINTERMADVANCEDEBT_EXPORT}
-                    ref={this.gridref}
                     IsExportFile={true}
                     DataExport={this.state.dataExport}
                     fileName="Danh sách báo đối soát"
                     onExportFile={this.handleExportFile.bind(this)}
                     onShowModal={this.onShowModalDetail.bind(this)}
-                />
+                /> */}
             </React.Fragment>
         );
 

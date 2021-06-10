@@ -40,6 +40,7 @@ export default class SearchForm extends Component {
     onValueChange(elementname, elementvalue, filterrest) {
         const FormDataContolLstd = this.state.FormData;
         FormDataContolLstd[elementname].value = elementvalue;
+        
         if (typeof filterrest != "undefined" && filterrest != "") {
             const objrest = filterrest.split(",");
             for (let i = 0; i < objrest.length; i++) {

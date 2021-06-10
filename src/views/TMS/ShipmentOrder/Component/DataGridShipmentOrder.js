@@ -913,7 +913,7 @@ class DataGridShipmentOderCom extends Component {
                                                 (
                                                     <span className="item price3">
                                                         <span className="price-title">Nợ: </span>
-                                                        <span className="price-debt">-{formatMoney(rowItem.TotalSaleMaterialMoney + rowItem.TotalCOD - rowItem.TotalReturnPrice, 0)}</span>
+                                                        <span className="price-debt">-{(rowItem.TotalCOD - rowItem.TotalReturnPrice)<=0?formatMoney(rowItem.TotalSaleMaterialMoney ):formatMoney(rowItem.TotalSaleMaterialMoney + rowItem.TotalCOD - rowItem.TotalReturnPrice, 0)}</span>
                                                     </span>
                                                 )
                                             }
@@ -1041,6 +1041,7 @@ class DataGridShipmentOderCom extends Component {
                                                 {TotalCOD > 0 && <div className="pricecod">COD:{formatMoney(TotalCOD, 0)}</div>}
                                                 {TotalSaleMaterialMoney > 0 && <div className="price-supplies">Vật tư:{formatMoney(TotalSaleMaterialMoney, 0)}</div>}
                                                 {IsInputReturn && <div className="price-supplies">Nhập trả:{formatMoney(TotalReturnPrice, 0)}</div>}
+                                                
                                                 {(IsPaidIn == true || (TotalSaleMaterialMoney + TotalCOD - TotalReturnPrice) == 0) ?
                                                     (
                                                         <div className="price-success">
@@ -1051,7 +1052,7 @@ class DataGridShipmentOderCom extends Component {
                                                     (
                                                         <div className="price-error">
                                                             <span className="price-title">Nợ: </span>
-                                                            <span className="price-debt">-{formatMoney(TotalSaleMaterialMoney + TotalCOD - TotalReturnPrice, 0)}</span>
+                                                            <span className="price-debt">-{(TotalCOD - TotalReturnPrice)<=0? formatMoney(TotalSaleMaterialMoney): formatMoney(TotalSaleMaterialMoney + TotalCOD - TotalReturnPrice, 0)}</span>
                                                         </div>
                                                     )
                                                 }
