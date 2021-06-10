@@ -6,8 +6,8 @@ import { ModalManager } from "react-dynamic-modal";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import {
-    PagePath, SearchAPIPath, APIHostName,
-    listColumn, LoadAPIPath, MLObjectDefinitionSearch,
+    PagePath, APISearch, APIHostName,
+    listColumn, APILoad, MLObjectDefinitionSearch,
     listElementSearch
 } from "../constants";
 import { MessageModal } from "../../../../common/components/Modal";
@@ -69,16 +69,36 @@ export class SearchCom extends Component {
             }
         ];
 
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, APISearch, searchData).then(apiResult => {
             if (!apiResult.IsError) {
 
                 if (apiResult.ResultObject.length > 0) {
-                    apiResult.ResultObject[0].TotaLRows = apiResult.ResultObject.length;
+
+                    const arrResult = apiResult.ResultObject.map((item, index) => {
+                        if (index == 1) {
+                            return {
+                                ...item,
+                                IsRevokeAssessReviewStatus: item.IsRevokeAssessReview == 0 ? 'Chưa duyệt' : 'Đã duyệt',
+                                TotaLRows: apiResult.ResultObject.length
+                            }
+                        } else {
+                            return {
+                                ...item,
+                                IsRevokeAssessReviewStatus: item.IsRevokeAssessReview == 0 ? 'Chưa duyệt' : 'Đã duyệt'
+                            }
+                        }
+                    });
+
+                    this.setState({
+                        dataGrid: arrResult
+                    });
+
+                } else {
+                    this.setState({
+                        dataGrid: apiResult.ResultObject
+                    });
                 }
 
-                this.setState({
-                    dataGrid: apiResult.ResultObject
-                })
             } else {
                 this.showMessage(apiResult.Message);
             }
@@ -147,7 +167,7 @@ export class SearchCom extends Component {
             }
         ];
 
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, APISearch, searchData).then(apiResult => {
             if (!apiResult.IsError) {
 
                 if (apiResult.ResultObject.length > 0) {

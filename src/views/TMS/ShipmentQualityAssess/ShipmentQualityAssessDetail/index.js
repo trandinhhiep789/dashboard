@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import ReactContext from '../ReactContext'
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import {
-    APIHostName, LoadAPIPath
+    APIHostName, APILoad
 } from "../constants";
 import { MessageModal } from "../../../../common/components/Modal";
 import { formatDate } from "../../../../common/library/CommonLib";
@@ -38,7 +38,7 @@ export class ShipmentQualityAssessDetail extends Component {
     }
 
     fetchShipmentQualityAssessDetail() {
-        this.props.callFetchAPI(APIHostName, LoadAPIPath, this.props.ShipmentQualityAssessId).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, APILoad, this.props.ShipmentQualityAssessId).then(apiResult => {
             if (!apiResult.IsError) {
                 this.setState({
                     data: apiResult.ResultObject

@@ -8,10 +8,10 @@ import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MessageModal } from "../../../../common/components/Modal";
 import {
-    PagePath, SearchAPIPath, APIHostName,
-    listColumn, LoadAPIPath, PagePathEdit,
-    MLObjectDefinitionEdit, CommentAPIPath, AddCommentAPIPath,
-    QualityAssessType, LoadInfoRvkSQAssess
+    PagePath, APISearch, APIHostName,
+    listColumn, APILoad, PagePathEdit,
+    MLObjectDefinitionEdit, APIComment, APICommentAdd,
+    APIQualityAssessType, APIShipmentQualityAssessRvkLoadNew
 } from "../constants";
 import FormContainer from "../../../../common/components/FormContainer";
 import FormControl from "../../../../common/components/FormContainer/FormControl";
@@ -62,7 +62,7 @@ export class EditCom extends Component {
     initData() {
         const { match, location, history } = this.props;
 
-        this.props.callFetchAPI(APIHostName, LoadAPIPath, match.params.id).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, APILoad, match.params.id).then(apiResult => {
             if (!apiResult.IsError) {
                 this.setState({
                     dataSource: apiResult.ResultObject
@@ -87,7 +87,7 @@ export class EditCom extends Component {
             }
         ]
 
-        this.props.callFetchAPI(APIHostName, CommentAPIPath, dataFetch).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, APIComment, dataFetch).then(apiResult => {
             if (!apiResult.IsError) {
                 this.setState({
                     dataCmt: apiResult.ResultObject
@@ -108,7 +108,7 @@ export class EditCom extends Component {
             }
         ];
 
-        this.props.callFetchAPI(APIHostName, LoadInfoRvkSQAssess, dataFetch).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, APIShipmentQualityAssessRvkLoadNew, dataFetch).then(apiResult => {
             if (!apiResult.IsError) {
                 this.setState({
                     dataRvkQualityAssess: apiResult.ResultObject
@@ -123,21 +123,23 @@ export class EditCom extends Component {
         try {
             const { dataSource } = this.state;
 
-            const options = dataQualityAssessType.map(item => {
-                return {
-                    value: item.QualityAssessTypeID,
-                    label: `${item.QualityAssessTypeID} - ${item.QualityAssessTypeName}`
-                }
-            });
+            if (dataSource !== null) {
+                const options = dataQualityAssessType.map(item => {
+                    return {
+                        value: item.QualityAssessTypeID,
+                        label: `${item.QualityAssessTypeID} - ${item.QualityAssessTypeName}`
+                    }
+                });
 
-            const indexQualityAssessType = options.findIndex(item => item.value == dataSource.QualityAssessTypeID);
+                const indexQualityAssessType = options.findIndex(item => item.value == dataSource.QualityAssessTypeID);
 
-            this.setState({
-                optQualityAssessType: options,
-                indexQualityAssessType
-            })
+                this.setState({
+                    optQualityAssessType: options,
+                    indexQualityAssessType
+                })
+            }
         } catch (error) {
-            this.showMessage("Lỗi lấy danh sách loại tiêu chí đánh giá chất lượng");
+            this.showMessage("Lỗi lấy danh sách loại tiêu chí đánh giá chất lượng, vui lòng tải lại trang");
         }
     }
 
@@ -149,7 +151,7 @@ export class EditCom extends Component {
             }
         ];
 
-        this.props.callFetchAPI(APIHostName, QualityAssessType, dataFetch).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, APIQualityAssessType, dataFetch).then(apiResult => {
             if (!apiResult.IsError) {
                 this.handleQualityAssessType(apiResult.ResultObject);
 
@@ -174,7 +176,7 @@ export class EditCom extends Component {
             CommentContent: CommentValue
         }
 
-        this.props.callFetchAPI(APIHostName, AddCommentAPIPath, data).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, APICommentAdd, data).then(apiResult => {
             if (!apiResult.IsError) {
                 this.initComment();
             } else {
