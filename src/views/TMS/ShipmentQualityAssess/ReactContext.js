@@ -2,7 +2,7 @@ import React from 'react';
 
 const ReactContext = React.createContext({
     dataGrid: [],
-    handleDataGrid: () => { },
+    callSearchData: () => { },
 })
 
 ReactContext.displayName = "ShipmentQualityAssess";

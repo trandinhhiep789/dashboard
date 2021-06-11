@@ -1,30 +1,51 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { ModalManager } from "react-dynamic-modal";
-import { Link } from 'react-router-dom';
+import Select from 'react-select';
 
 import ReactContext from '../ReactContext'
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import {
-    APIHostName, APILoad
+    PagePath, APISearch, APIHostName,
+    listColumn, APILoad, PagePathEdit,
+    MLObjectDefinitionEdit, APIComment, APICommentAdd,
+    APIQualityAssessType, APIShipmentQualityAssessRvkLoadNew, APIApproveUserList,
+    APIShipmentQualityAssessRvkAdd
 } from "../constants";
 import { MessageModal } from "../../../../common/components/Modal";
-import { formatDate } from "../../../../common/library/CommonLib";
+import FormContainer from "../../../../common/components/FormContainer";
+import FormControl from "../../../../common/components/FormContainer/FormControl";
+import Comment from "../../../../common/components/Comment";
+import { hideModal } from '../../../../actions/modal';
 
 export class ShipmentQualityAssessDetail extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            data: {}
+            dataCmt: null,
+            dataApproveUserList: null,
+            dataQualityAssessType: null,
+            dataPostAppoveUser: [],
+            optQualityAssessType: [],
+            indexOptQualityAssessType: null,
+            optApproveUser: [],
+            selectedOption: []
         }
 
-        this.fetchShipmentQualityAssessDetail = this.fetchShipmentQualityAssessDetail.bind(this);
-        this.handleCreatedUser = this.handleCreatedUser.bind(this);
+        this.fetchComment = this.fetchComment.bind(this);
+        this.fetchApproveUserList = this.fetchApproveUserList.bind(this);
+        this.fetchQualityAssessType = this.fetchQualityAssessType.bind(this);
+        this.handleApproveUserList = this.handleApproveUserList.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChangeSelect = this.handleChangeSelect.bind(this);
+        this.handleKeyPressSumit = this.handleKeyPressSumit.bind(this);
     }
 
     componentDidMount() {
-        this.fetchShipmentQualityAssessDetail();
+        this.fetchComment();
+        this.fetchApproveUserList();
+        this.fetchQualityAssessType();
     }
 
     showMessage(message) {
@@ -37,11 +58,24 @@ export class ShipmentQualityAssessDetail extends Component {
         );
     }
 
-    fetchShipmentQualityAssessDetail() {
-        this.props.callFetchAPI(APIHostName, APILoad, this.props.ShipmentQualityAssessId).then(apiResult => {
+    fetchComment() {
+        const { dataSource } = this.props;
+
+        const dataFetch = [
+            {
+                SearchKey: "@Keyword",
+                SearchValue: ""
+            },
+            {
+                SearchKey: "@SHIPMENTQUALITYASSESSID",
+                SearchValue: dataSource.ShipmentQualityAssessID
+            }
+        ]
+
+        this.props.callFetchAPI(APIHostName, APIComment, dataFetch).then(apiResult => {
             if (!apiResult.IsError) {
                 this.setState({
-                    data: apiResult.ResultObject
+                    dataCmt: apiResult.ResultObject
                 })
             } else {
                 this.showMessage(apiResult.Message);
@@ -49,188 +83,523 @@ export class ShipmentQualityAssessDetail extends Component {
         });
     }
 
-    handleCreatedUser(AppInfo) {
+    fetchApproveUserList() {
+        const { dataSource } = this.props;
         try {
-            const { UserName, FullName } = AppInfo.LoginInfo.LoginUserInfo;
-            return `${UserName} - ${FullName}`
+            const postData = [
+                {
+                    SearchKey: "@QUALITYASSESSTYPEID",
+                    // SearchValue: dataSource.QualityAssessTypeID
+                    SearchValue: 2
+                }
+            ]
+
+            this.props.callFetchAPI(APIHostName, APIApproveUserList, postData).then(apiResult => {
+                if (!apiResult.IsError) {
+                    this.handleApproveUserList(apiResult.ResultObject);
+
+                    this.setState({
+                        dataApproveUserList: apiResult.ResultObject
+                    })
+                } else {
+                    this.showMessage(apiResult.Message);
+                }
+            });
         } catch (error) {
-            return ``;
+            this.showMessage("Lỗi lấy danh sách người duyệt, vui lòng tải lại trang");
         }
     }
 
-    render() {
-        const { data } = this.state;
-        const { AppInfo } = this.props;
+    fetchQualityAssessType() {
+        const { dataSource } = this.props;
 
-        return (
-            <ReactContext.Consumer>
-                {
-                    ({ dataGrid, handleDataGrid }) => (
-                        <React.Fragment>
+        const dataFetch = [
+            {
+                SearchKey: "@Keyword",
+                SearchValue: ""
+            }
+        ];
+
+        this.props.callFetchAPI(APIHostName, APIQualityAssessType, dataFetch).then(apiResult => {
+            if (!apiResult.IsError) {
+                const options = apiResult.ResultObject.map(item => {
+                    return {
+                        value: item.QualityAssessTypeID,
+                        label: `${item.QualityAssessTypeID} - ${item.QualityAssessTypeName}`
+                    }
+                });
+
+                const indexOptQualityAssessType = options.findIndex(item => item.value == dataSource.QualityAssessTypeID);
+
+                this.setState({
+                    dataQualityAssessType: apiResult.ResultObject,
+                    optQualityAssessType: options,
+                    indexOptQualityAssessType
+                })
+            } else {
+                this.showMessage(apiResult.Message);
+            }
+        });
+    }
+
+    handleApproveUserList(data) {
+        try {
+            if (data !== null) {
+                const optionsApproveUser = data.reduce((acc, val) => {
+                    const indexExistApproveUser = acc.findIndex(item => item.ReviewLevelID == val.ReviewLevelID);
+
+                    if (indexExistApproveUser != -1) {
+                        acc[indexExistApproveUser].options = [
+                            ...acc[indexExistApproveUser].options,
+                            { label: `${val.UserName} - ${val.FullName}`, value: val.UserName }
+                        ];
+
+                        return acc;
+                    } else {
+                        return [
+                            ...acc,
                             {
-                                (Object.keys(data).length != 0 && data.constructor === Object) && <div className="container my-3 e-3">
-                                    <div className="row mb-2">
-                                        <div className="col">
-                                            <div className="row">
-                                                <div className="col-5 d-flex d-flex">Mã đánh giá</div>
-                                                <div>{data.ShipmentQualityAssessID}</div>
-                                            </div>
-                                        </div>
-
-                                        <div className="col">
-                                            <div className="row">
-                                                <div className="col-5 d-flex">Mã vận đơn</div>
-                                                <div>
-                                                    <Link target="_blank" to={`/ShipmentOrder/Detail/${data.ShipmentOrderID}`}>
-                                                        {data.ShipmentOrderID}
-                                                    </Link>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="row mb-2">
-                                        <div className="col">
-                                            <div className="row">
-                                                <div className="col-5 d-flex">Ngày đánh giá</div>
-                                                <div>{formatDate(data.AssessDate, false)}</div>
-                                            </div>
-                                        </div>
-
-                                        <div className="col">
-                                            <div className="row">
-                                                <div className="col-5 d-flex">Mã đơn hàng đối tác</div>
-                                                <div>{data.PartnerSaleOrderID}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="row mb-2">
-                                        <div className="col">
-                                            <div className="row">
-                                                <div className="col-5 d-flex">Giá trị đánh giá</div>
-                                                <div>{data.QualityAssessValue}</div>
-                                            </div>
-                                        </div>
-                                        <div className="col">
-                                            <div className="row">
-                                                <div className="col-5 d-flex">Người tạo</div>
-                                                <div>{this.handleCreatedUser(AppInfo)}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="row mb-2">
-                                        <div className="col">
-                                            <div className="row">
-                                                <div className="col-5 d-flex">Loại tiêu chí đánh giá</div>
-                                                <div>{data.QualityAssessTypeID}</div>
-                                            </div>
-                                        </div>
-                                        <div className="col">
-                                            <div className="row">
-                                                <div className="col-5 d-flex">Ngày tạo</div>
-                                                <div>{formatDate(data.CreatedDate, false)}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="row mb-2">
-                                        <div className="col">
-                                            <div className="row">
-                                                <div className="col-5 d-flex">Ngày duyệt gỡ đánh giá</div>
-                                                <div>{data.RevokeAssessReviewDate}</div>
-                                            </div>
-                                        </div>
-                                        <div className="col">
-                                            <div className="row">
-                                                <div className="col-5 d-flex">Người cập nhập</div>
-                                                <div>{data.UpdatedUser}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="row mb-2">
-                                        <div className="col">
-                                            <div className="row">
-                                                <div className="col-5 d-flex">Người duyệt gỡ đánh giá</div>
-                                                <div>{data.RevokeAssessReviewUser}</div>
-                                            </div>
-                                        </div>
-                                        <div className="col">
-                                            <div className="row">
-                                                <div className="col-5 d-flex">Ngày cập nhật</div>
-                                                <div>{data.UpdatedDate}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="row mb-2">
-                                        <div className="col">
-                                            <div className="row">
-                                                <div className="col-5 d-flex">Đã duyệt gỡ đánh giá</div>
-                                                <div>{data.IsRevokeAssessReview}</div>
-                                            </div>
-                                        </div>
-                                        <div className="col">
-                                            <div className="row">
-                                                <div className="col-5 d-flex">Người xóa</div>
-                                                <div>{data.DeletedUser}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="row mb-2">
-                                        <div className="col">
-                                            <div className="row">
-                                                <div className="col-5 d-flex">Ghi chú đánh giá</div>
-                                                <div className="col-7 pl-0">
-                                                    <textarea
-                                                        type='text'
-                                                        className='form-control'
-                                                        rows={2}
-                                                        disabled
-                                                        defaultValue={data.QualityAssessNote}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="col">
-                                            <div className="row">
-                                                <div className="col-5 d-flex">Ngày xóa</div>
-                                                <div>{data.DeletedDate}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="row mb-2">
-                                        <div className="col">
-                                            <div className="row">
-                                            </div>
-                                        </div>
-                                        <div className="col">
-                                            <div className="row">
-                                                <div className="col-5 d-flex">Lý do xóa</div>
-                                                <div className="col-7 pl-0">
-                                                    <textarea
-                                                        type='text'
-                                                        className='form-control'
-                                                        rows={2}
-                                                        disabled
-                                                        defaultValue={data.DeletedNote}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                ReviewLevelID: val.ReviewLevelID,
+                                ReviewLevelName: val.ReviewLevelName,
+                                options: [{ label: `${val.UserName} - ${val.FullName}`, value: val.UserName }]
                             }
-                        </React.Fragment>
-                    )
-                }
-            </ReactContext.Consumer>
+                        ]
+                    }
+                }, []);
 
-        )
+                this.setState({
+                    optApproveUser: optionsApproveUser
+                })
+            }
+        } catch (error) {
+            this.showMessage("Lỗi hệ thống...");
+        }
+    }
+
+    handleChangeSelect(...data) {
+        try {
+            const { selectedOption, dataApproveUserList, dataPostAppoveUser } = this.state;
+
+            const tempSelectedOption = selectedOption.filter(item => item.ReviewLevelID != data[1].name);
+            const tempDTtPostAppoveUser = dataPostAppoveUser.filter(item => item.ReviewLevelID != data[1].name)
+
+            if (data[0] != null) {
+                tempSelectedOption.push({ ReviewLevelID: data[1].name, UserName: data[0].value });
+
+                const itemApproveUser = dataApproveUserList.find(item => item.ReviewLevelID == data[1].name && item.UserName == data[0].value);
+                tempDTtPostAppoveUser.push(itemApproveUser);
+            }
+
+            this.setState({
+                selectedOption: tempSelectedOption,
+                dataPostAppoveUser: tempDTtPostAppoveUser
+            })
+        } catch (error) {
+            this.showMessage(error)
+        }
+    }
+
+    handleSubmit(handleDataGrid, data) {
+        console.log("🚀 ~ file: index.js ~ line 170 ~ ShipmentQualityAssessDetail ~ handleSubmit ~ FormData, MLObject", handleDataGrid, data)
+        const dataPost = [
+            {
+                SearchKey: "@SHIPMENTQUALITYASSESSID",
+                SearchValue: data[1].ShipmentQualityAssessID
+            },
+            {
+                SearchKey: "@SHIPMENTORDERID",
+                SearchValue: data[1].ShipmentOrderID
+            },
+            {
+                SearchKey: "@ASSESSDATE",
+                SearchValue: data[1].AssessDate
+            },
+            {
+                SearchKey: "@REVIEWLEVELID",
+                SearchValue: data[1].AssessDate
+            },
+        ]
+
+        this.props.hideModal();
+
+        return;
+        this.props.callFetchAPI(APIHostName, APIShipmentQualityAssessRvkAdd, dataFetch).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.props.hideModal();
+                handleDataGrid();
+            } else {
+                this.showMessage(apiResult.Message);
+            }
+        });
+    }
+
+    handleKeyPressSumit(CommentValue) {
+        const { dataSource } = this.props;
+
+        const data = {
+            ReplyToCommentID: "",
+            ShipmentQualityAssessID: dataSource.ShipmentQualityAssessID,
+            ShipmentOrderID: dataSource.ShipmentOrderID,
+            AssessDate: dataSource.AssessDate,
+            CommentDate: new Date(),
+            CommentContent: CommentValue
+        }
+
+        this.props.callFetchAPI(APIHostName, APICommentAdd, data).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.fetchComment();
+            } else {
+                this.showMessage(apiResult.Message);
+            }
+        });
+    }
+
+    render() {
+        const { dataSource } = this.props;
+        const { dataCmt, dataApproveUserList, dataQualityAssessType,
+            optQualityAssessType, indexOptQualityAssessType, optApproveUser } = this.state;
+
+        if (dataCmt === null || dataApproveUserList === null || dataQualityAssessType === null) {
+            return (<React.Fragment>...</React.Fragment>)
+        } else {
+            return (
+                <ReactContext.Consumer>
+                    {
+                        ({ dataGrid, callSearchData }) => (
+                            <React.Fragment>
+                                <FormContainer
+                                    MLObjectDefinition={MLObjectDefinitionEdit}
+                                    listelement={[]}
+                                    RequirePermission={""}
+                                    IsCloseModal={true}
+                                    onSubmit={(...data) => this.handleSubmit(callSearchData, data)}
+                                >
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <FormControl.TextBox
+                                                name="txtShipmentQualityAssessID"
+                                                colspan="8"
+                                                labelcolspan="4"
+                                                readOnly={true}
+                                                label="Mã đánh giá"
+                                                placeholder=""
+                                                controltype="InputControl"
+                                                value={dataSource.ShipmentQualityAssessID}
+                                                datasourcemember="ShipmentQualityAssessID"
+                                                validatonList={[]}
+                                            />
+                                        </div>
+
+                                        <div className="col-md-6">
+                                            <FormControl.TextBox
+                                                name="txtShipmentOrderID"
+                                                colspan="8"
+                                                labelcolspan="4"
+                                                readOnly={true}
+                                                label="Mã vận đơn"
+                                                placeholder=""
+                                                controltype="InputControl"
+                                                value={dataSource.ShipmentOrderID}
+                                                datasourcemember="ShipmentOrderID"
+                                                validatonList={[]}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <FormControl.FormControlDatetime
+                                                name="txtAssessDate"
+                                                colspan="8"
+                                                labelcolspan="4"
+                                                disabled={true}
+                                                label="Ngày đánh giá"
+                                                placeholder=""
+                                                controltype="InputControl"
+                                                value={dataSource.AssessDate}
+                                                datasourcemember="AssessDate"
+                                                validatonList={[]}
+                                            />
+                                        </div>
+
+                                        <div className="col-md-6">
+                                            <FormControl.TextBox
+                                                name="txtPartnerSaleOrderID"
+                                                colspan="8"
+                                                labelcolspan="4"
+                                                readOnly={true}
+                                                label="Mã đơn hàng đối tác"
+                                                placeholder=""
+                                                controltype="InputControl"
+                                                value={dataSource.PartnerSaleOrderID}
+                                                datasourcemember="PartnerSaleOrderID"
+                                                validatonList={[]}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <FormControl.ComboBoxNew
+                                                name="txtQualityAssessTypeID"
+                                                colspan="8"
+                                                labelcolspan="4"
+                                                disabled={true}
+                                                label="Loại tiêu chí đánh giá"
+                                                placeholder=""
+                                                controltype="InputControl"
+                                                defaultValue={optQualityAssessType[indexOptQualityAssessType]}
+                                                datasourcemember="QualityAssessTypeID"
+                                                validatonList={[]}
+                                                isMultiSelect={false}
+                                                listoption={optQualityAssessType}
+                                            />
+                                        </div>
+
+                                        <div className="col-md-6">
+                                            <FormControl.TextBox
+                                                name="txtCreatedUser"
+                                                colspan="8"
+                                                labelcolspan="4"
+                                                readOnly={true}
+                                                label="Người tạo"
+                                                placeholder=""
+                                                controltype="InputControl"
+                                                value={dataSource.FullName}
+                                                datasourcemember="CreatedUser"
+                                                validatonList={[]}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <FormControl.TextBox
+                                                name="txtQualityAssessValue"
+                                                colspan="8"
+                                                labelcolspan="4"
+                                                readOnly={true}
+                                                label="Giá trị đánh giá"
+                                                placeholder=""
+                                                controltype="InputControl"
+                                                value={dataSource.QualityAssessValue}
+                                                datasourcemember="QualityAssessValue"
+                                                validatonList={[]}
+                                            />
+                                        </div>
+
+                                        <div className="col-md-6">
+                                            <FormControl.FormControlDatetime
+                                                name="txtCreatedDate"
+                                                colspan="8"
+                                                labelcolspan="4"
+                                                disabled={true}
+                                                label="Ngày tạo"
+                                                placeholder=""
+                                                controltype="InputControl"
+                                                value={dataSource.CreatedDate}
+                                                datasourcemember="CreatedDate"
+                                                validatonList={[]}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <FormControl.TextArea
+                                                name="txtQualityAssessNote"
+                                                colspan="8"
+                                                labelcolspan="4"
+                                                readonly={true}
+                                                label="Ghi chú đánh giá"
+                                                placeholder=""
+                                                controltype="InputControl"
+                                                value={dataSource.QualityAssessNote}
+                                                datasourcemember="QualityAssessNote"
+                                                validatonList={[]}
+                                            />
+                                        </div>
+
+                                        <div className="col-md-6">
+                                            <FormControl.TextBox
+                                                name="txtUpdatedUser"
+                                                colspan="8"
+                                                labelcolspan="4"
+                                                readOnly={true}
+                                                label="Người cập nhật"
+                                                placeholder=""
+                                                controltype="InputControl"
+                                                value={dataSource.UpdatedUser}
+                                                datasourcemember="UpdatedUser"
+                                                validatonList={[]}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <FormControl.TextBox
+                                                name="txtIsRevokeAssessReview"
+                                                colspan="8"
+                                                labelcolspan="4"
+                                                readOnly={true}
+                                                label="Đã duyệt gỡ đánh giá"
+                                                placeholder=""
+                                                controltype="InputControl"
+                                                value={dataSource.IsRevokeAssessReview}
+                                                datasourcemember="IsRevokeAssessReview"
+                                                validatonList={[]}
+                                            />
+                                        </div>
+
+                                        <div className="col-md-6">
+                                            <FormControl.FormControlDatetime
+                                                name="txtUpdatedDate"
+                                                colspan="8"
+                                                labelcolspan="4"
+                                                disabled={true}
+                                                label="Ngày cập nhật"
+                                                placeholder=""
+                                                controltype="InputControl"
+                                                value={dataSource.UpdatedDate}
+                                                datasourcemember="UpdatedDate"
+                                                validatonList={[]}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <FormControl.TextBox
+                                                name="txtRevokeAssessReviewUser"
+                                                colspan="8"
+                                                labelcolspan="4"
+                                                readOnly={true}
+                                                label="Người duyệt gỡ đánh giá"
+                                                placeholder=""
+                                                controltype="InputControl"
+                                                value={dataSource.RevokeAssessReviewUser}
+                                                datasourcemember="RevokeAssessReviewUser"
+                                                validatonList={[]}
+                                            />
+                                        </div>
+
+                                        <div className="col-md-6">
+                                            <FormControl.TextBox
+                                                name="txtDeletedUser"
+                                                colspan="8"
+                                                labelcolspan="4"
+                                                readOnly={true}
+                                                label="Người xóa"
+                                                placeholder=""
+                                                controltype="InputControl"
+                                                value={dataSource.DeletedUser}
+                                                datasourcemember="DeletedUser"
+                                                validatonList={[]}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <FormControl.FormControlDatetime
+                                                name="txtRevokeAssessReviewDate"
+                                                colspan="8"
+                                                labelcolspan="4"
+                                                disabled={true}
+                                                label="Ngày duyệt gỡ đánh giá"
+                                                placeholder=""
+                                                controltype="InputControl"
+                                                value={dataSource.RevokeAssessReviewDate}
+                                                datasourcemember="RevokeAssessReviewDate"
+                                                validatonList={[]}
+                                            />
+                                        </div>
+
+                                        <div className="col-md-6">
+                                            <FormControl.FormControlDatetime
+                                                name="txtDeletedDate"
+                                                colspan="8"
+                                                labelcolspan="4"
+                                                disabled={true}
+                                                label="Ngày xóa"
+                                                placeholder=""
+                                                controltype="InputControl"
+                                                value={dataSource.DeletedDate}
+                                                datasourcemember="DeletedDate"
+                                                validatonList={[]}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="row">
+                                        <div className="col-md-6"></div>
+                                        <div className="col-md-6">
+                                            <FormControl.TextArea
+                                                name="txtDeletedNote"
+                                                colspan="8"
+                                                labelcolspan="4"
+                                                readonly={true}
+                                                label="Lý do xóa"
+                                                placeholder=""
+                                                controltype="InputControl"
+                                                value={dataSource.DeletedNote}
+                                                datasourcemember="DeletedNote"
+                                                validatonList={[]}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="card">
+                                        <div className="card-title group-card-title">
+                                            <h4 className="title">Danh sách mức duyệt</h4>
+                                        </div>
+                                        <div className="card-body">
+                                            <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                                <thead className="thead-light">
+                                                    <tr>
+                                                        <th className="jsgrid-header-cell">Mức duyệt</th>
+                                                        <th className="jsgrid-header-cell">Người duyệt</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {
+                                                        optApproveUser.map((rowItem, rowIndex) => {
+                                                            return (
+                                                                <tr key={rowIndex}>
+                                                                    <td>{rowItem.ReviewLevelName}</td>
+                                                                    <td>
+                                                                        <Select
+                                                                            name={rowItem.ReviewLevelID}
+                                                                            options={rowItem.options}
+                                                                            placeholder="--Chọn người duyệt--"
+                                                                            onChange={this.handleChangeSelect}
+                                                                            isClearable={true}
+                                                                            clearValue={() => console.log("cls")}
+                                                                        />
+                                                                    </td>
+                                                                </tr>
+                                                            )
+                                                        })
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <Comment
+                                        DataComments={dataCmt}
+                                        IsComment={true}
+                                        onChangeValue={() => { }}
+                                        onKeyPressSumit={this.handleKeyPressSumit}
+                                    />
+                                </FormContainer>
+                            </React.Fragment>
+                        )
+                    }
+                </ReactContext.Consumer>
+            )
+        }
     }
 }
 
@@ -246,6 +615,9 @@ const mapDispatchToProps = dispatch => {
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
         },
+        hideModal: () => {
+            dispatch(hideModal());
+        }
     };
 };
 

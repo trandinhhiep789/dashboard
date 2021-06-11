@@ -84,7 +84,7 @@ class GridCell extends Component {
     }
 
     onShowPopupNew(objValue) {
-        this.props.onModalClick(objValue, this.props.name)
+        this.props.onModalClick(objValue, this.props.name, { ...this.props })
     }
 
     componentDidMount() {

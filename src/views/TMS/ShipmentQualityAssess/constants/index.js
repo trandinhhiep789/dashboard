@@ -17,6 +17,8 @@ export const APIComment = "api/ShipmentQualityAssess_cmt/Search";
 export const APICommentAdd = "api/ShipmentQualityAssess_cmt/Add";
 export const APIQualityAssessType = "api/QualityAssessType/Search";
 export const APIShipmentQualityAssessRvkLoadNew = "api/ShipmentQualityAssess_rvk/LoadNew";
+export const APIShipmentQualityAssessRvkAdd = "api/ShipmentQualityAssess_rvk/Add";
+export const APIApproveUserList = "api/ShipmentQualityAssess_rvk/LoadByQualityAssessTypeID";
 
 export const listColumn = [
     {
@@ -61,15 +63,15 @@ export const listColumn = [
         DataSourceMember: "IsRevokeAssessReviewStatus",
         // Width: 250
     },
-    {
-        Name: "Action",
-        Type: "link",
-        Caption: "Tác vụ",
-        DataSourceMember: "ShipmentQualityAssessID",
-        Link: "/ShipmentQualityAssess/Edit/",
-        LinkText: "Chỉnh sửa",
-        // Width: 150
-    }
+    // {
+    //     Name: "Action",
+    //     Type: "link",
+    //     Caption: "Tác vụ",
+    //     DataSourceMember: "ShipmentQualityAssessID",
+    //     Link: "/ShipmentQualityAssess/Edit/",
+    //     LinkText: "Chỉnh sửa",
+    //     // Width: 150
+    // }
 
 ];
 

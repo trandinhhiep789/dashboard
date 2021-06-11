@@ -14,7 +14,7 @@ import { MessageModal } from "../../../../common/components/Modal";
 import DataGrid from "../../../../common/components/DataGrid";
 import ReactContext from '../ReactContext';
 import { showModal, hideModal } from '../../../../actions/modal';
-import { MODAL_TYPE_COMMONTMODALS } from "../../../../constants/actionTypes";
+import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_CONFIRMATION } from "../../../../constants/actionTypes";
 import ShipmentQualityAssessDetail from '../ShipmentQualityAssessDetail';
 import Add from '../Add'
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
@@ -105,10 +105,7 @@ export class SearchCom extends Component {
         });
     }
 
-
-
-    onShowModalDetail(objValue, name) {
-        const { key, value } = objValue[0];
+    onShowModalDetail(objValue, name, { ...lstProps }) {
         const { dataGrid } = this.state;
 
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
@@ -117,11 +114,11 @@ export class SearchCom extends Component {
                 text: <ReactContext.Provider
                     value={{
                         dataGrid: dataGrid,
-                        handleDataGrid: () => { },
+                        callSearchData: () => this.callSearchData(),
                     }}
                 >
                     <ShipmentQualityAssessDetail
-                        ShipmentQualityAssessId={value}
+                        dataSource={lstProps.rowItem}
                     />
                 </ReactContext.Provider>
             },
