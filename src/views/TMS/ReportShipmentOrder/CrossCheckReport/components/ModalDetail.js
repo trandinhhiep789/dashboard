@@ -747,8 +747,10 @@ class ModalDetailCom extends Component {
                         ref={this.searchref}
                         IsButtonExport={IsShowButtonExport}
                         onExportSubmit={this.handleExportData}
-                        className="multiple"
                         onchange={this.handleChange.bind(this)}
+                        className="multiple"
+                        btnGroup="d-flex align-items-stretch"
+                        btnExport="btn ml-1"
                     />
 
                     <DataGrid
