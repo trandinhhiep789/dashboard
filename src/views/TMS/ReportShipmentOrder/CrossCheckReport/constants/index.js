@@ -210,21 +210,21 @@ export const DataGridModalAdvanceMaterial = [
     },
     {
         Name: "quantitytms",
-        Type: "text",
+        Type: "textTwoNumber",
         Caption: "Số lượng TMS",
         DataSourceMember: "quantitytms",
         Width: "10%"
     },
     {
         Name: "quantityerp",
-        Type: "text",
+        Type: "textTwoNumber",
         Caption: "Số lượng ERP",
         DataSourceMember: "quantityerp",
         Width: "10%"
     },
     {
         Name: "differencequantity",
-        Type: "text",
+        Type: "textTwoNumber",
         Caption: "Chênh lệch",
         DataSourceMember: "differencequantity",
         Width: "10%"

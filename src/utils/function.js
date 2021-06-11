@@ -35,8 +35,18 @@ export const formatNumberNew = (num) => {
     const parNum = num.toString();
     let numSplt = parNum.split('.');
     if (num != undefined && num != '') {
+
         if (numSplt.length > 1) {
-            return numSplt[0].toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "." + numSplt[1].substr(0, 2);;
+            let intTwoNum = 0;
+            const compase = parseInt(numSplt[1].substr(2, 1));
+            if (numSplt[1].length > 2 && compase > 5) {
+                intTwoNum = parseInt(numSplt[1].substr(0, 2)) + 1;
+            }
+            else {
+                intTwoNum = numSplt[1].substr(0, 2);
+            }
+
+            return numSplt[0].toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "." + intTwoNum.toString();
         }
         else {
             return numSplt[0].toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');

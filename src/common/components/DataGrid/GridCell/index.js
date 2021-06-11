@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { formatDate, formatMonthDate } from "../../../library/CommonLib.js";
 import { ModalManager } from 'react-dynamic-modal';
 import { MessageModal } from "../../../../common/components/Modal";
-import { formatMoney, formatNumber, numberDecimalWithComma } from '../../../../utils/function';
+import { formatMoney, formatNumber, numberDecimalWithComma, formatNumberNew } from '../../../../utils/function';
 import { Base64 } from 'js-base64';
 import { withRouter } from 'react-router-dom';
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
@@ -132,6 +132,9 @@ class GridCell extends Component {
                 break;
             case "text":
                 control = <label>{text}</label>;
+                break;
+            case "textTwoNumber":
+                control = <label>{formatNumberNew(text)}</label>;
                 break;
             case "textBoldRed":
                 control = <label className="txt-boold-red">{text}</label>;
