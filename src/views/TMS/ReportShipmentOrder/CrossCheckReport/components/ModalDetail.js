@@ -651,9 +651,9 @@ class ModalDetailCom extends Component {
                         "Chứng từ liên quan": item.voucherconcern,
                         "Mã phiếu TMS": item.ovtms,
                         "Mã phiếu ERP": item.overp,
-                        "Số lượng TMS": item.quantitytms,
-                        "Số lượng ERP": item.quantityerp,
-                        "Chênh lệch": item.differencequantity,
+                        "Số lượng TMS": formatNumberNew(item.quantitytms),
+                        "Số lượng ERP": formatNumberNew(item.quantityerp),
+                        "Chênh lệch": formatNumberNew(item.differencequantity),
                     };
                     return element;
 
