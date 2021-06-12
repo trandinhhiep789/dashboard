@@ -18,6 +18,7 @@ export const APICommentAdd = "api/ShipmentQualityAssess_cmt/Add";
 export const APIQualityAssessType = "api/QualityAssessType/Search";
 export const APIShipmentQualityAssessRvkLoadNew = "api/ShipmentQualityAssess_rvk/LoadNew";
 export const APIShipmentQualityAssessRvkAdd = "api/ShipmentQualityAssess_rvk/Add";
+export const APIAddQualityAssessAndRVK = "api/ShipmentQualityAssess/AddQualityAssessAndRVK";
 export const APIApproveUserList = "api/ShipmentQualityAssess_rvk/LoadByQualityAssessTypeID";
 
 export const listColumn = [
@@ -180,46 +181,10 @@ export const MLObjectDefinitionEdit = [
         DataSourceMember: "ShipmentOrderID"
     },
     {
-        Name: "AssessDate",
-        DefaultValue: "",
-        BindControlName: "txtAssessDate",
-        DataSourceMember: "AssessDate"
-    },
-    {
         Name: "PartnerSaleOrderID",
         DefaultValue: "",
         BindControlName: "txtPartnerSaleOrderID",
         DataSourceMember: "PartnerSaleOrderID"
-    },
-    {
-        Name: "QualityAssessTypeID",
-        DefaultValue: "",
-        BindControlName: "txtQualityAssessTypeID",
-        DataSourceMember: "QualityAssessTypeID"
-    },
-    {
-        Name: "CreatedUser",
-        DefaultValue: "",
-        BindControlName: "txtCreatedUser",
-        DataSourceMember: "CreatedUser"
-    },
-    {
-        Name: "QualityAssessValue",
-        DefaultValue: "",
-        BindControlName: "txtQualityAssessValue",
-        DataSourceMember: "QualityAssessValue"
-    },
-    {
-        Name: "CreatedDate",
-        DefaultValue: "",
-        BindControlName: "txtCreatedDate",
-        DataSourceMember: "CreatedDate"
-    },
-    {
-        Name: "QualityAssessNote",
-        DefaultValue: "",
-        BindControlName: "txtQualityAssessNote",
-        DataSourceMember: "QualityAssessNote"
     },
     {
         Name: "UpdatedUser",
@@ -240,15 +205,15 @@ export const MLObjectDefinitionEdit = [
         DataSourceMember: "UpdatedDate"
     },
     {
+        Name: "RevokeAssessReviewDate",
+        DefaultValue: "",
+        BindControlName: "txtRevokeAssessReviewDate",
+        DataSourceMember: "RevokeAssessReviewDate"
+    },
+    {
         Name: "RevokeAssessReviewUser",
         DefaultValue: "",
         BindControlName: "txtRevokeAssessReviewUser",
         DataSourceMember: "RevokeAssessReviewUser"
-    },
-    {
-        Name: "DeletedUser",
-        DefaultValue: "",
-        BindControlName: "txtDeletedUser",
-        DataSourceMember: "DeletedUser"
     }
 ];

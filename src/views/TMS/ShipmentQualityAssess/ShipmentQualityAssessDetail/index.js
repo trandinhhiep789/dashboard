@@ -10,7 +10,7 @@ import {
     listColumn, APILoad, PagePathEdit,
     MLObjectDefinitionEdit, APIComment, APICommentAdd,
     APIQualityAssessType, APIShipmentQualityAssessRvkLoadNew, APIApproveUserList,
-    APIShipmentQualityAssessRvkAdd
+    APIShipmentQualityAssessRvkAdd, APIAddQualityAssessAndRVK
 } from "../constants";
 import { MessageModal } from "../../../../common/components/Modal";
 import FormContainer from "../../../../common/components/FormContainer";
@@ -201,29 +201,18 @@ export class ShipmentQualityAssessDetail extends Component {
 
     handleSubmit(handleDataGrid, data) {
         console.log("🚀 ~ file: index.js ~ line 170 ~ ShipmentQualityAssessDetail ~ handleSubmit ~ FormData, MLObject", handleDataGrid, data)
-        const dataPost = [
-            {
-                SearchKey: "@SHIPMENTQUALITYASSESSID",
-                SearchValue: data[1].ShipmentQualityAssessID
-            },
-            {
-                SearchKey: "@SHIPMENTORDERID",
-                SearchValue: data[1].ShipmentOrderID
-            },
-            {
-                SearchKey: "@ASSESSDATE",
-                SearchValue: data[1].AssessDate
-            },
-            {
-                SearchKey: "@REVIEWLEVELID",
-                SearchValue: data[1].AssessDate
-            },
-        ]
+        const { dataPostAppoveUser } = this.state;
 
-        this.props.hideModal();
+        const dataPost = {
+            ...data[1],
+            UpdatedDate: new Date(),
+            RevokeAssessReviewDate: new Date(),
+            lstShipmentQualityAssess_rvk: dataPostAppoveUser
+        }
 
-        return;
-        this.props.callFetchAPI(APIHostName, APIShipmentQualityAssessRvkAdd, dataFetch).then(apiResult => {
+        console.log("🚀 ~ file: index.js ~ line 207 ~ ShipmentQualityAssessDetail ~ handleSubmit ~ dataPost", dataPost)
+
+        this.props.callFetchAPI(APIHostName, APIAddQualityAssessAndRVK, dataPost).then(apiResult => {
             if (!apiResult.IsError) {
                 this.props.hideModal();
                 handleDataGrid();
@@ -257,7 +246,9 @@ export class ShipmentQualityAssessDetail extends Component {
     render() {
         const { dataSource } = this.props;
         const { dataCmt, dataApproveUserList, dataQualityAssessType,
-            optQualityAssessType, indexOptQualityAssessType, optApproveUser } = this.state;
+            optQualityAssessType, indexOptQualityAssessType, optApproveUser,
+            selectedOption
+        } = this.state;
 
         if (dataCmt === null || dataApproveUserList === null || dataQualityAssessType === null) {
             return (<React.Fragment>...</React.Fragment>)
@@ -273,6 +264,7 @@ export class ShipmentQualityAssessDetail extends Component {
                                     RequirePermission={""}
                                     IsCloseModal={true}
                                     onSubmit={(...data) => this.handleSubmit(callSearchData, data)}
+                                    IsDisabledSubmitForm={selectedOption.length === 0 ? true : false}
                                 >
                                     <div className="row">
                                         <div className="col-md-6">
@@ -550,42 +542,44 @@ export class ShipmentQualityAssessDetail extends Component {
                                         </div>
                                     </div>
 
-                                    <div className="card">
-                                        <div className="card-title group-card-title">
-                                            <h4 className="title">Danh sách mức duyệt</h4>
+                                    {
+                                        dataSource.IsRevokeAssessReview == 0 ? <div className="card">
+                                            <div className="card-title group-card-title">
+                                                <h4 className="title">Danh sách mức duyệt</h4>
+                                            </div>
+                                            <div className="card-body">
+                                                <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                                    <thead className="thead-light">
+                                                        <tr>
+                                                            <th className="jsgrid-header-cell">Mức duyệt</th>
+                                                            <th className="jsgrid-header-cell">Người duyệt</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {
+                                                            optApproveUser.map((rowItem, rowIndex) => {
+                                                                return (
+                                                                    <tr key={rowIndex}>
+                                                                        <td>{rowItem.ReviewLevelName}</td>
+                                                                        <td>
+                                                                            <Select
+                                                                                name={rowItem.ReviewLevelID}
+                                                                                options={rowItem.options}
+                                                                                placeholder="--Chọn người duyệt--"
+                                                                                onChange={this.handleChangeSelect}
+                                                                                isClearable={true}
+                                                                            />
+                                                                        </td>
+                                                                    </tr>
+                                                                )
+                                                            })
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
-                                        <div className="card-body">
-                                            <table className="table table-sm table-striped table-bordered table-hover table-condensed">
-                                                <thead className="thead-light">
-                                                    <tr>
-                                                        <th className="jsgrid-header-cell">Mức duyệt</th>
-                                                        <th className="jsgrid-header-cell">Người duyệt</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {
-                                                        optApproveUser.map((rowItem, rowIndex) => {
-                                                            return (
-                                                                <tr key={rowIndex}>
-                                                                    <td>{rowItem.ReviewLevelName}</td>
-                                                                    <td>
-                                                                        <Select
-                                                                            name={rowItem.ReviewLevelID}
-                                                                            options={rowItem.options}
-                                                                            placeholder="--Chọn người duyệt--"
-                                                                            onChange={this.handleChangeSelect}
-                                                                            isClearable={true}
-                                                                            clearValue={() => console.log("cls")}
-                                                                        />
-                                                                    </td>
-                                                                </tr>
-                                                            )
-                                                        })
-                                                    }
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                                            : <div></div>
+                                    }
 
                                     <Comment
                                         DataComments={dataCmt}
