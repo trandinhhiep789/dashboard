@@ -160,6 +160,8 @@ import SMSTemplate from "../TMS/MD/SMSTemplate";
 import ServiceGroup from "../TMS/MD/ServiceGroup";
 import ServicePriceApply from "../TMS/MD/ServicePriceApply";
 import PartnerSaleChannel from "../TMS/MD/PartnerSaleChannel";
+import DataExportTemplate from "../TMS/MD/DataExportTemplate";
+import DataExportTemplate_Format from "../TMS/MD/DataExportTemplate_Format";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -398,6 +400,8 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/ServicePriceApply" component={ServicePriceApply} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ServicePriceTable" component={ServicePriceTable} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/PartnerSaleChannel" component={PartnerSaleChannel} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/DataExportTemplate" component={DataExportTemplate} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/DataExportTemplate_Format" component={DataExportTemplate_Format} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
 
 

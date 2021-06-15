@@ -636,19 +636,35 @@ const AppMenu = [
                 ]
             },
             {
+                MenuName: 'Template',
+                MenuTitle: 'Template',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'SMSTemplate',
+                        MenuTitle: 'Template tin nhắn SMS',
+                        LinkTo: '/SMSTemplate',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'DataExportTemplate',
+                        MenuTitle: 'Template xuất dữ liệu',
+                        LinkTo: '/DataExportTemplate',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                ]
+            },
+            {
                 MenuName: 'TMSConfig',
                 MenuTitle: 'Cấu hình hệ thống TMS',
                 LinkTo: '/TMSConfig',
                 MenuIcon: '',
                 SubMenu: []
             },
-            {
-                MenuName: 'SMSTemplate',
-                MenuTitle: 'Template tin nhắn SMS',
-                LinkTo: '/SMSTemplate',
-                MenuIcon: '',
-                SubMenu: []
-            },
+            
 
 
         ]

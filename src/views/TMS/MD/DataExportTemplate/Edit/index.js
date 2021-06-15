@@ -17,8 +17,8 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_SERVICETYPE, ERPCOMMONCACHE_TMSREWARDTYPE } from "../../../../../constants/keyCache";
-import { REWARDTYPE_UPDATE, SERVICETYPE_UPDATE, SMSTEMPLATE_UPDATE } from "../../../../../constants/functionLists";
+import { ERPCOMMONCACHE_MTRETURNREQUESTTYPE, ERPCOMMONCACHE_SHIPMENTFEETYPE } from "../../../../../constants/keyCache";
+import { MTRETURNREQUESTTYPE_UPDATE, QUALITYASSESSTYPE_UPDATE } from "../../../../../constants/functionLists";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -38,31 +38,36 @@ class EditCom extends React.Component {
         this.props.updatePagePath(EditPagePath);
         const id = this.props.match.params.id;
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
-                if (apiResult.IsError) {
-                    this.setState({
-                        IsCallAPIError: apiResult.IsError
-                    });
-                    this.showMessage(apiResult.Message);
-                } else {
-                    this.setState({ DataSource: apiResult.ResultObject });
-                }
+            if (apiResult.IsError) {
                 this.setState({
-                    IsLoadDataComplete: true
+                    IsCallAPIError: apiResult.IsError
                 });
+                this.showMessage(apiResult.Message);
+            } else {
+                this.setState({ DataSource: apiResult.ResultObject });
+            }
+            this.setState({
+                IsLoadDataComplete: true
             });
+        });
     }
 
     handleSubmit(formData, MLObject) {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        // MLObject.AddFunctionID = MLObject.AddFunctionID && Array.isArray(MLObject.AddFunctionID) ? MLObject.AddFunctionID[0] : MLObject.AddFunctionID;
+        // MLObject.InputTypeID = MLObject.InputTypeID && Array.isArray(MLObject.InputTypeID) ? MLObject.InputTypeID[0] : MLObject.InputTypeID;
+        // MLObject.InventoryStatusID = MLObject.InventoryStatusID && Array.isArray(MLObject.InventoryStatusID) ? MLObject.InventoryStatusID[0] : MLObject.InventoryStatusID;
+
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
-                this.setState({ IsCallAPIError: apiResult.IsError });
-                if(!apiResult.IsError){
-                    //this.props.callClearLocalCache(ERPCOMMONCACHE_TMSREWARDTYPE);
-                    // this.handleSubmitInsertLog(MLObject);
-                }      
-                this.showMessage(apiResult.Message);
-            });
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            if (!apiResult.IsError) {
+                //this.props.callClearLocalCache(ERPCOMMONCACHE_MTRETURNREQUESTTYPE);
+                // this.handleSubmitInsertLog(MLObject);
+            }
+            this.showMessage(apiResult.Message);
+        });
+
     }
 
     handleCloseMessage() {
@@ -87,7 +92,7 @@ class EditCom extends React.Component {
         if (this.state.IsLoadDataComplete) {
             return (
                 <SimpleForm
-                    FormName="Cập nhật template tin nhắn SMS"
+                    FormName="Cập nhật template xuất dữ liệu"
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={EditElementList}
                     onSubmit={this.handleSubmit}
@@ -95,7 +100,7 @@ class EditCom extends React.Component {
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
-                    RequirePermission={SMSTEMPLATE_UPDATE}
+                    RequirePermission={QUALITYASSESSTYPE_UPDATE}
                     ref={this.searchref}
                 />
             );
