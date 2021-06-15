@@ -80,6 +80,7 @@ class EditCom extends React.Component {
     callLoadData(id) {
         const { SenderStoreSelect, StoreSelect } = this.state;
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
+           
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -149,6 +150,7 @@ class EditCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
+        // console.log("222", MLObject);
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.CoordinatorStoreID = this.props.match.params.id.trim();
@@ -372,7 +374,7 @@ class EditCom extends React.Component {
                                 readOnly={this.state.IsSystem}
                             />
                         </div>
-                        <div className="col-md-6">
+                        {/* <div className="col-md-6">
                             <MultiAllStoreComboBox
                                 name="cbSenderStoreID"
                                 colspan="8"
@@ -393,6 +395,30 @@ class EditCom extends React.Component {
                                 IsLabelDiv="kho xuất"
                                 disabled={this.state.IsSystem}
                                 readOnly={this.state.IsSystem}
+                            />
+                        </div> */}
+
+                        <div className="col-md-6">
+                            <FormControl.FormControlComboBoxNew
+
+                                name="cbSenderStoreID"
+                                colspan="8"
+                                labelcolspan="4"
+                                label="kho xuất"
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
+                                validatonList={["Comborequired"]}
+                                placeholder="-- Vui lòng chọn --"
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid="ERPCOMMONCACHE.STORE"
+                                valuemember="StoreID"
+                                nameMember="StoreName"
+                                controltype="InputControl"
+                                value={""}
+                                listoption={null}
+                                datasourcemember="SenderStoreID"
+                                filterValue={[1, 10]}
+                                filterobj="CompanyID"
                             />
                         </div>
 

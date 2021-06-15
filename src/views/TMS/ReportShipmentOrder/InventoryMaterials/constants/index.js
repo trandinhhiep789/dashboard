@@ -132,7 +132,7 @@ export const GridColumnList = [
     },
     {
         Name: "QuantityExpend",
-        Type: "text",
+        Type: "popupNew",
         Caption: "Tiêu hao khác",
         DataSourceMember: "QuantityExpend",
         Width: 100
@@ -220,7 +220,7 @@ export const GridColumnListPrice = [
     },
     {
         Name: "QuantityExpend",
-        Type: "text",
+        Type: "popupNew",
         Caption: "Tiêu hao khác",
         DataSourceMember: "QuantityExpend",
         Width: 100

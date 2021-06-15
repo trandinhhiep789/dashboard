@@ -179,6 +179,7 @@ class FormContainerCom extends Component {
 
     //#region InputChange && InputChangeList
     handleInputChange(elementname, elementvalue, namelabel, valuelabel, filterrest) {
+        // console.log("111",elementname, elementvalue, namelabel, valuelabel, filterrest )
         const FormDataContolLstd = this.state.FormData;
         FormDataContolLstd[elementname].value = elementvalue;
         if (typeof filterrest != "undefined" && filterrest != "") {
