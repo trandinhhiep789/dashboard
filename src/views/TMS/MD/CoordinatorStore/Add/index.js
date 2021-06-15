@@ -81,24 +81,27 @@ class AddCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
-        const { SenderStoreID } = this.state;
+        // console.log("222", MLObject);
+        // const { SenderStoreID } = this.state;
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.CoordinatorStoreWard_ItemList = this.state.DataSource.CoordinatorStoreWard_ItemList;
-        MLObject.SenderStoreID = SenderStoreID;
+        // MLObject.SenderStoreID = SenderStoreID;
 
-        if(MLObject.ShipmentOrderTypeID && Array.isArray(MLObject.ShipmentOrderTypeID)){
+        if (MLObject.ShipmentOrderTypeID && Array.isArray(MLObject.ShipmentOrderTypeID)) {
             let result = MLObject.ShipmentOrderTypeID.filter(item => Number.isInteger(item) === true);
             MLObject.ListShipmentOrderTypeID = result;
             MLObject.ShipmentOrderTypeID = -1;
         }
+        // console.log("databc", MLObject);
+
 
         this.props.callFetchAPI(APIHostName, AddNewAPIPath, MLObject).then(apiResult => {
+            // console.log("object", MLObject, apiResult)
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
         });
 
-        //console.log("databc", MLObject);
     }
 
     handleChange(formData, MLObject) {
@@ -138,7 +141,7 @@ class AddCom extends React.Component {
     }
 
     handleEdit(index) {
-        console.log('handleEdit', index)
+        // console.log('handleEdit', index)
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối',
             content: {
@@ -196,7 +199,7 @@ class AddCom extends React.Component {
     }
 
     onChangeAllStore(name, objstore) {
-
+        console.log("onChangeAllStore", name, objstore)
         this.setState({
             SenderStoreID: objstore.value
         })
@@ -305,8 +308,32 @@ class AddCom extends React.Component {
                                 filterobj="CompanyID"
                             />
                         </div>
-
                         <div className="col-md-6">
+                            <FormControl.FormControlComboBoxNew
+
+                                name="cbSenderStoreID"
+                                colspan="8"
+                                labelcolspan="4"
+                                label="kho xuất"
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
+                                validatonList={["Comborequired"]}
+                                placeholder="-- Vui lòng chọn --"
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid="ERPCOMMONCACHE.STORE"
+                                valuemember="StoreID"
+                                nameMember="StoreName"
+                                controltype="InputControl"
+                                value={""}
+                                listoption={null}
+                                datasourcemember="SenderStoreID"
+                                filterValue={[1, 10]}
+                                filterobj="CompanyID"
+                            />
+                        </div>
+
+
+                        {/* <div className="col-md-6">
                             <MultiAllStoreComboBox
                                 name="cbSenderStoreID"
                                 colspan="8"
@@ -326,7 +353,7 @@ class AddCom extends React.Component {
                                 validationErrorMessage={''}
                                 IsLabelDiv="kho xuất"
                             />
-                        </div>
+                        </div> */}
                     </div>
                     <div className="row">
                         {/* <div className="col-md-6">
