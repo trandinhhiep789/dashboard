@@ -265,6 +265,8 @@ class SearchCom extends React.Component {
                 return 3;
             case 'ChangeTotalQuantity':  // Sử dụng trong kỳ
                 return 4;
+            case 'QuantityExpend':  // Sử dụng trong kỳ
+                return 5;
             default:
                 return 0;
         }
@@ -395,6 +397,8 @@ class SearchCom extends React.Component {
     onShowModalDetail(objValue, name) {
         const { UserName, Month, ConfigValueMTReturn } = this.state;
         const status = this.getStatusDelivery(name);
+        console.log("1111", objValue, name, status)
+
 
         console.log("UserName", UserName)
 
@@ -464,6 +468,23 @@ class SearchCom extends React.Component {
                     this.showMessage(apiResult.MessageDetail)
                 }
             });
+        }
+        if (status == 5) { //		Tiêu hao khác
+            objData = {
+                Month: Month,
+                UserName: UserName,
+                ProductID: objValue[0].value
+            }
+            console.log("objData", objData)
+            this.showMessage("Tính năng đăng phát triển.")
+            // this.props.callFetchAPI(APIHostName, "api/AdvanceDebtFlow/LoadQuantityExpend", objData).then(apiResult => {
+            //     if (!apiResult.IsError) {
+            //         this.onShowModal(apiResult.ResultObject, status);
+            //     }
+            //     else {
+            //         this.showMessage(apiResult.MessageDetail)
+            //     }
+            // });
         }
 
     }
