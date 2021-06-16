@@ -6,11 +6,9 @@ import Select from 'react-select';
 import ReactContext from '../ReactContext'
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import {
-    PagePath, APISearch, APIHostName,
-    listColumn, APILoad, PagePathEdit,
-    MLObjectDefinitionEdit, APIComment, APICommentAdd,
-    APIQualityAssessType, APIShipmentQualityAssessRvkLoadNew, APIApproveUserList,
-    APIShipmentQualityAssessRvkAdd, APIAddQualityAssessAndRVK
+    APIHostName, MLObjectDefinitionEdit, APIComment, APICommentAdd,
+    APIQualityAssessType, APIApproveUserList, APIAddQualityAssessAndRVK,
+    APIShipmentQualityAssessRvkLoadNew
 } from "../constants";
 import { MessageModal } from "../../../../common/components/Modal";
 import FormContainer from "../../../../common/components/FormContainer";
@@ -26,6 +24,7 @@ export class ShipmentQualityAssessDetail extends Component {
             dataCmt: null,
             dataApproveUserList: null,
             dataQualityAssessType: null,
+            dataShipmentQualityAssess_RVK: null,
             dataPostAppoveUser: [],
             optQualityAssessType: [],
             indexOptQualityAssessType: null,
@@ -36,16 +35,19 @@ export class ShipmentQualityAssessDetail extends Component {
         this.fetchComment = this.fetchComment.bind(this);
         this.fetchApproveUserList = this.fetchApproveUserList.bind(this);
         this.fetchQualityAssessType = this.fetchQualityAssessType.bind(this);
+        this.fetchShipmentQualityAssess_RVK = this.fetchShipmentQualityAssess_RVK.bind(this);
         this.handleApproveUserList = this.handleApproveUserList.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChangeSelect = this.handleChangeSelect.bind(this);
         this.handleKeyPressSumit = this.handleKeyPressSumit.bind(this);
+        this.indexOptRevokeAssessReview = this.indexOptRevokeAssessReview.bind(this);
     }
 
     componentDidMount() {
         this.fetchComment();
         this.fetchApproveUserList();
         this.fetchQualityAssessType();
+        this.fetchShipmentQualityAssess_RVK();
     }
 
     showMessage(message) {
@@ -89,8 +91,8 @@ export class ShipmentQualityAssessDetail extends Component {
             const postData = [
                 {
                     SearchKey: "@QUALITYASSESSTYPEID",
-                    // SearchValue: dataSource.QualityAssessTypeID
-                    SearchValue: 2
+                    SearchValue: dataSource.QualityAssessTypeID
+                    // SearchValue: 2
                 }
             ]
 
@@ -135,6 +137,27 @@ export class ShipmentQualityAssessDetail extends Component {
                     dataQualityAssessType: apiResult.ResultObject,
                     optQualityAssessType: options,
                     indexOptQualityAssessType
+                })
+            } else {
+                this.showMessage(apiResult.Message);
+            }
+        });
+    }
+
+    fetchShipmentQualityAssess_RVK() {
+        const { dataSource } = this.props;
+
+        const dataFetch = [
+            {
+                SearchKey: "@SHIPMENTQUALITYASSESSID",
+                SearchValue: dataSource.ShipmentQualityAssessID
+            }
+        ];
+
+        this.props.callFetchAPI(APIHostName, APIShipmentQualityAssessRvkLoadNew, dataFetch).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.setState({
+                    dataShipmentQualityAssess_RVK: apiResult.ResultObject
                 })
             } else {
                 this.showMessage(apiResult.Message);
@@ -200,17 +223,15 @@ export class ShipmentQualityAssessDetail extends Component {
     }
 
     handleSubmit(handleDataGrid, data) {
-        console.log("🚀 ~ file: index.js ~ line 170 ~ ShipmentQualityAssessDetail ~ handleSubmit ~ FormData, MLObject", handleDataGrid, data)
+        const { dataSource } = this.props;
         const { dataPostAppoveUser } = this.state;
 
         const dataPost = {
             ...data[1],
+            UpdatedUser: dataSource.UpdatedUser,
             UpdatedDate: new Date(),
-            RevokeAssessReviewDate: new Date(),
             lstShipmentQualityAssess_rvk: dataPostAppoveUser
-        }
-
-        console.log("🚀 ~ file: index.js ~ line 207 ~ ShipmentQualityAssessDetail ~ handleSubmit ~ dataPost", dataPost)
+        };
 
         this.props.callFetchAPI(APIHostName, APIAddQualityAssessAndRVK, dataPost).then(apiResult => {
             if (!apiResult.IsError) {
@@ -243,14 +264,25 @@ export class ShipmentQualityAssessDetail extends Component {
         });
     }
 
+    indexOptRevokeAssessReview(...data) {
+        const options = data[0];
+        const { dataShipmentQualityAssess_RVK } = this.state;
+
+        const indexOpt = options.findIndex(element => {
+            return dataShipmentQualityAssess_RVK.some(item => item.UserName == element.value);
+        })
+
+        return indexOpt;
+    }
+
     render() {
         const { dataSource } = this.props;
         const { dataCmt, dataApproveUserList, dataQualityAssessType,
             optQualityAssessType, indexOptQualityAssessType, optApproveUser,
-            selectedOption
+            selectedOption, dataShipmentQualityAssess_RVK
         } = this.state;
 
-        if (dataCmt === null || dataApproveUserList === null || dataQualityAssessType === null) {
+        if (dataCmt === null || dataApproveUserList === null || dataQualityAssessType === null || dataShipmentQualityAssess_RVK === null) {
             return (<React.Fragment>...</React.Fragment>)
         } else {
             return (
@@ -263,6 +295,7 @@ export class ShipmentQualityAssessDetail extends Component {
                                     listelement={[]}
                                     RequirePermission={""}
                                     IsCloseModal={true}
+                                    isSubmitForm={dataSource.IsRevokeAssessReview == 1 ? false : true}
                                     onSubmit={(...data) => this.handleSubmit(callSearchData, data)}
                                     IsDisabledSubmitForm={selectedOption.length === 0 ? true : false}
                                 >
@@ -421,7 +454,7 @@ export class ShipmentQualityAssessDetail extends Component {
                                                 label="Người cập nhật"
                                                 placeholder=""
                                                 controltype="InputControl"
-                                                value={dataSource.UpdatedUser}
+                                                value={dataSource.UpdatedUserFullName}
                                                 datasourcemember="UpdatedUser"
                                                 validatonList={[]}
                                             />
@@ -430,16 +463,15 @@ export class ShipmentQualityAssessDetail extends Component {
 
                                     <div className="row">
                                         <div className="col-md-6">
-                                            <FormControl.TextBox
+                                            <FormControl.CheckBox
                                                 name="txtIsRevokeAssessReview"
                                                 colspan="8"
                                                 labelcolspan="4"
                                                 readOnly={true}
                                                 label="Đã duyệt gỡ đánh giá"
-                                                placeholder=""
-                                                controltype="InputControl"
-                                                value={dataSource.IsRevokeAssessReview}
+                                                value={dataSource.IsRevokeAssessReview == 1 ? true : false}
                                                 datasourcemember="IsRevokeAssessReview"
+                                                readonly={true}
                                                 validatonList={[]}
                                             />
                                         </div>
@@ -568,6 +600,7 @@ export class ShipmentQualityAssessDetail extends Component {
                                                                                 placeholder="--Chọn người duyệt--"
                                                                                 onChange={this.handleChangeSelect}
                                                                                 isClearable={true}
+                                                                                defaultValue={rowItem.options[this.indexOptRevokeAssessReview(rowItem.options)]}
                                                                             />
                                                                         </td>
                                                                     </tr>
@@ -578,7 +611,7 @@ export class ShipmentQualityAssessDetail extends Component {
                                                 </table>
                                             </div>
                                         </div>
-                                            : <div></div>
+                                            : <React.Fragment></React.Fragment>
                                     }
 
                                     <Comment
