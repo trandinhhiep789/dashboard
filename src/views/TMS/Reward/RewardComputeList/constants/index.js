@@ -137,90 +137,13 @@ export const GridColumnList = [
         DataSourceMember: "UnConfirmUser",
         Width: 200
     },
-
+    {
+        Name: "IsConfirmStatus",
+        Type: "textCustom",
+        Caption: "Chốt thưởng",
+        DataSourceMember: "IsConfirmStatus",
+        Width: "8%"
+    },
     
     
 ]
-
-export const GridColumnListByUserName = [
-    {
-        Name: "RewardDate",
-        Type: "texttolinkdate",
-        Caption: "Ngày",
-        DataSourceMember: "RewardDate",
-        Link: "/RewardShipmentOrder/RewardDate/",
-        Width: 100
-    },
-    {
-        Name: "TotalReward",
-        Type: "textCurrency",
-        Caption: "Tổng thưởng",
-        DataSourceMember: "TotalReward",
-        Width: 100
-    },
-    {
-        Name: "NoteReward",
-        Type: "text",
-        Caption: "Nội dung thưởng",
-        DataSourceMember: "NoteReward",
-        Width: 300
-    },
-  
-    
-]
-
-export const GridColumnListByDate = [
-
-    {
-        Name: "RewardTypeName",
-        Type: "text",
-        Caption: "Loại thưởng",
-        DataSourceMember: "RewardTypeName",
-        Width: 100
-    },
-    {
-        Name: "ProductID",
-        Type: "text",
-        Caption: "Mã sản phẩm",
-        DataSourceMember: "ProductID",
-        Width: 100
-    },
-    {
-        Name: "ProductName",
-        Type: "text",
-        Caption: "Tên sản phẩm",
-        DataSourceMember: "ProductName",
-        Width: 200
-    },
-    {
-       
-        Name: "ShipmentOrderID",
-        Type: "texttolink",
-        Caption: "Mã vận đơn",
-        DataSourceMember: "ShipmentOrderID",
-        Link: "/ShipmentOrder/Detail/",
-        Width: 100
-    },
-    {
-        Name: "Quantity",
-        Type: "text",
-        Caption: "Số lượng",
-        DataSourceMember: "Quantity",
-        Width: 100
-    },
-    {
-        Name: "RewardPrice",
-        Type: "textCurrency",
-        Caption: "Đơn giá thưởng",
-        DataSourceMember: "RewardPrice",
-        Width: 100
-    },
-    {
-        Name: "TotalReward",
-        Type: "textCurrency",
-        Caption: "Số tiền thưởng",
-        DataSourceMember: "TotalReward",
-        Width: 100
-    },
-]
-

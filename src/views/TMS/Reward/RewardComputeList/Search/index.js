@@ -89,8 +89,19 @@ class SearchCom extends React.Component {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             console.log("data",apiResult.ResultObject )
             if (!apiResult.IsError) {
+
+                const tempData = apiResult.ResultObject.map((item, index) => {
+                   
+                    if (item.IscomPuted) {
+                        item.IsConfirmStatus = <span className='lblstatusLock'>Chốt thưởng</span>;
+                    }
+                    else {
+                        item.IsConfirmStatus = <span className='lblstatusUnlock'>Chốt thưởng</span>;
+                    }
+                    return item;
+                })
                 this.setState({
-                    gridDataSource: apiResult.ResultObject,
+                    gridDataSource: tempData,
                     IsCallAPIError: apiResult.IsError,
                     IsLoadDataComplete: true,
                 });
@@ -144,8 +155,21 @@ class SearchCom extends React.Component {
 
 
 
-    handleExportFile(result) {
-        this.addNotification(result.Message, result.IsError);
+    onhandleUpdateItem(objId) {
+        console.log("id", objId)
+        // const { gridDataSource, widthPercent } = this.state;
+
+        // this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+        //     title: "Mô tả lý do thay đổi trạng thái",
+        //     content: {
+        //         text: <ChangeActiveModal
+        //             dataSource={gridDataSource}
+        //             objId={objId}
+        //             ObjDataRequest={this.updateStaffDebtStatus}
+        //         />
+        //     },
+        //     maxWidth: '800px'
+        // });
     }
 
 
@@ -165,6 +189,7 @@ class SearchCom extends React.Component {
 
                 <DataGrid
                     listColumn={GridColumnList}
+                    onUpdateItem={this.onhandleUpdateItem.bind(this)}
                     dataSource={this.state.gridDataSource}
                     // AddLink=""
                     IDSelectColumnName={'chkSelect'}
