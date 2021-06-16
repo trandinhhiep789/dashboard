@@ -29,6 +29,8 @@ import StoreWard from "../../CoordinatorStoreWard/Component/StoreWard";
 import ReactNotification from "react-notifications-component";
 import MultiStoreComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiStoreComboBox";
 import MultiAllStoreComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiAllStoreComboBox";
+import MultiSelectStoreByCompanyComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiSelectStoreByCompanyComboBox";
+
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -332,7 +334,6 @@ class AddCom extends React.Component {
                             />
                         </div>
 
-
                         {/* <div className="col-md-6">
                             <MultiAllStoreComboBox
                                 name="cbSenderStoreID"
@@ -352,6 +353,81 @@ class AddCom extends React.Component {
                                 datasourcemember="SenderStoreID"
                                 validationErrorMessage={''}
                                 IsLabelDiv="kho xuất"
+                            /> 
+                        </div> */}
+
+                        {/* <div className="col-md-6">
+
+                            <MultiSelectStoreByCompanyComboBox
+                                name="cbSenderStoreID"
+                                // rowspan = "12"
+                                colspan="8"
+                                labelcolspan="4"
+                                label="kho xuất"
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
+                                validatonList={["Comborequired"]}
+                                IsLabelDiv={false}
+                                isautoloaditemfromcache={false}
+                                onChange={this.onChangeAllStore.bind(this)}
+                                controltype="InputControl"
+                                value={[]}
+                                listoption={[]}
+                                isMultiSelect={false}
+                                datasourcemember="SenderStoreID"
+                                validationErrorMessage={''}
+                                IsLabelDiv="kho xuất"
+                                classNameDropdown="dropdown-custom"
+                                classRows="groupSelectDropCus"
+                                valueNameOption={1}
+                                nameOption="cbSenderStoreID"
+                                listoptionDropdown={[
+                                    { value: 1, label: 'Công ty TGDD' },
+                                    { value: 10, label: 'Công ty Tân Tâm' },
+                                ]}
+                            />
+                        </div> */}
+
+                        {/* <div className="col-md-6">
+                            <FormControl.FormControlComboBox
+                                name="cbDistrictID"
+                                colspan="8"
+                                labelcolspan="4"
+                                disabled=""
+                                label="Quận/huyện"
+                                validatonList={["Comborequired"]}
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid="ERPCOMMONCACHE.DISTRICT"
+                                valuemember="DistrictID"
+                                nameMember="DistrictName"
+                                controltype="InputControl"
+                                value={-1}
+                                listoption={[]}
+                                datasourcemember="DistrictID"
+                                filterValue=""
+                                filterobj="DistrictID"
+                                filterrest="cbSenderStoreID"
+                            />
+                        </div>
+                        <div className="col-md-6">
+                            <FormControl.FormControlComboBox
+                                name="cbSenderStoreID"
+                                colspan="8"
+                                labelcolspan="4"
+                                label="kho gửi"
+                                validatonList={["Comborequired"]}
+                                placeholder="-- Vui lòng chọn --"
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid="ERPCOMMONCACHE.STORE"
+                                valuemember="StoreID"
+                                nameMember="StoreName"
+                                controltype="InputControl"
+                                value={""}
+                                listoption={null}
+                                datasourcemember="SenderStoreID"
+                                filterName="cbDistrictID"
+                                filterValue=""
+                                filterobj="DistrictID"
                             />
                         </div> */}
                     </div>

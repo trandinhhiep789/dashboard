@@ -339,6 +339,13 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: [
                     {
+                        MenuName: 'RewardComputeType',
+                        MenuTitle: 'Loại tính thưởng',
+                        LinkTo: '/RewardComputeType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
                         MenuName: 'RewardCompute',
                         MenuTitle: 'Tính thưởng',
                         LinkTo: '/RewardCompute',
@@ -1076,7 +1083,13 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-
+            {
+                MenuName: 'RewardComputeList',
+                MenuTitle: 'Danh sách tính thưởng',
+                LinkTo: '/RewardComputeList',
+                MenuIcon: '',
+                SubMenu: []
+            },
 
         ]
     },
