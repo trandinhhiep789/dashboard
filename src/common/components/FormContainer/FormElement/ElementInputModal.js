@@ -290,7 +290,7 @@ class ElementModalComboBoxCom extends Component {
         const comboValues = this.getComboValue(selectedOption);
         if (this.props.onValueChange != null)
             if (this.props.isselectedOp) {
-                this.props.onValueChange(this.props.name, selectedOption,this.props.rowIndex)
+                this.props.onValueChange(this.props.name, selectedOption, this.props.rowIndex)
             }
             else {
                 this.props.onValueChange(this.props.name, comboValues, this.props.rowIndex, this.props.namelabel, selectedOption != null ? selectedOption.label : "", this.props.filterrest);
@@ -308,7 +308,7 @@ class ElementModalComboBoxCom extends Component {
         for (let i = 0; i < values.length; i++) {
             for (let j = 0; j < listOption.length; j++) {
                 if (values[i] == listOption[j].value) {
-                    selectedOption.push({ value: listOption[j].value, label: listOption[j].label,name: listOption[j].name,FullName: listOption[j].name });
+                    selectedOption.push({ value: listOption[j].value, label: listOption[j].label, name: listOption[j].name, FullName: listOption[j].name });
                 }
             }
         }
@@ -338,13 +338,13 @@ class ElementModalComboBoxCom extends Component {
                 if (!result.IsError && result.ResultObject.CacheData != null) {
                     if (typeof filterobj != undefined) {
                         result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
-                            listOption.push({ value: cacheItem[valuemember], label: cacheItem[valuemember] + '-' + cacheItem[nameMember],name: cacheItem[nameMember],FullName: cacheItem[nameMember]  });
+                            listOption.push({ value: cacheItem[valuemember], label: cacheItem[valuemember] + '-' + cacheItem[nameMember], name: cacheItem[nameMember], FullName: cacheItem[nameMember] });
                         }
                         );
                     }
                     else {
                         result.ResultObject.CacheData.map((cacheItem) => {
-                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[valuemember] + '-' + cacheItem[nameMember] ,name: cacheItem[nameMember],FullName: cacheItem[nameMember]  });
+                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[valuemember] + '-' + cacheItem[nameMember], name: cacheItem[nameMember], FullName: cacheItem[nameMember] });
                         }
                         );
                     }
@@ -373,7 +373,7 @@ class ElementModalComboBoxCom extends Component {
                 let listoptionnew = [{ value: -1, label: "--Vui lòng chọn--" }];
                 if (typeof nextProps.filterValue != "undefined") {
                     this.state.Data.filter(n => n[filterobj] == nextProps.filterValue).map((cacheItem) => {
-                        listoptionnew.push({ value: cacheItem[valuemember], label: cacheItem[valuemember] + '-' + cacheItem[nameMember], name: cacheItem[nameMember],FullName: cacheItem[nameMember]  });
+                        listoptionnew.push({ value: cacheItem[valuemember], label: cacheItem[valuemember] + '-' + cacheItem[nameMember], name: cacheItem[nameMember], FullName: cacheItem[nameMember] });
                     }
                     );
                 }
@@ -405,19 +405,19 @@ class ElementModalComboBoxCom extends Component {
         const listOption = this.state.Listoption;
         return (
             <div >
-            <Select
-                value={selectedOption}
-                name={name}
-                ref={this.props.inputRef}
-                onChange={this.handleValueChange}
-                options={listOption}
-                isDisabled={this.props.disabled == true ? true : this.props.readonly}
-                isMulti={isMultiSelect}
-                isSearchable={true}
-                placeholder={placeholder}
-                className={className}
-            />
-            <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
+                <Select
+                    value={selectedOption}
+                    name={name}
+                    ref={this.props.inputRef}
+                    onChange={this.handleValueChange}
+                    options={listOption}
+                    isDisabled={this.props.disabled == true ? true : this.props.readonly}
+                    isMulti={isMultiSelect}
+                    isSearchable={true}
+                    placeholder={placeholder}
+                    className={className}
+                />
+                <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
             </div>
         );
     }
@@ -694,15 +694,17 @@ class MultiUserComboBoxCom extends React.Component {
         this.props.callFetchAPI("ERPAPI", 'api/UserSearch/Search', listMLObject).then(apiResult => {
             let listOptionNew1 = [];
             for (let i = 0; i < apiResult.ResultObject.length; i++) {
-                listOptionNew1.push({
-                    value: apiResult.ResultObject[i].UserName,
-                    name: apiResult.ResultObject[i].UserName + "-" + apiResult.ResultObject[i].FullName,
-                    FullName: apiResult.ResultObject[i].FullName,
-                    DepartmentName: apiResult.ResultObject[i].DepartmentName,
-                    PositionName: apiResult.ResultObject[i].PositionName,
-                    Address: apiResult.ResultObject[i].Address
+                if (apiResult.ResultObject[i].UserName.substr(0, 3) != "004") {
+                    listOptionNew1.push({
+                        value: apiResult.ResultObject[i].UserName,
+                        name: apiResult.ResultObject[i].UserName + "-" + apiResult.ResultObject[i].FullName,
+                        FullName: apiResult.ResultObject[i].FullName,
+                        DepartmentName: apiResult.ResultObject[i].DepartmentName,
+                        PositionName: apiResult.ResultObject[i].PositionName,
+                        Address: apiResult.ResultObject[i].Address
 
-                });
+                    });
+                }
             }
             this.setState({
                 ListOption: listOptionNew1
@@ -730,15 +732,13 @@ class MultiUserComboBoxCom extends React.Component {
     handleValueChange1(e) {
         let value = e.target.value;
 
-        if (this.props.isPartner == undefined || this.props.isPartner == false)
-        {
-            if (value.length > 3 && e.keyCode != 40 && e.keyCode != 38 ) {
+        if (this.props.isPartner == undefined || this.props.isPartner == false) {
+            if (value.length > 3 && e.keyCode != 40 && e.keyCode != 38) {
                 this.callSearchData("*" + value + "*");
             }
         }
-        else
-        {
-            if (value.length > 3 && e.keyCode != 40 && e.keyCode != 38 && value.substr(0, 3)!="004") {
+        else {
+            if (value.length > 3 && e.keyCode != 40 && e.keyCode != 38 && value.substr(0, 3) != "004") {
                 this.callSearchData("*" + value + "*");
             }
         }

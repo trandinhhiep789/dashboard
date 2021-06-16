@@ -17,8 +17,8 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_MTRETURNREQUESTTYPE, ERPCOMMONCACHE_SHIPMENTFEETYPE } from "../../../../../constants/keyCache";
-import { DATAEXPORTTEMPLATE_UPDATE, MTRETURNREQUESTTYPE_UPDATE, QUALITYASSESSTYPE_UPDATE } from "../../../../../constants/functionLists";
+import { ERPCOMMONCACHE_MTRETURNREQUESTTYPE, ERPCOMMONCACHE_SHIPMENTFEETYPE, ERPCOMMONCACHE_SVTIMECONVERT } from "../../../../../constants/keyCache";
+import { MTRETURNREQUESTTYPE_UPDATE, QUALITYASSESSTYPE_UPDATE, SVTIMECONVERT_UPDATE } from "../../../../../constants/functionLists";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -62,7 +62,7 @@ class EditCom extends React.Component {
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
-                //this.props.callClearLocalCache(ERPCOMMONCACHE_MTRETURNREQUESTTYPE);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_SVTIMECONVERT);
                 // this.handleSubmitInsertLog(MLObject);
             }
             this.showMessage(apiResult.Message);
@@ -92,7 +92,7 @@ class EditCom extends React.Component {
         if (this.state.IsLoadDataComplete) {
             return (
                 <SimpleForm
-                    FormName="Cập nhật template xuất dữ liệu"
+                    FormName="Cập nhật bảng chuyển đổi thời gian thực hiện dịch vụ sang sản phẩm dịch vụ"
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={EditElementList}
                     onSubmit={this.handleSubmit}
@@ -100,7 +100,7 @@ class EditCom extends React.Component {
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
-                    RequirePermission={DATAEXPORTTEMPLATE_UPDATE}
+                    RequirePermission={SVTIMECONVERT_UPDATE}
                     ref={this.searchref}
                 />
             );
