@@ -28,7 +28,7 @@ import { convertNodeToElement } from "react-html-parser";
 import Collapsible from 'react-collapsible';
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 import {
-    ERPCOMMONCACHE_SHIPMENTORDERTYPE, ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE, ERPCOMMONCACHE_SERVICEGROUP, ERPUSERCACHE_PAYABLETYPE, ERPCOMMONCACHE_SHIPMENTORDERTYPE_WF, ERPCOMMONCACHE_SHIPMENTOT_WF_NEXT
+    ERPCOMMONCACHE_SHIPMENTORDERTYPE, ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE, ERPCOMMONCACHE_SERVICEGROUP, ERPUSERCACHE_PAYABLETYPE, ERPCOMMONCACHE_SHIPMENTORDERTYPE_WF, ERPCOMMONCACHE_SHIPMENTOT_WF_NEXT, ERPCOMMONCACHE_SVTIMECONVERT
 } from "../../../../../../constants/keyCache";
 
 import FixShipmentFee from "../../FixShipmentFee/";
@@ -269,6 +269,7 @@ class EditCom extends React.Component {
             });
         param.AddFunctionID = param.AddFunctionID && Array.isArray(param.AddFunctionID) ? param.AddFunctionID[0] : param.AddFunctionID;
         param.MTOuputPayableTypeID = param.MTOuputPayableTypeID && Array.isArray(param.MTOuputPayableTypeID) ? param.MTOuputPayableTypeID[0] : param.MTOuputPayableTypeID;
+        param.SvTimeConvertID = param.SvTimeConvertID && Array.isArray(param.SvTimeConvertID) ? param.SvTimeConvertID[0] : param.SvTimeConvertID;
         param.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         param.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         if (param.ShipmentOrderTypeWorkflow) {
@@ -708,6 +709,11 @@ class EditCom extends React.Component {
                                 labelcolspan={4} colspan={8} rowspan={8}
                             />
 
+                            <FormControl.CheckBox label="Có chuyển đổi thời gian thực hiện DV sang sản phẩm DV" name="IsConverSvTimeToSvProduct"
+                                datasourcemember="IsConverSvTimeToSvProduct" controltype="InputControl"
+                                labelcolspan={4} colspan={8} rowspan={8}
+                            />
+
                             {/* ------------------------------------------------------------------ */}
 
                             <FormControl.MultiSelectComboBox name="PartnerID" label="Danh sách đối tác"
@@ -738,11 +744,21 @@ class EditCom extends React.Component {
                             />
 
 
-                            <FormControl.MultiSelectComboBox name="MTOuputPayableTypeID" label="Hình thức thanh toán của yêu cầu xuất dịch vụ"
+                            <FormControl.MultiSelectComboBox name="MTOuputPayableTypeID" label="Hình thức thanh toán của yêu cầu xuất DV"
                                 labelcolspan={4} colspan={8} rowspan={8}
                                 IsLabelDiv={true} controltype="InputControl"
                                 isautoloaditemfromcache={true} loaditemcachekeyid={ERPUSERCACHE_PAYABLETYPE} valuemember="PayableTypeID" nameMember="PayableTypeName"
                                 listoption={[]} datasourcemember="MTOuputPayableTypeID"
+                                isMulti={false}
+                            //SelectedOption={this.state.SelectedServiceGroupList ? this.state.SelectedServiceGroupList : []}
+                            //onValueChangeCus={this.changeSelectServiceGroup}
+                            />
+
+                            <FormControl.MultiSelectComboBox name="SvTimeConvertID" label="Bảng chuyển đổi"
+                                labelcolspan={4} colspan={8} rowspan={8}
+                                IsLabelDiv={true} controltype="InputControl"
+                                isautoloaditemfromcache={true} loaditemcachekeyid={ERPCOMMONCACHE_SVTIMECONVERT} valuemember="SVTimeConvertID" nameMember="SVTimeConvertName"
+                                listoption={[]} datasourcemember="SvTimeConvertID"
                                 isMulti={false}
                             //SelectedOption={this.state.SelectedServiceGroupList ? this.state.SelectedServiceGroupList : []}
                             //onValueChangeCus={this.changeSelectServiceGroup}

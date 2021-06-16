@@ -180,6 +180,13 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    {
+                        MenuName: 'SvTimeConvert',
+                        MenuTitle: 'Bảng chuyển đổi thời gian thực hiện dịch vụ sang sản phẩm dịch vụ',
+                        LinkTo: '/SvTimeConvert',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
 
 
 
