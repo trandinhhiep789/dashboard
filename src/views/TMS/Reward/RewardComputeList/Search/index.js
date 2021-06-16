@@ -93,10 +93,10 @@ class SearchCom extends React.Component {
                 const tempData = apiResult.ResultObject.map((item, index) => {
                    
                     if (item.IscomPuted) {
-                        item.IsConfirmStatus = <span className='lblstatusLock'>Chốt thưởng</span>;
+                        item.IsConfirmStatus = <span className='lblstatusUnlock'>Chốt thưởng</span>;
                     }
                     else {
-                        item.IsConfirmStatus = <span className='lblstatusUnlock'>Chốt thưởng</span>;
+                        item.IsConfirmStatus = <span className='lblstatusLock'>Chốt thưởng</span>;
                     }
                     return item;
                 })
