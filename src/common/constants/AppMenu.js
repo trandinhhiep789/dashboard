@@ -1069,7 +1069,13 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-
+            {
+                MenuName: 'RewardComputeList',
+                MenuTitle: 'Danh sách tính thưởng',
+                LinkTo: '/RewardComputeList',
+                MenuIcon: '',
+                SubMenu: []
+            },
 
         ]
     },
