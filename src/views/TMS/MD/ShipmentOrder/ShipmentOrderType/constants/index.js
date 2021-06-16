@@ -1,4 +1,4 @@
-import { ERPUSERCACHE_PAYABLETYPE } from "../../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_SVTIMECONVERT, ERPUSERCACHE_PAYABLETYPE } from "../../../../../../constants/keyCache";
 
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/ShipmentOrderType/Search";
@@ -158,7 +158,7 @@ export const AddModalColumnList = [
         validatonList: [],
         value: false
     },
-     {
+    {
         Name: "MTOuputPayableTypeID",
         type: "select",
         label: "Hình thức thanh toán của yêu cầu xuất dịch vụ",
@@ -170,6 +170,29 @@ export const AddModalColumnList = [
         ValueMember: "PayableTypeID",
         NameMember: "PayableTypeName",
     },
+    {
+        Name: "IsConverSvTimeToSvProduct",
+        type: "checkbox",
+        label: "Có chuyển đổi thời gian thực hiện DV sang sản phẩm DV",
+        DataSourceMember: "IsConverSvTimeToSvProduct",
+        readonly: false,
+        validatonList: [],
+        value: false
+    },
+    {
+        Name: "SvTimeConvertID",
+        type: "select",
+        label: "Bảng chuyển đổi",
+        DataSourceMember: "SvTimeConvertID",
+        readonly: false,
+        validatonList: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: ERPCOMMONCACHE_SVTIMECONVERT,
+        ValueMember: "SVTimeConvertID",
+        NameMember: "SVTimeConvertName",
+    },
+
+
     //  {
     //     Name: "PartnerID",
     //     type: "select",
@@ -324,6 +347,18 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "MTOuputPayableTypeID",
         DataSourceMember: "MTOuputPayableTypeID"
+    },
+    {
+        Name: "IsConverSvTimeToSvProduct",
+        DefaultValue: "",
+        BindControlName: "IsConverSvTimeToSvProduct",
+        DataSourceMember: "IsConverSvTimeToSvProduct"
+    },
+    {
+        Name: "SvTimeConvertID",
+        DefaultValue: "",
+        BindControlName: "SvTimeConvertID",
+        DataSourceMember: "SvTimeConvertID"
     },
     {
         Name: "Description",
