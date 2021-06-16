@@ -1,5 +1,5 @@
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "api/TMSReward/Search";
+export const SearchAPIPath = "api/RewardComputeList/Search";
 export const SearchNewAPIPath = "api/TMSReward/SearchNew";
 export const LoadByUserNameAPIPath = "api/TMSReward/LoadByUserName";
 export const LoadByUserNameNewAPIPath = "api/TMSReward/LoadByUserNameNew";
@@ -16,138 +16,129 @@ const dtFromdate = new Date();
 dtFromdate.setDate(new Date().getDate() - 30);
 
 export const SearchElementList = [
-    
-    {
-        type: "Datetime",
-        name: "dtFromDate",
-        DataSourceMember: "FromDate",
-        label: "Từ Ngày",
-        // value: dtFromdate,
-        value: new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()),
-        timeFormat: false,
-        dateFormat: "DD/MM/YYYY",
-        colspan: 2,
-    },
-    {
-        type: "Datetime",
-        name: "dtToDate",
-        DataSourceMember: "ToDate",
-        label: "Đến Ngày",
-        value: new Date(),
-        timeFormat: false,
-        dateFormat: "DD/MM/YYYY",
-        colspan: 2,
-    },
     {
         type: "ComboBoxNewChange",
-        name: "cbCoordinatorStoreID",
-        DataSourceMember: "CoordinatorStoreID",
-        label: "kho làm việc",
-        colspan: 3,
+        name: "cbRewardComputeTypeID",
+        DataSourceMember: "RewardComputeTypeID",
+        label: "loại tính thưởng",
+        colspan: 2,
         value: "",
         isMultiSelect: false,
-        placeholder: "---Kho làm việc---",
+        placeholder: "---loại tính thưởng---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
-        ValueMember: "StoreID",
-        NameMember: "StoreName",
-        filterValue: 10,
-        filterobj:"CompanyID",
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.REWARDCOMPUTETYPE",
+        ValueMember: "RewardComputeTypeID",
+        NameMember: "RewardComputeTypeName",
         classNameCol:"col-custom"
     },
     {
-        type: "MultiSelectUser",
-        name: "cbUserName",
-        DataSourceMember: "UserName",
-        label: "Nhân viên",
-        colspan: 12,
-        rowspan: 3,
-        labelcolspan: 12,
-        IsLabelDiv: true,
+        type: "ComboBox",
+        name: "cbIscomPuted",
+        DataSourceMember: "IscomPuted",
+        label: "Đã tính thưởng",
+        colspan: 2,
         value: -1,
-        placeholder: "---Vui lòng chọn---",
-        listoption: [],
-        IsAutoLoadItemFromCache: false,
-        isMultiSelect: false
+        isMultiSelect: false,
+        placeholder: "--Tất cả--",
+        listoption: [
+            { value: -1, label: '--Tất cả--' },
+            { value: 0, label: 'Chưa tính' },
+            { value: 1, label: 'Đã tính' },
+
+        ],
+        ValueMember: "IscomPuted",
+        NameMember: "IscomPutedName"
 
     },
-
-
-]
+];
 
 export const  SearchMLObjectDefinition = [
     {
-        Name: "FromDate",
+        Name: "RewardComputeTypeID",
         DefaultValue: "",
-        BindControlName: "dtFromDate"
+        BindControlName: "cbRewardComputeTypeID"
     },
     {
-        Name: "ToDate",
+        Name: "IscomPuted",
         DefaultValue: "",
-        BindControlName: "dtToDate"
-    },
-    {
-        Name: "CoordinatorStore",
-        DefaultValue: "",
-        BindControlName: "cbCoordinatorStoreID"
-    },
-    {
-        Name: "UserName",
-        DefaultValue: "",
-        BindControlName: "cbUserName"
-    },
+        BindControlName: "cbIscomPuted"
+    }
 ]
 
 export const InitSearchParams = [
     {
-        SearchKey: "@FROMDATE",
-        SearchValue: new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear())
+        SearchKey: "@REWARDCOMPUTETYPEID",
+        SearchValue: ""
     },
     {
-        SearchKey: "@TODATE",
-        SearchValue: new Date()
-    },
-    {
-        SearchKey: "@COORDINATORSTOREID",
-        SearchValue: -1
-    },
-    {
-        SearchKey: "@USERNAME",
-        SearchValue: -1
+        SearchKey: "@ISCOMPUTED",
+        SearchValue: ""
     },
 ];
 
 export const GridColumnList = [
+    
     {
-        Name: "RewardUser",
-        Type: "texttolinkblank",
-        Caption: "Mã nhân viên",
-        DataSourceMember: "RewardUser",
-        Link: "/RewardShipmentOrder/UserName/",
-        Width: 70
+        Name: "RewardComputeTypeName",
+        Type: "text",
+        Caption: "Mã loại tính thưởng",
+        DataSourceMember: "RewardComputeTypeName",
+        Width: 200
     },
     {
-        Name: "FullName",
-        Type: "text",
-        Caption: "Tên nhân viên",
-        DataSourceMember: "FullName",
+        Name: "RewardDate",
+        Type: "date",
+        Caption: "Ngày tính thưởng",
+        DataSourceMember: "RewardDate",
+        Width: 150
+    },
+    
+    {
+        Name: "IscomPuted",
+        Type: "checkicon",
+        Caption: "Đã tính thưởng",
+        DataSourceMember: "IscomPuted",
         Width: 100
     },
     {
-        Name: "TotalReward",
-        Type: "textCurrency",
-        Caption: "Tổng thưởng",
-        DataSourceMember: "TotalReward",
-        Width: 50
+        Name: "LastComputedDate",
+        Type: "date",
+        Caption: "Ngày tính thưởng cuối",
+        DataSourceMember: "LastComputedDate",
+        Width: 150
     },
     {
-        Name: "NoteReward",
-        Type: "text",
-        Caption: "Nội dung thưởng",
-        DataSourceMember: "NoteReward",
-        Width: 300
+        Name: "IsConfirm",
+        Type: "checkicon",
+        Caption: "Đã chốt thưởng",
+        DataSourceMember: "IsConfirm",
+        Width: 100
     },
+    {
+        Name: "ConfirmUser",
+        Type: "text",
+        Caption: "Người chốt",
+        DataSourceMember: "ConfirmUser",
+        Width: 200
+    },
+
+    {
+        Name: "IsUnConfirm",
+        Type: "checkicon",
+        Caption: "Đã bỏ chốt thưởng",
+        DataSourceMember: "IsUnConfirm",
+        Width: 100
+    },
+    {
+        Name: "UnConfirmUser",
+        Type: "text",
+        Caption: "Người bỏ chốt",
+        DataSourceMember: "UnConfirmUser",
+        Width: 200
+    },
+
+    
     
 ]
 
