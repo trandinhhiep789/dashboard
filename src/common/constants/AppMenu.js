@@ -332,6 +332,13 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: [
                     {
+                        MenuName: 'RewardComputeType',
+                        MenuTitle: 'Loại tính thưởng',
+                        LinkTo: '/RewardComputeType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
                         MenuName: 'RewardCompute',
                         MenuTitle: 'Tính thưởng',
                         LinkTo: '/RewardCompute',
