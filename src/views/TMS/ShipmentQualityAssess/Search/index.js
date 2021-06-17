@@ -8,14 +8,14 @@ import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import {
     PagePath, APISearch, APIHostName,
     listColumn, MLObjectDefinitionSearch,
-    listElementSearch
+    listElementSearch, dataSearch
 } from "../constants";
 import { MessageModal } from "../../../../common/components/Modal";
 import DataGrid from "../../../../common/components/DataGrid";
 import ReactContext from '../ReactContext';
 import { showModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from "../../../../constants/actionTypes";
-import ShipmentQualityAssessDetail from '../ShipmentQualityAssessDetail';
+import Update from '../Update';
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 
 export class SearchCom extends Component {
@@ -24,15 +24,16 @@ export class SearchCom extends Component {
 
         this.state = {
             dataGrid: null,
-            PageNumber: 1
+            PageNumber: 1,
+            dataSearch: dataSearch
         }
 
         this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
+
         this.callSearchData = this.callSearchData.bind(this);
         this.showMessage = this.showMessage.bind(this);
         this.onShowModalDetail = this.onShowModalDetail.bind(this);
-        this.onUpdateClick = this.onUpdateClick.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.handleChangePage = this.handleChangePage.bind(this);
     }
@@ -52,47 +53,18 @@ export class SearchCom extends Component {
         );
     }
 
-    callSearchData() {
-        const searchData = [
-            {
-                SearchKey: "@Keyword",
-                SearchValue: ""
-            },
-            {
-                SearchKey: "@TYPENAME",
-                SearchValue: ""
-            },
-            {
-                SearchKey: "@CREATEDUSER",
-                SearchValue: ""
-            },
-            {
-                SearchKey: "@PAGEINDEX",
-                SearchValue: 1
-            },
-            {
-                SearchKey: "@PAGESIZE",
-                SearchValue: 50
-            }
-        ];
+    callSearchData(boolIsFetchSuccess = false) {
+        const { dataSearch } = this.state;
 
-        this.props.callFetchAPI(APIHostName, APISearch, searchData).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, APISearch, dataSearch).then(apiResult => {
             if (!apiResult.IsError) {
 
                 if (apiResult.ResultObject.length > 0) {
 
                     const arrResult = apiResult.ResultObject.map((item, index) => {
-                        if (index == 1) {
-                            return {
-                                ...item,
-                                IsRevokeAssessReviewStatus: item.IsRevokeAssessReview == 0 ? 'Chưa duyệt' : 'Đã duyệt',
-                                TotaLRows: apiResult.ResultObject.length
-                            }
-                        } else {
-                            return {
-                                ...item,
-                                IsRevokeAssessReviewStatus: item.IsRevokeAssessReview == 0 ? 'Chưa duyệt' : 'Đã duyệt'
-                            }
+                        return {
+                            ...item,
+                            IsRevokeAssessReviewStatus: item.IsRevokeAssessReview == 0 ? 'Chưa duyệt' : 'Đã duyệt'
                         }
                     });
 
@@ -106,6 +78,7 @@ export class SearchCom extends Component {
                     });
                 }
 
+                boolIsFetchSuccess && this.showMessage("Cập nhật dữ liệu thành công.")
             } else {
                 this.showMessage(apiResult.Message);
             }
@@ -121,10 +94,10 @@ export class SearchCom extends Component {
                 text: <ReactContext.Provider
                     value={{
                         dataGrid: dataGrid,
-                        callSearchData: () => this.callSearchData(),
+                        callSearchData: (boolIsFetchSuccess) => this.callSearchData(boolIsFetchSuccess),
                     }}
                 >
-                    <ShipmentQualityAssessDetail
+                    <Update
                         dataSource={lstProps.rowItem}
                     />
                 </ReactContext.Provider>
@@ -134,40 +107,55 @@ export class SearchCom extends Component {
 
     }
 
-    onUpdateClick() {
-        this.showMessage("Tính năng đang phát triển")
-    }
-
     handleSearch(formData, MLObject) {
-        const searchData = [
-            {
-                SearchKey: "@Keyword",
-                SearchValue: MLObject.Keyword
-            },
-            {
-                SearchKey: "@TYPENAME",
-                SearchValue: MLObject.Typename
-            },
-            {
-                SearchKey: "@CREATEDUSER",
-                SearchValue: MLObject.CreatedUser ? MLObject.CreatedUser.value : ""
-            },
-            {
-                SearchKey: "@PAGENUMBER",
-                SearchValue: 1
+        const searchData = dataSearch.map(element => {
+            switch (element.SearchKey) {
+                case "@Keyword":
+                    return {
+                        SearchKey: element.SearchKey,
+                        SearchValue: MLObject.Keyword
+                    }
+                case "@TYPENAME":
+                    return {
+                        SearchKey: element.SearchKey,
+                        SearchValue: MLObject.Typename
+                    }
+                case "@CREATEDUSER":
+                    return {
+                        SearchKey: element.SearchKey,
+                        SearchValue: MLObject.CreatedUser == -1 || MLObject.CreatedUser === null ? "" : MLObject.CreatedUser.value
+                    }
+                default:
+                    return element;
             }
-        ];
+        })
 
         this.props.callFetchAPI(APIHostName, APISearch, searchData).then(apiResult => {
             if (!apiResult.IsError) {
 
                 if (apiResult.ResultObject.length > 0) {
-                    apiResult.ResultObject[0].TotaLRows = apiResult.ResultObject.length;
+
+                    const arrResult = apiResult.ResultObject.map((item, index) => {
+                        return {
+                            ...item,
+                            IsRevokeAssessReviewStatus: item.IsRevokeAssessReview == 0 ? 'Chưa duyệt' : 'Đã duyệt',
+                        }
+                    });
+
+                    this.setState({
+                        dataGrid: arrResult,
+                        dataSearch: searchData,
+                        PageNumber: 1
+                    });
+
+                } else {
+                    this.setState({
+                        dataGrid: apiResult.ResultObject,
+                        dataSearch: searchData,
+                        PageNumber: 1
+                    });
                 }
 
-                this.setState({
-                    dataGrid: apiResult.ResultObject
-                })
             } else {
                 this.showMessage(apiResult.Message);
             }
@@ -177,28 +165,23 @@ export class SearchCom extends Component {
     handleChangePage(PageNumber) {
         if (PageNumber == this.state.PageNumber) return;
 
-        const searchData = [
-            {
-                SearchKey: "@Keyword",
-                SearchValue: ""
-            },
-            {
-                SearchKey: "@TYPENAME",
-                SearchValue: ""
-            },
-            {
-                SearchKey: "@CREATEDUSER",
-                SearchValue: ""
-            },
-            {
-                SearchKey: "@PAGEINDEX",
-                SearchValue: PageNumber
-            },
-            {
-                SearchKey: "@PAGESIZE",
-                SearchValue: 1
+        const { dataSearch } = this.state;
+
+        const searchData = dataSearch.map(element => {
+            if (element.SearchKey == "@PAGEINDEX") {
+                return {
+                    SearchKey: element.SearchKey,
+                    SearchValue: PageNumber
+                }
+            } else {
+                return element;
             }
-        ];
+        })
+
+        this.setState({
+            PageNumber,
+            dataSearch: searchData
+        });
 
         this.props.callFetchAPI(APIHostName, APISearch, searchData).then(apiResult => {
             if (!apiResult.IsError) {
@@ -206,29 +189,19 @@ export class SearchCom extends Component {
                 if (apiResult.ResultObject.length > 0) {
 
                     const arrResult = apiResult.ResultObject.map((item, index) => {
-                        if (index == 1) {
-                            return {
-                                ...item,
-                                IsRevokeAssessReviewStatus: item.IsRevokeAssessReview == 0 ? 'Chưa duyệt' : 'Đã duyệt',
-                                TotaLRows: apiResult.ResultObject.length
-                            }
-                        } else {
-                            return {
-                                ...item,
-                                IsRevokeAssessReviewStatus: item.IsRevokeAssessReview == 0 ? 'Chưa duyệt' : 'Đã duyệt'
-                            }
+                        return {
+                            ...item,
+                            IsRevokeAssessReviewStatus: item.IsRevokeAssessReview == 0 ? 'Chưa duyệt' : 'Đã duyệt',
                         }
                     });
 
                     this.setState({
-                        dataGrid: arrResult,
-                        PageNumber
+                        dataGrid: arrResult
                     });
 
                 } else {
                     this.setState({
-                        dataGrid: apiResult.ResultObject,
-                        PageNumber
+                        dataGrid: apiResult.ResultObject
                     });
                 }
 
