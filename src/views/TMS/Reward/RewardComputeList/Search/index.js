@@ -12,8 +12,8 @@ import {
     GridColumnList,
     APIHostName,
     SearchAPIPath,
-    SearchNewAPIPath,
-    InitSearchParams
+    InitSearchParams,
+    SearchConfirmLogAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -25,6 +25,7 @@ import { toIsoStringCus } from '../../../../../utils/function'
 import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
 import ConfirmModal from '../ConfirmModal'
 import { showModal, hideModal } from '../../../../../actions/modal';
+import DataGirdHistory from '../DataGirdHistory'
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -33,7 +34,7 @@ class SearchCom extends React.Component {
         this.callSearchData = this.callSearchData.bind(this);
         this.handleCallData = this.handleCallData.bind(this);
         this.HandleConfirmResult = this.HandleConfirmResult.bind(this);
-        
+
         this.state = {
             IsCallAPIError: false,
             gridDataSource: [],
@@ -156,7 +157,7 @@ class SearchCom extends React.Component {
         });
     }
 
-    HandleConfirmResult(result){
+    HandleConfirmResult(result) {
         console.log("result", result)
         this.addNotification(result.Message, result.IsError)
         const { SearchData } = this.state;
@@ -191,6 +192,65 @@ class SearchCom extends React.Component {
 
     }
 
+    onhandleHistoryItem(objId) {
+
+        const { gridDataSource } = this.state;
+        const dataFind = gridDataSource.find(n => {
+            return n.RewardComputeListID == objId[0].value
+        });
+
+        const postData = [
+            {
+                SearchKey: "@REWARDCOMPUTELISTID",
+                SearchValue: objId[0].value
+            },
+
+
+        ];
+
+        this.props.callFetchAPI(APIHostName, SearchConfirmLogAPIPath, postData).then(apiResult => {
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.MessageDetail);
+            }
+            else {
+
+                if(apiResult.ResultObject.length > 0){
+                    const tempData = apiResult.ResultObject.map((item, index) => {
+
+                        if (item.ConfirmLogType == 1) {
+                            item.ConfirmLogTypeName = item.ConfirmLogType + " - " + "Chốt thưởng"
+                        }
+                        else {
+                            item.ConfirmLogTypeName = item.ConfirmLogType + " - " + "Bỏ chốt thưởng"
+                        }
+                        return item;
+                    })
+                    this.onShowModalHistory(tempData, dataFind);
+                }
+                else{
+                    this.showMessage("Không tồn tại lịch sử chốt thưởng.");
+                }
+                
+            }
+        })
+
+    }
+
+    onShowModalHistory(dataSource = [], dataItem) {
+        const { widthPercent } = this.state;
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: "Danh sách lịch sử quản lý công nợ",
+            content: {
+                text: <DataGirdHistory
+                    dataSource={dataSource}
+                    dataItem={dataItem}
+                />
+
+            },
+            maxWidth: widthPercent + 'px'
+        });
+    }
+
 
     render() {
         return (
@@ -209,6 +269,7 @@ class SearchCom extends React.Component {
                 <DataGrid
                     listColumn={GridColumnList}
                     onUpdateItem={this.onhandleUpdateItem.bind(this)}
+                    onHistoryItem={this.onhandleHistoryItem.bind(this)}
                     dataSource={this.state.gridDataSource}
                     // AddLink=""
                     IDSelectColumnName={'chkSelect'}

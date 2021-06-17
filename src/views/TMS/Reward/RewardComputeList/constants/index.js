@@ -1,6 +1,7 @@
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/RewardComputeList/Search";
 export const ConfirmAPIPath = "api/RewardComputeList/Confirm";
+export const SearchConfirmLogAPIPath = "api/RewardComputeList_CFLog/Search";
 
 
 
@@ -124,10 +125,10 @@ export const GridColumnList = [
         Width: 100
     },
     {
-        Name: "ConfirmUser",
+        Name: "ConfirmFullName",
         Type: "text",
         Caption: "Người chốt",
-        DataSourceMember: "ConfirmUser",
+        DataSourceMember: "ConfirmFullName",
         Width: 200
     },
 
@@ -139,10 +140,10 @@ export const GridColumnList = [
         Width: 100
     },
     {
-        Name: "UnConfirmUser",
+        Name: "UnConfirmFullName",
         Type: "text",
         Caption: "Người bỏ chốt",
-        DataSourceMember: "UnConfirmUser",
+        DataSourceMember: "UnConfirmFullName",
         Width: 200
     },
     {
@@ -152,6 +153,51 @@ export const GridColumnList = [
         DataSourceMember: "IsConfirmStatus",
         Width: "8%"
     },
-    
+    {
+        Name: "History",
+        Type: "btnHistory",
+        Caption: "Lịch sử",
+        DataSourceMember: "History",
+        Width: "5%"
+    },
     
 ]
+
+
+export const DataGirdHistoryColumnList = [
+    {
+        Name: "RewardComputeListID",
+        Type: "text",
+        Caption: "Mã",
+        DataSourceMember: "RewardComputeListID",
+        Width: "10%"
+    },
+    {
+        Name: "RewardDate",
+        Type: "datetime",
+        Caption: "Ngày thưởng",
+        DataSourceMember: "RewardDate",
+        Width: "10%"
+    },
+    {
+        Name: "ConfirmLogTypeName",
+        Type: "text",
+        Caption: "Loại chốt",
+        DataSourceMember: "ConfirmLogTypeName",
+        Width: "10%"
+    },
+    {
+        Name: "ConfirmLogFullName",
+        Type: "text",
+        Caption: "Người chốt",
+        DataSourceMember: "ConfirmLogFullName",
+        Width: "10%"
+    },
+    {
+        Name: "ConfirmLogDate",
+        Type: "datetime",
+        Caption: "Ngày chốt",
+        DataSourceMember: "ConfirmLogDate",
+        Width: "10%"
+    },
+];
