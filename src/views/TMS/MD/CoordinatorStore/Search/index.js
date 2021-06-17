@@ -35,8 +35,7 @@ import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_CARRIERTYPE } from "../../../../../constants/keyCache";
-import { formatDistance } from "date-fns";
-
+import { formatDate } from '../../../../../common/library/CommonLib'
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
@@ -138,7 +137,6 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            // console.log("object", apiResult,searchData )
             if (!apiResult.IsError) {
                 const result = apiResult.ResultObject.map((item) => {
                     item.SenderStoreNameLable = item.SenderStoreID + " - " + item.SenderStoreName;
@@ -171,7 +169,7 @@ class SearchCom extends React.Component {
 
         let excelData = []
         this.props.callFetchAPI(APIHostName, APIDataExport, paramExport).then(apiResult => {
-            console.log("object", apiResult)
+
             if (!apiResult.IsError) {
                 excelData = apiResult.ResultObject.map((item, index) => {
                     let element = {
@@ -179,6 +177,8 @@ class SearchCom extends React.Component {
                         "Đối tác": item.PartnerID + " - " + item.PartnerName,
                         "Kho điều phối": item.StoreID + " - " + item.StoreName,
                         "Kho gửi": item.SenderStoreID + " - " + item.SenderStoreName,
+                        "Ngày cập nhật": formatDate(item.UpdatedDate, false),
+                        "Người cập nhật": item.UpdatedUserFullName
                     };
                     return element;
                 })
