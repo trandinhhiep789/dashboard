@@ -12,8 +12,8 @@ import {
     GridColumnList,
     APIHostName,
     SearchAPIPath,
-    SearchNewAPIPath,
-    InitSearchParams
+    InitSearchParams,
+    SearchConfirmLogAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -22,12 +22,18 @@ import "react-notifications-component/dist/theme.css";
 import { TMS_REWARDCOMPUTELIST_VIEW, TMS_REWARDCOMPUTELIST_CONFIRM } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { toIsoStringCus } from '../../../../../utils/function'
+import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
+import ConfirmModal from '../ConfirmModal'
+import { showModal, hideModal } from '../../../../../actions/modal';
+import DataGirdHistory from '../DataGirdHistory'
+
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
         this.handleCallData = this.handleCallData.bind(this);
+        this.HandleConfirmResult = this.HandleConfirmResult.bind(this);
 
         this.state = {
             IsCallAPIError: false,
@@ -67,10 +73,10 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-  
+
 
         const postData = [
-       
+
             {
                 SearchKey: "@REWARDCOMPUTETYPEID",
                 SearchValue: MLObject.RewardComputeTypeID
@@ -81,23 +87,21 @@ class SearchCom extends React.Component {
             },
 
         ];
+
+        this.setState({
+            SearchData: postData
+        })
         this.callSearchData(postData);
     }
 
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("data",apiResult.ResultObject )
+            console.log("data", apiResult)
             if (!apiResult.IsError) {
 
                 const tempData = apiResult.ResultObject.map((item, index) => {
-                   
-                    if (item.IscomPuted) {
-                        item.IsConfirmStatus = <span className='lblstatusUnlock'>Chốt thưởng</span>;
-                    }
-                    else {
-                        item.IsConfirmStatus = <span className='lblstatusLock'>Chốt thưởng</span>;
-                    }
+                    item.IsConfirmStatus = <span className='lbl-confirm'>Chốt thưởng</span>;
                     return item;
                 })
                 this.setState({
@@ -107,7 +111,7 @@ class SearchCom extends React.Component {
                 });
             }
             else {
-                this.showMessage(apiResult.MessageDetail)
+                this.showMessage(apiResult.Message)
             }
         });
     }
@@ -153,23 +157,98 @@ class SearchCom extends React.Component {
         });
     }
 
+    HandleConfirmResult(result) {
+        console.log("result", result)
+        this.addNotification(result.Message, result.IsError)
+        const { SearchData } = this.state;
+        this.callSearchData(SearchData);
+    }
 
 
     onhandleUpdateItem(objId) {
-        console.log("id", objId)
-        // const { gridDataSource, widthPercent } = this.state;
 
-        // this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-        //     title: "Mô tả lý do thay đổi trạng thái",
-        //     content: {
-        //         text: <ChangeActiveModal
-        //             dataSource={gridDataSource}
-        //             objId={objId}
-        //             ObjDataRequest={this.updateStaffDebtStatus}
-        //         />
-        //     },
-        //     maxWidth: '800px'
-        // });
+        const { gridDataSource } = this.state;
+        const dataFind = gridDataSource.find(n => {
+            return n.RewardComputeListID == objId[0].value
+        });
+
+        if (dataFind.IsComPuted > 0) {
+            this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+                title: "Chốt thưởng",
+                content: {
+                    text: <ConfirmModal
+                        dataSource={dataFind}
+                        objId={objId}
+                        ObjDataRequest={this.HandleConfirmResult}
+                    />
+                },
+                maxWidth: '800px'
+            });
+        }
+        else {
+            this.showMessage("Loại tính thưởng này chưa tính nên không được chốt thưởng.")
+        }
+
+
+    }
+
+    onhandleHistoryItem(objId) {
+
+        const { gridDataSource } = this.state;
+        const dataFind = gridDataSource.find(n => {
+            return n.RewardComputeListID == objId[0].value
+        });
+
+        const postData = [
+            {
+                SearchKey: "@REWARDCOMPUTELISTID",
+                SearchValue: objId[0].value
+            },
+
+
+        ];
+
+        this.props.callFetchAPI(APIHostName, SearchConfirmLogAPIPath, postData).then(apiResult => {
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.MessageDetail);
+            }
+            else {
+
+                if(apiResult.ResultObject.length > 0){
+                    const tempData = apiResult.ResultObject.map((item, index) => {
+
+                        if (item.ConfirmLogType == 1) {
+                            item.ConfirmLogTypeName = item.ConfirmLogType + " - " + "Chốt thưởng"
+                        }
+                        else {
+                            item.ConfirmLogTypeName = item.ConfirmLogType + " - " + "Bỏ chốt thưởng"
+                        }
+                        return item;
+                    })
+                    this.onShowModalHistory(tempData, dataFind);
+                }
+                else{
+                    this.showMessage("Không tồn tại lịch sử chốt thưởng.");
+                }
+                
+            }
+        })
+
+    }
+
+    onShowModalHistory(dataSource = [], dataItem) {
+        const { widthPercent } = this.state;
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: "Danh sách lịch sử quản lý công nợ",
+            content: {
+                text: <DataGirdHistory
+                    dataSource={dataSource}
+                    dataItem={dataItem}
+                />
+
+            },
+            maxWidth: widthPercent + 'px'
+        });
     }
 
 
@@ -177,7 +256,7 @@ class SearchCom extends React.Component {
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
-                 <SearchForm
+                <SearchForm
                     FormName="Tìm kiếm danh sách tính thưởng"
                     MLObjectDefinition={SearchMLObjectDefinition}
                     listelement={SearchElementList}
@@ -185,11 +264,12 @@ class SearchCom extends React.Component {
                     ref={this.searchref}
                     className="multiple"
                     classNamebtnSearch="groupAction"
-                /> 
+                />
 
                 <DataGrid
                     listColumn={GridColumnList}
                     onUpdateItem={this.onhandleUpdateItem.bind(this)}
+                    onHistoryItem={this.onhandleHistoryItem.bind(this)}
                     dataSource={this.state.gridDataSource}
                     // AddLink=""
                     IDSelectColumnName={'chkSelect'}
@@ -202,10 +282,10 @@ class SearchCom extends React.Component {
                     IsExportFile={false}
                     IsAutoPaging={true}
                     RowsPerPage={20}
-                    // RequirePermission={TMS_REWARDCOMPUTELIST_VIEW}
+                    RequirePermission={TMS_REWARDCOMPUTELIST_VIEW}
                     IsExportFile={false}
                     ref={this.gridref}
-                /> 
+                />
             </React.Fragment>
         );
 
@@ -229,6 +309,12 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
+        },
+        hideModal: (type, props) => {
+            dispatch(hideModal(type, props));
         }
     };
 };
