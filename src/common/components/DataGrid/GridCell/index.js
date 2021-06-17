@@ -124,6 +124,9 @@ class GridCell extends Component {
             case "textCustom":
                 control = <div className="textCustom" onClick={() => { this.onClickAction(listValue) }} >{text}</div>;
                 break;
+            case "btnActionConfirm":
+                control = <div className="groupAction"><button className="btnActionConfirm" onClick={() => { this.onClickAction(listValue) }}><i className="ti-check"></i> {text}</button></div>;
+                break;
             case "btnHistory":
                 control = <button className="btnHistory" onClick={() => { this.onHistoryClickAction(listValue) }}><i className="fa fa-history"></i></button>;
                 break;

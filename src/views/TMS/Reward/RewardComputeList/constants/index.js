@@ -1,9 +1,9 @@
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/RewardComputeList/Search";
-export const SearchNewAPIPath = "api/TMSReward/SearchNew";
-export const LoadByUserNameAPIPath = "api/TMSReward/LoadByUserName";
-export const LoadByUserNameNewAPIPath = "api/TMSReward/LoadByUserNameNew";
-export const SearchDetailAPIPath = "api/TMSRewardDetail/Search";
+export const ConfirmAPIPath = "api/RewardComputeList/Confirm";
+
+
+
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
@@ -36,7 +36,7 @@ export const SearchElementList = [
         type: "ComboBox",
         name: "cbIscomPuted",
         DataSourceMember: "IscomPuted",
-        label: "Đã tính thưởng",
+        label: "Tính thưởng",
         colspan: 2,
         value: -1,
         isMultiSelect: false,
@@ -52,6 +52,14 @@ export const SearchElementList = [
 
     },
 ];
+
+export const MLObjectChangeConfirmModal = [
+    {
+        Name: "IsConfirm",
+        DefaultValue: "",
+        BindControlName: "cbIsConfirm"
+    }
+]
 
 export const  SearchMLObjectDefinition = [
     {
@@ -95,10 +103,10 @@ export const GridColumnList = [
     },
     
     {
-        Name: "IscomPuted",
+        Name: "IsComPuted",
         Type: "checkicon",
         Caption: "Đã tính thưởng",
-        DataSourceMember: "IscomPuted",
+        DataSourceMember: "IsComPuted",
         Width: 100
     },
     {
@@ -139,7 +147,7 @@ export const GridColumnList = [
     },
     {
         Name: "IsConfirmStatus",
-        Type: "textCustom",
+        Type: "btnActionConfirm",
         Caption: "Chốt thưởng",
         DataSourceMember: "IsConfirmStatus",
         Width: "8%"
