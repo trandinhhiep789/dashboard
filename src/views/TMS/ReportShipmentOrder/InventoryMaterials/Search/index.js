@@ -16,7 +16,8 @@ import {
     DataGridModalQuantityHanOverDone,
     DataGridModalQuantityHanOverDoing,
     DataGridModalQuantityReturn,
-    DataGridModalChangeTotalQuantity
+    DataGridModalChangeTotalQuantity,
+    DataGridModalQuantityExpend
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -125,7 +126,6 @@ class SearchCom extends React.Component {
 
         }
 
-        console.log("objData", objData)
         this.callSearchData(objData);
     }
 
@@ -133,6 +133,8 @@ class SearchCom extends React.Component {
 
 
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+
+            console.log("apiResult", searchData, apiResult)
             if (apiResult && !apiResult.IsError && apiResult.ResultObject) {
 
                 const tempData = apiResult.ResultObject.filter(a => a.MaterialGroupID.trim() == this.state.ConfigValue);
@@ -388,29 +390,57 @@ class SearchCom extends React.Component {
                     maxWidth: widthPercent + 'px'
                 });
                 break;
+            case 5:
+                dataExcel = data.map(item => {
+                    const result = DataGridModalChangeTotalQuantity.reduce((acc, val) => {
+                        acc[val.Caption] = item[val.DataSourceMember]
+
+                        return acc;
+                    }, {})
+
+                    return result;
+                })
+
+
+                this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+                    title: "Tiêu hao khác",
+                    content: {
+                        text: <ModalBox
+                            UserName={(MLObject.UserName == -1 || MLObject.UserName == null) ? "" : MLObject.UserName.label}
+                            Month={Month}
+                            listColumn={DataGridModalQuantityExpend}
+                            dataSource={data}
+                            fileName={"Sử dụng trong kỳ"}
+                            dataExport={dataExcel}
+                        />
+                    },
+                    maxWidth: widthPercent + 'px'
+                });
+                break;
 
             default:
                 break;
         }
     }
 
-    onShowModalDetail(objValue, name) {
+    onShowModalDetail(objValue, name, { ...lstProps }) {
         const { UserName, Month, ConfigValueMTReturn } = this.state;
         const status = this.getStatusDelivery(name);
-        console.log("1111", objValue, name, status)
+        console.log("1111", objValue, name, status, { ...lstProps })
 
-
-        console.log("UserName", UserName)
+        const rowItem = { ...lstProps.rowItem }
+        console.log("rowItem", rowItem)
 
         let objData = {};
         if (status == 1) { //	Nhận trong kỳ
             objData = {
                 Month: Month,
-                UserName: UserName,
-                ProductID: objValue[0].value,
+                UserName: rowItem.RequestUser,//UserName
+                ProductID: rowItem.ProductID,//objValue[0].value,
                 IsHandOverMaterial: 1 // v_ISHANDOVERMATERIAL
             }
             this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/LoadByHandOverMaterial", objData).then(apiResult => {
+                console.log("Nhận trong kỳ", objData, apiResult)
                 if (!apiResult.IsError) {
                     this.onShowModal(apiResult.ResultObject, status);
                 }
@@ -423,8 +453,8 @@ class SearchCom extends React.Component {
         if (status == 2) { //	Chờ bàn giao
             objData = {
                 Month: Month,
-                UserName: UserName,
-                ProductID: objValue[0].value,
+                UserName: rowItem.RequestUser,//UserName
+                ProductID: rowItem.ProductID,//objValue[0].value,
                 IsHandOverMaterial: 0 // v_ISHANDOVERMATERIAL
             }
             this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/LoadByHandOverMaterial", objData).then(apiResult => {
@@ -439,13 +469,15 @@ class SearchCom extends React.Component {
         if (status == 3) { //Nhập trả
             objData = {
                 Month: Month,
-                UserNameList: UserName,
-                OrderTypeID: ConfigValueMTReturn
+                UserName: rowItem.RequestUser,
+                ProductID: rowItem.ProductID,
+                //OrderTypeID: ConfigValueMTReturn
                 // ProductID: objValue[0].value,
                 // IsHandOverMaterial: 0 // v_ISHANDOVERMATERIAL
             }
             //this.showMessage("Tính năng đang phát triển.")
             this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/GetExchangeOrderByUser", objData).then(apiResult => {
+                console.log("Nhập trả", objData, apiResult)
                 if (!apiResult.IsError) {
                     this.onShowModal(apiResult.ResultObject, status);
                 }
@@ -457,8 +489,8 @@ class SearchCom extends React.Component {
         if (status == 4) { //	Sử dụng trong kỳ
             objData = {
                 Month: Month,
-                UserName: UserName,
-                ProductID: objValue[0].value
+                UserName: rowItem.RequestUser,//UserName
+                ProductID: rowItem.ProductID,//objValue[0].value,
             }
             this.props.callFetchAPI(APIHostName, "api/AdvanceDebtFlow/LoadAdvanceDebtFlowUsing", objData).then(apiResult => {
                 if (!apiResult.IsError) {
@@ -472,19 +504,19 @@ class SearchCom extends React.Component {
         if (status == 5) { //		Tiêu hao khác
             objData = {
                 Month: Month,
-                UserName: UserName,
-                ProductID: objValue[0].value
+                UserName: rowItem.RequestUser,
+                ProductID: rowItem.ProductID,
             }
-            console.log("objData", objData)
-            this.showMessage("Tính năng đăng phát triển.")
-            // this.props.callFetchAPI(APIHostName, "api/AdvanceDebtFlow/LoadQuantityExpend", objData).then(apiResult => {
-            //     if (!apiResult.IsError) {
-            //         this.onShowModal(apiResult.ResultObject, status);
-            //     }
-            //     else {
-            //         this.showMessage(apiResult.MessageDetail)
-            //     }
-            // });
+            // this.showMessage("Tính năng đăng phát triển.")
+            this.props.callFetchAPI(APIHostName, "api/AdvanceDebtFlow/LoadQuantityExpend", objData).then(apiResult => {
+                console.log("Tiêu hao khác", objData, apiResult)
+                if (!apiResult.IsError) {
+                    this.onShowModal(apiResult.ResultObject, status);
+                }
+                else {
+                    this.showMessage(apiResult.MessageDetail)
+                }
+            });
         }
 
     }
