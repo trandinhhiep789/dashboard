@@ -9,7 +9,7 @@ import {
     APIHostName, APIQualityAssessTypeSRH, APICommentSRH,
     APICommentAdd, APIQualityAssessType_RVLevelLoad, APIShipmentQualityAssessRvkLoadNew,
     APIAddQualityAssessAndRVK,
-    MLObjectDefinitionEdit
+    MLObjectDefinitionEdit, arrOptReviewStatus
 } from "../constants";
 import { MessageModal } from "../../../../common/components/Modal";
 import FormContainer from "../../../../common/components/FormContainer";
@@ -28,8 +28,7 @@ export class Update extends Component {
             arrFetchComment: null,
             arrFetchQualityAssessType_RVLevel: null,
             arrOptQualityAssessType_RVLevel: [],
-            arrFetchShipmentQualityAssess_RVK: null,
-            arrIsSelectShipmentQualityAssess_RVK: []
+            arrFetchShipmentQualityAssess_RVK: null
         }
 
         this.fetchArrQualityAssessType = this.fetchArrQualityAssessType.bind(this);
@@ -38,9 +37,11 @@ export class Update extends Component {
 
         this.handleArrQualityAssessType_RVLevel = this.handleArrQualityAssessType_RVLevel.bind(this);
         this.handleEnterComment = this.handleEnterComment.bind(this);
-        this.handleGetIndexSelected = this.handleGetIndexSelected.bind(this);
         this.handleChangeSelect = this.handleChangeSelect.bind(this);
+        this.handleChangeReviewStatus = this.handleChangeReviewStatus.bind(this);
         this.handleSubmitForm = this.handleSubmitForm.bind(this);
+        this.handleValueReviewStatus = this.handleValueReviewStatus.bind(this);
+        this.handleValueReviewUser = this.handleValueReviewUser.bind(this);
     }
 
     componentDidMount() {
@@ -48,6 +49,16 @@ export class Update extends Component {
         this.fetchArrComment();
         this.fetchArrQualityAssessType_RVLevel();
         this.fetchArrShipmentQualityAssess_RVK();
+    }
+
+    showMessage(message) {
+        ModalManager.open(
+            <MessageModal
+                title="Thông báo"
+                message={message}
+                onRequestClose={() => true}
+            />
+        );
     }
 
     fetchArrQualityAssessType() {
@@ -148,6 +159,12 @@ export class Update extends Component {
                 this.setState({
                     arrFetchShipmentQualityAssess_RVK: apiResult.ResultObject
                 })
+
+                apiResult.ResultObject.forEach(item => {
+                    this.setState({
+                        [item.ReviewLevelID]: { UserName: item.UserName, ReviewStatus: item.ReviewStatus }
+                    })
+                })
             } else {
                 this.showMessage(apiResult.Message);
             }
@@ -184,16 +201,6 @@ export class Update extends Component {
         return arrResult;
     }
 
-    showMessage(message) {
-        ModalManager.open(
-            <MessageModal
-                title="Thông báo"
-                message={message}
-                onRequestClose={() => true}
-            />
-        );
-    }
-
     handleEnterComment(CommentContent) {
         const { dataSource } = this.props;
 
@@ -215,85 +222,81 @@ export class Update extends Component {
         });
     }
 
-    handleGetIndexSelected(arrOpts) {
-        try {
-            const { arrFetchShipmentQualityAssess_RVK } = this.state
-
-            const numIndex = arrOpts.findIndex((item, index) => {
-                return arrFetchShipmentQualityAssess_RVK.some(item1 => item1.UserName == item.value);
-            });
-
-            if (numIndex == -1) {
-                return "";
-            } else {
-                return arrOpts[numIndex];
-            }
-        } catch (error) {
-            return "";
-        }
-    }
-
     handleChangeSelect(...data) {
         try {
-            const { arrIsSelectShipmentQualityAssess_RVK } = this.state;
             const { name } = data[1];
 
-            const numIndex = arrIsSelectShipmentQualityAssess_RVK.findIndex(item => item.name == name);
-            let arrIsSelect = [];
-
-            if (numIndex == -1) {
-                arrIsSelect = [
-                    ...arrIsSelectShipmentQualityAssess_RVK,
-                    {
-                        name,
-                        value: data[0] == null ? "" : data[0].value
-                    }
-                ]
-            } else {
-                arrIsSelect = arrIsSelectShipmentQualityAssess_RVK.map(item => {
-                    if (item.name == name) {
-                        return {
-                            name,
-                            value: data[0] == null ? "" : data[0].value
-                        }
-                    } else {
-                        return item;
-                    }
-                })
-            };
-
             this.setState({
-                arrIsSelectShipmentQualityAssess_RVK: arrIsSelect
+                [name]: { UserName: data[0].value, ReviewStatus: 0 }
             });
         } catch (error) {
             this.showMessage("Lỗi chọn người duyệt, vui lòng thử lại.")
         }
     }
 
+    handleChangeReviewStatus(...data) {
+        try {
+            const { name } = data[1];
+
+            this.setState({
+                [name]: { ...this.state[name], ReviewStatus: data[0].value }
+            });
+        } catch (error) {
+            this.showMessage("Lỗi chọn trạng thái duyệt, vui lòng thử lại.")
+        }
+    }
+
+    handleValueReviewStatus(ReviewLevelID, arrOptReviewStatus) {
+        try {
+            if (this.state[ReviewLevelID]) {
+                return arrOptReviewStatus.find(item => item.value == this.state[ReviewLevelID].ReviewStatus);
+            } else {
+                return "";
+            }
+        } catch (error) {
+            this.showMessage("Lỗi trạng thái duyệt.")
+        }
+    }
+
+    handleValueReviewUser(ReviewLevelID, arrOptReviewUser) {
+        try {
+            if (this.state[ReviewLevelID]) {
+                return arrOptReviewUser.find(item => item.value == this.state[ReviewLevelID].UserName);
+            } else {
+                return "";
+            }
+        } catch (error) {
+            this.showMessage("Lỗi danh sách người duyệt.")
+        }
+    }
+
     handleSubmitForm(callSearchData, data) {
         const { dataSource } = this.props;
-        const { arrIsSelectShipmentQualityAssess_RVK, arrFetchQualityAssessType_RVLevel } = this.state;
+        const { arrFetchQualityAssessType_RVLevel } = this.state;
 
-        const lstShipmentQualityAssess_rvk = arrIsSelectShipmentQualityAssess_RVK.reduce((acc, val) => {
-            const found = arrFetchQualityAssessType_RVLevel.find(item => {
-                return item.ReviewLevelID == val.name && item.UserName == val.value;
-            })
-
-            if (found == undefined) {
-                return acc;
+        const lstShipmentQualityAssess_rvk = arrFetchQualityAssessType_RVLevel.reduce((acc, val) => {
+            if (this.state[val.ReviewLevelID] && this.state[val.ReviewLevelID].UserName == val.UserName) {
+                return [
+                    ...acc,
+                    {
+                        ...val,
+                        ReviewStatus: this.state[val.ReviewLevelID].ReviewStatus
+                    }
+                ]
             } else {
-                return [...acc, found];
+                return acc;
             }
-        }, [])
+        }, []);
 
         const objPost = {
             ...data[1],
+            IsRevokeAssessReview: lstShipmentQualityAssess_rvk[lstShipmentQualityAssess_rvk.length - 1].ReviewStatus == 1 ? 1 : 0,
+            RevokeAssessReviewUser: `${lstShipmentQualityAssess_rvk[lstShipmentQualityAssess_rvk.length - 1].UserName} - ${lstShipmentQualityAssess_rvk[lstShipmentQualityAssess_rvk.length - 1].FullName}`,
+            RevokeAssessReviewDate: new Date(),
             UpdatedUser: dataSource.UpdatedUser,
             UpdatedDate: new Date(),
             lstShipmentQualityAssess_rvk
         };
-
-        console.log(objPost)
 
         this.props.callFetchAPI(APIHostName, APIAddQualityAssessAndRVK, objPost).then(apiResult => {
             if (!apiResult.IsError) {
@@ -303,6 +306,22 @@ export class Update extends Component {
                 this.showMessage(apiResult.Message);
             }
         });
+    }
+
+    isDisabledSelectReviewLevelID(objDefaultValueReviewUser, ReviewLevelID) {
+        try {
+            const { Username } = this.props.AppInfo.LoginInfo;
+
+            if (Username == objDefaultValueReviewUser.value) {
+                return false;
+            } else if (this.state[ReviewLevelID] && this.state[ReviewLevelID].UserName == Username) {
+                return false;
+            } else {
+                return true;
+            }
+        } catch (error) {
+            this.showMessage("Lỗi trạng thái duyệt, vui lòng thử lại.")
+        }
     }
 
     render() {
@@ -615,11 +634,15 @@ export class Update extends Component {
                                                         <tr>
                                                             <th className="jsgrid-header-cell">Mức duyệt</th>
                                                             <th className="jsgrid-header-cell">Người duyệt</th>
+                                                            <th className="jsgrid-header-cell">Trạng thái duyệt</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         {
                                                             arrOptQualityAssessType_RVLevel.map((item, index) => {
+                                                                const objValueReviewUser = this.handleValueReviewUser(item.ReviewLevelID, item.listOpts)
+
+                                                                const boolDisableReviewStatus = this.isDisabledSelectReviewLevelID(objValueReviewUser, item.ReviewLevelID);
 
                                                                 return (
                                                                     <tr key={index}>
@@ -630,8 +653,17 @@ export class Update extends Component {
                                                                                 options={item.listOpts}
                                                                                 placeholder="--Người duyệt--"
                                                                                 onChange={this.handleChangeSelect}
-                                                                                isClearable={true}
-                                                                                defaultValue={this.handleGetIndexSelected(item.listOpts)}
+                                                                                value={objValueReviewUser}
+                                                                            />
+                                                                        </td>
+                                                                        <td>
+                                                                            <Select
+                                                                                name={item.ReviewLevelID}
+                                                                                options={arrOptReviewStatus}
+                                                                                placeholder="--Trạng thái duyệt--"
+                                                                                onChange={this.handleChangeReviewStatus}
+                                                                                value={this.handleValueReviewStatus(item.ReviewLevelID, arrOptReviewStatus)}
+                                                                                isDisabled={boolDisableReviewStatus}
                                                                             />
                                                                         </td>
                                                                     </tr>

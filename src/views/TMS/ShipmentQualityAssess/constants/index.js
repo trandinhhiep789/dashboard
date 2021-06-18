@@ -23,6 +23,12 @@ export const APIShipmentQualityAssessRvkAdd = "api/ShipmentQualityAssess_rvk/Add
 export const APIAddQualityAssessAndRVK = "api/ShipmentQualityAssess/AddQualityAssessAndRVK";
 export const APIQualityAssessType_RVLevelLoad = "api/ShipmentQualityAssess_rvk/LoadByQualityAssessTypeID";
 
+export const arrOptReviewStatus = [
+    { value: 0, label: "Chưa duyệt" },
+    { value: 1, label: "Đồng ý" },
+    { value: 2, label: "Từ chối" }
+]
+
 export const dataSearch = [
     {
         SearchKey: "@Keyword",
