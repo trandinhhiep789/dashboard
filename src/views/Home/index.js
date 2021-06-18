@@ -126,10 +126,8 @@ import RewardDetailExport from "../TMS/Reward/RewardDetailExport";
 import RewardPointReview from "../TMS/Reward/RewardPointReview";
 import RewardComputeList from "../TMS/Reward/RewardComputeList";
 import PosToRWPosTable from "../TMS/MD/PosToRWPosTable";
-
+import RewardComputeType from "../TMS/MD/RewardComputeType";
 import ServicePriceTable from "../TMS/MD/ServicePriceTable";
-
-
 import UserRewardStore from "../TMS/MD/RewardStoreUser";
 import FuelPrice from "../TMS/MD/FuelPrice";
 import AppFeedBackPriority from "../TMS/MD/AppFeedBack/AppFeedBackPriority";
@@ -163,6 +161,7 @@ import ServicePriceApply from "../TMS/MD/ServicePriceApply";
 import PartnerSaleChannel from "../TMS/MD/PartnerSaleChannel";
 import DataExportTemplate from "../TMS/MD/DataExportTemplate";
 import DataExportTemplate_Format from "../TMS/MD/DataExportTemplate_Format";
+import SvTimeConvert from "../TMS/MD/SvTimeConvert";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -336,6 +335,8 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/RewardDetailExport" component={RewardDetailExport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/RewardPointReview" component={RewardPointReview} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/RewardComputeList" component={RewardComputeList} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/RewardComputeType" component={RewardComputeType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    
                                     
                                     <PrivateRoute path="/AreaType" component={AreaType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/Area" component={Area} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
@@ -405,6 +406,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/PartnerSaleChannel" component={PartnerSaleChannel} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/DataExportTemplate" component={DataExportTemplate} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/DataExportTemplate_Format" component={DataExportTemplate_Format} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/SvTimeConvert" component={SvTimeConvert} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
 
 

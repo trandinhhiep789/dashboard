@@ -16,9 +16,9 @@ import ReactNotification from "react-notifications-component";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache,callGetUserCache } from "../../../../actions/cacheAction";
-import { DATAEXPORTTEMPLATE_ADD, DATAEXPORTTEMPLATE_DELETE, DATAEXPORTTEMPLATE_UPDATE, GET_CACHE_USER_FUNCTION_LIST, MTRETURNREQUESTTYPE_ADD, MTRETURNREQUESTTYPE_DELETE, MTRETURNREQUESTTYPE_UPDATE, QUALITYASSESSTYPE_ADD, QUALITYASSESSTYPE_DELETE, QUALITYASSESSTYPE_UPDATE } from "../../../../constants/functionLists";
+import { GET_CACHE_USER_FUNCTION_LIST, MTRETURNREQUESTTYPE_ADD, MTRETURNREQUESTTYPE_DELETE, MTRETURNREQUESTTYPE_UPDATE, QUALITYASSESSTYPE_ADD, QUALITYASSESSTYPE_DELETE, QUALITYASSESSTYPE_UPDATE, SVTIMECONVERT_ADD, SVTIMECONVERT_DELETE, SVTIMECONVERT_UPDATE } from "../../../../constants/functionLists";
 
-class DataExportTemplate_FormatCom extends React.Component {
+class SvTimeConvertDetailCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
@@ -33,7 +33,7 @@ class DataExportTemplate_FormatCom extends React.Component {
             cssNotification: "",
             iconNotification: "",
             DataSource: this.props.DataSource ? this.props.DataSource : [],
-            DataExportTemplateID: this.props.DataExportTemplateID,
+            SvTimeConvertID: this.props.SvTimeConvertID,
             IsInsert: true,
             ModalColumnList_Insert: ModalColumnList_Insert,
             ModalColumnList_Edit: ModalColumnList_Edit
@@ -43,8 +43,8 @@ class DataExportTemplate_FormatCom extends React.Component {
 
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.DataExportTemplateID !== this.state.DataExportTemplateID) {
-            this.setState({ DataExportTemplateID: nextProps.DataExportTemplateID });
+        if (nextProps.SvTimeConvertID !== this.state.SvTimeConvertID) {
+            this.setState({ SvTimeConvertID: nextProps.SvTimeConvertID });
         }
 
         if (nextProps.DataSource !== this.state.DataSource) {
@@ -112,17 +112,17 @@ class DataExportTemplate_FormatCom extends React.Component {
         
         this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
-                let isAllowAdd = result.ResultObject.CacheData.filter(x => x.FunctionID == DATAEXPORTTEMPLATE_ADD);
+                let isAllowAdd = result.ResultObject.CacheData.filter(x => x.FunctionID == SVTIMECONVERT_ADD);
                 if (isAllowAdd && isAllowAdd.length > 0) {
                     IsAllowedAdd = true;
                 }
 
-                let isAllowUpdate = result.ResultObject.CacheData.filter(x => x.FunctionID == DATAEXPORTTEMPLATE_UPDATE);
+                let isAllowUpdate = result.ResultObject.CacheData.filter(x => x.FunctionID == SVTIMECONVERT_UPDATE);
                 if (isAllowUpdate && isAllowUpdate.length > 0) {
                     IsAllowedUpdate = true;
                 }
 
-                let isAllowDelete = result.ResultObject.CacheData.filter(x => x.FunctionID == DATAEXPORTTEMPLATE_DELETE);
+                let isAllowDelete = result.ResultObject.CacheData.filter(x => x.FunctionID == SVTIMECONVERT_DELETE);
                 if (isAllowDelete && isAllowDelete.length > 0) {
                     IsAllowedDelete = true;
                 }
@@ -146,7 +146,7 @@ class DataExportTemplate_FormatCom extends React.Component {
         }
         this.setState({ IsInsert: true });
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
-            title: 'Thêm mới định dạng các cột dữ liệu xuất',
+            title: 'Thêm mới chi tiết bảng chuyển đổi',
             autoCloseModal: false,
             //onValueChange: this.handleModalChange,
             onClose: this.onClose,
@@ -154,7 +154,9 @@ class DataExportTemplate_FormatCom extends React.Component {
                 if (isConfirmed) {
                     let MLObject = GetMLObjectData(MLObjectDefinition, formData, dataSource);
                     if (MLObject) {
-                        MLObject.DataExportTemplateID = this.state.DataExportTemplateID;
+                        MLObject.SvTimeConvertID = this.state.SvTimeConvertID;
+                        MLObject.MaterialGroupID = MLObject.MaterialGroupID && Array.isArray(MLObject.MaterialGroupID) ? MLObject.MaterialGroupID[0] : MLObject.MaterialGroupID;
+                        MLObject.ProductID = MLObject.ProductID && Array.isArray(MLObject.ProductID) ? MLObject.ProductID[0].ProductID : MLObject.ProductID;
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
                         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
@@ -167,6 +169,7 @@ class DataExportTemplate_FormatCom extends React.Component {
                             //this.showMessage(apiResult.Message);
                             this.addNotification(apiResult.Message, apiResult.IsError);
                         });
+
                     }
                 }
             },
@@ -200,14 +203,16 @@ class DataExportTemplate_FormatCom extends React.Component {
        
 
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
-            title: 'Chỉnh sửa định dạng các cột dữ liệu xuất',
+            title: 'Chỉnh sửa chi tiết bảng chuyển đổi',
             //onValueChange: this.handleModalChange,
             onClose: this.onClose,
             onConfirm: (isConfirmed, formData) => {
                 if (isConfirmed) {
                     let MLObject = GetMLObjectData(MLObjectDefinition, formData, _DataSource);
                     if (MLObject) {
-                        MLObject.DataExportTemplateID = this.state.DataExportTemplateID;
+                        MLObject.SvTimeConvertID = this.state.SvTimeConvertID;
+                        MLObject.MaterialGroupID = MLObject.MaterialGroupID && Array.isArray(MLObject.MaterialGroupID) ? MLObject.MaterialGroupID[0] : MLObject.MaterialGroupID;
+                        MLObject.ProductID = MLObject.ProductID && Array.isArray(MLObject.ProductID) ? MLObject.ProductID[0].ProductID : MLObject.ProductID;
                         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
                         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
@@ -274,15 +279,15 @@ class DataExportTemplate_FormatCom extends React.Component {
                     dataSource={this.state.DataSource}
                     modalElementList={ModalColumnList_Insert}
                     MLObjectDefinition={MLObjectDefinition}
-                    IDSelectColumnName={"chkSelectFormatID"}
-                    PKColumnName={"FormatID"}
+                    IDSelectColumnName={"chkSelectSvTimeConvertDetailID"}
+                    PKColumnName={"SvTimeConvertDetailID"}
                     onDeleteClick={this.handleDelete}
                     onInsertClick={this.handleInsert}
                     onInsertClickEdit={this.handleEdit}
                     IsAutoPaging={false}
                     //RowsPerPage={10}
                     IsCustomAddLink={true}
-                    headingTitle={"Định dạng các cột dữ liệu xuất"}
+                    headingTitle={"Chi tiết bảng chuyển đổi thời gian thực hiện dịch vụ sang sản phẩm dịch vụ"}
                 />
             </div>
         );
@@ -326,5 +331,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const DataExportTemplate_Format = connect(mapStateToProps, mapDispatchToProps)(DataExportTemplate_FormatCom);
-export default DataExportTemplate_Format;
+const SvTimeConvertDetail = connect(mapStateToProps, mapDispatchToProps)(SvTimeConvertDetailCom);
+export default SvTimeConvertDetail;

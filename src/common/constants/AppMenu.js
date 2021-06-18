@@ -180,6 +180,13 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    {
+                        MenuName: 'SvTimeConvert',
+                        MenuTitle: 'Bảng chuyển đổi thời gian thực hiện dịch vụ sang sản phẩm dịch vụ',
+                        LinkTo: '/SvTimeConvert',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
 
 
 
@@ -332,6 +339,13 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: [
                     {
+                        MenuName: 'RewardComputeType',
+                        MenuTitle: 'Loại tính thưởng',
+                        LinkTo: '/RewardComputeType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
                         MenuName: 'RewardCompute',
                         MenuTitle: 'Tính thưởng',
                         LinkTo: '/RewardCompute',
@@ -401,13 +415,7 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
-                    {
-                        MenuName: 'ServicePriceTable',
-                        MenuTitle: 'Giá dịch vụ của Tận Tâm',
-                        LinkTo: '/ServicePriceTable',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
+                   
                     {
                         MenuName: 'ServicePriceApply',
                         MenuTitle: 'Bảng giá dịch vụ áp dụng',
@@ -671,7 +679,7 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-            
+
 
 
         ]
@@ -1012,6 +1020,21 @@ const AppMenu = [
         LinkTo: '/ShipmentOrder',
         MenuIcon: '',
         SubMenu: []
+    },
+    {
+        MenuName: 'Price',
+        MenuTitle: 'Giá',
+        LinkTo: '',
+        MenuIcon: '',
+        SubMenu: [
+            {
+                MenuName: 'ServicePriceTable',
+                MenuTitle: 'Giá dịch vụ của Tận Tâm',
+                LinkTo: '/ServicePriceTable',
+                MenuIcon: '',
+                SubMenu: []
+            },
+        ]
     },
     {
         MenuName: 'Reward',

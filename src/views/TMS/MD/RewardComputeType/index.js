@@ -1,14 +1,16 @@
 import React from "react";
 import {
+    BrowserRouter as Router,
     Route,
     Switch
 } from "react-router-dom";
 import { connect } from "react-redux";
-import { callFetchAPI } from "../../../actions/fetchAPIAction";
+import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import Search from "./Search";
-
-import NotFound from '../../NotFound'
-class ShipmentOrderControlCom extends React.Component {
+import Add from "./Add";
+import Edit from "./Edit";
+import NotFound from '../../../NotFound'
+class RewardComputeTypeCom extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -16,7 +18,9 @@ class ShipmentOrderControlCom extends React.Component {
     render() {
         return (
             <Switch>
-                <Route exact path="/ShipmentQualityAssess" component={Search} />
+                <Route exact path="/RewardComputeType" component={Search} />
+                <Route exact path="/RewardComputeType/Add" component={Add} />
+                <Route exact path="/RewardComputeType/Edit/:id" component={Edit} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );
@@ -38,4 +42,8 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShipmentOrderControlCom);
+const RewardComputeType = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(RewardComputeTypeCom);
+export default RewardComputeType;

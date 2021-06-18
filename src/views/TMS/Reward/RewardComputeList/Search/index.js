@@ -12,22 +12,28 @@ import {
     GridColumnList,
     APIHostName,
     SearchAPIPath,
-    SearchNewAPIPath,
-    InitSearchParams
+    InitSearchParams,
+    SearchConfirmLogAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { TMS_TMSREWARD_EXPORT, TMS_TMSREWARD_VIEW } from "../../../../../constants/functionLists";
+import { TMS_REWARDCOMPUTELIST_VIEW, TMS_REWARDCOMPUTELIST_CONFIRM } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { toIsoStringCus } from '../../../../../utils/function'
+import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
+import ConfirmModal from '../ConfirmModal'
+import { showModal, hideModal } from '../../../../../actions/modal';
+import DataGirdHistory from '../DataGirdHistory'
+
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
         this.handleCallData = this.handleCallData.bind(this);
+        this.HandleConfirmResult = this.HandleConfirmResult.bind(this);
 
         this.state = {
             IsCallAPIError: false,
@@ -46,9 +52,9 @@ class SearchCom extends React.Component {
     componentDidMount() {
 
         const param = {
-            FromDate: InitSearchParams[0].SearchValue,
-            ToDate: InitSearchParams[1].SearchValue,
-            CoordinatorStore: InitSearchParams[2].SearchValue,
+            // FromDate: InitSearchParams[0].SearchValue,
+            // ToDate: InitSearchParams[1].SearchValue,
+            // CoordinatorStore: InitSearchParams[2].SearchValue,
         }
 
         this.setState({
@@ -67,77 +73,45 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        const param = {
-            // FromDate: MLObject.FromDate,
-            // ToDate: MLObject.ToDate,
-            FromDate: toIsoStringCus(new Date(MLObject.FromDate).toISOString()), //MLObject.FromDate,
-            ToDate: toIsoStringCus(new Date(MLObject.ToDate).toISOString()), // MLObject.ToDate
-            CoordinatorStore: MLObject.CoordinatorStore
-        }
 
-        this.setState({
-            params: param
-        })
 
         const postData = [
+
             {
-                SearchKey: "@FROMDATE",
-                SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString())//MLObject.FromDate
+                SearchKey: "@REWARDCOMPUTETYPEID",
+                SearchValue: MLObject.RewardComputeTypeID
             },
             {
-                SearchKey: "@TODATE",
-                SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString()) //MLObject.ToDate
-            },
-            {
-                SearchKey: "@COORDINATORSTOREID",
-                SearchValue: MLObject.CoordinatorStore
-            },
-            {
-                SearchKey: "@UserName",
-                SearchValue: MLObject.UserName.value
+                SearchKey: "@ISCOMPUTED",
+                SearchValue: MLObject.IscomPuted
             },
 
         ];
+
+        this.setState({
+            SearchData: postData
+        })
         this.callSearchData(postData);
     }
 
     callSearchData(searchData) {
 
-        this.props.callFetchAPI(APIHostName, SearchNewAPIPath, searchData).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            console.log("data", apiResult)
             if (!apiResult.IsError) {
-                const totalAmount = apiResult.ResultObject.reduce((sum, curValue, curIndex, []) => {
-                    sum += curValue.TotalReward
-                    return sum
-                }, 0);
-
-                const tempDataExport = apiResult.ResultObject.map((item, index) => {
-                    let element = {
-                        "Mã nhân viên": item.RewardUser.trim(),
-                        "Tên nhân viên": item.FullName.trim(),
-                        "Tổng thưởng": item.TotalReward,
-
-                    };
-
-                    return element;
-                });
 
                 const tempData = apiResult.ResultObject.map((item, index) => {
-                    item.NoteReward = "Điểm thưởng này chỉ mang tính chất tham khảo, kết quả thưởng cuối cùng sẽ được KSNB và Phòng Lao động tiền lương điều chỉnh sau khi đối chiếu với các số liệu khác";
-
+                    item.IsConfirmStatus = <span className='lbl-confirm'>Chốt thưởng</span>;
                     return item;
-
                 })
-
                 this.setState({
                     gridDataSource: tempData,
                     IsCallAPIError: apiResult.IsError,
-                    totalAmount: totalAmount,
                     IsLoadDataComplete: true,
-                    dataExport: tempDataExport
                 });
             }
             else {
-                this.showMessage(apiResult.MessageDetail)
+                this.showMessage(apiResult.Message)
             }
         });
     }
@@ -183,10 +157,98 @@ class SearchCom extends React.Component {
         });
     }
 
+    HandleConfirmResult(result) {
+        console.log("result", result)
+        this.addNotification(result.Message, result.IsError)
+        const { SearchData } = this.state;
+        this.callSearchData(SearchData);
+    }
 
 
-    handleExportFile(result) {
-        this.addNotification(result.Message, result.IsError);
+    onhandleUpdateItem(objId) {
+
+        const { gridDataSource } = this.state;
+        const dataFind = gridDataSource.find(n => {
+            return n.RewardComputeListID == objId[0].value
+        });
+
+        if (dataFind.IsComPuted > 0) {
+            this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+                title: "Chốt thưởng",
+                content: {
+                    text: <ConfirmModal
+                        dataSource={dataFind}
+                        objId={objId}
+                        ObjDataRequest={this.HandleConfirmResult}
+                    />
+                },
+                maxWidth: '800px'
+            });
+        }
+        else {
+            this.showMessage("Loại tính thưởng này chưa tính nên không được chốt thưởng.")
+        }
+
+
+    }
+
+    onhandleHistoryItem(objId) {
+
+        const { gridDataSource } = this.state;
+        const dataFind = gridDataSource.find(n => {
+            return n.RewardComputeListID == objId[0].value
+        });
+
+        const postData = [
+            {
+                SearchKey: "@REWARDCOMPUTELISTID",
+                SearchValue: objId[0].value
+            },
+
+
+        ];
+
+        this.props.callFetchAPI(APIHostName, SearchConfirmLogAPIPath, postData).then(apiResult => {
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.MessageDetail);
+            }
+            else {
+
+                if(apiResult.ResultObject.length > 0){
+                    const tempData = apiResult.ResultObject.map((item, index) => {
+
+                        if (item.ConfirmLogType == 1) {
+                            item.ConfirmLogTypeName = item.ConfirmLogType + " - " + "Chốt thưởng"
+                        }
+                        else {
+                            item.ConfirmLogTypeName = item.ConfirmLogType + " - " + "Bỏ chốt thưởng"
+                        }
+                        return item;
+                    })
+                    this.onShowModalHistory(tempData, dataFind);
+                }
+                else{
+                    this.showMessage("Không tồn tại lịch sử chốt thưởng.");
+                }
+                
+            }
+        })
+
+    }
+
+    onShowModalHistory(dataSource = [], dataItem) {
+        const { widthPercent } = this.state;
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: "Danh sách lịch sử quản lý công nợ",
+            content: {
+                text: <DataGirdHistory
+                    dataSource={dataSource}
+                    dataItem={dataItem}
+                />
+
+            },
+            maxWidth: widthPercent + 'px'
+        });
     }
 
 
@@ -194,22 +256,24 @@ class SearchCom extends React.Component {
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
-                <div>Tính Năng đang phát triển.</div>
-                {/* <SearchForm
+                <SearchForm
                     FormName="Tìm kiếm danh sách tính thưởng"
                     MLObjectDefinition={SearchMLObjectDefinition}
                     listelement={SearchElementList}
                     onSubmit={this.handleSearchSubmit}
                     ref={this.searchref}
                     className="multiple"
-                /> */}
+                    classNamebtnSearch="groupAction"
+                />
 
-                {/* <DataGrid
+                <DataGrid
                     listColumn={GridColumnList}
+                    onUpdateItem={this.onhandleUpdateItem.bind(this)}
+                    onHistoryItem={this.onhandleHistoryItem.bind(this)}
                     dataSource={this.state.gridDataSource}
                     // AddLink=""
-                    IDSelectColumnName={''}
-                    PKColumnName={'RewardUser'}
+                    IDSelectColumnName={'chkSelect'}
+                    PKColumnName={'RewardComputeListID'}
                     isHideHeaderToolbar={false}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
@@ -217,19 +281,11 @@ class SearchCom extends React.Component {
                     IsPrint={false}
                     IsExportFile={false}
                     IsAutoPaging={true}
-                    RowsPerPage={10}
-                    params={this.state.params}
-                    totalCurrency={true}
-                    totalCurrencyColSpan={3}
-                    totalCurrencyNumber={this.state.totalAmount}
-                    RequirePermission={TMS_TMSREWARD_VIEW}
-                    ExportPermission={TMS_TMSREWARD_EXPORT}
-                    IsExportFile={true}
-                    DataExport={this.state.dataExport}
-                    fileName="Danh sách thưởng giao hàng"
-                    onExportFile={this.handleExportFile.bind(this)}
+                    RowsPerPage={20}
+                    RequirePermission={TMS_REWARDCOMPUTELIST_VIEW}
+                    IsExportFile={false}
                     ref={this.gridref}
-                /> */}
+                />
             </React.Fragment>
         );
 
@@ -253,6 +309,12 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
+        },
+        hideModal: (type, props) => {
+            dispatch(hideModal(type, props));
         }
     };
 };
