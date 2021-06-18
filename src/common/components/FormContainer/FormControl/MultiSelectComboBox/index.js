@@ -65,7 +65,21 @@ class MultiSelectComboBoxCom extends React.Component {
         this.props.callFetchAPI("ERPAPI", 'api/UserSearch/Search', listMLObject).then(apiResult => {
             let listOptionNew1 = [];
             for (let i = 0; i < apiResult.ResultObject.length; i++) {
-                if (apiResult.ResultObject[i].UserName.substr(0, 3) != "004") {
+                if(this.props.isCheckPartner == undefined)
+                {
+                    if (apiResult.ResultObject[i].UserName.substr(0, 3) != "004") {
+                        listOptionNew1.push({
+                            value: apiResult.ResultObject[i].UserName,
+                            name: apiResult.ResultObject[i].UserName + "-" + apiResult.ResultObject[i].FullName,
+                            FullName: apiResult.ResultObject[i].FullName,
+                            DepartmentName: apiResult.ResultObject[i].DepartmentName,
+                            PositionName: apiResult.ResultObject[i].PositionName,
+                            Address: apiResult.ResultObject[i].Address
+                        });
+                    }
+                }
+                else
+                {
                     listOptionNew1.push({
                         value: apiResult.ResultObject[i].UserName,
                         name: apiResult.ResultObject[i].UserName + "-" + apiResult.ResultObject[i].FullName,
@@ -74,7 +88,9 @@ class MultiSelectComboBoxCom extends React.Component {
                         PositionName: apiResult.ResultObject[i].PositionName,
                         Address: apiResult.ResultObject[i].Address
                     });
+
                 }
+                
             }
             this.setState({
                 ListOption: listOptionNew1

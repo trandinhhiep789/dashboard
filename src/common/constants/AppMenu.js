@@ -415,17 +415,18 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
-                    {
-                        MenuName: 'ServicePriceTable',
-                        MenuTitle: 'Giá dịch vụ của Tận Tâm',
-                        LinkTo: '/ServicePriceTable',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
+                   
                     {
                         MenuName: 'ServicePriceApply',
                         MenuTitle: 'Bảng giá dịch vụ áp dụng',
                         LinkTo: '/ServicePriceApply',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'PosToRWPosTable',
+                        MenuTitle: 'Bảng chuyển đổi chức vụ',
+                        LinkTo: '/PosToRWPosTable',
                         MenuIcon: '',
                         SubMenu: []
                     },
@@ -678,7 +679,7 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-            
+
 
 
         ]
@@ -1019,6 +1020,21 @@ const AppMenu = [
         LinkTo: '/ShipmentOrder',
         MenuIcon: '',
         SubMenu: []
+    },
+    {
+        MenuName: 'Price',
+        MenuTitle: 'Giá',
+        LinkTo: '',
+        MenuIcon: '',
+        SubMenu: [
+            {
+                MenuName: 'ServicePriceTable',
+                MenuTitle: 'Giá dịch vụ của Tận Tâm',
+                LinkTo: '/ServicePriceTable',
+                MenuIcon: '',
+                SubMenu: []
+            },
+        ]
     },
     {
         MenuName: 'Reward',

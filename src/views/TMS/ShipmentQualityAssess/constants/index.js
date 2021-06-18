@@ -13,13 +13,38 @@ export const APIHostName = "TMSAPI";
 export const APISearch = "api/ShipmentQualityAssess/Search";
 export const APILoad = "api/ShipmentQualityAssess/Load";
 export const APIAdd = "api/ShipmentQualityAssess/Add";
-export const APIComment = "api/ShipmentQualityAssess_cmt/Search";
+export const APICommentSRH = "api/ShipmentQualityAssess_cmt/Search";
 export const APICommentAdd = "api/ShipmentQualityAssess_cmt/Add";
-export const APIQualityAssessType = "api/QualityAssessType/Search";
+export const APIQualityAssessTypeSRH = "api/QualityAssessType/Search";
+export const APIQualityAssessTypeLoad = "api/QualityAssessType/Load";
+export const APIShipmentQualityAssess_RVK_SRH = "api/ShipmentQualityAssess_rvk/Search";
 export const APIShipmentQualityAssessRvkLoadNew = "api/ShipmentQualityAssess_rvk/LoadNew";
 export const APIShipmentQualityAssessRvkAdd = "api/ShipmentQualityAssess_rvk/Add";
 export const APIAddQualityAssessAndRVK = "api/ShipmentQualityAssess/AddQualityAssessAndRVK";
-export const APIApproveUserList = "api/ShipmentQualityAssess_rvk/LoadByQualityAssessTypeID";
+export const APIQualityAssessType_RVLevelLoad = "api/ShipmentQualityAssess_rvk/LoadByQualityAssessTypeID";
+
+export const dataSearch = [
+    {
+        SearchKey: "@Keyword",
+        SearchValue: ""
+    },
+    {
+        SearchKey: "@TYPENAME",
+        SearchValue: ""
+    },
+    {
+        SearchKey: "@CREATEDUSER",
+        SearchValue: ""
+    },
+    {
+        SearchKey: "@PAGEINDEX",
+        SearchValue: 1
+    },
+    {
+        SearchKey: "@PAGESIZE",
+        SearchValue: 50
+    }
+]
 
 export const listColumn = [
     {
@@ -63,17 +88,7 @@ export const listColumn = [
         Caption: "Đã duyệt gỡ đánh giá",
         DataSourceMember: "IsRevokeAssessReviewStatus",
         // Width: 250
-    },
-    // {
-    //     Name: "Action",
-    //     Type: "link",
-    //     Caption: "Tác vụ",
-    //     DataSourceMember: "ShipmentQualityAssessID",
-    //     Link: "/ShipmentQualityAssess/Edit/",
-    //     LinkText: "Chỉnh sửa",
-    //     // Width: 150
-    // }
-
+    }
 ];
 
 export const listElementSearch = [
@@ -93,8 +108,8 @@ export const listElementSearch = [
         classNameDropdown: "dropdown-custom",
         listoption: [
             { value: -1, label: "--Vui lòng chọn--" },
-            { value: 1, label: "Mã đơn hàng" },
-            { value: 2, label: "Mã vận đơn" }
+            { value: 1, label: "Mã vận đơn" },
+            { value: 2, label: "Mã đơn hàng" }
         ]
     },
     {
@@ -133,40 +148,6 @@ export const MLObjectDefinitionSearch = [
     }
 ]
 
-export const MLObjectDefinitionAdd = [
-    {
-        Name: "ShipmentOrderID",
-        DefaultValue: "",
-        BindControlName: "txtShipmentOrderID",
-        DataSourceMember: "ShipmentOrderID"
-    },
-    {
-        Name: "PartnerSaleOrderID",
-        DefaultValue: "",
-        BindControlName: "txtPartnerSaleOrderID",
-        DataSourceMember: "PartnerSaleOrderID"
-    },
-    {
-        Name: "QualityAssessValue",
-        DefaultValue: "",
-        BindControlName: "txtQualityAssessValue",
-        DataSourceMember: "QualityAssessValue"
-    },
-    {
-        Name: "QualityAssessTypeID",
-        DefaultValue: "",
-        BindControlName: "txtQualityAssessTypeID",
-        DataSourceMember: "QualityAssessTypeID"
-    },
-    {
-        Name: "QualityAssessNote",
-        DefaultValue: "",
-        BindControlName: "txtQualityAssessNote",
-        DataSourceMember: "QualityAssessNote"
-    },
-
-];
-
 export const MLObjectDefinitionEdit = [
     {
         Name: "ShipmentQualityAssessID",
@@ -187,33 +168,21 @@ export const MLObjectDefinitionEdit = [
         DataSourceMember: "PartnerSaleOrderID"
     },
     {
+        Name: "AssessDate",
+        DefaultValue: "",
+        BindControlName: "txtAssessDate",
+        DataSourceMember: "AssessDate"
+    },
+    {
         Name: "UpdatedUser",
         DefaultValue: "",
         BindControlName: "txtUpdatedUser",
         DataSourceMember: "UpdatedUser"
     },
     {
-        Name: "IsRevokeAssessReview",
-        DefaultValue: "",
-        BindControlName: "txtIsRevokeAssessReview",
-        DataSourceMember: "IsRevokeAssessReview"
-    },
-    {
         Name: "UpdatedDate",
         DefaultValue: "",
         BindControlName: "txtUpdatedDate",
         DataSourceMember: "UpdatedDate"
-    },
-    {
-        Name: "RevokeAssessReviewDate",
-        DefaultValue: "",
-        BindControlName: "txtRevokeAssessReviewDate",
-        DataSourceMember: "RevokeAssessReviewDate"
-    },
-    {
-        Name: "RevokeAssessReviewUser",
-        DefaultValue: "",
-        BindControlName: "txtRevokeAssessReviewUser",
-        DataSourceMember: "RevokeAssessReviewUser"
     }
 ];

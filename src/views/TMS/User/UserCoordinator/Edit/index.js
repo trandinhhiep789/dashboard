@@ -294,6 +294,7 @@ class EditCom extends React.Component {
                                         label="Người dùng"
                                         disabled={false}
                                         IsLabelDiv={true}
+                                        isCheckPartner={true}
                                         isautoloaditemfromcache={false}
                                         onChange={this.onChangeUser.bind(this)}
                                         controltype="InputControl"
