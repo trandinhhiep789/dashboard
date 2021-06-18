@@ -4,6 +4,7 @@ export const UpdateAPIPath = "api/CoordinatorGroup_Member/Update";
 export const DeleteAPIPath = "api/CoordinatorGroup_Member/Delete";
 export const GetUserAPIPath = "api/CoordinatorGroup_Member/GetUserByStoreID";
 export const BackLink = "/CoordinatorGroup";
+export const AddByFileAPIPath ="api/CoordinatorGroup_Member/AddByFile";
 
 export const ModalColumnList_Insert = [
     {
@@ -149,5 +150,25 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "CreatedUser",
         DataSourceMember: "CreatedUser"
+    }
+];
+
+
+export const schema = {
+    'Mã trưởng nhóm': {
+        prop: 'UserName',
+        type: String,
+        required: true
+    },
+    'Hệ thống': {
+        prop: 'IsSystem',
+        type: Number
+    },
+}
+
+export const DataTemplateExport = [
+    {
+        "Mã trưởng nhóm": '98138',
+        "Hệ thống": 0
     }
 ];

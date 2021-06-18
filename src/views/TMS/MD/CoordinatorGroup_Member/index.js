@@ -9,8 +9,8 @@ import { showModal, hideModal } from '../../../../actions/modal';
 import { GetMLObjectData } from "../../../../common/library/form/FormLib";
 import Collapsible from 'react-collapsible';
 import {
-    AddAPIPath, UpdateAPIPath, DeleteAPIPath, APIHostName,
-    ModalColumnList_Insert, ModalColumnList_Edit, DataGridColumnList, MLObjectDefinition
+    AddAPIPath, UpdateAPIPath, DeleteAPIPath, APIHostName, AddByFileAPIPath, 
+    ModalColumnList_Insert, ModalColumnList_Edit, DataGridColumnList, MLObjectDefinition, schema, DataTemplateExport
 } from "./constants";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
@@ -39,7 +39,8 @@ class CoordinatorGroup_MemberCom extends React.Component {
             CoordinatorGroupID: this.props.CoordinatorGroupID,
             IsInsert: true,
             ModalColumnList_Insert: ModalColumnList_Insert,
-            ModalColumnList_Edit: ModalColumnList_Edit
+            ModalColumnList_Edit: ModalColumnList_Edit,
+            DataTemplateExport
         };
         this.notificationDOMRef = React.createRef();
     }
@@ -324,6 +325,60 @@ class CoordinatorGroup_MemberCom extends React.Component {
     }
 
 
+    handleExportFileTemplate(result) {
+        this.addNotification(result.Message, result.IsError);
+    }
+
+    handleImportFile(resultRows, errors) {
+
+        const CreatedUser = this.props.AppInfo.LoginInfo.Username;
+        const LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        const CoordinatorGroupID = this.props.CoordinatorGroupID;
+        const importData = resultRows.map(item => {
+            const { UserName, IsSystem } = item
+            return {
+                ...item,
+                CoordinatorGroupID,
+                CreatedUser,
+                LoginLogID
+                //ProvinceFullName: `${ProvinceID} - ${ProvinceName}`,
+                //WardFullName: `${WardID} - ${WardName}`
+            }
+        })
+
+        let data = [];
+        let _isError = false;
+        importData.map((itemObject, index) => {
+            if (!itemObject.UserName && _isError == false) {
+                this.addNotification("Vui lòng chọn người dùng.", true);
+                _isError = true;
+            } else {
+                data.push(itemObject);
+            }
+        });
+
+
+        if (_isError) {
+            return;
+        }
+
+
+        this.props.callFetchAPI(APIHostName, AddByFileAPIPath, data).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            if (!apiResult.IsError) {
+                //this.props.callClearLocalCache(ERPCOMMONCACHE_MATERIALGROUP);
+                if (this.props.onComponentChange) {
+                    this.props.onComponentChange();
+                }
+            }
+
+            this.addNotification(apiResult.Message, apiResult.IsError);
+
+        });
+
+    }
+
+
     render() {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
@@ -345,6 +400,14 @@ class CoordinatorGroup_MemberCom extends React.Component {
                     //RowsPerPage={10}
                     IsCustomAddLink={true}
                     headingTitle={"Trưởng nhóm thuộc nhóm điều phối"}
+
+                    IsImportFile={true}
+                    SchemaData={schema}
+                    onImportFile={this.handleImportFile.bind(this)}
+                    isExportFileTemplate={true}
+                    DataTemplateExport={this.state.DataTemplateExport}
+                    fileNameTemplate={"Danh sách trưởng nhóm thuộc nhóm điều phối"}
+                    onExportFileTemplate={this.handleExportFileTemplate.bind(this)}
                 />
             </div>
         );

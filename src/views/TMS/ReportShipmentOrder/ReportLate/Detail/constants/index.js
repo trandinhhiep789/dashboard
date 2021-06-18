@@ -344,8 +344,9 @@ export const DataGridColumnList = [
     },
     {
         Name: "ShipmentOrderID",
-        Type: "text",
+        Type: "texttolink",
         Caption: "Mã vận đơn",
+        Link: "/ShipmentOrder/Detail/",
         DataSourceMember: "ShipmentOrderID",
         Width: 150
     },

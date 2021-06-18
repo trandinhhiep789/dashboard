@@ -312,6 +312,18 @@ export const MLObjectDefinition = [
         DataSourceMember: "IsShowPurchaseList"
     },
     {
+        Name: "IsCanUpdateBeginDoService",
+        DefaultValue: "",
+        BindControlName: "IsCanUpdateBeginDoService",
+        DataSourceMember: "IsCanUpdateBeginDoService"
+    },
+    {
+        Name: "IsCanUpdateCompleteDoService",
+        DefaultValue: "",
+        BindControlName: "IsCanUpdateCompleteDoService",
+        DataSourceMember: "IsCanUpdateCompleteDoService"
+    },
+    {
         Name: "OrderIndex",
         DefaultValue: "",
         BindControlName: "OrderIndex",
