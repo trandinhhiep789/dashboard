@@ -388,9 +388,13 @@ class InfoProductCom extends Component {
                                 <label className="col-form-label bold">Nộp tiền thu ngân:</label>
                             </div>
                             <div className="form-group col-md-4">
-                                {(this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD - this.state.ShipmentOrder.TotalReturnPrice) > 0 ?
-                                    this.state.ShipmentOrder.IsPaidIn == true ? <span className="badge badge-success">Đã nộp tiền thu ngân</span> : <span className="badge badge-danger">Chưa nộp tiền</span> : ""
+                                {this.state.ShipmentOrder.CollectedTotalMoney > 0 ?
+                                this.state.ShipmentOrder.IsPaidIn == true ?<React.Fragment><span className="badge badge-success">Đã nộp tiền thu ngân - {this.state.ShipmentOrder.TotalPaidInMoney}</span><label className="col-form-label lbl-currency-total" >Còn nợ - {this.state.ShipmentOrder.TotalUnPaidInMoney}</label></React.Fragment> :
+                                <span className="badge badge-danger">Chưa nộp tiền</span> :""
                                 }
+                                {/* {(this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD - this.state.ShipmentOrder.TotalReturnPrice) > 0 ?
+                                    this.state.ShipmentOrder.IsPaidIn == true ? <span className="badge badge-success">Đã nộp tiền thu ngân</span> : <span className="badge badge-danger">Chưa nộp tiền</span> : ""
+                                } */}
                             </div>
                             <div className="form-group col-md-2">
                                 <label className="col-form-label bold">Người xuất:</label>
