@@ -125,6 +125,7 @@ import TotalRewardExport from "../TMS/Reward/TotalRewardExport";
 import RewardDetailExport from "../TMS/Reward/RewardDetailExport";
 import RewardPointReview from "../TMS/Reward/RewardPointReview";
 import RewardComputeList from "../TMS/Reward/RewardComputeList";
+import PosToRWPosTable from "../TMS/MD/PosToRWPosTable";
 
 import ServicePriceTable from "../TMS/MD/ServicePriceTable";
 
@@ -372,6 +373,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/FuelPrice" component={FuelPrice} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/RewardComputeSchedule" component={RewardComputeSchedule} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/RewardComputeLog" component={RewardComputeLog} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/PosToRWPosTable" component={PosToRWPosTable} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="/AppFeedBackPriority" component={AppFeedBackPriority} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/AppFeedBackStatus" component={AppFeedBackStatus} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />

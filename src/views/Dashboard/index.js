@@ -35,11 +35,6 @@ class DashboardCom extends Component {
     componentDidMount() {
         this.props.updatePagePath(PagePath);
         this.callSearchDataReport()
-        this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetListMaterialHouseWork",210614000000072).then((apiResult) => {
-            console.log("GetListMaterialHouseWork",apiResult)
-           
-        });
-
     }
 
     callSearchDataReport() {
