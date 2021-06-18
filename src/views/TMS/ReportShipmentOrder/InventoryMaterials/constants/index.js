@@ -75,6 +75,13 @@ export const SearchMLObjectDefinition = [
 
 export const GridColumnList = [
     {
+        Name: "RequestUser",
+        Type: "text",
+        Caption: "Mã nhân viên",
+        DataSourceMember: "RequestUser",
+        Width: 100
+    },
+    {
         Name: "MaterialGroupID",
         Type: "text",
         Caption: "Nhóm vật tư",
@@ -162,6 +169,13 @@ export const GridColumnList = [
 ]
 
 export const GridColumnListPrice = [
+    {
+        Name: "RequestUser",
+        Type: "text",
+        Caption: "Mã nhân viên",
+        DataSourceMember: "RequestUser",
+        Width: 100
+    },
     {
         Name: "MaterialGroupID",
         Type: "text",
@@ -344,10 +358,10 @@ export const DataGridModalQuantityReturn = [
         Width: 100
     },
     {
-        Name: "QuantityUnitName",
+        Name: "Quantity",
         Type: "text",
         Caption: "Số lượng",
-        DataSourceMember: "QUANTITYUNITNAME",
+        DataSourceMember: "Quantity",
         Width: 100
     },
 ];
@@ -372,6 +386,30 @@ export const DataGridModalChangeTotalQuantity = [
         Type: "text",
         Caption: "Số lượng",
         DataSourceMember: "ChangeTotalQuantity",
+        Width: 100
+    },
+];
+
+export const DataGridModalQuantityExpend = [
+    {
+        Name: "MTReturnRequestID",
+        Type: "text",
+        Caption: "Mã yêu cầu nhập trả vật tư",
+        DataSourceMember: "MTReturnRequestID",
+        Width: 100
+    },
+    {
+        Name: "InputVoucherID",
+        Type: "text",
+        Caption: "Mã phiếu nhập trả",
+        DataSourceMember: "InputVoucherID",
+        Width: 100
+    },
+    {
+        Name: "Quantity",
+        Type: "text",
+        Caption: "Số lượng",
+        DataSourceMember: "Quantity",
         Width: 100
     },
 ];

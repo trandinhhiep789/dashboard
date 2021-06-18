@@ -5,6 +5,7 @@ export const AddAPIPath = "api/SvTimeConvert/Add";
 export const UpdateAPIPath = "api/SvTimeConvert/Update";
 export const DeleteAPIPath = "api/SvTimeConvert/Delete";
 export const UpdateOrderAPIPath = "api/SvTimeConvert/UpdateOrder";
+export const GetMaterialProductAPIPath= "api/MaterialGroup_Product/GetAll";
 export const BackLink = "/SvTimeConvert";
 export const AddLink = "/SvTimeConvert/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";
