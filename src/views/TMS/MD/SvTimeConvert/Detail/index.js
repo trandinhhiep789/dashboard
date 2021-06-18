@@ -56,20 +56,20 @@ class DetailCom extends React.Component {
             this.setState({
                 IsLoadDataComplete: true
             });
-            console.log("apiResult", apiResult);
+            //console.log("apiResult", apiResult);
         });
 
-        // this.props.callFetchAPI(APIHostName, GetMaterialProductAPIPath, id).then(apiResult => {
-        //     if (apiResult.IsError) {
-        //         this.setState({
-        //             IsCallAPIError: apiResult.IsError
-        //         });
-        //         this.showMessage(apiResult.Message);
-        //     } else {
-        //         this.setState({ MaterialProductDataSource: apiResult.ResultObject });
-        //     }
-        //     //console.log("apiResult", apiResult);
-        // });
+        this.props.callFetchAPI(APIHostName, GetMaterialProductAPIPath, id).then(apiResult => {
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            } else {
+                this.setState({ MaterialProductDataSource: apiResult.ResultObject });
+            }
+            //console.log("apiResult", apiResult);
+        });
     }
 
     onComponentChange() {
@@ -232,6 +232,7 @@ class DetailCom extends React.Component {
                     <SvTimeConvertDetail
                         SvTimeConvertID={this.props.match.params.id}
                         DataSource={this.state.DataSource.ListSvTimeConvertDetail ? this.state.DataSource.ListSvTimeConvertDetail : []}
+                        MaterialProductDataSource={this.state.MaterialProductDataSource ? this.state.MaterialProductDataSource : []}
                         onComponentChange={this.onComponentChange}
                     />
 
