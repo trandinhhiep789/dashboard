@@ -388,7 +388,8 @@ class InfoProductCom extends Component {
                                 <label className="col-form-label bold">Nộp tiền thu ngân:</label>
                             </div>
                             <div className="form-group col-md-4">
-                                {(this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD - this.state.ShipmentOrder.TotalReturnPrice) > 0 ?
+                              
+                                {this.state.ShipmentOrder.CollectedTotalMoney > 0 ?
                                     this.state.ShipmentOrder.IsPaidIn == true ? <span className="badge badge-success">Đã nộp tiền thu ngân</span> : <span className="badge badge-danger">Chưa nộp tiền</span> : ""
                                 }
                             </div>
@@ -402,16 +403,40 @@ class InfoProductCom extends Component {
 
                         <div className="form-row">
                         <div className="form-group col-md-2">
-                                <label className="col-form-label bold"> Thời gian nộp tiền:</label>
+                                <label className="col-form-label bold"> Số tiền nộp:</label>
                             </div>
                             <div className="form-group col-md-4">
-                                {formatDate(this.state.ShipmentOrder.PaidInTime)} 
+                            <label className="col-form-label">
+                               
+                                <span className="badge badge-success">{formatMoney(this.state.ShipmentOrder.TotalPaidInMoney,0)}đ</span> 
+                                     
+                                </label>
                             </div>
                             <div className="form-group col-md-2">
                                 <label className="col-form-label bold"> Thông tin xuất:</label>
                             </div>
                             <div className="form-group col-md-4">
                                 {this.state.ShipmentOrder.IsOutputGoods == true ? <span className="badge badge-success">Đã xuất hàng</span> : <span className="badge badge-danger">Chưa xuất hàng </span>}
+                            </div>
+                        </div>
+
+                        <div className="form-row">
+                        <div className="form-group col-md-2">
+                                <label className="col-form-label bold">Số tiền chưa nộp:</label>
+                            </div>
+                            <div className="form-group col-md-4">
+                            { this.state.ShipmentOrder.IsPaidIn == true?
+                                <span className="badge badge-danger">{formatMoney(this.state.ShipmentOrder.TotalUnPaidInMoney,0)}đ</span> :<span className="badge badge-danger">{formatMoney(this.state.ShipmentOrder.CollectedTotalMoney,0)}đ</span>
+                                }
+                   
+                            </div>
+                        </div>
+                        <div className="form-row">
+                        <div className="form-group col-md-2">
+                                <label className="col-form-label bold"> Thời gian nộp tiền:</label>
+                            </div>
+                            <div className="form-group col-md-4">
+                                {formatDate(this.state.ShipmentOrder.PaidInTime)} 
                             </div>
                         </div>
 
