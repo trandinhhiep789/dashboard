@@ -97,11 +97,9 @@ class ConfirmModalCom extends Component {
     }
 
     render() {
-        console.log("aaa", this.props)
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
-                <p>modal chốt thưởng</p>
                 <FormContainer
                     MLObjectDefinition={MLObjectChangeConfirmModal}
                     dataSource={null}
