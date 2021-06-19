@@ -81,7 +81,8 @@ export const SearchElementList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERSTATUS",
         ValueMember: "ShipmentOrderStatusID",
         NameMember: "ShipmentOrderStatusName",
-        classNameCol: "col-custom"
+        classNameCol: "col-custom",
+        divClassNameLabel: ""
     },
     {
         type: "ComboBox",
