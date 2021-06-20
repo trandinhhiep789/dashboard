@@ -91,20 +91,19 @@ class ModalDetailCom extends Component {
                     },
                     {
                         "name": "V_OUTPUTTYPEIDLIST2",
-                        "value":  this.getValueKeyConfig("RECONCILIATION_INVENTORYOUTPUTTYPEIDLIST").toString(), //"2223,9,12"
+                        "value": this.getValueKeyConfig("RECONCILIATION_INVENTORYOUTPUTTYPEIDLIST").toString(), //"2223,9,12"
                         "op": "array"
                     },
-                    
+
                     {
                         "name": "V_ISCHECKVIEWDIFFERENCE",
                         "value": this.state.Difference,
                         "op": "array"
                     },
                     {
-                 
+
                         "name": "V_VIRTUALSTOREIDLIST",
-                        "value": "9375",//this.getValueKeyConfig("RECONCILIATION_SALEOUTPUTTYPEIDLIST").toString(),//"3",
-                        "op": "array"   
+                        "value": this.getValueKeyConfig("RECONCILIATION_VIRTUALSTOREIDLIST").toString(), //"9375",
                     },
                     {
                         "name": "V_PAGEINDEX",
@@ -142,7 +141,7 @@ class ModalDetailCom extends Component {
                     },
                     {
                         "name": "V_OUTPUTTYPEIDLIST2",
-                        "value":  this.getValueKeyConfig("RECONCILIATION_INVENTORYINPUTTYPEIDLIST").toString(), //"2223,9,12"
+                        "value": this.getValueKeyConfig("RECONCILIATION_INVENTORYINPUTTYPEIDLIST").toString(), //"2223,9,12"
                         "op": "array"
                     },
                     {
@@ -157,10 +156,10 @@ class ModalDetailCom extends Component {
                         "op": "array"
                     },
                     {
-                 
+
                         "name": "V_VIRTUALSTOREIDLIST",
-                        "value": "9375",//this.getValueKeyConfig("RECONCILIATION_SALEOUTPUTTYPEIDLIST").toString(),//"3",
-                        "op": "array"   
+                        "value": this.getValueKeyConfig("RECONCILIATION_VIRTUALSTOREIDLIST").toString(),//"9375"
+                        "op": "array"
                     },
                     {
                         "name": "V_PAGESIZE",
@@ -342,12 +341,24 @@ class ModalDetailCom extends Component {
                     },
                     {
                         "name": "V_OUTPUTTYPEIDLIST",
-                        "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEOUTPUTTYPEIDLIST").toString(), //"2223,9,12"
+                        "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEOUTPUTTYPEIDLIST").toString(), //"2223"
                         "op": "array"
                     },
                     {
+                        "name": "V_OUTPUTTYPEIDLIST2",
+                        "value": this.getValueKeyConfig("RECONCILIATION_INVENTORYOUTPUTTYPEIDLIST").toString(), //"2223,9,12"
+                        "op": "array"
+                    },
+
+                    {
                         "name": "V_ISCHECKVIEWDIFFERENCE",
-                        "value": Difference,
+                        "value": this.state.Difference,
+                        "op": "array"
+                    },
+                    {
+
+                        "name": "V_VIRTUALSTOREIDLIST",
+                        "value": this.getValueKeyConfig("RECONCILIATION_VIRTUALSTOREIDLIST").toString(),//"3",
                         "op": "array"
                     },
                     {
@@ -381,18 +392,29 @@ class ModalDetailCom extends Component {
                     },
                     {
                         "name": "V_INPUTTYPEIDLIST",
-                        "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEINPUTTYPEIDLIST").toString(), //"2064,7,13"
+                        "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEINPUTTYPEIDLIST").toString(), //"2064"
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_OUTPUTTYPEIDLIST2",
+                        "value": this.getValueKeyConfig("RECONCILIATION_INVENTORYINPUTTYPEIDLIST").toString(), //"2223,9,12"
                         "op": "array"
                     },
                     {
                         "name": "V_ISCHECKVIEWDIFFERENCE",
-                        "value": Difference,
+                        "value": this.state.Difference,
                         "op": "array"
                     }
                     ,
                     {
                         "name": "V_PAGEINDEX",
                         "value": PageNumber,
+                        "op": "array"
+                    },
+                    {
+
+                        "name": "V_VIRTUALSTOREIDLIST",
+                        "value": this.getValueKeyConfig("RECONCILIATION_VIRTUALSTOREIDLIST").toString(),//"9375",
                         "op": "array"
                     },
                     {
@@ -426,7 +448,7 @@ class ModalDetailCom extends Component {
                     },
                     {
                         "name": "V_ISCHECKVIEWDIFFERENCE",
-                        "value": Difference,
+                        "value": this.state.Difference,
                         "op": "array"
                     }
                     ,
@@ -465,7 +487,7 @@ class ModalDetailCom extends Component {
                     },
                     {
                         "name": "V_ISCHECKVIEWDIFFERENCE",
-                        "value": Difference,
+                        "value": this.state.Difference,
                         "op": "array"
                     },
                     {
@@ -522,12 +544,24 @@ class ModalDetailCom extends Component {
                     },
                     {
                         "name": "V_OUTPUTTYPEIDLIST",
-                        "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEOUTPUTTYPEIDLIST").toString(), //"2223,9,12"
+                        "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEOUTPUTTYPEIDLIST").toString(), //"2223"
                         "op": "array"
                     },
                     {
+                        "name": "V_OUTPUTTYPEIDLIST2",
+                        "value": this.getValueKeyConfig("RECONCILIATION_INVENTORYOUTPUTTYPEIDLIST").toString(), //"2223,9,12"
+                        "op": "array"
+                    },
+
+                    {
                         "name": "V_ISCHECKVIEWDIFFERENCE",
                         "value": 1,
+                        "op": "array"
+                    },
+                    {
+
+                        "name": "V_VIRTUALSTOREIDLIST",
+                        "value": this.getValueKeyConfig("RECONCILIATION_VIRTUALSTOREIDLIST").toString(),// "9375",
                         "op": "array"
                     },
                     {
@@ -561,7 +595,12 @@ class ModalDetailCom extends Component {
                     },
                     {
                         "name": "V_INPUTTYPEIDLIST",
-                        "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEINPUTTYPEIDLIST").toString(), //"2064,7,13"
+                        "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEINPUTTYPEIDLIST").toString(), //"2064"
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_OUTPUTTYPEIDLIST2",
+                        "value": this.getValueKeyConfig("RECONCILIATION_INVENTORYINPUTTYPEIDLIST").toString(), //"2223,9,12"
                         "op": "array"
                     },
                     {
@@ -573,6 +612,12 @@ class ModalDetailCom extends Component {
                     {
                         "name": "V_PAGEINDEX",
                         "value": -1,
+                        "op": "array"
+                    },
+                    {
+
+                        "name": "V_VIRTUALSTOREIDLIST",
+                        "value": this.getValueKeyConfig("RECONCILIATION_VIRTUALSTOREIDLIST").toString(),//"9375",
                         "op": "array"
                     },
                     {
