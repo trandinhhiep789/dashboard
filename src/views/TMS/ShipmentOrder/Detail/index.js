@@ -65,10 +65,14 @@ class DetailCom extends React.Component {
 
     callLoadData(id) {
 
-        // this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetListMaterial",210510000000050).then((apiResult) => {
+        // let objAdvanceRequestLoad=
+        // {AdvanceRequestTypeID:7,ReceiverStoreID:4121,RequestUserName:"",ShipmentOrderLst:""}
+
+        // this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetListMaterial",'210531000281230').then((apiResult) => {
         //     console.log("apiResult.ResultObject",apiResult)
-           
         // });
+
+
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
             if (apiResult.IsError) {
                 this.setState({
@@ -114,6 +118,9 @@ class DetailCom extends React.Component {
                         ShipmentOrderTypeWF={this.state.ShipmentOrderType_WorkFlowList}
                         CurrentShipmentOrderStepID={this.state.CurrentShipmentOrderStepID}
                         TotalMoney={this.state.DataSource.CollectedTotalMoney + this.state.DataSource.TotalCOD}
+                        TotalCOD={this.state.DataSource.TotalCOD}
+                        TotalSaleMaterialMoney={this.state.DataSource.TotalSaleMaterialMoney}
+                        TotalReturnPrice={this.state.DataSource.TotalReturnPrice}
                         IsCancelDelivery={this.state.IsCancelDelivery}
                     />
                     
