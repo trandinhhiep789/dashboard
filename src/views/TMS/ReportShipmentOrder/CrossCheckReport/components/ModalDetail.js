@@ -104,6 +104,7 @@ class ModalDetailCom extends Component {
 
                         "name": "V_VIRTUALSTOREIDLIST",
                         "value": this.getValueKeyConfig("RECONCILIATION_VIRTUALSTOREIDLIST").toString(), //"9375",
+                        "op": "array"
                     },
                     {
                         "name": "V_PAGEINDEX",
@@ -145,6 +146,12 @@ class ModalDetailCom extends Component {
                         "op": "array"
                     },
                     {
+
+                        "name": "V_VIRTUALSTOREIDLIST",
+                        "value": this.getValueKeyConfig("RECONCILIATION_VIRTUALSTOREIDLIST").toString(),//"9375"
+                        "op": "array"
+                    },
+                    {
                         "name": "V_ISCHECKVIEWDIFFERENCE",
                         "value": this.state.Difference,
                         "op": "array"
@@ -155,12 +162,7 @@ class ModalDetailCom extends Component {
                         "value": PageNumber,
                         "op": "array"
                     },
-                    {
-
-                        "name": "V_VIRTUALSTOREIDLIST",
-                        "value": this.getValueKeyConfig("RECONCILIATION_VIRTUALSTOREIDLIST").toString(),//"9375"
-                        "op": "array"
-                    },
+                    
                     {
                         "name": "V_PAGESIZE",
                         "value": 100,
@@ -318,7 +320,7 @@ class ModalDetailCom extends Component {
         this.addNotification(result.Message, result.IsError);
     }
 
-    handleSearchSubmit(formData, MLObject) {
+     handleSearchSubmit(formData, MLObject) {
         this.setState({
             IsLoadDataComplete: false
         })
@@ -349,18 +351,18 @@ class ModalDetailCom extends Component {
                         "value": this.getValueKeyConfig("RECONCILIATION_INVENTORYOUTPUTTYPEIDLIST").toString(), //"2223,9,12"
                         "op": "array"
                     },
+                    {
 
+                        "name": "V_VIRTUALSTOREIDLIST",
+                        "value": this.getValueKeyConfig("RECONCILIATION_VIRTUALSTOREIDLIST").toString(),//"9375"
+                        "op": "array"
+                    },
                     {
                         "name": "V_ISCHECKVIEWDIFFERENCE",
                         "value": this.state.Difference,
                         "op": "array"
                     },
-                    {
-
-                        "name": "V_VIRTUALSTOREIDLIST",
-                        "value": this.getValueKeyConfig("RECONCILIATION_VIRTUALSTOREIDLIST").toString(),//"3",
-                        "op": "array"
-                    },
+                   
                     {
                         "name": "V_PAGEINDEX",
                         "value": PageNumber,
