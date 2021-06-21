@@ -85,7 +85,7 @@ class ModalDetailCom extends Component {
                         "op": "timestamp"
                     },
                     {
-                        "name": "V_OUTPUTTYPEIDLIST",
+                        "name": "V_OUTPUTTYPEIDLIST1",
                         "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEOUTPUTTYPEIDLIST").toString(), //"2223"
                         "op": "array"
                     },
@@ -136,7 +136,7 @@ class ModalDetailCom extends Component {
                         "op": "timestamp"
                     },
                     {
-                        "name": "V_INPUTTYPEIDLIST",
+                        "name": "V_INPUTTYPEIDLIST1",
                         "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEINPUTTYPEIDLIST").toString(), //"2064"
                         "op": "array"
                     },
@@ -342,7 +342,7 @@ class ModalDetailCom extends Component {
                         "op": "timestamp"
                     },
                     {
-                        "name": "V_OUTPUTTYPEIDLIST",
+                        "name": "V_OUTPUTTYPEIDLIST1",
                         "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEOUTPUTTYPEIDLIST").toString(), //"2223"
                         "op": "array"
                     },
@@ -393,7 +393,7 @@ class ModalDetailCom extends Component {
                         "op": "timestamp"
                     },
                     {
-                        "name": "V_INPUTTYPEIDLIST",
+                        "name": "V_INPUTTYPEIDLIST1",
                         "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEINPUTTYPEIDLIST").toString(), //"2064"
                         "op": "array"
                     },
@@ -545,7 +545,7 @@ class ModalDetailCom extends Component {
                         "op": "timestamp"
                     },
                     {
-                        "name": "V_OUTPUTTYPEIDLIST",
+                        "name": "V_OUTPUTTYPEIDLIST1",
                         "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEOUTPUTTYPEIDLIST").toString(), //"2223"
                         "op": "array"
                     },
@@ -595,7 +595,7 @@ class ModalDetailCom extends Component {
                         "op": "timestamp"
                     },
                     {
-                        "name": "V_INPUTTYPEIDLIST",
+                        "name": "V_INPUTTYPEIDLIST1",
                         "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEINPUTTYPEIDLIST").toString(), //"2064"
                         "op": "array"
                     },
