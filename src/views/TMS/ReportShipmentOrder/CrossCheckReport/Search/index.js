@@ -141,7 +141,11 @@ class SearchCom extends React.Component {
                     "value": this.getValueKeyConfig("RECONCILIATION_INVENTORYOUTPUTTYPEIDLIST").toString(),//"2223,9,12",
                     "op": "array"
                 },
-                
+                {
+                    "name": "V_OUTINPUTTYPEIDREPORT6LIST",
+                    "value": this.getValueKeyConfig("RECONCILIATION_INVENTORYINPUTTYPEIDLIST").toString(),//"2223,9,12",
+                    "op": "array"
+                },
                 {
                  
                     "name": "V_VIRTUALSTOREIDLIST",
