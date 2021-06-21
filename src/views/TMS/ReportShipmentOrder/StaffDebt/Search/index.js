@@ -318,7 +318,7 @@ class SearchCom extends React.Component {
 
         this.props.callFetchAPI(APIHostName, SearchUnlockLogAPIPath, postData).then(apiResult => {
             if (apiResult.IsError) {
-                this.showMessage(apiResult.MessageDetail);
+                this.showMessage(apiResult.Message);
             }
             else {
                 const tempData = apiResult.ResultObject.map((item, index) => {

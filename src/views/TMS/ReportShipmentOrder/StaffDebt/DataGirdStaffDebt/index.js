@@ -142,7 +142,7 @@ class DataGirdStaffDebtCom extends Component {
         this.props.callFetchAPI(APIHostName, "api/StaffDebtDetail_UnLockLog/Search", postData).then(apiResult => {
             console.log("history", objId, postData, apiResult)
             if (apiResult.IsError) {
-                this.showMessage(apiResult.MessageDetail);
+                this.showMessage(apiResult.Message);
             }
             else {
 
