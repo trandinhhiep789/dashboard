@@ -141,7 +141,7 @@ class ModalDetailCom extends Component {
                         "op": "array"
                     },
                     {
-                        "name": "V_OUTPUTTYPEIDLIST2",
+                        "name": "V_INPUTTYPEIDLIST2",
                         "value": this.getValueKeyConfig("RECONCILIATION_INVENTORYINPUTTYPEIDLIST").toString(), //"2223,9,12"
                         "op": "array"
                     },
@@ -398,7 +398,7 @@ class ModalDetailCom extends Component {
                         "op": "array"
                     },
                     {
-                        "name": "V_OUTPUTTYPEIDLIST2",
+                        "name": "V_INPUTTYPEIDLIST2",
                         "value": this.getValueKeyConfig("RECONCILIATION_INVENTORYINPUTTYPEIDLIST").toString(), //"2223,9,12"
                         "op": "array"
                     },
@@ -600,7 +600,7 @@ class ModalDetailCom extends Component {
                         "op": "array"
                     },
                     {
-                        "name": "V_OUTPUTTYPEIDLIST2",
+                        "name": "V_INPUTTYPEIDLIST2",
                         "value": this.getValueKeyConfig("RECONCILIATION_INVENTORYINPUTTYPEIDLIST").toString(), //"2223,9,12"
                         "op": "array"
                     },
