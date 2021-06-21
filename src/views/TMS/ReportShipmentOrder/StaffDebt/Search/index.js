@@ -129,7 +129,7 @@ class SearchCom extends React.Component {
                     }
                     item.StaffDebtID = Base64.encode(JSON.stringify(objStaffDebtID));
                     item.FullNameMember = item.UserName + " - " + item.FullName
-                    item.Note = "Xem"
+                    item.Note = "Chi tiết"
                     if (item.IsLockDelivery) {
                         item.DeliveryStatus = <span className='lblstatusLock'>Đã khóa</span>;
                     }
@@ -349,7 +349,7 @@ class SearchCom extends React.Component {
         });
     }
 
-    onShowModal(dataSource, dataItem) {
+    onShowModal(dataSource, dataItem, param) {
         const { widthPercent } = this.state;
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: "Chi tiết danh sách nợ tiền thu hộ theo nhân viên",
@@ -357,12 +357,14 @@ class SearchCom extends React.Component {
                 text: <DataGirdStaffDebt
                     dataSource={dataSource}
                     dataItem={dataItem}
+                    param={param}
                 />
 
             },
             maxWidth: widthPercent + 'px'
         });
     }
+
 
     onShowModalDetail(objValue, name) {
         const { gridDataSource } = this.state;
@@ -384,12 +386,19 @@ class SearchCom extends React.Component {
         ]
 
         this.props.callFetchAPI(APIHostName, SearchDetailAPIPath, param).then(apiResult => {
+            console.log("aaa", param, apiResult)
             if (!apiResult.IsError) {
                 const dataTemp = apiResult.ResultObject.map((item, index) => {
                     item.FullNameMemer = item.UserName + " - " + item.FullName
+                    if (item.IsLockDelivery) {
+                        item.DeliveryStatus = <span className='lblstatusLock'>Đã khóa</span>;
+                    }
+                    else {
+                        item.DeliveryStatus = <span className='lblstatusUnlock'>Hoạt động</span>;
+                    }
                     return item;
                 })
-                this.onShowModal(dataTemp, tempItme)
+                this.onShowModal(dataTemp, tempItme, param)
             }
             else {
                 this.showMessage(apiResult.Message)
