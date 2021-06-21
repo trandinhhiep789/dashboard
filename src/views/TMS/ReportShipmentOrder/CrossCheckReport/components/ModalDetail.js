@@ -552,16 +552,15 @@ class ModalDetailCom extends Component {
                         "value": this.getValueKeyConfig("RECONCILIATION_INVENTORYOUTPUTTYPEIDLIST").toString(), //"2223,9,12"
                         "op": "array"
                     },
-
-                    {
-                        "name": "V_ISCHECKVIEWDIFFERENCE",
-                        "value": 1,
-                        "op": "array"
-                    },
                     {
 
                         "name": "V_VIRTUALSTOREIDLIST",
                         "value": this.getValueKeyConfig("RECONCILIATION_VIRTUALSTOREIDLIST").toString(),// "9375",
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_ISCHECKVIEWDIFFERENCE",
+                        "value": 1,
                         "op": "array"
                     },
                     {
@@ -604,6 +603,12 @@ class ModalDetailCom extends Component {
                         "op": "array"
                     },
                     {
+
+                        "name": "V_VIRTUALSTOREIDLIST",
+                        "value": this.getValueKeyConfig("RECONCILIATION_VIRTUALSTOREIDLIST").toString(),//"9375",
+                        "op": "array"
+                    },
+                    {
                         "name": "V_ISCHECKVIEWDIFFERENCE",
                         "value": 1,
                         "op": "array"
@@ -614,12 +619,7 @@ class ModalDetailCom extends Component {
                         "value": -1,
                         "op": "array"
                     },
-                    {
-
-                        "name": "V_VIRTUALSTOREIDLIST",
-                        "value": this.getValueKeyConfig("RECONCILIATION_VIRTUALSTOREIDLIST").toString(),//"9375",
-                        "op": "array"
-                    },
+                  
                     {
                         "name": "V_PAGESIZE",
                         "value": -1,
