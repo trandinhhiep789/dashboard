@@ -23,7 +23,7 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_SERVICETYPE, ERPCOMMONCACHE_TMSREWARDTYPE } from "../../../../../constants/keyCache";
-import { SERVICETYPE_VIEW, SERVICETYPE_DELETE, REWARDTYPE_VIEW, REWARDTYPE_DELETE } from "../../../../../constants/functionLists";
+import { REWARDTYPEVIEW, PERIODUSERRWPOSITION_VIEW, PERIODUSERRWPOSITION_DELETE } from "../../../../../constants/functionLists";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -64,7 +64,7 @@ class SearchCom extends React.Component {
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
-                this.props.callClearLocalCache(ERPCOMMONCACHE_TMSREWARDTYPE);
+                //this.props.callClearLocalCache(ERPCOMMONCACHE_TMSREWARDTYPE);
                 // this.handleSubmitInsertLog();
             }
         });
@@ -154,7 +154,7 @@ class SearchCom extends React.Component {
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
-                        FormName="Tìm kiếm danh sách loại thưởng"
+                        FormName="Tìm kiếm danh sách bảng chuyển đổi chức vụ nhân viên và vị trí thưởng"
                         MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
@@ -168,8 +168,8 @@ class SearchCom extends React.Component {
                         PKColumnName={PKColumnName}
                         onDeleteClick={this.handleDelete}
                         ref={this.gridref}
-                        RequirePermission={REWARDTYPE_VIEW}
-                        DeletePermission={REWARDTYPE_DELETE}
+                        RequirePermission={PERIODUSERRWPOSITION_VIEW}
+                        DeletePermission={PERIODUSERRWPOSITION_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                     />

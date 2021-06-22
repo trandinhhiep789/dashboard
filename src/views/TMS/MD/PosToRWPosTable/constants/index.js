@@ -1,3 +1,5 @@
+import { ERPCOMMONCACHE_TMSREWARDPOSITION } from "../../../../../constants/keyCache";
+
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/PosToRWPosTable/Search";
 export const LoadAPIPath = "api/PosToRWPosTable/Load";
@@ -14,18 +16,18 @@ export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách loại thưởng" }
+    { Link: "", Title: "Danh sách bảng chuyển đổi chức vụ nhân viên và vị trí thưởng" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/PosToRWPosTable", Title: "Danh sách loại thưởng" },
+    { Link: "/PosToRWPosTable", Title: "Danh sách bảng chuyển đổi chức vụ nhân viên và vị trí thưởng" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/PosToRWPosTable", Title: "Danh sách loại thưởng" },
+    { Link: "/PosToRWPosTable", Title: "Danh sách bảng chuyển đổi chức vụ nhân viên và vị trí thưởng" },
     { Link: "", Title: "Thêm" }
 ];
 
@@ -42,23 +44,23 @@ export const SearchElementList = [
 ];
 
 export const AddElementList = [
-    {
-        type: "text",
-        name: "txtPosToRWPosTableID",
-        label: "mã loại thưởng",
-        value: "",
-        maxSize: "10",
-        placeholder: "",
-        icon: "",
-        listoption: {},
-        DataSourceMember: "PosToRWPosTableID",
-        readonly: false,
-        validatonList: ["required", "number"]
-    },
+    // {
+    //     type: "text",
+    //     name: "txtPosToRWPosTableID",
+    //     label: "mã loại thưởng",
+    //     value: "",
+    //     maxSize: "10",
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: {},
+    //     DataSourceMember: "PosToRWPosTableID",
+    //     readonly: false,
+    //     validatonList: ["required", "number"]
+    // },
     {
         type: "text",
         name: "txtPosToRWPosTableName",
-        label: "tên loại thưởng",
+        label: "Tên bảng chuyển đổi",
         value: "",
         maxSize: "200",
         placeholder: "",
@@ -67,6 +69,80 @@ export const AddElementList = [
         DataSourceMember: "PosToRWPosTableName",
         readonly: false,
         validatonList: ["required"],
+    },
+    {
+        name: "txtDepartmentID",
+        type: "multiselect",
+        label: "phòng ban",
+        DataSourceMember: "DepartmentID",
+        readonly: false,
+        value: -1,
+        validatonList: ["Comborequired"],
+        isMulti: false,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.BCNBSYSTEM_DEPARTMENT",
+        ValueMember: "DepartmentID",
+        NameMember: "DepartmentName",
+        //KeyFilter: "DepartmentName",
+        //ValueFilter: "1,2"
+    },
+    {
+        name: "txtPositionID",
+        type: "multiselect",
+        label: "chức vụ",
+        DataSourceMember: "PositionID",
+        readonly: false,
+        value: -1,
+        validatonList: ["Comborequired"],
+        isMulti: false,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.BCNBSYSTEM_DEPARTMENT",
+        ValueMember: "PositionID",
+        NameMember: "PositionName",
+        //KeyFilter: "DepartmentName",
+        //ValueFilter: "1,2"
+    },
+    {
+        name: "txtRewardPositionID",
+        type: "multiselect",
+        label: "vị trí thưởng",
+        DataSourceMember: "RewardPositionID",
+        readonly: false,
+        value: -1,
+        validatonList: ["Comborequired"],
+        isMulti: false,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: ERPCOMMONCACHE_TMSREWARDPOSITION,
+        ValueMember: "RewardPositionID",
+        NameMember: "RewardPositionName",
+        //KeyFilter: "DepartmentName",
+        //ValueFilter: "1,2"
+    },
+    {
+        type: "text",
+        name: "txtDelayDays",
+        label: "ngày set vị trí thưởng kể từ ngày thuyên chuyển",
+        value: "",
+        maxSize: "5",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "DelayDays",
+        readonly: false,
+        validatonList: ["required", "number"],
+    },
+    {
+        type: "text",
+        name: "txtBaseServiceTime",
+        label: "Thời gian dịch vụ cơ sở",
+        value: "",
+        maxSize: "10",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "BaseServiceTime",
+        readonly: false,
+        validatonList: ["required", "number"],
     },
     {
         type: "textarea",
@@ -220,6 +296,50 @@ export const MLObjectDefinition = [
         BindControlName: "txtPosToRWPosTableName",
         DataSourceMember: "PosToRWPosTableName"
     },
+
+
+    {
+        Name: "PosToRWPosTableName",
+        DefaultValue: "",
+        BindControlName: "txtPosToRWPosTableName",
+        DataSourceMember: "PosToRWPosTableName"
+    },
+    {
+        Name: "DepartmentID",
+        DefaultValue: "",
+        BindControlName: "txtDepartmentID",
+        DataSourceMember: "DepartmentID"
+    },
+    {
+        Name: "DepartmentName",
+        DefaultValue: "",
+        BindControlName: "txtDepartmentName",
+        DataSourceMember: "DepartmentName"
+    },
+    {
+        Name: "PositionID",
+        DefaultValue: "",
+        BindControlName: "txtPositionID",
+        DataSourceMember: "PositionID"
+    },
+    {
+        Name: "PositionName",
+        DefaultValue: "",
+        BindControlName: "txtPositionName",
+        DataSourceMember: "PositionName"
+    },
+    {
+        Name: "RewardPositionID",
+        DefaultValue: "",
+        BindControlName: "txtRewardPositionID",
+        DataSourceMember: "RewardPositionID"
+    },
+    {
+        Name: "RewardPositionName",
+        DefaultValue: "",
+        BindControlName: "txtRewardPositionName",
+        DataSourceMember: "RewardPositionName"
+    },
     {
         Name: "Description",
         DefaultValue: "",
@@ -275,24 +395,38 @@ export const DataGridColumnList = [
     {
         Name: "PosToRWPosTableID",
         Type: "text",
-        Caption: "Mã loại thưởng",
+        Caption: "Mã bảng chuyển đổi",
         DataSourceMember: "PosToRWPosTableID",
         Width: 160
     },
     {
         Name: "PosToRWPosTableName",
         Type: "text",
-        Caption: "Tên loại thưởng",
+        Caption: "Tên bảng chuyển đổi",
         DataSourceMember: "PosToRWPosTableName",
         Width: 250
     },
     {
-        Name: "Description",
+        Name: "RewardPositionName",
         Type: "text",
-        Caption: "Mô tả",
-        DataSourceMember: "Description",
-        //Width: 200
+        Caption: "Tên vị trí thưởng",
+        DataSourceMember: "RewardPositionName",
+        Width: 250
     },
+    {
+        Name: "DelayDays",
+        Type: "text",
+        Caption: "Ngày set VTT kể từ ngày thuyên chuyển",
+        DataSourceMember: "DelayDays",
+        Width: 250
+    },
+    // {
+    //     Name: "Description",
+    //     Type: "text",
+    //     Caption: "Mô tả",
+    //     DataSourceMember: "Description",
+    //     //Width: 200
+    // },
     {
         Name: "IsActived",
         Type: "checkicon",

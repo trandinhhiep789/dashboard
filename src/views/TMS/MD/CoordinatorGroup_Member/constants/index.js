@@ -89,20 +89,20 @@ export const DataGridColumnList = [
         DataSourceMember: "FullName",
         Width: 300
     },
-    {
-        Name: "IsSystem",
-        Type: "checkicon",
-        Caption: "Hệ thống",
-        DataSourceMember: "IsSystem",
-        Width: 200
-    },
-    {
-        Name: "EditUserName",
-        Type: "edit",
-        Caption: "Sửa",
-        DataSourceMember: "UserName",
-        Width: 100
-    }
+    // {
+    //     Name: "IsSystem",
+    //     Type: "checkicon",
+    //     Caption: "Hệ thống",
+    //     DataSourceMember: "IsSystem",
+    //     Width: 200
+    // },
+    // {
+    //     Name: "EditUserName",
+    //     Type: "edit",
+    //     Caption: "Sửa",
+    //     DataSourceMember: "UserName",
+    //     Width: 100
+    // }
 
 
 
@@ -159,16 +159,11 @@ export const schema = {
         prop: 'UserName',
         type: String,
         required: true
-    },
-    'Hệ thống': {
-        prop: 'IsSystem',
-        type: Number
-    },
+    }
 }
 
 export const DataTemplateExport = [
     {
-        "Mã trưởng nhóm": '98138',
-        "Hệ thống": 0
+        "Mã trưởng nhóm": '98138'
     }
 ];

@@ -10,20 +10,19 @@ import {
     LoadAPIPath,
     BackLink,
     EditPagePath,
-    DetailPagePath,
-    GetMaterialProductAPIPath
+    DetailPagePath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { format } from "date-fns";
 import { formatDate } from "../../../../../common/library/CommonLib";
-import DataExportTemplate_Format from "../../DataExportTemplate_Format";
-import DataExportTemplate_Width from "../../DataExportTemplate_Width";
+import MTReturnRequestType_ReviewLevel_User from "../../MTReturnRequestType_ReviewLevel_User";
+import QualityAssessType_ReviewLevel_User from "../../QualityAssessType_ReviewLevel_User";
 
 
 
-class DetailCom extends React.Component {
+class ReviewLevelDetailCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
@@ -53,24 +52,20 @@ class DetailCom extends React.Component {
                 this.showMessage(apiResult.Message);
             } else {
                 this.setState({ DataSource: apiResult.ResultObject });
+                const detailID = apiResult.ResultObject.QualityAssessTypeID;
+                const DetailPagePath = [
+                    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
+                    { Link: "/QualityAssessType", Title: "Loại tiêu chí đánh giá chất lượng" },
+                    { Link: "/QualityAssessType/Detail/" + detailID, Title: "Chi tiết loại tiêu chí đánh giá chất lượng" },
+                    { Link: "", Title: "Chi tiết mức duyệt loại tiêu chí đánh giá chất lượng" }
+                ];
+                this.props.updatePagePath(DetailPagePath);
             }
             this.setState({
                 IsLoadDataComplete: true
             });
             //console.log("apiResult", apiResult);
         });
-
-        // this.props.callFetchAPI(APIHostName, GetMaterialProductAPIPath, id).then(apiResult => {
-        //     if (apiResult.IsError) {
-        //         this.setState({
-        //             IsCallAPIError: apiResult.IsError
-        //         });
-        //         this.showMessage(apiResult.Message);
-        //     } else {
-        //         this.setState({ MaterialProductDataSource: apiResult.ResultObject });
-        //     }
-        //     //console.log("apiResult", apiResult);
-        // });
     }
 
     onComponentChange() {
@@ -105,7 +100,7 @@ class DetailCom extends React.Component {
                     <div className="col-md-12 col-sm-12 col-xs-12">
                         <div className="x_panel">
                             <div className="x_title">
-                                <h2>Thông tin template xuất dữ liệu</h2>
+                                <h2>Thông tin mức duyệt</h2>
                                 <div className="clearfix"></div>
                             </div>
 
@@ -113,14 +108,14 @@ class DetailCom extends React.Component {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Mã template xuất dữ liệu: </span>
-                                            <span className="xcode">{this.state.DataSource.DataExportTemplateID} - {this.state.DataSource.DataExportTemplateName}</span>
+                                            <span>Mã mức duyệt: </span>
+                                            <span className="xcode">{this.state.DataSource.ReviewLevelID}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Danh sách kích thước các cột: </span>
-                                            <span>{this.state.DataSource.ColumnWidthList}</span>
+                                            <span>Tên mức duyệt: </span>
+                                            <span>{this.state.DataSource.ReviewLevelName}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -128,64 +123,18 @@ class DetailCom extends React.Component {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Tên store load dữ liệu: </span>
-                                            <span>{this.state.DataSource.LoadDataStoreName}</span>
+                                            <span>Mô tả: </span>
+                                            <span>{this.state.DataSource.Description}</span>
                                         </div>
                                     </div>
 
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span> Template tên file xuất dữ liệu: </span>
-                                            <span>{this.state.DataSource.ExportFileNameTemplate}</span>
+                                            <span> Thứ tự hiển thị: </span>
+                                            <span>{this.state.DataSource.ReviewOrderIndex}</span>
                                         </div>
                                     </div>
                                 </div>
-
-
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Tiêu đề file xuất dữ liệu: </span>
-                                            <span>{this.state.DataSource.HeaderTitle}</span>
-                                        </div>
-                                    </div>
-
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span> Danh sách các cột dữ liệu cần xuất: </span>
-                                            <span>{this.state.DataSource.HeaderColumnNameList}</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group checkbox customCheckbox">
-                                            <span>Có nén tập tin xuất: </span>
-                                            <label>
-                                                <input name="IscomPressExportFile" type="checkbox" id="IscomPressExportFile" checked={this.state.DataSource.IscomPressExportFile} />
-                                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    <div className="col-md-6">
-                                        <div className="form-group checkbox customCheckbox">
-                                            <span>Có nén tập tin xuất với mật khẩu: </span>
-                                            <label>
-                                                <input name="IscomPressExportFileWithPass" type="checkbox" id="IscomPressExportFileWithPass" checked={this.state.DataSource.IscomPressExportFileWithPass} />
-                                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-
-
-
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group checkbox customCheckbox">
@@ -207,70 +156,30 @@ class DetailCom extends React.Component {
                                     </div>
                                 </div>
 
-
-
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span> Thứ tự hiển thị: </span>
-                                            <span>{this.state.DataSource.OrderIndex}</span>
+                                            <span>Người tạo: </span>
+                                            <span>{this.state.DataSource.CreatedUserFullName}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span> Mô tả: </span>
-                                            <span>{this.state.DataSource.Description}</span>
+                                            <span>Ngày tạo: </span>
+                                            <span>{formatDate(this.state.DataSource.CreatedDate)}</span>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Người cập nhật: </span>
-                                            <span>{this.state.DataSource.UpdatedUserFullName}</span>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Ngày cập nhật: </span>
-                                            <span>{formatDate(this.state.DataSource.UpdatedDate)}</span>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                {/* <div className="row">
-                                    <div className="col-md-12">
-                                        <div className="form-group checkbox customCheckbox">
-                                            <span>Cho phép nhập trùng SP </span>
-                                            <label>
-                                                <input name="IsAllowDuplicationProduct" type="checkbox" id="IsAllowDuplicationProduct" checked={this.state.DataSource.IsAllowDuplicationProduct} />
-                                                <span className="cr"><i className="cr-icon fa fa-check"></i></span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div> */}
-
-
-
                             </div>
                         </div>
                     </div>
 
-                    <DataExportTemplate_Format
-                        DataExportTemplateID={this.props.match.params.id}
-                        DataSource={this.state.DataSource.FormatList ? this.state.DataSource.FormatList : []}
+                    <br />
+                    <QualityAssessType_ReviewLevel_User
+                        ReviewLevelID={this.props.match.params.id}
+                        DataSource={this.state.DataSource.ListQualityAssessType_ReviewLevel_User ? this.state.DataSource.ListQualityAssessType_ReviewLevel_User : []}
                         onComponentChange={this.onComponentChange}
                     />
-
-                    <DataExportTemplate_Width
-                        DataExportTemplateID={this.props.match.params.id}
-                        DataSource={this.state.DataSource.ListDataExportTemplate_Width ? this.state.DataSource.ListDataExportTemplate_Width : []}
-                        onComponentChange={this.onComponentChange}
-                    />
-
-
                 </React.Fragment >
             );
         }
@@ -303,8 +212,8 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const Detail = connect(
+const ReviewLevelDetail = connect(
     mapStateToProps,
     mapDispatchToProps
-)(DetailCom);
-export default Detail;
+)(ReviewLevelDetailCom);
+export default ReviewLevelDetail;

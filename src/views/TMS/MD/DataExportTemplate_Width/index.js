@@ -15,10 +15,10 @@ import {
 import ReactNotification from "react-notifications-component";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
-import { callGetCache, callClearLocalCache, callGetUserCache } from "../../../../actions/cacheAction";
-import { GET_CACHE_USER_FUNCTION_LIST, MTRETURNREQUESTTYPE_ADD, MTRETURNREQUESTTYPE_DELETE, MTRETURNREQUESTTYPE_UPDATE, QUALITYASSESSTYPE_ADD, QUALITYASSESSTYPE_DELETE, QUALITYASSESSTYPE_UPDATE, SVTIMECONVERT_ADD, SVTIMECONVERT_DELETE, SVTIMECONVERT_UPDATE } from "../../../../constants/functionLists";
+import { callGetCache, callClearLocalCache,callGetUserCache } from "../../../../actions/cacheAction";
+import { DATAEXPORTTEMPLATE_ADD, DATAEXPORTTEMPLATE_DELETE, DATAEXPORTTEMPLATE_UPDATE, GET_CACHE_USER_FUNCTION_LIST, MTRETURNREQUESTTYPE_ADD, MTRETURNREQUESTTYPE_DELETE, MTRETURNREQUESTTYPE_UPDATE, QUALITYASSESSTYPE_ADD, QUALITYASSESSTYPE_DELETE, QUALITYASSESSTYPE_UPDATE } from "../../../../constants/functionLists";
 
-class SvTimeConvertDetailCom extends React.Component {
+class DataExportTemplate_WidthCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
@@ -26,7 +26,6 @@ class SvTimeConvertDetailCom extends React.Component {
         this.handleEdit = this.handleEdit.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.onClose = this.onClose.bind(this);
-        this.handleModalChange = this.handleModalChange.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -34,8 +33,7 @@ class SvTimeConvertDetailCom extends React.Component {
             cssNotification: "",
             iconNotification: "",
             DataSource: this.props.DataSource ? this.props.DataSource : [],
-            MaterialProductDataSource: this.props.MaterialProductDataSource ? this.props.MaterialProductDataSource : [],
-            SvTimeConvertID: this.props.SvTimeConvertID,
+            DataExportTemplateID: this.props.DataExportTemplateID,
             IsInsert: true,
             ModalColumnList_Insert: ModalColumnList_Insert,
             ModalColumnList_Edit: ModalColumnList_Edit
@@ -45,16 +43,12 @@ class SvTimeConvertDetailCom extends React.Component {
 
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.SvTimeConvertID !== this.state.SvTimeConvertID) {
-            this.setState({ SvTimeConvertID: nextProps.SvTimeConvertID });
+        if (nextProps.DataExportTemplateID !== this.state.DataExportTemplateID) {
+            this.setState({ DataExportTemplateID: nextProps.DataExportTemplateID });
         }
 
         if (nextProps.DataSource !== this.state.DataSource) {
             this.setState({ DataSource: nextProps.DataSource });
-        }
-
-        if (nextProps.MaterialProductDataSource !== this.state.MaterialProductDataSource) {
-            this.setState({ MaterialProductDataSource: nextProps.MaterialProductDataSource });
         }
     }
 
@@ -78,20 +72,23 @@ class SvTimeConvertDetailCom extends React.Component {
     }
 
     addNotification(message1, IsError) {
-        let cssNotification, iconNotification;
         if (!IsError) {
-            cssNotification = "notification-custom-success";
-            iconNotification = "fa fa-check"
+            this.setState({
+                cssNotification: "notification-custom-success",
+                iconNotification: "fa fa-check"
+            });
         } else {
-            cssNotification = "notification-danger";
-            iconNotification = "fa fa-exclamation"
+            this.setState({
+                cssNotification: "notification-danger",
+                iconNotification: "fa fa-exclamation"
+            });
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={cssNotification}>
+                <div className={this.state.cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={iconNotification} />
+                        <i className={this.state.iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -112,20 +109,20 @@ class SvTimeConvertDetailCom extends React.Component {
         let IsAllowedAdd = false;
         let IsAllowedUpdate = false;
         let IsAllowedDelete = false;
-
+        
         this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
-                let isAllowAdd = result.ResultObject.CacheData.filter(x => x.FunctionID == SVTIMECONVERT_ADD);
+                let isAllowAdd = result.ResultObject.CacheData.filter(x => x.FunctionID == DATAEXPORTTEMPLATE_ADD);
                 if (isAllowAdd && isAllowAdd.length > 0) {
                     IsAllowedAdd = true;
                 }
 
-                let isAllowUpdate = result.ResultObject.CacheData.filter(x => x.FunctionID == SVTIMECONVERT_UPDATE);
+                let isAllowUpdate = result.ResultObject.CacheData.filter(x => x.FunctionID == DATAEXPORTTEMPLATE_UPDATE);
                 if (isAllowUpdate && isAllowUpdate.length > 0) {
                     IsAllowedUpdate = true;
                 }
 
-                let isAllowDelete = result.ResultObject.CacheData.filter(x => x.FunctionID == SVTIMECONVERT_DELETE);
+                let isAllowDelete = result.ResultObject.CacheData.filter(x => x.FunctionID == DATAEXPORTTEMPLATE_DELETE);
                 if (isAllowDelete && isAllowDelete.length > 0) {
                     IsAllowedDelete = true;
                 }
@@ -137,78 +134,29 @@ class SvTimeConvertDetailCom extends React.Component {
             }
         });
     }
-
-
-    handleModalChange(formData, formValidation, elementName, elementValue) {
-        if (elementName == "MaterialGroupID") {
-            let options = [];
-            this.props.MaterialProductDataSource.map((item, index) => {
-                if (item.MaterialGroupID == elementValue) {
-                    options.push({ value: item.ProductID, name: item.ProductName })
-                }
-            })
-            const elementlist = this.state.IsInsert ? ModalColumnList_Insert : ModalColumnList_Edit;
-            elementlist.forEach(function (objElement) {
-                if (objElement.Name == "ProductID") {
-                    objElement.listoption = options;
-                    objElement.value = [];
-                    formData.ProductID = [];
-                }
-
-
-            });
-            if (this.state.IsInsert) {
-                this.setState({
-                    ModalColumnList_Insert: elementlist
-                });
-            } else {
-                this.setState({
-                    ModalColumnList_Edit: elementlist
-                });
-            }
-
-            return formData;
-        }
-
-
-        //console.log("formdata",formData);
-
-        //return 1;
-    }
-
+    
     onClose() {
 
     }
 
     handleInsert(MLObjectDefinition, modalElementList, dataSource) {
-        if (!this.state.IsAllowedAdd) {
+        if(!this.state.IsAllowedAdd){
             this.showMessage("Bạn không có quyền");
             return;
         }
         this.setState({ IsInsert: true });
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
-            title: 'Thêm mới chi tiết bảng chuyển đổi',
+            title: 'Thêm mới định dạng các cột dữ liệu xuất',
             autoCloseModal: false,
-            onValueChange: this.handleModalChange,
+            //onValueChange: this.handleModalChange,
             onClose: this.onClose,
             onConfirm: (isConfirmed, formData) => {
                 if (isConfirmed) {
                     let MLObject = GetMLObjectData(MLObjectDefinition, formData, dataSource);
                     if (MLObject) {
-                        MLObject.SvTimeConvertID = this.state.SvTimeConvertID;
-                        MLObject.MaterialGroupID = MLObject.MaterialGroupID && Array.isArray(MLObject.MaterialGroupID) ? MLObject.MaterialGroupID[0] : MLObject.MaterialGroupID;
-                        MLObject.ProductID = MLObject.ProductID && Array.isArray(MLObject.ProductID) ? MLObject.ProductID[0] : -1;
-                        //MLObject.ProductID = MLObject.ProductID && Array.isArray(MLObject.ProductID) ? MLObject.ProductID[0].ProductID : MLObject.ProductID;
+                        MLObject.DataExportTemplateID = this.state.DataExportTemplateID;
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-
-                        //kiểm tra dữ liệu đã tồn tại
-                        let duplicatedItems = this.state.DataSource.filter(x => x.ServiceTimeLong == MLObject.ServiceTimeLong && x.MaterialGroupID == MLObject.MaterialGroupID && x.ProductID == MLObject.ProductID)
-                        if (duplicatedItems.length > 0) {
-                            this.addNotification("Dữ liệu đẵ tồn tại", true);
-                            return;
-                        }
-
                         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
                             if (!apiResult.IsError) {
                                 if (this.props.onComponentChange) {
@@ -219,7 +167,6 @@ class SvTimeConvertDetailCom extends React.Component {
                             //this.showMessage(apiResult.Message);
                             this.addNotification(apiResult.Message, apiResult.IsError);
                         });
-
                     }
                 }
             },
@@ -228,7 +175,7 @@ class SvTimeConvertDetailCom extends React.Component {
     }
 
     handleEdit(value, pkColumnName) {
-        if (!this.state.IsAllowedUpdate) {
+        if(!this.state.IsAllowedUpdate){
             this.showMessage("Bạn không có quyền");
             return;
         }
@@ -250,46 +197,19 @@ class SvTimeConvertDetailCom extends React.Component {
             }
         });
 
-
-        let options = [];
-        this.props.MaterialProductDataSource.map((item, index) => {
-            if (item.MaterialGroupID == _DataSource.MaterialGroupID) {
-                options.push({ value: item.ProductID, name: item.ProductName })
-            }
-        })
-        const elementlist = ModalColumnList_Edit;
-        elementlist.forEach(function (objElement) {
-            if (objElement.Name == "ProductID") {
-                objElement.listoption = options;
-                objElement.value = [_DataSource.ProductID];
-            }
-        });
-
-
-
+       
 
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
-            title: 'Chỉnh sửa chi tiết bảng chuyển đổi',
-            onValueChange: this.handleModalChange,
+            title: 'Chỉnh sửa định dạng các cột dữ liệu xuất',
+            //onValueChange: this.handleModalChange,
             onClose: this.onClose,
             onConfirm: (isConfirmed, formData) => {
                 if (isConfirmed) {
                     let MLObject = GetMLObjectData(MLObjectDefinition, formData, _DataSource);
                     if (MLObject) {
-                        MLObject.SvTimeConvertID = this.state.SvTimeConvertID;
-                        MLObject.MaterialGroupID = MLObject.MaterialGroupID && Array.isArray(MLObject.MaterialGroupID) ? MLObject.MaterialGroupID[0] : MLObject.MaterialGroupID;
-                        MLObject.ProductID = MLObject.ProductID && Array.isArray(MLObject.ProductID) ? MLObject.ProductID[0] : MLObject.ProductID;
-                        //MLObject.ProductID = MLObject.ProductID && Array.isArray(MLObject.ProductID) ? MLObject.ProductID[0].ProductID : MLObject.ProductID;
+                        MLObject.DataExportTemplateID = this.state.DataExportTemplateID;
                         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-
-                        //kiểm tra dữ liệu đã tồn tại
-                        let duplicatedItems = this.state.DataSource.filter(x => x.ServiceTimeLong == MLObject.ServiceTimeLong && x.MaterialGroupID == MLObject.MaterialGroupID && x.ProductID == MLObject.ProductID)
-                        if (duplicatedItems.length > 0) {
-                            this.addNotification("Dữ liệu đẵ tồn tại", true);
-                            return;
-                        }
-
                         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
                             if (!apiResult.IsError) {
                                 if (this.props.onComponentChange) {
@@ -305,14 +225,14 @@ class SvTimeConvertDetailCom extends React.Component {
                     }
                 }
             },
-            modalElementList: elementlist,
+            modalElementList: ModalColumnList_Edit,
             formData: _DataSource
         });
     }
 
 
     handleDelete(deleteList, pkColumnName) {
-        if (!this.state.IsAllowedDelete) {
+        if(!this.state.IsAllowedDelete){
             this.showMessage("Bạn không có quyền");
             return;
         }
@@ -354,15 +274,15 @@ class SvTimeConvertDetailCom extends React.Component {
                     dataSource={this.state.DataSource}
                     modalElementList={ModalColumnList_Insert}
                     MLObjectDefinition={MLObjectDefinition}
-                    IDSelectColumnName={"chkSelectSvTimeConvertDetailID"}
-                    PKColumnName={"SvTimeConvertDetailID"}
+                    IDSelectColumnName={"chkSelectColumnWidthID"}
+                    PKColumnName={"ColumnWidthID"}
                     onDeleteClick={this.handleDelete}
                     onInsertClick={this.handleInsert}
                     onInsertClickEdit={this.handleEdit}
                     IsAutoPaging={false}
                     //RowsPerPage={10}
                     IsCustomAddLink={true}
-                    headingTitle={"Chi tiết bảng chuyển đổi thời gian thực hiện dịch vụ sang sản phẩm dịch vụ"}
+                    headingTitle={"Kích thước các cột dữ liệu xuất"}
                 />
             </div>
         );
@@ -406,5 +326,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const SvTimeConvertDetail = connect(mapStateToProps, mapDispatchToProps)(SvTimeConvertDetailCom);
-export default SvTimeConvertDetail;
+const DataExportTemplate_Width = connect(mapStateToProps, mapDispatchToProps)(DataExportTemplate_WidthCom);
+export default DataExportTemplate_Width;

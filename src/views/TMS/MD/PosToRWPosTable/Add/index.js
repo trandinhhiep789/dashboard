@@ -16,7 +16,7 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_SERVICETYPE, ERPCOMMONCACHE_TMSREWARDTYPE } from "../../../../../constants/keyCache";
-import { REWARDTYPE_ADD, SERVICETYPE_ADD } from "../../../../../constants/functionLists";
+import { PERIODUSERRWPOSITION_ADD, REWARDTYPE_ADD, SERVICETYPE_ADD } from "../../../../../constants/functionLists";
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
@@ -39,7 +39,7 @@ class AddCom extends React.Component {
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if(!apiResult.IsError){
-                this.props.callClearLocalCache(ERPCOMMONCACHE_TMSREWARDTYPE);
+                //this.props.callClearLocalCache(ERPCOMMONCACHE_TMSREWARDTYPE);
                 //this.handleSubmitInsertLog(MLObject);
             }            
             this.showMessage(apiResult.Message);
@@ -70,7 +70,7 @@ class AddCom extends React.Component {
         }
         return (
             <SimpleForm
-                FormName="Thêm loại thưởng"
+                FormName="Thêm bảng chuyển đổi chức vụ nhân viên và vị trí thưởng"
                 MLObjectDefinition={MLObjectDefinition} 
                 listelement={AddElementList}
                 onSubmit={this.handleSubmit}
@@ -78,7 +78,7 @@ class AddCom extends React.Component {
                 IsErrorMessage={this.state.IsCallAPIError}
                 dataSource={dataSource}
                 BackLink={BackLink}
-                RequirePermission={REWARDTYPE_ADD}
+                RequirePermission={PERIODUSERRWPOSITION_ADD}
                 ref={this.searchref}
             />
         );

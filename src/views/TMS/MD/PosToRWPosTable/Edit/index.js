@@ -18,7 +18,7 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_SERVICETYPE, ERPCOMMONCACHE_TMSREWARDTYPE } from "../../../../../constants/keyCache";
-import { REWARDTYPE_UPDATE, SERVICETYPE_UPDATE } from "../../../../../constants/functionLists";
+import { PERIODUSERRWPOSITION_UPDATE, REWARDTYPE_UPDATE, SERVICETYPE_UPDATE } from "../../../../../constants/functionLists";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -58,7 +58,7 @@ class EditCom extends React.Component {
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
                 this.setState({ IsCallAPIError: apiResult.IsError });
                 if(!apiResult.IsError){
-                    this.props.callClearLocalCache(ERPCOMMONCACHE_TMSREWARDTYPE);
+                    //this.props.callClearLocalCache(ERPCOMMONCACHE_TMSREWARDTYPE);
                     // this.handleSubmitInsertLog(MLObject);
                 }      
                 this.showMessage(apiResult.Message);
@@ -87,7 +87,7 @@ class EditCom extends React.Component {
         if (this.state.IsLoadDataComplete) {
             return (
                 <SimpleForm
-                    FormName="Cập nhật loại thưởng"
+                    FormName="Cập nhật bảng chuyển đổi chức vụ nhân viên và vị trí thưởng"
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={EditElementList}
                     onSubmit={this.handleSubmit}
@@ -95,7 +95,7 @@ class EditCom extends React.Component {
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
-                    RequirePermission={REWARDTYPE_UPDATE}
+                    RequirePermission={PERIODUSERRWPOSITION_UPDATE}
                     ref={this.searchref}
                 />
             );
