@@ -285,7 +285,7 @@ class SearchCom extends React.Component {
                 titleName = "Báo cáo chi tiết xuất tiêu hao vật";
                 break
             case 4:
-                titleName = "Báo cáo chi tiết xuất bán vật tư cho khác";
+                titleName = "Báo cáo chi tiết xuất bán vật tư cho khách";
                 break
             default:
                 titleName = "Báo cáo chi tiết tạm ứng vật tư";
