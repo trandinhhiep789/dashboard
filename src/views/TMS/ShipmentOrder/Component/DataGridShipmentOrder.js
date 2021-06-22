@@ -730,7 +730,7 @@ class DataGridShipmentOderCom extends Component {
                                     rowClass = "jsgrid-alt-row";
                                 }
                                 let rowtrClass = "unReadingItem";
-                                if (rowItem.SelectedUser != ""||rowItem.IsView ==true) {
+                                if (rowItem.SelectedUser != "" || rowItem.IsView == true) {
                                     rowtrClass = "noReadingItem readingItem";
                                 }
 
@@ -869,11 +869,11 @@ class DataGridShipmentOderCom extends Component {
                                                         <label className="item address-receiver">
                                                             <span>ĐP: <span className="coordinatorUser">{rowItem.CoordinatorUser + "-" + rowItem.CoordinatorUserName}</span></span>
                                                         </label>
-                                                         {rowItem.DeliverUserFullNameList!= ""?
-                                                       (<label className="item address-receiver">
-                                                            <span>{ReactHtmlParser(rowItem.DeliverUserFullNameList)}</span>
-                                                        </label>):""
-                                                           }
+                                                        {rowItem.DeliverUserFullNameList != "" ?
+                                                            (<label className="item address-receiver">
+                                                                <span>{ReactHtmlParser(rowItem.DeliverUserFullNameList)}</span>
+                                                            </label>) : ""
+                                                        }
 
                                                         <label className="item address-receiver">
                                                             <span className="receiverred">{rowItem.CoordinatorNote != "" ? "Ghi chú: " + rowItem.CoordinatorNote : ""}</span>
@@ -913,7 +913,7 @@ class DataGridShipmentOderCom extends Component {
                                                 (
                                                     <span className="item price3">
                                                         <span className="price-title">Nợ: </span>
-                                                        <span className="price-debt">-{(rowItem.TotalCOD - rowItem.TotalReturnPrice)<=0?formatMoney(rowItem.TotalSaleMaterialMoney ):formatMoney(rowItem.TotalSaleMaterialMoney + rowItem.TotalCOD - rowItem.TotalReturnPrice, 0)}</span>
+                                                        <span className="price-debt">-{(rowItem.TotalCOD - rowItem.TotalReturnPrice) <= 0 ? formatMoney(rowItem.TotalSaleMaterialMoney) : formatMoney(rowItem.TotalSaleMaterialMoney + rowItem.TotalCOD - rowItem.TotalReturnPrice, 0)}</span>
                                                     </span>
                                                 )
                                             }
@@ -954,7 +954,9 @@ class DataGridShipmentOderCom extends Component {
                     <tbody>
                         {
                             DataSource != null && DataSource.map((rowItem, rowIndex) => {
-                                const { ShipmentOrderID, PartnerSaleOrderID, ReceiverFullAddress, ShipItemNameList, OrderNote, TotalCOD, IsCancelDelivery, TotalSaleMaterialMoney, TotalReturnPrice, IsPaidIn, ReceiverFullName, ReceiverPhoneNumber, SelectedUser, IsInputReturn, PrimaryShipItemName, PhoneCount, IsOutputGoods, IsHandoverGoods, ExpectedDeliveryDate, CurrentShipmentOrderStepID, CoordinatorUser, ShipmentOrderStatusName, ShipmentOrderTypeName, CoordinatorUserName, DeliverUserFullNameList, CoordinatorNote } = rowItem;
+                                const { ShipmentOrderID, PartnerSaleOrderID, ReceiverFullAddress, ShipItemNameList, OrderNote, TotalCOD, IsCancelDelivery, TotalSaleMaterialMoney, TotalReturnPrice, IsPaidIn, ReceiverFullName,
+                                    ReceiverPhoneNumber, SelectedUser, IsInputReturn, PrimaryShipItemName, PhoneCount, IsOutputGoods, IsHandoverGoods, ExpectedDeliveryDate, CurrentShipmentOrderStepID, CoordinatorUser,
+                                    ShipmentOrderStatusName, ShipmentOrderTypeName, CoordinatorUserName, DeliverUserFullNameList, CoordinatorNote, CollectedTotalMoney, TotalPaidInMoney, TotalUnPaidInMoney } = rowItem;
 
                                 let rowtrClass = "un-reading-item";
                                 if (SelectedUser != "") {
@@ -1041,23 +1043,29 @@ class DataGridShipmentOderCom extends Component {
                                                 {TotalCOD > 0 && <div className="pricecod">COD:{formatMoney(TotalCOD, 0)}</div>}
                                                 {TotalSaleMaterialMoney > 0 && <div className="price-supplies">Vật tư:{formatMoney(TotalSaleMaterialMoney, 0)}</div>}
                                                 {IsInputReturn && <div className="price-supplies">Nhập trả:{formatMoney(TotalReturnPrice, 0)}</div>}
-                                                
                                                 {(IsPaidIn == true || (TotalSaleMaterialMoney + TotalCOD - TotalReturnPrice) == 0) ?
-                                                    (
-                                                        <div className="price-success">
-                                                            <span className="price-title ">Nợ: </span>
-                                                            <span className="price-debt">0đ</span>
-                                                        </div>
-                                                    ) :
+                                                    CollectedTotalMoney == TotalPaidInMoney ?
+                                                        (
+                                                            <div className="price-success">
+                                                                <span className="price-title ">Nợ: </span>
+                                                                <span className="price-debt">0đ</span>
+                                                            </div>
+                                                        ) :
+                                                        (
+                                                            <div className="price-error">
+                                                                <span className="price-title ">Nợ: </span>
+                                                                <span className="price-debt">{formatMoney(TotalUnPaidInMoney, 0)}đ</span>
+                                                            </div>
+                                                        )
+                                                    :
                                                     (
                                                         <div className="price-error">
                                                             <span className="price-title">Nợ: </span>
-                                                            <span className="price-debt">-{(TotalCOD - TotalReturnPrice)<=0? formatMoney(TotalSaleMaterialMoney): formatMoney(TotalSaleMaterialMoney + TotalCOD - TotalReturnPrice, 0)}</span>
+                                                            <span className="price-debt">-{(TotalCOD - TotalReturnPrice) <= 0 ? formatMoney(TotalSaleMaterialMoney) : formatMoney(TotalSaleMaterialMoney + TotalCOD - TotalReturnPrice, 0)}</span>
                                                         </div>
                                                     )
                                                 }
                                             </div>
-
                                             <div>
                                                 {(IsOutputGoods == false && IsHandoverGoods == false) ? <span className="badge badge-danger">Chưa xuất </span> : ""}
                                                 {(IsOutputGoods == true && IsHandoverGoods == false) ? <span className="badge badge-info">Đã xuất </span> : ""}

@@ -118,23 +118,39 @@ class SearchCom extends React.Component {
                 },
                 {
                     "name": "V_OUTINPUTTYPEIDREPORT1LIST",
-                    "value": "2223,9,12",
+                    "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEOUTPUTTYPEIDLIST").toString(),//"2223",
                     "op": "array"
                 },
                 {
                     "name": "V_OUTINPUTTYPEIDREPORT2LIST",
-                    "value": "2064,7,13",
+                    "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEINPUTTYPEIDLIST").toString(),//"2064",
                     "op": "array"
                 },
                 {
                     "name": "V_OUTINPUTTYPEIDREPORT3LIST",
-                    "value": "2503",
+                    "value": this.getValueKeyConfig("RECONCILIATION_CONSUMPOUTPUTTYPEIDLIST").toString(),//"2503",
                     "op": "array"
                 },
                 {
                     "name": "V_OUTINPUTTYPEIDREPORT4LIST",
-                    "value": "3",
+                    "value": this.getValueKeyConfig("RECONCILIATION_SALEOUTPUTTYPEIDLIST").toString(),//"3",
                     "op": "array"
+                },
+                {
+                    "name": "V_OUTINPUTTYPEIDREPORT5LIST",
+                    "value": this.getValueKeyConfig("RECONCILIATION_INVENTORYOUTPUTTYPEIDLIST").toString(),//"2223,9,12",
+                    "op": "array"
+                },
+                {
+                    "name": "V_OUTINPUTTYPEIDREPORT6LIST",
+                    "value": this.getValueKeyConfig("RECONCILIATION_INVENTORYINPUTTYPEIDLIST").toString(),//"2223,9,12",
+                    "op": "array"
+                },
+                {
+                 
+                    "name": "V_VIRTUALSTOREIDLIST",
+                    "value": this.getValueKeyConfig("RECONCILIATION_VIRTUALSTOREIDLIST").toString(),//"3","9375",
+                    "op": "array"   
                 },
                 {
                     "name": "V_ISCHECKVIEWDIFFERENCE",
@@ -145,7 +161,7 @@ class SearchCom extends React.Component {
             ]
         }
         console.log("objDataNewol", objDataNewol)
-        this.callSearchData(objDataNewol)
+       this.callSearchData(objDataNewol)
         // }
     }
 
@@ -241,6 +257,15 @@ class SearchCom extends React.Component {
         });
     }
 
+
+    getValueKeyConfig(key) {
+        const { cacheConfig } = this.state;
+        let strListOption = "";
+        cacheConfig.filter(item => item.TMSConfigID == key).map((keyItem) => {
+            strListOption = keyItem.TMSConfigValue;
+        })
+        return strListOption;
+    }
 
     handleExportFile(result) {
         this.addNotification(result.Message, result.IsError);

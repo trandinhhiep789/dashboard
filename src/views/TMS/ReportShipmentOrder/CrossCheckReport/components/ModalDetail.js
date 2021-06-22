@@ -85,13 +85,25 @@ class ModalDetailCom extends Component {
                         "op": "timestamp"
                     },
                     {
-                        "name": "V_OUTPUTTYPEIDLIST",
-                        "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEOUTPUTTYPEIDLIST").toString(), //"2223,9,12"
+                        "name": "V_OUTPUTTYPEIDLIST1",
+                        "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEOUTPUTTYPEIDLIST").toString(), //"2223"
                         "op": "array"
                     },
                     {
+                        "name": "V_OUTPUTTYPEIDLIST2",
+                        "value": this.getValueKeyConfig("RECONCILIATION_INVENTORYOUTPUTTYPEIDLIST").toString(), //"2223,9,12"
+                        "op": "array"
+                    },
+
+                    {
                         "name": "V_ISCHECKVIEWDIFFERENCE",
                         "value": this.state.Difference,
+                        "op": "array"
+                    },
+                    {
+
+                        "name": "V_VIRTUALSTOREIDLIST",
+                        "value": this.getValueKeyConfig("RECONCILIATION_VIRTUALSTOREIDLIST").toString(), //"9375",
                         "op": "array"
                     },
                     {
@@ -124,8 +136,19 @@ class ModalDetailCom extends Component {
                         "op": "timestamp"
                     },
                     {
-                        "name": "V_INPUTTYPEIDLIST",
-                        "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEINPUTTYPEIDLIST").toString(), //"2064,7,13"
+                        "name": "V_INPUTTYPEIDLIST1",
+                        "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEINPUTTYPEIDLIST").toString(), //"2064"
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_INPUTTYPEIDLIST2",
+                        "value": this.getValueKeyConfig("RECONCILIATION_INVENTORYINPUTTYPEIDLIST").toString(), //"2223,9,12"
+                        "op": "array"
+                    },
+                    {
+
+                        "name": "V_VIRTUALSTOREIDLIST",
+                        "value": this.getValueKeyConfig("RECONCILIATION_VIRTUALSTOREIDLIST").toString(),//"9375"
                         "op": "array"
                     },
                     {
@@ -139,6 +162,7 @@ class ModalDetailCom extends Component {
                         "value": PageNumber,
                         "op": "array"
                     },
+                    
                     {
                         "name": "V_PAGESIZE",
                         "value": 100,
@@ -296,7 +320,7 @@ class ModalDetailCom extends Component {
         this.addNotification(result.Message, result.IsError);
     }
 
-    handleSearchSubmit(formData, MLObject) {
+     handleSearchSubmit(formData, MLObject) {
         this.setState({
             IsLoadDataComplete: false
         })
@@ -318,15 +342,27 @@ class ModalDetailCom extends Component {
                         "op": "timestamp"
                     },
                     {
-                        "name": "V_OUTPUTTYPEIDLIST",
-                        "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEOUTPUTTYPEIDLIST").toString(), //"2223,9,12"
+                        "name": "V_OUTPUTTYPEIDLIST1",
+                        "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEOUTPUTTYPEIDLIST").toString(), //"2223"
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_OUTPUTTYPEIDLIST2",
+                        "value": this.getValueKeyConfig("RECONCILIATION_INVENTORYOUTPUTTYPEIDLIST").toString(), //"2223,9,12"
+                        "op": "array"
+                    },
+                    {
+
+                        "name": "V_VIRTUALSTOREIDLIST",
+                        "value": this.getValueKeyConfig("RECONCILIATION_VIRTUALSTOREIDLIST").toString(),//"9375"
                         "op": "array"
                     },
                     {
                         "name": "V_ISCHECKVIEWDIFFERENCE",
-                        "value": Difference,
+                        "value": this.state.Difference,
                         "op": "array"
                     },
+                   
                     {
                         "name": "V_PAGEINDEX",
                         "value": PageNumber,
@@ -357,19 +393,30 @@ class ModalDetailCom extends Component {
                         "op": "timestamp"
                     },
                     {
-                        "name": "V_INPUTTYPEIDLIST",
-                        "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEINPUTTYPEIDLIST").toString(), //"2064,7,13"
+                        "name": "V_INPUTTYPEIDLIST1",
+                        "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEINPUTTYPEIDLIST").toString(), //"2064"
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_INPUTTYPEIDLIST2",
+                        "value": this.getValueKeyConfig("RECONCILIATION_INVENTORYINPUTTYPEIDLIST").toString(), //"2223,9,12"
                         "op": "array"
                     },
                     {
                         "name": "V_ISCHECKVIEWDIFFERENCE",
-                        "value": Difference,
+                        "value": this.state.Difference,
                         "op": "array"
                     }
                     ,
                     {
                         "name": "V_PAGEINDEX",
                         "value": PageNumber,
+                        "op": "array"
+                    },
+                    {
+
+                        "name": "V_VIRTUALSTOREIDLIST",
+                        "value": this.getValueKeyConfig("RECONCILIATION_VIRTUALSTOREIDLIST").toString(),//"9375",
                         "op": "array"
                     },
                     {
@@ -403,7 +450,7 @@ class ModalDetailCom extends Component {
                     },
                     {
                         "name": "V_ISCHECKVIEWDIFFERENCE",
-                        "value": Difference,
+                        "value": this.state.Difference,
                         "op": "array"
                     }
                     ,
@@ -442,7 +489,7 @@ class ModalDetailCom extends Component {
                     },
                     {
                         "name": "V_ISCHECKVIEWDIFFERENCE",
-                        "value": Difference,
+                        "value": this.state.Difference,
                         "op": "array"
                     },
                     {
@@ -498,8 +545,19 @@ class ModalDetailCom extends Component {
                         "op": "timestamp"
                     },
                     {
-                        "name": "V_OUTPUTTYPEIDLIST",
-                        "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEOUTPUTTYPEIDLIST").toString(), //"2223,9,12"
+                        "name": "V_OUTPUTTYPEIDLIST1",
+                        "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEOUTPUTTYPEIDLIST").toString(), //"2223"
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_OUTPUTTYPEIDLIST2",
+                        "value": this.getValueKeyConfig("RECONCILIATION_INVENTORYOUTPUTTYPEIDLIST").toString(), //"2223,9,12"
+                        "op": "array"
+                    },
+                    {
+
+                        "name": "V_VIRTUALSTOREIDLIST",
+                        "value": this.getValueKeyConfig("RECONCILIATION_VIRTUALSTOREIDLIST").toString(),// "9375",
                         "op": "array"
                     },
                     {
@@ -537,8 +595,19 @@ class ModalDetailCom extends Component {
                         "op": "timestamp"
                     },
                     {
-                        "name": "V_INPUTTYPEIDLIST",
-                        "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEINPUTTYPEIDLIST").toString(), //"2064,7,13"
+                        "name": "V_INPUTTYPEIDLIST1",
+                        "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEINPUTTYPEIDLIST").toString(), //"2064"
+                        "op": "array"
+                    },
+                    {
+                        "name": "V_INPUTTYPEIDLIST2",
+                        "value": this.getValueKeyConfig("RECONCILIATION_INVENTORYINPUTTYPEIDLIST").toString(), //"2223,9,12"
+                        "op": "array"
+                    },
+                    {
+
+                        "name": "V_VIRTUALSTOREIDLIST",
+                        "value": this.getValueKeyConfig("RECONCILIATION_VIRTUALSTOREIDLIST").toString(),//"9375",
                         "op": "array"
                     },
                     {
@@ -552,6 +621,7 @@ class ModalDetailCom extends Component {
                         "value": -1,
                         "op": "array"
                     },
+                  
                     {
                         "name": "V_PAGESIZE",
                         "value": -1,

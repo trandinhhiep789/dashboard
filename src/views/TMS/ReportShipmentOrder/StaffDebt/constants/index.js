@@ -8,6 +8,8 @@ export const SearchWithinPaginationAPI = "api/StaffDebt/SearchNew";
 export const UpdateUnlockAPIPath = "api/StaffDebt/UpdateUnlock";
 export const SearchDetailAPIPath = "api/StaffDebtDetail/Search";
 
+export const UpdateUnlockDetailAPIPath = "api/StaffDebtDetail/UpdateUnlock";
+
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
@@ -273,7 +275,7 @@ export const GridColumnList = [
 export const DataGirdStaffDebtColumnList = [
     {
         Name: "ShipmentOrderID",
-        Type: "texttolinkNewBlank",
+        Type: "texttolinkNewBlankValue",
         Caption: "Mã vận đơn",
         Link: "/ShipmentOrder/Detail/",
         DataSourceMember: "ShipmentOrderID",
@@ -292,35 +294,35 @@ export const DataGirdStaffDebtColumnList = [
         Type: "date",
         Caption: "Thời gian xuất hàng",
         DataSourceMember: "OutputDate",
-        Width: "10%"
+        Width: "8%"
     },
     {
         Name: "CollectedTime",
         Type: "date",
         Caption: "Thời gian thu",
         DataSourceMember: "CollectedTime",
-        Width: "10%"
+        Width: "8%"
     },
     {
         Name: "TotalCOD",
         Type: "textCurrency",
         Caption: "Tiền COD",
         DataSourceMember: "TotalCOD",
-        Width: "10%"
+        Width: "8%"
     },
     {
         Name: "TotalSaleMaterialMoney",
         Type: "textCurrency",
         Caption: "Tiền vật tư",
         DataSourceMember: "TotalSaleMaterialMoney",
-        Width: "10%"
+        Width: "8%"
     },
     {
         Name: "TotalMoney",
         Type: "textCurrency",
         Caption: "Tổng tiền phải thu",
         DataSourceMember: "TotalMoney",
-        Width: "10%"
+        Width: "8%"
     },
     {
         Name: "CollectedTotalMoney",
@@ -334,7 +336,7 @@ export const DataGirdStaffDebtColumnList = [
         Type: "text",
         Caption: "Số giờ nợ",
         DataSourceMember: "DebtInterval",
-        Width: "10%"
+        Width: "8%"
     },
     {
         Name: "IsOverDueDebt",
@@ -343,6 +345,20 @@ export const DataGirdStaffDebtColumnList = [
         DataSourceMember: "IsOverDueDebt",
         Width: "10%"
     },
+    // {
+    //     Name: "DeliveryStatus",
+    //     Type: "textCustom",
+    //     Caption: "Tình trạng",
+    //     DataSourceMember: "DeliveryStatus",
+    //     Width: "8%"
+    // },
+    // {
+    //     Name: "History",
+    //     Type: "btnHistory",
+    //     Caption: "Lịch sử",
+    //     DataSourceMember: "History",
+    //     Width: "4%"
+    // },
 ]
 
 export const DataGirdStaffDebtHistoryColumnList = [
@@ -390,3 +406,41 @@ export const MLObjectChangeActiveModal = [
         BindControlName: "txtDescription"
     }
 ]
+
+export const DataGirdStaffDebtDetailHistoryColumnList = [
+    {
+        Name: "FullName",
+        Type: "text",
+        Caption: "Mã NV",
+        DataSourceMember: "FullName",
+        Width: "10%"
+    },
+    {
+        Name: "StoreName",
+        Type: "text",
+        Caption: "Kho điều phối",
+        DataSourceMember: "StoreName",
+        Width: "10%"
+    },
+    {
+        Name: "UnLockDeliveryFullName",
+        Type: "text",
+        Caption: "Người mở khóa",
+        DataSourceMember: "UnLockDeliveryFullName",
+        Width: "10%"
+    },
+    {
+        Name: "UnLockDeliveryDate",
+        Type: "datetime",
+        Caption: "Ngày mở khóa",
+        DataSourceMember: "UnLockDeliveryDate",
+        Width: "10%"
+    },
+    {
+        Name: "UnLockDeliveryNote",
+        Type: "text",
+        Caption: "Ghi chú",
+        DataSourceMember: "UnLockDeliveryNote",
+        Width: "10%"
+    },
+];

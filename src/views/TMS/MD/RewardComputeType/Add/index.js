@@ -37,8 +37,9 @@ class AddCom extends React.Component {
     }
 
     handleSubmit(FormData, MLObject) {
-        console.log("submit",FormData, MLObject)
+        
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+            console.log("submit",apiResult, MLObject)
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
                 this.props.callClearLocalCache(ERPCOMMONCACHE_REWARDCOMPUTETYPE);
