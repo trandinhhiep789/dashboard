@@ -91,4 +91,17 @@
             }
         }
     }
+    &.modal-list-down{
+        .table{
+            tbody{
+                .btn-download-file{
+                    margin-bottom: 0;
+                    img {
+                        clear: both;
+                        width: 20px;
+                    }
+                }
+            }
+        }
+    }
 }

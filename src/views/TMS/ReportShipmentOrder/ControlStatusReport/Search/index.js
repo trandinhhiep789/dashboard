@@ -16,8 +16,8 @@ import SearchForm from "../../../../../common/components/FormContainer/SearchFor
 import DataGrid from "../../../../../common/components/DataGrid";
 import { MessageModal } from "../../../../../common/components/Modal";
 import { SHIPMENTORDER_REPORT_EXPORT, SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
-import { showModal } from '../../../../../actions/modal';
-import { MODAL_TYPE_DOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
+import { showModal, hideModal } from '../../../../../actions/modal';
+import { MODAL_TYPE_DOWNLOAD_EXCEL, MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
 
 class Search extends React.Component {
     constructor(props) {
@@ -195,19 +195,25 @@ class Search extends React.Component {
 
         ];
 
-        //TMS_SHIP_RCS_EXPORT
-        this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/ExportControlStatusReport", postData).then(apiResult => {
-            if (!apiResult.IsError) {
-                this.props.showModal(MODAL_TYPE_DOWNLOAD_EXCEL, {
-                    title: "Tải file",
-                    URLDownloadFile: apiResult.Message,
-                    maxWidth: '300px'
-                });
-            }
-            else {
-                this.showMessage(apiResult.Message)
-            }
+        this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
+            title: "Tải file",
+            maxWidth: '1000px',
+            onClose: false
         });
+
+
+        // this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/ExportControlStatusReport", postData).then(apiResult => {
+        //     if (!apiResult.IsError) {
+        //         // this.props.showModal(MODAL_TYPE_DOWNLOAD_EXCEL, {
+        //         //     title: "Tải file",
+        //         //     URLDownloadFile: "http://expfilecdn.tterpbeta.vn/ExpData/2021/06/23/StaffDebtExpebe86d2e-f30b-4577-97d0-da488ac6b9f0.zip",
+        //         //     maxWidth: '300px'
+        //         // });
+        //     }
+        //     else {
+        //         this.showMessage(apiResult.Message)
+        //     }
+        // });
     };
 
     handleonChangePage(pageNum) {
@@ -244,9 +250,10 @@ class Search extends React.Component {
                     listelement={SearchElementList}
                     MLObjectDefinition={SearchMLObjectDefinition}
                     ref={this.searchref}
-                    IsButtonExport={false}
+                    IsButtonExport={true}
                     onExportSubmit={this.handleExportFileFormSearch}
                     onSubmit={this.handleSearchSubmit}
+                    classNamebtnSearch="groupAction"
                 />
 
                 <DataGrid
@@ -297,6 +304,9 @@ const mapDispatchToProps = dispatch => {
         showModal: (type, props) => {
             dispatch(showModal(type, props));
         },
+        hideModal: (type, props) => {
+            dispatch(hideModal(type, props));
+        }
     };
 };
 
