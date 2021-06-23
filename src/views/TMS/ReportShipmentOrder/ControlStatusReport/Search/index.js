@@ -33,6 +33,7 @@ class Search extends React.Component {
         this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+        this.handleHistorySearch = this.handleHistorySearch.bind(this);
         this.showMessage = this.showMessage.bind(this);
         this.addNotification = this.addNotification.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
@@ -193,26 +194,28 @@ class Search extends React.Component {
 
         ];
 
+        this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/ExportControlStatusReport", postData).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
+                    title: "Tải file",
+                    maxWidth: '1000px',
+                    ParamRequest: { RequestUser: 98138, DataExportTemplateID: 1}
+                });
+            }
+            else {
+                this.showMessage(apiResult.Message)
+            }
+        });
+    };
+
+    handleHistorySearch()
+    {
         this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
             title: "Tải file",
             maxWidth: '1000px',
             ParamRequest:{RequestUser:73309,DataExportTemplateID:1}
         });
-
-
-        // this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/ExportControlStatusReport", postData).then(apiResult => {
-        //     if (!apiResult.IsError) {
-        //         this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
-        //             title: "Tải file",
-        //             maxWidth: '1000px',
-        //             ParamRequest: { RequestUser: 98138, DataExportTemplateID: 1}
-        //         });
-        //     }
-        //     else {
-        //         this.showMessage(apiResult.Message)
-        //     }
-        // });
-    };
+    }
 
     handleonChangePage(pageNum) {
         const { SearchData } = this.state;
@@ -249,6 +252,8 @@ class Search extends React.Component {
                     MLObjectDefinition={SearchMLObjectDefinition}
                     ref={this.searchref}
                     IsButtonExport={true}
+                    IsButtonhistory={true}
+                    onHistorySubmit={this.handleHistorySearch}
                     onExportSubmit={this.handleExportFileFormSearch}
                     onSubmit={this.handleSearchSubmit}
                     classNamebtnSearch="groupAction"

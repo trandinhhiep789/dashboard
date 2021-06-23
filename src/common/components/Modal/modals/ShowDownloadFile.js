@@ -169,6 +169,8 @@ class ShowDownloadFileCom extends React.Component {
                                                     <th className="jsgrid-header-cell" style={{ width: "36%" }}>Tên file xuất</th>
                                                     <th className="jsgrid-header-cell" style={{ width: "8%" }}>Xuất dữ liệu</th>
                                                     <th className="jsgrid-header-cell" style={{ width: "8%" }}>Pass</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: "8%" }}>Thời gian load</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: "8%" }}>Tổng thời gian</th>
                                                     <th className="jsgrid-header-cell" style={{ width: "8%" }}>Dowload</th>
                                                 </tr>
                                             </thead>
@@ -182,6 +184,8 @@ class ShowDownloadFileCom extends React.Component {
                                                     <td>{item.ExportedFileName}</td>
                                                     <td>{item.IsExportedError==true?"có lỗi":"không lỗi"}</td>
                                                     <td>{item.ExportedFilePassword}</td>
+                                                    <td>{item.LoadDataIntervalStr}</td>
+                                                    <td>{item.TotalExportDataIntervalStr}</td>
                                                     <td>
                                                         <a
                                                             target="_blank"
