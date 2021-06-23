@@ -4,8 +4,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux';
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { hideModal } from '../../../../actions/modal';
-import { CDN_DOWNLOAD_FILE } from '../../../../constants/systemVars';
-
+import { formatDate, formatMonthDate } from "../../../../common/library/CommonLib.js";
 const Overlay = styled.div`
   position: fixed;
   top: 0;
@@ -69,9 +68,10 @@ class ShowDownloadFileCom extends React.Component {
         this.listenKeyboard = this.listenKeyboard.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.state = {
-            FormData: [],
-            FormValidation: this.props.formValidation ? this.props.formValidation : {},
-            selectedFile: {}
+            DataSource: [],
+            CallAPIMessage: "",
+            IsCallAPIError: false,
+            IsLoadDataComplete: false,
         };
     }
 
@@ -81,6 +81,8 @@ class ShowDownloadFileCom extends React.Component {
         }
     };
     componentDidMount() {
+
+        this.GetDataFile()
         if (this.props.onClose) {
             window.addEventListener('keydown', this.listenKeyboard, true);
         }
@@ -122,21 +124,25 @@ class ShowDownloadFileCom extends React.Component {
 
 
 
-    // onHandleUpload() {
-    //     const data = new FormData()
-    //     const fileList = this.state.selectedFile;
-    //     Object.keys(fileList).forEach(function (key) {
-    //         data.append(key, fileList[key])
-    //     });
-    //     this.props.callFetchAPI(APIHostName, "api/PieRequest_Attachment/Upload", data).then((apiResult) => {
-    //         if (!apiResult.IsError) {
-    //             // this.callSearchData(this.state.SearchData);
-    //         }
-    //         // this.setState({ IsCallAPIError: apiResult.IsError });
-    //         // this.showMessage(apiResult.Message);
-    //     });
+    GetDataFile() {
+        // let objAdvanceRequestLoad=
+        // {RequestUser:98138,DataExportTemplateID:4}
 
-    // }
+      this.props.callFetchAPI(APIHostName, "api/DataExportQueue/GetByUserTemplateID",this.props.ParamRequest).then((apiResult) => {
+        if (!apiResult.IsError) {
+            this.setState({
+                DataSource: apiResult.ResultObject,
+                IsCallAPIError: apiResult.IsError,
+                IsLoadDataComplete: true,
+                IsLoadData: true
+            });
+        }
+        // else {
+        //  //   this.addNotification(apiResult.Message, apiResult.IsError);
+        // }
+        });
+
+    }
 
 
 
@@ -159,32 +165,37 @@ class ShowDownloadFileCom extends React.Component {
                                         <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                             <thead className="thead-light">
                                                 <tr>
-                                                    <th className="jsgrid-header-cell" style={{ width: "6%" }}>Mã</th>
-                                                    <th className="jsgrid-header-cell" style={{ width: "10%" }}>Thời gian</th>
-                                                    <th className="jsgrid-header-cell" style={{ width: "36%" }}>Lỗi</th>
-                                                    <th className="jsgrid-header-cell" style={{ width: "8%" }}>Giá</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: "15%" }}>Thời gian xuất</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: "36%" }}>Tên file xuất</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: "8%" }}>Xuất dữ liệu</th>
                                                     <th className="jsgrid-header-cell" style={{ width: "8%" }}>Pass</th>
-                                                    <th className="jsgrid-header-cell" style={{ width: "12%" }}>Dowload</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: "8%" }}>Dowload</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>0001</td>
-                                                    <td>0001</td>
-                                                    <td>0001</td>
-                                                    <td>0001</td>
-                                                    <td>0001</td>
+                                            {
+                                            this.state.DataSource && this.state.DataSource.map((item, index) => {
+                                                return <tr
+                                                    key={"Product" + index}
+                                                >
+                                                    <td>{formatDate(item.QueueDate)}</td>
+                                                    <td>{item.ExportedFileName}</td>
+                                                    <td>{item.IsExportedError==true?"có lỗi":"không lỗi"}</td>
+                                                    <td>{item.ExportedFilePassword}</td>
                                                     <td>
                                                         <a
                                                             target="_blank"
                                                             className="btn-download-file"
-                                                            href={CDN_DOWNLOAD_FILE + "ExpData/2021/06/23/ControlStatusReport1cf4ef71-65a8-4871-aa79-a31eebe15d94.zip"} //http://expfilecdn.tterpbeta.vn/ExpData/2021/06/23/ControlStatusReport1cf4ef71-65a8-4871-aa79-a31eebe15d94.zip
-                                                            data-url={CDN_DOWNLOAD_FILE + "ExpData/2021/06/23/ControlStatusReport1cf4ef71-65a8-4871-aa79-a31eebe15d94.zip"}
+                                                            href={item.ExportedFileURL}
+                                                            data-url={item.ExportedFileURL}
                                                         >
                                                             <img className="item" src="/src/img/icon/icon-down.gif" alt="download file icon" />
                                                         </a>
                                                     </td>
                                                 </tr>
+                                            })
+                                        }
+                                                
                                             </tbody>
                                         </table>
                                     </div>
