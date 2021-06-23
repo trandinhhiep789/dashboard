@@ -177,6 +177,10 @@
                 clear: both;
                 &.groupAction{
                     clear: both;
+                    .btnSearch{
+                        display: inline-flex;
+                        justify-content: flex-start;
+                    }
                 }
 
                 .btnSearch {
