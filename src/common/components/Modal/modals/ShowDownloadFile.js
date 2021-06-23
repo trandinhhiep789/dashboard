@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux';
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
+import { hideModal } from '../../../../actions/modal';
+import { CDN_DOWNLOAD_FILE } from '../../../../constants/systemVars';
 
 const Overlay = styled.div`
   position: fixed;
@@ -65,6 +67,7 @@ class ShowDownloadFileCom extends React.Component {
         this.onOverlayClick = this.onOverlayClick.bind(this);
         this.onDialogClick = this.onDialogClick.bind(this);
         this.listenKeyboard = this.listenKeyboard.bind(this);
+        this.handleClose = this.handleClose.bind(this);
         this.state = {
             FormData: [],
             FormValidation: this.props.formValidation ? this.props.formValidation : {},
@@ -88,17 +91,18 @@ class ShowDownloadFileCom extends React.Component {
             window.removeEventListener('keydown', this.listenKeyboard, true);
         }
     }
-    
+
     get title() {
         const { title } = this.props;
 
         return <h4 className="modal-title" id="myModalLabel">{title}</h4>
     }
     get close() {
+        console.log("bbb")
         const { onClose } = this.props;
         return onClose ?
-            <button className='close' onClick={onClose} ><span aria-hidden="true">×</span></button>
-            : <button className='close'><span aria-hidden="true">×</span></button>
+            <button className='close' onClick={this.handleClose} ><span aria-hidden="true">×</span></button>
+            : <button className='close' onClick={this.handleClose}><span aria-hidden="true">×</span></button>
     }
 
     onOverlayClick() {
@@ -110,8 +114,14 @@ class ShowDownloadFileCom extends React.Component {
     };
 
 
+    handleClose() {
+        this.props.hideModal();
+    }
 
- 
+
+
+
+
     // onHandleUpload() {
     //     const data = new FormData()
     //     const fileList = this.state.selectedFile;
@@ -127,43 +137,59 @@ class ShowDownloadFileCom extends React.Component {
     //     });
 
     // }
-  
-   
+
+
 
     render() {
-       
+
         let maxWidth = '900px';
         return (
-            <div className='modals mfp-zoom-out modalconfirmcus modalconfirmcus5'>
+            <div className='modals mfp-zoom-out modalconfirmcus modalconfirmcus5 modal-list-down'>
                 <Overlay />
-                <Content onClick={this.onOverlayClick}>
-                    <Dialog onClick={this.onDialogClick} customStyle={{ maxWidth: maxWidth }}>
+                <Content>
+                    <Dialog customStyle={{ maxWidth: maxWidth }}>
                         <div className="modal-header">
                             {this.title}
                             {this.close}
                         </div>
                         <Body>
-                        <div className="card-body">
-                        <div className="form-row">
-                            <div className="table-responsive">
-                                <table className="table table-sm table-striped table-bordered table-hover table-condensed">
-                                    <thead className="thead-light">
-                                        <tr>
-                                            <th className="jsgrid-header-cell" style={{ width: "6%" }}>Mã</th>
-                                            <th className="jsgrid-header-cell" style={{ width: "10%" }}>Thời gian</th>
-                                            <th className="jsgrid-header-cell" style={{ width: "36%" }}>Lỗi</th>
-                                            <th className="jsgrid-header-cell" style={{ width: "8%" }}>Giá</th>
-                                            <th className="jsgrid-header-cell" style={{ width: "8%" }}>Pass</th>
-                                            <th className="jsgrid-header-cell" style={{ width: "12%" }}>Dowload</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        
-                                    </tbody>
-                                </table>
+                            <div className="card-body">
+                                <div className="form-row">
+                                    <div className="table-responsive">
+                                        <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                            <thead className="thead-light">
+                                                <tr>
+                                                    <th className="jsgrid-header-cell" style={{ width: "6%" }}>Mã</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: "10%" }}>Thời gian</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: "36%" }}>Lỗi</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: "8%" }}>Giá</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: "8%" }}>Pass</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: "12%" }}>Dowload</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>0001</td>
+                                                    <td>0001</td>
+                                                    <td>0001</td>
+                                                    <td>0001</td>
+                                                    <td>0001</td>
+                                                    <td>
+                                                        <a
+                                                            target="_blank"
+                                                            className="btn-download-file"
+                                                            href={CDN_DOWNLOAD_FILE + "ExpData/2021/06/23/ControlStatusReport1cf4ef71-65a8-4871-aa79-a31eebe15d94.zip"} //http://expfilecdn.tterpbeta.vn/ExpData/2021/06/23/ControlStatusReport1cf4ef71-65a8-4871-aa79-a31eebe15d94.zip
+                                                            data-url={CDN_DOWNLOAD_FILE + "ExpData/2021/06/23/ControlStatusReport1cf4ef71-65a8-4871-aa79-a31eebe15d94.zip"}
+                                                        >
+                                                            <img className="item" src="/src/img/icon/icon-down.gif" alt="download file icon" />
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        </div>
                         </Body>
                     </Dialog>
                 </Content>
@@ -189,6 +215,9 @@ const mapDispatchToProps = dispatch => {
     return {
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
+        },
+        hideModal: () => {
+            dispatch(hideModal());
         }
 
     }

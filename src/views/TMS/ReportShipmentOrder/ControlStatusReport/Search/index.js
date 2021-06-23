@@ -16,8 +16,8 @@ import SearchForm from "../../../../../common/components/FormContainer/SearchFor
 import DataGrid from "../../../../../common/components/DataGrid";
 import { MessageModal } from "../../../../../common/components/Modal";
 import { SHIPMENTORDER_REPORT_EXPORT, SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
-import { showModal } from '../../../../../actions/modal';
-import { MODAL_TYPE_DOWNLOAD_EXCEL,MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
+import { showModal, hideModal } from '../../../../../actions/modal';
+import { MODAL_TYPE_DOWNLOAD_EXCEL, MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
 
 class Search extends React.Component {
     constructor(props) {
@@ -197,11 +197,11 @@ class Search extends React.Component {
 
         this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
             title: "Tải file",
-            maxWidth: '900px',
-            onClose:false
+            maxWidth: '1000px',
+            onClose: false
         });
 
-       
+
         // this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/ExportControlStatusReport", postData).then(apiResult => {
         //     if (!apiResult.IsError) {
         //         // this.props.showModal(MODAL_TYPE_DOWNLOAD_EXCEL, {
@@ -253,6 +253,7 @@ class Search extends React.Component {
                     IsButtonExport={true}
                     onExportSubmit={this.handleExportFileFormSearch}
                     onSubmit={this.handleSearchSubmit}
+                    classNamebtnSearch="groupAction"
                 />
 
                 <DataGrid
@@ -303,6 +304,9 @@ const mapDispatchToProps = dispatch => {
         showModal: (type, props) => {
             dispatch(showModal(type, props));
         },
+        hideModal: (type, props) => {
+            dispatch(hideModal(type, props));
+        }
     };
 };
 
