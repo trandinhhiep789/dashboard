@@ -143,7 +143,27 @@ class ShowDownloadFileCom extends React.Component {
                             {this.close}
                         </div>
                         <Body>
-                            hoclenho
+                        <div className="card-body">
+                        <div className="form-row">
+                            <div className="table-responsive">
+                                <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                    <thead className="thead-light">
+                                        <tr>
+                                            <th className="jsgrid-header-cell" style={{ width: "6%" }}>Mã</th>
+                                            <th className="jsgrid-header-cell" style={{ width: "10%" }}>Thời gian</th>
+                                            <th className="jsgrid-header-cell" style={{ width: "36%" }}>Lỗi</th>
+                                            <th className="jsgrid-header-cell" style={{ width: "8%" }}>Giá</th>
+                                            <th className="jsgrid-header-cell" style={{ width: "8%" }}>Pass</th>
+                                            <th className="jsgrid-header-cell" style={{ width: "12%" }}>Dowload</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        </div>
                         </Body>
                     </Dialog>
                 </Content>
