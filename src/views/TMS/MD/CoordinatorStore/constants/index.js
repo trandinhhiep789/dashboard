@@ -438,3 +438,60 @@ export const DataTemplateExport = [
         "Hệ thống": "1"
     },
 ];
+
+export const DataMasterTemplateExport = [
+    {
+        "Loại Yêu Cầu Vận Chuyển": "1007",
+        "Đối Tác": "1",
+        "Kho Điều Phối": "4121",
+        "Kho Xuất": "777",
+        "Kích Hoạt": "1",
+        "Hệ Thống": "0",
+        "Kiểm Tra Địa Chỉ Khách Hàng": "0"
+    },
+    {
+        "Loại Yêu Cầu Vận Chuyển": "1000",
+        "Đối Tác": "2",
+        "Kho Điều Phối": "4121",
+        "Kho Xuất": "777",
+        "Kích Hoạt": "1",
+        "Hệ Thống": "0",
+        "Kiểm Tra Địa Chỉ Khách Hàng": "0"
+    },
+];
+
+
+export const schemaMaster = {
+    'Loại Yêu Cầu Vận Chuyển': {
+        prop: 'ShipmentOrderTypeID',
+        type: String,
+        required: true
+    },
+    'Đối Tác': {
+        prop: 'PartnerID',
+        type: String,
+        ed: true
+    },
+    'Kho Điều Phối': {
+        prop: 'StoreID',
+        type: String,
+        required: true
+    },
+    'Kho Xuất': {
+        prop: 'SenderStoreID',
+        type: String,
+        required: true
+    },
+    'Kích Hoạt': {
+        prop: 'IsActived',
+        type: Number
+    },
+    'Hệ thống': {
+        prop: 'IsSystem',
+        type: Number
+    },
+    'Kiểm Tra Địa Chỉ Khách Hàng': {
+        prop: 'IsCheckCustomerAddress',
+        type: Number
+    },
+}

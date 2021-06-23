@@ -23,7 +23,9 @@ import {
     InitSearchExportParams,
     PagePath,
     DataGridCoordinatorStoreColumnList,
-    APIDataExport
+    APIDataExport,
+    schemaMaster,
+    DataMasterTemplateExport
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -54,6 +56,7 @@ class SearchCom extends React.Component {
             IsLoadDataComplete: false,
             dataExport: [],
             PageNumber: 1,
+            DataMasterTemplateExport
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -268,6 +271,33 @@ class SearchCom extends React.Component {
             PageNumber: pageNum
         });
     }
+    handleImportFile(resultRows, errors) {
+        console.log("import", resultRows, errors)
+        // const { ShipmentOrderTypeID, PartnerID, StoreID, SenderStoreID, IsActived, IsSystem, IsCheckCustomerAddress } = item
+        let MLObject ={};
+        MLObject.CoordinatorStore_ItemList =  resultRows;
+
+        this.props.callFetchAPI(APIHostName, "api/CoordinatorStore/ImportInsert", MLObject).then(apiResult => {
+           
+            console.log("object", MLObject, apiResult)
+            // this.setState({ IsCallAPIError: apiResult.IsError });
+            // this.showMessage(apiResult.Message);
+            if(apiResult.IsError){
+                this.showMessage(apiResult.Message);
+            }
+            else{
+                this.addNotification(apiResult.Message, apiResult.IsError);
+                this.callSearchData(this.state.SearchData);
+            }
+        });
+       
+    }
+
+    
+    handleExportFileTemplate(result) {
+        console.log("template", result)
+        this.addNotification(result.Message, result.IsError);
+    }
 
     render() {
         return (
@@ -300,6 +330,13 @@ class SearchCom extends React.Component {
                     isPaginationServer={true}
                     PageNumber={this.state.PageNumber}
                     onChangePage={this.handleonChangePage.bind(this)}
+                    isExportFileTemplate={true}
+                    fileNameTemplate={"Danh sách định nghĩa kho điều phối giao hàng"}
+                    onExportFileTemplate={this.handleExportFileTemplate.bind(this)}
+                    DataTemplateExport={this.state.DataMasterTemplateExport}
+                    IsImportFile={true}
+                    SchemaData={schemaMaster}
+                    onImportFile={this.handleImportFile.bind(this)}
 
                 />
             </React.Fragment>
