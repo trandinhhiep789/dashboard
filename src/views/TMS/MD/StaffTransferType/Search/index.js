@@ -13,6 +13,7 @@ import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
+import { STAFFTRANSFERTYPE_VIEW, STAFFTRANSFERTYPE_DELETE } from "../../../../../constants/functionLists";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -155,8 +156,8 @@ class SearchCom extends React.Component {
                         PKColumnName={"StaffTransferTypeID"}
                         onDeleteClick={this.handleDelete}
                         ref={this.gridref}
-                        RequirePermission={""}
-                        DeletePermission={""}
+                        RequirePermission={STAFFTRANSFERTYPE_VIEW}
+                        DeletePermission={STAFFTRANSFERTYPE_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                     />

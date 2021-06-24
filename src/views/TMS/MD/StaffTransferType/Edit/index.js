@@ -16,7 +16,7 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-// import { } from "../../../../../constants/functionLists";
+import { STAFFTRANSFERTYPE_UPDATE } from "../../../../../constants/functionLists";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -96,7 +96,7 @@ class EditCom extends React.Component {
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
-                    // RequirePermission={""}
+                    RequirePermission={STAFFTRANSFERTYPE_UPDATE}
                     ref={this.searchref}
                 />
             );

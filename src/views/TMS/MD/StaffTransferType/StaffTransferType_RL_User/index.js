@@ -1,5 +1,4 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
@@ -15,7 +14,8 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache, callGetUserCache } from "../../../../../actions/cacheAction";
-import ReviewLevel_User from './ReviewLevel_User'
+import ReviewLevel_User from './ReviewLevel_User';
+import { GET_CACHE_USER_FUNCTION_LIST, STAFFTRANSFERTYPE_ADD, STAFFTRANSFERTYPE_DELETE } from '../../../../../constants/functionLists'
 
 class StaffTransferType_RL_User extends React.Component {
     constructor(props) {
@@ -24,13 +24,11 @@ class StaffTransferType_RL_User extends React.Component {
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
-            IsCloseForm: false,
             cssNotification: "",
             iconNotification: "",
             DataSource: this.props.DataSource,
-            IsInsert: true,
-            IsAllowedAdd: true, // update => fasle
-            IsAllowedDelete: true // update => fasle
+            IsAllowedAdd: false,
+            IsAllowedDelete: false
         };
 
         this.notificationDOMRef = React.createRef();
@@ -144,23 +142,23 @@ class StaffTransferType_RL_User extends React.Component {
         let IsAllowedAdd = false;
         let IsAllowedDelete = false;
 
-        // this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
-        //     if (!result.IsError && result.ResultObject.CacheData != null) {
-        //         let isAllowAdd = result.ResultObject.CacheData.filter(x => x.FunctionID == INVENTORYREQUESTTYPE_ADD);
-        //         if (isAllowAdd && isAllowAdd.length > 0) {
-        //             IsAllowedAdd = true;
-        //         }
+        this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                let isAllowAdd = result.ResultObject.CacheData.filter(x => x.FunctionID == STAFFTRANSFERTYPE_ADD);
+                if (isAllowAdd && isAllowAdd.length > 0) {
+                    IsAllowedAdd = true;
+                }
 
-        //         let isAllowDelete = result.ResultObject.CacheData.filter(x => x.FunctionID == INVENTORYREQUESTTYPE_DELETE);
-        //         if (isAllowDelete && isAllowDelete.length > 0) {
-        //             IsAllowedDelete = true;
-        //         }
-        //         this.setState({
-        //             IsAllowedAdd: IsAllowedAdd,
-        //             IsAllowedDelete: IsAllowedDelete
-        //         });
-        //     }
-        // });
+                let isAllowDelete = result.ResultObject.CacheData.filter(x => x.FunctionID == STAFFTRANSFERTYPE_DELETE);
+                if (isAllowDelete && isAllowDelete.length > 0) {
+                    IsAllowedDelete = true;
+                }
+                this.setState({
+                    IsAllowedAdd: IsAllowedAdd,
+                    IsAllowedDelete: IsAllowedDelete
+                });
+            }
+        });
     }
 
     onComplete(message, isError) {
@@ -226,12 +224,7 @@ class StaffTransferType_RL_User extends React.Component {
 
     }
 
-
     render() {
-        if (this.state.IsCloseForm) {
-            return <Redirect to={`/StaffTransferType/ReviewLevelDetail/${this.props.match.params.id}`} />;
-        }
-
         return (
             <div className="sub-grid detail">
                 <ReactNotification ref={this.notificationDOMRef} />

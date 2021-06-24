@@ -14,7 +14,7 @@ import ReactNotification from "react-notifications-component";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache, callGetUserCache } from "../../../../../actions/cacheAction";
-import { } from "../../../../../constants/functionLists";
+import { GET_CACHE_USER_FUNCTION_LIST, STAFFTRANSFERTYPE_ADD, STAFFTRANSFERTYPE_UPDATE, STAFFTRANSFERTYPE_DELETE } from "../../../../../constants/functionLists";
 
 class StaffTransferType_RVLevel extends React.Component {
     constructor(props) {
@@ -28,9 +28,9 @@ class StaffTransferType_RVLevel extends React.Component {
             StaffTransferType_RVLevel_DataSource: this.props.StaffTransferType_RVLevel_DataSource ? this.props.StaffTransferType_RVLevel_DataSource : [],
             StaffTransferTypeID: this.props.StaffTransferTypeID,
             IsInsert: true,
-            IsAllowedAdd: true, // update sau => false
-            IsAllowedUpdate: true, // update sau => false
-            IsAllowedDelete: true // update sau => false
+            IsAllowedAdd: false,
+            IsAllowedUpdate: false,
+            IsAllowedDelete: false
         };
 
         this.notificationDOMRef = React.createRef();
@@ -104,29 +104,29 @@ class StaffTransferType_RVLevel extends React.Component {
         let IsAllowedUpdate = false;
         let IsAllowedDelete = false;
 
-        // this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
-        //     if (!result.IsError && result.ResultObject.CacheData != null) {
-        //         let isAllowAdd = result.ResultObject.CacheData.filter(x => x.FunctionID == INVENTORYREQUESTTYPE_ADD);
-        //         if (isAllowAdd && isAllowAdd.length > 0) {
-        //             IsAllowedAdd = true;
-        //         }
+        this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                let isAllowAdd = result.ResultObject.CacheData.filter(x => x.FunctionID == STAFFTRANSFERTYPE_ADD);
+                if (isAllowAdd && isAllowAdd.length > 0) {
+                    IsAllowedAdd = true;
+                }
 
-        //         let isAllowUpdate = result.ResultObject.CacheData.filter(x => x.FunctionID == INVENTORYREQUESTTYPE_UPDATE);
-        //         if (isAllowUpdate && isAllowUpdate.length > 0) {
-        //             IsAllowedUpdate = true;
-        //         }
+                let isAllowUpdate = result.ResultObject.CacheData.filter(x => x.FunctionID == STAFFTRANSFERTYPE_UPDATE);
+                if (isAllowUpdate && isAllowUpdate.length > 0) {
+                    IsAllowedUpdate = true;
+                }
 
-        //         let isAllowDelete = result.ResultObject.CacheData.filter(x => x.FunctionID == INVENTORYREQUESTTYPE_DELETE);
-        //         if (isAllowDelete && isAllowDelete.length > 0) {
-        //             IsAllowedDelete = true;
-        //         }
-        //         this.setState({
-        //             IsAllowedAdd: IsAllowedAdd,
-        //             IsAllowedUpdate: IsAllowedUpdate,
-        //             IsAllowedDelete: IsAllowedDelete
-        //         });
-        //     }
-        // });
+                let isAllowDelete = result.ResultObject.CacheData.filter(x => x.FunctionID == STAFFTRANSFERTYPE_DELETE);
+                if (isAllowDelete && isAllowDelete.length > 0) {
+                    IsAllowedDelete = true;
+                }
+                this.setState({
+                    IsAllowedAdd: IsAllowedAdd,
+                    IsAllowedUpdate: IsAllowedUpdate,
+                    IsAllowedDelete: IsAllowedDelete
+                });
+            }
+        });
     }
 
     onClose() { }
@@ -150,11 +150,8 @@ class StaffTransferType_RVLevel extends React.Component {
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
 
                         this.props.callFetchAPI(APIHostName, APIAdd, MLObject).then(apiResult => {
-                            console.log("🚀 ~ file: index.js ~ line 154 ~ StaffTransferType_RVLevel ~ this.props.callFetchAPI ~ apiResult", apiResult)
 
                             if (!apiResult.IsError) {
-                                console.log("🚀 ~ file: index.js ~ line 154 ~ StaffTransferType_RVLevel ~ this.props.callFetchAPI ~ apiResult")
-
                                 this.props.onComponentChange();
                                 this.props.hideModal();
                             }

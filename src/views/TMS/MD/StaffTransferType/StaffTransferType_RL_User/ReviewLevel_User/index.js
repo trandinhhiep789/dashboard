@@ -8,7 +8,6 @@ import {
     APIHostName,
     APIAdd,
     MLObjectDefinition,
-    BackLink,
     GetUserAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
@@ -27,7 +26,6 @@ class ReviewLevel_UserCom extends React.Component {
             IsCallAPIError: false,
             FormContent: "",
             IsLoadDataComplete: false,
-            IsCloseForm: false,
             StoreID: 0,
             ReviewUser: []
         };
@@ -125,9 +123,6 @@ class ReviewLevel_UserCom extends React.Component {
     }
 
     render() {
-        if (this.state.IsCloseForm) {
-            return <Redirect to={BackLink} />;
-        }
         return (
             <React.Fragment>
                 <FormContainer
@@ -138,7 +133,6 @@ class ReviewLevel_UserCom extends React.Component {
                     FormMessage={this.state.CallAPIMessage}
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={null}
-                    BackLink={BackLink}
                     onchange={this.handleChange.bind(this)}
                 >
                     <FormControl.FormControlComboBox

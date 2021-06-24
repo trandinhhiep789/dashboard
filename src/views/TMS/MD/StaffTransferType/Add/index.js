@@ -15,6 +15,7 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
+import { STAFFTRANSFERTYPE_ADD } from "../../../../../constants/functionLists";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -82,7 +83,7 @@ class AddCom extends React.Component {
                 IsErrorMessage={IsCallAPIError}
                 dataSource={{ IsActived: true }}
                 BackLink={BackLink}
-                RequirePermission={""}
+                RequirePermission={STAFFTRANSFERTYPE_ADD}
                 ref={this.searchref}
             />
         );
