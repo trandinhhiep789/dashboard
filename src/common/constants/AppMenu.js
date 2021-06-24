@@ -415,7 +415,7 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
-                   
+
                     {
                         MenuName: 'ServicePriceApply',
                         MenuTitle: 'Bảng giá dịch vụ áp dụng',
@@ -457,6 +457,13 @@ const AppMenu = [
                         MenuName: 'CoordinatorGroup',
                         MenuTitle: 'Nhóm điều phối',
                         LinkTo: '/CoordinatorGroup',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'StaffTransferType',
+                        MenuTitle: 'Loại hình thuyên chuyển nhân viên',
+                        LinkTo: '/StaffTransferType',
                         MenuIcon: '',
                         SubMenu: []
                     }
@@ -1253,6 +1260,13 @@ const AppMenu = [
                 MenuName: 'SaleSummaryReport',
                 MenuTitle: 'Báo cáo đơn hàng',
                 LinkTo: '/SaleSummaryReport',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
+                MenuName: 'MonthlySaleOrder',
+                MenuTitle: 'Xem bảng kê job Tự động tính doanh thu',
+                LinkTo: '/MonthlySaleOrder',
                 MenuIcon: '',
                 SubMenu: []
             },
