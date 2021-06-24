@@ -127,6 +127,13 @@ export default class SearchForm extends Component {
         }
     }
 
+    handlehistorySubmit()
+    {
+        if (this.props.onHistorySubmit != null) {
+            this.props.onHistorySubmit();
+        }
+    }
+
     changeLoadComplete() {
     }
 
@@ -346,6 +353,7 @@ export default class SearchForm extends Component {
                             }
 
                         </button>
+
                         {
                             // this.props.IsButtonExport != undefined && this.props.IsButtonExport == true && <button className="btn btn-export ml-1" type="button" onClick={this.handleExportSubmit.bind(this)}>
                             this.props.IsButtonExport != undefined
@@ -359,6 +367,14 @@ export default class SearchForm extends Component {
                                 }
                             </button>
                         }
+                        {
+                            this.props.IsButtonhistory == true
+                            && <button type="button" className="btn "  onClick={this.handlehistorySubmit.bind(this)} title="" data-provide="tooltip" data-original-title="Xem lịch sử">
+                                <i className="fa fa-history"></i>
+                            </button>
+
+                        }
+
 
                     </div>
                 </div>

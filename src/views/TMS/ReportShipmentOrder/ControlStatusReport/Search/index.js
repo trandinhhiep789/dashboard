@@ -33,6 +33,7 @@ class Search extends React.Component {
         this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+        this.handleHistorySearch = this.handleHistorySearch.bind(this);
         this.showMessage = this.showMessage.bind(this);
         this.addNotification = this.addNotification.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
@@ -84,7 +85,6 @@ class Search extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/ControlStatusReport", searchData).then(apiResult => {
-            console.log("aa", searchData, apiResult)
             if (!apiResult.IsError) {
                 this.setState({
                     gridDataSource: apiResult.ResultObject
@@ -97,7 +97,6 @@ class Search extends React.Component {
     };
 
     handleSearchSubmit(formData, MLObject) {
-        console.log("MLObject", formData, MLObject)
         const postData = [
 
             {
@@ -195,26 +194,28 @@ class Search extends React.Component {
 
         ];
 
+        this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/ExportControlStatusReport", postData).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
+                    title: "Tải file",
+                    maxWidth: '1000px',
+                    ParamRequest: { RequestUser: 98138, DataExportTemplateID: 1}
+                });
+            }
+            else {
+                this.showMessage(apiResult.Message)
+            }
+        });
+    };
+
+    handleHistorySearch()
+    {
         this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
             title: "Tải file",
             maxWidth: '1000px',
-            onClose: false
+            ParamRequest:{RequestUser:73309,DataExportTemplateID:1}
         });
-
-
-        // this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/ExportControlStatusReport", postData).then(apiResult => {
-        //     if (!apiResult.IsError) {
-        //         // this.props.showModal(MODAL_TYPE_DOWNLOAD_EXCEL, {
-        //         //     title: "Tải file",
-        //         //     URLDownloadFile: "http://expfilecdn.tterpbeta.vn/ExpData/2021/06/23/StaffDebtExpebe86d2e-f30b-4577-97d0-da488ac6b9f0.zip",
-        //         //     maxWidth: '300px'
-        //         // });
-        //     }
-        //     else {
-        //         this.showMessage(apiResult.Message)
-        //     }
-        // });
-    };
+    }
 
     handleonChangePage(pageNum) {
         const { SearchData } = this.state;
@@ -251,6 +252,8 @@ class Search extends React.Component {
                     MLObjectDefinition={SearchMLObjectDefinition}
                     ref={this.searchref}
                     IsButtonExport={true}
+                    IsButtonhistory={true}
+                    onHistorySubmit={this.handleHistorySearch}
                     onExportSubmit={this.handleExportFileFormSearch}
                     onSubmit={this.handleSearchSubmit}
                     classNamebtnSearch="groupAction"
