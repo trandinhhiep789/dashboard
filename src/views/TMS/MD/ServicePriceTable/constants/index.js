@@ -143,6 +143,18 @@ export const DataGridColumnList = [
         DataSourceMember: "Description",
     },
     {
+        Name: "UpdatedDate",
+        Type: "datetime",
+        Caption: "Ngày cập nhật",
+        DataSourceMember: "UpdatedDate",
+    },
+    {
+        Name: "UpdatedUserFullName",
+        Type: "text",
+        Caption: "Người cập nhật",
+        DataSourceMember: "UpdatedUserFullName",
+    },
+    {
         Name: "IsActived",
         Type: "checkicon",
         Caption: "Kích hoạt",

@@ -27,6 +27,7 @@ import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 import { numberDecimalWithComma } from '../../../../../../utils/function';
 import { ERPCOMMONCACHE_LIMITTYPE, ERPCOMMONCACHE_USER_LIMIT } from "../../../../../../constants/keyCache";
+import { formatDate, formatMonthDate } from "../../../../../../common/library/CommonLib.js";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -109,8 +110,10 @@ class SearchCom extends React.Component {
 
                     return acc;
                 }, [
-                    { name: "Mã nhân viên", dataSource: "UserName", width: 100, type: "text" },
-                    { name: "Tên nhân viên", dataSource: "FullName", width: 100, type: "text" }
+                    { name: "Nhân viên", dataSource: "UserName", width: 80, type: "text" },
+                    { name: "Tên nhân viên", dataSource: "FullName", width: 100, type: "text" },
+                    { name: "Ngày cập nhật", dataSource: "UpdatedDate", width: 100, type: "text" },
+                    { name: "Ngưởi cập nhật", dataSource: "UpdatedUserFullName", width: 100, type: "text" }
                 ])
 
                 return listColumn;
@@ -126,9 +129,8 @@ class SearchCom extends React.Component {
 
     initGridDataSource(data) {
         const groupData = data.reduce((acc, val, ind, arr) => {
-
+            // console.log("acc", acc, val, ind, arr)
             const tempItemAcc = acc.findIndex(item => item.UserName == val.UserName);
-
             const objDataLimit = {
                 LimitValue: val.LimitValue,
                 IsAllowdecimalLimitValue: val.IsAllowdecimalLimitValue,
@@ -144,6 +146,8 @@ class SearchCom extends React.Component {
                     {
                         UserName: val.UserName,
                         FullName: val.FullName,
+                        UpdatedUserFullName: val.UpdatedUserFullName,
+                        UpdatedDate: formatDate(val.UpdatedDate, false),
                         [val.LimitTypeID]: objDataLimit,
                         initialData: [val]
                     }
@@ -200,7 +204,7 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchUserLimitAPIPath, searchData).then(apiResult => {
-
+            // console.log("data", apiResult, searchData)
             const groupData = this.initGridDataSource(apiResult.ResultObject);
             const initInputError = this.initArrInputError(apiResult.ResultObject);
             const listColumn = this.getTableHeader(groupData);
@@ -450,6 +454,7 @@ class SearchCom extends React.Component {
     render() {
         const { listColumn, gridDataSource, arrInputError, isErrorValidate } = this.state;
 
+        // console.log("listColumn", listColumn, gridDataSource)
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -483,9 +488,12 @@ class SearchCom extends React.Component {
                                 <tbody>
                                     {
                                         gridDataSource.length > 0 && gridDataSource.map((item, index) => {
+                                            // console.log("object1111", item, index)
                                             return <tr key={item.UserName}>
                                                 {
                                                     listColumn.map((item1, index1) => {
+                                                        // console.log("222", item1, index1)
+
                                                         switch (item1.type) {
                                                             case "text":
                                                                 return <td key={index1}>{item[item1.dataSource]}</td>
