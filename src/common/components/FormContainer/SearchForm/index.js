@@ -346,7 +346,7 @@ export default class SearchForm extends Component {
                 <div className={classNamebtnSearch}>
                     {/* <div className="btnSearch btncustom"> */}
                     <div className={this.props.btnGroup ? this.props.btnGroup : 'btnSearch btncustom'}>
-                        <button className="btn btn-primary" type="submit">
+                        <button className={this.props.IsShowButtonSearch != undefined && this.props.IsShowButtonSearch == false ? "btnHide" : "btn btn-primary"} type="submit">
                             {
                                 !!this.props.TitleButton ? this.props.TitleButton : <span className="fa fa-search">Tìm Kiếm</span>
 
