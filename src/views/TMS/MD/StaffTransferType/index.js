@@ -8,6 +8,7 @@ import Search from "./Search";
 import Add from "./Add";
 import Detail from "./Detail";
 import ReviewLevelDetail from './ReviewLevelDetail'
+import Edit from './Edit'
 import NotFound from '../../../NotFound'
 
 class StaffTransferTypeCom extends React.Component {
@@ -22,6 +23,7 @@ class StaffTransferTypeCom extends React.Component {
                 <Route exact path="/StaffTransferType/Add" component={Add} />
                 <Route exact path="/StaffTransferType/Detail/:id" component={Detail} />
                 <Route exact path="/StaffTransferType/ReviewLevelDetail/:id" component={ReviewLevelDetail} />
+                <Route exact path="/StaffTransferType/Edit/:id" component={Edit} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );

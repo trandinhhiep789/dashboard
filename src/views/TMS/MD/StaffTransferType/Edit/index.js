@@ -6,32 +6,48 @@ import SimpleForm from "../../../../../common/components/Form/SimpleForm";
 import { MessageModal } from "../../../../../common/components/Modal";
 import {
     APIHostName,
-    APIAdd,
-    AddElementList,
-    AddMLObjectDefinition,
+    LoadAPIPath,
+    UpdateAPIPath,
+    EditElementList,
+    MLObjectDefinition,
     BackLink,
-    AddPagePath
+    EditPagePath
 } from "./constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
+// import { } from "../../../../../constants/functionLists";
 
-class AddCom extends React.Component {
+class EditCom extends React.Component {
     constructor(props) {
         super(props);
-
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
+            FormContent: "",
+            IsLoadDataComplete: false,
             IsCloseForm: false
         };
-
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleCloseMessage = this.handleCloseMessage.bind(this);
     }
 
     componentDidMount() {
-        this.props.updatePagePath(AddPagePath);
+        this.props.updatePagePath(EditPagePath);
+        const id = this.props.match.params.id;
+        this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            } else {
+                this.setState({ DataSource: apiResult.ResultObject });
+            }
+            this.setState({
+                IsLoadDataComplete: true
+            });
+        });
     }
 
     handleSubmit(formData, MLObject) {
@@ -43,7 +59,7 @@ class AddCom extends React.Component {
             this.setState({ IsCallAPIError: true });
             this.showMessage("Phải có tự động duyệt thì mới có tự động thuyên chuyển.");
         } else {
-            this.props.callFetchAPI(APIHostName, APIAdd, MLObject).then(apiResult => {
+            this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
                 this.setState({ IsCallAPIError: apiResult.IsError });
                 this.showMessage(apiResult.Message);
             });
@@ -66,25 +82,29 @@ class AddCom extends React.Component {
     }
 
     render() {
-        const { IsCloseForm, CallAPIMessage, IsCallAPIError } = this.state;
-
-        if (IsCloseForm) {
+        if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
-
+        if (this.state.IsLoadDataComplete) {
+            return (
+                <SimpleForm
+                    FormName="Cập nhật loại hình thuyên chuyển nhân viên"
+                    MLObjectDefinition={MLObjectDefinition}
+                    listelement={EditElementList}
+                    onSubmit={this.handleSubmit}
+                    FormMessage={this.state.CallAPIMessage}
+                    IsErrorMessage={this.state.IsCallAPIError}
+                    dataSource={this.state.DataSource}
+                    BackLink={BackLink}
+                    // RequirePermission={""}
+                    ref={this.searchref}
+                />
+            );
+        }
         return (
-            <SimpleForm
-                FormName="Thêm loại hình thuyên chuyển nhân viên"
-                MLObjectDefinition={AddMLObjectDefinition}
-                listelement={AddElementList}
-                onSubmit={this.handleSubmit}
-                FormMessage={CallAPIMessage}
-                IsErrorMessage={IsCallAPIError}
-                dataSource={{ IsActived: true }}
-                BackLink={BackLink}
-                RequirePermission={""}
-                ref={this.searchref}
-            />
+            <div>
+                <label>Đang nạp dữ liệu...</label>
+            </div>
         );
     }
 }
@@ -113,5 +133,8 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const Add = connect(mapStateToProps, mapDispatchToProps)(AddCom);
-export default Add;
+const Edit = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(EditCom);
+export default Edit;

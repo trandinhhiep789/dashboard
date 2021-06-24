@@ -8,7 +8,7 @@ import {
     APILoad,
     BackLink,
     DetailPagePath
-} from "../constants";
+} from "./constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../actions/cacheAction";

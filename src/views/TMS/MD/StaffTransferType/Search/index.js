@@ -7,7 +7,7 @@ import { MessageModal } from "../../../../../common/components/Modal";
 import {
     APIHostName, PagePath, APISearch, InitSearchParams, SearchElementList, SearchMLObjectDefinition,
     AddLink, IDSelectColumnName, DataGridColumnList
-} from "../constants";
+} from "./constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
@@ -71,15 +71,11 @@ class SearchCom extends React.Component {
             listMLObject.push(MLObject);
         });
 
-        this.showMessage("Tính năng đang phát triển");
-
-        return;
-
-        this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, "api/StaffTransferType/DeleteMany", listMLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
-                this.callSearchData(this.state.SearchData);
+                this.fetchDataGrid(InitSearchParams);
             }
         });
     }

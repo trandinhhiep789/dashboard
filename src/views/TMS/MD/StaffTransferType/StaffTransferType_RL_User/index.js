@@ -7,16 +7,14 @@ import "react-notifications-component/dist/theme.css";
 import { ModalManager } from "react-dynamic-modal";
 import { MessageModal } from "../../../../../common/components/Modal";
 import DataGrid from "../../../../../common/components/DataGrid";
-import { MODAL_TYPE_CONFIRMATION, MODAL_TYPE_COMMONTMODALS } from '../../../../../constants/actionTypes';
+import { MODAL_TYPE_COMMONTMODALS } from '../../../../../constants/actionTypes';
 import { showModal, hideModal } from '../../../../../actions/modal';
-import { GetMLObjectData } from "../../../../../common/library/form/FormLib";
 import {
-    listColumn, modalElementList, MLObjectDefinition
+    listColumn, ModalColumnList_Insert, MLObjectDefinition, APIHostName, DeleteAPIPath
 } from "./constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache, callGetUserCache } from "../../../../../actions/cacheAction";
-import { GET_CACHE_USER_FUNCTION_LIST, INVENTORYREQUESTTYPE_ADD, INVENTORYREQUESTTYPE_DELETE } from "../../../../../constants/functionLists";
 import ReviewLevel_User from './ReviewLevel_User'
 
 class StaffTransferType_RL_User extends React.Component {
@@ -166,7 +164,7 @@ class StaffTransferType_RL_User extends React.Component {
     }
 
     onComplete(message, isError) {
-        this.addNotification(message, isError);
+        this.showMessage(message);
     }
 
     onClose() {
@@ -195,9 +193,6 @@ class StaffTransferType_RL_User extends React.Component {
 
 
     handleDelete(deleteList, pkColumnName) {
-        this.showMessage("Tính năng đang phát triển");
-        return;
-
         if (!this.state.IsAllowedDelete) {
             this.showMessage("Bạn không có quyền");
             return;
@@ -234,7 +229,7 @@ class StaffTransferType_RL_User extends React.Component {
 
     render() {
         if (this.state.IsCloseForm) {
-            return <Redirect to={BackLink} />;
+            return <Redirect to={`/StaffTransferType/ReviewLevelDetail/${this.props.match.params.id}`} />;
         }
 
         return (
@@ -243,7 +238,7 @@ class StaffTransferType_RL_User extends React.Component {
                 <DataGrid
                     listColumn={listColumn}
                     dataSource={this.state.DataSource}
-                    modalElementList={modalElementList}
+                    modalElementList={ModalColumnList_Insert}
                     MLObjectDefinition={MLObjectDefinition}
                     IDSelectColumnName={"chkSelectCSID"}
                     PKColumnName={"CSID"}

@@ -8,7 +8,7 @@ import { MODAL_TYPE_CONFIRMATION } from '../../../../../constants/actionTypes';
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { GetMLObjectData } from "../../../../../common/library/form/FormLib";
 import {
-    AddListColumn, BackLink, AddMLObjectDefinition, AddModalElementList, APIAdd, APIHostName
+    listColumn, BackLink, MLObjectDefinition, ModalColumnList_Insert, APIAdd, APIHostName, ModalColumnList_Edit, UpdateAPIPath, DeleteAPIPath
 } from "./constants";
 import ReactNotification from "react-notifications-component";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
@@ -173,7 +173,7 @@ class StaffTransferType_RVLevel extends React.Component {
             return;
         }
         this.setState({ IsInsert: false });
-        let _InventoryRequestType_ReviewLevel_DataSource = {};
+        let _StaffTransferType_RVLevel_DataSource = {};
         this.state.StaffTransferType_RVLevel_DataSource.map((item, index) => {
             let isMath = false;
             for (var j = 0; j < pkColumnName.length; j++) {
@@ -186,7 +186,7 @@ class StaffTransferType_RVLevel extends React.Component {
                 }
             }
             if (isMath) {
-                _InventoryRequestType_ReviewLevel_DataSource = item;
+                _StaffTransferType_RVLevel_DataSource = item;
             }
         });
 
@@ -195,9 +195,9 @@ class StaffTransferType_RVLevel extends React.Component {
             onClose: this.onClose,
             onConfirm: (isConfirmed, formData) => {
                 if (isConfirmed) {
-                    let MLObject = GetMLObjectData(MLObjectDefinition, formData, _InventoryRequestType_ReviewLevel_DataSource);
+                    let MLObject = GetMLObjectData(MLObjectDefinition, formData, _StaffTransferType_RVLevel_DataSource);
                     if (MLObject) {
-                        MLObject.InventoryRequestTypeID = this.state.InventoryRequestTypeID;
+                        MLObject.StaffTransferTypeID = this.state.StaffTransferTypeID;
                         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
                         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
@@ -207,24 +207,18 @@ class StaffTransferType_RVLevel extends React.Component {
                                 }
                                 this.props.hideModal();
                             }
-                            //this.showMessage(apiResult.Message);
-                            this.addNotification(apiResult.Message, apiResult.IsError);
+                            this.showMessage(apiResult.Message);
                         });
-                        //this.resetCombobox();
-                        //console.log("edit", MLObject);
                     }
                 }
             },
             modalElementList: ModalColumnList_Edit,
-            formData: _InventoryRequestType_ReviewLevel_DataSource
+            formData: _StaffTransferType_RVLevel_DataSource
         });
     }
 
 
     handleDelete(deleteList, pkColumnName) {
-        this.showMessage("Tính năng đang phát triển");
-        return;
-
         if (!this.state.IsAllowedDelete) {
             this.showMessage("Bạn không có quyền");
             return;
@@ -248,7 +242,8 @@ class StaffTransferType_RVLevel extends React.Component {
                 }
                 this.props.hideModal();
             }
-            this.addNotification(apiResult.Message, apiResult.IsError);
+            // this.addNotification(apiResult.Message, apiResult.IsError);
+            this.showMessage(apiResult.Message);
         });
 
     }
@@ -265,10 +260,10 @@ class StaffTransferType_RVLevel extends React.Component {
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <DataGrid
-                    listColumn={AddListColumn}
+                    listColumn={listColumn}
                     dataSource={StaffTransferType_RVLevel_DataSource}
-                    modalElementList={AddModalElementList}
-                    MLObjectDefinition={AddMLObjectDefinition}
+                    modalElementList={ModalColumnList_Insert}
+                    MLObjectDefinition={MLObjectDefinition}
                     IDSelectColumnName={"chkSelectReviewLevelID"}
                     PKColumnName={"ReviewLevelID"}
                     onDeleteClick={this.handleDelete}

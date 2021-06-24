@@ -1,9 +1,11 @@
 export const APIHostName = "TMSAPI";
 export const APIAdd = "api/StaffTransferType_rvLevel/Add";
+export const UpdateAPIPath = "api/StaffTransferType_rvLevel/Update";
+export const DeleteAPIPath = "api/StaffTransferType_rvLevel/DeleteMany";
 
 export const BackLink = "/StaffTransferType";
 
-export const AddListColumn = [
+export const listColumn = [
     {
         Name: "chkSelectReviewLevelID",
         Type: "checkbox",
@@ -50,7 +52,7 @@ export const AddListColumn = [
 
 ];
 
-export const AddModalElementList = [
+export const ModalColumnList_Insert = [
     {
         Name: "ReviewLevelID",
         type: "text",
@@ -110,7 +112,7 @@ export const AddModalElementList = [
 ];
 
 
-export const AddMLObjectDefinition = [
+export const MLObjectDefinition = [
     {
         Name: "ReviewLevelID",
         DefaultValue: "",
@@ -164,5 +166,64 @@ export const AddMLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "CreatedUser",
         DataSourceMember: "CreatedUser"
+    }
+];
+
+export const ModalColumnList_Edit = [
+    {
+        Name: "ReviewLevelID",
+        type: "text",
+        label: "mã mức duyệt",
+        maxSize: "9",
+        DataSourceMember: "ReviewLevelID",
+        readonly: true,
+        validatonList: ["required", "number"]
+    },
+    {
+        Name: "ReviewLevelName",
+        type: "text",
+        label: "tên mức duyệt",
+        maxSize: "200",
+        DataSourceMember: "ReviewLevelName",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        Name: "ReviewOrderIndex",
+        type: "text",
+        label: "thứ tự hiển thị",
+        maxSize: "9",
+        value: 0,
+        DataSourceMember: "ReviewOrderIndex",
+        readonly: false,
+        validatonList: ["number"]
+    },
+    {
+        Name: "Description",
+        type: "textarea",
+        label: "Mô tả",
+        maxSize: "2000",
+        DataSourceMember: "Description",
+        rows: "6",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        Name: "IsActived",
+        type: "checkbox",
+        label: "Kích hoạt",
+        DataSourceMember: "IsActived",
+        readonly: false,
+        validatonList: [],
+        value: true
+    },
+    {
+        Name: "IsSystem",
+        type: "checkbox",
+        label: "Hệ thống",
+        DataSourceMember: "IsSystem",
+        readonly: false,
+        validatonList: [],
+        value: false
     }
 ];

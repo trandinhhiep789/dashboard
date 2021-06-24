@@ -1,8 +1,7 @@
 export const APIHostName = "TMSAPI";
 export const GetUserAPIPath = "api/StaffTransferType_rl_User/GetUserByStoreID";
 export const APIAdd = "api/StaffTransferType_rl_User/Add";
-
-export const BackLink = "/StaffTransferType";
+export const DeleteAPIPath = "api/StaffTransferType_rl_User/DeleteMany";
 
 export const listColumn = [
     {
@@ -35,7 +34,7 @@ export const listColumn = [
     }
 ];
 
-export const modalElementList = [
+export const ModalColumnList_Insert = [
     {
         type: "select",
         Name: "ReviewLevelID",

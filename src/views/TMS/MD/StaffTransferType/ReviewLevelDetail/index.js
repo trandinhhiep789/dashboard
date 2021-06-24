@@ -6,8 +6,7 @@ import { MessageModal } from "../../../../../common/components/Modal";
 import {
     APIHostName,
     APILoad,
-    BackLink,
-    DetailPagePath
+    BackLink
 } from "./constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
