@@ -122,24 +122,27 @@ class ShowDownloadFileCom extends React.Component {
 
 
 
+    handleLoadSubmit() {
+        this.GetDataFile()
+    }
 
 
     GetDataFile() {
         // let objAdvanceRequestLoad=
         // {RequestUser:98138,DataExportTemplateID:4}
 
-      this.props.callFetchAPI(APIHostName, "api/DataExportQueue/GetByUserTemplateID",this.props.ParamRequest).then((apiResult) => {
-        if (!apiResult.IsError) {
-            this.setState({
-                DataSource: apiResult.ResultObject,
-                IsCallAPIError: apiResult.IsError,
-                IsLoadDataComplete: true,
-                IsLoadData: true
-            });
-        }
-        // else {
-        //  //   this.addNotification(apiResult.Message, apiResult.IsError);
-        // }
+        this.props.callFetchAPI(APIHostName, "api/DataExportQueue/GetByUserTemplateID", this.props.ParamRequest).then((apiResult) => {
+            if (!apiResult.IsError) {
+                this.setState({
+                    DataSource: apiResult.ResultObject,
+                    IsCallAPIError: apiResult.IsError,
+                    IsLoadDataComplete: true,
+                    IsLoadData: true
+                });
+            }
+            // else {
+            //  //   this.addNotification(apiResult.Message, apiResult.IsError);
+            // }
         });
 
     }
@@ -148,7 +151,7 @@ class ShowDownloadFileCom extends React.Component {
 
     render() {
 
-        let maxWidth = '900px';
+        let maxWidth = '90%';
         return (
             <div className='modals mfp-zoom-out modalconfirmcus modalconfirmcus5 modal-list-down'>
                 <Overlay />
@@ -166,7 +169,9 @@ class ShowDownloadFileCom extends React.Component {
                                             <thead className="thead-light">
                                                 <tr>
                                                     <th className="jsgrid-header-cell" style={{ width: "15%" }}>Thời gian xuất</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: "15%" }}>Ngày hết hạn</th>
                                                     <th className="jsgrid-header-cell" style={{ width: "36%" }}>Tên file xuất</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: "8%" }}> kích thước tập tin</th>
                                                     <th className="jsgrid-header-cell" style={{ width: "8%" }}>Xuất dữ liệu</th>
                                                     <th className="jsgrid-header-cell" style={{ width: "8%" }}>Pass</th>
                                                     <th className="jsgrid-header-cell" style={{ width: "8%" }}>Thời gian load</th>
@@ -175,31 +180,42 @@ class ShowDownloadFileCom extends React.Component {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                            {
-                                            this.state.DataSource && this.state.DataSource.map((item, index) => {
-                                                return <tr
-                                                    key={"Product" + index}
-                                                >
-                                                    <td>{formatDate(item.QueueDate)}</td>
-                                                    <td>{item.ExportedFileName}</td>
-                                                    <td>{item.IsExportedError==true?"có lỗi":"không lỗi"}</td>
-                                                    <td>{item.ExportedFilePassword}</td>
-                                                    <td>{item.LoadDataIntervalStr}</td>
-                                                    <td>{item.TotalExportDataIntervalStr}</td>
-                                                    <td>
-                                                        <a
-                                                            target="_blank"
-                                                            className="btn-download-file"
-                                                            href={item.ExportedFileURL}
-                                                            data-url={item.ExportedFileURL}
+                                                {
+                                                    this.state.DataSource && this.state.DataSource.map((item, index) => {
+                                                        return <tr
+                                                            key={"Product" + index}
                                                         >
-                                                            <img className="item" src="/src/img/icon/icon-down.gif" alt="download file icon" />
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            })
-                                        }
-                                                
+                                                            <td>{formatDate(item.QueueDate)}</td>
+                                                            <td>{formatDate(item.ExpiredDate)}</td>
+                                                            <td>{item.ExportedFileName}</td>
+                                                            <td>{item.ExportedCompressFileSizeStr}</td>
+                                                            <td>{item.IsExportedError == true ? "có lỗi" : "không lỗi"}</td>
+                                                            <td>{item.ExportedFilePassword}</td>
+                                                            <td>{item.LoadDataIntervalStr}</td>
+                                                            <td>{item.TotalExportDataIntervalStr}</td>
+                                                            <td>
+                                                                {(item.IsExported == true && item.IsExportedError == false) ?
+                                                                    (
+                                                                        <a
+                                                                            target="_blank"
+                                                                            className="btn-download-file"
+                                                                            href={item.ExportedFileURL}
+                                                                            data-url={item.ExportedFileURL}
+                                                                        >
+                                                                            <img className="item" src="/src/img/icon/icon-down.gif" alt="download file icon" />
+                                                                        </a>
+                                                                    ) :
+                                                                    (
+                                                                        <button className="btnHistory"  onClick={this.handleLoadSubmit.bind(this)} ><i className="fa fa-history"></i></button>
+                                                                    )
+
+                                                                }
+
+                                                            </td>
+                                                        </tr>
+                                                    })
+                                                }
+
                                             </tbody>
                                         </table>
                                     </div>
