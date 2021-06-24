@@ -162,6 +162,7 @@ import PartnerSaleChannel from "../TMS/MD/PartnerSaleChannel";
 import DataExportTemplate from "../TMS/MD/DataExportTemplate";
 import DataExportTemplate_Format from "../TMS/MD/DataExportTemplate_Format";
 import SvTimeConvert from "../TMS/MD/SvTimeConvert";
+import MonthlySaleOrder from "../TMS/ReportShipmentOrder/MonthlySaleOrder";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -407,9 +408,10 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/DataExportTemplate" component={DataExportTemplate} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/DataExportTemplate_Format" component={DataExportTemplate_Format} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/SvTimeConvert" component={SvTimeConvert} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/MonthlySaleOrder" component={MonthlySaleOrder} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
 
-
+                                    
                                     <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                 </Switch>
