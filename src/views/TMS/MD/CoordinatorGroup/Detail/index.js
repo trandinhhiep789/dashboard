@@ -21,6 +21,7 @@ import DestroyRequestType_ReviewLevel from "../../DestroyRequestType_ReviewLevel
 import DestroyRequestType_ReviewLevel_User from "../../DestroyRequestType_ReviewLevel_User";
 import CoordinatorGroup_Member from "../../CoordinatorGroup_Member";
 import CoordinatorGroup_DUser from "../../CoordinatorGroup_DUser";
+import CoordinatorGroup_Store from "../../CoordinatorGroup_Store";
 
 
 class DetailCom extends React.Component {
@@ -181,6 +182,12 @@ class DetailCom extends React.Component {
                     <CoordinatorGroup_DUser
                         CoordinatorGroupID={this.props.match.params.id}
                         DataSource={this.state.DataSource.ListCoordinatorGroup_DUser ? this.state.DataSource.ListCoordinatorGroup_DUser : []}
+                        onComponentChange={this.onComponentChange}
+                    />
+
+                    <CoordinatorGroup_Store
+                        CoordinatorGroupID={this.props.match.params.id}
+                        DataSource={this.state.DataSource.ListCoordinatorGroup_Store ? this.state.DataSource.ListCoordinatorGroup_Store : []}
                         onComponentChange={this.onComponentChange}
                     />
                 </React.Fragment >
