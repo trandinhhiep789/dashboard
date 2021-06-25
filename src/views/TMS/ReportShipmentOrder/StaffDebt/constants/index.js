@@ -291,14 +291,14 @@ export const DataGirdStaffDebtColumnList = [
     },
     {
         Name: "OutputDate",
-        Type: "date",
+        Type: "datetime",
         Caption: "Thời gian xuất hàng",
         DataSourceMember: "OutputDate",
         Width: "8%"
     },
     {
         Name: "CollectedTime",
-        Type: "date",
+        Type: "datetime",
         Caption: "Thời gian thu",
         DataSourceMember: "CollectedTime",
         Width: "8%"
