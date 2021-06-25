@@ -903,20 +903,28 @@ class DataGridShipmentOderCom extends Component {
                                             {rowItem.TotalCOD > 0 ? <span className="item pricecod">COD:{formatMoney(rowItem.TotalCOD, 0)}</span> : ""}
                                             {rowItem.TotalSaleMaterialMoney > 0 ? <span className="item price-supplies">Vật tư:{formatMoney(rowItem.TotalSaleMaterialMoney, 0)}</span> : ""}
                                             {rowItem.IsInputReturn == true ? <span className="item price-supplies">Nhập trả:{formatMoney(rowItem.TotalReturnPrice, 0)}</span> : ""}
-                                            {(rowItem.IsPaidIn == true || (rowItem.TotalSaleMaterialMoney + rowItem.TotalCOD - rowItem.TotalReturnPrice) == 0) ?
-                                                (
-                                                    <span className="item price3 price-success">
-                                                        <span className="price-title ">Nợ: </span>
-                                                        <span className="price-debt">0đ</span>
-                                                    </span>
-                                                ) :
-                                                (
-                                                    <span className="item price3">
-                                                        <span className="price-title">Nợ: </span>
-                                                        <span className="price-debt">-{(rowItem.TotalCOD - rowItem.TotalReturnPrice) <= 0 ? formatMoney(rowItem.TotalSaleMaterialMoney) : formatMoney(rowItem.TotalSaleMaterialMoney + rowItem.TotalCOD - rowItem.TotalReturnPrice, 0)}</span>
-                                                    </span>
-                                                )
-                                            }
+                                              {(rowItem.IsPaidIn == true || (rowItem.TotalSaleMaterialMoney + rowItem.TotalCOD - rowItem.TotalReturnPrice) == 0) ?
+                                                    rowItem.CollectedTotalMoney == rowItem.TotalPaidInMoney ?
+                                                        (
+                                                            <span className="item price3 price-success">
+                                                            <span className="price-title ">Nợ: </span>
+                                                            <span className="price-debt">0đ</span>
+                                                        </span>
+                                                        ) :
+                                                        (
+                                                            <div className="item price3">
+                                                                <span className="price-title">Nợ: </span>
+                                                                <span className="price-debt">{formatMoney(rowItem.TotalUnPaidInMoney, 0)}đ</span>
+                                                            </div>
+                                                        )
+                                                    :
+                                                    (
+                                                        <div className="item price3">
+                                                            <span className="price-title">Nợ: </span>
+                                                            <span className="price-debt">-{(rowItem.TotalCOD - rowItem.TotalReturnPrice) <= 0 ? formatMoney(rowItem.TotalSaleMaterialMoney) : formatMoney(rowItem.TotalSaleMaterialMoney + rowItem.TotalCOD - rowItem.TotalReturnPrice, 0)}</span>
+                                                        </div>
+                                                    )
+                                                }
                                         </div>
                                     </td>
                                 </tr>

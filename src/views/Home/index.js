@@ -154,6 +154,7 @@ import DeliveryTimeFrame from "../TMS/MD/DeliveryTimeFrame";
 import WeekDay from "../TMS/MD/WeekDay";
 import DeliveryAbility from '../../views/TMS/DeliveryAbility';
 import CoordinatorGroup from "../TMS/MD/CoordinatorGroup";
+import StaffTransferType from "../TMS/MD/StaffTransferType";
 import ReportLate from "../TMS/ReportShipmentOrder/ReportLate";
 import SMSTemplate from "../TMS/MD/SMSTemplate";
 import ServiceGroup from "../TMS/MD/ServiceGroup";
@@ -337,8 +338,8 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/RewardPointReview" component={RewardPointReview} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/RewardComputeList" component={RewardComputeList} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/RewardComputeType" component={RewardComputeType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
-                                    
-                                    
+
+
                                     <PrivateRoute path="/AreaType" component={AreaType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/Area" component={Area} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ShipmentOrder" component={ShipmentOrder} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
@@ -399,6 +400,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/DeliveryAbility" component={DeliveryAbility} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/DevTest" component={PageTest} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/CoordinatorGroup" component={CoordinatorGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/StaffTransferType" component={StaffTransferType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ReportLate" component={ReportLate} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/SMSTemplate" component={SMSTemplate} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ServiceGroup" component={ServiceGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
