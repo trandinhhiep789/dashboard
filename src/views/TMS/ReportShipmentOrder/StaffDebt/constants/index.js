@@ -291,14 +291,14 @@ export const DataGirdStaffDebtColumnList = [
     },
     {
         Name: "OutputDate",
-        Type: "date",
+        Type: "datetime",
         Caption: "Thời gian xuất hàng",
         DataSourceMember: "OutputDate",
         Width: "8%"
     },
     {
         Name: "CollectedTime",
-        Type: "date",
+        Type: "datetime",
         Caption: "Thời gian thu",
         DataSourceMember: "CollectedTime",
         Width: "8%"
@@ -345,20 +345,20 @@ export const DataGirdStaffDebtColumnList = [
         DataSourceMember: "IsOverDueDebt",
         Width: "10%"
     },
-    // {
-    //     Name: "DeliveryStatus",
-    //     Type: "textCustom",
-    //     Caption: "Tình trạng",
-    //     DataSourceMember: "DeliveryStatus",
-    //     Width: "8%"
-    // },
-    // {
-    //     Name: "History",
-    //     Type: "btnHistory",
-    //     Caption: "Lịch sử",
-    //     DataSourceMember: "History",
-    //     Width: "4%"
-    // },
+    {
+        Name: "DeliveryStatus",
+        Type: "textCustom",
+        Caption: "Tình trạng",
+        DataSourceMember: "DeliveryStatus",
+        Width: "8%"
+    },
+    {
+        Name: "History",
+        Type: "btnHistory",
+        Caption: "Lịch sử",
+        DataSourceMember: "History",
+        Width: "4%"
+    },
 ]
 
 export const DataGirdStaffDebtHistoryColumnList = [
