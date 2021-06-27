@@ -66,6 +66,8 @@ class StaffTransferType_rvLevelCom extends React.Component {
             this.setState({
                 [name]: value
             })
+
+            this.props.onChangeSelect(name, value);
         } catch (error) {
 
         }

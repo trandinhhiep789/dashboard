@@ -23,11 +23,12 @@ class AddCom extends React.Component {
         super(props);
 
         this.state = {
-            StaffTransferTypeData: null
+            StaffTransferData: null
         }
 
         this.fetchStaffTransferType_rvLevelData = this.fetchStaffTransferType_rvLevelData.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChangeStaffTransferType_rvLevel = this.handleChangeStaffTransferType_rvLevel.bind(this);
     }
 
     componentDidMount() {
@@ -44,7 +45,7 @@ class AddCom extends React.Component {
                 this.showMessage(apiResult.Message);
             } else {
                 this.setState({
-                    StaffTransferTypeData: apiResult.ResultObject
+                    StaffTransferData: apiResult.ResultObject
                 })
             }
         })
@@ -61,15 +62,25 @@ class AddCom extends React.Component {
         );
     }
 
+    handleChangeStaffTransferType_rvLevel(name, value) {
+        this.setState({
+            [name]: value
+        })
+    }
+
     handleSubmit(formData, MLObject) {
         console.log("🚀 ~ file: index.js ~ line 65 ~ AddCom ~ handleSubmit ~ formData, MLObject", formData, MLObject)
+        const { StaffTransferData } = this.state;
 
+        const arrStaffTransferType_rvLevel = StaffTransferData.ListStaffTransferType_rvLevel.filter(item => item.UserName == this.state[item.ReviewLevelID]);
+
+        console.log(arrStaffTransferType_rvLevel)
     }
 
     render() {
-        const { StaffTransferTypeData } = this.state;
+        const { StaffTransferData } = this.state;
 
-        if (StaffTransferTypeData == null) {
+        if (StaffTransferData == null) {
             return (
                 <React.Fragment>
                     Đang tải dữ liệu ...
@@ -176,13 +187,14 @@ class AddCom extends React.Component {
                         </div>
 
                         {
-
-                            StaffTransferTypeData.IsAutoReview == false && StaffTransferTypeData.ListStaffTransferType_rvLevel.length != 0
-                            && <div className="row">
-                                <StaffTransferType_rvLevelCom
-                                    dataSource={StaffTransferTypeData.ListStaffTransferType_rvLevel}
-                                />
-                            </div>
+                            (StaffTransferData.ListStaffTransferType_rvLevel != null && StaffTransferData.ListStaffTransferType_rvLevel[0].IsAutoReview_StaffTransferType == false)
+                                ? <div className="row">
+                                    <StaffTransferType_rvLevelCom
+                                        dataSource={StaffTransferData.ListStaffTransferType_rvLevel}
+                                        onChangeSelect={this.handleChangeStaffTransferType_rvLevel}
+                                    />
+                                </div>
+                                : <React.Fragment></React.Fragment>
                         }
                     </FormContainer>
                 </React.Fragment>
