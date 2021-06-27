@@ -13,6 +13,7 @@ const initialLoginInfoState = {
   IsLoginRequest: false,
   IsLoginCompleted: false,
   IsLoginSuccess: false,
+  IsRelogin: false,
   IsLoginError: false,
   Username: "",
   Password: ""
