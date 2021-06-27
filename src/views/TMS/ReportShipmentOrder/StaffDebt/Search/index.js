@@ -79,14 +79,14 @@ class SearchCom extends React.Component {
 
     handleSearchSubmit(formData, MLObject) {
         const postData = [
-            {
-                SearchKey: "@FROMDATE",
-                SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString())
-            },
-            {
-                SearchKey: "@TODATE",
-                SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString())
-            },
+            // {
+            //     SearchKey: "@FROMDATE",
+            //     SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString())
+            // },
+            // {
+            //     SearchKey: "@TODATE",
+            //     SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString())
+            // },
             {
                 SearchKey: "@USERNAME",
                 SearchValue: MLObject.UserName == -1 || MLObject.UserName == null ? MLObject.UserName : MLObject.UserName.value
@@ -413,14 +413,14 @@ class SearchCom extends React.Component {
 
     handleExportSubmit(formData, MLObject) {
         const searchData = [
-            {
-                SearchKey: "@FROMDATE",
-                SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString())
-            },
-            {
-                SearchKey: "@TODATE",
-                SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString())
-            },
+            // {
+            //     SearchKey: "@FROMDATE",
+            //     SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString())
+            // },
+            // {
+            //     SearchKey: "@TODATE",
+            //     SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString())
+            // },
             {
                 SearchKey: "@USERNAME",
                 SearchValue: MLObject.UserName == -1 ? MLObject.UserName : MLObject.UserName.value
