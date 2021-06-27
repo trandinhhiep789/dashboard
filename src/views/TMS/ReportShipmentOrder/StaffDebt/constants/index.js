@@ -134,8 +134,8 @@ export const SearchElementList = [
         placeholder: "---Vui lòng chọn---",
         listoption: [],
         IsAutoLoadItemFromCache: false,
-        isMultiSelect: false
-
+        isMultiSelect: false,
+        isClearable: true
     },
     {
         type: "ComboBox",

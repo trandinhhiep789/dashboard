@@ -981,6 +981,13 @@ const AppMenu = [
                 LinkTo: '/ShipmentQualityAssess',
                 MenuIcon: '',
                 SubMenu: []
+            },
+            {
+                MenuName: 'StaffTransfer',
+                MenuTitle: 'Điều chuyển nhân sự',
+                LinkTo: '/StaffTransfer',
+                MenuIcon: '',
+                SubMenu: []
             }
         ]
     },
