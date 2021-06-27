@@ -89,7 +89,7 @@ class SearchCom extends React.Component {
             },
             {
                 SearchKey: "@USERNAME",
-                SearchValue: MLObject.UserName == -1 ? MLObject.UserName : MLObject.UserName.value
+                SearchValue: MLObject.UserName == -1 || MLObject.UserName == null ? MLObject.UserName : MLObject.UserName.value
             },
             {
                 SearchKey: "@STOREID",
