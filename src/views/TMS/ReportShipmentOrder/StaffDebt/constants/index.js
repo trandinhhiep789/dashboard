@@ -18,14 +18,14 @@ export const PagePath = [
 
 
 export const InitSearchParams = [
-    {
-        SearchKey: "@FROMDATE",
-        SearchValue: toIsoStringCus(new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()).toISOString())
-    },
-    {
-        SearchKey: "@TODATE",
-        SearchValue: new Date()
-    },
+    // {
+    //     SearchKey: "@FROMDATE",
+    //     SearchValue: toIsoStringCus(new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()).toISOString())
+    // },
+    // {
+    //     SearchKey: "@TODATE",
+    //     SearchValue: new Date()
+    // },
     {
         SearchKey: "@USERNAME",
         SearchValue: -1
@@ -51,26 +51,26 @@ export const InitSearchParams = [
 
 export const SearchElementList = [
 
-    {
-        type: "Datetime",
-        name: "dtFromDate",
-        DataSourceMember: "FromDate",
-        label: "Từ Ngày",
-        value: new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()),
-        timeFormat: false,
-        dateFormat: "DD/MM/YYYY",
-        colspan: 2,
-    },
-    {
-        type: "Datetime",
-        name: "dtToDate",
-        DataSourceMember: "ToDate",
-        label: "Đến Ngày",
-        value: new Date(),
-        timeFormat: false,
-        dateFormat: "DD/MM/YYYY",
-        colspan: 2,
-    },
+    // {
+    //     type: "Datetime",
+    //     name: "dtFromDate",
+    //     DataSourceMember: "FromDate",
+    //     label: "Từ Ngày",
+    //     value: new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()),
+    //     timeFormat: false,
+    //     dateFormat: "DD/MM/YYYY",
+    //     colspan: 2,
+    // },
+    // {
+    //     type: "Datetime",
+    //     name: "dtToDate",
+    //     DataSourceMember: "ToDate",
+    //     label: "Đến Ngày",
+    //     value: new Date(),
+    //     timeFormat: false,
+    //     dateFormat: "DD/MM/YYYY",
+    //     colspan: 2,
+    // },
     // {
     //     type: "ComboBox",
     //     name: "cbReceiverProvinceID",
@@ -155,16 +155,16 @@ export const SearchElementList = [
 ]
 
 export const SearchMLObjectDefinition = [
-    {
-        Name: "FromDate",
-        DefaultValue: "",
-        BindControlName: "dtFromDate"
-    },
-    {
-        Name: "ToDate",
-        DefaultValue: "",
-        BindControlName: "dtToDate"
-    },
+    // {
+    //     Name: "FromDate",
+    //     DefaultValue: "",
+    //     BindControlName: "dtFromDate"
+    // },
+    // {
+    //     Name: "ToDate",
+    //     DefaultValue: "",
+    //     BindControlName: "dtToDate"
+    // },
     // {
     //     Name: "ReceiverProvinceID",
     //     DefaultValue: "",

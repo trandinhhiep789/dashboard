@@ -77,27 +77,45 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        console.log("MLObject", MLObject, toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false), Date.parse(toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false)))
-
+        //console.log("MLObject", MLObject, toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false), Date.parse(toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false)))
+        console.log("MLObject.FromDate", MLObject.FromDate);
+        console.log("MLObject.ToDate", MLObject.ToDate);
         const { cacheConfig } = this.state;
         // if (MLObject.BusinessID < 0) {
 
         //     this.showMessage("Vui lòng chọn nghiệp vụ cần tìm kiếm.")
         // }
         // else {
+            var fromDate = MLObject.FromDate._d;
+            if(fromDate == null)
+                fromDate = MLObject.FromDate;
+            var toDate = MLObject.ToDate._d;
+            if(toDate == null)
+                toDate = MLObject.ToDate;
 
+        console.log("fromDate", fromDate);
+        console.log("toDate", toDate);
+
+          
         const objParams = {
+                FromDate: fromDate.getTime() ,
+                ToDate: toDate.getTime(), //Date.parse(MLObject.ToDate),
+                BusinessID: MLObject.BusinessID,
+                Difference: MLObject.Difference
+            }
+       
+      /* const objParams = {
             FromDate: Date.parse(toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false)),
             ToDate: Date.parse(toIsoStringCusNew(new Date(MLObject.ToDate).toISOString(), false)), //Date.parse(MLObject.ToDate),
             BusinessID: MLObject.BusinessID,
             Difference: MLObject.Difference
-        }
+        }*/
 
         this.setState({
             params: objParams,
             Difference: MLObject.Difference == true ? 1 : 0,
         })
-        console.log("object", toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false))
+        //console.log("object", toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false))
         const objDataNewol = {
             "storedName": "ERP_TMS_ADVANCEREQUEST",
             "params": [
@@ -147,10 +165,10 @@ class SearchCom extends React.Component {
                     "op": "array"
                 },
                 {
-                 
+
                     "name": "V_VIRTUALSTOREIDLIST",
                     "value": this.getValueKeyConfig("RECONCILIATION_VIRTUALSTOREIDLIST").toString(),//"3","9375",
-                    "op": "array"   
+                    "op": "array"
                 },
                 {
                     "name": "V_ISCHECKVIEWDIFFERENCE",
@@ -160,15 +178,15 @@ class SearchCom extends React.Component {
 
             ]
         }
-        console.log("objDataNewol", objDataNewol)
-       this.callSearchData(objDataNewol)
-        // }
+        //console.log("objDataNewol", objDataNewol)
+        this.callSearchData(objDataNewol)
+
     }
 
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/CrossCheckReport", searchData).then(apiResult => {
-            console.log("aa", searchData, apiResult)
+            //console.log("aa", searchData, apiResult)
             if (!apiResult.IsError) {
                 // const tempData = apiResult.ResultObject.map((item, index) => {
                 //     item.DateData = item.date
