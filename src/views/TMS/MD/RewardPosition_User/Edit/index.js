@@ -12,7 +12,11 @@ import {
     APIHostName,
     PagePath,
     AddAPIPath,
-    GetAllByUserNameAPIPath
+    GetAllByUserNameAPIPath,
+    GetAllAPIPath,
+    DataTemplateExport,
+    schema,
+    AddByFileAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -20,7 +24,11 @@ import { callGetCache, callClearLocalCache, callGetUserCache } from "../../../..
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { ERPUSERCACHE_FUNCTION } from "../../../../../constants/keyCache";
-import { USERSKILL_VIEW, USERSKILL_UPDATE, GET_CACHE_USER_FUNCTION_LIST, USER_REWARDPOSITION_VIEW, USER_REWARDPOSITION_UPDATE, USER_REWARDPOSITION_ADD } from "../../../../../constants/functionLists";
+import { USERSKILL_VIEW, USERSKILL_UPDATE, GET_CACHE_USER_FUNCTION_LIST, USER_REWARDPOSITION_VIEW, USER_REWARDPOSITION_UPDATE, USER_REWARDPOSITION_ADD, USER_REWARDPOSITION_EXPORT } from "../../../../../constants/functionLists";
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+import readXlsxFile from 'read-excel-file'
+import { formatDate } from "../../../../../common/library/CommonLib";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -29,6 +37,10 @@ class EditCom extends React.Component {
         this.getDataCombobox = this.getDataCombobox.bind(this);
         this.onClickUser_RewardPosition = this.onClickUser_RewardPosition.bind(this);
         this.checkAddPermission = this.checkAddPermission.bind(this);
+        this.handleExportCSV = this.handleExportCSV.bind(this);
+        this.getDataForExport = this.getDataForExport.bind(this);
+        // this.handleImportFile = this.handleImportFile.bind(this);
+        // this.onHandleImportFile = this.onHandleImportFile.bind(this);
         this.state = {
             Username: "",
             DepartmentName: "",
@@ -36,8 +48,7 @@ class EditCom extends React.Component {
             Address: "",
             DataSource: [],
             DataSourceUser_RewardPosition: [],
-            cssNotification: "notification-danger",
-            iconNotification: "fa fa-exclamation"
+            DataExport: []
         };
 
         this.notificationDOMRef = React.createRef();
@@ -46,6 +57,7 @@ class EditCom extends React.Component {
     componentDidMount() {
         this.checkAddPermission();
         this.props.updatePagePath(PagePath);
+        this.getDataForExport();
     }
 
     checkAddPermission() {
@@ -59,6 +71,11 @@ class EditCom extends React.Component {
                 let _update = result.ResultObject.CacheData.filter(x => x.FunctionID == USER_REWARDPOSITION_ADD);
                 if (_update && _update.length > 0) {
                     this.setState({ IsAllowUpdate: true });
+                }
+
+                let _export = result.ResultObject.CacheData.filter(x => x.FunctionID == USER_REWARDPOSITION_EXPORT);
+                if (_export && _export.length > 0) {
+                    this.setState({ IsAllowExport: true });
                 }
             }
             //console.log("handleGetCache: ", result);
@@ -152,24 +169,24 @@ class EditCom extends React.Component {
         });
     }
 
+
+
     addNotification(message1, IsError) {
+        let cssNotification = "";
+        let iconNotification = "";
         if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check";
         } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation";
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={this.state.cssNotification}>
+                <div className={cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
+                        <i className={iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -219,19 +236,17 @@ class EditCom extends React.Component {
 
             //console.log("this.state.DataSourceUser_RewardPosition", this.state.DataSourceUser_RewardPosition);
 
-            // let countSelected = 0;
-            // countSelected = data.filter(item => item.IsSelected == true).length;
-            // if (countSelected > 1) {
-            //     this.addNotification("Chỉ được phép chọn 1 vị trí thưởng", true);
-            // } else {
-            //     this.props.callFetchAPI(APIHostName, AddAPIPath, data).then(apiResult => {
-            //         this.addNotification(apiResult.Message, apiResult.IsError);
-            //     });
-            // }
+            let countSelected = 0;
+            countSelected = data.filter(item => item.IsSelected == true && (item.RewardPositionID === 1 || item.RewardPositionID === 5)).length;
+            if (countSelected > 1) {
+                this.addNotification("Vị trí thưởng nhân viên và cộng tác viên chỉ được phép chọn 1.", true);
+            } else {
+                this.props.callFetchAPI(APIHostName, AddAPIPath, data).then(apiResult => {
+                    this.addNotification(apiResult.Message, apiResult.IsError);
+                });
+            }
 
-            this.props.callFetchAPI(APIHostName, AddAPIPath, data).then(apiResult => {
-                this.addNotification(apiResult.Message, apiResult.IsError);
-            });
+
 
         } else {
             this.addNotification("Bạn không có quyền cập nhật", true);
@@ -250,6 +265,169 @@ class EditCom extends React.Component {
         );
     }
 
+    getDataForExport() {
+        this.props.callFetchAPI(APIHostName, GetAllAPIPath, null).then(apiResult => {
+            //console.log("apiResult", apiResult);
+            if (!apiResult.IsError && apiResult.ResultObject != null) {
+                const exelData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Mã nhân viên": item.UserName,
+                        "Tên nhân viên": item.FullName,
+                        "Mã vị trí thưởng": item.RewardPositionID,
+                        "Tên vị trí thưởng": item.RewardPositionName,
+                        "Loại nhân viên": item.StaffTypeName
+                    };
+                    return element;
+
+                })
+
+                this.setState({
+                    DataExport: exelData
+                });
+            }
+        });
+    }
+
+
+
+    handleExportCSV() {
+        const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+        const fileExtension = '.xlsx';
+        let result;
+        if (!this.state.IsAllowExport) {
+            result = {
+                IsError: true,
+                Message: "Bạn không có quyền xuất file exel!"
+            };
+        }
+        else if (this.state.DataExport.length == 0) {
+            result = {
+                IsError: true,
+                Message: "Dữ liệu không tồn tại. Không thể xuất file!"
+            };
+        }
+        else {
+
+            const ws = XLSX.utils.json_to_sheet(this.state.DataExport);
+            const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+            const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+            const data = new Blob([excelBuffer], { type: fileType });
+
+
+            FileSaver.saveAs(data, "Danh sách vị trí thưởng của nhân viên" + fileExtension);
+
+            result = {
+                IsError: false,
+                Message: "Xuất file thành công!"
+            };
+        }
+        //this.props.onExportFile(result);
+        this.addNotification(result.Message, result.IsError);
+
+    }
+
+    //import exel file 
+    handleExportFileTemplate() {
+        const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+        const fileExtension = '.xlsx';
+        let result;
+
+        try {
+            const ws = XLSX.utils.json_to_sheet(DataTemplateExport);
+            const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+            const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+            const data = new Blob([excelBuffer], { type: fileType });
+            FileSaver.saveAs(data, "Danh sách vị trí thưởng của 1 nhân viên" + fileExtension);
+            result = {
+                IsError: false,
+                Message: "Xuất file thành công!"
+            };
+        } catch (error) {
+            result = {
+                IsError: true,
+                Message: "Lỗi xuất file!"
+            }
+        } finally {
+            this.addNotification(result.Message, result.IsError);
+        }
+    }
+
+    handleImportFile() {
+        const input = document.getElementById('buttonImportFile');
+        input.click();
+
+        let count = 0;
+        //const schema = this.props.SchemaData;
+       
+        input.addEventListener('change', () => {
+            readXlsxFile(input.files[0], { schema }).then(({ rows, errors }) => {
+                if(count > 0){
+                    return;
+                }
+                this.onHandleImportFile(rows, errors);
+                count ++;
+                
+            }, function (error) {
+                alert("File vừa chọn lỗi. Vui lòng chọn file khác.")
+            });
+
+            setTimeout(() => {
+                input.value = '';
+            }, 1000);
+
+            
+            
+        });
+    }
+
+
+    onHandleImportFile(resultRows, errors) {
+        const CreatedUser = this.props.AppInfo.LoginInfo.Username;
+        const LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        const importData = resultRows.map(item => {
+            const { UserName, RewardPositionID, IsSystem } = item
+            return {
+                ...item,
+                CreatedUser,
+                LoginLogID
+                //ProvinceFullName: `${ProvinceID} - ${ProvinceName}`,
+                //WardFullName: `${WardID} - ${WardName}`
+            }
+        })
+
+
+        //console.log("data", importData);
+
+        let _isError = false;
+        importData.map((itemObject, index) => {
+            if (!itemObject.UserName && _isError == false) {
+                this.addNotification("Vui lòng chọn người dùng.", true);
+                _isError = true;
+            } else if (!itemObject.RewardPositionID && _isError == false) {
+                this.addNotification("Vui lòng chọn mã vị trí thưởng.", true);
+                _isError = true;
+            }
+        });
+
+        if (_isError) {
+            return;
+        }
+
+
+        this.props.callFetchAPI(APIHostName, AddByFileAPIPath, importData).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            // if (!apiResult.IsError) {
+            //     this.callSearchData(this.state.SearchData);
+            // }
+
+            this.addNotification(apiResult.Message, apiResult.IsError);
+
+        });
+
+
+
+    }
+
     render() {
         if (this.state.IsAllowView) {
             return (
@@ -262,13 +440,13 @@ class EditCom extends React.Component {
                             </div>
                             <div className="card-body">
                                 <div className="row">
-                                    <div className="col-md-6">
+                                    <div className="col-md-4">
                                         <div className="row">
                                             <div className="col-md-12">
                                                 <MultiSelectComboBox
                                                     name="User"
-                                                    colspan={9}
-                                                    labelcolspan={3}
+                                                    colspan={7}
+                                                    labelcolspan={4}
                                                     label="Nhập mã nhân viên"
                                                     disabled={false}
                                                     IsLabelDiv={true}
@@ -285,21 +463,67 @@ class EditCom extends React.Component {
 
                                         </div>
                                     </div>
-                                    <div className="col-md-6 container">
+                                    <div className="col-md-7">
                                         <div className="row">
-                                            <div className="col-md-12">
+                                            <div className="col-md-6">
                                                 {this.state.FullName ?
                                                     <div>
-                                                        <label className="col-form-label 6">Tên nhân viên:</label> &nbsp; &nbsp;
+                                                        <label className="col-form-label">Tên nhân viên:</label> &nbsp; &nbsp;
                                                         <b style={{ color: "blue" }}>{this.state.FullName}</b>
                                                     </div>
                                                     : ""
                                                 }
 
                                             </div>
+                                            {
+                                                this.state.DataSourceUser_RewardPosition.length > 0 && this.state.DataSourceUser_RewardPosition[0].UpdatedDate ?
+                                                    <div style={{ position: "absolute", display: "inherit", left: "39%" }}>
+                                                        <div>
+                                                            <div>
+                                                                <label className="col-form-label">Ngày cập nhật:</label> &nbsp; &nbsp;
+                                                                <span>{formatDate(this.state.DataSourceUser_RewardPosition[0].UpdatedDate)}</span>
+                                                            </div>
+                                                        </div>
+                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                        <div>
+                                                            <div>
+                                                                <label className="col-form-label">Người cập nhật:</label> &nbsp; &nbsp;
+                                                                <span>{this.state.DataSourceUser_RewardPosition[0].UpdatedUserFullName}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    : ""
+
+                                            }
+
 
                                         </div>
                                     </div>
+                                    {/* <div className="col-md-2">
+                                        <button type="button" class="btn btn-primary" style={{ position: "absolute", bottom: "-47px", right: "16px", zIndex: "1" }} onClick={this.handleExportCSV}>Xuất exel</button>
+                                    </div> */}
+
+
+                                    <div className="col-md-1">
+                                        <div className="btn-toolbar" style={{ position: "absolute", bottom: "-47px", right: "16px", zIndex: "1" }}>
+                                            <div className="btn-group btn-group-sm">
+                                                <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.handleExportCSV}>
+                                                    <span className="fa fa-file-excel-o"> Xuất file excel </span>
+                                                </button>
+
+                                                {/* import file exel */}
+                                                <button type="button" className="btn btn-export ml-10" onClick={this.handleExportFileTemplate.bind(this)}>
+                                                    <span className="fa fa-exchange">Xuất file mẫu</span>
+                                                </button>
+                                                <button type="button" className="btn btn-export  ml-10" onClick={this.handleImportFile.bind(this)} >
+                                                    <span className="fa fa-exchange"> Import File </span>
+                                                </button>
+                                                < input type="file" id="buttonImportFile" style={{ display: "none" }} ref={input => this.inputElement = input} />
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <br />
 

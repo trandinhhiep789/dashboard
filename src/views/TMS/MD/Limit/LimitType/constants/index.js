@@ -79,6 +79,31 @@ export const MLObjectDefinition = [
         BindControlName: "txtDescription",
         DataSourceMember: "Description"
     },
+
+    {
+        Name: "IsAllowdecimalLimitValue",
+        DefaultValue: false,
+        BindControlName: "chkIsAllowdecimalLimitValue",
+        DataSourceMember: "IsAllowdecimalLimitValue"
+    },
+    {
+        Name: "IsCheckRangeLimitValue",
+        DefaultValue: true,
+        BindControlName: "chkIsCheckRangeLimitValue",
+        DataSourceMember: "IsCheckRangeLimitValue"
+    },
+    {
+        Name: "MinLimitValue",
+        DefaultValue: {},
+        BindControlName: "txtMinLimitValue",
+        DataSourceMember: "MinLimitValue"
+    },
+    {
+        Name: "MaxLimitValue",
+        DefaultValue: true,
+        BindControlName: "txtMaxLimitValue",
+        DataSourceMember: "MaxLimitValue"
+    },
     {
         Name: "IsActived",
         DefaultValue: true,
@@ -111,7 +136,7 @@ export const AddElementList = [
         loaditemcachekeyid: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
         valuemember: "ShipmentOrderTypeID",
         nameMember: "ShipmentOrderTypeName",
-        OrderIndex:1
+        OrderIndex: 1
     },
     {
         type: "select",
@@ -128,7 +153,7 @@ export const AddElementList = [
         loaditemcachekeyid: "ERPCOMMONCACHE.PARTNER",
         valuemember: "PartnerID",
         nameMember: "PartnerName",
-        OrderIndex:2
+        OrderIndex: 2
     },
     {
         type: "select",
@@ -147,7 +172,7 @@ export const AddElementList = [
         nameMember: "StoreName",
         filterValue: 10,
         filterobj: "CompanyID",
-        OrderIndex:3
+        OrderIndex: 3
     },
     {
         type: "select",
@@ -166,16 +191,16 @@ export const AddElementList = [
         nameMember: "StoreName",
         filterValue: 1,
         filterobj: "CompanyID",
-        OrderIndex:4
+        OrderIndex: 4
     },
     {
         type: "checkbox",
         name: "chkIsCheckCustomerAddress",
-        datasourcemember:"IsCheckCustomerAddress",
+        datasourcemember: "IsCheckCustomerAddress",
         label: "kiểm tra địa chỉ khách hàng",
         value: false,
         readonly: false,
-        OrderIndex:5
+        OrderIndex: 5
     }
 
 ];
@@ -185,7 +210,7 @@ export const EditElementList = [
 
 ];
 
-export const DataGridColumnList=[
+export const DataGridColumnList = [
     {
         Name: "chkSelect",
         Type: "checkbox",
@@ -198,14 +223,63 @@ export const DataGridColumnList=[
         Type: "text",
         Caption: "Mã loại giới hạn",
         DataSourceMember: "LimitTypeID",
-        Width: 70
+        Width: 100
     },
     {
         Name: "LimitTypeName",
         Type: "text",
         Caption: "Tên loại giới hạn",
         DataSourceMember: "LimitTypeName",
-        Width: 500
+        Width: 300
+    },
+    {
+        Name: "IsCheckRangeLimitValue",
+        Type: "checkicon",
+        Caption: "KTGT giới hạn",
+        DataSourceMember: "IsCheckRangeLimitValue",
+        Width: 80
+    },
+    {
+        Name: "MinLimitValue",
+        Type: "numberDecimalWithComma",
+        Caption: "GTGH nhỏ nhất",
+        DataSourceMember: "MinLimitValue",
+        Width: 80
+    },
+    {
+        Name: "MaxLimitValue",
+        Type: "numberDecimalWithComma",
+        Caption: "GTGH lớn nhất",
+        DataSourceMember: "MaxLimitValue",
+        Width: 80
+    },
+    {
+        Name: "IsAllowdecimalLimitValue",
+        Type: "checkicon",
+        Caption: "nhập số lẻ",
+        DataSourceMember: "IsAllowdecimalLimitValue",
+        Width: 80
+    },
+    {
+        Name: "IsActived",
+        Type: "checkicon",
+        Caption: "Kích hoạt",
+        DataSourceMember: "IsActived",
+        Width: 80
+    },
+    {
+        Name: "UpdatedUserFullName",
+        Type: "text",
+        Caption: "Người cập nhật",
+        DataSourceMember: "UpdatedUserFullName",
+        Width: 140
+    },
+    {
+        Name: "UpdatedDate",
+        Type: "date",
+        Caption: "Ngày cập nhật",
+        DataSourceMember: "UpdatedDate",
+        Width: 140
     },
     {
         Name: "Action",

@@ -18,6 +18,7 @@ import { REWARDCOMPUTESCHEDULE_ADD } from "../../../../../constants/functionList
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
+import { toIsoStringCus } from "../../../../../utils/function";
 
 
 class AddCom extends React.Component {
@@ -76,6 +77,8 @@ class AddCom extends React.Component {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
 
+        MLObject.RewardDateFrom = toIsoStringCus(new Date(MLObject.RewardDateFrom).toISOString());
+        MLObject.RewardDateTo = toIsoStringCus(new Date(MLObject.RewardDateTo).toISOString());
 
         var dates = {
             convert: function (d) {
@@ -133,14 +136,6 @@ class AddCom extends React.Component {
         if (validDate == 1) {
             this.addNotification("Ngày tính thưởng không hợp lệ. Vui lòng kiểm tra lại.", true);
         } else {
-
-            // if (MLObject.RewardDateFrom.getMonth) {
-            //     MLObject.RewardDateFrom.setDate(MLObject.RewardDateFrom.getDate() + 1);
-            // }
-
-            // if (MLObject.RewardDateTo.getMonth) {
-            //     MLObject.RewardDateTo.setDate(MLObject.RewardDateTo.getDate() + 1);
-            // }
 
             this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
                 this.setState({ IsCallAPIError: apiResult.IsError });

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { CDN_UPLOAD_FILE } from '../../../constants/systemVars.js'
+import { CDN_UPLOAD_FILE } from '../../../constants/systemVars.js';
+import { withRouter } from 'react-router-dom';
 
 class CommentCom extends Component {
     constructor(props) {
@@ -13,9 +14,7 @@ class CommentCom extends Component {
     }
 
     componentDidMount() {
-        this.setState({
-            FullName: this.props.AppInfo.LoginInfo.LoginUserInfo.UserName + " - " + this.props.AppInfo.LoginInfo.LoginUserInfo.FullName
-        })
+
     }
 
     componentWillReceiveProps(nextProps) {
@@ -59,13 +58,15 @@ class CommentCom extends Component {
 
     handleKeyPress(e) {
         if (e.key === 'Enter') {
+            e.preventDefault();
             this.onSendComment();
         }
     }
 
     onSendComment() {
         const { CommentValue } = this.state;
-        this.props.onKeyPressSumit(CommentValue)
+        this.props.onKeyPressSumit(CommentValue);
+        this.setState({ CommentValue: '' });
     }
 
 
@@ -101,7 +102,7 @@ class CommentCom extends Component {
                             <div className='comment_account'>
                                 <img className='comment_account_img' src='/src/img/avatar/1.jpg'></img>
                                 <div className="txtFullName">
-                                    <span>{FullName}</span>
+                                    <span>{!!this.props.LoginInfo.LoginUserInfo && !!this.props.LoginInfo.LoginUserInfo.UserName ? this.props.LoginInfo.LoginUserInfo.UserName +" - "+this.props.LoginInfo.LoginUserInfo.FullName : ''}</span>
                                 </div>
                             </div>
                             <div className='form-group col-md-12 txtcomment'>
@@ -118,6 +119,7 @@ class CommentCom extends Component {
 const mapStateToProps = state => {
     return {
         AppInfo: state,
+        LoginInfo: state.LoginInfo,
         FetchAPIInfo: state.FetchAPIInfo
     }
 }
@@ -132,4 +134,4 @@ const mapDispatchToProps = dispatch => {
 
 
 const Comment = connect(mapStateToProps, mapDispatchToProps)(CommentCom);
-export default Comment;
+export default withRouter(Comment);

@@ -7,12 +7,14 @@ import { UploadModal } from "../../UploadModal/index";
 import { ModalManager } from 'react-dynamic-modal';
 import Datetime from 'react-datetime';
 import MultiSelectComboBox from "../AdvanceForm/FormControl/MultiSelectComboBox";
+import ElementSearch from '../../FormContainer/FormElement/ElementSearch';
 import ProductComboBox from "../../FormContainer/FormControl/MultiSelectComboBox/ProductComboBox";
 import "../../../../../node_modules/react-datetime/css/react-datetime.css";
 import JoditEditor from "jodit-react";
 
 import { TreeSelect } from "antd";
 import "antd/dist/antd.css";
+
 
 const singleFileUploadImage = {
     maxWidth: "100px",
@@ -254,6 +256,10 @@ class FormElementCom extends Component {
         this.validateInput(inputname, moment ? moment._d : null);
     }
 
+    handleDateTimeSearchChange(inputname, moment) {
+        this.validateInput(inputname, moment ? moment : null);
+    }
+
     handleMultiSelectChange(name, comboValues) {
         if (this.props.onValueChange)
             this.props.onValueChange(name, comboValues);
@@ -470,6 +476,7 @@ class FormElementCom extends Component {
                         labelcolspan={this.props.labelcolspan}
                         controltype={this.props.controltype}
                         listoption={this.state.Listoption}
+                        SelectedOption={this.props.SelectedOption}
                         IsLabelDiv={false}
                         isMulti={this.props.isMulti}
                         onValueChange={this.handleMultiSelectChange}
@@ -478,6 +485,24 @@ class FormElementCom extends Component {
                 );
 
                 break;
+            case "ComboBox":
+                // if (typeof elementItem.filterName != "undefined") {
+                //     elementItem.filterValue = this.state.FormData[elementItem.filterName].value;
+                // }
+
+                return (
+                    <ElementSearch.ElementComboBox
+                        onValueChange={this.handleMultiSelectChange}
+                        ValidatonErrorMessage={this.props.validationErrorMessage}
+                        inputRef={this.props.inputRef}
+                        colspan={this.props.colspan}
+                        value={this.props.value}
+                        filterValue={this.props.ValueFilter}
+                        filterobj={this.props.KeyFilter}
+                        {...this.props}
+                        key={index}
+                    />
+                );
             case "productbox":
                 control = (
                     <ProductComboBox
@@ -520,7 +545,7 @@ class FormElementCom extends Component {
                 control = <input className={this.props.CSSClassName} name={this.props.name} type={this.props.type} defaultValue={this.props.value} checked={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} />;
                 break;
             case "text":
-                control = <input className={controlCSSClassName} name={this.props.name} ref={this.props.inputRef} type={this.props.type} placeholder={this.props.placeholder} defaultValue={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} disabled={this.state.IsSystem} maxLength={this.props.maxSize} />;
+                control = <input className={controlCSSClassName} name={this.props.name} ref={this.props.inputRef} type={this.props.type} placeholder={this.props.placeholder} defaultValue={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} disabled={this.state.IsSystem} maxLength={this.props.maxSize} style={{ textTransform: this.props.textTransform ? this.props.textTransform : "inherit" }} />;
                 break;
             case "textType":
                 control = <input className={controlCSSClassName} name={this.props.name} type={this.props.type} type="text" placeholder={this.props.placeholder} defaultValue={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} disabled={this.state.IsSystem} />;
@@ -607,7 +632,7 @@ class FormElementCom extends Component {
                     datetimeclassName += " is-invalid";
                 }
 
-                control = <Datetime timeFormat={true} dateFormat="DD/MM/YYYY" value={this.props.value} readOnly={this.props.readonly} name={this.props.name} type={this.props.type} className={CSSClassName} onChange={(moment) => this.handleDateTimeChange(this.props.name, moment)} className={datetimeclassName} locale={"vi-VN"}></Datetime>
+                control = <Datetime timeFormat={true} input={true} dateFormat="DD/MM/YYYY" value={this.props.value} readOnly={this.props.readonly} name={this.props.name} type={this.props.type} className={CSSClassName} onChange={(moment) => this.handleDateTimeSearchChange(this.props.name, moment)} className={datetimeclassName} locale={"vi-VN"}></Datetime>
                 break;
             case "treeSelect":
                 let disabledd = this.state.IsSystem;

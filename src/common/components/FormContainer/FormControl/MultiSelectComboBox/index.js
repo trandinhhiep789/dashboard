@@ -65,15 +65,32 @@ class MultiSelectComboBoxCom extends React.Component {
         this.props.callFetchAPI("ERPAPI", 'api/UserSearch/Search', listMLObject).then(apiResult => {
             let listOptionNew1 = [];
             for (let i = 0; i < apiResult.ResultObject.length; i++) {
-                listOptionNew1.push({
-                    value: apiResult.ResultObject[i].UserName,
-                    name: apiResult.ResultObject[i].UserName + "-" + apiResult.ResultObject[i].FullName,
-                    FullName: apiResult.ResultObject[i].FullName,
-                    DepartmentName: apiResult.ResultObject[i].DepartmentName,
-                    PositionName: apiResult.ResultObject[i].PositionName,
-                    Address: apiResult.ResultObject[i].Address
+                if(this.props.isCheckPartner == undefined)
+                {
+                    if (apiResult.ResultObject[i].UserName.substr(0, 3) != "004") {
+                        listOptionNew1.push({
+                            value: apiResult.ResultObject[i].UserName,
+                            name: apiResult.ResultObject[i].UserName + "-" + apiResult.ResultObject[i].FullName,
+                            FullName: apiResult.ResultObject[i].FullName,
+                            DepartmentName: apiResult.ResultObject[i].DepartmentName,
+                            PositionName: apiResult.ResultObject[i].PositionName,
+                            Address: apiResult.ResultObject[i].Address
+                        });
+                    }
+                }
+                else
+                {
+                    listOptionNew1.push({
+                        value: apiResult.ResultObject[i].UserName,
+                        name: apiResult.ResultObject[i].UserName + "-" + apiResult.ResultObject[i].FullName,
+                        FullName: apiResult.ResultObject[i].FullName,
+                        DepartmentName: apiResult.ResultObject[i].DepartmentName,
+                        PositionName: apiResult.ResultObject[i].PositionName,
+                        Address: apiResult.ResultObject[i].Address
+                    });
 
-                });
+                }
+                
             }
             this.setState({
                 ListOption: listOptionNew1
@@ -95,9 +112,17 @@ class MultiSelectComboBoxCom extends React.Component {
 
     handleValueChange1(e) {
         let value = e.target.value;
-        if (value.length > 3 && e.keyCode != 40 && e.keyCode != 38) {
-            this.callSearchData("*" + value + "*");
+        if (this.props.isPartner == undefined || this.props.isPartner == false) {
+            if (value.length > 3 && e.keyCode != 40 && e.keyCode != 38) {
+                this.callSearchData("*" + value + "*");
+            }
         }
+        else {
+            if (value.length > 3 && e.keyCode != 40 && e.keyCode != 38 && value.substr(0, 3) != "004") {
+                this.callSearchData("*" + value + "*");
+            }
+        }
+
 
     }
     render() {
@@ -107,7 +132,7 @@ class MultiSelectComboBoxCom extends React.Component {
             for (let i = 0; i < listOption.length; i++) {
                 listOptionNew.push({
                     value: listOption[i].value,
-                    label:listOption[i].value+"-"+listOption[i].FullName,
+                    label: listOption[i].value + "-" + listOption[i].FullName,
                     FullName: listOption[i].FullName,
                     DepartmentName: listOption[i].DepartmentName,
                     PositionName: listOption[i].PositionName,

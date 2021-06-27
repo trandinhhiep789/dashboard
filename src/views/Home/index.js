@@ -15,13 +15,14 @@ import { callGetCacheFromLocal, callClearLocalCache } from "../../actions/cacheA
 import { getCookie } from "../../common/library/CommonLib.js";
 
 import PrivateRoute from '../../Route/PrivateRoute'
-
+import ChangePassword from '../../views/ChangePassword';
 import PageUI from '../../views/Test/PageUI';
 import TestModal from '../../views/Test/TestModal';
 import TestCache from '../../views/Test/TestCache';
 import TestFormContainer from '../../views/Test/TestFormContainer';
 import TestTabs from '../../views/Test/TestTabs';
 import TestPageLayout from '../../views/Test/TestPageLayout';
+import PageTest from '../../views/Test/PageTest'
 import CacheManager from '../../views/System/CacheManager';
 import Dashboard from '../../views/Dashboard';
 import AccountInfo from '../../views/Account';
@@ -40,6 +41,8 @@ import PartnerPriviledgeGroup from '../../views/TMS/MD/PartnerPriviledge/Partner
 import ShipmentOrder from '../../views/TMS/ShipmentOrder';
 import WorkingPlan from '../../views/TMS/WorkingPlan';
 import ShipmentOrderControl from '../../views/TMS/ShipmentOrderControl';
+import ManagerShipmentOrder from '../../views/TMS/ManagerShipmentOrder';
+
 import MapContainer from '../../views/TMS/ShipmentOrder/Component/MapContainer ';
 import Maps from '../../views/TMS/ShipmentOrder/Component/Maps';
 import McPriviledge from '../../views/TMS/MD/PartnerPriviledge/McPriviledge';
@@ -77,6 +80,7 @@ import LimitType from "../TMS/MD/Limit/LimitType";
 import UserLimit from "../TMS/MD/Limit/UserLimit";
 import UserLimitTest from "../TMS/MD/Limit/UserLimit/Search/indexNew.js";
 import DestroyRequest from "../TMS/DestroyRequest";
+import MTReturnRequest from "../TMS/MTReturnRequest";
 import InventoryRequest from "../TMS/InventoryRequest";
 import RewardPriceTable from "../TMS/MD/RewardPrice/RewardPriceTable";
 import UseGuide from "../../views/UseGuide";
@@ -104,17 +108,27 @@ import ReportCoordinatorByUser from "../TMS/ReportShipmentOrder/ReportCoordinato
 import ReportShipmentOrderExport from "../TMS/ReportShipmentOrder/ReportShipmentOrderExport";
 import InvestigationShipmentOrderStatus from "../TMS/ReportShipmentOrder/InvestigationShipmentOrderStatus";
 import InventoryMaterials from "../TMS/ReportShipmentOrder/InventoryMaterials";
-
+import ComprehensiveReport from "../TMS/ReportShipmentOrder/ComprehensiveReport";
+import SaleSummaryReport from "../TMS/ReportShipmentOrder/SaleSummaryReport";
+import ShipmentQualityAssess from "../TMS/ShipmentQualityAssess";
+import StaffTransfer from "../TMS/StaffTransfer";
+import OverdueOrderReport from '../TMS/ReportShipmentOrder/OverdueOrderReport';
+import OverdueStaffDebt from '../TMS/ReportShipmentOrder/OverdueStaffDebt';
+import ControlStatusReport from '../TMS/ReportShipmentOrder/ControlStatusReport';
+import CrossCheckReport from '../TMS/ReportShipmentOrder/CrossCheckReport';
 
 import RewardShipmentOrderByType from "../TMS/Reward/RewardShipmentOrderByType";
 import RewardShipmentOrder from "../TMS/Reward/RewardShipmentOrder";
+import OtherRewardTotal from "../TMS/Reward/OtherRewardTotal";
 import RewardShipmentOrderByUser from "../TMS/Reward/RewardShipmentOrderByUser";
 import RewardCompute from "../TMS/Reward/RewardCompute";
 import TotalRewardExport from "../TMS/Reward/TotalRewardExport";
 import RewardDetailExport from "../TMS/Reward/RewardDetailExport";
 import RewardPointReview from "../TMS/Reward/RewardPointReview";
-
-
+import RewardComputeList from "../TMS/Reward/RewardComputeList";
+import PosToRWPosTable from "../TMS/MD/PosToRWPosTable";
+import RewardComputeType from "../TMS/MD/RewardComputeType";
+import ServicePriceTable from "../TMS/MD/ServicePriceTable";
 import UserRewardStore from "../TMS/MD/RewardStoreUser";
 import FuelPrice from "../TMS/MD/FuelPrice";
 import AppFeedBackPriority from "../TMS/MD/AppFeedBack/AppFeedBackPriority";
@@ -132,7 +146,25 @@ import TMSConfig from "../TMS/MD/TMSConfig";
 import DeliveryDateUpdateType from "../TMS/MD/DeliveryDateUpdateType";
 import DeliveryDateUpdateReason from "../TMS/MD/DeliveryDateUpdateReason";
 import PeriodUserRWPosition from "../TMS/MD/PeriodUserRWPosition";
-
+import MTReturnRequestType from "../TMS/MD/MTReturnRequestType";
+import QualityAssessGroup from "../TMS/MD/QualityAssessGroup";
+import QualityAssessType from "../TMS/MD/QualityAssessType";
+import SoAssessSynSchedule from "../TMS/MD/SoAssessSynSchedule";
+import DeliveryGoodsGroup from "../TMS/MD/DeliveryGoodsGroup";
+import DeliveryTimeFrame from "../TMS/MD/DeliveryTimeFrame";
+import WeekDay from "../TMS/MD/WeekDay";
+import DeliveryAbility from '../../views/TMS/DeliveryAbility';
+import CoordinatorGroup from "../TMS/MD/CoordinatorGroup";
+import StaffTransferType from "../TMS/MD/StaffTransferType";
+import ReportLate from "../TMS/ReportShipmentOrder/ReportLate";
+import SMSTemplate from "../TMS/MD/SMSTemplate";
+import ServiceGroup from "../TMS/MD/ServiceGroup";
+import ServicePriceApply from "../TMS/MD/ServicePriceApply";
+import PartnerSaleChannel from "../TMS/MD/PartnerSaleChannel";
+import DataExportTemplate from "../TMS/MD/DataExportTemplate";
+import DataExportTemplate_Format from "../TMS/MD/DataExportTemplate_Format";
+import SvTimeConvert from "../TMS/MD/SvTimeConvert";
+import MonthlySaleOrder from "../TMS/ReportShipmentOrder/MonthlySaleOrder";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -210,7 +242,7 @@ class HomeCom extends React.Component {
         //console.log("Home this.props.AuthenticationInfo.LoginInfo.IsRelogin: ", this.props.AuthenticationInfo.LoginInfo.IsRelogin);
         return (
             <React.Fragment>
-                {/* <Spin className="ant-spin-custom" spinning={this.props.AuthenticationInfo.FetchAPIInfo.IsFetchAPICompleted === false && this.props.AuthenticationInfo.FetchAPIInfo.HostURL} size="large"> */}
+                <Spin className="ant-spin-custom" spinning={this.props.AuthenticationInfo.FetchAPIInfo.IsFetchAPICompleted === false && this.props.AuthenticationInfo.FetchAPIInfo.HostURL} size="large">
                     <Header />
                     <main className="main-container">
                         <div className="main-content">
@@ -219,7 +251,7 @@ class HomeCom extends React.Component {
                             }
 
                             <div className="row">
-                                {this.props.AuthenticationInfo.FetchAPIInfo.IsFetchAPICompleted === false && this.props.AuthenticationInfo.FetchAPIInfo.HostURL ? <div className="preloader"><div className="spinner-linear"><div className="line"></div></div></div> : ''}
+                                {/* {this.props.AuthenticationInfo.FetchAPIInfo.IsFetchAPICompleted === false && this.props.AuthenticationInfo.FetchAPIInfo.HostURL ? <div className="preloader"><div className="spinner-linear"><div className="line"></div></div></div> : ''} */}
 
                                 <Switch>
                                     <PrivateRoute exact path="/" component={Dashboard} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
@@ -230,7 +262,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/TestFormContainer" component={TestFormContainer} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/TestTabs" component={TestTabs} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/TestPageLayout" component={TestPageLayout} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
-
+                                    <PrivateRoute path="/changepassword" component={ChangePassword} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/CacheManager" component={CacheManager} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     {/* <PrivateRoute path="*" component={Category} isLoggedIn={isLoggedIn} /> */}
 
@@ -288,19 +320,33 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/ReportShipmentOrderExport" component={ReportShipmentOrderExport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/InvestigationShipmentOrderStatus" component={InvestigationShipmentOrderStatus} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/InventoryMaterials" component={InventoryMaterials} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/ComprehensiveReport" component={ComprehensiveReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/SaleSummaryReport" component={SaleSummaryReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/ShipmentQualityAssess" component={ShipmentQualityAssess} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/StaffTransfer" component={StaffTransfer} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/OverdueOrderReport" component={OverdueOrderReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/OverdueStaffDebt" component={OverdueStaffDebt} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/ControlStatusReport" component={ControlStatusReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/CrossCheckReport" component={CrossCheckReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
 
                                     <PrivateRoute path="/RewardShipmentOrderByType" component={RewardShipmentOrderByType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/RewardShipmentOrder" component={RewardShipmentOrder} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/OtherRewardTotal" component={OtherRewardTotal} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/RewardShipmentOrderByUser" component={RewardShipmentOrderByUser} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/RewardCompute" component={RewardCompute} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/TotalRewardExport" component={TotalRewardExport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/RewardDetailExport" component={RewardDetailExport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/RewardPointReview" component={RewardPointReview} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/RewardComputeList" component={RewardComputeList} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/RewardComputeType" component={RewardComputeType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+
 
                                     <PrivateRoute path="/AreaType" component={AreaType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/Area" component={Area} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ShipmentOrder" component={ShipmentOrder} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+
+                                    <PrivateRoute path="/ManagerShipmentOrder" component={ManagerShipmentOrder} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ShipmentOrderControl" component={ShipmentOrderControl} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/Maps" component={MapContainer} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/Map" component={Maps} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
@@ -321,6 +367,8 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/InventoryRequest" component={InventoryRequest} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/UseGuide" component={UseGuide} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
+                                    <PrivateRoute path="/MTReturnRequest" component={MTReturnRequest} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+
                                     <PrivateRoute path="/RewardType" component={RewardType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/RewardPriceType" component={RewardPriceType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/RewardPosition" component={RewardPosition} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
@@ -330,6 +378,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/FuelPrice" component={FuelPrice} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/RewardComputeSchedule" component={RewardComputeSchedule} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/RewardComputeLog" component={RewardComputeLog} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/PosToRWPosTable" component={PosToRWPosTable} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="/AppFeedBackPriority" component={AppFeedBackPriority} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/AppFeedBackStatus" component={AppFeedBackStatus} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
@@ -342,6 +391,30 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/TMSConfig" component={TMSConfig} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/DeliveryDateUpdateType" component={DeliveryDateUpdateType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/DeliveryDateUpdateReason" component={DeliveryDateUpdateReason} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/DeliveryGoodsGroup" component={DeliveryGoodsGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/DeliveryTimeFrame" component={DeliveryTimeFrame} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/WeekDay" component={WeekDay} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+
+                                    <PrivateRoute path="/MTReturnRequestType" component={MTReturnRequestType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/QualityAssessGroup" component={QualityAssessGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/QualityAssessType" component={QualityAssessType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/SoAssessSynSchedule" component={SoAssessSynSchedule} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/DeliveryAbility" component={DeliveryAbility} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/DevTest" component={PageTest} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/CoordinatorGroup" component={CoordinatorGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/StaffTransferType" component={StaffTransferType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/ReportLate" component={ReportLate} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/SMSTemplate" component={SMSTemplate} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/ServiceGroup" component={ServiceGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/ServicePriceApply" component={ServicePriceApply} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/ServicePriceTable" component={ServicePriceTable} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/PartnerSaleChannel" component={PartnerSaleChannel} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/DataExportTemplate" component={DataExportTemplate} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/DataExportTemplate_Format" component={DataExportTemplate_Format} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/SvTimeConvert" component={SvTimeConvert} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/MonthlySaleOrder" component={MonthlySaleOrder} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+
+
 
                                     <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
@@ -352,7 +425,7 @@ class HomeCom extends React.Component {
                         </div>
                     </main>
                     <Footer />
-                {/* </Spin> */}
+                </Spin>
             </React.Fragment >
         );
     }

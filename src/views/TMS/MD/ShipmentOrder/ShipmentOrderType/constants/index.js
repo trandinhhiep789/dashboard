@@ -1,3 +1,5 @@
+import { ERPCOMMONCACHE_SVTIMECONVERT, ERPUSERCACHE_PAYABLETYPE } from "../../../../../../constants/keyCache";
+
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/ShipmentOrderType/Search";
 export const LoadAPIPath = "api/ShipmentOrderType/Load";
@@ -156,6 +158,41 @@ export const AddModalColumnList = [
         validatonList: [],
         value: false
     },
+    {
+        Name: "MTOuputPayableTypeID",
+        type: "select",
+        label: "Hình thức thanh toán của yêu cầu xuất dịch vụ",
+        DataSourceMember: "MTOuputPayableTypeID",
+        readonly: false,
+        validatonList: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: ERPUSERCACHE_PAYABLETYPE,
+        ValueMember: "PayableTypeID",
+        NameMember: "PayableTypeName",
+    },
+    {
+        Name: "IsConverSvTimeToSvProduct",
+        type: "checkbox",
+        label: "Có chuyển đổi thời gian thực hiện DV sang sản phẩm DV",
+        DataSourceMember: "IsConverSvTimeToSvProduct",
+        readonly: false,
+        validatonList: [],
+        value: false
+    },
+    {
+        Name: "SvTimeConvertID",
+        type: "select",
+        label: "Bảng chuyển đổi",
+        DataSourceMember: "SvTimeConvertID",
+        readonly: false,
+        validatonList: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: ERPCOMMONCACHE_SVTIMECONVERT,
+        ValueMember: "SVTimeConvertID",
+        NameMember: "SVTimeConvertName",
+    },
+
+
     //  {
     //     Name: "PartnerID",
     //     type: "select",
@@ -306,6 +343,24 @@ export const MLObjectDefinition = [
         DataSourceMember: "IsCheckDuplicateSaleOrderID"
     },
     {
+        Name: "MTOuputPayableTypeID",
+        DefaultValue: "",
+        BindControlName: "MTOuputPayableTypeID",
+        DataSourceMember: "MTOuputPayableTypeID"
+    },
+    {
+        Name: "IsConverSvTimeToSvProduct",
+        DefaultValue: "",
+        BindControlName: "IsConverSvTimeToSvProduct",
+        DataSourceMember: "IsConverSvTimeToSvProduct"
+    },
+    {
+        Name: "SvTimeConvertID",
+        DefaultValue: "",
+        BindControlName: "SvTimeConvertID",
+        DataSourceMember: "SvTimeConvertID"
+    },
+    {
         Name: "Description",
         DefaultValue: "",
         Label: "Mô tả",
@@ -387,18 +442,18 @@ export const DataGridColumnList = [
         Width: 100
     },
     {
-        Name: "CreatedDate",
+        Name: "UpdatedDate",
         Type: "date",
-        Caption: "Ngày tạo",
-        DataSourceMember: "CreatedDate",
-        Width: 150
+        Caption: "Ngày cập nhật",
+        DataSourceMember: "UpdatedDate",
+        Width: 140
     },
     {
-        Name: "CreatedUserFullName",
+        Name: "UpdatedUserFullName",
         Type: "text",
-        Caption: "Người tạo",
-        DataSourceMember: "CreatedUserFullName",
-        Width: 150
+        Caption: "Người cập nhật",
+        DataSourceMember: "UpdatedUserFullName",
+        Width: 140
     },
     {
         Name: "Action",

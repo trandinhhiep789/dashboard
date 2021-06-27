@@ -44,7 +44,7 @@ class ReviewLevel_UserCom extends React.Component {
 
     handleChange(formData, MLObject) {
         if (formData.StoreID.value != -1 && formData.StoreID.value != this.state.StoreID) {
-            this.setState({ StoreID: formData.StoreID.value });
+            this.setState({ StoreID: formData.StoreID.value, ReviewUser: [{ value: -1, label: "--Vui lòng chọn--" }] });
             this.props.callFetchAPI(APIHostName, GetUserAPIPath, formData.StoreID.value).then(apiResult => {
                 this.setState({ IsCallAPIError: apiResult.IsError });
                 if (!apiResult.IsError) {

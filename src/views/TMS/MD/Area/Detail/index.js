@@ -17,6 +17,7 @@ import { callGetCache } from "../../../../../actions/cacheAction";
 import { format } from "date-fns";
 import { formatDate } from "../../../../../common/library/CommonLib";
 import Area_Store from "../../Area_Store";
+import Area_Province from "../../Area_Province";
 
 class DetailCom extends React.Component {
     constructor(props) {
@@ -49,7 +50,9 @@ class DetailCom extends React.Component {
             } else {
                 this.setState({
                     DataSource: apiResult.ResultObject,
-                    AreaStore: apiResult.ResultObject.AreaStore ? apiResult.ResultObject.AreaStore : []
+                    AreaStore: apiResult.ResultObject.AreaStore ? apiResult.ResultObject.AreaStore : [],
+                    AreaStoreAll: apiResult.ResultObject.AreaStoreAll ? apiResult.ResultObject.AreaStoreAll : [],
+                    AreaProvince: apiResult.ResultObject.AreaProvince ? apiResult.ResultObject.AreaProvince : []
                 });
 
             }
@@ -160,14 +163,14 @@ class DetailCom extends React.Component {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Người tạo: </span>
-                                            <span>{this.state.DataSource.CreatedUserFullName}</span>
+                                            <span>Người cập nhật: </span>
+                                            <span>{this.state.DataSource.UpdatedUserFullName}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Ngày tạo: </span>
-                                            <span>{formatDate(this.state.DataSource.CreatedDate)}</span>
+                                            <span>Ngày cập nhật: </span>
+                                            <span>{formatDate(this.state.DataSource.UpdatedDate)}</span>
                                         </div>
                                     </div>
 
@@ -182,8 +185,17 @@ class DetailCom extends React.Component {
                     <br />
                     <Area_Store
                         AreaID={this.props.match.params.id}
+                        AreaTypeID={this.state.DataSource.AreaTypeID}
                         AreaStoreDataSource={this.state.AreaStore ? this.state.AreaStore : []}
+                        AreaStoreAllDataSource={this.state.AreaStoreAll? this.state.AreaStoreAll : []}
                         onAreaStoreChange={this.onComponentChange}
+                    />
+
+                    <br />
+                    <Area_Province
+                        AreaID={this.props.match.params.id}
+                        DataSource={this.state.AreaProvince ? this.state.AreaProvince : []}
+                        onAreaProvinceChange={this.onComponentChange}
                     />
 
 

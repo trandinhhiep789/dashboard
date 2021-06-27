@@ -294,6 +294,7 @@ class EditCom extends React.Component {
                                         label="Người dùng"
                                         disabled={false}
                                         IsLabelDiv={true}
+                                        isCheckPartner={true}
                                         isautoloaditemfromcache={false}
                                         onChange={this.onChangeUser.bind(this)}
                                         controltype="InputControl"
@@ -363,7 +364,6 @@ class EditCom extends React.Component {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-
                                                     <tr>
                                                         <td> <MultiStoreComboBox
                                                             name="UserStore"
@@ -388,7 +388,6 @@ class EditCom extends React.Component {
                                                                     <span className="fa fa-plus ff"> Thêm</span>
                                                                 </button> : ""
                                                             }
-
                                                         </td>
                                                     </tr>
 
@@ -430,7 +429,6 @@ class EditCom extends React.Component {
                                                         <th className="jsgrid-header-cell" style={{ width: "10%" }}>Tác vụ</th>
                                                         <th className="jsgrid-header-cell" style={{ width: "30%" }}>Mã nhóm quyền</th>
                                                         <th className="jsgrid-header-cell" style={{ width: "60%" }}>Tên nhóm quyền</th>
-
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -466,12 +464,8 @@ class EditCom extends React.Component {
                                                     </button> : ""
                                                 }
                                             </div>
-
                                         </div>
                                     </div>
-
-
-
                                 </div>
                             </div>
                         </div>

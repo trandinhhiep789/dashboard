@@ -19,7 +19,7 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { TMS_TMSREWARD_VIEW } from "../../../../../constants/functionLists";
+import { TMS_TMSREWARD_EXPORT, TMS_TMSREWARD_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { toIsoStringCus } from '../../../../../utils/function'
 class SearchCom extends React.Component {
@@ -112,18 +112,24 @@ class SearchCom extends React.Component {
 
                 const tempDataExport = apiResult.ResultObject.map((item, index) => {
                     let element = {
-                        "Mã nhân viên": item.RewardUser,
-                        "Tên nhân viên": item.FullName,
+                        "Mã nhân viên": item.RewardUser.trim(),
+                        "Tên nhân viên": item.FullName.trim(),
                         "Tổng thưởng": item.TotalReward,
 
                     };
 
                     return element;
+                });
+
+                const tempData = apiResult.ResultObject.map((item, index) => {
+                    item.NoteReward = "Điểm thưởng này chỉ mang tính chất tham khảo, kết quả thưởng cuối cùng sẽ được KSNB và Phòng Lao động tiền lương điều chỉnh sau khi đối chiếu với các số liệu khác";
+
+                    return item;
 
                 })
 
                 this.setState({
-                    gridDataSource: apiResult.ResultObject,
+                    gridDataSource: tempData,
                     IsCallAPIError: apiResult.IsError,
                     totalAmount: totalAmount,
                     IsLoadDataComplete: true,
@@ -148,23 +154,20 @@ class SearchCom extends React.Component {
     }
 
     addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
         if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
         } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={this.state.cssNotification}>
+                <div className={cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
+                        <i className={iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -180,8 +183,10 @@ class SearchCom extends React.Component {
         });
     }
 
+
+
     handleExportFile(result) {
-        this.addNotification(result.Message);
+        this.addNotification(result.Message, result.IsError);
     }
 
 
@@ -217,6 +222,7 @@ class SearchCom extends React.Component {
                     totalCurrencyColSpan={3}
                     totalCurrencyNumber={this.state.totalAmount}
                     RequirePermission={TMS_TMSREWARD_VIEW}
+                    ExportPermission={TMS_TMSREWARD_EXPORT}
                     IsExportFile={true}
                     DataExport={this.state.dataExport}
                     fileName="Danh sách thưởng giao hàng"

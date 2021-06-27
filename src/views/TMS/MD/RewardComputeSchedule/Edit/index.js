@@ -19,6 +19,7 @@ import { updatePagePath } from "../../../../../actions/pageAction";
 import { REWARDCOMPUTESCHEDULE_UPDATE } from "../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_AREATYPE, ERPCOMMONCACHE_MATERIALGROUP } from "../../../../../constants/keyCache";
+import { toIsoStringCus } from "../../../../../utils/function";
 
 
 class EditCom extends React.Component {
@@ -54,14 +55,14 @@ class EditCom extends React.Component {
                 });
                 this.showMessage(apiResult.Message);
             } else {
-                if(apiResult.ResultObject.IsAutoAdd){
+                if (apiResult.ResultObject.IsAutoAdd) {
                     this.showMessage("Lịch tự động thêm, không thể chỉnh sửa.");
                     this.setState({ IsCloseForm: true });
-                }else{
+                } else {
                     this.setState({
                         DataSource: apiResult.ResultObject
                     });
-                }  
+                }
             }
             this.setState({
                 IsLoadDataComplete: true
@@ -77,7 +78,8 @@ class EditCom extends React.Component {
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
 
         if (MLObject.RewardDate.getMonth) {
-            MLObject.RewardDate.setDate(MLObject.RewardDate.getDate() + 1);
+            //MLObject.RewardDate.setDate(MLObject.RewardDate.getDate() + 1);
+            MLObject.RewardDate = toIsoStringCus(new Date(MLObject.RewardDate).toISOString());
         } else {
             MLObject.RewardDate = this.state.DataSource.RewardDate;
         }
@@ -126,7 +128,7 @@ class EditCom extends React.Component {
                     RequirePermission={REWARDCOMPUTESCHEDULE_UPDATE}
                     ref={this.searchref}
                 />
-                
+
             );
         }
         return (

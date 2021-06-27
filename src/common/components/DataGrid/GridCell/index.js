@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { formatDate, formatMonthDate } from "../../../library/CommonLib.js";
 import { ModalManager } from 'react-dynamic-modal';
 import { MessageModal } from "../../../../common/components/Modal";
-import { formatMoney, formatNumber } from '../../../../utils/function';
+import { formatMoney, formatNumber, numberDecimalWithComma, formatNumberNew } from '../../../../utils/function';
 import { Base64 } from 'js-base64';
 import { withRouter } from 'react-router-dom';
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
@@ -22,7 +22,11 @@ class GridCell extends Component {
     }
 
     componentDidMount() {
-        console.log("this.props", this.props)
+    }
+
+    handleShowImage(e) {
+        const objIme = e.currentTarget.dataset.id;
+        this.props.onShowImageClick(objIme)
     }
 
     handleInputChange(e) {
@@ -80,7 +84,7 @@ class GridCell extends Component {
     }
 
     onShowPopupNew(objValue) {
-        this.props.onModalClick(objValue, this.props.name)
+        this.props.onModalClick(objValue, this.props.name, { ...this.props })
     }
 
     componentDidMount() {
@@ -88,6 +92,10 @@ class GridCell extends Component {
 
     onClickAction(objValue) {
         this.props.onUpdateClick(objValue)
+    }
+    onHistoryClickAction(objValue) {
+
+        this.props.onHistoryClick(objValue)
     }
 
     render() {
@@ -116,11 +124,20 @@ class GridCell extends Component {
             case "textCustom":
                 control = <div className="textCustom" onClick={() => { this.onClickAction(listValue) }} >{text}</div>;
                 break;
+            case "btnActionConfirm":
+                control = <div className="groupAction"><button className="btnActionConfirm" onClick={() => { this.onClickAction(listValue) }}><i className="ti-check"></i> {text}</button></div>;
+                break;
+            case "btnHistory":
+                control = <button className="btnHistory" onClick={() => { this.onHistoryClickAction(listValue) }}><i className="fa fa-history"></i></button>;
+                break;
             case "textList":
                 control = <label>{text == "" ? text : ReactHtmlParser(text.replace(/;/g, '<br/>'))}</label>;
                 break;
             case "text":
                 control = <label>{text}</label>;
+                break;
+            case "textTwoNumber":
+                control = <label>{formatNumberNew(text)}</label>;
                 break;
             case "textBoldRed":
                 control = <label className="txt-boold-red">{text}</label>;
@@ -199,6 +216,19 @@ class GridCell extends Component {
                         }
                     }}>{text}</Link>;
                 break;
+            case "texttolinkNewBlankValue":
+
+                control = <Link
+                    className="linktext"
+                    target="_blank"
+                    to={{
+                        pathname: this.props.link + text,
+                        state: {
+                            params: this.props.params
+                        }
+                    }}>{text}</Link>;
+                break;
+
 
             case "texttolinkblank":
                 const param = this.props.params;
@@ -348,10 +378,39 @@ class GridCell extends Component {
                 );
             case "hyperlink":
                 const { RelatedVoucherID } = rowItem;
-                const destinationHyperlink = RelatedVoucherID.includes("AR") ? hyperLink.AREdit : hyperLink.SODetail;
+                let destinationHyperlink;
+
+                if (RelatedVoucherID.includes("AR")) {
+                    destinationHyperlink = hyperLink.AREdit
+                } else if (RelatedVoucherID.includes("RR")) {
+                    destinationHyperlink = hyperLink.MTRDetail
+                } else {
+                    destinationHyperlink = hyperLink.SODetail
+                }
+
                 const partsText = text.split(RelatedVoucherID);
                 control = <p>{partsText[0]}<Link to={`${destinationHyperlink}/${RelatedVoucherID}`} target="_blank">{RelatedVoucherID}</Link>{partsText[1]}</p>
                 break;
+            case "images":
+                const objlst = this.props.text.split(";");
+                // const { RelatedVoucherID } = rowItem;
+                // const destinationHyperlink = RelatedVoucherID.includes("AR") ? hyperLink.AREdit : hyperLink.SODetail;
+                // const partsText = text.split(RelatedVoucherID);
+                control = <ul className="img-group" data-id={this.props.text} onClick={this.handleShowImage.bind(this)} >
+                    {objlst[0] != "" && objlst.map((item, index) =>
+                        <li key={index}>
+                            <div className="img-item">
+                                <img src={JSON.parse(item).ImageFileURL} />
+                            </div>
+                        </li>
+                    )}
+                </ul>
+                break;
+
+            case "numberDecimalWithComma":
+                control = <span>{numberDecimalWithComma(text)}</span>
+                break;
+
             default:
                 control = <label>{text}</label>;
                 break;

@@ -14,7 +14,7 @@ import { TreeSelect, DatePicker, TimePicker } from "antd";
 import moment from 'moment';
 import Datetime from 'react-datetime';
 import "antd/dist/antd.css";
-import Select from 'react-select';
+import Select, { components } from 'react-select';
 import { formatMoney } from '../../../../utils/function';
 import { formatDateNew } from '../../../../common/library/CommonLib.js';
 import { ExportStringToDate, ExportStringDate } from "../../../../common/library/ultils";
@@ -351,6 +351,56 @@ class FormControlTextBox extends React.Component {
     }
 }
 
+const MySelectCCB = ({ allOption = { label: "Chọn tất cả", value: "*" }, ...props }) => {
+    return (
+        <Select
+            {...props}
+            options={[allOption, ...props.options]}
+            onChange={(selected, event) => {
+                if (selected !== null && selected.length > 0) {
+                    if (selected[selected.length - 1].value === allOption.value) {
+                        return props.onChange([allOption, ...props.options]);
+                    }
+                    let result = [];
+                    if (selected.length === props.options.length) {
+                        if (selected.includes(allOption)) {
+                            result = selected.filter(
+                                option => option.value !== allOption.value
+                            );
+                        } else if (event.action === "select-option") {
+                            result = [allOption, ...props.options];
+                        }
+                        return props.onChange(result);
+                    }
+                }
+
+                return props.onChange(selected);
+            }}
+        />
+    );
+}
+
+const OptionCCB = props => {
+    return (
+        <div>
+            <components.Option {...props}>
+                {/* <input
+                    type="checkbox"
+                    checked={props.isSelected}
+                    onChange={() => null}
+                />{" "} */}
+                <label>{props.label}</label>
+            </components.Option>
+        </div>
+    );
+};
+
+const MultiValueCCB = props => (
+    <components.MultiValue {...props}>
+        <span>{props.data.label}</span>
+    </components.MultiValue>
+);
+
 class FormControlComboBoxCom extends Component {
     constructor(props) {
         super(props);
@@ -375,15 +425,22 @@ class FormControlComboBoxCom extends Component {
         let selectedOption = [];
         if ((values == null || values === -1) && !this.props.isMultiSelect)
             return { value: -1, label: "--Vui lòng chọn--" };
-        if (typeof values.toString() == "string")
-            values = values.toString().split(",");
-        for (let i = 0; i < values.length; i++) {
-            for (let j = 0; j < listOption.length; j++) {
-                if (values[i] == listOption[j].value) {
-                    selectedOption.push({ value: listOption[j].value, label: listOption[j].label });
+
+        if (!!values) {
+            if (typeof values.toString() == "string")
+                values = values.toString().split(",");
+
+
+            for (let i = 0; i < values.length; i++) {
+                for (let j = 0; j < listOption.length; j++) {
+                    if (values[i] == listOption[j].value) {
+                        selectedOption.push({ value: listOption[j].value, label: listOption[j].label, name: listOption[j].name });
+                    }
                 }
             }
         }
+
+
         return selectedOption;
     }
     getComboValue(selectedOption) {
@@ -411,11 +468,12 @@ class FormControlComboBoxCom extends Component {
             const nameMember = this.props.nameMember;
             if (this.props.isusercache == true) {
                 this.props.callGetUserCache(cacheKeyID).then((result) => {
-                    //console.log("this.props.isautoloaditemfromcach2: ", this.props.loaditemcachekeyid, this.state.Listoption, result);
+                    // console.log("this.props.isautoloaditemfromcach2: ", this.props.loaditemcachekeyid, this.state.Listoption, result);
                     listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
                     if (!result.IsError && result.ResultObject.CacheData != null) {
                         result.ResultObject.CacheData.map((cacheItem) => {
-                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember], name: cacheItem[nameMember] });
+
+                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + "-" + cacheItem[nameMember], name: cacheItem[nameMember] });
                         }
                         );
                         this.setState({ Listoption: listOption });
@@ -433,6 +491,7 @@ class FormControlComboBoxCom extends Component {
             }
             else {
                 this.props.callGetCache(cacheKeyID).then((result) => {
+                    // console.log("this.props.isautoloaditemfromcach1: ", this.props.loaditemcachekeyid, this.state.Listoption, result);
                     if (!isMultiSelect) {
                         listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
                     }
@@ -500,7 +559,7 @@ class FormControlComboBoxCom extends Component {
     }
 
     render() {
-        let { name, label, rowspan, colspan, labelcolspan, validatonList, isMultiSelect, disabled, validationErrorMessage, placeholder, listoption } = this.props;
+        let { name, label, rowspan, colspan, labelcolspan, validatonList, isMultiSelect, disabled, validationErrorMessage, placeholder, listoption, isCloseMenuOnSelect } = this.props;
         let formRowClassName = "form-row";
         if (rowspan != null) {
             formRowClassName = "form-row col-md-" + rowspan;
@@ -522,6 +581,7 @@ class FormControlComboBoxCom extends Component {
         if (validationErrorMessage != undefined && validationErrorMessage != "") {
             className += " is-invalid";
         }
+        const closeMenuOnSelect = isCloseMenuOnSelect == false ? isCloseMenuOnSelect : true
         const selectedOption = this.state.SelectedOption;
         const listOption = this.state.Listoption;
         return (
@@ -532,18 +592,35 @@ class FormControlComboBoxCom extends Component {
                     </label>
                 </div>
                 <div className={formGroupClassName}>
-                    <Select
-                        value={selectedOption}
-                        name={name}
-                        ref={this.props.inputRef}
-                        onChange={this.handleValueChange}
-                        options={listOption}
-                        isDisabled={disabled}
-                        isMulti={isMultiSelect}
-                        isSearchable={true}
-                        placeholder={placeholder}
-                        className={className}
-                    />
+
+                    {
+                        this.props.isAllowSelectAll
+                            ? <MySelectCCB
+                                options={listOption}
+                                isMulti={isMultiSelect}
+                                closeMenuOnSelect={closeMenuOnSelect}
+                                hideSelectedOptions={false}
+                                components={{ OptionCCB, MultiValueCCB }}
+                                onChange={this.handleValueChange}
+                                allowSelectAll={true}
+                                value={selectedOption}
+                                placeholder={placeholder}
+                            />
+                            : <Select
+                                value={selectedOption}
+                                name={name}
+                                ref={this.props.inputRef}
+                                onChange={this.handleValueChange}
+                                options={listOption}
+                                isDisabled={disabled}
+                                isMulti={isMultiSelect}
+                                isSearchable={true}
+                                placeholder={placeholder}
+                                className={className}
+                                closeMenuOnSelect={closeMenuOnSelect}
+                            />
+                    }
+
                     <div className="invalid-feedback"><ul className="list-unstyled"><li>{validationErrorMessage}</li></ul></div>
                 </div>
             </div>
@@ -562,7 +639,7 @@ class FormControlComboBoxUserCom extends Component {
         const comboValues = this.getComboValue(selectedOption);
         if (this.props.onValueChange != null)
             this.props.onValueChange(this.props.name, comboValues, selectedOption);
-     
+
     }
 
     bindcombox(value, listOption) {
@@ -570,6 +647,7 @@ class FormControlComboBoxUserCom extends Component {
         let selectedOption = [];
         if ((values == null || values === -1) && !this.props.isMultiSelect)
             return { value: -1, label: "--Vui lòng chọn--" };
+
         if (typeof values.toString() == "string")
             values = values.toString().split(",");
         for (let i = 0; i < values.length; i++) {
@@ -1227,7 +1305,7 @@ class CheckBox extends React.Component {
                 <div className={labelDivClassName}>
                     <label className="col-form-label 5">
                         {this.props.label}<span className="text-danger"> {star}</span>
-                        
+
 
                     </label>
                 </div>
@@ -1246,7 +1324,7 @@ class CheckBox extends React.Component {
                                 disabled={this.props.disabled}
                             />
                             <span className="cr"><i className="cr-icon fa fa-check"></i></span>
-                            
+
                         </label>
                         {this.props.titleSmall != null ? <span className="txtSmall">{this.props.titleSmall}</span> : ""}
                     </div>
@@ -1747,6 +1825,7 @@ class ComboBoxNewCom extends Component {
                             isSearchable={true}
                             placeholder={placeholder}
                             className={className}
+                            {...this.props}
                         />
                         <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
                     </div>
@@ -1956,10 +2035,243 @@ class ComboBoxSelectCom extends Component {
 }
 export const ComboBoxSelect = connect(mapStateToProps, mapDispatchToProps)(ComboBoxSelectCom);
 
+class FormControlComboBoxNewCom extends Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+        this.state = { Listoption: [], SelectedOption: [] }
+    }
+    handleValueChange(selectedOption) {
+        // console.log("change", selectedOption)
+        const comboValues = this.getComboValue(selectedOption);
+        if (this.props.isselectedOp) {
+            if (this.props.onValueChange != null)
+                this.props.onValueChange(this.props.name, selectedOption, this.props.namelabel, selectedOption != null ? selectedOption.name : "", this.props.filterrest);
+        }
+        else {
+            if (this.props.onValueChange != null)
+                this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption != null ? selectedOption.name : "", this.props.filterrest);
+        }
+
+    }
+
+    bindcombox(value, listOption) {
+        let values = value;
+        let selectedOption = [];
+        if ((values == null || values === -1) && !this.props.isMultiSelect)
+            return { value: -1, label: "--Vui lòng chọn--" };
+
+        if (!!values) {
+            if (typeof values.toString() == "string")
+                values = values.toString().split(",");
+
+
+            for (let i = 0; i < values.length; i++) {
+                for (let j = 0; j < listOption.length; j++) {
+                    if (values[i] == listOption[j].value) {
+                        selectedOption.push({ value: listOption[j].value, label: listOption[j].label, name: listOption[j].name });
+                    }
+                }
+            }
+        }
+
+
+        return selectedOption;
+    }
+    getComboValue(selectedOption) {
+        let values = [];
+        if (selectedOption == null)
+            return -1;
+        if (this.props.isMultiSelect) {
+            for (let i = 0; i < selectedOption.length; i++) {
+                values.push(selectedOption[i].value);
+            }
+        } else {
+            return selectedOption.value;
+        }
+
+        return values;
+    }
+    //#endregion tree category
+
+    componentDidMount() {
+        // console.log("this.props: ", this.props, this.props.loaditemcachekeyid);
+        let listOption = this.props.listoption;
+        let { filterValue, filterobj, isMultiSelect } = this.props;
+        if (this.props.isautoloaditemfromcache) {
+            const cacheKeyID = this.props.loaditemcachekeyid;
+            const valueMember = this.props.valuemember;
+            const nameMember = this.props.nameMember;
+            if (this.props.isusercache == true) {
+                this.props.callGetUserCache(cacheKeyID).then((result) => {
+                    // console.log("this.props.isautoloaditemfromcach2: ", this.props.loaditemcachekeyid, this.state.Listoption, result);
+                    listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+                    if (!result.IsError && result.ResultObject.CacheData != null) {
+                        result.ResultObject.CacheData.map((cacheItem) => {
+
+                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + "-" + cacheItem[nameMember], name: cacheItem[nameMember] });
+                        }
+                        );
+                        this.setState({ Listoption: listOption });
+                        const aa = this.bindcombox(this.props.value, listOption);
+                        this.setState({ SelectedOption: aa });
+
+                    }
+                    else {
+                        this.setState({ Listoption: listOption });
+
+                    }
+                    //  console.log("this.props.isautoloaditemfromcachess: ",this.props.loaditemcachekeyid, this.state.Listoption);
+                });
+
+            }
+            else {
+                this.props.callGetCache(cacheKeyID).then((result) => {
+                    // console.log("this.props.isautoloaditemfromcach1: ", this.props.loaditemcachekeyid, this.state.Listoption, result);
+                    if (!isMultiSelect) {
+                        listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+                    }
+                    else {
+                        listOption = [];
+                    }
+
+                    if (!result.IsError && result.ResultObject.CacheData != null) {
+                        if (typeof filterobj != undefined && filterValue != "" && filterValue.length > 0) {
+                            // console.log("object", result.ResultObject.CacheData.filter(item => filterValue.includes(item[filterobj])))
+                            // result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
+                            result.ResultObject.CacheData.filter(item => filterValue.includes(item[filterobj])).map((cacheItem) => {
+                                // console.log("valueMember", cacheItem[valueMember])
+                                listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + "-" + cacheItem[nameMember], name: cacheItem[nameMember] });
+                            }
+                            );
+                        }
+                        else {
+                            result.ResultObject.CacheData.map((cacheItem) => {
+                                // console.log("11", cacheItem[valueMember])
+                                listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + "-" + cacheItem[nameMember], name: cacheItem[nameMember] });
+                            }
+                            );
+                        }
+                        this.setState({ Listoption: listOption, Data: result.ResultObject.CacheData });
+                        const strSelectedOption = this.bindcombox(this.props.value, listOption);
+                        this.setState({ SelectedOption: strSelectedOption });
+                    }
+                    else {
+                        this.setState({ Listoption: listOption });
+                    }
+                });
+            }
+
+        }
+        else {
+            this.setState({ Listoption: listOption });
+            const strSelectedOption = this.bindcombox(this.props.value, listOption);
+            this.setState({ SelectedOption: strSelectedOption });
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(this.props.filterValue) !== JSON.stringify(nextProps.filterValue)) // Check if it's a new user, you can also use some unique property, like the ID
+        {
+            let { filterobj, valuemember, nameMember, isMultiSelect } = this.props;
+            if (typeof filterobj != undefined && nextProps.filterValue != "" && filterValue.length > 0) {
+                let listoptionnew = []
+                if (!isMultiSelect)
+                    listoptionnew = [{ value: -1, label: "--Vui lòng chọn--" }];
+                // this.state.Data.filter(n => n[filterobj] == nextProps.filterValue).map((cacheItem) => {
+                    this.state.Data.filter(item => nextProps.filterValue.includes(item[filterobj])).map((cacheItem) => {
+                    listoptionnew.push({ value: cacheItem[valuemember], label: cacheItem[valuemember] + "-" + cacheItem[nameMember], name: cacheItem[nameMember] });
+                }
+                );
+                this.setState({ Listoption: listoptionnew });
+            }
+        }
+        if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) {
+            const aa = this.bindcombox(nextProps.value, this.state.Listoption);
+            this.setState({ SelectedOption: aa });
+        }
+
+        if (JSON.stringify(this.props.listoption) !== JSON.stringify(nextProps.listoption)) // Check if it's a new user, you can also use some unique property, like the ID
+        {
+            this.setState({ Listoption: nextProps.listoption });
+        }
+    }
+
+    render() {
+        let { name, label, rowspan, colspan, labelcolspan, validatonList, isMultiSelect, disabled, validationErrorMessage, placeholder, listoption, isCloseMenuOnSelect } = this.props;
+        let formRowClassName = "form-row";
+        if (rowspan != null) {
+            formRowClassName = "form-row col-md-" + rowspan;
+        }
+
+        let formGroupClassName = "form-group col-md-4";
+        if (colspan != null) {
+            formGroupClassName = "form-group col-md-" + colspan;
+        }
+        let labelDivClassName = "form-group col-md-2";
+        if (labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + labelcolspan;
+        }
+        let star;
+        if (validatonList != undefined && validatonList.includes("Comborequired") == true) {
+            star = '*'
+        }
+        let className = "react-select";
+        if (validationErrorMessage != undefined && validationErrorMessage != "") {
+            className += " is-invalid";
+        }
+        const closeMenuOnSelect = isCloseMenuOnSelect == false ? isCloseMenuOnSelect : true
+        const selectedOption = this.state.SelectedOption;
+        const listOption = this.state.Listoption;
+        return (
+            <div className={formRowClassName} >
+                <div className={labelDivClassName}>
+                    <label className="col-form-label 6">
+                        {label}<span className="text-danger"> {star}</span>
+                    </label>
+                </div>
+                <div className={formGroupClassName}>
+
+                    {
+                        this.props.isAllowSelectAll
+                            ? <MySelectCCB
+                                options={listOption}
+                                isMulti={isMultiSelect}
+                                closeMenuOnSelect={closeMenuOnSelect}
+                                hideSelectedOptions={false}
+                                components={{ OptionCCB, MultiValueCCB }}
+                                onChange={this.handleValueChange}
+                                allowSelectAll={true}
+                                value={selectedOption}
+                                placeholder={placeholder}
+                            />
+                            : <Select
+                                value={selectedOption}
+                                name={name}
+                                ref={this.props.inputRef}
+                                onChange={this.handleValueChange}
+                                options={listOption}
+                                isDisabled={disabled}
+                                isMulti={isMultiSelect}
+                                isSearchable={true}
+                                placeholder={placeholder}
+                                className={className}
+                                closeMenuOnSelect={closeMenuOnSelect}
+                            />
+                    }
+
+                    <div className="invalid-feedback"><ul className="list-unstyled"><li>{validationErrorMessage}</li></ul></div>
+                </div>
+            </div>
+        );
+    }
+}
+export const FormControlComboBoxNew = connect(mapStateToProps, mapDispatchToProps)(FormControlComboBoxNewCom);
 
 export default {
     FormControlTextBox, TextBox, TextArea, CheckBox, modal, TextBoxCurrency, TextBoxNew,
     FormControlComboBox,
+    FormControlComboBoxNew,
     FormControlComboBoxUser,
     FormControlDatetime,
     FormControlDatetimeNew,

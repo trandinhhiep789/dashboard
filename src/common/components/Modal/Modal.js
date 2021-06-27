@@ -158,7 +158,7 @@ class ModalCom extends React.Component {
     checkInput(formValidation) {
         for (const key in formValidation) {
             if (formValidation[key].IsValidationError) {
-                if (typeof this.elementItemRefs[key].focus !== "undefined") {
+                if (this.elementItemRefs && this.elementItemRefs[key] && typeof this.elementItemRefs[key].focus !== "undefined") {
                     this.elementItemRefs[key].focus();
                     return false;
                 } else {
@@ -262,6 +262,7 @@ class ModalCom extends React.Component {
                                     isMulti={elementItem.isMulti}
                                     KeyFilter={elementItem.KeyFilter}
                                     ValueFilter={elementItem.ValueFilter}
+                                    textTransform={elementItem.textTransform}
                                 />
                             </div>);
                     }
@@ -326,7 +327,8 @@ class ModalCom extends React.Component {
 }
 ModalCom.propTypes = {
     children: PropTypes.node,
-    title: PropTypes.string,
+    // title: PropTypes.string,
+    title: PropTypes.node,
     onClose: PropTypes.func
 }
 const mapStateToProps = state => {

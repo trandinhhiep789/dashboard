@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { ModalManager } from "react-dynamic-modal";
+import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 import InputGrid from "../../../../../common/components/FormContainer/FormControl/InputGrid";
 import FormContainer from "../../../../../common/components/FormContainer";
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
@@ -19,7 +19,9 @@ import {
     LoadNewAPIPath,
     MLObjectDefinition,
     DataGridColumnList,
-    PKColumnNameWard
+    PKColumnNameWard,
+    schema,
+    DataTemplateExport
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -32,7 +34,6 @@ import ReactNotification from "react-notifications-component";
 import MultiStoreComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiStoreComboBox";
 import MultiAllStoreComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiAllStoreComboBox";
 
-
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
@@ -44,6 +45,7 @@ class EditCom extends React.Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.addNotification = this.addNotification.bind(this);
+        this.convertDataCoordinatorStoreWard = this.convertDataCoordinatorStoreWard.bind(this)
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -57,6 +59,8 @@ class EditCom extends React.Component {
             SenderStoreID: "",
             SenderStoreSelect: [],
             IsSystem: false,
+            DataTemplateExport,
+            DbCoordinatorStoreWard: []
         };
         this.searchref = React.createRef();
         this.gridref = React.createRef();
@@ -67,7 +71,6 @@ class EditCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
         this.callLoadData(this.props.match.params.id);
-
     }
 
     handleCloseMessage() {
@@ -77,6 +80,7 @@ class EditCom extends React.Component {
     callLoadData(id) {
         const { SenderStoreSelect, StoreSelect } = this.state;
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
+           
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -103,6 +107,8 @@ class EditCom extends React.Component {
                     IsShowCustomerAddress = true
                 }
 
+                this.convertDataCoordinatorStoreWard(apiResult.ResultObject.CoordinatorStoreWard_ItemList)
+
                 this.setState({
                     DataSource: apiResult.ResultObject,
                     IsLoadDataComplete: true,
@@ -114,6 +120,23 @@ class EditCom extends React.Component {
         });
     }
 
+    convertDataCoordinatorStoreWard(CoordinatorStoreWard_ItemList) {
+        try {
+            const arrResult = CoordinatorStoreWard_ItemList.map(item => {
+                const { DistrictID, DistrictName, ProvinceID, ProvinceName, WardID, WardName } = item
+                item.DistrictFullName = `${DistrictID} - ${DistrictName}`;
+                item.ProvinceFullName = `${ProvinceID} - ${ProvinceName}`;
+                item.WardFullName = `${WardID} - ${WardName}`;
+                return item;
+            })
+
+            this.setState({
+                DbCoordinatorStoreWard: arrResult
+            })
+        } catch (error) {
+            this.showMessage("Lỗi lấy danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối")
+        }
+    }
 
     showMessage(message) {
         ModalManager.open(
@@ -126,9 +149,9 @@ class EditCom extends React.Component {
         );
     }
 
-
     handleSubmit(formData, MLObject) {
-        MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
+        // console.log("222", MLObject);
+        MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.CoordinatorStoreID = this.props.match.params.id.trim();
         this.props.callFetchAPI(APIHostName, UpdateNewAPIPath, MLObject).then(apiResult => {
@@ -137,8 +160,10 @@ class EditCom extends React.Component {
         });
     }
 
+
     handleChange(formData, MLObject) {
         if (formData.chkIsCheckCustomerAddress.value) {
+
             this.setState({
                 IsShowCustomerAddress: false
             })
@@ -240,6 +265,32 @@ class EditCom extends React.Component {
 
     }
 
+    handleImportFile(resultRows, errors) {
+        const arrResultRows = resultRows.map(item => {
+            const { DistrictID, DistrictName, ProvinceID, ProvinceName, WardID, WardName } = item
+            return {
+                ...item,
+                DistrictFullName: `${DistrictID} - ${DistrictName}`,
+                ProvinceFullName: `${ProvinceID} - ${ProvinceName}`,
+                WardFullName: `${WardID} - ${WardName}`
+            }
+        })
+
+        this.setState({
+            DataSource: {
+                ...this.state.DataSource,
+                CoordinatorStoreWard_ItemList: [...this.state.DataSource.CoordinatorStoreWard_ItemList, ...arrResultRows]
+            }
+        })
+        // this.props.callFetchAPI(APIHostName, AddAutoAPIPath, resultRows).then(apiResult => {
+        //     console.log('apiResult', apiResult)
+        // });
+    }
+
+    handleExportFileTemplate(result) {
+        this.addNotification(result.Message);
+    }
+
     render() {
         const { DataSource, IsShowCustomerAddress, DataWard } = this.state;
         if (this.state.IsCloseForm) {
@@ -261,7 +312,6 @@ class EditCom extends React.Component {
                     <div className="row">
                         <div className="col-md-6">
                             <FormControl.ComboBoxSelect
-
                                 name="cbShipmentOrderTypeID"
                                 colspan="8"
                                 labelcolspan="4"
@@ -281,7 +331,6 @@ class EditCom extends React.Component {
                         </div>
                         <div className="col-md-6">
                             <FormControl.FormControlComboBox
-
                                 name="cbPartnerID"
                                 colspan="8"
                                 labelcolspan="4"
@@ -301,12 +350,10 @@ class EditCom extends React.Component {
                                 filterValue={1}
                                 filterobj="PartnerTypeID"
                             />
-
                         </div>
 
                         <div className="col-md-6">
                             <FormControl.FormControlComboBox
-
                                 name="cbStoreID"
                                 colspan="8"
                                 labelcolspan="4"
@@ -327,7 +374,7 @@ class EditCom extends React.Component {
                                 readOnly={this.state.IsSystem}
                             />
                         </div>
-                        <div className="col-md-6">
+                        {/* <div className="col-md-6">
                             <MultiAllStoreComboBox
                                 name="cbSenderStoreID"
                                 colspan="8"
@@ -348,6 +395,30 @@ class EditCom extends React.Component {
                                 IsLabelDiv="kho xuất"
                                 disabled={this.state.IsSystem}
                                 readOnly={this.state.IsSystem}
+                            />
+                        </div> */}
+
+                        <div className="col-md-6">
+                            <FormControl.FormControlComboBoxNew
+
+                                name="cbSenderStoreID"
+                                colspan="8"
+                                labelcolspan="4"
+                                label="kho xuất"
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
+                                validatonList={["Comborequired"]}
+                                placeholder="-- Vui lòng chọn --"
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid="ERPCOMMONCACHE.STORE"
+                                valuemember="StoreID"
+                                nameMember="StoreName"
+                                controltype="InputControl"
+                                value={""}
+                                listoption={null}
+                                datasourcemember="SenderStoreID"
+                                filterValue={[1, 10]}
+                                filterobj="CompanyID"
                             />
                         </div>
 
@@ -403,12 +474,19 @@ class EditCom extends React.Component {
                         IDSelectColumnName={"WardID"}
                         listColumn={DataGridColumnList}
                         PKColumnName={"WardID"}
-                        dataSource={this.state.DataSource.CoordinatorStoreWard_ItemList}
+                        dataSource={this.state.DbCoordinatorStoreWard}
                         // value={null}
                         onInsertClick={this.handleInsertNew}
                         onEditClick={this.handleEdit}
                         onDeleteClick={this.handleDelete}
                         isHiddenButtonAdd={IsShowCustomerAddress}
+                        isImportFile={true}
+                        schemaData={schema}
+                        onImportFile={this.handleImportFile.bind(this)}
+                        isExportFileTemplate={true}
+                        DataTemplateExport={this.state.DataTemplateExport}
+                        fileNameTemplate={"Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối"}
+                        onExportFileTemplate={this.handleExportFileTemplate.bind(this)}
                     />
 
 

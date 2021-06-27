@@ -43,3 +43,29 @@
         }
     }
 }
+
+.groupSelectDrop{
+    clear: both;
+    display: inline-flex;
+    justify-content: flex-start;
+    width: 100%;
+    .react-select {
+        width: 70%;
+        .css-yk16xz-control, .css-1pahdxg-control {
+            min-height: 30px;
+            border-color: #808080;
+            border-radius: 4px 0 0 4px;
+        }
+    }
+    .input-group-append {
+        width: 30%;
+        .btn {
+            width: 100%;
+            border-color: #808080;
+            border-radius: 0 4px 4px 0;
+            height: 35px;
+            padding: 0;
+            line-height: 35px;
+        }
+    }
+}

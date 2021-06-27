@@ -270,7 +270,7 @@ export const DataGridColumnList = [
         Type: "checkbox",
         Caption: "Chọn",
         DataSourceMember: "PartnerRoleID",
-        Width: 150
+        Width: 80
     },
     {
         Name: "PartnerRoleID",
@@ -284,7 +284,7 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Tên vai trò",
         DataSourceMember: "PartnerRoleName",
-        Width: 800
+        Width: 350
     },
     {
         Name: "IsActived",
@@ -294,18 +294,25 @@ export const DataGridColumnList = [
         Width: 200
     },
     {
-        Name: "CreatedDate",
+        Name: "UpdatedDate",
         Type: "date",
-        Caption: "Ngày tạo",
-        DataSourceMember: "CreatedDate",
-        Width: 200
+        Caption: "Ngày cập nhật",
+        DataSourceMember: "UpdatedDate",
+        Width: 140
+    },
+    {
+        Name: "UpdatedUserFullName",
+        Type: "text",
+        Caption: "Người cập nhật",
+        DataSourceMember: "UpdatedUserFullName",
+        Width: 140
     },
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
         DataSourceMember: "PartnerRoleID",
-        Width: 200,
+        Width: 100,
         Link: "/PartnerRole/Edit/",
         LinkText: "Chỉnh sửa"
     }

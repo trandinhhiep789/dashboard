@@ -282,6 +282,48 @@ export const MLObjectDefinition = [
         DataSourceMember: "IsCheckMustHandOverGoods"
     },
     {
+        Name: "IsCanHandoverToReceiver",
+        DefaultValue: "",
+        BindControlName: "IsCanHandoverToReceiver",
+        DataSourceMember: "IsCanHandoverToReceiver"
+    },
+    {
+        Name: "IsCheckMustHandoverToReceiver",
+        DefaultValue: "",
+        BindControlName: "IsCheckMustHandoverToReceiver",
+        DataSourceMember: "IsCheckMustHandoverToReceiver"
+    },
+    {
+        Name: "IsSendSMSToCustomer",
+        DefaultValue: "",
+        BindControlName: "IsSendSMSToCustomer",
+        DataSourceMember: "IsSendSMSToCustomer"
+    },
+    {
+        Name: "SendToCustomerSMSTemplateID",
+        DefaultValue: "",
+        BindControlName: "SendToCustomerSMSTemplateID",
+        DataSourceMember: "SendToCustomerSMSTemplateID"
+    },
+    {
+        Name: "IsShowPurchaseList",
+        DefaultValue: "",
+        BindControlName: "IsShowPurchaseList",
+        DataSourceMember: "IsShowPurchaseList"
+    },
+    {
+        Name: "IsCanUpdateBeginDoService",
+        DefaultValue: "",
+        BindControlName: "IsCanUpdateBeginDoService",
+        DataSourceMember: "IsCanUpdateBeginDoService"
+    },
+    {
+        Name: "IsCanUpdateCompleteDoService",
+        DefaultValue: "",
+        BindControlName: "IsCanUpdateCompleteDoService",
+        DataSourceMember: "IsCanUpdateCompleteDoService"
+    },
+    {
         Name: "OrderIndex",
         DefaultValue: "",
         BindControlName: "OrderIndex",

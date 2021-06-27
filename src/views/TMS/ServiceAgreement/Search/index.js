@@ -12,7 +12,7 @@ import formatDistance from 'date-fns/formatDistance';
 import viLocale from "date-fns/locale/vi";
 import { compareAsc, format, add } from 'date-fns';
 
-import { SERVICEAGREEMENT_VIEW, SERVICEAGREEMENT_DELETE } from "../../../../constants/functionLists";
+import { SERVICEAGREEMENT_VIEW, SERVICEAGREEMENT_DELETE, SERVICEAGREEMENT_EXPORT } from "../../../../constants/functionLists";
 
 
 import {
@@ -69,7 +69,6 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            // console.log("SA:", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -80,7 +79,7 @@ class SearchCom extends React.Component {
 
                 const result = apiResult.ResultObject.map((item) => {
 
-                    item.ExtendLable = item.ExtendedDate ? formatDate(item.ExtendedDate) : 'Chưa gia hạn';
+                    item.ExtendLable = item.ExtendedDate ? formatDate(item.ExtendedDate, true) : 'Chưa gia hạn';
                     let currentDate = new Date();
                     if (item.ExtendedDate != null) {
                         const ExtendedDate = new Date(item.ExtendedDate);
@@ -115,6 +114,13 @@ class SearchCom extends React.Component {
                                 item.StatusLable = <span className='lblstatus text-success'>Còn hạn</span>;
                             }
                         }
+                    }
+
+                    if (item.IsdePOSited) {
+                        item.DepositedLable = "Đã ký";
+                    }
+                    else {
+                        item.DepositedLable = "Chưa ký";
                     }
                     return item;
 
@@ -208,6 +214,7 @@ class SearchCom extends React.Component {
             MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
             listMLObject.push(MLObject);
         });
+
         this.props.callFetchAPI(APIHostName, DeleteNewAPIPath, listMLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.addNotification(apiResult.Message, apiResult.IsError);
@@ -223,17 +230,9 @@ class SearchCom extends React.Component {
         if (!IsError) {
             cssNotification = "notification-custom-success";
             iconNotification = "fa fa-check"
-            // this.setState({
-            //     cssNotification: "notification-custom-success",
-            //     iconNotification: "fa fa-check"
-            // });
         } else {
             cssNotification = "notification-danger";
             iconNotification = "fa fa-exclamation"
-            // this.setState({
-            //     cssNotification: "notification-danger",
-            //     iconNotification: "fa fa-exclamation"
-            // });
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
@@ -255,6 +254,8 @@ class SearchCom extends React.Component {
             dismissable: { click: true }
         });
     }
+
+
 
     handleSearchSubmit(formData, MLObject) {
         const DataSearch = [
@@ -293,13 +294,11 @@ class SearchCom extends React.Component {
     }
 
     handleExportFile(result) {
-        this.addNotification(result.Message);
+        this.addNotification(result.Message, result.IsError);
     }
 
     handleImportFile(resultRows, errors) {
-        console.log('handleImportFile', resultRows, errors)
         // this.props.callFetchAPI(APIHostName, AddAutoAPIPath, resultRows).then(apiResult => {
-        //     console.log('apiResult', apiResult)
         // });
     }
 
@@ -328,6 +327,7 @@ class SearchCom extends React.Component {
                     RowsPerPage={10}
                     RequirePermission={SERVICEAGREEMENT_VIEW}
                     DeletePermission={SERVICEAGREEMENT_DELETE}
+                    ExportPermission={SERVICEAGREEMENT_EXPORT}
                     IsExportFile={true}
                     DataExport={this.state.dataExport}
                     fileName="Danh sách hợp đồng"

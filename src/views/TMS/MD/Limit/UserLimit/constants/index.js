@@ -81,7 +81,7 @@ export const SearchElementList = [
 
     },
 
-   
+
 ];
 
 export const SearchMLObjectDefinitionNew = [
@@ -141,7 +141,7 @@ export const SearchElementListNew = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.AREATT",
         ValueMember: "AreaID",
         NameMember: "AreaName",
-        filterrest:"cbStore",
+        filterrest: "cbStore",
 
     },
 
@@ -163,7 +163,7 @@ export const SearchElementListNew = [
         // filterobj: "CompanyID",
         filterName: "cbArea",
         filterValue: "",
-        filterobj:"AreaID",
+        filterobj: "AreaID",
 
     },
 
@@ -201,5 +201,8 @@ export const SearchElementListNew = [
 
     },
 
-   
+
 ];
+
+export const DefaultMaxLimitAmount = 10000000;
+export const DefaultMaxLimitCoil = 15;

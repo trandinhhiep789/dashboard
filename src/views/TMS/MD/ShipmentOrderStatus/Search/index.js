@@ -27,7 +27,7 @@ import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_SHIPMENTORDERSTATUS } from "../../../../../constants/keyCache";
-import { SHIPMENTORDERSTATUS_VIEW, SHIPMENTORDERSTATUS_DELETE } from "../../../../../constants/functionLists";
+import { SHIPMENTORDERSTATUS_VIEW, SHIPMENTORDERSTATUS_DELETE, SHIPMENTORDERSTATUS_EXPORT } from "../../../../../constants/functionLists";
 import { formatDate } from "../../../../../common/library/CommonLib";
 
 class SearchCom extends React.Component {
@@ -104,8 +104,8 @@ class SearchCom extends React.Component {
                         "Mã trạng thái yêu cầu vận chuyển": item.ShipmentOrderStatusID,
                         "Tên trạng thái yêu cầu vận chuyển": item.ShipmentOrderStatusName,
                         "Kích hoạt": item.IsActived ? "Có" : "Không",
-                        "Ngày tạo": formatDate(item.CreatedDate),
-                        "Người tạo": item.CreatedFullName
+                        "Ngày cập nhật": formatDate(item.UpdatedDate),
+                        "Người cập nhật": item.UpdatedUserFullName
                     };
                     return element;
 
@@ -199,6 +199,7 @@ class SearchCom extends React.Component {
                         ref={this.gridref}
                         RequirePermission={SHIPMENTORDERSTATUS_VIEW}
                         DeletePermission={SHIPMENTORDERSTATUS_DELETE}
+                        ExportPermission={SHIPMENTORDERSTATUS_EXPORT}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                         IsExportFile={true}

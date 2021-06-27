@@ -77,16 +77,7 @@ export const DataGridColumnList = [
         Caption: "Tổng số lượng",
         DataSourceMember: "TotalQuantity",
         Width: 100
-    },
-    {
-        Name: "UsableQuantity",
-        Type: "text",
-        Caption: "Số lượng khả dụng",
-        DataSourceMember: "UsableQuantity",
-        Width: 100
-    },
-
-
+    }
 ];
 
 export const DataGridHistoryColumnList = [
@@ -107,7 +98,8 @@ export const DataGridHistoryColumnList = [
         Width: 250,
         Hyperlinks: {
             AREdit: "AdvanceRequest/Edit",
-            SODetail: "ShipmentOrder/Detail"
+            SODetail: "ShipmentOrder/Detail",
+            MTRDetail: "MTReturnRequest/Detail",
         }
     },
 
@@ -125,23 +117,23 @@ export const DataGridHistoryColumnList = [
         DataSourceMember: "NewTotalQuantity",
         Width: 100
     },
-    {
-        Name: "OldUsAbleQuantity",
-        Type: "text",
-        Caption: "Sô lượng sử dụng cũ",
-        DataSourceMember: "OldUsAbleQuantity",
-        Width: 150
-    },
-    {
-        Name: "NewUsAbleQuantity",
-        Type: "text",
-        Caption: "Sô lượng sử dụng mới",
-        DataSourceMember: "NewUsAbleQuantity",
-        Width: 150
-    },
+    // {
+    //     Name: "OldUsAbleQuantity",
+    //     Type: "text",
+    //     Caption: "Sô lượng sử dụng cũ",
+    //     DataSourceMember: "OldUsAbleQuantity",
+    //     Width: 150
+    // },
+    // {
+    //     Name: "NewUsAbleQuantity",
+    //     Type: "text",
+    //     Caption: "Sô lượng sử dụng mới",
+    //     DataSourceMember: "NewUsAbleQuantity",
+    //     Width: 150
+    // },
     {
         Name: "CreatedDate",
-        Type: "date",
+        Type: "datetime",
         Caption: "Ngày thay đổi",
         DataSourceMember: "CreatedDate",
         Width: 150

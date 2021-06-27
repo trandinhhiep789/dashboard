@@ -18,13 +18,14 @@ const dtFromdate = new Date();
 dtFromdate.setDate(new Date().getDate() - 30);
 
 export const SearchElementList = [
-    
+
     {
         type: "Datetime",
         name: "dtFromDate",
         DataSourceMember: "FromDate",
         label: "Từ Ngày",
-        value: new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()),
+        // value: new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()),
+        value: new Date(),
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
@@ -53,7 +54,7 @@ export const SearchElementList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
         ValueMember: "ShipmentOrderTypeID",
         NameMember: "ShipmentOrderTypeName",
-        classNameCol:"col-custom"
+        classNameCol: "col-custom"
     },
     {
         type: "ComboBoxNewChange",
@@ -71,12 +72,12 @@ export const SearchElementList = [
         NameMember: "StoreName",
         // filterValue: 10,
         // filterobj:"CompanyID",
-        classNameCol:"col-custom"
+        classNameCol: "col-custom"
     },
 
 ]
 
-export const  SearchMLObjectDefinition = [
+export const SearchMLObjectDefinition = [
     {
         Name: "FromDate",
         DefaultValue: "",

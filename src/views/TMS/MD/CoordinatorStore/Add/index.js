@@ -29,6 +29,8 @@ import StoreWard from "../../CoordinatorStoreWard/Component/StoreWard";
 import ReactNotification from "react-notifications-component";
 import MultiStoreComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiStoreComboBox";
 import MultiAllStoreComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiAllStoreComboBox";
+import MultiSelectStoreByCompanyComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiSelectStoreByCompanyComboBox";
+
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -81,15 +83,27 @@ class AddCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
-        const { SenderStoreID } = this.state;
+        // console.log("222", MLObject);
+        // const { SenderStoreID } = this.state;
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.CoordinatorStoreWard_ItemList = this.state.DataSource.CoordinatorStoreWard_ItemList;
-        MLObject.SenderStoreID = SenderStoreID;
+        // MLObject.SenderStoreID = SenderStoreID;
+
+        if (MLObject.ShipmentOrderTypeID && Array.isArray(MLObject.ShipmentOrderTypeID)) {
+            let result = MLObject.ShipmentOrderTypeID.filter(item => Number.isInteger(item) === true);
+            MLObject.ListShipmentOrderTypeID = result;
+            MLObject.ShipmentOrderTypeID = -1;
+        }
+        // console.log("databc", MLObject);
+
+
         this.props.callFetchAPI(APIHostName, AddNewAPIPath, MLObject).then(apiResult => {
+            // console.log("object", MLObject, apiResult)
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
         });
+
     }
 
     handleChange(formData, MLObject) {
@@ -129,7 +143,7 @@ class AddCom extends React.Component {
     }
 
     handleEdit(index) {
-        console.log('handleEdit',index)
+        // console.log('handleEdit', index)
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối',
             content: {
@@ -187,7 +201,7 @@ class AddCom extends React.Component {
     }
 
     onChangeAllStore(name, objstore) {
-        
+        console.log("onChangeAllStore", name, objstore)
         this.setState({
             SenderStoreID: objstore.value
         })
@@ -199,7 +213,7 @@ class AddCom extends React.Component {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
-    
+
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -214,7 +228,7 @@ class AddCom extends React.Component {
                 >
                     <div className="row">
                         <div className="col-md-6">
-                            <FormControl.ComboBoxSelect
+                            {/* <FormControl.ComboBoxSelect
 
                                 name="cbShipmentOrderTypeID"
                                 colspan="8"
@@ -229,7 +243,28 @@ class AddCom extends React.Component {
                                 controltype="InputControl"
                                 value={""}
                                 listoption={null}
-                                datasourcemember="ShipmentOrderTypeID" />
+                                isMultiSelect={true}
+                                datasourcemember="ShipmentOrderTypeID" /> */}
+
+                            <FormControl.FormControlComboBox
+                                name="cbShipmentOrderTypeID"
+                                colspan="8"
+                                labelcolspan="4"
+                                label="loại yêu cầu vận chuyển"
+                                // validatonList={[""]}
+                                isautoloaditemfromcache={true}
+                                validatonList={["Comborequired"]}
+                                isMultiSelect={true}
+                                placeholder="-- Vui lòng chọn --"
+                                loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERTYPE"
+                                valuemember="ShipmentOrderTypeID"
+                                nameMember="ShipmentOrderTypeName"
+                                controltype="InputControl"
+                                value={""}
+                                listoption={null}
+                                datasourcemember="ShipmentOrderTypeID"
+                                isAllowSelectAll={true}
+                            />
                         </div>
                         <div className="col-md-6">
                             <FormControl.FormControlComboBox
@@ -247,10 +282,10 @@ class AddCom extends React.Component {
                                 controltype="InputControl"
                                 value={""}
                                 listoption={null}
-                                datasourcemember="PartnerID" 
+                                datasourcemember="PartnerID"
                                 filterValue={1}
                                 filterobj="PartnerTypeID"
-                                />
+                            />
 
                         </div>
 
@@ -275,8 +310,31 @@ class AddCom extends React.Component {
                                 filterobj="CompanyID"
                             />
                         </div>
-
                         <div className="col-md-6">
+                            <FormControl.FormControlComboBoxNew
+
+                                name="cbSenderStoreID"
+                                colspan="8"
+                                labelcolspan="4"
+                                label="kho xuất"
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
+                                validatonList={["Comborequired"]}
+                                placeholder="-- Vui lòng chọn --"
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid="ERPCOMMONCACHE.STORE"
+                                valuemember="StoreID"
+                                nameMember="StoreName"
+                                controltype="InputControl"
+                                value={""}
+                                listoption={null}
+                                datasourcemember="SenderStoreID"
+                                filterValue={[1, 10]}
+                                filterobj="CompanyID"
+                            />
+                        </div>
+
+                        {/* <div className="col-md-6">
                             <MultiAllStoreComboBox
                                 name="cbSenderStoreID"
                                 colspan="8"
@@ -295,8 +353,83 @@ class AddCom extends React.Component {
                                 datasourcemember="SenderStoreID"
                                 validationErrorMessage={''}
                                 IsLabelDiv="kho xuất"
+                            /> 
+                        </div> */}
+
+                        {/* <div className="col-md-6">
+
+                            <MultiSelectStoreByCompanyComboBox
+                                name="cbSenderStoreID"
+                                // rowspan = "12"
+                                colspan="8"
+                                labelcolspan="4"
+                                label="kho xuất"
+                                disabled={this.state.IsSystem}
+                                readOnly={this.state.IsSystem}
+                                validatonList={["Comborequired"]}
+                                IsLabelDiv={false}
+                                isautoloaditemfromcache={false}
+                                onChange={this.onChangeAllStore.bind(this)}
+                                controltype="InputControl"
+                                value={[]}
+                                listoption={[]}
+                                isMultiSelect={false}
+                                datasourcemember="SenderStoreID"
+                                validationErrorMessage={''}
+                                IsLabelDiv="kho xuất"
+                                classNameDropdown="dropdown-custom"
+                                classRows="groupSelectDropCus"
+                                valueNameOption={1}
+                                nameOption="cbSenderStoreID"
+                                listoptionDropdown={[
+                                    { value: 1, label: 'Công ty TGDD' },
+                                    { value: 10, label: 'Công ty Tân Tâm' },
+                                ]}
+                            />
+                        </div> */}
+
+                        {/* <div className="col-md-6">
+                            <FormControl.FormControlComboBox
+                                name="cbDistrictID"
+                                colspan="8"
+                                labelcolspan="4"
+                                disabled=""
+                                label="Quận/huyện"
+                                validatonList={["Comborequired"]}
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid="ERPCOMMONCACHE.DISTRICT"
+                                valuemember="DistrictID"
+                                nameMember="DistrictName"
+                                controltype="InputControl"
+                                value={-1}
+                                listoption={[]}
+                                datasourcemember="DistrictID"
+                                filterValue=""
+                                filterobj="DistrictID"
+                                filterrest="cbSenderStoreID"
                             />
                         </div>
+                        <div className="col-md-6">
+                            <FormControl.FormControlComboBox
+                                name="cbSenderStoreID"
+                                colspan="8"
+                                labelcolspan="4"
+                                label="kho gửi"
+                                validatonList={["Comborequired"]}
+                                placeholder="-- Vui lòng chọn --"
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid="ERPCOMMONCACHE.STORE"
+                                valuemember="StoreID"
+                                nameMember="StoreName"
+                                controltype="InputControl"
+                                value={""}
+                                listoption={null}
+                                datasourcemember="SenderStoreID"
+                                filterName="cbDistrictID"
+                                filterValue=""
+                                filterobj="DistrictID"
+                            />
+                        </div> */}
                     </div>
                     <div className="row">
                         {/* <div className="col-md-6">
@@ -377,6 +510,7 @@ class AddCom extends React.Component {
                                 controltype="InputControl"
                                 colspan="8"
                                 value={false}
+                                disabled={true}
                                 labelcolspan="4"
                                 classNameCustom="customCheckbox"
                                 titleSmall="Chọn vào đây để khai báo danh sách phường/xã"
@@ -385,7 +519,7 @@ class AddCom extends React.Component {
                         <div className="col-md-6"></div>
                     </div>
 
-                    <InputGridControl
+                    {/* <InputGridControl
                         name="CoordinatorStoreWard_ItemList"
                         controltype="InputGridControl"
                         title="Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối"
@@ -398,7 +532,7 @@ class AddCom extends React.Component {
                         onDeleteClick={this.handleDelete}
                         isHiddenButtonAdd={IsShowCustomerAddress}
                         ref={this.gridref}
-                    />
+                    /> */}
 
                 </FormContainer>
             </React.Fragment>

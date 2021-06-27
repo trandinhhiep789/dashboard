@@ -94,8 +94,17 @@ class SearchCom extends React.Component {
 
     handleonSearchEvent(Keywordid) {
         if (Keywordid != "") {
-            if (Keywordid.includes("SO")) {
-                this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByPartnerSaleOrderID", String(Keywordid).trim()).then(apiResult => {
+            if (Keywordid.trim().length==15) {
+                this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByKeyword", String(Keywordid).trim()).then(apiResult => {
+                    if (!apiResult.IsError) {
+                        this.setState({
+                            gridDataSource: apiResult.ResultObject
+                        });
+                    }
+                });
+            }
+             else if(Keywordid.trim().length==10) {
+                this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByPhoneNember", String(Keywordid).trim()).then(apiResult => {
                     if (!apiResult.IsError) {
                         this.setState({
                             gridDataSource: apiResult.ResultObject
@@ -104,7 +113,7 @@ class SearchCom extends React.Component {
                 });
             }
             else {
-                this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByKeyword", String(Keywordid).trim()).then(apiResult => {
+                this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByPartnerSaleOrderID", String(Keywordid).trim()).then(apiResult => {
                     if (!apiResult.IsError) {
                         this.setState({
                             gridDataSource: apiResult.ResultObject
@@ -130,7 +139,6 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        console.log("MLObject", formData, MLObject)
         // let result="";
         // if ( MLObject.ShipmentOrderTypeID != -1 &&  MLObject.ShipmentOrderTypeID != null &&  MLObject.ShipmentOrderTypeID != "") {
         //     result =  MLObject.ShipmentOrderTypeID.reduce((data, item, index) => {
@@ -190,8 +198,8 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.Typename
             },
             {
-                SearchKey: "@IsOrderBy",
-                SearchValue: MLObject.IsOrderBy
+                SearchKey: "@RequestStoreID",
+                SearchValue: MLObject.RequestStoreID
             },
             {
                 SearchKey: "@PAGESIZE",
@@ -203,7 +211,7 @@ class SearchCom extends React.Component {
             }
         ];
         this.setState({ SearchData: postData });
-        this.callSearchData(postData);
+         this.callSearchData(postData);
     }
 
     callSearchData(searchData) {
@@ -281,7 +289,7 @@ class SearchCom extends React.Component {
             PrintID: id
         })
 
-        this.props.callFetchAPI("TMSAPI", "api/ShipmentOrder/LoadInfoForMobile", id).then(apiResult => {
+        this.props.callFetchAPI("TMSAPI", "api/ShipmentOrder/LoadPrintData", id).then(apiResult => {
             //this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
                 // debugger;

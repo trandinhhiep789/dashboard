@@ -9,6 +9,7 @@ export const UpdateNewAPIPath = "api/CoordinatorStore/UpdateNew";
 export const DeleteAPIPath = "api/CoordinatorStore/Delete";
 export const DeleteNewAPIPath = "api/CoordinatorStore/DeleteNew";
 export const UpdateOrderAPIPath = "api/CoordinatorStore/UpdateOrder";
+export const APIDataExport = "api/CoordinatorStore/Export";
 export const BackLink = "/CoordinatorStore";
 export const AddLink = "/CoordinatorStore/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";
@@ -35,7 +36,7 @@ export const AddPagePath = [
 ];
 
 export const InitSearchParams = [
- 
+
     {
         SearchKey: "@ShipmentOrderTypeID",
         SearchValue: ""
@@ -43,11 +44,32 @@ export const InitSearchParams = [
     {
         SearchKey: "@StoreID",
         SearchValue: ""
+    },
+    {
+        SearchKey: "@PAGESIZE",
+        SearchValue: 100
+    },
+    {
+        SearchKey: "@PAGEINDEX",
+        SearchValue: 0
     }
 ];
 
+
+export const InitSearchExportParams = [
+
+    {
+        SearchKey: "@ShipmentOrderTypeID",
+        SearchValue: ""
+    },
+    {
+        SearchKey: "@StoreID",
+        SearchValue: ""
+    },
+];
+
 export const SearchElementList = [
-   
+
     {
         type: "ComboBoxNewChange",
         name: "cbShipmentOrderTypeID",
@@ -62,7 +84,8 @@ export const SearchElementList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
         ValueMember: "ShipmentOrderTypeID",
         NameMember: "ShipmentOrderTypeName",
-        classNameCol:"col-custom"
+        classNameCol: "col-custom",
+        //validatonList: ["Comborequired"]
     },
 
     {
@@ -81,20 +104,20 @@ export const SearchElementList = [
         NameMember: "StoreName",
         // filterValue: 1,
         // filterobj:"CompanyID",
-        classNameCol:"col-custom"
+        classNameCol: "col-custom"
     },
-  
+
 ];
 
 export const SearchMLObjectDefinition = [
     {
         Name: "ShipmentOrderTypeID",
-        DefaultValue: "",
+        DefaultValue: -1,
         BindControlName: "cbShipmentOrderTypeID"
     },
     {
         Name: "StoreID",
-        DefaultValue: "",
+        DefaultValue: -1,
         BindControlName: "cbStoreID"
     },
 ];
@@ -102,29 +125,29 @@ export const SearchMLObjectDefinition = [
 export const DataGridColumnList = [
 
     {
-        Name: "ProvinceName",
+        Name: "ProvinceFullName",
         Type: "text",
         Caption: "Tỉnh/thành phố",
-        DataSourceMember: "ProvinceName",
+        DataSourceMember: "ProvinceFullName",
         Width: 200
     },
-    
+
     {
-        Name: "DistrictName",
+        Name: "DistrictFullName",
         Type: "text",
         Caption: "Quận/huyện",
-        DataSourceMember: "DistrictName",
+        DataSourceMember: "DistrictFullName",
         Width: 200
     },
-  
+
     {
-        Name: "WardName",
+        Name: "WardFullName",
         Type: "text",
         Caption: "Phường/xã",
-        DataSourceMember: "WardName",
+        DataSourceMember: "WardFullName",
         Width: 200
     },
-    
+
 
     {
         Name: "chkIsSystem",
@@ -133,7 +156,7 @@ export const DataGridColumnList = [
         DataSourceMember: "IsSystem",
         Width: 70
     },
-  
+
     {
 
         Name: "Action",
@@ -220,7 +243,7 @@ export const AddElementList = [
         loaditemcachekeyid: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
         valuemember: "ShipmentOrderTypeID",
         nameMember: "ShipmentOrderTypeName",
-        OrderIndex:1
+        OrderIndex: 1
     },
     {
         type: "select",
@@ -237,7 +260,7 @@ export const AddElementList = [
         loaditemcachekeyid: "ERPCOMMONCACHE.PARTNER",
         valuemember: "PartnerID",
         nameMember: "PartnerName",
-        OrderIndex:2
+        OrderIndex: 2
     },
     {
         type: "select",
@@ -256,7 +279,7 @@ export const AddElementList = [
         nameMember: "StoreName",
         filterValue: 10,
         filterobj: "CompanyID",
-        OrderIndex:3
+        OrderIndex: 3
     },
     {
         type: "select",
@@ -275,16 +298,16 @@ export const AddElementList = [
         nameMember: "StoreName",
         filterValue: 1,
         filterobj: "CompanyID",
-        OrderIndex:4
+        OrderIndex: 4
     },
     {
         type: "checkbox",
         name: "chkIsCheckCustomerAddress",
-        datasourcemember:"IsCheckCustomerAddress",
+        datasourcemember: "IsCheckCustomerAddress",
         label: "kiểm tra địa chỉ khách hàng",
         value: false,
         readonly: false,
-        OrderIndex:5
+        OrderIndex: 5
     }
 
 ];
@@ -299,7 +322,7 @@ export const EditElementList = [
 
 ];
 
-export const DataGridCoordinatorStoreColumnList=[
+export const DataGridCoordinatorStoreColumnList = [
     {
         Name: "chkSelect",
         Type: "checkbox",
@@ -336,12 +359,139 @@ export const DataGridCoordinatorStoreColumnList=[
         Width: 250
     },
     {
+        Name: "UpdatedDate",
+        Type: "datetime",
+        Caption: "Ngày cập nhật",
+        DataSourceMember: "UpdatedDate",
+        Width: 130
+    },
+    {
+        Name: "UpdatedUserFullName",
+        Type: "text",
+        Caption: "Người cập nhật",
+        DataSourceMember: "UpdatedUserFullName",
+        Width: 150
+    },
+    {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
         DataSourceMember: "CoordinatorStoreID",
-        Width: 100,
+        Width: 80,
         Link: "/CoordinatorStore/Edit/",
         LinkText: "Chỉnh sửa"
     },
 ]
+
+
+export const schema = {
+    'Mã Tỉnh': {
+        prop: 'ProvinceID',
+        type: String,
+        required: true
+    },
+    'Tên Tỉnh': {
+        prop: 'ProvinceName',
+        type: String
+    },
+    'Mã Huyện/ Quận': {
+        prop: 'DistrictID',
+        type: String,
+        required: true
+    },
+    'Tên Huyện/ Quận': {
+        prop: 'DistrictName',
+        type: String
+    },
+    'Tên Phường/ Xã': {
+        prop: 'WardName',
+        type: String
+    },
+    'Mã Phường/ Xã': {
+        prop: 'WardID',
+        type: String,
+        required: true
+    },
+    'Hệ thống': {
+        prop: 'IsSystem',
+        type: Number
+    },
+}
+
+export const DataTemplateExport = [
+    {
+        "Mã Tỉnh": "102",
+        "Tên Tỉnh": "Bà Rịa - Vũng Tàu",
+        "Mã Huyện/ Quận": "887",
+        "Tên Huyện/ Quận": "Huyện Côn Đảo",
+        "Mã Phường/ Xã": "182",
+        "Tên Phường/ Xã": "Thị trấn Côn Đảo",
+        "Hệ thống": "0"
+    },
+    {
+        "Mã Tỉnh": "109",
+        "Tên Tỉnh": "Bình Dương",
+        "Mã Huyện/ Quận": "2022",
+        "Tên Huyện/ Quận": "Huyện Bắc Tân Uyên",
+        "Mã Phường/ Xã": "1112",
+        "Tên Phường/ Xã": "Xã Lạc An",
+        "Hệ thống": "1"
+    },
+];
+
+export const DataMasterTemplateExport = [
+    {
+        "Loại Yêu Cầu Vận Chuyển": "1007",
+        "Đối Tác": "1",
+        "Kho Điều Phối": "4121",
+        "Kho Xuất": "777",
+        "Kích Hoạt": "1",
+        "Hệ Thống": "0",
+        "Kiểm Tra Địa Chỉ Khách Hàng": "0"
+    },
+    {
+        "Loại Yêu Cầu Vận Chuyển": "1000",
+        "Đối Tác": "2",
+        "Kho Điều Phối": "4121",
+        "Kho Xuất": "777",
+        "Kích Hoạt": "1",
+        "Hệ Thống": "0",
+        "Kiểm Tra Địa Chỉ Khách Hàng": "0"
+    },
+];
+
+
+export const schemaMaster = {
+    'Loại Yêu Cầu Vận Chuyển': {
+        prop: 'ShipmentOrderTypeID',
+        type: String,
+        required: true
+    },
+    'Đối Tác': {
+        prop: 'PartnerID',
+        type: String,
+        ed: true
+    },
+    'Kho Điều Phối': {
+        prop: 'StoreID',
+        type: String,
+        required: true
+    },
+    'Kho Xuất': {
+        prop: 'SenderStoreID',
+        type: String,
+        required: true
+    },
+    'Kích Hoạt': {
+        prop: 'IsActived',
+        type: Number
+    },
+    'Hệ thống': {
+        prop: 'IsSystem',
+        type: Number
+    },
+    'Kiểm Tra Địa Chỉ Khách Hàng': {
+        prop: 'IsCheckCustomerAddress',
+        type: Number
+    },
+}

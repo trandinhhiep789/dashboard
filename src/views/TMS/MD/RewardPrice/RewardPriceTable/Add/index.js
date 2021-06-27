@@ -65,8 +65,37 @@ class AddCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
-        MLObject.AreaID = MLObject.AreaID != "" ? MLObject.AreaID : -1
+        // console.log("123", formData, MLObject)
+        let result;
+        if (!!MLObject.AreaID && MLObject.AreaID != -1 && MLObject.AreaID != null && MLObject.AreaID != "" ) {
+            result = MLObject.AreaID.reduce((data, item, index) => {
+                const comma = data.length ? "," : "";
+                return data + comma + item;
+            }, '');
+        }
+        else {
+            result = ""
+        }
+
+        let RewardPriceTable_Area = [];
+        if (!!MLObject.AreaID && MLObject.AreaID.length > 0) {
+            RewardPriceTable_Area = MLObject.AreaID.map((item, index) => {
+                let element = {}
+                element.AreaID = item;
+                return element;
+            })
+        }
+
+
+
+        MLObject.ApplyAreaNameList = result
+        MLObject.RewardPriceTable_AreaList = RewardPriceTable_Area
+        MLObject.AreaID = !!MLObject.AreaID && MLObject.AreaID != "" ? MLObject.AreaID[0] : -1
         MLObject.CarrierTypeID = MLObject.CarrierTypeID != "" ? MLObject.CarrierTypeID : -1
+
+        // console.log("object", formData, MLObject, RewardPriceTable_Area)
+
+
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
@@ -110,6 +139,7 @@ class AddCom extends React.Component {
 
 
     render() {
+
         const { DataSource } = this.state;
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
@@ -183,19 +213,21 @@ class AddCom extends React.Component {
 
 
                         <div className="col-md-6">
-                            <FormControl.ComboBoxSelect
+                            <FormControl.FormControlComboBox
                                 name="cbAreaID"
                                 colspan="8"
                                 labelcolspan="4"
                                 label="khu vực"
                                 // validatonList={[""]}
                                 isautoloaditemfromcache={true}
+                                isMultiSelect={true}
                                 placeholder="-- Vui lòng chọn --"
                                 loaditemcachekeyid={ERPCOMMONCACHE_AREATT} //"ERPCOMMONCACHE.AREATT"
                                 valuemember="AreaID"
                                 nameMember="AreaName"
                                 controltype="InputControl"
                                 value={""}
+                                // isselectedOp={true}
                                 listoption={null}
                                 datasourcemember="AreaID" />
 

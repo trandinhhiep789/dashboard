@@ -35,7 +35,7 @@ class DestroyRequestRVListCom extends Component {
                     <h4 className="title">Danh sách sản phẩm</h4>
                 </div>
                 <div className="card-body">
-                    <div class="col-lg-12 SearchForm">
+                    <div className="col-lg-12 SearchForm">
                         <div className="card">
                             <div className="card-body">
                                 <table className="table table-sm table-striped table-bordered table-hover table-condensed">

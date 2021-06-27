@@ -11,28 +11,29 @@ export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "UserName";
 export const SearchPartnerRoleAPIPath = "api/PartnerRole/Search2";
 export const CreateUserNameAPIPath = "api/PartnerUser/CreateNewUserID";
+import { ERPCOMMONCACHE_STORE } from '../../../../../../constants/keyCache';
 import { CDN_LOGO_IMAGE } from '../../../../../../constants/systemVars';
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/PartnerUser", Title: "Người dùng của nhà cung cấp" }
+    { Link: "/PartnerUser", Title: "Khai báo user đối tác" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/PartnerUser", Title: "Người dùng của nhà cung cấp" },
+    { Link: "/PartnerUser", Title: "Khai báo user đối tác" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/PartnerUser", Title: "Người dùng của nhà cung cấp" },
+    { Link: "/PartnerUser", Title: "Khai báo user đối tác" },
     { Link: "", Title: "Thêm" }
 ];
 
 export const DetailPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/PartnerUser", Title: "Người dùng của nhà cung cấp" },
+    { Link: "/PartnerUser", Title: "Khai báo user đối tác" },
     { Link: "", Title: "Chi tiết" }
 ];
 
@@ -53,7 +54,7 @@ export const InitSearchParams = [
         SearchKey: "@PartnerID",
         SearchValue: -1
     }
-   
+
 ];
 
 export const SearchMLObjectDefinition = [
@@ -78,14 +79,14 @@ export const SearchElementList = [
         label: "Từ khóa",
         value: "",
         colspan: 2,
-        placeholder: "Từ khóa",
+        placeholder: "số điện thoại/mã user",
         icon: ""
     },
     {
         type: "ComboBox",
         name: "cbPartnerID",
         DataSourceMember: "PartnerID",
-        label: "Nhà cung cấp",
+        label: "Chọn đối tác",
         colspan: 2,
         value: -1,
         isMultiSelect: false,
@@ -128,19 +129,19 @@ export const SearchElementList = [
 ];
 
 export const AddElementList = [
-    {
-        type: "text",
-        Name: "txtUserName",
-        label: "tên truy cập người dùng:",
-        value: "",
-        maxSize: "20",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        DataSourceMember: "UserName",
-        readonly: true,
-        validatonList: []
-    },
+    // {
+    //     type: "text",
+    //     Name: "txtUserName",
+    //     label: "tên truy cập người dùng:",
+    //     value: "",
+    //     maxSize: "20",
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: [],
+    //     DataSourceMember: "UserName",
+    //     readonly: true,
+    //     validatonList: []
+    // },
     // {
     //     type: "button",
     //     name: "btnCreateUserName",
@@ -170,6 +171,56 @@ export const AddElementList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
         ValueMember: "PartnerID",
         NameMember: "PartnerName"
+    },
+    {
+        type: "multiselect",
+        Name: "txtPartnerRoleID",
+        label: "Vai trò:",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "PartnerRoleID",
+        readonly: false,
+        validatonList: ["Comborequired"],
+        isMulti: false,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNERROLE",
+        ValueMember: "PartnerRoleID",
+        NameMember: "PartnerRoleName"
+    },
+    // {
+    //     type: "text",
+    //     Name: "txtLimit",
+    //     label: "hạn mức người dùng:",
+    //     value: 0,
+    //     maxSize: "400",
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: [],
+    //     DataSourceMember: "",
+    //     readonly: true,
+    //     disabled: true,
+    //     validatonList: []
+    // },
+    {
+        type: "multiselect",
+        Name: "txtCoordinatorStoreID",
+        label: "Kho được điều phối:",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "CoordinatorStoreID",
+        readonly: false,
+        validatonList: [],
+        isMulti: true,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.USER_COOSTORE_BYUSER",
+        ValueMember: "StoreID",
+        NameMember: "StoreName",
+        // KeyFilter: "CompanyID",
+        // ValueFilter: 10
     },
     {
         type: "password",
@@ -220,6 +271,7 @@ export const AddElementList = [
         listoption: [],
         DataSourceMember: "FullName",
         readonly: false,
+        textTransform: "uppercase",
         validatonList: ["required"]
     },
     // {
@@ -257,7 +309,7 @@ export const AddElementList = [
         listoption: [],
         DataSourceMember: "PhoneNumber",
         readonly: false,
-        validatonList: ["number"]
+        validatonList: ["required", "number"]
     },
     {
         type: "text",
@@ -269,7 +321,7 @@ export const AddElementList = [
         DataSourceMember: "Birthday",
         ValueMember: "Birthday",
         NameMember: "Birthday",
-        validatonList: ["date"]
+        validatonList: ["required", "date"]
     },
     {
         type: "text",
@@ -283,6 +335,19 @@ export const AddElementList = [
         DataSourceMember: "Email",
         readonly: false,
         validatonList: ["Email"]
+    },
+    {
+        type: "text",
+        Name: "txtIdCardNumber",
+        label: "số CMND:",
+        value: "",
+        maxSize: "12",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "IdCardNumber",
+        readonly: false,
+        validatonList: ["required", "number"]
     },
     {
         type: "textarea",
@@ -354,47 +419,59 @@ export const EditElementList = [
         NameMember: "PartnerName",
     },
     {
-        type: "password",
-        name: "txtPassWord",
-        label: "Mật khẩu:",
-        value: "",
-        maxSize: "400",
+        type: "multiselect",
+        name: "txtPartnerRoleID",
+        label: "Vai trò:",
+        value: -1,
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "",
+        DataSourceMember: "PartnerRoleID",
         readonly: false,
-        validatonList: []
+        validatonList: ["Comborequired"],
+        isMulti: false,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNERROLE",
+        ValueMember: "PartnerRoleID",
+        NameMember: "PartnerRoleName"
     },
+    // {
+    //     type: "text",
+    //     name: "txtLimit",
+    //     label: "hạn mức người dùng:",
+    //     value: 0,
+    //     maxSize: "400",
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: [],
+    //     DataSourceMember: "",
+    //     readonly: true,
+    //     disabled: true,
+    //     validatonList: []
+    // },
     {
-        type: "password",
-        name: "txtPassWordConfirm",
-        label: "Xác nhận mật khẩu:",
+        type: "multiselect",
+        name: "txtCoordinatorStoreID",
+        label: "Kho được điều phối:",
         value: "",
-        maxSize: "400",
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "",
+        DataSourceMember: "CoordinatorStoreID",
         readonly: false,
-        validatonList: []
-    },
-    {
-        type: "checkbox",
-        name: "chkShowPassWord",
-        label: "Hiển thị mật khẩu:",
-        value: "",
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        readonly: false,
-        DataSourceMember: "",
-        validatonList: []
+        validatonList: [],
+        isMulti: true,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.USER_COOSTORE_BYUSER",
+        ValueMember: "StoreID",
+        NameMember: "StoreName",
+        // KeyFilter: "CompanyID",
+        // ValueFilter: 10
     },
     {
         type: "text",
         name: "txtFullName",
-        label: "Họ tên đầy đủ:",
+        label: "họ tên đầy đủ:",
         value: "",
         maxSize: "400",
         placeholder: "",
@@ -402,7 +479,7 @@ export const EditElementList = [
         listoption: [],
         DataSourceMember: "FullName",
         readonly: false,
-        validatonList: []
+        validatonList: ["required"]
     },
     // {
     //     type: "text",
@@ -448,10 +525,10 @@ export const EditElementList = [
         value: "",
         placeholder: "",
         icon: "",
-        DataSourceMember: "Birthday",
+        DataSourceMember: "BirthdayString",
         ValueMember: "Birthday",
         NameMember: "Birthday",
-        validatonList: ["date"]
+        validatonList: ["required", "date"]
     },
     {
         type: "text",
@@ -465,6 +542,19 @@ export const EditElementList = [
         DataSourceMember: "Email",
         readonly: false,
         validatonList: ["Email"]
+    },
+    {
+        type: "text",
+        name: "txtIdCardNumber",
+        label: "số CMND:",
+        value: "",
+        maxSize: "12",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "IdCardNumber",
+        readonly: false,
+        validatonList: ["required", "number"]
     },
     {
         type: "textarea",
@@ -502,6 +592,70 @@ export const EditElementList = [
         listoption: [],
         readonly: false,
         DataSourceMember: "IsSystem",
+        validatonList: []
+    },
+    {
+        type: "button",
+        name: "btnSetNewPass",
+        label: "Đổi mật khẩu",
+        value: "",
+        maxSize: "400",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "checkbox",
+        name: "chkShowPassWord",
+        label: "Hiển thị mật khẩu:",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        readonly: false,
+        DataSourceMember: "",
+        validatonList: []
+    },
+    {
+        type: "password",
+        name: "txtOldPassWord",
+        label: "Mật khẩu cũ:",
+        value: "",
+        maxSize: "400",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "password",
+        name: "txtPassWord",
+        label: "Mật khẩu mới:",
+        value: "",
+        maxSize: "400",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "password",
+        name: "txtPassWordConfirm",
+        label: "Xác nhận mật khẩu mới:",
+        value: "",
+        maxSize: "400",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "",
+        readonly: false,
         validatonList: []
     }
 ];
@@ -902,10 +1056,34 @@ export const MLObjectDefinition = [
         DataSourceMember: "PartnerID"
     },
     {
+        Name: "PartnerRoleID",
+        DefaultValue: "",
+        BindControlName: "txtPartnerRoleID",
+        DataSourceMember: "PartnerRoleID"
+    },
+    {
+        Name: "PartnerRoleName",
+        DefaultValue: "",
+        BindControlName: "txtPartnerRoleName",
+        DataSourceMember: "PartnerRoleName"
+    },
+    {
+        Name: "CoordinatorStoreID",
+        DefaultValue: "",
+        BindControlName: "txtCoordinatorStoreID",
+        DataSourceMember: "CoordinatorStoreID"
+    },
+    {
         Name: "PassWord",
         DefaultValue: "",
         BindControlName: "txtPassWord",
         DataSourceMember: "PassWord"
+    },
+    {
+        Name: "OldPassWord",
+        DefaultValue: "",
+        BindControlName: "txtOldPassWord",
+        DataSourceMember: "OldPassWord"
     },
     {
         Name: "FullName",
@@ -942,6 +1120,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "txtEmail",
         DataSourceMember: "Email"
+    },
+    {
+        Name: "IdCardNumber",
+        DefaultValue: "",
+        BindControlName: "txtIdCardNumber",
+        DataSourceMember: "IdCardNumber"
     },
     {
         Name: "Description",
@@ -1080,11 +1264,11 @@ export const Modal_MLObjectDefinition = [
 
 export const DataGridColumnList = [
     {
-        Name: "chkSelectUserName",
+        Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
         DataSourceMember: "UserName",
-        Width: 100
+        Width: 60
     },
     // {
     //     Name: "UserName",
@@ -1099,7 +1283,7 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Tên người dùng",
         DataSourceMember: "UserName",
-        Width: 200
+        Width: 120
     },
     {
         Name: "FullName",
@@ -1113,7 +1297,14 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Tên nhà cung cấp",
         DataSourceMember: "PartnerName",
-        Width: 800
+        Width: 350
+    },
+    {
+        Name: "PartnerRoleName",
+        Type: "text",
+        Caption: "Vai trò nhà cung cấp",
+        DataSourceMember: "PartnerRoleName",
+        Width: 150
     },
     {
         Name: "PhoneNumber",
@@ -1127,21 +1318,28 @@ export const DataGridColumnList = [
         Type: "checkicon",
         Caption: "Kích hoạt",
         DataSourceMember: "IsActived",
-        Width: 200
+        Width: 100
     },
     {
-        Name: "CreatedDate",
+        Name: "UpdatedDate",
         Type: "date",
-        Caption: "Ngày tạo",
-        DataSourceMember: "CreatedDate",
-        Width: 200
+        Caption: "Ngày cập nhật",
+        DataSourceMember: "UpdatedDate",
+        Width: 120
+    },
+    {
+        Name: "UpdatedUserFullName",
+        Type: "text",
+        Caption: "Người cập nhật",
+        DataSourceMember: "UpdatedUserFullName",
+        Width: 140
     },
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
         DataSourceMember: "UserName",
-        Width: 200,
+        Width: 80,
         Link: "/PartnerUser/edit/",
         LinkText: "Chỉnh sửa"
     }

@@ -3,6 +3,12 @@
         .image-gallery-content {
             .image-gallery-slide-wrapper {
                 clear: both;
+                .image-gallery-fullscreen-button{
+                    display: none;
+                }
+                .image-gallery-play-button{
+                    display: none;
+                }
                 .image-gallery-swipe {
                     .image-gallery-image {
                         img {
@@ -25,6 +31,14 @@
                     }
                 }
             }
+            .image-gallery-left-nav, .image-gallery-right-nav{
+                padding: 0px 10px;
+                &:focus{
+                    outline: none;
+                    box-shadow: none;
+                    border: none;
+                }
+            }
 
         }
     }
@@ -41,3 +55,5 @@
         }
     }
 }
+
+

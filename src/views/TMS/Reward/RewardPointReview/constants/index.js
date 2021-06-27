@@ -6,15 +6,17 @@ export const PagePath = [
     { Link: "", Title: "Kiểm tra điểm thưởng" }
 ];
 
-
+let currentDate = new Date()
+currentDate.setMonth(currentDate.getMonth() - 1)
 export const SearchElementList = [
-    
+
     {
         type: "Datetime",
         name: "dtFromDate",
         DataSourceMember: "FromDate",
         label: "Từ Ngày",
-        value: new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()),
+        // value: new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()),
+        value: new Date(`${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear()}`),
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
@@ -59,7 +61,7 @@ export const SearchElementList = [
 
 ]
 
-export const  SearchMLObjectDefinition = [
+export const SearchMLObjectDefinition = [
     {
         Name: "FromDate",
         DefaultValue: "",
@@ -80,7 +82,7 @@ export const  SearchMLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "txtShipmentOderId"
     },
-    
+
 ]
 
 export const GridColumnList = [
@@ -107,7 +109,7 @@ export const GridColumnList = [
         Width: 200
     },
     {
-       
+
         Name: "ShipmentOrderID",
         Type: "texttolinkNewBlank",
         Caption: "Mã vận đơn",
@@ -129,7 +131,7 @@ export const GridColumnList = [
         DataSourceMember: "DeliveryDistance",
         Width: 100
     },
-    
+
     {
         Name: "RewardPrice",
         Type: "textCurrency",

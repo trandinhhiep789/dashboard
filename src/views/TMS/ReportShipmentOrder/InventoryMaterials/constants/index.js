@@ -1,5 +1,6 @@
+import { USER_PERMISSION_VIEW } from '../../../../../constants/functionLists';
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "";
+export const SearchAPIPath = "api/BeginTermAdvanceDebt/LoadInStock";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
@@ -12,10 +13,26 @@ export const SearchElementList = [
         name: "dtMonth",
         DataSourceMember: "Month",
         label: "Tháng",
-        value: "",
+        value: new Date(),
         format: "MM-YYYY",
         colspan: 2,
         placeholder: "MM-YYYY",
+    },
+    {
+        type: "ComboBox",
+        name: "cbAreaID",
+        DataSourceMember: "AreaID",
+        label: "Khu vực",
+        colspan: 2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "---Vui lòng chọn---",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.AREATT",
+        ValueMember: "AreaID",
+        NameMember: "AreaName"
+
     },
     {
         type: "MultiSelectUser",
@@ -30,17 +47,24 @@ export const SearchElementList = [
         placeholder: "---Vui lòng chọn---",
         listoption: [],
         IsAutoLoadItemFromCache: false,
-        isMultiSelect: false
-
+        isMultiSelect: false,
+        IsPermission: true,
+        PermissionKey: USER_PERMISSION_VIEW,
+        isClearable: true
     },
 
 ]
 
-export const  SearchMLObjectDefinition = [
+export const SearchMLObjectDefinition = [
     {
         Name: "Month",
         DefaultValue: "",
         BindControlName: "dtMonth"
+    },
+    {
+        Name: "AreaID",
+        DefaultValue: "",
+        BindControlName: "cbAreaID"
     },
     {
         Name: "UserName",
@@ -51,150 +75,341 @@ export const  SearchMLObjectDefinition = [
 
 export const GridColumnList = [
     {
-        Name: "aa",
+        Name: "RequestUser",
+        Type: "text",
+        Caption: "Mã nhân viên",
+        DataSourceMember: "RequestUser",
+        Width: 100
+    },
+    {
+        Name: "MaterialGroupID",
+        Type: "text",
+        Caption: "Nhóm vật tư",
+        DataSourceMember: "MaterialGroupID",
+        Width: 100
+    },
+    {
+        Name: "ProductName",
         Type: "text",
         Caption: "Ống đồng",
-        DataSourceMember: "aa",
+        DataSourceMember: "ProductName",
         Width: 100
     },
     {
-        Name: "a1",
+        Name: "QuantityUnit",
         Type: "text",
         Caption: "Đơn vị",
-        DataSourceMember: "a1",
+        DataSourceMember: "QuantityUnit",
         Width: 100
     },
     {
-        Name: "a2",
+        Name: "TotalQuantityBegin",
         Type: "text",
         Caption: "Số dư đầu kỳ",
-        DataSourceMember: "a2",
+        DataSourceMember: "TotalQuantityBegin",
         Width: 100
     },
     {
-        Name: "a3",
-        Type: "text",
+        Name: "QuantityHanOverDone",
+        Type: "popupNew",
         Caption: "Nhận trong kỳ",
-        DataSourceMember: "a1",
+        DataSourceMember: "QuantityHanOverDone",
         Width: 100
     },
     {
-        Name: "a4",
-        Type: "text",
+        Name: "QuantityHanOverDoing",
+        Type: "popupNew",
         Caption: "Chờ bàn giao",
-        DataSourceMember: "a4",
+        DataSourceMember: "QuantityHanOverDoing",
         Width: 100
     },
     {
-        Name: "a5",
-        Type: "text",
+        Name: "QuantityReturn",
+        Type: "popupNew",
         Caption: "Nhập trả",
-        DataSourceMember: "a5",
+        DataSourceMember: "QuantityReturn",
         Width: 100
     },
     {
-        Name: "a6",
-        Type: "text",
+        Name: "ChangeTotalQuantity",
+        Type: "popupNew",
         Caption: "Sử dụng trong kỳ",
-        DataSourceMember: "a6",
+        DataSourceMember: "ChangeTotalQuantity",
         Width: 100
     },
     {
-        Name: "a7",
-        Type: "text",
+        Name: "QuantityExpend",
+        Type: "popupNew",
         Caption: "Tiêu hao khác",
-        DataSourceMember: "a7",
+        DataSourceMember: "QuantityExpend",
         Width: 100
     },
     {
-        Name: "a8",
+        Name: "TotalQuantity",
         Type: "text",
         Caption: "Cuối kỳ",
-        DataSourceMember: "a8",
+        DataSourceMember: "TotalQuantity",
         Width: 100
     },
-    
+    {
+        Name: "SalePrice",
+        Type: "textCurrency",
+        Caption: "Đơn giá (giá vốn)",
+        DataSourceMember: "SalePrice",
+        Width: 100
+    },
+    {
+        Name: "TotalSalePrice",
+        Type: "textCurrency",
+        Caption: "Số tiền quy đổi",
+        DataSourceMember: "TotalSalePrice",
+        Width: 100
+    },
+
 ]
 
 export const GridColumnListPrice = [
     {
-        Name: "aa",
+        Name: "RequestUser",
+        Type: "text",
+        Caption: "Mã nhân viên",
+        DataSourceMember: "RequestUser",
+        Width: 100
+    },
+    {
+        Name: "MaterialGroupID",
+        Type: "text",
+        Caption: "Nhóm vật tư",
+        DataSourceMember: "MaterialGroupID",
+        Width: 100
+    },
+    {
+        Name: "ProductName",
         Type: "text",
         Caption: "Vật tư khác",
-        DataSourceMember: "aa",
+        DataSourceMember: "ProductName",
         Width: 100
     },
     {
-        Name: "a1",
+        Name: "QuantityUnit",
         Type: "text",
         Caption: "Đơn vị",
-        DataSourceMember: "a1",
+        DataSourceMember: "QuantityUnit",
         Width: 100
     },
     {
-        Name: "a2",
+        Name: "TotalQuantityBegin",
         Type: "text",
         Caption: "Số dư đầu kỳ",
-        DataSourceMember: "a2",
+        DataSourceMember: "TotalQuantityBegin",
         Width: 100
     },
     {
-        Name: "a3",
-        Type: "text",
+        Name: "QuantityHanOverDone",
+        Type: "popupNew",
         Caption: "Nhận trong kỳ",
-        DataSourceMember: "a1",
+        DataSourceMember: "QuantityHanOverDone",
         Width: 100
     },
     {
-        Name: "a4",
-        Type: "text",
+        Name: "QuantityHanOverDoing",
+        Type: "popupNew",
         Caption: "Chờ bàn giao",
-        DataSourceMember: "a4",
+        DataSourceMember: "QuantityHanOverDoing",
         Width: 100
     },
     {
-        Name: "a5",
-        Type: "text",
+        Name: "QuantityReturn",
+        Type: "popupNew",
         Caption: "Nhập trả",
-        DataSourceMember: "a5",
+        DataSourceMember: "QuantityReturn",
         Width: 100
     },
     {
-        Name: "a6",
-        Type: "text",
+        Name: "ChangeTotalQuantity",
+        Type: "popupNew",
         Caption: "Sử dụng trong kỳ",
-        DataSourceMember: "a6",
+        DataSourceMember: "ChangeTotalQuantity",
         Width: 100
     },
     {
-        Name: "a7",
-        Type: "text",
+        Name: "QuantityExpend",
+        Type: "popupNew",
         Caption: "Tiêu hao khác",
-        DataSourceMember: "a7",
+        DataSourceMember: "QuantityExpend",
         Width: 100
     },
     {
-        Name: "a8",
+        Name: "TotalQuantity",
         Type: "text",
         Caption: "Cuối kỳ",
-        DataSourceMember: "a8",
+        DataSourceMember: "TotalQuantity",
         Width: 100
     },
     {
-        Name: "a9",
-        Type: "text",
+        Name: "SalePrice",
+        Type: "textCurrency",
         Caption: "Đơn giá (giá vốn)",
-        DataSourceMember: "a9",
+        DataSourceMember: "SalePrice",
         Width: 100
     },
     {
-        Name: "a10",
-        Type: "text",
+        Name: "TotalSalePrice",
+        Type: "textCurrency",
         Caption: "Số tiền quy đổi",
-        DataSourceMember: "a10",
+        DataSourceMember: "TotalSalePrice",
         Width: 100
     },
-    
-    
+
+
 ]
 
+export const DataGridModalQuantityHanOverDone = [
+    {
+        Name: "AdvanceRequestID",
+        Type: "texttolinkNewBlank",
+        Caption: "Yêu cầu tạm ứng",
+        Link: "/AdvanceRequest/Edit/",
+        DataSourceMember: "AdvanceRequestID",
+        Width: 100
+    },
+    {
+        Name: "SaleOrderID",
+        Type: "text",
+        Caption: "Yêu cầu xuất",
+        DataSourceMember: "SaleOrderID",
+        Width: 100
+    },
+    {
+        Name: "OutputVoucherID",
+        Type: "text",
+        Caption: "Mã phiếu xuất",
+        DataSourceMember: "OutputVoucherID",
+        Width: 100
+    },
+    {
+        Name: "ConvertQuantity",
+        Type: "text",
+        Caption: "Số lượng",
+        DataSourceMember: "ConvertQuantity",
+        Width: 100
+    },
+    {
+        Name: "HandOverDate",
+        Type: "text",
+        Caption: "Ngày bàn giao",
+        DataSourceMember: "HandOverDate",
+        Width: 100
+    },
+
+];
+
+export const DataGridModalQuantityHanOverDoing = [
+    {
+        Name: "AdvanceRequestID",
+        Type: "text",
+        Caption: "Yêu cầu tạm ứng",
+        DataSourceMember: "AdvanceRequestID",
+        Width: 100
+    },
+    {
+        Name: "SaleOrderID",
+        Type: "text",
+        Caption: "Yêu cầu xuất",
+        DataSourceMember: "SaleOrderID",
+        Width: 100
+    },
+    {
+        Name: "OutputVoucherID",
+        Type: "text",
+        Caption: "Mã phiếu xuất",
+        DataSourceMember: "OutputVoucherID",
+        Width: 100
+    },
+    {
+        Name: "ConvertQuantity",
+        Type: "text",
+        Caption: "Số lượng",
+        DataSourceMember: "ConvertQuantity",
+        Width: 100
+    }
+];
+
+export const DataGridModalQuantityReturn = [
+    {
+        Name: "SaleOrderID",
+        Type: "text",
+        Caption: "Yêu cầu xuất",
+        DataSourceMember: "SALEORDERID",
+        Width: 100
+    },
+    {
+        Name: "OutputVoucherID",
+        Type: "text",
+        Caption: "Mã phiếu xuất ",
+        DataSourceMember: "OUTPUTVOUCHERID",
+        Width: 100
+    },
+    {
+        Name: "ExchangeOrderID",
+        Type: "text",
+        Caption: "Mã nhập trả",
+        DataSourceMember: "EXCHANGEORDERID",
+        Width: 100
+    },
+    {
+        Name: "Quantity",
+        Type: "text",
+        Caption: "Số lượng",
+        DataSourceMember: "Quantity",
+        Width: 100
+    },
+];
+
+export const DataGridModalChangeTotalQuantity = [
+    {
+        Name: "ShipmentOrderID",
+        Type: "text",
+        Caption: "Mã vận đơn",
+        DataSourceMember: "ShipmentOrderID",
+        Width: 100
+    },
+    {
+        Name: "PartnerSaleOrderID",
+        Type: "text",
+        Caption: "Mã đơn hàng",
+        DataSourceMember: "PartnerSaleOrderID",
+        Width: 100
+    },
+    {
+        Name: "ChangeTotalQuantity",
+        Type: "text",
+        Caption: "Số lượng",
+        DataSourceMember: "ChangeTotalQuantity",
+        Width: 100
+    },
+];
+
+export const DataGridModalQuantityExpend = [
+    {
+        Name: "MTReturnRequestID",
+        Type: "text",
+        Caption: "Mã yêu cầu nhập trả vật tư",
+        DataSourceMember: "MTReturnRequestID",
+        Width: 100
+    },
+    {
+        Name: "InputVoucherID",
+        Type: "text",
+        Caption: "Mã phiếu nhập trả",
+        DataSourceMember: "InputVoucherID",
+        Width: 100
+    },
+    {
+        Name: "Quantity",
+        Type: "text",
+        Caption: "Số lượng",
+        DataSourceMember: "Quantity",
+        Width: 100
+    },
+];

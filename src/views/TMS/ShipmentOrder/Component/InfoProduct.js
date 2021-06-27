@@ -19,6 +19,8 @@ class InfoProductCom extends Component {
             ShipmentOrder_FeeLst: [],
             ShipmentOrder_CodUpdLogLst: []
         }
+
+        this.sortDataShipmentOrderItemList = this.sortDataShipmentOrderItemList.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -143,7 +145,7 @@ class InfoProductCom extends Component {
                             <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                 <thead className="thead-light">
                                     <tr>
-                                       <th className="jsgrid-header-cell">Ngày cập nhật</th>
+                                        <th className="jsgrid-header-cell">Ngày cập nhật</th>
                                         <th className="jsgrid-header-cell">Người cập nhật</th>
                                         <th className="jsgrid-header-cell">Tổng tiền thu hộ cũ</th>
                                         <th className="jsgrid-header-cell">Tổng tiền thu hộ mới</th>
@@ -155,7 +157,7 @@ class InfoProductCom extends Component {
                                         this.state.ShipmentOrder_CodUpdLogLst && this.state.ShipmentOrder_CodUpdLogLst.map((item, index) => {
                                             return (
                                                 <tr key={index}>
-                                                     <td>{formatDate(item.CreatedDate)}</td>
+                                                    <td>{formatDate(item.CreatedDate)}</td>
                                                     <td>{item.CreatedUser + "-" + item.CreatedUserFullName}</td>
                                                     <td>{formatMoney(item.OldTotalcod, 0)}</td>
                                                     <td>{formatMoney(item.NewTotalcod, 0)}</td>
@@ -171,6 +173,83 @@ class InfoProductCom extends Component {
             },
             maxWidth: '1000px'
         });
+    }
+
+    sortDataShipmentOrderItemList(data) {
+        try {
+            if (data.length == 1) {
+                return data;
+            }
+
+            let cloneData = [...data], tempIndex = [];
+
+            // lấy sản phẩm chính
+            const mainProduct = cloneData.filter((item, index) => {
+                // if (item.Price != 0 || item.ProductSerial != "") {
+                if (item.Price != 0) {
+                    tempIndex.push(index);
+                    return true;
+                }
+                return false;
+            });
+
+            // xóa sản phẩm chính khỏi arr ban đầu
+            tempIndex.sort((a, b) => b - a);
+            for (let index = 0; index < tempIndex.length; index++) {
+                cloneData.splice(tempIndex[index], 1);
+            }
+            tempIndex.length = 0;
+
+            let result = mainProduct.reduce((acc, val) => {
+                let arrTemp = [];
+
+                // lấy danh sách sản phẩm khuyến mãi theo sp chính
+                cloneData.forEach((ele, index) => {
+                    if (val.ProductID.trim() == ele.RelateProductID.trim()) {
+                        let isExist = false;
+
+                        // không lấy trùng lặp
+                        arrTemp.forEach(ele1 => {
+                            if (ele1.ProductID == ele.ProductID) {
+                                isExist = true;
+                            }
+                        });
+                        if (isExist == false) {
+                            arrTemp.push(ele);
+                            tempIndex.push(index);
+                        }
+                    }
+                });
+
+                // remove những sp khuyến mãi khỏi mảng ban đầu
+                tempIndex.sort((a, b) => b - a);
+                for (let index = 0; index < tempIndex.length; index++) {
+                    cloneData.splice(tempIndex[index], 1);
+                }
+                tempIndex.length = 0;
+
+                // sắp xếp thứ tự sp khuyến mãi
+                arrTemp.sort((a, b) => a.ProductID.trim() - b.ProductID.trim());
+
+                return [...acc, val, ...arrTemp];
+            }, []);
+
+            // push những sản phẩm không liên quan còn lại
+            if (cloneData.length > 0) {
+                cloneData.sort((a, b) => a.ProductID.trim() - b.ProductID.trim());
+                result.push(...cloneData);
+            };
+
+            // kiem tra có đúng so luong san pham
+            if (result.length != data.length) {
+                return data;
+            } else {
+                return result;
+            }
+
+        } catch (error) {
+            return data;
+        }
     }
 
 
@@ -216,7 +295,26 @@ class InfoProductCom extends Component {
                         </div>
 
                         <div className="form-row">
-                         
+                            <div className="form-group col-md-2">
+                                <label className="col-form-label bold">Mã chương trình bán hàng:</label>
+                            </div>
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label lbl-currency">
+                                    {this.state.ShipmentOrder.SaleProgramID}
+                                </label>
+                            </div>
+                            <div className="form-group col-md-2">
+                                <label className="col-form-label bold">Mã đối tác cung cấp dịch vụ trả góp(Công ty tài chính):</label>
+                            </div>
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label lbl-currency">
+                                    {this.state.ShipmentOrder.InstalmentPartnerID}
+                                </label>
+                            </div>
+                        </div>
+
+                        <div className="form-row">
+
                             <div className="form-group col-md-2">
                                 <label className="col-form-label bold">Tổng tiền COD:</label>
                             </div>
@@ -261,7 +359,7 @@ class InfoProductCom extends Component {
                                 <label className="col-form-label lbl-currency">{formatMoney(this.state.ShipmentOrder.TotalReturnPrice, 0)}đ</label>
                             </div>
                             <div className="form-group col-md-2">
-                                <label className="col-form-label bold">Tổng đã tiền thu khách hàng:</label>
+                                <label className="col-form-label bold">Tổng tiền đã thu khách hàng:</label>
                             </div>
                             <div className="form-group col-md-4">
                                 <label className="col-form-label">
@@ -275,7 +373,13 @@ class InfoProductCom extends Component {
                                 <label className="col-form-label bold">Tổng tiền phải thu:</label>
                             </div>
                             <div className="form-group col-md-4">
-                                <label className="col-form-label lbl-currency-total" >{formatMoney((this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD) - this.state.ShipmentOrder.TotalReturnPrice, 0)}đ</label>
+                                <label className="col-form-label lbl-currency-total" >{(this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD - this.state.ShipmentOrder.TotalReturnPrice)>0?formatMoney((this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD) - this.state.ShipmentOrder.TotalReturnPrice, 0):formatMoney(this.state.ShipmentOrder.TotalSaleMaterialMoney)}đ</label>
+                            </div>
+                            <div className="form-group col-md-2">
+                                <label className="col-form-label bold">Thời gian xuất:</label>
+                            </div>
+                            <div className="form-group col-md-4">
+                                <label className="col-form-label bold">{formatDate(this.state.ShipmentOrder.OutputGoodsDate)}</label>
                             </div>
                         </div>
 
@@ -284,30 +388,55 @@ class InfoProductCom extends Component {
                                 <label className="col-form-label bold">Nộp tiền thu ngân:</label>
                             </div>
                             <div className="form-group col-md-4">
-                                {(this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD - this.state.ShipmentOrder.TotalReturnPrice)>0?
-                         this.state.ShipmentOrder.IsPaidIn == true ? <span className="badge badge-success">Đã nộp tiền thu ngân</span> : <span className="badge badge-danger">Chưa nộp tiền</span>:""
-                         }
-                            </div>
-                        </div>
-
-                        <div className="form-row">
-                            <div className="form-group col-md-2">
-                                <label className="col-form-label bold"> Thông tin xuất:</label>
-                            </div>
-                            <div className="form-group col-md-2">
-                                {this.state.ShipmentOrder.IsOutputGoods == true ? <span className="badge badge-success">Đã xuất hàng</span> : <span className="badge badge-danger">Chưa xuất hàng </span>}
-                            </div>
-                            <div className="form-group col-md-2">
-                                <label className="col-form-label bold">Thời gian xuất:</label>
-                            </div>
-                            <div className="form-group col-md-2">
-                                <label className="col-form-label bold">   <label className="col-form-label" >{formatDate(this.state.ShipmentOrder.OutputGoodsDate)}</label></label>
+                              
+                                {this.state.ShipmentOrder.CollectedTotalMoney > 0 ?
+                                    this.state.ShipmentOrder.IsPaidIn == true ? <span className="badge badge-success">Đã nộp tiền thu ngân</span> : <span className="badge badge-danger">Chưa nộp tiền</span> : ""
+                                }
                             </div>
                             <div className="form-group col-md-2">
                                 <label className="col-form-label bold">Người xuất:</label>
                             </div>
-                            <div className="form-group col-md-2">
+                            <div className="form-group col-md-4">
                                 <label className="col-form-label bold">{this.state.ShipmentOrder.OutputGoodsUser + "-" + this.state.ShipmentOrder.OutputGoodsUserFull}</label>
+                            </div>
+                        </div>
+
+                        <div className="form-row">
+                        <div className="form-group col-md-2">
+                                <label className="col-form-label bold"> Số tiền nộp:</label>
+                            </div>
+                            <div className="form-group col-md-4">
+                            <label className="col-form-label">
+                               
+                                <span className="badge badge-success">{formatMoney(this.state.ShipmentOrder.TotalPaidInMoney,0)}đ</span> 
+                                     
+                                </label>
+                            </div>
+                            <div className="form-group col-md-2">
+                                <label className="col-form-label bold"> Thông tin xuất:</label>
+                            </div>
+                            <div className="form-group col-md-4">
+                                {this.state.ShipmentOrder.IsOutputGoods == true ? <span className="badge badge-success">Đã xuất hàng</span> : <span className="badge badge-danger">Chưa xuất hàng </span>}
+                            </div>
+                        </div>
+
+                        <div className="form-row">
+                        <div className="form-group col-md-2">
+                                <label className="col-form-label bold">Số tiền chưa nộp:</label>
+                            </div>
+                            <div className="form-group col-md-4">
+                            { this.state.ShipmentOrder.IsPaidIn == true?
+                                <span className="badge badge-danger">{formatMoney(this.state.ShipmentOrder.TotalUnPaidInMoney,0)}đ</span> :<span className="badge badge-danger">{formatMoney(this.state.ShipmentOrder.CollectedTotalMoney,0)}đ</span>
+                                }
+                   
+                            </div>
+                        </div>
+                        <div className="form-row">
+                        <div className="form-group col-md-2">
+                                <label className="col-form-label bold"> Thời gian nộp tiền:</label>
+                            </div>
+                            <div className="form-group col-md-4">
+                                {formatDate(this.state.ShipmentOrder.PaidInTime)} 
                             </div>
                         </div>
 
@@ -341,34 +470,38 @@ class InfoProductCom extends Component {
                                     </thead>
                                     <tbody>
                                         {
-                                            this.state.ShipmentOrder.ShipmentOrder_ItemList && this.groupBy(this.state.ShipmentOrder.ShipmentOrder_ItemList, ['ProductID', 'ProductName', 'ProductSerial', 'QuantityUnitName', 'Price', 'IsInstallItem', 'PackingUnitName', 'SizeItem', 'Weight']).sort((a, b) => (b.Price > a.Price) ? 1 : -1).map((item, index) => {
-                                                return (
-                                                    <tr key={"Product" + index}>
-                                                        <td>
-                                                            <div className="checkbox">
-                                                                <label>
-                                                                    <input type="checkbox" readOnly className="form-control form-control-sm" checked={item.IsInstallItem} />
-                                                                    <span className="cr">
-                                                                        <i className="cr-icon fa fa-check"></i>
-                                                                    </span>
-                                                                </label>
-                                                            </div>
-                                                        </td>
-                                                        <td>{item.ProductID}</td>
-                                                        <td>{item.ProductName}</td>
-                                                        <td>{item.ProductSerial}</td>
-                                                        <td>{item.PackingUnitName}</td>
-                                                        <td>{formatMoney(item.Price, 0)}đ</td>
-                                                        <td>{item.Quantity}</td>
-                                                        <td>{item.QuantityUnitName}</td>
-                                                    </tr>
-                                                )
+                                            this.state.ShipmentOrder.ShipmentOrder_ItemList
+                                            && this.sortDataShipmentOrderItemList(this.state.ShipmentOrder.ShipmentOrder_ItemList).map((item, index) => {
+                                                return <tr
+                                                    key={"Product" + index}
+                                                    className={parseFloat(item.Price) != 0 || item.ProductSerial.trim() != ""
+                                                        ? "row-main-product" : undefined}
+                                                >
+                                                    <td>
+                                                        <div className="checkbox">
+                                                            <label>
+                                                                <input type="checkbox" readOnly className="form-control form-control-sm" checked={item.IsInstallItem} />
+                                                                <span className="cr">
+                                                                    <i className="cr-icon fa fa-check"></i>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                    <td>{item.ProductID}</td>
+                                                    <td>{item.ProductName}</td>
+                                                    <td>{item.ProductSerial}</td>
+                                                    <td>{item.PackingUnitName}</td>
+                                                    <td>{formatMoney(item.Price, 0)}đ</td>
+                                                    <td>{item.Quantity}</td>
+                                                    <td>{item.QuantityUnitName}</td>
+                                                </tr>
                                             })
                                         }
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+
                         {this.state.ShipmentOrder.ReturnItemList.length > 0 ?
                             (<div className="form-row">
                                 <div className="col-md-12">

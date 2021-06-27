@@ -80,11 +80,34 @@ export function formatDate(dateString, notGetTime) {
     return dateString;
 }
 
+// export function formatStrToDate(dateString, notGetTime) {
+//     try {
+//         const arrDateString = dateString.split(/[\s,-.]+/);
+//         const newDate = new Date(Date.parse(dateString.split(" ")[0]))
+
+//         const formatNumber = (data) => {
+//             if (parseInt(data) < 10) {
+//                 return "0" + data
+//             } else {
+//                 return data
+//             }
+//         }
+
+//         if (!notGetTime) {
+//             return `${formatNumber(newDate.getDate())}/${formatNumber(newDate.getMonth() + 1)}/${newDate.getFullYear()} ${arrDateString[3]}:${arrDateString[4]}:${arrDateString[5]} ${arrDateString[arrDateString.length - 1]}`
+//         } else {
+//             return `${formatNumber(newDate.getDate())}/${formatNumber(newDate.getMonth() + 1)}/${newDate.getFullYear()}`
+//         }
+//     } catch (error) {
+//         return dateString;
+//     }
+// }
+
 export function formatMonthDate(dateString, notGetTime) {
     if (dateString) {
         try {
             const d = new Date(Date.parse(dateString));
-            let dateStringFormated = ConvertStr(d.getDate()) + "/" + ConvertStr(d.getMonth() + 1) 
+            let dateStringFormated = ConvertStr(d.getDate()) + "/" + ConvertStr(d.getMonth() + 1)
             if (!notGetTime)
                 dateStringFormated += " " + ConvertStr(d.getHours()) + ":" + ConvertStr(d.getMinutes());
             return dateStringFormated;
@@ -94,6 +117,22 @@ export function formatMonthDate(dateString, notGetTime) {
     }
     return dateString;
 }
+
+export function formatMonthYear(dateString, notGetTime) {
+    if (dateString) {
+        try {
+            const d = new Date(Date.parse(dateString));
+            let dateStringFormated = ConvertStr(d.getMonth() + 1) + "/" + d.getFullYear().toString()
+            if (!notGetTime)
+                dateStringFormated += " " + ConvertStr(d.getHours()) + ":" + ConvertStr(d.getMinutes());
+            return dateStringFormated;
+        } catch (error) {
+            return dateString;
+        }
+    }
+    return dateString;
+}
+
 export function setCookie(cname, cvalue, exminute) {
     var d = new Date();
     d.setTime(d.getTime() + (exminute * 60 * 1000));

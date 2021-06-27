@@ -107,6 +107,9 @@
             button {}
             .btn-export{
                 clear: both;
+                line-height: initial;
+                height: 36px;
+                transition: .3s all;
             }
 
             @media (max-width: 767px) {
@@ -172,7 +175,13 @@
         &.multiple-custom {
             .item {
                 clear: both;
-
+                &.groupAction{
+                    clear: both;
+                    .btnSearch{
+                        display: inline-flex;
+                        justify-content: flex-start;
+                    }
+                }
 
                 .btnSearch {
                     position: static;

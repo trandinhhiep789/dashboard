@@ -20,7 +20,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { CANCELDELIVERYREASON_VIEW, CANCELDELIVERYREASON_DELETE } from "../../../../../constants/functionLists";
+import { CANCELDELIVERYREASON_VIEW, CANCELDELIVERYREASON_DELETE, CANCELDELIVERYREASON_EXPORT } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
@@ -103,8 +103,8 @@ class SearchCom extends React.Component {
                         "Tên lý do hủy giao hàng": item.CancelDeliveryReasonName,
                         "Mô tả": item.Description,
                         "Kích hoạt": item.IsActived ? "Có" : "Không",
-                        "Ngày tạo": formatDate(item.CreatedDate),
-                        "Người tạo": item.CreatedUserFullName
+                        "Ngày cập nhật": formatDate(item.UpdatedDate),
+                        "Người cập nhật": item.UpdatedUserFullName
                     };
                     return element;
 
@@ -113,7 +113,7 @@ class SearchCom extends React.Component {
                 this.setState({
                     dataExport: exelData,
                     gridDataSource: apiResult.ResultObject,
-                    IsShowForm: true, 
+                    IsShowForm: true,
                     IsCallAPIError: false,
                 });
             } else {
@@ -199,6 +199,7 @@ class SearchCom extends React.Component {
                         ref={this.gridref}
                         RequirePermission={CANCELDELIVERYREASON_VIEW}
                         DeletePermission={CANCELDELIVERYREASON_DELETE}
+                        ExportPermission={CANCELDELIVERYREASON_EXPORT}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                         IsExportFile={true}

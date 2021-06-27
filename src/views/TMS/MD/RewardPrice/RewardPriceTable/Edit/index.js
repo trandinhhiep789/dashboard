@@ -55,6 +55,7 @@ class EditCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
+            console.log("edit", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -62,6 +63,11 @@ class EditCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
+
+
+                const arrAreaTmp = apiResult.ResultObject.AreaIDList.toString().split(",");
+                apiResult.ResultObject.AreaIDListNew = arrAreaTmp;
+                console.log("AreaIDList", apiResult.ResultObject.AreaIDList, apiResult.ResultObject);
 
                 this.setState({
                     DataSource: apiResult.ResultObject,
@@ -89,9 +95,34 @@ class EditCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
+        // console.log("121",MLObject )
+
+        let result;
+        if (!!MLObject.AreaID && MLObject.AreaID != -1 && MLObject.AreaID != null && MLObject.AreaID != "" ) {
+            result = MLObject.AreaID.reduce((data, item, index) => {
+                const comma = data.length ? "," : "";
+                return data + comma + item;
+            }, '');
+        }
+        else {
+            result = ""
+        }
+
+        let RewardPriceTable_Area = [];
+        if (!!MLObject.AreaID && MLObject.AreaID.length > 0) {
+            RewardPriceTable_Area = MLObject.AreaID.map((item, index) => {
+                let element = {}
+                element.AreaID = item;
+                return element;
+            })
+        }
         MLObject.RewardPriceTableID = this.props.match.params.id;
-        MLObject.AreaID = MLObject.AreaID != "" ? MLObject.AreaID : -1
+        MLObject.ApplyAreaNameList = result
+        MLObject.RewardPriceTable_AreaList = RewardPriceTable_Area
+        MLObject.AreaID = !!MLObject.AreaID && MLObject.AreaID != "" ? MLObject.AreaID[0] : -1
         MLObject.CarrierTypeID = MLObject.CarrierTypeID != "" ? MLObject.CarrierTypeID : -1
+
+
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
@@ -214,12 +245,13 @@ class EditCom extends React.Component {
 
 
                         <div className="col-md-6">
-                            <FormControl.ComboBoxSelect
+                            <FormControl.FormControlComboBox
                                 name="cbAreaID"
                                 colspan="8"
                                 labelcolspan="4"
                                 label="khu vực"
                                 // validatonList={["Comborequired"]}
+                                isMultiSelect={true}
                                 isautoloaditemfromcache={true}
                                 placeholder="-- Vui lòng chọn --"
                                 loaditemcachekeyid={ERPCOMMONCACHE_AREATT} //"ERPCOMMONCACHE.AREATT"
@@ -230,7 +262,7 @@ class EditCom extends React.Component {
                                 listoption={null}
                                 disabled={this.state.IsSystem}
                                 readOnly={this.state.IsSystem}
-                                datasourcemember="AreaID" />
+                                datasourcemember="AreaIDListNew" />
 
                         </div>
 

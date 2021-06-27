@@ -19,6 +19,7 @@ import { callGetCache, callClearLocalCache } from "../../../../../../actions/cac
 import { LIMITTYPE_ADD } from "../../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import { ERPCOMMONCACHE_LIMITTYPE } from "../../../../../../constants/keyCache";
+import el from "date-fns/esm/locale/el/index.js";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -36,7 +37,9 @@ class AddCom extends React.Component {
             cssNotification: "",
             iconNotification: "",
             MainDriverUser: "",
-            MainCoordinatorStoreID: ""
+            MainCoordinatorStoreID: "",
+            IsCheckRangeLimit: true,
+            IsAllowdecimalLimit: false
         };
         this.searchref = React.createRef();
         this.gridref = React.createRef();
@@ -66,11 +69,24 @@ class AddCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
-
+        console.log("clg", formData, MLObject)
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
 
-        // console.log("1111", MLObject)
+        if (!MLObject.IsAllowdecimalLimitValue) {
+            if (parseInt(MLObject.MinLimitValue.trim()) > parseInt(MLObject.MaxLimitValue.trim())) {
+                this.addNotification("GTGH nhỏ nhất không được lơn hơn GTGH lớn nhất.", true);
+                return;
+            }
+        }
+        else {
+            if (parseFloat(MLObject.MinLimitValue.trim()) > parseFloat(MLObject.MaxLimitValue.trim())) {
+                this.addNotification("GTGH nhỏ nhất không được lơn hơn GTGH lớn nhất.", true);
+                return;
+            }
+        }
+
+
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
@@ -78,27 +94,26 @@ class AddCom extends React.Component {
                 this.props.callClearLocalCache(ERPCOMMONCACHE_LIMITTYPE);
             }
         });
+
+
     }
 
 
     addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
         if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
         } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={this.state.cssNotification}>
+                <div className={cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
+                        <i className={iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -114,9 +129,60 @@ class AddCom extends React.Component {
         });
     }
 
+    handleChange(formData, MLObject) {
+        if (formData.chkIsCheckRangeLimitValue.value) {
+            this.setState({
+                IsCheckRangeLimit: true
+            })
+        }
+        else {
+            this.setState({
+                IsCheckRangeLimit: false
+            })
+
+        }
+
+        if (formData.chkIsAllowdecimalLimitValue.value) {
+            this.setState({
+                IsAllowdecimalLimit: true
+            })
+            if (!formData.chkIsCheckRangeLimitValue.value) {
+                formData.txtMinLimitValue.ErrorLst.IsValidatonError = false;
+                formData.txtMinLimitValue.ErrorLst.ValidatonErrorMessage = "";
+                formData.txtMaxLimitValue.ErrorLst.IsValidatonError = false;
+                formData.txtMaxLimitValue.ErrorLst.ValidatonErrorMessage = "";
+                formData.txtMaxLimitValue.validatonList = [];
+                formData.txtMinLimitValue.validatonList = [];
+                
+            }
+            else {
+                formData.txtMinLimitValue.validatonList = ['required','numberDecimal'];
+                formData.txtMaxLimitValue.validatonList = ['required', 'numberDecimal'];
+            }
+        }
+        else {
+            this.setState({
+                IsAllowdecimalLimit: false
+            })
+            if (!formData.chkIsCheckRangeLimitValue.value) {
+                formData.txtMinLimitValue.ErrorLst.IsValidatonError = false;
+                formData.txtMinLimitValue.ErrorLst.ValidatonErrorMessage = "";
+                formData.txtMaxLimitValue.ErrorLst.IsValidatonError = false;
+                formData.txtMaxLimitValue.ErrorLst.ValidatonErrorMessage = "";
+
+                formData.txtMaxLimitValue.validatonList = [];
+                formData.txtMinLimitValue.validatonList = [];
+            }
+            else {
+                formData.txtMaxLimitValue.validatonList = ['required', 'number'];
+                formData.txtMinLimitValue.validatonList = ['required', 'number'];
+            }
+        }
+
+    }
 
     render() {
-        const { DataSource } = this.state;
+        const { DataSource, IsCheckRangeLimit, IsAllowdecimalLimit } = this.state;
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
@@ -131,6 +197,7 @@ class AddCom extends React.Component {
                     onSubmit={this.handleSubmit}
                     BackLink={BackLink}
                     RequirePermission={LIMITTYPE_ADD}
+                    onchange={this.handleChange.bind(this)}
                 >
 
                     <div className="row">
@@ -178,6 +245,73 @@ class AddCom extends React.Component {
                                 classNameCustom="customcontrol"
                             />
                         </div>
+
+
+
+                        <div className="col-md-6">
+                            <FormControl.CheckBox
+                                name="chkIsAllowdecimalLimitValue"
+                                colspan="8"
+                                labelcolspan="4"
+                                readOnly={false}
+                                label="Cho phép nhập số lẻ"
+                                controltype="InputControl"
+                                value={false}
+                                datasourcemember="IsAllowdecimalLimitValue"
+                                classNameCustom="customCheckbox"
+                            />
+                        </div>
+
+                        <div className="col-md-6">
+                            <FormControl.CheckBox
+                                name="chkIsCheckRangeLimitValue"
+                                colspan="8"
+                                labelcolspan="4"
+                                readOnly={false}
+                                label="có kiểm tra GTGH"
+                                controltype="InputControl"
+                                value={true}
+                                datasourcemember="IsCheckRangeLimitValue"
+                                classNameCustom="customCheckbox"
+                            />
+                        </div>
+
+
+                        <div className="col-md-6">
+                            <FormControl.TextBox
+                                name="txtMinLimitValue"
+                                colspan="8"
+                                labelcolspan="4"
+                                readOnly={IsCheckRangeLimit == true ? false : true}
+                                label="GTGH nhỏ nhất"
+                                placeholder="Giá trị giới hạn nhỏ nhất"
+                                controltype="InputControl"
+                                value=""
+                                maxSize={9}
+                                datasourcemember="MinLimitValue"
+                                validatonList={(IsAllowdecimalLimit == false && IsCheckRangeLimit == true) ? ['required', 'number'] : ['required', 'numberDecimal'] }
+                            />
+                        </div>
+
+
+                        <div className="col-md-6">
+                            <FormControl.TextBox
+                                name="txtMaxLimitValue"
+                                colspan="8"
+                                labelcolspan="4"
+                                readOnly={IsCheckRangeLimit == true ? false : true}
+                                label="GTGH lớn nhất"
+                                placeholder="Giá trị giới hạn lớn nhất"
+                                controltype="InputControl"
+                                value=""
+                                maxSize={9}
+                                datasourcemember="MaxLimitValue"
+                                validatonList={(IsAllowdecimalLimit == false && IsCheckRangeLimit == true) ? ['required', 'number'] : ['required', 'numberDecimal'] }
+                            />
+                        </div>
+
+
+
                         <div className="col-md-6">
                             <FormControl.CheckBox
                                 name="chkIsActived"

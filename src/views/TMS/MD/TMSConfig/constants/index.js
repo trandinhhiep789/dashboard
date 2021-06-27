@@ -343,21 +343,21 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Mã cấu hình hệ thống TMS",
         DataSourceMember: "TMSConfigID",
-        Width: 200
+        Width: 250
     },
     {
         Name: "TMSConfigName",
         Type: "text",
         Caption: "Tên cấu hình hệ thống TMS",
         DataSourceMember: "TMSConfigName",
-        Width: 250
+        //Width: 250
     },
     {
         Name: "TMSConfigValue",
         Type: "text",
         Caption: "Giá trị cấu hình",
         DataSourceMember: "TMSConfigValue",
-        //Width: 200
+        Width: 220
     },
     {
         Name: "IsActived",
@@ -374,17 +374,17 @@ export const DataGridColumnList = [
     //     Width: 200
     // },
     {
-        Name: "CreatedDate",
+        Name: "UpdatedDate",
         Type: "date",
-        Caption: "Ngày tạo",
-        DataSourceMember: "CreatedDate",
+        Caption: "Ngày cập nhật",
+        DataSourceMember: "UpdatedDate",
         Width: 140
     },
     {
-        Name: "CreatedUserFullName",
+        Name: "UpdatedUserFullName",
         Type: "text",
-        Caption: "Người tạo",
-        DataSourceMember: "CreatedUserFullName",
+        Caption: "Người cập nhật",
+        DataSourceMember: "UpdatedUserFullName",
         Width: 140
     },
     {

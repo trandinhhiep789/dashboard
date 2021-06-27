@@ -31,6 +31,9 @@
 @import "./pageshipmentorder";
 @import "./spin";
 @import "./sidebar";
+@import "./_accountsite";
+@import "./infoCoordinator";
+@import "./CoordinatorGroup";
 
 
 body{
@@ -417,7 +420,7 @@ select.form-control:-webkit-autofill:focus {
         div {
             clear: both;
             span:first-child{
-                min-width: 200px;
+                //min-width: 200px;
                 display: inline-block;
                 font-weight: 500;
                 vertical-align: top;
@@ -527,6 +530,14 @@ select.form-control:-webkit-autofill:focus {
         min-height: 42px;
     }
     
+}
+
+.btnSearchSubmitCustom{
+    bottom: 7px;
+}
+
+.btnHide{ 
+    display: none !important;
 }
 
 

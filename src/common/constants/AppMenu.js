@@ -14,30 +14,30 @@ const AppMenu = [
         LinkTo: '',
         MenuIcon: '',
         SubMenu: [
-            {
-                MenuName: 'PartnerType',
-                MenuTitle: 'Đối tác',
-                LinkTo: '',
-                MenuIcon: '',
-                SubMenu: [
-                    {
-                        MenuName: 'PartnerType',
-                        MenuTitle: 'Danh sách loại đối tác',
-                        LinkTo: '/PartnerType',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    {
-                        MenuName: 'Partner',
-                        MenuTitle: 'Danh sách đối tác',
-                        LinkTo: '/Partner',
-                        MenuIcon: '',
-                        SubMenu: []
-                    }
+            // {
+            //     MenuName: 'PartnerType',
+            //     MenuTitle: 'Đối tác',
+            //     LinkTo: '',
+            //     MenuIcon: '',
+            //     SubMenu: [
+            //         {
+            //             MenuName: 'PartnerType',
+            //             MenuTitle: 'Danh sách loại đối tác',
+            //             LinkTo: '/PartnerType',
+            //             MenuIcon: '',
+            //             SubMenu: []
+            //         },
+            //         {
+            //             MenuName: 'Partner',
+            //             MenuTitle: 'Danh sách đối tác',
+            //             LinkTo: '/Partner',
+            //             MenuIcon: '',
+            //             SubMenu: []
+            //         }
 
-                    
-                ]
-            },
+
+            //     ]
+            // },
             {
                 MenuName: 'CarrierType',
                 MenuTitle: 'Vận chuyển',
@@ -114,6 +114,35 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    {
+                        MenuName: 'DeliveryExpress',
+                        MenuTitle: 'Tải giao hàng',
+                        LinkTo: '',
+                        MenuIcon: '',
+                        SubMenu: [
+                            {
+                                MenuName: 'DeliveryGoodsGroup',
+                                MenuTitle: 'Danh sách nhóm hàng hóa vận chuyển',
+                                LinkTo: '/DeliveryGoodsGroup',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+                            {
+                                MenuName: 'DeliveryTimeFrame',
+                                MenuTitle: 'Danh sách khung thời gian vận chuyển',
+                                LinkTo: '/DeliveryTimeFrame',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+                            {
+                                MenuName: 'WeekDay',
+                                MenuTitle: 'Danh sách các ngày trong tuần',
+                                LinkTo: '/WeekDay',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+                        ]
+                    },
 
                 ]
             },
@@ -144,6 +173,21 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    {
+                        MenuName: 'ServiceGroup',
+                        MenuTitle: 'Nhóm dịch vụ',
+                        LinkTo: '/ServiceGroup',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'SvTimeConvert',
+                        MenuTitle: 'Bảng chuyển đổi thời gian thực hiện dịch vụ sang sản phẩm dịch vụ',
+                        LinkTo: '/SvTimeConvert',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+
 
 
                 ]
@@ -235,36 +279,36 @@ const AppMenu = [
 
                 ]
             },
-            {
-                MenuName: 'Service',
-                MenuTitle: 'Dịch vụ',
-                LinkTo: '',
-                MenuIcon: '',
-                SubMenu: [
-                    {
-                        MenuName: 'ServiceType',
-                        MenuTitle: 'Loại dịch vụ',
-                        LinkTo: '/ServiceType',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    {
-                        MenuName: 'ServiceSeasonType',
-                        MenuTitle: 'Loại mùa dịch vụ',
-                        LinkTo: '/ServiceSeasonType',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    {
-                        MenuName: 'ServiceAgreementType',
-                        MenuTitle: 'Loại hợp đồng dịch vụ',
-                        LinkTo: '/ServiceAgreementType',
-                        MenuIcon: '',
-                        SubMenu: []
-                    }
+            // {
+            //     MenuName: 'Service',
+            //     MenuTitle: 'Dịch vụ',
+            //     LinkTo: '',
+            //     MenuIcon: '',
+            //     SubMenu: [
+            //         {
+            //             MenuName: 'ServiceType',
+            //             MenuTitle: 'Loại dịch vụ',
+            //             LinkTo: '/ServiceType',
+            //             MenuIcon: '',
+            //             SubMenu: []
+            //         },
+            //         {
+            //             MenuName: 'ServiceSeasonType',
+            //             MenuTitle: 'Loại mùa dịch vụ',
+            //             LinkTo: '/ServiceSeasonType',
+            //             MenuIcon: '',
+            //             SubMenu: []
+            //         },
+            //         {
+            //             MenuName: 'ServiceAgreementType',
+            //             MenuTitle: 'Loại hợp đồng dịch vụ',
+            //             LinkTo: '/ServiceAgreementType',
+            //             MenuIcon: '',
+            //             SubMenu: []
+            //         }
 
-                ]
-            },
+            //     ]
+            // },
             {
                 MenuName: 'grantrights',
                 MenuTitle: 'Cấp quyền',
@@ -294,6 +338,13 @@ const AppMenu = [
                 LinkTo: '',
                 MenuIcon: '',
                 SubMenu: [
+                    {
+                        MenuName: 'RewardComputeType',
+                        MenuTitle: 'Loại tính thưởng',
+                        LinkTo: '/RewardComputeType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
                     {
                         MenuName: 'RewardCompute',
                         MenuTitle: 'Tính thưởng',
@@ -364,22 +415,59 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+
                     {
-                        MenuName: 'PNServicePriceTable',
-                        MenuTitle: 'Bảng giá dịch vụ của đối tác',
-                        LinkTo: '/PNServicePriceTable',
+                        MenuName: 'ServicePriceApply',
+                        MenuTitle: 'Bảng giá dịch vụ áp dụng',
+                        LinkTo: '/ServicePriceApply',
                         MenuIcon: '',
                         SubMenu: []
-                    }
+                    },
+                    {
+                        MenuName: 'PosToRWPosTable',
+                        MenuTitle: 'Bảng chuyển đổi chức vụ',
+                        LinkTo: '/PosToRWPosTable',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    // {
+                    //     MenuName: 'PNServicePriceTable',
+                    //     MenuTitle: 'Bảng giá dịch vụ của đối tác',
+                    //     LinkTo: '/PNServicePriceTable',
+                    //     MenuIcon: '',
+                    //     SubMenu: []
+                    // }
 
                 ]
             },
             {
-                MenuName: 'CoordinatorStore',
-                MenuTitle: 'Kho điều phối giao hàng',
-                LinkTo: '/CoordinatorStore',
+                MenuName: 'Coordinator',
+                MenuTitle: 'Điều phối giao hàng',
+                LinkTo: '',
                 MenuIcon: '',
-                SubMenu: []
+                SubMenu: [
+                    {
+                        MenuName: 'CoordinatorStore',
+                        MenuTitle: 'Kho điều phối giao hàng',
+                        LinkTo: '/CoordinatorStore',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'CoordinatorGroup',
+                        MenuTitle: 'Nhóm điều phối',
+                        LinkTo: '/CoordinatorGroup',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'StaffTransferType',
+                        MenuTitle: 'Loại hình thuyên chuyển nhân viên',
+                        LinkTo: '/StaffTransferType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    }
+                ]
             },
             {
                 MenuName: 'Vehicle',
@@ -515,15 +603,15 @@ const AppMenu = [
                         LinkTo: '/InventoryRequestType',
                         MenuIcon: '',
                         SubMenu: []
-                    }
+                    },
+                    {
+                        MenuName: 'MTReturnRequestType',
+                        MenuTitle: 'Loại yêu cầu nhập trả vật tư',
+                        LinkTo: '/MTReturnRequestType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
                 ]
-            },
-            {
-                MenuName: 'TMSConfig',
-                MenuTitle: 'Cấu hình hệ thống TMS',
-                LinkTo: '/TMSConfig',
-                MenuIcon: '',
-                SubMenu: []
             },
             {
                 MenuName: 'DeliveryDateUpdate',
@@ -546,7 +634,59 @@ const AppMenu = [
                         SubMenu: []
                     },
                 ]
-            }
+            },
+            {
+                MenuName: 'QualityAssess',
+                MenuTitle: 'Tiêu chí đánh giá chất lượng',
+                LinkTo: '/QualityAssess',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'QualityAssessGroup',
+                        MenuTitle: 'Nhóm tiêu chí đánh giá chất lượng',
+                        LinkTo: '/QualityAssessGroup',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'QualityAssessType',
+                        MenuTitle: 'Loại tiêu chí đánh giá chất lượng',
+                        LinkTo: '/QualityAssessType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                ]
+            },
+            {
+                MenuName: 'Template',
+                MenuTitle: 'Template',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'SMSTemplate',
+                        MenuTitle: 'Template tin nhắn SMS',
+                        LinkTo: '/SMSTemplate',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'DataExportTemplate',
+                        MenuTitle: 'Template xuất dữ liệu',
+                        LinkTo: '/DataExportTemplate',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                ]
+            },
+            {
+                MenuName: 'TMSConfig',
+                MenuTitle: 'Cấu hình hệ thống TMS',
+                LinkTo: '/TMSConfig',
+                MenuIcon: '',
+                SubMenu: []
+            },
+
 
 
         ]
@@ -591,6 +731,74 @@ const AppMenu = [
                 LinkTo: '/IDDocumentType',
                 MenuIcon: '',
                 SubMenu: []
+            },
+            {
+                MenuName: 'PartnerType',
+                MenuTitle: 'Đối tác',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'PartnerType',
+                        MenuTitle: 'Danh sách loại đối tác',
+                        LinkTo: '/PartnerType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'Partner',
+                        MenuTitle: 'Danh sách đối tác',
+                        LinkTo: '/Partner',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'PartnerSaleChannel',
+                        MenuTitle: 'Kênh bán hàng của đối tác',
+                        LinkTo: '/PartnerSaleChannel',
+                        MenuIcon: '',
+                        SubMenu: []
+                    }
+
+
+                ]
+            },
+            {
+                MenuName: 'Service',
+                MenuTitle: 'Dịch vụ',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'ServiceType',
+                        MenuTitle: 'Loại dịch vụ',
+                        LinkTo: '/ServiceType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'ServiceSeasonType',
+                        MenuTitle: 'Loại mùa dịch vụ',
+                        LinkTo: '/ServiceSeasonType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'ServiceAgreementType',
+                        MenuTitle: 'Loại hợp đồng dịch vụ',
+                        LinkTo: '/ServiceAgreementType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    }
+
+                ]
+            },
+            {
+                MenuName: 'PNServicePriceTable',
+                MenuTitle: 'Bảng giá dịch vụ của đối tác',
+                LinkTo: '/PNServicePriceTable',
+                MenuIcon: '',
+                SubMenu: []
             }
         ]
     },
@@ -618,6 +826,13 @@ const AppMenu = [
                         MenuName: 'ShipmentOrderControl',
                         MenuTitle: 'Kiểm soát giao hàng',
                         LinkTo: '/ShipmentOrderControl',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'ManagerShipmentOrder',
+                        MenuTitle: 'Quản lý vận đơn',
+                        LinkTo: '/ManagerShipmentOrder',
                         MenuIcon: '',
                         SubMenu: []
                     },
@@ -694,7 +909,7 @@ const AppMenu = [
                 LinkTo: '',
                 MenuIcon: '',
                 SubMenu: [
-                   
+
                     {
                         MenuName: 'RewardShipmentOrder',
                         MenuTitle: 'Tổng thưởng giao hàng',
@@ -739,6 +954,41 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
+            {
+                MenuName: 'MTReturnRequest',
+                MenuTitle: 'Yêu cầu nhập trả vật tư',
+                LinkTo: '/MTReturnRequest',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
+                MenuName: 'SoAssessSynSchedule',
+                MenuTitle: 'Đồng bộ dữ liệu đánh giá vận đơn',
+                LinkTo: '/SoAssessSynSchedule',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
+                MenuName: 'DeliveryAbility',
+                MenuTitle: 'Khai báo tổng tải',
+                LinkTo: '/DeliveryAbility',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
+                MenuName: 'ShipmentQualityAssess',
+                MenuTitle: 'Đánh giá chất lượng giao hàng',
+                LinkTo: '/ShipmentQualityAssess',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
+                MenuName: 'StaffTransfer',
+                MenuTitle: 'Điều chuyển nhân sự',
+                LinkTo: '/StaffTransfer',
+                MenuIcon: '',
+                SubMenu: []
+            }
         ]
     },
     {
@@ -786,6 +1036,21 @@ const AppMenu = [
         SubMenu: []
     },
     {
+        MenuName: 'Price',
+        MenuTitle: 'Giá',
+        LinkTo: '',
+        MenuIcon: '',
+        SubMenu: [
+            {
+                MenuName: 'ServicePriceTable',
+                MenuTitle: 'Giá dịch vụ của Tận Tâm',
+                LinkTo: '/ServicePriceTable',
+                MenuIcon: '',
+                SubMenu: []
+            },
+        ]
+    },
+    {
         MenuName: 'Reward',
         MenuTitle: 'Thưởng',
         LinkTo: '',
@@ -795,6 +1060,13 @@ const AppMenu = [
                 MenuName: 'RewardShipmentOrder',
                 MenuTitle: 'Tổng thưởng giao hàng',
                 LinkTo: '/RewardShipmentOrder',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
+                MenuName: 'OtherRewardTotal',
+                MenuTitle: 'Tổng thưởng khác',
+                LinkTo: '/OtherRewardTotal',
                 MenuIcon: '',
                 SubMenu: []
             },
@@ -820,7 +1092,7 @@ const AppMenu = [
                 SubMenu: [
                     {
                         MenuName: 'TotalRewardExport',
-                        MenuTitle: 'Xuất tổng thưởng',
+                        MenuTitle: 'Tổng thưởng nhân viên - CTV',
                         LinkTo: '/TotalRewardExport',
                         MenuIcon: '',
                         SubMenu: []
@@ -841,7 +1113,13 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-
+            {
+                MenuName: 'RewardComputeList',
+                MenuTitle: 'Danh sách tính thưởng',
+                LinkTo: '/RewardComputeList',
+                MenuIcon: '',
+                SubMenu: []
+            },
 
         ]
     },
@@ -878,6 +1156,13 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    {
+                        MenuName: 'ReportLate',
+                        MenuTitle: 'Vận đơn trễ',
+                        LinkTo: '/ReportLate',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
                 ]
             },
             {
@@ -903,6 +1188,43 @@ const AppMenu = [
                 ]
             },
             {
+                MenuName: 'Accountancy',
+                MenuTitle: 'Kế toán',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'ControlStatusReport',
+                        MenuTitle: 'Báo cáo kiểm soát trạng thái vận đơn',
+                        LinkTo: '/ControlStatusReport',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'OverdueOrderReport',
+                        MenuTitle: 'Báo cáo chi tiết vận đơn quá hạn',
+                        LinkTo: '/OverdueOrderReport',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'OverdueStaffDebt',
+                        MenuTitle: 'Báo cáo thống kê công nợ quá hạn',
+                        LinkTo: '/OverdueStaffDebt',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'CrossCheckReport',
+                        MenuTitle: 'Báo cáo đối soát',
+                        LinkTo: '/CrossCheckReport',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+
+                ]
+            },
+            {
                 MenuName: 'DebtByUser',
                 MenuTitle: 'Thống kê công nợ theo NV',
                 LinkTo: '/DebtByUser',
@@ -925,22 +1247,47 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-            {
-                MenuName: 'InvestigationShipmentOrderStatus',
-                MenuTitle: 'Tra cứu trạng thái vận đơn',
-                LinkTo: '/InvestigationShipmentOrderStatus',
-                MenuIcon: '',
-                SubMenu: []
-            },
+
             {
                 MenuName: 'InventoryMaterials',
                 MenuTitle: 'Báo cáo tồn kho vật tư',
                 LinkTo: '/InventoryMaterials',
                 MenuIcon: '',
                 SubMenu: []
-            }
+            },
+            {
+                MenuName: 'ComprehensiveReport',
+                MenuTitle: 'Báo cáo tổng hợp',
+                LinkTo: '/ComprehensiveReport',
+                MenuIcon: '',
+                SubMenu: []
+            },
+
+            {
+                MenuName: 'SaleSummaryReport',
+                MenuTitle: 'Báo cáo đơn hàng',
+                LinkTo: '/SaleSummaryReport',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
+                MenuName: 'MonthlySaleOrder',
+                MenuTitle: 'Xem bảng kê job Tự động tính doanh thu',
+                LinkTo: '/MonthlySaleOrder',
+                MenuIcon: '',
+                SubMenu: []
+            },
+
+
         ]
-    }
+    },
+    {
+        MenuName: 'InvestigationShipmentOrderStatus',
+        MenuTitle: 'Tra cứu vận đơn',
+        LinkTo: '/InvestigationShipmentOrderStatus',
+        MenuIcon: '',
+        SubMenu: []
+    },
 
 ];
 

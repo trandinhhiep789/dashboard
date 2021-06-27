@@ -23,8 +23,9 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
-import { callGetCache } from "../../../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 import { INSTALLBUNDLE_ADD } from "../../../../../../constants/functionLists";
+import { ERPCOMMONCACHE_INSTALLBUNDLE } from "../../../../../../constants/keyCache";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -70,6 +71,9 @@ class AddCom extends React.Component {
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
+            if (!apiResult.IsError) {
+                this.props.callClearLocalCache(ERPCOMMONCACHE_INSTALLBUNDLE);
+            }
             this.showMessage(apiResult.Message);
         });
     }
@@ -123,6 +127,9 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID));
         },
         showModal: (type, props) => {
             dispatch(showModal(type, props));

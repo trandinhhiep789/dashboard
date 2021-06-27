@@ -21,7 +21,7 @@ class InputGridCellCom extends Component {
         this.previewMedia = this.previewMedia.bind(this);
         this.handleInputFocus = this.handleInputFocus.bind(this);
         this.handleInputChangeDicimal = this.handleInputChangeDicimal.bind(this);
-
+        this.onChangeInputNumber = this.onChangeInputNumber.bind(this)
     }
 
 
@@ -158,7 +158,6 @@ class InputGridCellCom extends Component {
             return;
         }
         const id = e.currentTarget.dataset.id;
-        //console.log("cellhandleonClickEdit inputname",id)
         this.props.onInsertClickEdit(this.props.index);
     }
 
@@ -168,8 +167,7 @@ class InputGridCellCom extends Component {
     }
 
     handleInputChangeDicimal(e) {
-        const IsAllowDecimal =  e.target.dataset.isallowdecimal;
-        console.log('e', IsAllowDecimal)
+        const IsAllowDecimal = e.target.dataset.isallowdecimal;
         let arrValidationList = [];
         if (this.props.type == 'textboxNewGroup') {
             if (!IsAllowDecimal) {
@@ -179,7 +177,6 @@ class InputGridCellCom extends Component {
                 arrValidationList.push('numberDecimal')
             }
         }
-        console.log('arrValidationList', arrValidationList)
 
         this.validateInputNew(e, arrValidationList);
 
@@ -187,7 +184,7 @@ class InputGridCellCom extends Component {
     }
 
     validateInputNew(e, arrValidationList) {
-        
+
         const ischecked = e.target.type == 'checkbox' ? e.target.checked : false;
         let inputvalue = e.target.value;
         // if (e.target.type == 'checkbox') {
@@ -196,7 +193,7 @@ class InputGridCellCom extends Component {
         if (this.props.type == 'numeric') {
             inputvalue = this.formatNumeric(inputvalue);
         }
-        
+
         const inputname = e.target.name;
         let elementdata = { Name: inputname, Value: inputvalue, IsChecked: ischecked, HasChanged: true };
         let isVavalidatonError = false;
@@ -230,7 +227,7 @@ class InputGridCellCom extends Component {
 
 
     handleInputChangeNew(evalue) {
-        console.log("ee", evalue, this.props)
+        // console.log("ee", evalue, this.props)
     }
 
     handleInputFocus(e) {
@@ -288,6 +285,12 @@ class InputGridCellCom extends Component {
         // }
         // const inputvalue  =  e.target.value;
         this.props.onValueChangeALL(inputvalue, this.props.index);
+    }
+    onChangeInputNumber(e) {
+
+        if (this.props.onChangeInputNumber)
+            this.props.onChangeInputNumber(e)
+
     }
 
     handleEditClick() {
@@ -449,8 +452,6 @@ class InputGridCellCom extends Component {
 
             case "textboxNewGroup":
                 {
-                    // console.log('aa', this.props);
-
                     let className = "form-control form-control-sm";
                     if (this.props.CSSClassName != null)
                         className = this.props.CSSClassName;
@@ -471,12 +472,12 @@ class InputGridCellCom extends Component {
                     let control;
                     if (this.props.isAllowDecimal) {
 
-                        control = <input type="text" data-IsAllowDecimal = {this.props.isAllowDecimal} name={this.props.name} className={className} readOnly={isSystem}
+                        control = <input type="text" data-IsAllowDecimal={this.props.isAllowDecimal} name={this.props.name} className={className} readOnly={isSystem}
                             onChange={this.handleInputChangeDicimal} defaultValue={text} value={textNoneZero} disabled={this.state.IsDisabled} maxLength={this.props.maxSize} />;
                     }
                     else {
                         // control = <div>{this.props.isAllowDecimal == true ? 'true' : 'false'}</div>
-                        control = <input type="text" name={this.props.name} data-IsAllowDecimal = {this.props.isAllowDecimal} className={className} readOnly={isSystem}
+                        control = <input type="text" name={this.props.name} data-IsAllowDecimal={this.props.isAllowDecimal} className={className} readOnly={isSystem}
                             onChange={this.handleInputChangeDicimal} defaultValue={text} value={textNoneZero} disabled={this.state.IsDisabled} maxLength={this.props.maxSize} />;
                     }
 
@@ -500,6 +501,43 @@ class InputGridCellCom extends Component {
                         className = this.props.CSSClassName;
                     let valueFormat = this.props.text ? Number(this.props.text).toLocaleString() : 0;
                     return <input className={className} name={this.props.name} value={valueFormat} type="text" placeholder={this.props.placeholder} onChange={this.handleInputChange} readOnly={isSystem} disabled={this.state.IsDisabled} maxLength={this.props.maxSize} onKeyUp={(e) => { e.target.value = Number(this.formatNumeric(e.target.value)).toLocaleString() }} />;
+                }
+            case "inputNumber":
+                {
+                    const {
+                        isDecimalInputNumber,
+                        stepDecimalInputNumber,
+                        isNoneZero,
+                        maxInputNumber,
+                        minInputNumber,
+                        disabled,
+                        CSSClassName,
+                        errorInputNumber,
+                        errMsgInputNumber,
+                        value,
+                        text
+                    } = this.props;
+
+                    return (
+                        <React.Fragment>
+                            <InputNumber
+                                className={CSSClassName ? CSSClassName : "form-control form-control-sm"}
+                                min={minInputNumber}
+                                max={maxInputNumber}
+                                step={stepDecimalInputNumber ? stepDecimalInputNumber : 1}
+                                formatter={isDecimalInputNumber && (value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ','))}
+                                parser={isDecimalInputNumber && (value => value.replace(/\$\s?|(,*)/g, ''))}
+                                disabled={disabled ? disabled : false}
+                                onChange={(e) => this.onChangeInputNumber(e)}
+                                defaultValue={text}
+                                value={value}
+                            />
+                            <div className={"text-danger"}>
+                                {errMsgInputNumber}
+                            </div>
+
+                        </React.Fragment>
+                    )
                 }
             case "textarea":
                 {

@@ -92,7 +92,7 @@ class FormContainerCom extends Component {
         //"FormContainer handleInputChangeList: ", formDataList, tabNameList, tabMLObjectDefinitionList, IsSystem);
         let formDataTemp = this.state.FormData;
         //let formValidationTemp = this.state.FormValidation;
-        let formValidationTemp={};
+        let formValidationTemp = {};
         let isSystem = typeof (IsSystem) != "undefined" ? IsSystem : this.state.IsSystem;
         let _isFirstTimeLoad = isFirstTimeLoad != undefined ? isFirstTimeLoad : false;
         for (let i = 0; i < tabNameList.length; i++) {
@@ -245,9 +245,19 @@ class FormContainerCom extends Component {
             //console.log("this.state.FormVavalidaton[key]: ", this.state.FormVavalidaton[key]);
             if (formValidation[key].IsValidationError) {
                 //console.log("index: ", index);
-                this.elementItemRefs[key].focus();
+                // this.elementItemRefs[key].focus();
+                // index++;
+                // return false;
+
                 index++;
-                return false;
+                if (this.elementItemRefs && this.elementItemRefs[key] && typeof this.elementItemRefs[key].focus !== "undefined") {
+                    this.elementItemRefs[key].focus();
+                    return false;
+                } else {
+                    return false;
+                }
+
+
             }
             index++;
         }
@@ -486,7 +496,7 @@ class FormContainerCom extends Component {
     }
 
     handleSubmit(e) {
-        debugger;
+        // debugger;
         e.preventDefault();
         const mLObjectDefinition = this.props.MLObjectDefinition;
         //console.log("Submit Click formdata!", this.state.FormData,  this.props.listelement);
@@ -566,6 +576,7 @@ class FormContainerCom extends Component {
                     isMulti={elementItem.isMulti}
                     KeyFilter={elementItem.KeyFilter}
                     ValueFilter={elementItem.ValueFilter}
+                    SelectedOption={elementItem.SelectedOption}
                 />
             </div>);
         }
@@ -1155,4 +1166,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 const FormContainer = connect(mapStateToProps, mapDispatchToProps)(FormContainerCom);
-export default FormContainer; 
+export default FormContainer;

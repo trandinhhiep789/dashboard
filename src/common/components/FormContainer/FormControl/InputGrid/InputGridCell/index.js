@@ -47,6 +47,15 @@ class InputGridCellCom extends Component {
         this.props.onClickDelete(this.props.index);
     }
 
+    handleDeleteNew(e){
+        if (this.props.isSystem) {
+            return;
+        }
+        const index = e.currentTarget.dataset.index;
+        const item = e.currentTarget.dataset.id;
+        this.props.onClickDeleteNew(index, item);
+    }
+
     handleonClickDeleteNew(e) {
         if (this.props.isSystem) {
             return;
@@ -71,7 +80,7 @@ class InputGridCellCom extends Component {
     }
 
     render() {
-        
+
         const type = this.props.type;
         let text = ReactHtmlParser(this.props.text);
         const to = this.props.to + text;
@@ -194,6 +203,22 @@ class InputGridCellCom extends Component {
                         <span className="fa fa-plus ff"> Chỉnh sửa</span>
                     </button>
                 );
+            case "buttonDelete":
+                const Item =  this.props.rowsItem;
+                const myJSON = JSON.stringify(Item);
+                return (
+                    <a title="" className="table-action hover-danger" onClick={this.handleDeleteNew.bind(this)} data-index={this.props.index} data-id={myJSON} title="Delete">
+                        <i className="ti-trash"></i>
+                    </a>
+                );
+                case "buttonDeleteNew":
+                    return (
+                        <div className="group-action group-action-new">
+                            <a title="" className="table-action hover-danger" onClick={this.handleonClickDeleteNew} data-id={this.props.idItem} title="Delete">
+                                <i className="ti-trash"></i>
+                            </a>
+                        </div>
+                    )
             default:
                 return <label>{text}</label>;
         }

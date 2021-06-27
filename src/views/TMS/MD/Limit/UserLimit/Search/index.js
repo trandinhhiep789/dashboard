@@ -6,7 +6,7 @@ import SearchForm from "../../../../../../common/components/FormContainer/Search
 import DataGrid from "../../../../../../common/components/DataGrid";
 import { MessageModal } from "../../../../../../common/components/Modal";
 import {
-    DataGridColumnList,
+    DataGridColumnList, AddNewAPIPath,
     AddLink,
     APIHostName,
     SearchUserLimitAPIPath,
@@ -17,6 +17,7 @@ import {
     PagePath,
     SearchMLObjectDefinitionNew,
     SearchElementListNew,
+    DefaultMaxLimitCoil, DefaultMaxLimitAmount
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
@@ -24,8 +25,9 @@ import { LIMITTYPE_VIEW, LIMITTYPE_DELETE } from "../../../../../../constants/fu
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
-import { formatMoney } from '../../../../../../utils/function';
-import { ERPCOMMONCACHE_LIMITTYPE } from "../../../../../../constants/keyCache";
+import { numberDecimalWithComma } from '../../../../../../utils/function';
+import { ERPCOMMONCACHE_LIMITTYPE, ERPCOMMONCACHE_USER_LIMIT } from "../../../../../../constants/keyCache";
+import { formatDate, formatMonthDate } from "../../../../../../common/library/CommonLib.js";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -33,20 +35,19 @@ class SearchCom extends React.Component {
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
-        this.handleChangeLimitType = this.handleChangeLimitType.bind(this);
+        this.getTableHeader = this.getTableHeader.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.initGridDataSource = this.initGridDataSource.bind(this);
+        this.initArrInputError = this.initArrInputError.bind(this);
 
         this.state = {
-            CallAPIMessage: "",
             gridDataSource: [],
-            gridDataLimtType: [],
-            dataLimitTyle: [],
-            IsCallAPIError: false,
             SearchData: InitSearchParamsNew,
             cssNotification: "",
             iconNotification: "",
-            IsLoadDataComplete: false,
-            isValidate: false,
-            lstUserNameFind: []
+            listColumn: [],
+            arrInputError: [],
+            isErrorValidate: false
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -56,28 +57,12 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
-        this.getCacheLimitTyle();
-    }
-
-    getCacheLimitTyle() {
-        this.props.callGetCache(ERPCOMMONCACHE_LIMITTYPE).then((result) => {
-
-            if (!result.IsError) {
-                this.setState({
-                    dataLimitTyle: result.ResultObject.CacheData
-                })
-            }
-            else {
-                this.showMessage(result.Message)
-            }
-        });
     }
 
     handleSearchSubmit(formData, MLObject) {
-        // console.log('aaa',formData, MLObject)
         let result;
-        
-        if (MLObject.UserName != -1 && MLObject.UserName!=null) {
+
+        if (MLObject.UserName != -1 && MLObject.UserName != null) {
             result = MLObject.UserName.reduce((data, item, index) => {
                 const comma = data.length ? "," : "";
                 return data + comma + item.value;
@@ -90,7 +75,7 @@ class SearchCom extends React.Component {
             {
                 SearchKey: "@AREAID",
                 SearchValue: MLObject.AreaID
-                
+
             },
             {
                 SearchKey: "@STOREID",
@@ -105,72 +90,136 @@ class SearchCom extends React.Component {
                 SearchValue: result
             }
         ];
-        this.setState({ SearchData: postData,  });
+        this.setState({ SearchData: postData, });
         this.callSearchData(postData);
+    }
+
+    getTableHeader(data) {
+        try {
+
+            if (data.length > 0) {
+                const { initialData } = data[0];
+
+                const listColumn = initialData.reduce((acc, val, ind, arr) => {
+                    acc.push({
+                        name: val.LimitTypeName,
+                        dataSource: val.LimitTypeID,
+                        width: 60,
+                        type: "input"
+                    })
+
+                    return acc;
+                }, [
+                    { name: "Nhân viên", dataSource: "UserName", width: 80, type: "text" },
+                    { name: "Tên nhân viên", dataSource: "FullName", width: 100, type: "text" },
+                    { name: "Ngày cập nhật", dataSource: "UpdatedDate", width: 100, type: "text" },
+                    { name: "Ngưởi cập nhật", dataSource: "UpdatedUserFullName", width: 100, type: "text" }
+                ])
+
+                return listColumn;
+
+            } else {
+                return [];
+            }
+
+        } catch (error) {
+            return [];
+        }
+    }
+
+    initGridDataSource(data) {
+        const groupData = data.reduce((acc, val, ind, arr) => {
+            // console.log("acc", acc, val, ind, arr)
+            const tempItemAcc = acc.findIndex(item => item.UserName == val.UserName);
+            const objDataLimit = {
+                LimitValue: val.LimitValue,
+                IsAllowdecimalLimitValue: val.IsAllowdecimalLimitValue,
+                IsCheckRangeLimitValue: val.IsCheckRangeLimitValue,
+                MaxLimitValue: val.MaxLimitValue,
+                MinLimitValue: val.MinLimitValue,
+                IsRegister: val.IsRegister
+            }
+
+            if (tempItemAcc == -1) {
+                return [
+                    ...acc,
+                    {
+                        UserName: val.UserName,
+                        FullName: val.FullName,
+                        UpdatedUserFullName: val.UpdatedUserFullName,
+                        UpdatedDate: formatDate(val.UpdatedDate, false),
+                        [val.LimitTypeID]: objDataLimit,
+                        initialData: [val]
+                    }
+                ];
+            } else {
+                acc[tempItemAcc] = {
+                    ...acc[tempItemAcc],
+                    [val.LimitTypeID]: objDataLimit,
+                    initialData: [...acc[tempItemAcc].initialData, val]
+                }
+
+                return acc;
+            }
+
+        }, []);
+
+        return groupData;
+    }
+
+    initArrInputError(data) {
+        const groupData = data.reduce((acc, val, ind, arr) => {
+
+            const tempItemAcc = acc.findIndex(item => item.UserName == val.UserName);
+
+            if (tempItemAcc == -1) {
+                return [
+                    ...acc,
+                    {
+                        UserName: val.UserName,
+                        FullName: val.FullName,
+                        [val.LimitTypeID]: {
+                            isError: false,
+                            status: ""
+                        },
+
+                    }
+                ];
+            } else {
+                acc[tempItemAcc] = {
+                    ...acc[tempItemAcc],
+                    [val.LimitTypeID]: {
+                        isError: false,
+                        status: ""
+                    },
+                }
+
+                return acc;
+            }
+
+        }, []);
+
+        return groupData;
     }
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchUserLimitAPIPath, searchData).then(apiResult => {
-            console.log('SearchUserLimit', apiResult, searchData);
-            if (!apiResult.IsError) {
-                if (apiResult.ResultObject.length > 0) {
-                    const sortResult = apiResult.ResultObject.sort((a, b) => (a.UserName > b.UserName) ? 1
-                        : (a.UserName === b.UserName)
-                            ? (a.LimitTypeID > b.LimitTypeID) ? 1 : -1 : -1);
-                   
-                    const dataSource = sortResult.reduce((catsSoFar, item, index) => {
-                        if (!catsSoFar[item.UserName]) catsSoFar[item.UserName] = [];
-                            catsSoFar[item.UserName].push(item);
-                        return catsSoFar;
-                    }, {});
+            // console.log("data", apiResult, searchData)
+            const groupData = this.initGridDataSource(apiResult.ResultObject);
+            const initInputError = this.initArrInputError(apiResult.ResultObject);
+            const listColumn = this.getTableHeader(groupData);
 
-                    let init = []
-                    let userName = '';
+            this.setState({
+                listColumn: listColumn,
+                gridDataSource: groupData,
+                arrInputError: initInputError
+            })
 
-                    sortResult.map((e, i) => {
-                        if (init.length <= 0) {
-                            init.push(e)
-                            userName = e.UserName
-                        }
-                        else {
-                            if (userName != e.UserName) {
-                                init.push(e)
-                                userName = e.UserName
-                            }
-                        }
-                    })
-                    let lstUserNameFind = [];
-                    init.map((item, index)=>{
-                        lstUserNameFind.push(item.UserName)
-                    })
-
-                    this.setState({
-                        gridDataSource: init,
-                        gridDataLimtType: dataSource,
-                        IsCallAPIError: apiResult.IsError,
-                        IsLoadDataComplete: true,
-                        lstUserNameFind: lstUserNameFind
-                    });
-                }
-                else {
-                    this.showMessage("Không tồn tại dữ liệu.");
-                    this.setState({
-                        IsLoadDataComplete: false,
-                    });
-                }
-
-            }
-            else {
-                this.showMessage(apiResult.Message);
-                this.setState({
-                    IsLoadDataComplete: false,
-                });
-            }
         });
     }
 
     handleCloseMessage() {
-        if (!this.state.IsCallAPIError);
+
     }
 
     showMessage(message) {
@@ -217,78 +266,199 @@ class SearchCom extends React.Component {
         });
     }
 
-    handleChangeLimitType(e) {
-        const inputvalue = e.target.value;
-        const inputName = e.target.name;
-        const inputValueNew = inputvalue.toString().replace(new RegExp(',', 'g'), "");
-        const userItem = e.target.attributes['data-user'].value;
-        const userlimitType = e.target.attributes['data-limittype'].value;
-        const index = e.target.attributes['data-index'].value;
+    handleSubmit() {
+        const { gridDataSource } = this.state;
 
-        const dataFind = this.state.gridDataLimtType[userItem].find(n => {
-            return n.LimitTypeID == inputName && n.UserName == userItem
-        });
-        dataFind.LimitValue = inputValueNew;
+        const dataSubmit = gridDataSource.reduce((acc, val) => {
+            const { initialData } = val;
 
-        if (inputValueNew > 0) {
-            dataFind.IsRegister = true;
-        }
-        else {
-            dataFind.IsRegister = false;
-        }
-
-        if (inputValueNew.toString().length > 1) {
-            if (/^[0-9]*$/.test(inputValueNew)) {
-                this.setState({
-                    isValidate: false
+            const updateInitData = initialData.reduce((acc1, val1) => {
+                acc1.push({
+                    ...val1,
+                    LimitValue: parseFloat(val[val1.LimitTypeID].LimitValue),
+                    IsRegister: val[val1.LimitTypeID].IsRegister
                 })
-                e.target.classList.remove('is-invalid')
-            }
-            else {
-                e.target.classList.add('is-invalid')
-                this.setState({
-                    isValidate: true
-                })
-            }
-        }
 
-        let Item = this.state.gridDataLimtType[userItem];
-        let formDatanew = []
-        let formData = []
-        formDatanew = Object.assign([], Item, { [index]: dataFind });
-        formData = Object.assign([], this.state.gridDataLimtType, { [userItem]: formDatanew });
-        this.setState({
-            gridDataLimtType: formData
-        })
-    }
+                return acc1;
+            }, [])
 
-    onClickLimitType() {
-        // console.log("gridDataLimtType", this.state.gridDataLimtType, this.state.gridDataLimtType.length)
-        let lstUserLimit = [];
-        this.state.lstUserNameFind.map((item) => {
-            this.state.gridDataLimtType[item].map((e) => {
-                lstUserLimit.push(e)
-            })
-        })
-        this.props.callFetchAPI(APIHostName, 'api/User_Limit/AddNew', lstUserLimit).then(apiResult => {
+            return [...acc, ...updateInitData];
+
+        }, [])
+
+        this.props.callFetchAPI(APIHostName, AddNewAPIPath, dataSubmit).then(apiResult => {
             if (apiResult.IsError) {
-                this.showMessage(apiResult.Message)
+                this.showMessage(apiResult.Message);
             }
             else {
                 this.addNotification(apiResult.Message, apiResult.IsError);
-                this.callSearchData(this.state.SearchData)
+                this.callSearchData(this.state.SearchData);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_USER_LIMIT)
             }
         });
+
+
+    }
+
+
+    handleChange(e, param1, param2, dataInput) {
+        const cloneGridDataSource = [...this.state.gridDataSource];
+        const cloneArrInputError = [...this.state.arrInputError];
+        const { IsAllowdecimalLimitValue, IsCheckRangeLimitValue, LimitValue, MaxLimitValue, MinLimitValue } = dataInput;
+        const pattern = param2 == 1
+            ? /^\d+$/igm // check so nguyen
+            : /(^[+]?[0-9]+\.[0-9]+$|^\d+$)/igm // check so thap phan hoac so nguyen
+
+        let flagError = false;
+        let valueInput = e.target.value;
+
+
+        switch (param2) {
+            case 1:
+                const arr = valueInput.split(",");
+                valueInput = arr.join('');
+                break;
+
+            default:
+                break;
+        }
+
+        cloneGridDataSource[param1][param2].LimitValue = valueInput;
+
+
+        // begin validate
+        if (pattern.test(valueInput)) {
+            cloneArrInputError[param1][param2] = {
+                isError: false,
+                status: ""
+            }
+
+        } else {
+            cloneArrInputError[param1][param2] = {
+                isError: true,
+                status: "Vui lòng nhập số"
+            }
+            flagError = true;
+        }
+
+        if (flagError) {
+            this.setState({
+                gridDataSource: cloneGridDataSource,
+                isErrorValidate: true
+            })
+            return;
+        }
+
+
+        if (IsAllowdecimalLimitValue) {
+
+        } else {
+            if (/^\d+$/igm.test(valueInput)) {
+                cloneArrInputError[param1][param2] = {
+                    isError: false,
+                    status: ""
+                }
+            } else {
+                cloneArrInputError[param1][param2] = {
+                    isError: true,
+                    status: "Vui lòng nhập số nguyên"
+                }
+                flagError = true;
+            }
+        }
+
+        if (flagError) {
+            this.setState({
+                gridDataSource: cloneGridDataSource,
+                isErrorValidate: true
+            })
+            return;
+        }
+
+
+        if (IsCheckRangeLimitValue) {
+
+            if (parseFloat(valueInput) >= MinLimitValue && parseFloat(valueInput) <= MaxLimitValue) {
+                cloneArrInputError[param1][param2] = {
+                    isError: false,
+                    status: ""
+                }
+            } else {
+                cloneArrInputError[param1][param2] = {
+                    isError: true,
+                    status: `Vượt quá số lượng hạn mức (<=${numberDecimalWithComma(MaxLimitValue)})`
+                }
+                flagError = true;
+            }
+
+        } else {
+
+            switch (param2) {
+                case 1:
+                    if (parseFloat(valueInput) >= 0 && parseFloat(valueInput) <= DefaultMaxLimitAmount) {
+
+                        cloneArrInputError[param1][param2] = {
+                            isError: false,
+                            status: ""
+                        }
+                    } else {
+
+                        cloneArrInputError[param1][param2] = {
+                            isError: true,
+                            status: `Vượt quá số lượng hạn mức (<=${numberDecimalWithComma(DefaultMaxLimitAmount)})`
+                        }
+                        flagError = true;
+                    }
+                    break;
+
+                default:
+                    if (parseFloat(valueInput) >= 0 && parseFloat(valueInput) <= DefaultMaxLimitCoil) {
+
+                        cloneArrInputError[param1][param2] = {
+                            isError: false,
+                            status: ""
+                        }
+                    } else {
+
+                        cloneArrInputError[param1][param2] = {
+                            isError: true,
+                            status: `Vượt quá số lượng hạn mức (<=${DefaultMaxLimitCoil})`
+                        }
+
+                        flagError = true;
+                    }
+                    break;
+            }
+
+        }
+        // end validate
+
+        if (flagError) {
+            this.setState({
+                gridDataSource: cloneGridDataSource,
+                isErrorValidate: true
+            })
+            return;
+        } else {
+            cloneGridDataSource[param1][param2].IsRegister = true;
+
+            this.setState({
+                gridDataSource: cloneGridDataSource,
+                isErrorValidate: false
+            })
+        }
 
 
     }
 
     render() {
-        let className = "form-control form-control-sm";
+        const { listColumn, gridDataSource, arrInputError, isErrorValidate } = this.state;
 
+        // console.log("listColumn", listColumn, gridDataSource)
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
+
                 <SearchForm
                     FormName="Tìm kiếm danh sách giới hạn theo người dùng"
                     MLObjectDefinition={SearchMLObjectDefinitionNew}
@@ -304,53 +474,59 @@ class SearchCom extends React.Component {
                             <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                 <thead className="thead-light">
                                     <tr>
-                                        <th className="jsgrid-header-cell" style={{ width: 100 }}>Mã nhân viên</th>
-                                        <th className="jsgrid-header-cell" style={{ width: 100 }}>Tên nhân viên</th>
                                         {
-                                            this.state.dataLimitTyle && this.state.dataLimitTyle.map((item, index) => {
+                                            listColumn && listColumn.map((item, index) => {
                                                 return (
-                                                    <th key={index} className="jsgrid-header-cell" style={{ width: 200 }}>{item.LimitTypeName}</th>
+                                                    <th key={index} className="jsgrid-header-cell" style={{ width: item.width }}>
+                                                        {item.name}
+                                                    </th>
                                                 )
                                             })
                                         }
-
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {
-                                        this.state.gridDataSource && this.state.gridDataSource.map((item, index) => {
-                                            return (
-                                                <tr key={index}>
-                                                    <td>{item.UserName}</td>
-                                                    <td>{item.FullName}</td>
-                                                    {
-                                                        this.state.gridDataLimtType && this.state.gridDataLimtType[item.UserName].map((item1, index1) => {
-                                                            return (
-                                                                <td key={index1}>
-                                                                    <input type="text" className={className}
-                                                                        onChange={this.handleChangeLimitType}
-                                                                        value={formatMoney(item1.LimitValue, 0)}
-                                                                        name={item1.LimitTypeID}
-                                                                        data-index={index1}
-                                                                        data-user={item.UserName}
-                                                                        data-limittype={item1.LimitTypeID}
-                                                                        maxLength={15}
+                                        gridDataSource.length > 0 && gridDataSource.map((item, index) => {
+                                            // console.log("object1111", item, index)
+                                            return <tr key={item.UserName}>
+                                                {
+                                                    listColumn.map((item1, index1) => {
+                                                        // console.log("222", item1, index1)
+
+                                                        switch (item1.type) {
+                                                            case "text":
+                                                                return <td key={index1}>{item[item1.dataSource]}</td>
+
+                                                            case "input":
+                                                                return <td key={index1}>
+                                                                    <input type="text"
+                                                                        className="form-control form-control-sm"
+                                                                        value={item1.dataSource == 1
+                                                                            ? numberDecimalWithComma(item[item1.dataSource].LimitValue)
+                                                                            : item[item1.dataSource].LimitValue}
+                                                                        onChange={(e) => this.handleChange(e, index, item1.dataSource, item[item1.dataSource])}
                                                                     />
 
-                                                                    <div className="invalid-feedback"><ul className="list-unstyled"><li>Vui lòng nhập số</li></ul></div>
-
+                                                                    {
+                                                                        arrInputError[index][item1.dataSource].isError
+                                                                        && <span className="text-danger">{arrInputError[index][item1.dataSource].status}</span>
+                                                                    }
                                                                 </td>
-                                                            )
-                                                        })
-                                                    }
-                                                </tr>
-                                            )
+
+                                                            default:
+                                                                return <td key={index1}>{item[item1.dataSource]}</td>
+                                                        }
+                                                    })
+                                                }
+                                            </tr>
                                         })
                                     }
                                 </tbody>
+
                             </table>
                             <div className="text-right">
-                                <button type="button" className="btn btn-info" data-provide="tooltip" data-original-title="Cập nhật" onClick={this.onClickLimitType.bind(this)}>
+                                <button type="button" className="btn btn-info" data-provide="tooltip" data-original-title="Cập nhật" onClick={this.handleSubmit.bind(this)} disabled={isErrorValidate}>
                                     <span className="fa fa-check-square-o"> Cập nhật</span>
                                 </button>
                             </div>

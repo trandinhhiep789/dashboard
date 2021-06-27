@@ -5,6 +5,23 @@
         padding: 10px;
         border: 1px solid #d9d9d9;
         border-top: 0; 
+        .row {
+            .card {
+                .card-body {
+                    .form-row {
+                        @media (max-width: 768px) {
+                            .form-group {
+                                &:first-child {
+                                    display: none;
+                                }
+                                margin-bottom: 0 !important;
+                                padding: 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     .Collapsible__trigger {
         display: block;

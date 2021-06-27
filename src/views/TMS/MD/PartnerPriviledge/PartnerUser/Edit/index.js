@@ -35,7 +35,10 @@ import { callGetCache, callClearLocalCache } from "../../../../../../actions/cac
 import Collapsible from 'react-collapsible';
 import { Prompt } from 'react-router';
 import { PARTNERUSER_UPDATE } from "../../../../../../constants/functionLists";
-import { ERPCOMMONCACHE_PARTNERUSER } from "../../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_PARTNERUSER, ERPCOMMONCACHE_TMSCONFIG } from "../../../../../../constants/keyCache";
+import { toIsoStringCus } from "../../../../../../utils/function";
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -44,25 +47,31 @@ class EditCom extends React.Component {
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleInputUserRoleInsert = this.handleInputUserRoleInsert.bind(this);
         this.callLoadData = this.callLoadData.bind(this);
+        this.initCache = this.initCache.bind(this);
+        //this.initLimit = this.initLimit.bind(this);
         this.handleOnInputChange = this.handleOnInputChange.bind(this);
+        this.handleSetNewPass = this.handleSetNewPass.bind(this);
+        this.displayInputControl = this.displayInputControl.bind(this);
         this.handleInputUserRoleDelete = this.handleInputUserRoleDelete.bind(this);
         this.handleSelectedFile = this.handleSelectedFile.bind(this);
         this.addPartnerUser_IDDocumentPopup = this.addPartnerUser_IDDocumentPopup.bind(this);
         this.editPartnerUser_IDDocumentPopup = this.editPartnerUser_IDDocumentPopup.bind(this);
         this.delete_PartnerUser_IDDocumentPopup = this.delete_PartnerUser_IDDocumentPopup.bind(this);
+        this.addNotification = this.addNotification.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
             FormContent: "",
             IsLoadDataComplete: false,
             IsCloseForm: false,
-            EditElementList: EditElementList,
             Password: "",
             PasswordConfirm: "",
             Files: [],
-            IsNotSaved: false
+            IsNotSaved: false,
+            IsShowChangePass: false
         };
         this.searchref = React.createRef();
+        this.notificationDOMRef = React.createRef();
     }
 
     handleCloseMessage() {
@@ -90,6 +99,37 @@ class EditCom extends React.Component {
         );
     }
 
+    addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
+        if (!IsError) {
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
+        } else {
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
+
+
     //file upload
     handleSelectedFile(file, nameValue, isDeletetedFile) {
         const filelist = { [nameValue]: file, "KeyName": nameValue, IsDeletetedFile: isDeletetedFile };
@@ -111,7 +151,46 @@ class EditCom extends React.Component {
     componentDidMount() {
         this.callLoadData();
         this.props.updatePagePath(EditPagePath);
+        this.initCache();
+
+        // setTimeout(() => {
+        //     this.displayInputControl(false);
+        // }, 1500);
+
     }
+
+
+
+    setLimit(name, elementValue) {
+        var x = document.getElementsByName(name)[0];
+        x.value = Number(elementValue).toLocaleString();
+    }
+
+    initCache() {
+        this.props.callGetCache(ERPCOMMONCACHE_TMSCONFIG).then((result) => {
+            if (result && !result.IsError && result.ResultObject) {
+                let _ADVANCELIMIT_LEADERPARTNER = result.ResultObject.CacheData.filter(x => x.TMSConfigID == "ADVANCELIMIT_LEADERPARTNER");
+                let _ADVANCELIMIT_STAFFPARTNER = result.ResultObject.CacheData.filter(x => x.TMSConfigID == "ADVANCELIMIT_STAFFPARTNER");
+                this.setState({
+                    ADVANCELIMIT_LEADERPARTNER: _ADVANCELIMIT_LEADERPARTNER ? _ADVANCELIMIT_LEADERPARTNER[0].TMSConfigValue : 0,
+                    ADVANCELIMIT_STAFFPARTNER: _ADVANCELIMIT_STAFFPARTNER ? _ADVANCELIMIT_STAFFPARTNER[0].TMSConfigValue : 0
+                })
+            }
+
+        });
+    }
+
+    // initLimit() {
+    //     let role = this.state.PartnerRoleID;
+    //     let limitValue = 0;
+    //     if (role == 1) { //quản lý
+    //         limitValue = this.state.ADVANCELIMIT_LEADERPARTNER;
+    //     }
+    //     this.setLimit("txtLimit", limitValue);
+
+    // }
+
+
 
     callLoadData(key) {
         const id = this.props.match.params.id;
@@ -122,13 +201,35 @@ class EditCom extends React.Component {
                 });
                 this.showMessage(apiResult.Message);
             } else {
-                apiResult.ResultObject.Birthday = apiResult.ResultObject.BirthdayString;
+                //apiResult.ResultObject.Birthday = apiResult.ResultObject.BirthdayString;
+                apiResult.ResultObject.PartnerRoleID = apiResult.ResultObject.ListPartnerUser_Role.length > 0 ? apiResult.ResultObject.ListPartnerUser_Role[0].PartnerRoleID : -1;
                 if (key === undefined) {
+
+                    //khởi tạo kho điều phối
+                    let selectedOptionStore = [];
+                    if (apiResult.ResultObject.ListUser_CoordinatorStore) {
+                        apiResult.ResultObject.ListUser_CoordinatorStore.map(row => {
+                            selectedOptionStore.push({ value: row.StoreID, label: row.StoreName, name: row.StoreName });
+                        })
+                    }
+
+                    const _editElement = EditElementList;
+                    _editElement.forEach(function (objElement) {
+                        if (objElement.name == 'txtCoordinatorStoreID') {
+                            objElement.SelectedOption = selectedOptionStore;
+                        }
+                    });
+
+
+
                     this.setState({
                         DataSource: apiResult.ResultObject,
-                        PassWord: apiResult.ResultObject.PassWord,
+                        PassWordOld: apiResult.ResultObject.PassWord,
                         PassWordConfirm: apiResult.ResultObject.PassWord,
-                        ListPartnerUser_IDDocument: apiResult.ResultObject.ListPartnerUser_IDDocument
+                        ListPartnerUser_IDDocument: apiResult.ResultObject.ListPartnerUser_IDDocument,
+                        Birthday: apiResult.ResultObject.Birthday,
+                        PartnerRoleID: apiResult.ResultObject.PartnerRoleID,
+                        EditElementList: _editElement
                     });
                 } else {
                     this.setState({ ListPartnerUser_IDDocument: apiResult.ResultObject.ListPartnerUser_IDDocument });
@@ -136,6 +237,11 @@ class EditCom extends React.Component {
                 // apiResult.ResultObject.PassWord = null;
                 // apiResult.ResultObject.PassWordConfirm = null;
             }
+
+            setTimeout(() => {
+                this.displayInputControl(false);
+            }, 600);
+
             this.setState({
                 IsLoadDataComplete: true
             });
@@ -365,6 +471,8 @@ class EditCom extends React.Component {
         });
     }
 
+
+
     handleOnInputChange(name, value) {
         this.setState({ IsNotSaved: true });
         if (name == "txtPassWord") {
@@ -374,8 +482,26 @@ class EditCom extends React.Component {
         } else if (name == "chkShowPassWord") {
             this.showPassWord("txtPassWord");
             this.showPassWord("txtPassWordConfirm");
+            this.showPassWord("txtOldPassWord");
             return;
         }
+
+
+        // if (name == "txtPartnerRoleID") {
+        //     let role = value[0];
+        //     let limitValue = 0;
+        //     if (role == 1) { //quản lý
+        //         limitValue = this.state.ADVANCELIMIT_LEADERPARTNER;
+        //     } else if (role == 2) { // nhân viên
+        //         limitValue = this.state.ADVANCELIMIT_STAFFPARTNER;
+        //     }
+        //     this.setLimit("txtLimit", limitValue);
+        //     this.setState({
+        //         PartnerRoleID: role
+        //     });
+        // }
+
+        //console.log("formdata", formdata);
 
     }
 
@@ -388,14 +514,35 @@ class EditCom extends React.Component {
         }
     }
 
+    displayInputControl(value) {
+        var selector = document.getElementsByClassName('form-row');
+        for (var i = 16; i <= 19; i++) {
+            var item = selector[i];
+            selector[i].style.display = value ? "" : "none";
+        }
+    }
+
+    handleSetNewPass() {
+        let isShow = !this.state.IsShowChangePass;
+        this.displayInputControl(isShow);
+        this.setState({
+            IsShowChangePass: isShow
+        });
+    }
+
+
     handleSubmit(formData, MLObject) {
         //check password valid
         let { PassWord, PassWordConfirm } = this.state;
-        if (PassWord != PassWordConfirm) {
+        if (PassWord && PassWord != PassWordConfirm) {
             this.setState({ IsCallAPIError: true });
-            this.showMessage("Xác nhận mật khẩu chưa đúng.");
+            this.addNotification("Xác nhận mật khẩu chưa đúng.", true);
             return false;
         }
+
+
+
+        MLObject.FullName = MLObject.FullName.toUpperCase();
 
         let fullName = MLObject.FullName.split(" ");
         let firstName = fullName[fullName.length - 1];
@@ -412,26 +559,61 @@ class EditCom extends React.Component {
         MLObject.LastName = lastName.trim();
         MLObject.ListPartnerUser_Role = this.state.DataSource.ListPartnerUser_Role;
         MLObject.PartnerID = MLObject.PartnerID && Array.isArray(MLObject.PartnerID) ? MLObject.PartnerID[0] : MLObject.PartnerID;
-
+        MLObject.PartnerRoleID = MLObject.PartnerRoleID && Array.isArray(MLObject.PartnerRoleID) ? MLObject.PartnerRoleID[0] : this.state.PartnerRoleID;
         if (MLObject.Birthday) {
             let temp = MLObject.Birthday.trim().split('/');
             let myDate = new Date(temp[1] + '/' + temp[0] + '/' + temp[2]);
-            myDate.setDate(myDate.getDate() + 1);
             MLObject.Birthday = myDate;
         }
+        
+
+        ///kiểm tra người dùng đủ 18 tuổi
+        let validYearOld = (new Date()).getFullYear() - (new Date(MLObject.Birthday)).getFullYear();
+        if (validYearOld < 18) {
+            this.addNotification("Yêu cầu người dùng trên 18 tuổi.", true);
+            return;
+        }else if(validYearOld > 100){
+            this.addNotification("Yêu cầu người dùng dưới 100 tuổi.", true);
+            return;
+        }
+
+        MLObject.Birthday = toIsoStringCus(new Date(MLObject.Birthday).toISOString());
+        // try {
+        //     MLObject.Birthday = toIsoStringCus(new Date(MLObject.Birthday).toISOString());
+        // } catch (error) {
+        //     MLObject.Birthday = toIsoStringCus(new Date(this.state.Birthday).toISOString());
+        // }
 
         if (!MLObject.PassWord) {
-            MLObject.PassWord = this.state.PassWord;
+            MLObject.PassWord = this.state.PassWordOld;
         } else {
+            MLObject.OldPassWord = MD5Digest(MLObject.OldPassWord);
+            MLObject.RawPass = MD5Digest(PassWord);
             MLObject.PassWord = MD5Digest(PassWord);
         }
 
+        //hạn mức người dùng
+        if (MLObject.PartnerRoleID == 1) {// quản lý
+            MLObject.LimitValue = this.state.ADVANCELIMIT_LEADERPARTNER;
+        } else if (MLObject.PartnerRoleID == 2) {// nhân viên
+            MLObject.LimitValue = this.state.ADVANCELIMIT_STAFFPARTNER;
+        }
+        else {
+            MLObject.LimitValue = 0;
+        }
+
+        //console.log("MLObject", MLObject);
 
 
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNERUSER);
-            this.showMessage(apiResult.Message);
+            if (apiResult.IsError) {
+                this.addNotification(apiResult.Message, true);
+            } else {
+                this.showMessage(apiResult.Message);
+            }
+
         });
     }
     render() {
@@ -441,6 +623,7 @@ class EditCom extends React.Component {
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
                     <Prompt
                         when={this.state.IsNotSaved}
                         message='Có dữ liệu chưa được lưu. Bạn có muốn rời trang?'
@@ -455,13 +638,14 @@ class EditCom extends React.Component {
                         BackLink={BackLink}
                         dataSource={this.state.DataSource}
                         onValueChange={this.handleOnInputChange}
+                        handleButtonClick={this.handleSetNewPass}
                         RequirePermission={PARTNERUSER_UPDATE}
                     >
                         <br />
                         {/* <Collapsible trigger="Vai trò của người dùng" easing="ease-in" open={true}>
                             
                         </Collapsible> */}
-                        <div>
+                        {/* <div>
                             <InputGrid
                                 name="LstPartnerUser_Role"
                                 controltype="GridControl"
@@ -477,7 +661,7 @@ class EditCom extends React.Component {
                                 headingTitle={"Vai trò của người dùng"}
                             />
                         </div>
-                        <br />
+                        <br /> */}
                         {/* <Collapsible trigger="Giấy tờ tùy thân của người dùng" easing="ease-in" open={true}>
                             
                         </Collapsible> */}

@@ -15,15 +15,20 @@ import {
     IDSelectColumnName,
     PKColumnName,
     InitSearchParams,
-    PagePath
+    PagePath,
+    DataTemplateExport,
+    schema,
+    AddByFileAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { PERIODUSERRWPOSITION_VIEW, PERIODUSERRWPOSITION_DELETE } from "../../../../../constants/functionLists";
+import { PERIODUSERRWPOSITION_VIEW, PERIODUSERRWPOSITION_DELETE, PERIODUSERRWPOSITION_EXPORT } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_AREATYPE, ERPCOMMONCACHE_MATERIALGROUP } from "../../../../../constants/keyCache";
+import { formatDate } from "../../../../../common/library/CommonLib";
+import { toIsoStringCus } from "../../../../../utils/function";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -36,8 +41,8 @@ class SearchCom extends React.Component {
             gridDataSource: [],
             IsCallAPIError: false,
             SearchData: InitSearchParams,
-            cssNotification: "",
-            iconNotification: ""
+            dataExport: [],
+            DataTemplateExport
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -47,6 +52,109 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.callSearchData(this.state.SearchData);
         this.props.updatePagePath(PagePath);
+    }
+
+    handleExportFile(result) {
+        this.addNotification(result.Message, result.IsError);
+    }
+
+
+    handleImportFile(resultRows, errors) {
+
+        const CreatedUser = this.props.AppInfo.LoginInfo.Username;
+        const LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        const importData = resultRows.map(item => {
+            const { UserName, RewardPositionID, ApplyFromDate, ApplyToDate, IsActived, IsSystem } = item
+            return {
+                ...item,
+                CreatedUser,
+                LoginLogID
+                //ProvinceFullName: `${ProvinceID} - ${ProvinceName}`,
+                //WardFullName: `${WardID} - ${WardName}`
+            }
+        })
+
+        var dates = {
+            convert: function (d) {
+
+                return (
+                    d.constructor === Date ? d :
+                        d.constructor === Array ? new Date(d[0], d[1], d[2]) :
+                            d.constructor === Number ? new Date(d) :
+                                d.constructor === String ? new Date(d) :
+                                    typeof d === "object" ? new Date(d.year, d.month, d.date) :
+                                        NaN
+                );
+            },
+            compare: function (a, b) {
+                return (
+                    isFinite(a = this.convert(a).valueOf()) &&
+                        isFinite(b = this.convert(b).valueOf()) ?
+                        (a > b) - (a < b) :
+                        NaN
+                );
+            },
+            inRange: function (d, start, end) {
+                return (
+                    isFinite(d = this.convert(d).valueOf()) &&
+                        isFinite(start = this.convert(start).valueOf()) &&
+                        isFinite(end = this.convert(end).valueOf()) ?
+                        start <= d && d <= end :
+                        NaN
+                );
+            }
+        }
+        debugger;
+
+        let data = [];
+        let _isError = false;
+        importData.map((itemObject, index) => {
+
+            if ((!itemObject.ApplyFromDate || !itemObject.ApplyToDate) && _isError == false) {
+                this.addNotification("Vui lòng nhập ngày áp dụng.", true);
+                _isError = true;
+            } else if (!itemObject.UserName && _isError == false) {
+                this.addNotification("Vui lòng chọn người dùng.", true);
+                _isError = true;
+            } else if (!itemObject.RewardPositionID && _isError == false) {
+                this.addNotification("Vui lòng chọn mã vị trí thưởng.", true);
+                _isError = true;
+            }
+            else if (_isError == false) {
+                let validDate = dates.compare(itemObject.ApplyFromDate, itemObject.ApplyToDate);
+                if (validDate == 1) {
+                    this.addNotification("Ngày khai báo vị trí thưởng theo khoảng thời gian không hợp lệ. Vui lòng kiểm tra lại.", true);
+                    _isError = true;
+                } else {
+                    itemObject.ApplyFromDate = toIsoStringCus(new Date(itemObject.ApplyFromDate).toISOString());
+                    itemObject.ApplyToDate = toIsoStringCus(new Date(itemObject.ApplyToDate).toISOString());
+                    data.push(itemObject);
+                }
+
+            }
+        });
+
+
+        if (_isError) {
+            return;
+        }
+
+
+        this.props.callFetchAPI(APIHostName, AddByFileAPIPath, data).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            if (!apiResult.IsError) {
+                //this.props.callClearLocalCache(ERPCOMMONCACHE_MATERIALGROUP);
+                this.callSearchData(this.state.SearchData);
+            }
+
+            this.addNotification(apiResult.Message, apiResult.IsError);
+
+        });
+
+    }
+
+    handleExportFileTemplate(result) {
+        this.addNotification(result.Message, result.IsError);
     }
 
     handleDelete(deleteList, pkColumnName) {
@@ -86,15 +194,35 @@ class SearchCom extends React.Component {
             //this.searchref.current.changeLoadComplete();
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
+                // xuất exel
+                const exelData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Người dùng": item.UserName,
+                        "Vị trí thưởng": item.RewardPositionName,
+                        "Áp dụng từ ngày": formatDate(item.ApplyFromDate),
+                        "Áp dụng đến ngày": formatDate(item.ApplyToDate),
+                        "Kích hoạt": item.IsActived ? "Có" : "Không",
+                        "Ngày cập nhật": formatDate(item.UpdatedDate),
+                        "Người cập nhật": item.UpdatedUserFullName
+                    };
+                    return element;
+
+                })
+
                 this.setState({
+                    dataExport: exelData,
                     gridDataSource: apiResult.ResultObject,
+                    IsCallAPIError: apiResult.IsError,
                     IsShowForm: true
                 });
             } else {
-                this.setState({ IsShowForm: false,
-                    IsCallAPIError:!apiResult.IsError,
-                 });
-                 this.showMessage(apiResult.Message);
+                this.setState({
+                    dataExport: [],
+                    gridDataSource: [],
+                    IsShowForm: false,
+                    IsCallAPIError: !apiResult.IsError,
+                });
+                this.showMessage(apiResult.Message);
             }
         });
     }
@@ -117,23 +245,20 @@ class SearchCom extends React.Component {
     }
 
     addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
         if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
         } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={this.state.cssNotification}>
+                <div className={cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
+                        <i className={iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -148,6 +273,7 @@ class SearchCom extends React.Component {
             dismissable: { click: true }
         });
     }
+
 
     render() {
         if (this.state.IsShowForm) {
@@ -171,8 +297,21 @@ class SearchCom extends React.Component {
                         ref={this.gridref}
                         RequirePermission={PERIODUSERRWPOSITION_VIEW}
                         DeletePermission={PERIODUSERRWPOSITION_DELETE}
+                        ExportPermission={PERIODUSERRWPOSITION_EXPORT}
                         IsAutoPaging={true}
                         RowsPerPage={30}
+                        IsExportFile={true}
+                        DataExport={this.state.dataExport}
+                        fileName="Danh sách vị trí thưởng theo khoảng thời gian"
+                        onExportFile={this.handleExportFile.bind(this)}
+
+                        IsImportFile={true}
+                        SchemaData={schema}
+                        onImportFile={this.handleImportFile.bind(this)}
+                        isExportFileTemplate={true}
+                        DataTemplateExport={this.state.DataTemplateExport}
+                        fileNameTemplate={"Danh sách vị trí thưởng theo khoảng thời gian"}
+                        onExportFileTemplate={this.handleExportFileTemplate.bind(this)}
                     />
                 </React.Fragment>
             );

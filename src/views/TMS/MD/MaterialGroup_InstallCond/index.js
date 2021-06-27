@@ -122,23 +122,21 @@ class MaterialGroup_InstallCondCom extends React.Component {
     }
 
     addNotification(message1, IsError) {
+        let cssNotification = "";
+        let iconNotification = "";
         if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check";
         } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation";
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={this.state.cssNotification}>
+                <div className={cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
+                        <i className={iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -427,6 +425,15 @@ class MaterialGroup_InstallCondCom extends React.Component {
                             return;
                         }
 
+                        //check valid activation
+                        let _MaterialGroup_Product_IsActive = this.state.MaterialGroup_ProductDataSource.filter(x => x.ProductID == MLObject.MaterialProductID);
+                        let _MaterialGroup_InstallCond_IsActive = MLObject.IsActived;
+
+                        if (_MaterialGroup_Product_IsActive.length > 0 && _MaterialGroup_Product_IsActive[0].IsActived == true && _MaterialGroup_InstallCond_IsActive == false) {
+                            this.addNotification("Vui lòng không bỏ kích hoạt", true);
+                            return;
+                        }
+
                         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
                             if (!apiResult.IsError) {
                                 if (this.props.onMaterialGroup_InstallCondChange) {
@@ -510,6 +517,18 @@ class MaterialGroup_InstallCondCom extends React.Component {
                             return;
                         }
 
+                        // console.log("MaterialGroup_ProductDataSource", this.state.MaterialGroup_InstallCondDataSource)
+                        // console.log("MLObject.IsActived", _MaterialGroup_Product_IsActive)
+
+                        //check valid activation
+                        let _MaterialGroup_Product_IsActive = this.state.MaterialGroup_ProductDataSource.filter(x => x.ProductID == MLObject.MaterialProductID);
+                        let _MaterialGroup_InstallCond_IsActive = MLObject.IsActived;
+
+                        if (_MaterialGroup_Product_IsActive.length > 0 && _MaterialGroup_Product_IsActive[0].IsActived == true && _MaterialGroup_InstallCond_IsActive == false) {
+                            this.addNotification("Vui lòng không bỏ kích hoạt", true);
+                            return;
+                        }
+
                         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
                             if (!apiResult.IsError) {
                                 if (this.props.onMaterialGroup_InstallCondChange) {
@@ -522,7 +541,7 @@ class MaterialGroup_InstallCondCom extends React.Component {
                             this.addNotification(apiResult.Message, apiResult.IsError);
                         });
 
-                        
+
                     }
                 }
             },
@@ -646,7 +665,7 @@ class MaterialGroup_InstallCondCom extends React.Component {
                     onDeleteClick={this.handleDelete}
                     onInsertClick={this.handleInsert}
                     onInsertClickEdit={this.handleEdit}
-                    IsAutoPaging={false}
+                    IsAutoPaging={true}
                     RowsPerPage={10}
                     IsCustomAddLink={true}
                     headingTitle={"Điều kiện lắp đặt của nhóm vật tư"}

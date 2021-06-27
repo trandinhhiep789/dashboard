@@ -20,7 +20,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { PACKAGETYPE_VIEW, PACKAGETYPE_DELETE } from "../../../../../constants/functionLists";
+import { PACKAGETYPE_VIEW, PACKAGETYPE_DELETE, PACKAGETYPE_EXPORT } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
@@ -102,8 +102,8 @@ class SearchCom extends React.Component {
                         "Mã loại đóng gói hàng hóa": item.PackageTypeID,
                         "Tên loại đóng gói hàng hóa": item.PackageTypeName,
                         "Kích hoạt": item.IsActived ? "Có" : "Không",
-                        "Ngày tạo": formatDate(item.CreatedDate),
-                        "Người tạo": item.CreatedFullName
+                        "Ngày cập nhật": formatDate(item.UpdatedDate),
+                        "Người cập nhật": item.UpdatedUserFullName
                     };
                     return element;
 
@@ -197,6 +197,7 @@ class SearchCom extends React.Component {
                         ref={this.gridref}
                         RequirePermission={PACKAGETYPE_VIEW}
                         DeletePermission={PACKAGETYPE_DELETE}
+                        ExportPermission={PACKAGETYPE_EXPORT}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                         IsExportFile={true}

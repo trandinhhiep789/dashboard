@@ -233,52 +233,52 @@ export const DataGridColumnList = [
     {
         Name: "ServiceAgreementID",
         Type: "texttolink",
-        Caption: "Mã hợp đồng",
+        Caption: "Mã HĐ",
         DataSourceMember: "ServiceAgreementID",
         Link: "/ServiceAgreement/Detail/",
-        Width: 140
+        Width: 70
     },
     {
         Name: "ServiceAgreementNumber",
         Type: "text",
-        Caption: "Số hợp đồng",
+        Caption: "Số HĐ",
         DataSourceMember: "ServiceAgreementNumber",
-        Width: 140
+        Width: 200
     },
     {
         Name: "PartnerName",
         Type: "text",
         Caption: "Đối tác",
         DataSourceMember: "PartnerName",
-        Width: 300
+        Width: 340
     },
     {
         Name: "ServiceTypeName",
         Type: "text",
         Caption: "Loại dịch vụ",
         DataSourceMember: "ServiceTypeName",
-        Width: 180
+        Width:  200
     },
     {
         Name: "AreaName",
         Type: "text",
         Caption: "Khu vực",
         DataSourceMember: "AreaName",
-        Width: 180
+        Width: 100
     },
     {
         Name: "SignedDate",
         Type: "date",
-        Caption: "Ngày ký hợp đồng",
+        Caption: "Ngày ký HĐ",
         DataSourceMember: "SignedDate",
-        Width: 150
+        Width: 130
     },
     {
         Name: "ExpiredDate",
         Type: "date",
-        Caption: "Ngày hết hạn hợp đồng",
+        Caption: "Ngày hết hạn HĐ",
         DataSourceMember: "ExpiredDate",
-        Width: 150
+        Width: 130
     },
     {
         Name: "ExtendLable",
@@ -288,11 +288,18 @@ export const DataGridColumnList = [
         Width: 150
     },
     {
+        Name: "DepositedLable",
+        Type: "text",
+        Caption: "Đã ký quỹ",
+        DataSourceMember: "DepositedLable",
+        Width: 100
+    },
+    {
         Name: "StatusLable",
         Type: "text",
         Caption: "Trạng thái",
         DataSourceMember: "StatusLable",
-        Width: 130
+        Width: 100
     },
     {
         Name: "Action",

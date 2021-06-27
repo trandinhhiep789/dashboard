@@ -37,6 +37,10 @@ class SearchCom extends React.Component {
         this.notificationDOMRef = React.createRef();
     }
 
+    componentDidMount() {
+        this.props.updatePagePath(PagePath);
+    }
+
     handleSearchSubmit(formData, MLObject) {
         console.log("search:", formData, MLObject)
         // const postData = [
@@ -79,11 +83,11 @@ class SearchCom extends React.Component {
 
             {
                 SearchKey: "@FROMDATE",
-                SearchValue: dtFromdate
+                SearchValue: MLObject.FromDate
             },
             {
                 SearchKey: "@TODATE",
-                SearchValue: new Date()
+                SearchValue: MLObject.ToDate
             },
 
 
@@ -96,7 +100,7 @@ class SearchCom extends React.Component {
     callSearchData(postData) {
         //api/ShipmentOrder/SearchReportExport
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchReportExportNew", postData).then(apiResult => {
-            //console.log("postData:", postData, apiResult)
+            console.log("postData:", postData, apiResult)
             if (!apiResult.IsError) {
                 if (apiResult.ResultObject.length > 0) {
                     const exelData = apiResult.ResultObject.map((item, index) => {
@@ -107,6 +111,8 @@ class SearchCom extends React.Component {
                             "Thời gian hẹn giao": formatDate(item.ExpectedDeliveryDate, false),
                             "Thời gian thực giao": formatDate(item.ActualDeliveryDate, false),
                             "Tên khách hàng": item.ReceiverFullName,
+                            "Mã quận": item.ReceiverDistrictID,
+                            "Tên quận": item.DistrictName,
                             "Địa chỉ": item.ReceiverFullAddress,
                             "Nhân viên giao": item.DeliverUserFullNameList,
                             "Mã phương tiện(1 XM,2.XT)": item.CarrierTypeID,
@@ -124,14 +130,23 @@ class SearchCom extends React.Component {
                             "Có lắp đặt": item.IsInstallItem,
                             "Đã hoàn thành": item.IsCompleteDeliverIed,
                             "Đã hủy giao": item.IsCancelDelivery,
-                            "Trạng thái giao hàng": item.ShipmentOrderStatusName
+                            "Trạng thái giao hàng": item.ShipmentOrderStatusName,
+
+                            "Mã kho điều phối": item.CoordinatorStoreID,
+                            "Tên kho điều phối": item.StoreName,
+                            "Kho tạo": item.RequestStoreID,
+                            "Mã khu vực": item.BCNBAreaID,
+                            "Tên khu vực": item.AreaName,
+                           
+                            "Mã nhân viên tạo": item.CreatedUser,
+                            "Nhân viên tạo": item.FullName
                         };
                         return element;
 
                     })
 
-                    //this.handleExportCSV(exelData);
-                    this.showMessage("Chức năng đang phát triển chưa.")
+                    this.handleExportCSV(exelData);
+                    // this.showMessage("Chức năng đang phát triển chưa.")
                 } else {
                     this.showMessage("Dữ liệu không tồn tại nên không thể xuất.")
                 }

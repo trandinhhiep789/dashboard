@@ -42,4 +42,66 @@
             }
         }
     }
+
+    .btn-download-file {
+        display: inline-flex;
+        justify-content: center;
+        flex-direction: column;
+        margin-bottom: 20px;
+        .item{
+            clear: both;
+            margin-bottom: 20px;
+            margin-top: 20px;
+            &:last-child{
+                margin-bottom: 0px;
+                margin-top: 0px;
+            }
+        }
+    }
+
+    .SearchForm{
+        margin-top: 10px;
+        .checkboxSelectCustom{
+            .form-group{
+                &.form-group-input{
+                    .custom-control{
+                        .custom-control-label{
+                            line-height: 0;
+                            &::before{
+                                top: 0;
+                                bottom: 0;
+                            }
+                            &::after{
+                                top: 0;
+                                bottom: 0;
+                            }
+                            span{
+                                width: 100%;
+                                left: 0;
+                                position: static;
+                                line-height: initial;
+                                
+                            }
+                        }
+                    }
+                    .lbl-title{
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+    &.modal-list-down{
+        .table{
+            tbody{
+                .btn-download-file{
+                    margin-bottom: 0;
+                    img {
+                        clear: both;
+                        width: 20px;
+                    }
+                }
+            }
+        }
+    }
 }

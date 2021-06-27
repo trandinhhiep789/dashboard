@@ -1,4 +1,42 @@
+
+.groupAction{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    button {
+        &.btnActionConfirm {
+            border: 1px solid #1c9536;
+            text-align: center;
+            cursor: pointer;
+            background-color: #1c9536;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 11px;
+            padding: 3px 5px;
+            line-height: initial;
+            &:focus{
+                box-shadow: none;
+                outline: none;
+            }
+        }
+    }
+    
+}
 button {
+    &.btnHistory {
+        background: transparent;
+        border: none;
+        text-align: center;
+        width: 100%;
+        cursor: pointer;
+        &:focus{
+            box-shadow: none;
+            outline: none;
+        }
+    }
+    
+    
     &.btn-light{
         &:disabled{
             color: #212529;

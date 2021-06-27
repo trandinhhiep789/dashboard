@@ -76,7 +76,7 @@ export const InitSearchParams = [
     }
 ];
 
-export const DataGridColumnList=[
+export const DataGridColumnList = [
     {
         Name: "chkSelect",
         Type: "checkbox",
@@ -90,7 +90,7 @@ export const DataGridColumnList=[
         Caption: "Tên đơn giá",
         DataSourceMember: "RewardPriceTableName",
         Link: "/RewardPriceTable/Detail/",
-        Width: 250
+        Width: 150
     },
     {
         Name: "RewardPriceTypeName",
@@ -100,10 +100,10 @@ export const DataGridColumnList=[
         Width: 250
     },
     {
-        Name: "AreaName",
+        Name: "ApplyAreaNameList",
         Type: "text",
         Caption: "Khu vực áp dụng",
-        DataSourceMember: "AreaName",
+        DataSourceMember: "ApplyAreaNameList",
         Width: 200
     },
     {
@@ -113,11 +113,25 @@ export const DataGridColumnList=[
         DataSourceMember: "CarrierTypeName",
         Width: 120
     },
+    // {
+    //     Name: "FullName",
+    //     Type: "text",
+    //     Caption: "Người tạo",
+    //     DataSourceMember: "FullName",
+    //     Width: 120
+    // },
     {
-        Name: "FullName",
+        Name: "UpdatedDate",
+        Type: "date",
+        Caption: "Ngày cập nhật",
+        DataSourceMember: "UpdatedDate",
+        Width: 100
+    },
+    {
+        Name: "UpdatedUserFullName",
         Type: "text",
-        Caption: "Người tạo",
-        DataSourceMember: "FullName",
+        Caption: "Người cập nhật",
+        DataSourceMember: "UpdatedUserFullName",
         Width: 120
     },
     {
@@ -125,7 +139,7 @@ export const DataGridColumnList=[
         Type: "link",
         Caption: "Tác vụ",
         DataSourceMember: "RewardPriceTableID",
-        Width: 100,
+        Width: 80,
         Link: "/RewardPriceTable/Edit/",
         LinkText: "Chỉnh sửa"
     },
@@ -157,6 +171,13 @@ export const MLObjectDefinition = [
         BindControlName: "cbCarrierTypeID",
         DataSourceMember: "CarrierTypeID"
     },
+    {
+        Name: "AreaIDListNew",
+        DefaultValue: {},
+        BindControlName: "cbAreaID",
+        DataSourceMember: "AreaIDListNew"
+    },
+
     {
         Name: "AreaID",
         DefaultValue: {},
@@ -271,10 +292,10 @@ export const DataGridColumnItemListRPTDetail = [
         DataSourceMember: "",
         Width: 70,
     }
-    
+
 ]
 
-export const MLObjectRPTDetailItem= [
+export const MLObjectRPTDetailItem = [
     {
         Name: "RewardPriceTableDetailID",
         DefaultValue: {},
@@ -312,23 +333,23 @@ export const MLObjectRPTDetailItem= [
         BindControlName: "ckIsPriceByTechspecsValueRange",
         DataSourceMember: "IsPriceByTechspecsValueRange"
     },
-    
+
     {
         Name: "FromTechspecsValue",
         DefaultValue: {},
         BindControlName: "txtFromTechspecsValue",
         DataSourceMember: "FromTechspecsValue"
     },
-    
+
     {
         Name: "ToTechspecsValue",
         DefaultValue: {},
         BindControlName: "txtToTechspecsValue",
         DataSourceMember: "ToTechspecsValue"
     },
-    
+
     {
-        
+
         Name: "ProductID",
         DefaultValue: "",
         BindControlName: "cbProductID",
@@ -371,7 +392,7 @@ export const DataGridColumnItemListRPTException = [
         DataSourceMember: "SubGroupFullName",
         Width: 100
     },
-   
+
     {
         Name: "FromQuantity",
         Type: "textNumber",
@@ -408,17 +429,17 @@ export const DataGridColumnItemListRPTException = [
         DataSourceMember: "",
         Width: 70,
     }
-    
+
 ]
 
-export const MLObjectRPTExceptionItem= [
+export const MLObjectRPTExceptionItem = [
     {
         Name: "RewardPriceTableExceptionID",
         DefaultValue: {},
         BindControlName: "txtRewardPriceTableExceptionID",
         DataSourceMember: "RewardPriceTableExceptionID"
     },
-    
+
     {
         Name: "MainGroupID",
         DefaultValue: {},
@@ -431,14 +452,14 @@ export const MLObjectRPTExceptionItem= [
         BindControlName: "cbSubGroup",
         DataSourceMember: "SubGroupID"
     },
-   
+
     {
         Name: "FromQuantity",
         DefaultValue: {},
         BindControlName: "txtFromQuantity",
         DataSourceMember: "FromQuantity"
     },
-    
+
     {
         Name: "ToQuantity",
         DefaultValue: {},

@@ -23,7 +23,7 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_SHIPMENTFEETYPE } from "../../../../../constants/keyCache";
-import { SHIPMENTFEETYPE_VIEW, SHIPMENTFEETYPE_DELETE } from "../../../../../constants/functionLists";
+import { SHIPMENTFEETYPE_VIEW, SHIPMENTFEETYPE_DELETE, SHIPMENTFEETYPE_EXPORT } from "../../../../../constants/functionLists";
 import { formatDate } from "../../../../../common/library/CommonLib";
 
 class SearchCom extends React.Component {
@@ -100,8 +100,8 @@ class SearchCom extends React.Component {
                         "Tên loại phí vận chuyển": item.ShipmentFeeTypeName,
                         "Mô tả": item.Description,
                         "Kích hoạt": item.IsActived ? "Có" : "Không",
-                        "Ngày tạo": formatDate(item.CreatedDate),
-                        "Người tạo": item.CreatedUserFullName
+                        "Ngày cập nhật": formatDate(item.UpdatedDate),
+                        "Người cập nhật": item.UpdatedUserFullName
                     };
                     return element;
 
@@ -195,6 +195,7 @@ class SearchCom extends React.Component {
                         ref={this.gridref}
                         RequirePermission={SHIPMENTFEETYPE_VIEW}
                         DeletePermission={SHIPMENTFEETYPE_DELETE}
+                        ExportPermission={SHIPMENTFEETYPE_EXPORT}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                         IsExportFile={true}

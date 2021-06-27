@@ -23,23 +23,19 @@ class MultiTreeSelectCom extends React.Component {
 
     componentDidMount() {
         let { listoption, IsAutoLoadItemFromCache, LoadItemCacheKeyID, ValueMember, NameMember, filterName, filterValue, filterobj } = this.props;
-        // console.log("this.props.isautoloaditemfromcachess: ", this.props.isautoloaditemfromcache,this.props.loaditemcachekeyid,this.props.listoption)
         if (IsAutoLoadItemFromCache) {
-            // console.log("ValueMember ", ValueMember, NameMember, this.props);
             this.props.callGetCache(LoadItemCacheKeyID).then((result) => {
-                let listoptionnew=[];
-                // console.log("this.props.isautoloaditemfromcach2: ", result);
+                let listoptionnew = [];
                 if (!result.IsError && result.ResultObject.CacheData != null) {
                     if (typeof filterobj != undefined) {
-                        // console.log(filterobj,result.ResultObject.CacheData,result.ResultObject.CacheData.filter(n => n.filterobj == 1))
                         result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
-                            listoptionnew.push({ value: cacheItem[ValueMember],key:cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
+                            listoptionnew.push({ value: cacheItem[ValueMember], key: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
                         }
                         );
                     }
                     else {
                         result.ResultObject.CacheData.map((cacheItem) => {
-                            listoptionnew.push({ value: cacheItem[ValueMember],key:cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
+                            listoptionnew.push({ value: cacheItem[ValueMember], key: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
                         }
                         );
                     }
@@ -51,20 +47,17 @@ class MultiTreeSelectCom extends React.Component {
                 else {
                     this.setState({ ListOption: listoptionnew });
                 }
-                //  console.log("this.props.isautoloaditemfromcachess: ",this.props.loaditemcachekeyid, this.state.Listoption);
             });
 
 
         }
         else {
-            //console.log("this.props.isautoloaditemfromcache1: ",this.props.loaditemcachekeyid, this.state.Listoption);
             this.setState({ ListOption: listoption });
             const aa = this.bindcombox(this.props.value, listoption);
             this.setState({ SelectedOption: aa });
         }
     }
     componentWillReceiveProps(nextProps) {
-      //  console.log("bindcombox",this.props.name,this.props.value,nextProps.value)
         if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) // Check if it's a new user, you can also use some unique property, like the ID
         {
             const aa = this.bindcombox(nextProps.value, this.state.ListOption);
@@ -72,21 +65,19 @@ class MultiTreeSelectCom extends React.Component {
         }
     }
     bindcombox(value, listOption) {
-
-        //console.log("bindcombox",this.props.name,value)
         let values = value;
         let selectedOption = [];
         if (values == null || values === -1)
             return selectedOption;
         if (typeof values.toString() == "string")
             values = values.toString().split(',');
-            for (let i = 0; i < values.length; i++) {
-                for (let j = 0; j < listOption.length; j++) {
-                    if (values[i] == listOption[j].value) {
-                        selectedOption.push({ value: listOption[j].value,key: listOption[j], label: listOption[j].label });
-                    }
+        for (let i = 0; i < values.length; i++) {
+            for (let j = 0; j < listOption.length; j++) {
+                if (values[i] == listOption[j].value) {
+                    selectedOption.push({ value: listOption[j].value, key: listOption[j], label: listOption[j].label });
                 }
             }
+        }
         return selectedOption;
     }
 
@@ -101,9 +92,9 @@ class MultiTreeSelectCom extends React.Component {
     }
 
     getComboValue(selectedOption) {
-         let result="";
-        if (selectedOption != -1 &&  selectedOption!= null &&  selectedOption != "") {
-            result =  selectedOption.reduce((data, item, index) => {
+        let result = "";
+        if (selectedOption != -1 && selectedOption != null && selectedOption != "") {
+            result = selectedOption.reduce((data, item, index) => {
                 const comma = data.length ? "," : "";
                 return data + comma + item;
             }, '');
@@ -112,8 +103,7 @@ class MultiTreeSelectCom extends React.Component {
     }
 
     render() {
-
-        let { placeholder, maxTagCount,name } = this.props;
+        let { placeholder, maxTagCount, name } = this.props;
         let formRowClassName = "form-row";
         if (this.props.rowspan)
             formRowClassName = "col-md-" + this.props.rowspan + " " + this.props.classNameCol;
@@ -138,8 +128,7 @@ class MultiTreeSelectCom extends React.Component {
         if (this.props.validationErrorMessage != undefined && this.props.validationErrorMessage != "") {
             classNameselect += " is-invalid";
         }
-        //console.log("this.state.ListOption",name,this.state.ListOption)
-       //console.log("this.state.SelectedOption",name,this.state.SelectedOption)
+
         const tProps = {
             treeData: this.state.ListOption,
             value: this.state.SelectedOption,
@@ -151,19 +140,23 @@ class MultiTreeSelectCom extends React.Component {
             style: {
                 width: '100%',
             },
+            filterTreeNode: (search, item) => {
+                return item.title.toLowerCase().indexOf(search.toLowerCase()) >= 0;
+            }
         };
 
         return (
             <div className={formRowClassName} >
-                {isLabelDiv &&
-                    <div className={labelDivClassName}>
+                {
+                    isLabelDiv &&
+                    <div className={this.props.divClassNameLabel}>
+                        {/*  <div className={labelDivClassName}> */}
                         <label className="col-form-label 6">
                             {this.props.label}<span className="text-danger"> {star}</span>
                         </label>
                     </div>
                 }
                 <div className="form-group">
-
                     <TreeSelect {...tProps} />
                     <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
                 </div>
@@ -171,6 +164,11 @@ class MultiTreeSelectCom extends React.Component {
         );
     }
 }
+
+MultiTreeSelectCom.defaultProps = {
+    divClassNameLabel: 'form-group form-group-input-select-label'
+};
+
 const mapStateToProps = state => {
     return {
         AppInfo: state,

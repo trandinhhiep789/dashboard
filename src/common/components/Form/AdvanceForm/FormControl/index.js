@@ -237,7 +237,7 @@ class CheckBox extends React.Component {
 
     handleClick = (e) => {
         this.inputElement.click();
-      }
+    }
 
     renderlayout() {
         let formRowClassName = "form-row custom-controls-stacked";
@@ -465,7 +465,7 @@ class ComboBoxCom extends Component {
     }
 
     render() {
-        if(this.props.hide){
+        if (this.props.hide) {
             return null;
         }
 
@@ -609,7 +609,7 @@ class FileUpload extends React.Component {
                     <label className="col-form-label">{this.props.label}</label>
                 </div>
                 <div className={formGroupClassName}>
-                    <input type="text" class="form-control file-value" placeholder="Chọn hình ảnh..." readonly value={textFileValue}></input>
+                    <input type="text" className="form-control file-value" placeholder="Chọn hình ảnh..." readonly value={textFileValue}></input>
                     <input type="file" name={this.props.name} id={this.props.name}
                         onChange={this.handleValueChange}
                         value={this.props.value}
@@ -619,7 +619,7 @@ class FileUpload extends React.Component {
                         required={this.props.required}
                         ref={this.props.inputRef}
                     />
-                    <span class="input-group-append"><label class="btn btn-light file-browser" htmlFor={this.props.name}><i class="fa fa-upload"></i></label></span>
+                    <span className="input-group-append"><label className="btn btn-light file-browser" htmlFor={this.props.name}><i className="fa fa-upload"></i></label></span>
                 </div>
             </div>
 

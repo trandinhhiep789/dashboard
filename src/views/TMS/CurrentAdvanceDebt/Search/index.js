@@ -9,7 +9,7 @@ import { formatDate } from "../../../../common/library/CommonLib.js";
 import { showModal, hideModal } from '../../../../actions/modal';
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { TMS_CURRENTADVANCEDEBT_VIEW } from "../../../../constants/functionLists";
+import { TMS_CURRENTADVANCEDEBT_EXPORT, TMS_CURRENTADVANCEDEBT_VIEW } from "../../../../constants/functionLists";
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 
@@ -88,7 +88,7 @@ class SearchCom extends React.Component {
 
     handleGetDatat(id) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, id).then(apiResult => {//MLObject.UserName.value
-            console.log("apiResult", apiResult)
+            // console.log("apiResult", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError,
@@ -142,8 +142,7 @@ class SearchCom extends React.Component {
                         "Tên nhóm vật tư": item.MaterialGroupName,
                         "Mã sản phẩm": item.ProductID,
                         "Tên sản phẩm": item.ProductName,
-                        "Tổng số lượng": item.TotalQuantity,
-                        "Số lượng khả dụng": item.UsableQuantity
+                        "Tổng số lượng": item.TotalQuantity
                     };
                     return element;
 
@@ -181,7 +180,7 @@ class SearchCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
-                if(apiResult.ResultObject != null ){
+                if (apiResult.ResultObject != null) {
                     apiResult.ResultObject.map((item, index) => {
 
                         //1: Tạm ứng, 2: sử dụng; 3: Hủy vật tư
@@ -194,37 +193,34 @@ class SearchCom extends React.Component {
                         else if (item.AdvanceDebtFlowTypeID == 3) {
                             item.AdvanceDebtFlowTypeName = "Hủy vật tư";
                         }
-    
+
                     })
                     this.handleShowModal(apiResult.ResultObject)
                 }
-                else{
+                else {
                     this.showMessage("Không tồn tại dữ liệu.");
                 }
-                
+
             }
         });
 
     }
 
     addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
         if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
         } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={this.state.cssNotification}>
+                <div className={cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
+                        <i className={iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -241,7 +237,7 @@ class SearchCom extends React.Component {
     }
 
     handleExportFile(result) {
-        this.addNotification(result.Message);
+        this.addNotification(result.Message, result.IsError);
     }
 
     handleShowModal(data) {
@@ -261,7 +257,7 @@ class SearchCom extends React.Component {
     handleExportSubmit(formData, MLObject) {
         const userName = MLObject.UserName == -1 ? MLObject.UserName : MLObject.UserName.value
         this.props.callFetchAPI(APIHostName, SearchExportAPIPath, userName).then(apiResult => {
-             console.log("handleExportSubmit", userName, apiResult)
+           
             if (!apiResult.IsError) {
                 if (apiResult.ResultObject.length > 0) {
                     const exelData = apiResult.ResultObject.map((item, index) => {
@@ -272,8 +268,7 @@ class SearchCom extends React.Component {
                             "Tên nhóm vật tư": item.MaterialGroupName,
                             "Mã sản phẩm": item.ProductID,
                             "Tên sản phẩm": item.ProductName,
-                            "Tổng số lượng": item.TotalQuantity,
-                            "Số lượng khả dụng": item.UsableQuantity
+                            "Tổng số lượng": item.TotalQuantity
                         };
                         return element;
 
@@ -355,6 +350,7 @@ class SearchCom extends React.Component {
                     fileName="Danh sách thống kê hạn mức tạm ứng"
                     onExportFile={this.handleExportFile.bind(this)}
                     RequirePermission={TMS_CURRENTADVANCEDEBT_VIEW}
+                    ExportPermission={TMS_CURRENTADVANCEDEBT_EXPORT}
                 />
             </React.Fragment>
         );

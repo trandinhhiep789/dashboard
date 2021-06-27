@@ -20,7 +20,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { SHIPMENTORDERSTATUSGROUP_VIEW, SHIPMENTORDERSTATUSGROUP_DELETE } from "../../../../../constants/functionLists";
+import { SHIPMENTORDERSTATUSGROUP_VIEW, SHIPMENTORDERSTATUSGROUP_DELETE, SHIPMENTORDERSTATUSGROUP_EXPORT } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
@@ -105,8 +105,8 @@ class SearchCom extends React.Component {
                         "Tên nhóm trạng thái yêu cầu vận chuyển": item.ShipmentOrderStatusGroupName,
                         "Mô tả": item.Description,
                         "Kích hoạt": item.IsActived ? "Có" : "Không",
-                        "Ngày tạo": formatDate(item.CreatedDate),
-                        "Người tạo": item.CreatedUserFullName
+                        "Ngày cập nhật": formatDate(item.UpdatedDate),
+                        "Người cập nhật": item.UpdatedUserFullName
                     };
                     return element;
 
@@ -197,6 +197,7 @@ class SearchCom extends React.Component {
                         ref={this.gridref}
                         RequirePermission={SHIPMENTORDERSTATUSGROUP_VIEW}
                         DeletePermission={SHIPMENTORDERSTATUSGROUP_DELETE}
+                        ExportPermission={SHIPMENTORDERSTATUSGROUP_EXPORT}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                         IsExportFile={true}

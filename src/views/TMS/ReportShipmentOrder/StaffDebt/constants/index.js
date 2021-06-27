@@ -2,9 +2,13 @@ import { toIsoStringCus } from '../../../../../utils/function';
 
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/StaffDebt/Search";
+export const SearchUnlockLogAPIPath = "api/StaffDebt_unLockLog/Search";
 export const SearchExportAPIPath = "api/StaffDebt/SearchExport";
+export const SearchWithinPaginationAPI = "api/StaffDebt/SearchNew";
 export const UpdateUnlockAPIPath = "api/StaffDebt/UpdateUnlock";
 export const SearchDetailAPIPath = "api/StaffDebtDetail/Search";
+
+export const UpdateUnlockDetailAPIPath = "api/StaffDebtDetail/UpdateUnlock";
 
 
 export const PagePath = [
@@ -14,55 +18,59 @@ export const PagePath = [
 
 
 export const InitSearchParams = [
-    {
-        SearchKey: "@FROMDATE",
-        SearchValue: toIsoStringCus(new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()).toISOString())
-    },
-    {
-        SearchKey: "@TODATE",
-        SearchValue: new Date()
-    },
+    // {
+    //     SearchKey: "@FROMDATE",
+    //     SearchValue: toIsoStringCus(new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()).toISOString())
+    // },
+    // {
+    //     SearchKey: "@TODATE",
+    //     SearchValue: new Date()
+    // },
     {
         SearchKey: "@USERNAME",
-        SearchValue:-1
+        SearchValue: -1
     },
     {
         SearchKey: "@STOREID",
         SearchValue: -1
     },
-    // {
-    //     SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
-    //     SearchValue: -1
-    // },
-    // {
-    //     SearchKey: "@RECEIVERDISTRICTID",
-    //     SearchValue: -1
-    // },
-  
+    {
+        SearchKey: "@ISLOCKDELIVERY",
+        SearchValue: -1
+    },
+    {
+        SearchKey: "@PAGESIZE",
+        SearchValue: 20
+    },
+    {
+        SearchKey: "@PAGEINDEX",
+        SearchValue: 0
+    }
+
 ];
 
 export const SearchElementList = [
-    
-    {
-        type: "Datetime",
-        name: "dtFromDate",
-        DataSourceMember: "FromDate",
-        label: "Từ Ngày",
-        value: new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()),
-        timeFormat: false,
-        dateFormat: "DD/MM/YYYY",
-        colspan: 2,
-    },
-    {
-        type: "Datetime",
-        name: "dtToDate",
-        DataSourceMember: "ToDate",
-        label: "Đến Ngày",
-        value: new Date(),
-        timeFormat: false,
-        dateFormat: "DD/MM/YYYY",
-        colspan: 2,
-    },
+
+    // {
+    //     type: "Datetime",
+    //     name: "dtFromDate",
+    //     DataSourceMember: "FromDate",
+    //     label: "Từ Ngày",
+    //     value: new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()),
+    //     timeFormat: false,
+    //     dateFormat: "DD/MM/YYYY",
+    //     colspan: 2,
+    // },
+    // {
+    //     type: "Datetime",
+    //     name: "dtToDate",
+    //     DataSourceMember: "ToDate",
+    //     label: "Đến Ngày",
+    //     value: new Date(),
+    //     timeFormat: false,
+    //     dateFormat: "DD/MM/YYYY",
+    //     colspan: 2,
+    // },
     // {
     //     type: "ComboBox",
     //     name: "cbReceiverProvinceID",
@@ -95,7 +103,7 @@ export const SearchElementList = [
         NameMember: "StoreName",
         // filterValue: 10,
         // filterobj:"CompanyID",
-        classNameCol:"col-custom"
+        classNameCol: "col-custom"
     },
     // {
     //     type: "ComboBox",
@@ -126,23 +134,37 @@ export const SearchElementList = [
         placeholder: "---Vui lòng chọn---",
         listoption: [],
         IsAutoLoadItemFromCache: false,
-        isMultiSelect: false
-
+        isMultiSelect: false,
+        isClearable: true
     },
-
+    {
+        type: "ComboBox",
+        name: "cbDeliveryStatus",
+        DataSourceMember: "DeliveryStatus",
+        label: "Trạng thái khóa",
+        colspan: 2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "--Tất cả--",
+        listoption: [
+            { value: -1, label: '--Tất cả--' },
+            { value: 1, label: 'Đã khóa' },
+            { value: 0, label: 'Hoạt động' }
+        ],
+    }
 ]
 
-export const  SearchMLObjectDefinition = [
-    {
-        Name: "FromDate",
-        DefaultValue: "",
-        BindControlName: "dtFromDate"
-    },
-    {
-        Name: "ToDate",
-        DefaultValue: "",
-        BindControlName: "dtToDate"
-    },
+export const SearchMLObjectDefinition = [
+    // {
+    //     Name: "FromDate",
+    //     DefaultValue: "",
+    //     BindControlName: "dtFromDate"
+    // },
+    // {
+    //     Name: "ToDate",
+    //     DefaultValue: "",
+    //     BindControlName: "dtToDate"
+    // },
     // {
     //     Name: "ReceiverProvinceID",
     //     DefaultValue: "",
@@ -163,6 +185,11 @@ export const  SearchMLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "cbUserName"
     },
+    {
+        Name: "DeliveryStatus",
+        DefaultValue: "",
+        BindControlName: "cbDeliveryStatus"
+    }
 ]
 
 export const GridColumnList = [
@@ -171,77 +198,84 @@ export const GridColumnList = [
         Type: "text",
         Caption: "Mã NV nợ",
         DataSourceMember: "FullNameMember",
-        Width: "12%"
+        Width: "15%"
     },
     {
         Name: "StoreName",
         Type: "text",
         Caption: "Kho điều phối",
         DataSourceMember: "StoreName",
-        Width: "14%"
+        Width: "15%"
     },
     {
         Name: "TotalCOD",
         Type: "textCurrency",
         Caption: "Tổng tiền phải thu hộ",
         DataSourceMember: "TotalCOD",
-        Width: "10%"
+        Width: "8%"
     },
     {
         Name: "TotalSaleMaterialMoney",
         Type: "textCurrency",
         Caption: "Tổng tiền phải thu vật tư",
         DataSourceMember: "TotalSaleMaterialMoney",
-        Width: "10%"
+        Width: "8%"
     },
     {
         Name: "TotalMoney",
         Type: "textCurrency",
         Caption: "Tổng tiền phải thu",
         DataSourceMember: "TotalMoney",
-        Width: "10%"
+        Width: "8%"
     },
     {
         Name: "CollectedTotalMoney",
         Type: "textCurrency",
         Caption: "Tổng tiền đã thu của khách hàng",
         DataSourceMember: "CollectedTotalMoney",
-        Width: "10%"
+        Width: "12%"
     },
     {
         Name: "TotalDebtOrders",
         Type: "text",
         Caption: "Tổng vận đơn còn nợ",
         DataSourceMember: "TotalDebtOrders",
-        Width: "10%"
+        Width: "8%"
     },
     {
         Name: "TotALoverDueDebtOrders",
         Type: "text",
         Caption: "Tổng vận đơn nợ quá hạn",
         DataSourceMember: "TotALoverDueDebtOrders",
-        Width: "10%"
+        Width: "8%"
     },
     {
         Name: "DeliveryStatus",
         Type: "textCustom",
         Caption: "Tình trạng",
         DataSourceMember: "DeliveryStatus",
-        Width: "7%"
+        Width: "8%"
+    },
+    {
+        Name: "History",
+        Type: "btnHistory",
+        Caption: "Lịch sử",
+        DataSourceMember: "History",
+        Width: "5%"
     },
     {
         Name: "Note",
         Type: "popupNew",
         Caption: "Ghi chú",
         DataSourceMember: "Note",
-        Width: "7%"
+        Width: "5%"
     },
 ]
 
-export const  DataGirdStaffDebtColumnList=[
+export const DataGirdStaffDebtColumnList = [
     {
         Name: "ShipmentOrderID",
-        Type: "texttolinkNewBlank",
+        Type: "texttolinkNewBlankValue",
         Caption: "Mã vận đơn",
         Link: "/ShipmentOrder/Detail/",
         DataSourceMember: "ShipmentOrderID",
@@ -257,38 +291,38 @@ export const  DataGirdStaffDebtColumnList=[
     },
     {
         Name: "OutputDate",
-        Type: "date",
+        Type: "datetime",
         Caption: "Thời gian xuất hàng",
         DataSourceMember: "OutputDate",
-        Width: "10%"
+        Width: "8%"
     },
     {
         Name: "CollectedTime",
-        Type: "date",
+        Type: "datetime",
         Caption: "Thời gian thu",
         DataSourceMember: "CollectedTime",
-        Width: "10%"
+        Width: "8%"
     },
     {
         Name: "TotalCOD",
         Type: "textCurrency",
         Caption: "Tiền COD",
         DataSourceMember: "TotalCOD",
-        Width: "10%"
+        Width: "8%"
     },
     {
         Name: "TotalSaleMaterialMoney",
         Type: "textCurrency",
         Caption: "Tiền vật tư",
         DataSourceMember: "TotalSaleMaterialMoney",
-        Width: "10%"
+        Width: "8%"
     },
     {
         Name: "TotalMoney",
         Type: "textCurrency",
         Caption: "Tổng tiền phải thu",
         DataSourceMember: "TotalMoney",
-        Width: "10%"
+        Width: "8%"
     },
     {
         Name: "CollectedTotalMoney",
@@ -302,7 +336,7 @@ export const  DataGirdStaffDebtColumnList=[
         Type: "text",
         Caption: "Số giờ nợ",
         DataSourceMember: "DebtInterval",
-        Width: "10%"
+        Width: "8%"
     },
     {
         Name: "IsOverDueDebt",
@@ -311,4 +345,102 @@ export const  DataGirdStaffDebtColumnList=[
         DataSourceMember: "IsOverDueDebt",
         Width: "10%"
     },
+    {
+        Name: "DeliveryStatus",
+        Type: "textCustom",
+        Caption: "Tình trạng",
+        DataSourceMember: "DeliveryStatus",
+        Width: "8%"
+    },
+    {
+        Name: "History",
+        Type: "btnHistory",
+        Caption: "Lịch sử",
+        DataSourceMember: "History",
+        Width: "4%"
+    },
 ]
+
+export const DataGirdStaffDebtHistoryColumnList = [
+    {
+        Name: "FullName",
+        Type: "text",
+        Caption: "Mã NV",
+        DataSourceMember: "FullName",
+        Width: "10%"
+    },
+    {
+        Name: "StoreFullName",
+        Type: "text",
+        Caption: "Kho điều phối",
+        DataSourceMember: "StoreFullName",
+        Width: "10%"
+    },
+    {
+        Name: "UnLockFullName",
+        Type: "text",
+        Caption: "Người mở khóa",
+        DataSourceMember: "UnLockFullName",
+        Width: "10%"
+    },
+    {
+        Name: "unLockDeliveryDate",
+        Type: "datetime",
+        Caption: "Ngày mở khóa",
+        DataSourceMember: "unLockDeliveryDate",
+        Width: "10%"
+    },
+    {
+        Name: "UnLockDeliveryNote",
+        Type: "text",
+        Caption: "Ghi chú",
+        DataSourceMember: "UnLockDeliveryNote",
+        Width: "10%"
+    },
+];
+
+export const MLObjectChangeActiveModal = [
+    {
+        Name: "Description",
+        DefaultValue: "",
+        BindControlName: "txtDescription"
+    }
+]
+
+export const DataGirdStaffDebtDetailHistoryColumnList = [
+    {
+        Name: "FullName",
+        Type: "text",
+        Caption: "Mã NV",
+        DataSourceMember: "FullName",
+        Width: "10%"
+    },
+    {
+        Name: "StoreName",
+        Type: "text",
+        Caption: "Kho điều phối",
+        DataSourceMember: "StoreName",
+        Width: "10%"
+    },
+    {
+        Name: "UnLockDeliveryFullName",
+        Type: "text",
+        Caption: "Người mở khóa",
+        DataSourceMember: "UnLockDeliveryFullName",
+        Width: "10%"
+    },
+    {
+        Name: "UnLockDeliveryDate",
+        Type: "datetime",
+        Caption: "Ngày mở khóa",
+        DataSourceMember: "UnLockDeliveryDate",
+        Width: "10%"
+    },
+    {
+        Name: "UnLockDeliveryNote",
+        Type: "text",
+        Caption: "Ghi chú",
+        DataSourceMember: "UnLockDeliveryNote",
+        Width: "10%"
+    },
+];

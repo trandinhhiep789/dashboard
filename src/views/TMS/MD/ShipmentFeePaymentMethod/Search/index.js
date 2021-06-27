@@ -23,7 +23,7 @@ import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache } from "../../../../../actions/cacheAction";
-import { SHIPMENTFEEPAYMENTMETHOD_VIEW, SHIPMENTFEEPAYMENTMETHOD_DELETE } from "../../../../../constants/functionLists";
+import { SHIPMENTFEEPAYMENTMETHOD_VIEW, SHIPMENTFEEPAYMENTMETHOD_DELETE, SHIPMENTFEEPAYMENTMETHOD_EXPORT } from "../../../../../constants/functionLists";
 import { formatDate } from "../../../../../common/library/CommonLib";
 class SearchCom extends React.Component {
     constructor(props) {
@@ -97,8 +97,8 @@ class SearchCom extends React.Component {
                         "Mã phương thức thanh toán chi phí": item.ShipmentFeePaymentMethodID,
                         "Tên phương thức thanh toán chi phí": item.ShipmentFeePaymentMethodName,
                         "Kích hoạt": item.IsActived ? "Có" : "Không",
-                        "Ngày tạo": formatDate(item.CreatedDate),
-                        "Người tạo": item.CreatedFullName
+                        "Ngày cập nhật": formatDate(item.UpdatedDate),
+                        "Người cập nhật": item.UpdatedUserFullName
                     };
                     return element;
 
@@ -191,6 +191,7 @@ class SearchCom extends React.Component {
                         ref={this.gridref}
                         RequirePermission={SHIPMENTFEEPAYMENTMETHOD_VIEW}
                         DeletePermission={SHIPMENTFEEPAYMENTMETHOD_DELETE}
+                        ExportPermission={SHIPMENTFEEPAYMENTMETHOD_EXPORT}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                         IsExportFile={true}

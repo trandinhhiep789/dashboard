@@ -13,7 +13,11 @@ class ChangePasswordCom extends React.Component {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-        this.state = { CallAPIMessage: "", IsCallAPIError: false };
+        this.handleOnInputChange = this.handleOnInputChange.bind(this);
+        this.state = {
+            CallAPIMessage: "",
+            IsCallAPIError: false
+        };
     }
 
     componentDidMount() {
@@ -30,27 +34,74 @@ class ChangePasswordCom extends React.Component {
         />);
     }
 
-    handleSubmit(formData, MLObject) {
-        const hostname = "AuthenAPI";
-        const apiPath = "api/Authentication/ChangePassword";
-        const postData = {
-            UserName: MLObject.UserName,
-            OldPassword: MD5Digest(MLObject.OldPassword),
-            NewPassword: MD5Digest(MLObject.NewPassword)
+    showPassWord(name) {
+        var x = document.getElementsByName(name)[0];
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
         }
+    }
+    handleOnInputChange(name, value, formdata) {
+        if (name == "txtPassWord") {
+            this.setState({ PassWord: value });
+        } else if (name == "txtPassWordConfirm") {
+            this.setState({ PassWordConfirm: value });
+        } else if (name == "chkShowPassWord") {
+            this.showPassWord("txtPassWord");
+            this.showPassWord("txtPassWordConfirm");
+            this.showPassWord("txtOldPassWord");
+            return;
+        }
+    }
+
+    handleSubmit(formData, MLObject) {
+        //check password valid
+        let { PassWord, PassWordConfirm } = this.state;
+        if (PassWord != PassWordConfirm) {
+            this.setState({ IsCallAPIError: true });
+            this.showMessage("Xác nhận mật khẩu chưa đúng.");
+            return false;
+        }
+
+        const hostname = "TMSAPI";
+        //const apiPath = "api/PartnerUser/UpdatePassWordUserPartner";
+        const apiPath  = "api/PartnerUser/UpdatePassWordUserPartnerMobile";
+        let userLogin = this.props.AppInfo.LoginInfo.Username;
+        const postData = {
+            Username: userLogin,
+            Password: MD5Digest(MLObject.PassWord),
+            PasswordOld: MD5Digest(MLObject.OldPassWord),
+            UpdatedUser: ""
+        }
+
+
         this.props.callFetchAPI(hostname, apiPath, postData).then((apiResult) => {
             this.setState({ IsCallAPIError: apiResult.IsError })
             this.showMessage(apiResult.Message);
         });
+        //console.log("postdata", postData);
     }
     render() {
-        let listElement1 = ElementList;
-        listElement1[0].value = this.props.AppInfo.LoginInfo.LoginUserInfo.UserName;
+        //let listElement1 = ElementList;
+        //let user = this.props.AppInfo.LoginInfo.Username;
+        //listElement1[0].value = this.props.AppInfo.LoginInfo.Username;
+        // const dataSource = {
+        //     UserName: this.state.UserName
+        // }
         return (
             <React.Fragment>
-                <SimpleForm FormName="Đổi mật khẩu" MLObjectDefinition={MLObjectDefinition} listelement={listElement1} url="http://localhost:8910/api/contact" onSubmit={this.handleSubmit}
+                <SimpleForm
+                    FormName="Đổi mật khẩu"
+                    MLObjectDefinition={MLObjectDefinition}
+                    listelement={ElementList}
+                    onValueChange={this.handleOnInputChange}
+                    //url="http://localhost:8910/api/contact"
+                    onSubmit={this.handleSubmit}
                     FormCols="1"
-                    FormMessage={this.state.CallAPIMessage} IsErrorMessage={this.state.IsCallAPIError}
+                    //dataSource={dataSource}
+                    FormMessage={this.state.CallAPIMessage}
+                    IsErrorMessage={this.state.IsCallAPIError}
                     BackLink=""
                 />
             </React.Fragment>

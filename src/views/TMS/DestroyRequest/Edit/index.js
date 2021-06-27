@@ -77,7 +77,7 @@ class EditCom extends React.Component {
                     return e;
                 })
 
-                console.log("ResultObject", apiResult.ResultObject)
+
 
                 let lstoption = apiResult.ResultObject.reduce((r, a) => {
                     if (!r[`${a.ReviewLevelID}`]) r[`${a.ReviewLevelID}`] = {};
@@ -97,7 +97,7 @@ class EditCom extends React.Component {
 
 
                 Object.keys(lstoption).map(function (key) {
-                    // console.log("key", key)
+
                     const filterItem = DestroyRequestRL.filter(e => { return e.ReviewLevelID == key });
                     if (filterItem.length > 0) {
                         lstoption[key]["ReviewLevelID"] = lstoption[key]["DestroyRequest_ReviewLevelList"][0].ReviewLevelID;
@@ -111,7 +111,7 @@ class EditCom extends React.Component {
 
                 })
 
-                console.log("1111", lstoption)
+
                 let resultSort = Object.values(lstoption).sort((a, b) => a.ReviewOrderIndex - b.ReviewOrderIndex)
 
 
@@ -130,7 +130,7 @@ class EditCom extends React.Component {
     prevDataSubmit(formData, MLObject) {
         const { isError, gridDestroyRequestRL, isAutoReview, isAutoOutput, RequestUser, gridDestroyRequestRLSort } = this.state;
 
-        //  console.log("prevDataSubmit", gridDestroyRequestRL, MLObject);
+
 
         let arrReviewLevel = [];
         Object.keys(gridDestroyRequestRL).map(function (key) {
@@ -178,7 +178,7 @@ class EditCom extends React.Component {
 
             MLObject.lstDestroyRequestDetail = DestroyRequestDetail;
             MLObject.RequestUser = RequestUser;
-            console.log("MLObject", MLObject)
+
             this.handleSubmit(MLObject)
 
         }
@@ -212,9 +212,9 @@ class EditCom extends React.Component {
     }
 
     callLoadData(id) {
-        // console.log('callLoadData', id)
+
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            console.log("222", apiResult);
+
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -244,7 +244,7 @@ class EditCom extends React.Component {
                     else {
                         if (apiResult.ResultObject.lstDestroyRequestReviewLevel.length > 0) {
                             let IsExitRV = apiResult.ResultObject.lstDestroyRequestReviewLevel.filter(e => { return e.IsreViewed === true });
-                            console.log("IsExitRV", IsExitRV)
+
                             if (IsExitRV.length > 0) {
                                 disabledControll = true
                             }
@@ -290,7 +290,7 @@ class EditCom extends React.Component {
     }
 
     // valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
-    //     // console.log("valueChangeInputGrid", elementdata, index, name, gridFormValidation)
+    //     
     //     const { DestroyRequestDetail } = this.state;
     //     if (elementdata.Name == 'Quantity') {
     //         let Quantity = DestroyRequestDetail[index].UsableQuantity;
@@ -322,17 +322,17 @@ class EditCom extends React.Component {
     // }
 
     valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
-        // console.log("valueChangeInputGrid", elementdata, index, name, gridFormValidation)
+
 
         const { DestroyRequestDetail } = this.state;
-        // console.log('111', DestroyRequestDetail[index])
+
         const isAllowDecimal = DestroyRequestDetail[index].IsAllowDecimal;
         let item = elementdata.Name + '_' + index;
         if (!isAllowDecimal) {
             if (elementdata.Value.toString().length > 1) {
                 if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
                     if (elementdata.Name == 'Quantity') {
-                        let Quantity = DestroyRequestDetail[index].UsableQuantity;
+                        let Quantity = DestroyRequestDetail[index].TotalQuantity;
 
                         if (!gridFormValidation[item].IsValidationError) {
                             if (elementdata.Value > Quantity) {
@@ -372,7 +372,7 @@ class EditCom extends React.Component {
                     if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
                         if (parseInt(elementdata.Value) > 0) {
                             if (elementdata.Name == 'Quantity') {
-                                let Quantity = DestroyRequestDetail[index].UsableQuantity;
+                                let Quantity = DestroyRequestDetail[index].TotalQuantity;
 
                                 if (!gridFormValidation[item].IsValidationError) {
                                     if (elementdata.Value > Quantity) {
@@ -433,7 +433,7 @@ class EditCom extends React.Component {
 
                 if (/^\d*\.?\d+$/.test(elementdata.Value)) {
                     if (elementdata.Name == 'Quantity') {
-                        let Quantity = DestroyRequestDetail[index].UsableQuantity;
+                        let Quantity = DestroyRequestDetail[index].TotalQuantity;
 
                         if (!gridFormValidation[item].IsValidationError) {
                             if (elementdata.Value > Quantity) {
@@ -473,7 +473,7 @@ class EditCom extends React.Component {
                     if (/^[0-9][0-9]*$/.test(elementdata.Value)) {
                         if (parseInt(elementdata.Value) > 0) {
                             if (elementdata.Name == 'Quantity') {
-                                let Quantity = DestroyRequestDetail[index].UsableQuantity;
+                                let Quantity = DestroyRequestDetail[index].TotalQuantity;
 
                                 if (!gridFormValidation[item].IsValidationError) {
                                     if (elementdata.Value > Quantity) {
@@ -563,7 +563,7 @@ class EditCom extends React.Component {
                 "UserName": value,
                 "FullName": name,
             })
-            //  console.log("element", element);
+
 
             const parent = Object.assign({}, gridDestroyRequestRL, { [DestroyRequestRLID]: element });
 
@@ -572,7 +572,7 @@ class EditCom extends React.Component {
             this.setState({ gridDestroyRequestRL: parent })
         }
 
-        // console.log("gridDestroyRequestRLSort", gridDestroyRequestRLSort);
+
 
         if (this.state.IsLoadDataComplete) {
             return (

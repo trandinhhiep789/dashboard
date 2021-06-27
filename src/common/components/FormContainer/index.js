@@ -179,6 +179,7 @@ class FormContainerCom extends Component {
 
     //#region InputChange && InputChangeList
     handleInputChange(elementname, elementvalue, namelabel, valuelabel, filterrest) {
+        // console.log("111",elementname, elementvalue, namelabel, valuelabel, filterrest )
         const FormDataContolLstd = this.state.FormData;
         FormDataContolLstd[elementname].value = elementvalue;
         if (typeof filterrest != "undefined" && filterrest != "") {
@@ -251,7 +252,7 @@ class FormContainerCom extends Component {
     validationFormNew() {
         const FormDataContolLst = this.state.FormData;
         for (const key in FormDataContolLst) {
-            if (typeof FormDataContolLst[key].validatonList != "undefined") {
+            if (typeof FormDataContolLst[key].validatonList != "undefined"  &&  FormDataContolLst[key].validatonList.length > 0) {
                 const validation = ValidationField(FormDataContolLst[key].validatonList, FormDataContolLst[key].value, FormDataContolLst[key].label, FormDataContolLst[key]);
                 const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
                 FormDataContolLst[key].ErrorLst = validationObject;

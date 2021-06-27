@@ -2,6 +2,7 @@ export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/PeriodUserRWPosition/Search";
 export const LoadAPIPath = "api/PeriodUserRWPosition/Load";
 export const AddAPIPath = "api/PeriodUserRWPosition/Add";
+export const AddByFileAPIPath = "api/PeriodUserRWPosition/AddByFile";
 export const UpdateAPIPath = "api/PeriodUserRWPosition/Update";
 export const DeleteAPIPath = "api/PeriodUserRWPosition/Delete";
 export const UpdateOrderAPIPath = "api/PeriodUserRWPosition/UpdateOrder";
@@ -317,7 +318,6 @@ export const DataGridColumnList = [
         DataSourceMember: "RewardPositionName",
         Width: 160
     },
-
     {
         Name: "ApplyFromDate",
         Type: "date",
@@ -410,17 +410,17 @@ export const DataGridColumnList = [
     //     Width: 200
     // },
     {
-        Name: "CreatedDate",
-        Type: "date",
-        Caption: "Ngày tạo",
-        DataSourceMember: "CreatedDate",
-        Width: 100
+        Name: "UpdatedDate",
+        Type: "datetime",
+        Caption: "Ngày cập nhật",
+        DataSourceMember: "UpdatedDate",
+        Width: 140
     },
     {
-        Name: "CreatedUserFullName",
+        Name: "UpdatedUserFullName",
         Type: "text",
-        Caption: "Người tạo",
-        DataSourceMember: "CreatedUserFullName",
+        Caption: "Người cập nhật",
+        DataSourceMember: "UpdatedUserFullName",
         Width: 140
     },
     {
@@ -431,5 +431,48 @@ export const DataGridColumnList = [
         Width: 80,
         Link: "/PeriodUserRWPosition/Edit/",
         LinkText: "Chỉnh sửa"
+    }
+];
+
+
+
+export const schema = {
+    'Mã người dùng': {
+        prop: 'UserName',
+        type: String,
+        required: true
+    },
+    'Mã vị trí thưởng': {
+        prop: 'RewardPositionID',
+        type: Number
+    },
+    'Áp dụng từ ngày': {
+        prop: 'ApplyFromDate',
+        type: Date,
+        required: true
+    },
+    'Áp dụng đến ngày': {
+        prop: 'ApplyToDate',
+        type: Date,
+        required: true
+    },
+    'Kích hoạt': {
+        prop: 'IsActived',
+        type: Number
+    },
+    'Hệ thống': {
+        prop: 'IsSystem',
+        type: Number
+    },
+}
+
+export const DataTemplateExport = [
+    {
+        "Mã người dùng": '98138',
+        "Mã vị trí thưởng": 1,
+        "Áp dụng từ ngày": new Date(2021, 7, 20),
+        "Áp dụng đến ngày": new Date(2021, 7, 25),
+        "Kích hoạt": 1,
+        "Hệ thống": 0
     }
 ];

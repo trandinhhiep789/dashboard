@@ -51,6 +51,10 @@ export const InitSearchParams = [
     {
         SearchKey: "@ToDate",
         SearchValue: new Date()
+    },
+    {
+        SearchKey: "@Status",
+        SearchValue: -1
     }
 ];
 
@@ -80,24 +84,45 @@ export const SearchElementList = [
         ValueMember: "AdvanceRequestTypeID",
         NameMember: "AdvanceRequestTypeName"
     },
+
     {
-        type: "select",
+        type: "ComboBox",
         name: "slReceiverStoreID",
-        label: "Kho",
-        value: -1,
-        placeholder: "",
-        icon: "",
-        listoption: [],
         DataSourceMember: "ReceiverStoreID",
-        readonly: false,
-        validatonList: [],
+        label: "Kho",
+        colspan: "x",
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "---Vui lòng chọn---",
+        listoption: [],
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
         ValueMember: "StoreID",
         NameMember: "StoreName",
         KeyFilter: "CompanyID",
-        ValueFilter: 10
+        ValueFilter: 10,
+
+
     },
+
+    // {
+    //     type: "select",
+    //     name: "slReceiverStoreID",
+    //     label: "Kho",
+    //     value: -1,
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: [],
+    //     DataSourceMember: "ReceiverStoreID",
+    //     readonly: false,
+    //     validatonList: [],
+    //     IsAutoLoadItemFromCache: true,
+    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
+    //     ValueMember: "StoreID",
+    //     NameMember: "StoreName",
+    //     KeyFilter: "CompanyID",
+    //     ValueFilter: 10
+    // },
     // {
     //     type: "select",
     //     name: "slPartnerID",
@@ -114,6 +139,35 @@ export const SearchElementList = [
     //     ValueMember: "PartnerID",
     //     NameMember: "PartnerName"
     // },
+    {
+        type: "select",
+        name: "bcStatus",
+        label: "Trạng thái",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [
+            {
+                value: -1, label: "--Chọn tất cả--"
+            },
+            {
+                value: 0, label: "Đã xuất"
+            },
+            {
+                value: 1, label: "Đã bàn giao"
+            },
+            {
+                value: 2, label: "Đã hủy"
+            }
+        ],
+        DataSourceMember: "Status",
+        readonly: false,
+        validatonList: [],
+        IsAutoLoadItemFromCache: true,
+        // LoadItemCacheKeyID: "",
+        ValueMember: "Status",
+        NameMember: "Status"
+    },
     {
         type: "date",
         name: "dtFromDate",
@@ -164,7 +218,12 @@ export const SearchMLObjectDefinition = [
         Name: "ToDate",
         DefaultValue: "",
         BindControlName: "dtToDate"
-    }
+    },
+    {
+        Name: "Status",
+        DefaultValue: "",
+        BindControlName: "bcStatus"
+    },
 ];
 
 
@@ -176,63 +235,70 @@ export const DataGridColumnList = [
         Caption: "Mã yêu cầu tạm ứng",
         Link: "/AdvanceRequest/Edit/",
         DataSourceMember: "AdvanceRequestID",
-        Width: 100
+        //Width: 70
     },
     {
         Name: "AdvanceRequestTitle",
         Type: "text",
         Caption: "Tiêu đề yêu cầu tạm ứng",
         DataSourceMember: "AdvanceRequestTitle",
-        Width: 200
+        //Width: 200
     },
     {
         Name: "AdvanceRequestTypeName",
         Type: "text",
         Caption: "Loại yêu cầu tạm ứng",
         DataSourceMember: "AdvanceRequestTypeName",
-        Width: 180
+        //Width: 180
     },
     {
         Name: "ShipmentOrderID",
         Type: "text",
         Caption: "Mã yêu cầu vận chuyển",
         DataSourceMember: "ShipmentOrderID",
-        Width: 120
+        //Width: 120
     },
     {
         Name: "SaleOrderID",
         Type: "text",
         Caption: "Mã đơn hàng tạm ứng",
         DataSourceMember: "SaleOrderID",
-        Width: 120
+        // Width: 120
     },
     {
         Name: "RequestUserName",
         Type: "text",
         Caption: "Người yêu cầu",
         DataSourceMember: "RequestUserName",
-        Width: 160
+        //Width: 160
     },
     {
         Name: "RequestDate",
-        Type: "date",
+        Type: "datetime",
         Caption: "Ngày yêu cầu",
         DataSourceMember: "RequestDate",
-        Width: 80
+        //Width: 100
     },
     {
         Name: "IsOutput",
         Type: "checkicon",
         Caption: "Đã xuất",
         DataSourceMember: "IsOutput",
-        Width: 60
+        //Width: 50
+    },
+    {
+        Name: "IsHandoverMaterial",
+        Type: "checkicon",
+        Caption: "Đã bàn giao",
+        DataSourceMember: "IsHandoverMaterial",
+        //Width: 50
     },
     {
         Name: "IsDeleted",
         Type: "checkicon",
         Caption: "Đã hủy",
         DataSourceMember: "IsDeleted",
-        Width: 50
+        // Width: 50
     },
 ];
 

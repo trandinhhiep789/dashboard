@@ -10,8 +10,10 @@ import {
     SearchMLObjectDefinition,
     SearchElementList,
     GridColumnList,
+    GridColumnListShipmentOrder,
     APIHostName,
     SearchAPIPath,
+    SearchPartnerSaleOrderAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -21,19 +23,21 @@ import { TMS_INVESTIGATION_SO_STATUS } from "../../../../../constants/functionLi
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import InfoShipmentOrder from "../InfoShipmentOrder";
+import { MODAL_TYPE_IMAGE_SLIDE } from '../../../../../constants/actionTypes';
 
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
+        this.callSearchDataPartnerSaleOrderID = this.callSearchDataPartnerSaleOrderID.bind(this);
 
         this.state = {
             IsCallAPIError: false,
             dataSource: [],
-            gridDataSource:[],
+            gridDataSource: [],
             IsLoadDataComplete: false,
-
+            gridDataSourceShipmentOrder: []
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -44,28 +48,40 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
+        console.log("search", formData, MLObject)
         const postData = [
             {
                 SearchKey: "@Keyword",
                 SearchValue: MLObject.Keyword
             },
+
         ];
-        this.callSearchData(postData)
+
+        if (MLObject.Typename == 1) {
+            this.callSearchData(postData)
+        }
+        else {
+            this.callSearchDataPartnerSaleOrderID(postData)
+        }
+
+
+
     }
 
-    callSearchData(searchData) {
-
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+    callSearchDataPartnerSaleOrderID(searchData) {
+        this.props.callFetchAPI(APIHostName, SearchPartnerSaleOrderAPIPath, searchData).then(apiResult => {
+            console.log("222", searchData, apiResult)
             if (!apiResult.IsError) {
-                
+
                 const tempData = apiResult.ResultObject.ShipmentOrderType_WorkFlowList.map((item, index) => {
-                    item.ProcessFullName =item.ProcessUser +"-"+ item.ProcessUserName
+                    item.ProcessFullName = item.ProcessUser + "-" + item.ProcessUserName
                     return item;
                 })
                 this.setState({
                     gridDataSource: tempData,
                     dataSource: apiResult.ResultObject,
                 })
+
             }
             else {
                 this.setState({
@@ -76,6 +92,30 @@ class SearchCom extends React.Component {
         });
     }
 
+    callSearchData(searchData) {
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            if (!apiResult.IsError) {
+
+                const tempData = apiResult.ResultObject.ShipmentOrderType_WorkFlowList.map((item, index) => {
+                    item.ProcessFullName = item.ProcessUser + "-" + item.ProcessUserName
+                    return item;
+                })
+                this.setState({
+                    gridDataSource: tempData,
+                    dataSource: apiResult.ResultObject,
+                })
+
+            }
+            else {
+                this.setState({
+                    gridDataSource: []
+                })
+                this.showMessage(apiResult.Message)
+            }
+        });
+
+    }
+
     showMessage(message) {
         ModalManager.open(
             <MessageModal
@@ -84,6 +124,27 @@ class SearchCom extends React.Component {
                 onRequestClose={() => true}
             />
         );
+    }
+
+    handleShowImage(data) {
+        let images = [];
+        const objlst = data.split(";");
+        for (let i = 0; i < objlst.length; i++) {
+            images.push({
+                original: JSON.parse(objlst[i]).ImageFileURL,
+                thumbnail: JSON.parse(objlst[i]).ImageFileURL,
+                ImageCaptureGeoLocation: JSON.parse(objlst[i]).ImageCaptureGeoLocation,
+                ImageCaptureTime: JSON.parse(objlst[i]).ImageCaptureTime,
+                description: ""
+            });
+        }
+        this.props.showModal(MODAL_TYPE_IMAGE_SLIDE, {
+            title: 'Danh sách hình ảnh ',
+            ImageCaptureGeoLocation: JSON.parse(objlst[0]).ImageCaptureGeoLocation,
+            content: {
+                lstImage: images
+            },
+        });
     }
 
 
@@ -98,9 +159,67 @@ class SearchCom extends React.Component {
                     onSubmit={this.handleSearchSubmit}
                     ref={this.searchref}
                 />
-              
-                <InfoShipmentOrder dataShipmentOder= {this.state.dataSource} />
 
+                <InfoShipmentOrder dataShipmentOder={this.state.dataSource} />
+
+                <DataGrid
+                    listColumn={GridColumnListShipmentOrder}
+                    dataSource={this.state.dataSource.ShipmentOrder_DeliverUserList}
+                    IsFixheaderTable={false}
+                    IDSelectColumnName={'DeliverUserID'}
+                    PKColumnName={'DeliverUserID'}
+                    isHideHeaderToolbar={false}
+                    IsShowButtonAdd={false}
+                    IsShowButtonDelete={false}
+                    IsShowButtonPrint={false}
+                    IsPrint={false}
+                    IsAutoPaging={true}
+                    RowsPerPage={10}
+                    // RequirePermission={TMS_INVESTIGATION_SO_STATUS}
+                    ref={this.gridref}
+                />
+
+                <DataGrid
+                    listColumn={GridColumnList}
+                    dataSource={this.state.gridDataSource.sort((a, b) => new Date(a.ProcessDate) - new Date(b.ProcessDate))}
+                    IsFixheaderTable={false}
+                    IDSelectColumnName={'WorkFlowID'}
+                    PKColumnName={'WorkFlowID'}
+                    isHideHeaderToolbar={false}
+                    IsShowButtonAdd={false}
+                    IsShowButtonDelete={false}
+                    IsShowButtonPrint={false}
+                    IsPrint={false}
+                    IsAutoPaging={true}
+                    RowsPerPage={10}
+                    RequirePermission={TMS_INVESTIGATION_SO_STATUS}
+                    ref={this.gridref}
+                    onShowImage={this.handleShowImage.bind(this)}
+                />
+
+                {/* <div className="card">
+                    <h4 className="card-title"><strong>Lịch sử xử lý</strong></h4>
+                    <div className="card-body">
+                        <div className="table-responsive">
+                            <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                <thead className="thead-light">
+                                    <tr>
+                                        <th className="jsgrid-header-cell" style={{ width: 100 }} >Thời gian</th>
+                                        <th className="jsgrid-header-cell" style={{ width: 250 }} >Bước xử lý</th>
+                                        <th className="jsgrid-header-cell" style={{ width: 150 }} >Nhân viên</th>
+                                        <th className="jsgrid-header-cell" style={{ width: 150 }} >Hình ảnh</th>
+                                        <th className="jsgrid-header-cell" style={{ width: 70 }} >Tọa độ GPS</th>
+                                        <th className="jsgrid-header-cell" style={{ width: 250 }} >Ghi chú</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div> */}
+                {/* 
                 <DataGrid
                     listColumn={GridColumnList}
                     dataSource={this.state.gridDataSource}
@@ -116,7 +235,9 @@ class SearchCom extends React.Component {
                     RowsPerPage={10}
                     RequirePermission={TMS_INVESTIGATION_SO_STATUS}
                     ref={this.gridref}
-                />
+                /> */}
+
+
             </React.Fragment>
         );
 

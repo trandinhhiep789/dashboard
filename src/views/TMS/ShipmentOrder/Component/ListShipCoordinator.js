@@ -89,7 +89,7 @@ class ListShipCoordinatorCom extends Component {
             this.props.callFetchAPI(APIHostName, 'api/StaffDebt/UserIsLockDelivery', listStaffDebtObject).then((apiResult) => {
                 if (!apiResult.IsError) {
                     this.state.ShipmentOrder.map((row, indexRow) => {
-                        if (!row.IsCoordinator && row.IsPermission == true)
+                        if (!row.IsCoordinator && row.IsPermission == true && row.CarrierPartnerID <= 0)
                             row["ShipmentOrder_DeliverUserList"] = objDeliverUser;
                     });
                     this.setState({ selectedOption: selectedOption1, ShipmentOrder: this.state.ShipmentOrder });
@@ -105,7 +105,6 @@ class ListShipCoordinatorCom extends Component {
     }
 
     handleOnValueChangeDeliverUser(name, value, selectedOption) {
-        debugger
         let objMultiDeliverUser = [];
         let listStaffDebtObject = [];
         selectedOption && selectedOption.map((item, index) => {
@@ -120,7 +119,7 @@ class ListShipCoordinatorCom extends Component {
             this.props.callFetchAPI(APIHostName, 'api/StaffDebt/UserIsLockDelivery', listStaffDebtObject).then((apiResult) => {
                 if (!apiResult.IsError) {
                     this.state.ShipmentOrder.map((row, indexRow) => {
-                        if (!row.IsCoordinator && row.IsPermission == true)
+                        if (!row.IsCoordinator && row.IsPermission == true && row.CarrierPartnerID > 0)
                             row["ShipmentOrder_DeliverUserList"] = objMultiDeliverUser;
                     });
                     this.setState({ objDeliverUser: value, ShipmentOrder: this.state.ShipmentOrder });
@@ -170,7 +169,6 @@ class ListShipCoordinatorCom extends Component {
 
         if (this.checkInputName(elementobject) != "")
             return;
-    
         this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/AddInfoCoordinatorLst', this.state.ShipmentOrder).then((apiResult) => {
             if (this.props.onChangeValue != null)
                 this.props.onChangeValue(apiResult);
@@ -208,7 +206,7 @@ class ListShipCoordinatorCom extends Component {
             let listStaffDebtObject = [];
             rowvalue && rowvalue.map((item, index) => {
                 if (item.value != -1 && item.value != 0) {
-                    let objShipmentOrder_DeliverUser = { UserName: item.value, FullName: item.name }
+                    let objShipmentOrder_DeliverUser = { UserName: item.value,FullName: item.FullName }
                     objDeliverUser.push(objShipmentOrder_DeliverUser)
                     listStaffDebtObject.push({
                         UserName: item.value,
@@ -340,6 +338,7 @@ class ListShipCoordinatorCom extends Component {
                 placeholder: "---Nhân viên giao nhận---",
                 isMultiSelect: true,
                 disabled: false,
+                isPartner: true,
                 filterValue: "-1",
                 filterobj: "PartnerID",
                 filterrest: "CarrierPartnerID"
@@ -418,7 +417,6 @@ class ListShipCoordinatorCom extends Component {
             //     iputpop: false
             // }
         ];
-        console.log("this.state.ShipmentOrder",this.state.ShipmentOrder)
         return (
             <div className="card modalForm">
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -480,6 +478,7 @@ class ListShipCoordinatorCom extends Component {
                             value={this.state.selectedOption}
                             listoption={this.state.selectedOption}
                             isMultiSelect={true}
+                            isPartner={true}
                             datasourcemember="ShipmentOrder_DeliverUserList"
                         /> :
                         <FormControl.FormControlComboBoxUser

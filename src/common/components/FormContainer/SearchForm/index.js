@@ -4,6 +4,7 @@ import { ValidationField } from "../../../library/validation";
 import MultiSelectUserComboBox from "../FormControl/MultiSelectComboBox/MultiSelectUserComboBox";
 import ProductComboBox from "../FormControl/MultiSelectComboBox/ProductComboBox";
 import MultiTreeSelect from '../FormControl/MultiSelectComboBox/MultiTreeSelect'
+import MultiStoreSearchComboBox from '../FormControl/MultiSelectComboBox/MultiStoreSearchComboBox'
 
 export default class SearchForm extends Component {
     constructor(props) {
@@ -37,8 +38,10 @@ export default class SearchForm extends Component {
     }
 
     onValueChange(elementname, elementvalue, filterrest) {
+
         const FormDataContolLstd = this.state.FormData;
         FormDataContolLstd[elementname].value = elementvalue;
+
         if (typeof filterrest != "undefined" && filterrest != "") {
             const objrest = filterrest.split(",");
             for (let i = 0; i < objrest.length; i++) {
@@ -54,6 +57,10 @@ export default class SearchForm extends Component {
         this.setState({
             FormData: FormDataContolLstd,
         });
+        if (this.props.onchange != null) {
+            this.props.onchange(FormDataContolLstd, this.props.MLObjectDefinition);
+        }
+
     }
 
 
@@ -117,6 +124,13 @@ export default class SearchForm extends Component {
         });
         if (this.props.onExportSubmit != null) {
             this.props.onExportSubmit(FormData, MLObject);
+        }
+    }
+
+    handlehistorySubmit()
+    {
+        if (this.props.onHistorySubmit != null) {
+            this.props.onHistorySubmit();
         }
     }
 
@@ -311,6 +325,18 @@ export default class SearchForm extends Component {
                                         key={index}
                                     />
                                 );
+
+                            case "StoreComboBox":
+                                return (
+                                    <MultiStoreSearchComboBox
+                                        onValueChange={this.onValueChange}
+                                        ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                        inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
+                                        {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
+                                        key={index}
+                                    />
+                                );
                             default:
                                 break;
                         }
@@ -318,21 +344,37 @@ export default class SearchForm extends Component {
                 }
 
                 <div className={classNamebtnSearch}>
-                    <div className="btnSearch btncustom">
-                        <button className="btn btn-primary" type="submit">
+                    {/* <div className="btnSearch btncustom"> */}
+                    <div className={this.props.btnGroup ? this.props.btnGroup : 'btnSearch btncustom'}>
+                        <button className={this.props.IsShowButtonSearch != undefined && this.props.IsShowButtonSearch == false ? "btnHide" : "btn btn-primary"} type="submit">
                             {
                                 !!this.props.TitleButton ? this.props.TitleButton : <span className="fa fa-search">Tìm Kiếm</span>
 
                             }
 
                         </button>
+
                         {
-                            this.props.IsButtonExport != undefined && this.props.IsButtonExport == true && <button className="btn btn-export ml-1" type="button" onClick={this.handleExportSubmit.bind(this)}>
+                            // this.props.IsButtonExport != undefined && this.props.IsButtonExport == true && <button className="btn btn-export ml-1" type="button" onClick={this.handleExportSubmit.bind(this)}>
+                            this.props.IsButtonExport != undefined
+                            && this.props.IsButtonExport == true
+                            && <button
+                                className={this.props.btnExport ? this.props.btnExport : "btn btn-export ml-1"} type="button"
+                                onClick={this.handleExportSubmit.bind(this)}
+                            >
                                 {
-                                    !!this.props.TitleButtonExport ? <span className="ti ti-export"> {this.props.TitleButtonExport}</span> : <span className="ti ti-export">Xuất dữ liệu</span>
+                                    !!this.props.TitleButtonExport ? <span className="ti ti-export"> {this.props.TitleButtonExport}</span> : <span className="ti ti-export"> Xuất dữ liệu</span>
                                 }
                             </button>
                         }
+                        {
+                            this.props.IsButtonhistory == true
+                            && <button type="button" className="btn "  onClick={this.handlehistorySubmit.bind(this)} title="" data-provide="tooltip" data-original-title="Xem lịch sử">
+                                <i className="fa fa-history"></i>
+                            </button>
+
+                        }
+
 
                     </div>
                 </div>

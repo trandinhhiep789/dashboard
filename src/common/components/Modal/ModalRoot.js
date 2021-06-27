@@ -11,6 +11,8 @@ import ModalSearch from './modals/ModalSearch';
 import ConfiComponet from './modals/ConfiComponet.js';
 import ModalSlideImage from './modals/ModalSlideImage.js';
 import CommonModalView from './modals/CommonModalView';
+import DownloadFile from './modals/DownloadFile';
+import ShowDownloadFile from './modals/ShowDownloadFile';
 
 import {
     MODAL_TYPE_NOTIFICATION,
@@ -21,7 +23,9 @@ import {
     MODAL_TYPE_CONFIRMATIONNEW,
     MODAL_TYPE_CONFICOMPONET,
     MODAL_TYPE_IMAGE_SLIDE,
-    MODAL_TYPE_VIEW
+    MODAL_TYPE_VIEW,
+    MODAL_TYPE_DOWNLOAD_EXCEL,
+    MODAL_TYPE_SHOWDOWNLOAD_EXCEL
 } from '../../../constants/actionTypes';
 
 const MODAL_COMPONENTS = {
@@ -33,7 +37,9 @@ const MODAL_COMPONENTS = {
     [MODAL_TYPE_CONFIRMATIONNEW]: ConfirmationNew,
     [MODAL_TYPE_CONFICOMPONET]: ConfiComponet,
     [MODAL_TYPE_IMAGE_SLIDE]: ModalSlideImage,
-    [MODAL_TYPE_VIEW]: CommonModalView
+    [MODAL_TYPE_VIEW]: CommonModalView,
+    [MODAL_TYPE_DOWNLOAD_EXCEL]: DownloadFile,
+    [MODAL_TYPE_SHOWDOWNLOAD_EXCEL]: ShowDownloadFile
 };
 const lstModals = [];
 const ModalRoot = ({ type, props }) => {

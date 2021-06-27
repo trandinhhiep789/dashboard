@@ -9,8 +9,7 @@ function isEmpty(obj) {
     return true;
 }
 
-
-export default class SearchForm extends Component {
+class SearchForm extends Component {
     constructor(props) {
         super(props);
         this.onValueChange = this.onValueChange.bind(this);
@@ -67,52 +66,57 @@ export default class SearchForm extends Component {
 
     renderSearchForm() {
         const listElement = this.props.listelement;
+        const { proClassName, proCNItem, proCNBtnSubmit } = this.props;
+
         let cssSearchButton = "";
+
         return (
-            <div>
-                <div className="row search-forms">
-                    {
-                        listElement.map((elementItem, index) => {
-                            return (
-                                <div className="search-forms-item item" key={"div" + elementItem.name}>
-                                    <FormElement type={elementItem.type} name={elementItem.name}
-                                        CSSClassName="form-control form-control-sm"
-                                        value={this.state.FormData[elementItem.name]}
-                                        label={elementItem.label} placeholder={elementItem.placeholder}
-                                        icon={elementItem.icon}
-                                        onValueChange={this.onValueChange}
-                                        listoption={elementItem.listoption}
-                                        key={elementItem.name}
-                                        IsSearchForm="true"
-                                        IsAutoLoadItemFromCache={elementItem.IsAutoLoadItemFromCache}
-                                        LoadItemCacheKeyID={elementItem.LoadItemCacheKeyID}
-                                        ValueMember={elementItem.ValueMember}
-                                        NameMember={elementItem.NameMember}
-                                        nameOption={elementItem.nameOption}
-                                        labelOption={elementItem.labelOption}
-                                        iconOption={elementItem.iconOption}
-                                        labelOption={elementItem.labelOption}
-                                        valueOption={this.state.FormData[elementItem.valueOption]}
-                                        KeyFilter={elementItem.KeyFilter}
-                                        ValueFilter={elementItem.ValueFilter}
-                                    />
-                                </div>);
-                        }
+            <div className={proClassName == "" ? "row search-forms" : proClassName}>
+                {
+                    listElement.map((elementItem, index) => {
+                        return (
+                            <div className={proCNItem == "" ? "search-forms-item item" : proCNItem} key={"div" + elementItem.name}>
 
+                                <FormElement type={elementItem.type} name={elementItem.name}
+                                    CSSClassName="form-control form-control-sm"
+                                    value={this.state.FormData[elementItem.name]}
+                                    label={elementItem.label} placeholder={elementItem.placeholder}
+                                    icon={elementItem.icon}
+                                    onValueChange={this.onValueChange}
+                                    listoption={elementItem.listoption}
+                                    key={elementItem.name}
+                                    IsSearchForm="true"
+                                    IsAutoLoadItemFromCache={elementItem.IsAutoLoadItemFromCache}
+                                    LoadItemCacheKeyID={elementItem.LoadItemCacheKeyID}
+                                    ValueMember={elementItem.ValueMember}
+                                    NameMember={elementItem.NameMember}
+                                    nameOption={elementItem.nameOption}
+                                    labelOption={elementItem.labelOption}
+                                    iconOption={elementItem.iconOption}
+                                    //labelOption={elementItem.labelOption}
+                                    valueOption={this.state.FormData[elementItem.valueOption]}
+                                    KeyFilter={elementItem.KeyFilter}
+                                    ValueFilter={elementItem.ValueFilter}
+                                    colspan={elementItem.colspan}
+                                />
 
-                        )
+                            </div>);
                     }
 
-                    <div className="search-forms-item item">
-                        <div className="btnSearch">
-                            <button className="btn btn-primary" type="submit">{cssSearchButton}
-                                <span className="fa fa-search"> Tìm Kiếm</span>
-                            </button>
-                        </div>
 
+                    )
+                }
+
+                <div className={proCNBtnSubmit == "" ? "search-forms-item item" : proCNBtnSubmit}>
+                    <div className="btnSearch">
+                        <button className="btn btn-primary" type="submit">{cssSearchButton}
+                            <span className="fa fa-search"> Tìm Kiếm</span>
+                        </button>
                     </div>
 
-                    {/* {listElement.length <= 5 ?
+                </div>
+
+                {/* {listElement.length <= 5 ?
                         <div className="col-md-2 item">
                             <div className="btnSearch">
                                 <button className="btn btn-primary" type="submit">{cssSearchButton}
@@ -121,9 +125,8 @@ export default class SearchForm extends Component {
                             </div>
                         </div>
                         : ""} */}
-                </div>
+
                 {/* {listElement.length > 5 ?
-                   
                     <div className="row">
                         <div className="col-md-12 item" style={{ marginTop: '50px', display: 'block' }}>
                             <div className="btnSearch">
@@ -133,17 +136,12 @@ export default class SearchForm extends Component {
                             </div>
                         </div>
                     </div>
-
-
-
                     : ""} */}
-
             </div>
+
+
         );
     }
-
-
-
 
     render() {
         //this.renderTwoColumnForm();
@@ -158,7 +156,13 @@ export default class SearchForm extends Component {
                 </form>
             </div>
         );
-
-
     }
 }
+
+SearchForm.defaultProps = {
+    proClassName: "",
+    proCNItem: "",
+    proCNBtnSubmit: ""
+};
+
+export default SearchForm;

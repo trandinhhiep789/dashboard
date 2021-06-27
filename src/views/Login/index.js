@@ -42,6 +42,16 @@ class LoginCom extends React.Component {
         this.setState({ [name]: value });
     }
 
+    onShowPassChange(e){
+        const ischecked = e.target.type == 'checkbox' ? e.target.checked : false;
+        var x = document.getElementsByName("txtPassword")[0];
+        if (x.type === "password" && ischecked) {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+
     registerClient(username, password) {
         this.props.callRegisterClient(AUTHEN_HOSTNAME, username, password).then((registerResult) => {
             if (!registerResult.IsError) {
@@ -114,6 +124,14 @@ class LoginCom extends React.Component {
                             </div>
                             <a className="text-muted hover-primary fs-13 mt-2 mt-md-0" href="#">Quên mật khẩu?</a>
                         </div>
+
+                        <div className="form-group flexbox flex-column flex-md-row w-100">
+                            <div className="custom-control custom-checkbox">
+                                <input type="checkbox" name="txtshowpass" id="txtshowpass" onChange={this.onShowPassChange} className="custom-control-input" />
+                                <label className="custom-control-label" htmlFor="txtshowpass" >Hiển thị mật khẩu</label>
+                            </div>
+                        </div>
+
                         {/* <button className="btn btn-lg btn-primary btn-block btn-signin" type="submit" onClick={this.handleLogin} >Đăng nhập</button> */}
                         <Button className="btn btn-lg btn-primary btn-block btn-signin" onClick={this.handleLogin} loading={this.state.IsClickLoginButton}>Đăng nhập</Button>
                     </form>

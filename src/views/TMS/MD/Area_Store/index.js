@@ -39,7 +39,9 @@ class Area_StoreCom extends React.Component {
             cssNotification: "",
             iconNotification: "",
             AreaStoreDataSource: this.props.AreaStoreDataSource ? this.props.AreaStoreDataSource : [],
+            AreaStoreAllDataSource: this.props.AreaStoreAllDataSource ? this.props.AreaStoreAllDataSource : [],
             AreaID: this.props.AreaID,
+            AreaTypeID: this.props.AreaTypeID,
             IsInsert: true,
             ModalColumnList_Insert: ModalColumnList_Insert,
             ModalColumnList_Edit: ModalColumnList_Edit
@@ -52,9 +54,16 @@ class Area_StoreCom extends React.Component {
         if (nextProps.AreaID !== this.state.AreaID) {
             this.setState({ AreaID: nextProps.AreaID });
         }
+        if (nextProps.AreaTypeID !== this.state.AreaTypeID) {
+            this.setState({ AreaTypeID: nextProps.AreaTypeID });
+        }
+        if (nextProps.AreaStoreAllDataSource !== this.state.AreaStoreAllDataSource) {
+            this.setState({ AreaStoreAllDataSource: nextProps.AreaStoreAllDataSource });
+        }
 
         if (nextProps.AreaStoreDataSource !== this.state.AreaStoreDataSource) {
             this.setState({ AreaStoreDataSource: nextProps.AreaStoreDataSource });
+            this.initCache();
         }
     }
 
@@ -87,7 +96,7 @@ class Area_StoreCom extends React.Component {
                 this.setState({
                     IsAllowedAdd: IsAllowedAdd,
                     IsAllowedUpdate: IsAllowedUpdate,
-                    IsAllowedDelete: IsAllowedDelete     
+                    IsAllowedDelete: IsAllowedDelete
                 });
             }
         });
@@ -109,23 +118,20 @@ class Area_StoreCom extends React.Component {
     }
 
     addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
         if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
         } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={this.state.cssNotification}>
+                <div className={cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
+                        <i className={iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -140,6 +146,7 @@ class Area_StoreCom extends React.Component {
             dismissable: { click: true }
         });
     }
+
 
     initCache() {
 
@@ -157,6 +164,29 @@ class Area_StoreCom extends React.Component {
             if (!result.IsError && result.ResultObject.CacheData != null) {
                 this.setState({
                     Store: result.ResultObject.CacheData
+                });
+            }
+        });
+
+        this.props.callGetCache(ERPCOMMONCACHE_STORE).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                //console.log("FormElement listOption: ", listOption)
+                let _AreaStoreAll = this.state.AreaStoreAllDataSource ? this.state.AreaStoreAllDataSource : [];
+                //let _list = result.ResultObject.CacheData.filter(x => x.AreaID == this.state.AreaID && datasource.filter(y => y.StoreID == x.StoreID).length == 0)
+                let _list = result.ResultObject.CacheData.filter(x => x.CompanyID == 10 && x.IsActive == true && _AreaStoreAll.filter(y => y.StoreID == x.StoreID).length == 0);
+                //console.log("_list", _list, _AreaStoreAll)
+                let _list2 = [];
+                if (_list.length > 0) {
+                    _list2 = _list.map((item, index) => {
+                        return { value: item.StoreID, label: item.StoreName, name: item.StoreName };
+                    });
+                }
+                this.setState({
+                    StoreArea: _list2
+                });
+            } else {
+                this.setState({
+                    StoreArea: []
                 });
             }
         });
@@ -234,6 +264,17 @@ class Area_StoreCom extends React.Component {
             return;
         }
         this.setState({ IsInsert: true });
+
+
+        modalElementList.map((item, index) => {
+            if (item.Name == "StoreID") {
+                item.listoption = this.state.StoreArea;
+            }
+        });
+
+
+
+        //console.log("modalElementList", modalElementList, this.state.AreaStoreDataSource);
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
             title: 'Thêm mới kho điều phối của khu vực',
             autoCloseModal: false,
@@ -245,6 +286,7 @@ class Area_StoreCom extends React.Component {
                     if (MLObject) {
                         MLObject.AreaStoreCSID = this.state.AreaID + "," + MLObject.StoreID;
                         MLObject.AreaID = this.state.AreaID;
+                        MLObject.AreaTypeID = this.state.AreaTypeID;
                         MLObject.StoreID = MLObject.StoreID && Array.isArray(MLObject.StoreID) ? MLObject.StoreID[0] : MLObject.StoreID;
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
@@ -275,13 +317,15 @@ class Area_StoreCom extends React.Component {
                             this.addNotification(apiResult.Message, apiResult.IsError);
                         });
 
-                        this.props.hideModal();
+                        //this.props.hideModal();
                         this.resetCombobox();
                     }
                 }
             },
             modalElementList: modalElementList,
         });
+
+
     }
 
     handleEdit(value, pkColumnName) {
@@ -318,6 +362,7 @@ class Area_StoreCom extends React.Component {
                     if (MLObject) {
                         MLObject.AreaStoreCSID = this.state.AreaID + "," + MLObject.StoreID;
                         MLObject.AreaID = this.state.AreaID;
+                        MLObject.AreaTypeID = this.state.AreaTypeID;
                         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
                         // let _AreaStoreDataSource = this.state.AreaStoreDataSource
@@ -397,7 +442,7 @@ class Area_StoreCom extends React.Component {
         //     //this.showMessage(apiResult.Message);
         //     this.addNotification(apiResult.Message, apiResult.IsError);
         // });
-        
+
         if (!this.state.IsAllowedDelete) {
             this.showMessage("Bạn không có quyền");
             return;
@@ -409,7 +454,7 @@ class Area_StoreCom extends React.Component {
             pkColumnName.map((pkItem, pkIndex) => {
                 MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
             });
-            
+
             let _deleteList = _AreaStoreDataSource.filter(item => item.AreaStoreCSID == MLObject.AreaStoreCSID);
             if (_deleteList && _deleteList.length > 0) {
                 _deleteList[0].DeletedUser = this.props.AppInfo.LoginInfo.Username;
@@ -451,8 +496,8 @@ class Area_StoreCom extends React.Component {
     }
 
     render() {
-        let datasource = this.state.AreaStoreDataSource.filter(item => item.IsDeleted == undefined || item.IsDeleted == false);
-        datasource = this.initDatasource(datasource);
+        //let datasource = this.state.AreaStoreDataSource.filter(item => item.IsDeleted == undefined || item.IsDeleted == false);
+        //datasource = this.initDatasource(datasource);
 
 
         if (this.state.IsCloseForm) {
@@ -474,7 +519,7 @@ class Area_StoreCom extends React.Component {
             <div className="sub-grid detail">
                 <ReactNotification ref={this.notificationDOMRef} />
                 <DataGrid listColumn={DataGridColumnList}
-                    dataSource={datasource}
+                    dataSource={this.state.AreaStoreDataSource}
                     modalElementList={ModalColumnList_Insert}
                     MLObjectDefinition={MLObjectDefinition}
                     IDSelectColumnName={"chkSelectAreaStoreCSID"}

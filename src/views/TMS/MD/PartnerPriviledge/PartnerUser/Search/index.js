@@ -30,13 +30,14 @@ import {
     UpdateAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
-import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache, callGetUserCache } from "../../../../../../actions/cacheAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { PARTNERUSER_VIEW, PARTNERUSER_DELETE } from "../../../../../../constants/functionLists";
-import { ERPCOMMONCACHE_PARTNERUSER } from "../../../../../../constants/keyCache";
+import { PARTNERUSER_VIEW, PARTNERUSER_DELETE, PARTNERUSER_ADD, GET_CACHE_USER_FUNCTION_LIST, PARTNERUSER_UPDATE } from "../../../../../../constants/functionLists";
+import { ERPCOMMONCACHE_PARTNERUSER, ERPCOMMONCACHE_TMSCONFIG } from "../../../../../../constants/keyCache";
 import MD5Digest from "../../../../../../common/library/cryptography/MD5Digest";
+import { toIsoStringCus } from "../../../../../../utils/function";
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
@@ -50,6 +51,8 @@ class SearchCom extends React.Component {
         this.handleModalChangeEdit = this.handleModalChangeEdit.bind(this);
         this.CreateUserName = this.CreateUserName.bind(this);
         this.onClose = this.onClose.bind(this);
+        this.checkPermission = this.checkPermission.bind(this);
+        this.initCache = this.initCache.bind(this);
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
@@ -69,6 +72,8 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.callSearchData(this.state.SearchData);
         this.props.updatePagePath(PagePath);
+        this.checkPermission();
+        this.initCache();
     }
 
     CreateUserName() {
@@ -76,16 +81,16 @@ class SearchCom extends React.Component {
 
         // }
 
-        this.props.callFetchAPI(APIHostName, CreateUserNameAPIPath, "abc").then(apiResult => {
-            this.setState({ IsCallAPIError: apiResult.IsError });
-            if (!apiResult.IsError) {
-                this.setState({ UserID: apiResult.ResultObject })
-                document.getElementsByName("txtUserName")[0].value = apiResult.ResultObject;
-            } else {
-                this.showMessage("Lỗi tạo tên đăng nhập.");
-            }
-            //console.log("username", apiResult);
-        });
+        // this.props.callFetchAPI(APIHostName, CreateUserNameAPIPath, "abc").then(apiResult => {
+        //     this.setState({ IsCallAPIError: apiResult.IsError });
+        //     if (!apiResult.IsError) {
+        //         this.setState({ UserID: apiResult.ResultObject })
+        //         document.getElementsByName("txtUserName")[0].value = apiResult.ResultObject;
+        //     } else {
+        //         this.showMessage("Lỗi tạo tên đăng nhập.");
+        //     }
+        //     //console.log("username", apiResult);
+        // });
 
     }
 
@@ -105,8 +110,22 @@ class SearchCom extends React.Component {
         } else if (elementName == "chkShowPassWord") {
             this.showPassWord("txtPassWord");
             this.showPassWord("txtPassWordConfirm");
-            return;
         }
+
+        // if (elementName == "txtPartnerRoleID") {
+        //     let role = formData.txtPartnerRoleID && Array.isArray(formData.txtPartnerRoleID) ? formData.txtPartnerRoleID[0] : -1;
+        //     let limitValue = 0;
+        //     if (role == 1) { //quản lý
+        //         limitValue = this.state.ADVANCELIMIT_LEADERPARTNER;
+        //     } else if (role == 2) { // nhân viên
+        //         limitValue = this.state.ADVANCELIMIT_STAFFPARTNER;
+        //     }
+
+        //     this.setLimit("txtLimit", limitValue);
+        // }
+
+        //console.log("dsadsda", formData);
+
 
     }
 
@@ -132,9 +151,78 @@ class SearchCom extends React.Component {
         }
     }
 
+    setLimit(name, elementValue) {
+        var x = document.getElementsByName(name)[0];
+        x.value = Number(elementValue).toLocaleString();
+    }
+
+    checkPermission() {
+        let IsAllowedAdd = false;
+        let IsAllowedDelete = false;
+        let IsAllowedUpdate = false;
+        this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                let _isAllowedAdd = result.ResultObject.CacheData.filter(x => x.FunctionID == PARTNERUSER_ADD);
+                if (_isAllowedAdd && _isAllowedAdd.length > 0) {
+                    IsAllowedAdd = true;
+                }
+
+                let _isAllowedUpdate = result.ResultObject.CacheData.filter(x => x.FunctionID == PARTNERUSER_UPDATE);
+                if (_isAllowedUpdate && _isAllowedUpdate.length > 0) {
+                    IsAllowedUpdate = true;
+                }
+
+                let _isAlloweDelete = result.ResultObject.CacheData.filter(x => x.FunctionID == PARTNERUSER_DELETE);
+                if (_isAlloweDelete && _isAlloweDelete.length > 0) {
+                    IsAllowedDelete = true;
+                }
+
+                this.setState({
+                    IsAllowedAdd,
+                    //IsAllowedUpdate,
+                    IsAllowedDelete
+                });
+            }
+        });
+    }
+
+    initCache() {
+        this.props.callGetCache(ERPCOMMONCACHE_TMSCONFIG).then((result) => {
+            if (result && !result.IsError && result.ResultObject) {
+                let _ADVANCELIMIT_LEADERPARTNER = result.ResultObject.CacheData.filter(x => x.TMSConfigID == "ADVANCELIMIT_LEADERPARTNER");
+                let _ADVANCELIMIT_STAFFPARTNER = result.ResultObject.CacheData.filter(x => x.TMSConfigID == "ADVANCELIMIT_STAFFPARTNER");
+                this.setState({
+                    ADVANCELIMIT_LEADERPARTNER: _ADVANCELIMIT_LEADERPARTNER ? _ADVANCELIMIT_LEADERPARTNER[0].TMSConfigValue : 0,
+                    ADVANCELIMIT_STAFFPARTNER: _ADVANCELIMIT_STAFFPARTNER ? _ADVANCELIMIT_STAFFPARTNER[0].TMSConfigValue : 0
+                })
+            }
+
+        });
+    }
+
+    convertFormatDateTime(obj) {
+        var date = new Date(obj);
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+        var hour = date.getHours();
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+
+        var time = day + "/" + month + "/" + year + " " + hour + ':' + minute + ':' + second;
+        return time;
+    }
+
     handleInsert(MLObjectDefinition, modalElementList, dataSource) {
+        if (!this.state.IsAllowedAdd) {
+            this.showMessage("Bạn không có quyền");
+            return;
+        }
         this.setState({ IsInsert: true });
         this.CreateUserName();
+
+
+
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
             title: 'Thêm mới người dùng của nhà cung cấp',
             autoCloseModal: false,
@@ -152,11 +240,13 @@ class SearchCom extends React.Component {
                             return false;
                         }
 
-                        if (!this.state.UserID) {
-                            this.setState({ IsCallAPIError: true });
-                            this.showMessage("Chưa có tên đăng nhập. Vui lòng bấm nút tạo tên đăng nhập.");
-                            return false;
-                        }
+                        // if (!this.state.UserID) {
+                        //     this.setState({ IsCallAPIError: true });
+                        //     this.showMessage("Chưa có tên đăng nhập. Vui lòng bấm nút tạo tên đăng nhập.");
+                        //     return false;
+                        // }
+
+                        MLObject.FullName = MLObject.FullName.toUpperCase();
 
                         let fullName = MLObject.FullName.split(" ");
                         let firstName = fullName[fullName.length - 1];
@@ -169,17 +259,45 @@ class SearchCom extends React.Component {
 
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+                        MLObject.RawPass = MD5Digest(PassWord);
                         MLObject.PassWord = MD5Digest(PassWord);
                         MLObject.FirstName = firstName.trim();
                         MLObject.LastName = lastName.trim();
-                        MLObject.UserName = this.state.UserID;
+                        MLObject.UserName = -1;
                         MLObject.PartnerID = MLObject.PartnerID && Array.isArray(MLObject.PartnerID) ? MLObject.PartnerID[0] : MLObject.PartnerID;
+                        MLObject.PartnerRoleID = MLObject.PartnerRoleID && Array.isArray(MLObject.PartnerRoleID) ? MLObject.PartnerRoleID[0] : MLObject.PartnerRoleID;
 
                         if (MLObject.Birthday) {
                             let temp = MLObject.Birthday.trim().split('/');
                             let myDate = new Date(temp[1] + '/' + temp[0] + '/' + temp[2]);
-                            myDate.setDate(myDate.getDate() + 1);
                             MLObject.Birthday = myDate;
+                        }
+                        
+                        ///kiểm tra người dùng đủ 18 tuổi
+                        let validYearOld = (new Date()).getFullYear() - (new Date(MLObject.Birthday)).getFullYear();
+                        if (validYearOld < 18) {
+                            this.addNotification("Yêu cầu người dùng trên 18 tuổi.", true);
+                            return;
+                        }else if(validYearOld > 100){
+                            this.addNotification("Yêu cầu người dùng dưới 100 tuổi.", true);
+                            return;
+                        }
+
+                        MLObject.Birthday = toIsoStringCus(new Date(MLObject.Birthday).toISOString());
+
+
+
+
+
+
+                        //hạn mức người dùng
+                        if (MLObject.PartnerRoleID == 1) {// quản lý
+                            MLObject.LimitValue = this.state.ADVANCELIMIT_LEADERPARTNER;
+                        } else if (MLObject.PartnerRoleID == 2) {// nhân viên
+                            MLObject.LimitValue = this.state.ADVANCELIMIT_STAFFPARTNER;
+                        }
+                        else {
+                            MLObject.LimitValue = 0;
                         }
 
                         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
@@ -187,9 +305,10 @@ class SearchCom extends React.Component {
                                 this.callSearchData(this.state.SearchData);
                                 this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNERUSER);
                                 this.props.hideModal();
+                                this.showMessage(apiResult.Message);
+                            } else {
+                                this.addNotification(apiResult.Message, apiResult.IsError);
                             }
-                            //this.showMessage(apiResult.Message);
-                            this.addNotification(apiResult.Message, apiResult.IsError);
                         });
 
                         //console.log("MLObject", MLObject);
@@ -202,6 +321,10 @@ class SearchCom extends React.Component {
 
 
     handleEdit(value, pkColumnName) {
+        if (!this.state.IsAllowedUpdate) {
+            this.showMessage("Bạn không có quyền");
+            return;
+        }
         this.setState({ IsInsert: false });
         let _partnerUserData = {};
         this.state.gridDataSource.map((item, index) => {
@@ -306,6 +429,10 @@ class SearchCom extends React.Component {
 
 
     handleDelete(deleteList, pkColumnName) {
+        if (!this.state.IsAllowedDelete) {
+            this.showMessage("Bạn không có quyền");
+            return;
+        }
         let listMLObject = [];
         deleteList.map((row, index) => {
             let MLObject = {};
@@ -449,7 +576,7 @@ class SearchCom extends React.Component {
                         onDeleteClick={this.handleDelete}
                         onInsertClick={this.handleInsert}
                         onInsertClickEdit={this.handleEdit}
-                        IsAutoPaging={false}
+                        IsAutoPaging={true}
                         RowsPerPage={10}
                         IsCustomAddLink={true}
                         //headingTitle={"Người dùng của nhà cung cấp"}
@@ -494,9 +621,12 @@ const mapDispatchToProps = dispatch => {
         callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID));
         },
-        /*callGetCache: (cacheKeyID) => {
+        callGetUserCache: (cacheKeyID) => {
+            return dispatch(callGetUserCache(cacheKeyID));
+        },
+        callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
-        }*/
+        }
     };
 };
 

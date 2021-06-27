@@ -12,16 +12,18 @@ import {
     GridColumnList,
     APIHostName,
     SearchAPIPath,
+    SearchUnlockLogAPIPath,
     InitSearchParams,
     UpdateUnlockAPIPath,
     SearchDetailAPIPath,
-    SearchExportAPIPath
+    SearchExportAPIPath,
+    SearchWithinPaginationAPI
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { TMS_STAFFDEBT_VIEW } from "../../../../../constants/functionLists";
+import { TMS_STAFFDEBT_EXPORT, TMS_STAFFDEBT_VIEW } from "../../../../../constants/functionLists";
 import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
@@ -30,12 +32,18 @@ import { Base64 } from 'js-base64';
 import DataGirdStaffDebt from "../DataGirdStaffDebt";
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
+import DataGirdHistoryStaffDebt from "../DataGirdHistoryStaffDebt";
+import ChangeActiveModal from '../ChangeActiveModal';
 
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
-        this.callSearchData = this.callSearchData.bind(this);
+        // this.callSearchData = this.callSearchData.bind(this);
+        this.callDataFirstPage = this.callDataFirstPage.bind(this);
+        this.callDataThroughtPage = this.callDataThroughtPage.bind(this);
+        this.handleExportCSV = this.handleExportCSV.bind(this);
+        this.updateStaffDebtStatus = this.updateStaffDebtStatus.bind(this);
 
         this.state = {
             IsCallAPIError: false,
@@ -43,7 +51,8 @@ class SearchCom extends React.Component {
             IsLoadDataComplete: false,
             SearchData: InitSearchParams,
             widthPercent: "",
-            dataExport: []
+            dataExport: [],
+            PageNumber: 1
 
         };
         this.gridref = React.createRef();
@@ -53,7 +62,7 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
-        this.callSearchData(this.state.SearchData);
+        this.callDataFirstPage(this.state.SearchData)
         window.addEventListener("resize", this.updateWindowDimensions);
     }
 
@@ -69,42 +78,91 @@ class SearchCom extends React.Component {
 
 
     handleSearchSubmit(formData, MLObject) {
-        // console.log("MLObject", MLObject)
         const postData = [
-            {
-                SearchKey: "@FROMDATE",
-                SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString())
-            },
-            {
-                SearchKey: "@TODATE",
-                SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString())
-            },
+            // {
+            //     SearchKey: "@FROMDATE",
+            //     SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString())
+            // },
+            // {
+            //     SearchKey: "@TODATE",
+            //     SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString())
+            // },
             {
                 SearchKey: "@USERNAME",
-                SearchValue: MLObject.UserName == -1 ? MLObject.UserName : MLObject.UserName.value 
+                SearchValue: MLObject.UserName == -1 || MLObject.UserName == null ? MLObject.UserName : MLObject.UserName.value
             },
             {
                 SearchKey: "@STOREID",
                 SearchValue: MLObject.CoordinatorStoreID != "" ? MLObject.CoordinatorStoreID : -1
             },
-            // {
-            //     SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
-            //     SearchValue: MLObject.ShipmentOrderStatusGroupID
-            // },
-            // {
-            //     SearchKey: "@RECEIVERDISTRICTID",
-            //     SearchValue: MLObject.ReceiverProvinceID
-            // },
+            {
+                SearchKey: "@ISLOCKDELIVERY",
+                SearchValue: MLObject.DeliveryStatus
+            },
+            {
+                SearchKey: "@PAGESIZE",
+                SearchValue: 50
+            },
+            {
+                SearchKey: "@PAGEINDEX",
+                SearchValue: 0
+            }
 
         ];
 
-        this.callSearchData(postData)
+        this.setState({
+            SearchData: postData
+        })
+
+        this.callDataFirstPage(postData)
     }
 
-    callSearchData(searchData) {
+    callDataFirstPage(searchData) {
+        this.props.callFetchAPI(APIHostName, SearchWithinPaginationAPI, searchData).then(apiResult => {
+            console.log("object", apiResult)
+            if (!apiResult.IsError) {
+                let objStaffDebtID = {}
+                const tempData = apiResult.ResultObject.map((item, index) => {
+                    objStaffDebtID = {
+                        UserName: item.UserName,
+                        StoreID: item.StoreID
+                    }
+                    item.StaffDebtID = Base64.encode(JSON.stringify(objStaffDebtID));
+                    item.FullNameMember = item.UserName + " - " + item.FullName
+                    item.Note = "Chi tiết"
+                    if (item.IsLockDelivery) {
+                        item.DeliveryStatus = <span className='lblstatusLock'>Đã khóa</span>;
+                    }
+                    else {
+                        item.DeliveryStatus = <span className='lblstatusUnlock'>Hoạt động</span>;
+                    }
+                    return item;
+                })
 
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("apiResult",searchData, apiResult)
+                this.setState({
+                    gridDataSource: tempData
+                })
+            }
+            else {
+                this.setState({
+                    gridDataSource: []
+                })
+                this.showMessage(apiResult.MessageDetail)
+            }
+        })
+    }
+
+    callDataThroughtPage(PageNumber) {
+        const { SearchData } = this.state
+
+        const listMLObject = Object.assign([], SearchData, {
+            [6]: {
+                SearchKey: "@PAGEINDEX",
+                SearchValue: PageNumber - 1
+            }
+        });
+
+        this.props.callFetchAPI(APIHostName, SearchWithinPaginationAPI, listMLObject).then(apiResult => {
             if (!apiResult.IsError) {
                 let objStaffDebtID = {}
                 const tempData = apiResult.ResultObject.map((item, index) => {
@@ -124,25 +182,8 @@ class SearchCom extends React.Component {
                     return item;
                 })
 
-                const tempDataExport = apiResult.ResultObject.map((item, index) => {
-                    let element = {
-                        "Mã NV nợ": item.FullNameMember,
-                        "Kho điều phối": item.StoreID+"-"+item.StoreName,
-                        "Tổng tiền phải thu hộ": item.TotalCOD,
-                        "Tổng tiền phải thu vật tư": item.TotalSaleMaterialMoney,
-                        "Tổng tiền phải thu": item.TotalMoney,
-                        "Tổng tiền đã thu của khách hàng": item.CollectedTotalMoney,
-                        "Tổng vận đơn còn nợ": item.TotalDebtOrders,
-                        "Tổng vận đơn nợ quá hạn": item.TotALoverDueDebtOrders,
-                        "Tình trạng": item.IsLockDelivery == false ? "Hoạt động" : "Đã khóa",
-                    };
-
-                    return element;
-                })
-
                 this.setState({
-                    gridDataSource: tempData,
-                    dataExport: tempDataExport,
+                    gridDataSource: tempData
                 })
             }
             else {
@@ -151,8 +192,47 @@ class SearchCom extends React.Component {
                 })
                 this.showMessage(apiResult.MessageDetail)
             }
-        });
+        })
     }
+
+    handleonChangePage(PageNumber) {
+        this.callDataThroughtPage(PageNumber)
+
+        this.setState({
+            PageNumber
+        })
+    }
+
+    // callSearchData(searchData) {
+
+    //     this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+    //         if (!apiResult.IsError) {
+
+    //             const tempDataExport = apiResult.ResultObject.map((item, index) => {
+    //                 let element = {
+    //                     "Mã NV nợ": item.FullNameMember,
+    //                     "Kho điều phối": item.StoreID + "-" + item.StoreName,
+    //                     "Tổng tiền phải thu hộ": item.TotalCOD,
+    //                     "Tổng tiền phải thu vật tư": item.TotlSleMaterialMoney,
+    //                     "Tổng tiền phải thu": item.TotalMoney,
+    //                     "Tổng tiền đã thu của khách hàng": item.CollectedTotalMoney,
+    //                     "Tổng vận đơn còn nợ": item.TotalDebtOrders,
+    //                     "Tổng vận đơn nợ quá hạn": item.TotALoverDueDebtOrders,
+    //                     "Tình trạng": item.IsLockDelivery == false ? "Hoạt động" : "Đã khóa",
+    //                 };
+
+    //                 return element;
+    //             })
+
+    //             this.setState({
+    //                 dataExport: tempDataExport
+    //             })
+    //         }
+    //         else {
+    //             this.showMessage(apiResult.MessageDetail)
+    //         }
+    //     });
+    // }
 
     showMessage(message) {
         ModalManager.open(
@@ -169,7 +249,7 @@ class SearchCom extends React.Component {
         if (!IsError) {
             cssNotification = "notification-custom-success";
             iconNotification = "fa fa-check"
-           
+
         } else {
             cssNotification = "notification-danger";
             iconNotification = "fa fa-exclamation"
@@ -195,35 +275,71 @@ class SearchCom extends React.Component {
         });
     }
 
+    updateStaffDebtStatus(objDataRequest) {
+        this.props.callFetchAPI(APIHostName, UpdateUnlockAPIPath, objDataRequest).then(apiResult => {
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            this.callDataFirstPage(this.state.SearchData);
+        });
+    }
+
     onhandleUpdateItem(objId) {
+        const { gridDataSource, widthPercent } = this.state;
+
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: "Mô tả lý do thay đổi trạng thái",
+            content: {
+                text: <ChangeActiveModal
+                    dataSource={gridDataSource}
+                    objId={objId}
+                    ObjDataRequest={this.updateStaffDebtStatus}
+                />
+            },
+            maxWidth: '800px'
+        });
+    }
+
+    onhandleHistoryItem(objId) {
         const { gridDataSource } = this.state;
-        const objDataRequest = JSON.parse(Base64.decode(objId[0].value));
         const dataFind = gridDataSource.find(n => {
             return n.StaffDebtID == objId[0].value
         });
 
-        if (dataFind.iSunLockDelivery) {
-            objDataRequest.IsLockDelivery = 1
-            objDataRequest.IsUnLockDelivery= 0
-        }
-        else {
-            objDataRequest.IsLockDelivery = 0
-            objDataRequest.IsUnLockDelivery= 1
-        }
+        const postData = [
+            {
+                SearchKey: "@USERNAME",
+                SearchValue: dataFind.UserName
+            },
+            {
+                SearchKey: "@STOREID",
+                SearchValue: dataFind.StoreID
+            },
 
-        this.props.callFetchAPI(APIHostName, UpdateUnlockAPIPath, objDataRequest).then(apiResult => {
-            this.addNotification(apiResult.Message, apiResult.IsError)
-            this.callSearchData(this.state.SearchData)
-        });
+        ];
+
+        this.props.callFetchAPI(APIHostName, SearchUnlockLogAPIPath, postData).then(apiResult => {
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.Message);
+            }
+            else {
+                const tempData = apiResult.ResultObject.map((item, index) => {
+
+                    item.FullName = item.UserName + " - " + item.FullName;
+                    item.StoreFullName = item.StoreID + " - " + item.StoreName;
+                    item.UnLockFullName = item.unLockDeliveryUser + " - " + item.unLockDeliveryFullName;
+                    return item;
+                })
+                this.onShowModalHistory(tempData, dataFind);
+            }
+        })
 
     }
 
-    onShowModal(dataSource, dataItem) {
+    onShowModalHistory(dataSource = [], dataItem) {
         const { widthPercent } = this.state;
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: "Chi tiết danh sách nợ tiền thu hộ theo nhân viên",
+            title: "Danh sách lịch sử quản lý công nợ",
             content: {
-                text: <DataGirdStaffDebt
+                text: <DataGirdHistoryStaffDebt
                     dataSource={dataSource}
                     dataItem={dataItem}
                 />
@@ -233,64 +349,101 @@ class SearchCom extends React.Component {
         });
     }
 
+    onShowModal(dataSource, dataItem, param) {
+        const { widthPercent } = this.state;
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: "Chi tiết danh sách nợ tiền thu hộ theo nhân viên",
+            content: {
+                text: <DataGirdStaffDebt
+                    dataSource={dataSource}
+                    dataItem={dataItem}
+                    param={param}
+                />
+
+            },
+            maxWidth: widthPercent + 'px'
+        });
+    }
+
+
     onShowModalDetail(objValue, name) {
         const { gridDataSource } = this.state;
         const tempItme = gridDataSource.find(n => {
             return n.StaffDebtID == objValue[0].value
         });
         const obj = JSON.parse(Base64.decode(objValue[0].value));
-        const param =[
-           
+        const param = [
+
             {
                 SearchKey: "@USERNAME",
                 SearchValue: obj.UserName
             },
             {
                 SearchKey: "@STOREID",
-                SearchValue:  obj.StoreID
+                SearchValue: obj.StoreID
             },
 
         ]
 
         this.props.callFetchAPI(APIHostName, SearchDetailAPIPath, param).then(apiResult => {
-            if(!apiResult.IsError){
-                const dataTemp=  apiResult.ResultObject.map((item, index) => {
-                    item.FullNameMember = item.UserName + " - " + item.FullName
+            console.log("aaa", param, apiResult)
+            if (!apiResult.IsError) {
+                const dataTemp = apiResult.ResultObject.map((item, index) => {
+                    item.FullNameMemer = item.UserName + " - " + item.FullName
+                    if (item.IsLockDelivery) {
+                        item.DeliveryStatus = <span className='lblstatusLock'>Đã khóa</span>;
+                    }
+                    else {
+                        item.DeliveryStatus = <span className='lblstatusUnlock'>Hoạt động</span>;
+                    }
                     return item;
                 })
-                this.onShowModal(dataTemp, tempItme)
+                this.onShowModal(dataTemp, tempItme, param)
             }
-            else{
+            else {
                 this.showMessage(apiResult.Message)
             }
         })
 
     }
 
-    handleExportFile(result) {
-        this.addNotification(result.Message);
-    }
+    // handleExportFile() {
+    // this.addNotification(result.Message, result.IsError);
+    // }
 
-    handleExportSubmit(formData, MLObject){
-        const postData = [
+    handleExportSubmit(formData, MLObject) {
+        const searchData = [
+            // {
+            //     SearchKey: "@FROMDATE",
+            //     SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString())
+            // },
+            // {
+            //     SearchKey: "@TODATE",
+            //     SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString())
+            // },
             {
                 SearchKey: "@USERNAME",
-                SearchValue: MLObject.UserName ==  -1 ? MLObject.UserName : MLObject.UserName.value
+                SearchValue: MLObject.UserName == -1 ? MLObject.UserName : MLObject.UserName.value
             },
             {
                 SearchKey: "@STOREID",
                 SearchValue: MLObject.CoordinatorStoreID != "" ? MLObject.CoordinatorStoreID : -1
             },
-
+            {
+                SearchKey: "@ISLOCKDELIVERY",
+                SearchValue: MLObject.DeliveryStatus
+            }
         ];
-        this.props.callFetchAPI(APIHostName, SearchExportAPIPath, postData).then(apiResult => {
+
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+
             if (!apiResult.IsError) {
-                if(apiResult.ResultObject.length > 0){
+                if (apiResult.ResultObject.length > 0) {
                     const tempDataExport = apiResult.ResultObject.map((item, index) => {
                         let element = {
-                            "Mã NV nợ":  item.UserName + " - " + item.FullName,
+                            "Mã NV nợ": item.UserName + " - " + item.FullName,
                             "Kho điều phối": item.StoreID + "-" + item.StoreName,
-                            "Tổng tiền phải thu hộ": item.TotalCOD,
+                            "Tổng tiền p hải thu hộ": item.TotalCOD,
                             "Tổng tiền phải thu vật tư": item.TotalSaleMaterialMoney,
                             "Tổng tiền phải thu": item.TotalMoney,
                             "Tổng tiền đã thu của khách hàng": item.CollectedTotalMoney,
@@ -298,49 +451,40 @@ class SearchCom extends React.Component {
                             "Tổng vận đơn nợ quá hạn": item.TotALoverDueDebtOrders,
                             "Tình trạng": item.IsLockDelivery == false ? "Hoạt động" : "Đã khóa",
                         };
-    
+
                         return element;
                     })
                     this.handleExportCSV(tempDataExport);
                 }
-                else{
+                else {
                     this.showMessage("Dữ liệu không tồn tại nên không thể xuất.")
                 }
             }
-            else{
+            else {
                 this.showMessage(apiResult.Message)
             }
         })
     }
 
-    
+
     handleExportCSV(dataExport) {
         const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
         const fileExtension = '.xlsx';
         const fileName = 'Danh sách quản lý công nợ';
-        let result;
-        if (dataExport.length == 0) {
-            result = {
-                IsError: true,
-                Message: "Dữ liệu không tồn tại. Không thể xuất file!"
-            };
+
+        const ws = XLSX.utils.json_to_sheet(dataExport);
+        const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+        const data = new Blob([excelBuffer], { type: fileType });
+
+        FileSaver.saveAs(data, fileName + fileExtension);
+
+        const result = {
+            IsError: false,
+            Message: "Xuất file thành công!"
         }
-        else {
 
-            const ws = XLSX.utils.json_to_sheet(dataExport);
-            const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
-            const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-            const data = new Blob([excelBuffer], { type: fileType });
-
-
-            FileSaver.saveAs(data, fileName + fileExtension);
-
-            result = {
-                IsError: false,
-                Message: "Xuất file thành công!"
-            };
-            this.addNotification(result.Message, result.IsError);
-        }
+        this.addNotification(result.Message, result.IsError);
     }
 
     render() {
@@ -363,6 +507,7 @@ class SearchCom extends React.Component {
                 <DataGrid
                     listColumn={GridColumnList}
                     onUpdateItem={this.onhandleUpdateItem.bind(this)}
+                    onHistoryItem={this.onhandleHistoryItem.bind(this)}
                     dataSource={this.state.gridDataSource}
                     IsFixheaderTable={false}
                     IDSelectColumnName={'StaffDebtID'}
@@ -373,14 +518,18 @@ class SearchCom extends React.Component {
                     IsShowButtonDelete={false}
                     IsShowButtonPrint={false}
                     IsPrint={false}
-                    IsExportFile={true}
-                    DataExport={this.state.dataExport}
+                    IsExportFile={false}
+                    // DataExport={[]}
                     fileName="Danh sách quản lý công nợ"
-                    onExportFile={this.handleExportFile.bind(this)}
+                    // onExportFile={this.handleExportFile.bind(this)}
                     IsAutoPaging={true}
-                    RowsPerPage={20}
+                    RowsPerPage={50}
                     RequirePermission={TMS_STAFFDEBT_VIEW}
+                    ExportPermission={TMS_STAFFDEBT_EXPORT}
                     ref={this.gridref}
+                    isPaginationServer={true}
+                    onChangePage={this.handleonChangePage.bind(this)}
+                    PageNumber={this.state.PageNumber}
                 />
             </React.Fragment>
         );

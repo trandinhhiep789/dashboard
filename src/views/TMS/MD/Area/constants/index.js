@@ -1,5 +1,6 @@
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/Area/Search";
+export const ExportAPIPath = "api/Area/Export";
 export const LoadAPIPath = "api/Area/Load";
 export const AddAPIPath = "api/Area/Add";
 export const UpdateAPIPath = "api/Area/Update";
@@ -433,18 +434,18 @@ export const DataGridColumnList = [
     //     Width: 200
     // },
     {
-        Name: "CreatedDate",
+        Name: "UpdatedDate",
         Type: "date",
-        Caption: "Ngày tạo",
-        DataSourceMember: "CreatedDate",
-        Width: 120
+        Caption: "Ngày cập nhật",
+        DataSourceMember: "UpdatedDate",
+        Width: 140
     },
     {
-        Name: "CreatedUserFullName",
+        Name: "UpdatedUserFullName",
         Type: "text",
-        Caption: "Người tạo",
-        DataSourceMember: "CreatedUserFullName",
-        Width: 120
+        Caption: "Người cập nhật",
+        DataSourceMember: "UpdatedUserFullName",
+        Width: 140
     },
     {
         Name: "Action",

@@ -12,8 +12,8 @@ export const API_HOST_LIST = {
     },
     TMSAPI: {
         HostName: "TMSAPI",
-             HostBaseURL: 'http://tmsapi.tterpbeta.vn/'
-            //HostBaseURL: 'http://devtmsapi.tterpbeta.vn/'
+        HostBaseURL: 'http://tmsapi.tterpbeta.vn/'
+        //HostBaseURL: 'http://devtmsapi.tterpbeta.vn/'
     },
     CacheAPI: {
         HostName: "CacheAPI",
@@ -30,3 +30,4 @@ export const MAX_PAGE_SHOW = 10;
 
 export const DEFAULT_ROW_PER_PAGE = 6;
 export const CDN_LOGO_IMAGE = "http://wfimagecdn.tterpbeta.vn/";
+export const CDN_DOWNLOAD_FILE = "http://expfilecdn.tterpbeta.vn/";

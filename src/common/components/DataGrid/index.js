@@ -1,23 +1,23 @@
 import React, { Component, PropTypes, Fragment } from 'react';
-import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
+import { Link, withRouter } from "react-router-dom";
 import { Modal, ModalManager, Effect } from 'react-dynamic-modal';
+import readXlsxFile from 'read-excel-file'
+import Media from "react-media";
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+import ReactTooltip from 'react-tooltip';
+
 import { MessageModal } from "../Modal";
 import { DEFAULT_ROW_PER_PAGE } from "../../../constants/systemVars.js";
 import GridCell from "./GridCell";
 import GridPage from "./GridPage";
-import { connect } from 'react-redux';
+import GridPageServer from "./getdataserver";
 import { callGetCache, callGetUserCache } from "../../../actions/cacheAction";
 import { GET_CACHE_USER_FUNCTION_LIST } from "../../../constants/functionLists";
 import { hideModal } from '../../../actions/modal';
-import Media from "react-media";
-
-import * as FileSaver from 'file-saver';
-import * as XLSX from 'xlsx';
-
 import { formatMoney } from '../../../utils/function';
 import PartnerPayaleTemplate from '../PrintTemplate/PartnerPayaleTemplate';
-import readXlsxFile from 'read-excel-file'
-import { withRouter } from 'react-router-dom';
 
 class DataGridCom extends Component {
     constructor(props) {
@@ -36,12 +36,20 @@ class DataGridCom extends Component {
         this.handleMultipleInsertClick = this.handleMultipleInsertClick.bind(this);
         this.handleOneInsertClick = this.handleOneInsertClick.bind(this);
         this.handleImportFile = this.handleImportFile.bind(this);
+        this.mediaRenderDataGrid = this.mediaRenderDataGrid.bind(this);
+        this.onChangePageToServerHandle = this.onChangePageToServerHandle.bind(this)
 
         this.checkAll = this.checkAll.bind(this);
         this.getCheckList = this.getCheckList.bind(this);
         const pkColumnName = this.props.PKColumnName.split(',');
         const listPKColumnName = pkColumnName.map(item => { return { key: item } });
-        this.state = { GridData: {}, IsCheckAll: false, PageNumber: 1, ListPKColumnName: listPKColumnName };
+        this.state = {
+            GridData: {},
+            IsCheckAll: false,
+            PageNumber: 1,
+            ListPKColumnName: listPKColumnName,
+            IsExportFile: true
+        };
     }
 
     componentDidMount() {
@@ -65,14 +73,22 @@ class DataGridCom extends Component {
                 }
             });
         }
-
+        if (this.props.ExportPermission) {
+            this.checkPermission(this.props.ExportPermission).then((result) => {
+                this.setState({ IsExportFile: result });
+            })
+        }
     }
 
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.dataSource) !== JSON.stringify(nextProps.dataSource)) // Check if it's a new user, you can also use some unique property, like the ID
         {
             const gridData = this.getCheckList(nextProps.dataSource);
-            this.setState({ GridData: gridData, PageNumber: 1 });
+            // this.setState({ GridData: gridData, PageNumber: 1 });
+            this.setState({
+                GridData: gridData,
+                PageNumber: this.props.isPaginationServer ? this.props.PageNumber : 1
+            })
         }
     }
 
@@ -97,6 +113,16 @@ class DataGridCom extends Component {
             this.props.onUpdateItem(id)
     }
 
+    handleHistoryItemClick(id) {
+        if (this.props.onHistoryItem != null)
+            this.props.onHistoryItem(id)
+    }
+
+    handleShowImageClick(id) {
+        if (this.props.onShowImage != null)
+            this.props.onShowImage(id)
+    }
+
     handleDetailClick(id) {
         if (this.props.onDetailClick != null)
             this.props.onDetailClick(id);
@@ -106,9 +132,9 @@ class DataGridCom extends Component {
             this.props.onDetailModalClick(item);
     }
 
-    handleShowModalClick(objdata, name) {
+    handleShowModalClick(objdata, name, { ...lstProps }) {
         if (this.props.onShowModal != null)
-            this.props.onShowModal(objdata, name);
+            this.props.onShowModal(objdata, name, { ...lstProps });
     }
 
     handleInsertClick() {
@@ -158,6 +184,12 @@ class DataGridCom extends Component {
         this.setState({ PageNumber: pageNum });
         const temp = this.checkInputisAll(this.getDisplayDataPageNumber(this.props.dataSource, pageNum), this.state.GridData[this.props.IDSelectColumnName]);
         this.setState({ IsCheckAll: temp });
+    }
+
+    onChangePageToServerHandle(pageNum) {
+        this.setState({ PageNumber: pageNum });
+        if (this.props.onChangePage != null)
+            this.props.onChangePage(pageNum);
     }
 
     checkInputisAll(dataSource, gridData) {
@@ -319,28 +351,33 @@ class DataGridCom extends Component {
         const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
         const fileExtension = '.xlsx';
         let result;
-        if (this.props.DataExport.length == 0) {
-            result = {
-                IsError: true,
-                Message: "Dữ liệu không tồn tại. Không thể xuất file!"
-            };
+
+        if (this.props.isPaginationServer) {
+            this.props.onExportFile()
+        } else {
+            if (this.props.DataExport.length == 0) {
+                result = {
+                    IsError: true,
+                    Message: "Dữ liệu trong bảng không tồn tại. Không thể xuất file!"
+                };
+            }
+            else {
+
+                const ws = XLSX.utils.json_to_sheet(this.props.DataExport);
+                const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+                const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+                const data = new Blob([excelBuffer], { type: fileType });
+
+
+                FileSaver.saveAs(data, this.props.fileName + fileExtension);
+
+                result = {
+                    IsError: false,
+                    Message: "Xuất file thành công!"
+                };
+            }
+            this.props.onExportFile(result);
         }
-        else {
-
-            const ws = XLSX.utils.json_to_sheet(this.props.DataExport);
-            const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
-            const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-            const data = new Blob([excelBuffer], { type: fileType });
-
-
-            FileSaver.saveAs(data, this.props.fileName + fileExtension);
-
-            result = {
-                IsError: false,
-                Message: "Xuất file thành công!"
-            };
-        }
-        this.props.onExportFile(result);
 
     }
 
@@ -364,6 +401,18 @@ class DataGridCom extends Component {
         this.setState({ GridData: {}, IsCheckAll: false });
     }
 
+    getPageCountToServer(dataRows) {
+        if (dataRows == null || dataRows.length == 0)
+            return 1;
+        let rowsPerPage = DEFAULT_ROW_PER_PAGE;
+        if (this.props.RowsPerPage != null && dataRows.length > 0)
+            rowsPerPage = this.props.RowsPerPage;
+        let pageCount = parseInt(Math.ceil(dataRows[0].TotaLRows / rowsPerPage));
+        if (pageCount < 1)
+            pageCount = 1;
+        return pageCount;
+    }
+
     getPageCount(dataSource) {
         if (dataSource == null)
             return 1;
@@ -377,22 +426,26 @@ class DataGridCom extends Component {
     }
 
     getDisplayData(dataSource) {
-        if (!this.props.IsAutoPaging)
-            return dataSource;
-        let resultData = [];
-        if (dataSource == null)
+        if (this.props.isPaginationServer) {
+            return dataSource
+        } else {
+            if (!this.props.IsAutoPaging)
+                return dataSource;
+            let resultData = [];
+            if (dataSource == null)
+                return resultData;
+            let rowsPerPage = DEFAULT_ROW_PER_PAGE;
+            if (this.props.RowsPerPage != null)
+                rowsPerPage = this.props.RowsPerPage;
+            let startRowIndex = (this.state.PageNumber - 1) * rowsPerPage;
+            let endRowIndex = startRowIndex + rowsPerPage;
+            if (endRowIndex > dataSource.length)
+                endRowIndex = dataSource.length;
+            for (let i = startRowIndex; i < endRowIndex; i++) {
+                resultData.push(dataSource[i]);
+            }
             return resultData;
-        let rowsPerPage = DEFAULT_ROW_PER_PAGE;
-        if (this.props.RowsPerPage != null)
-            rowsPerPage = this.props.RowsPerPage;
-        let startRowIndex = (this.state.PageNumber - 1) * rowsPerPage;
-        let endRowIndex = startRowIndex + rowsPerPage;
-        if (endRowIndex > dataSource.length)
-            endRowIndex = dataSource.length;
-        for (let i = startRowIndex; i < endRowIndex; i++) {
-            resultData.push(dataSource[i]);
         }
-        return resultData;
     }
 
     getDisplayDataPageNumber(dataSource, intPageNumber) {
@@ -428,8 +481,8 @@ class DataGridCom extends Component {
         return { [idSelectColumnName]: checkList };
     }
 
-    renderDataGrid() {
-        const listColumn = this.props.listColumn;
+    renderDataGrid(listColumn) {
+        // const { onMobileView, listColumnOnMobileView, listColumn } = this.props;
         const dataSource = this.getDisplayData(this.props.dataSource);
         const pkColumnName = this.state.ListPKColumnName;
         const idSelectColumnName = this.props.IDSelectColumnName;
@@ -527,6 +580,8 @@ class DataGridCom extends Component {
                                                     onDetailtModalClick={this.handleDetailModalClick.bind(this)}
                                                     onModalClick={this.handleShowModalClick.bind(this)}
                                                     onUpdateClick={this.handleUpdateItemClick.bind(this)}
+                                                    onHistoryClick={this.handleHistoryItemClick.bind(this)}
+                                                    onShowImageClick={this.handleShowImageClick.bind(this)}
                                                     pkColumnName={this.state.ListPKColumnName}
                                                     params={this.props.params}
                                                     linkTo={this.state.ListPKColumnName + index}
@@ -566,6 +621,28 @@ class DataGridCom extends Component {
                 </table>
             </div>
         );
+    }
+
+    mediaRenderDataGrid() {
+        const { isMobileView, listColumnOnMobileView, listColumn } = this.props;
+
+        if (isMobileView) {
+            return (
+                <Media queries={{
+                    small: "(max-width: 576px)",
+                    medium: "(min-width: 577px)"
+                }}>
+                    {matches => (
+                        <Fragment>
+                            {matches.small && this.renderDataGrid(listColumnOnMobileView)}
+                            {matches.medium && this.renderDataGrid(listColumn)}
+                        </Fragment>
+                    )}
+                </Media>
+            )
+        } else {
+            return this.renderDataGrid(listColumn);
+        }
     }
 
     checkPermission(permissionKey) {
@@ -633,21 +710,55 @@ class DataGridCom extends Component {
         this.props.onSubmitItem(listMLObject);
     }
 
+    handleExportFileTemplate() {
+        const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+        const fileExtension = '.xlsx';
+        let result;
+
+        try {
+            const ws = XLSX.utils.json_to_sheet(this.props.DataTemplateExport);
+            const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+            const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+            const data = new Blob([excelBuffer], { type: fileType });
+            FileSaver.saveAs(data, this.props.fileNameTemplate + fileExtension);
+            result = {
+                IsError: false,
+                Message: "Xuất file thành công!"
+            };
+        } catch (error) {
+            result = {
+                IsError: true,
+                Message: "Lỗi xuất file!"
+            }
+        } finally {
+            this.props.onExportFileTemplate(result);
+        }
+    }
+
     handleImportFile() {
         const input = document.getElementById('buttonImportFile');
         input.click();
 
-
+        let count = 0;
         const schema = this.props.SchemaData;
 
         input.addEventListener('change', () => {
             readXlsxFile(input.files[0], { schema }).then(({ rows, errors }) => {
                 // errors.length === 0
+                if (count > 0) {
+                    return;
+                }
                 if (this.props.onImportFile != null)
                     this.props.onImportFile(rows, errors);
+                count++;
             }, function (error) {
                 alert("File vừa chọn lỗi. Vui lòng chọn file khác.")
-            })
+            });
+
+            setTimeout(() => {
+                input.value = '';
+            }, 1000);
+
         })
     }
 
@@ -659,8 +770,15 @@ class DataGridCom extends Component {
                 <input className="w-200px" type="text" name="txtKeyword" placeholder="Search" onKeyPress={this.handleKeyPress} />
             </div>;
         }
-        const pageCount = this.getPageCount(this.props.dataSource);
-        const datagrid = this.renderDataGrid();
+        let pageCount;
+        if (this.props.isPaginationServer) {
+            pageCount = this.getPageCountToServer(this.props.dataSource);
+        }
+        else {
+            pageCount = this.getPageCount(this.props.dataSource);
+        }
+
+        const datagrid = this.mediaRenderDataGrid();
         let hasHeaderToolbar = true;
         if (this.props.isHideHeaderToolbar)
             hasHeaderToolbar = false;
@@ -689,6 +807,12 @@ class DataGridCom extends Component {
         if (this.props.IsShowButtonDelete != undefined && this.props.IsShowButtonDelete == false) {
             isShowButtonDelete = false;
         }
+
+        let isShowButtonExport = false;
+        if (this.props.IsExportFile != undefined && this.props.IsExportFile == true) {
+            isShowButtonExport = true;
+        }
+
         if (this.state.IsPermision == undefined) {
             return <p className="col-md-12">Đang kiểm tra quyền...</p>
         }
@@ -698,7 +822,6 @@ class DataGridCom extends Component {
         if (this.state.IsPermision === 'error') {
             return <p className="col-md-12">Lỗi khi kiểm tra quyền, vui lòng thử lại</p>
         }
-        // console.log("this.props", this.props)
         return (
 
             <div className="col-lg-12 SearchForm">
@@ -755,10 +878,21 @@ class DataGridCom extends Component {
                                                 )
                                                 : ""
                                         }
-                                        {this.props.IsExportFile == true &&
-                                            <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.handleExportCSV.bind(this)}>
-                                                <span className="fa fa-file-excel-o"> Xuất file excel </span>
-                                            </button>
+                                        {
+
+                                            isShowButtonExport &&
+                                            (
+                                                this.state.IsExportFile == true ?
+                                                    <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.handleExportCSV.bind(this)}>
+                                                        <span className="fa fa-file-excel-o"> Xuất file excel </span>
+                                                    </button>
+                                                    : <React.Fragment>
+                                                        <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" data-tip="Bạn không có quyền!">
+                                                            <span className="fa fa-file-excel-o"> Xuất file excel </span>
+                                                        </button>
+                                                        <ReactTooltip type="warning" />
+                                                    </React.Fragment>
+                                            )
                                         }
                                         {
                                             //hiển thị nút in 
@@ -779,6 +913,11 @@ class DataGridCom extends Component {
                                         }
                                         {/* nut import file  */}
                                         {
+                                            this.props.isExportFileTemplate && <button type="button" className="btn btn-export ml-10" onClick={this.handleExportFileTemplate.bind(this)}>
+                                                <span className="fa fa-exchange">Xuất file mẫu</span>
+                                            </button>
+                                        }
+                                        {
                                             isShowButtonImport == true &&
                                             <button type="button" className="btn btn-export  ml-10" onClick={this.handleImportFile} >
                                                 <span className="fa fa-exchange"> Import File </span>
@@ -797,13 +936,21 @@ class DataGridCom extends Component {
                         } */}
 
                         {this.props.RowFooter ? this.props.RowFooter(this.props.dataSource) : ""}
-                        <Media query={{ minWidth: 768 }}>
-                            {matches =>
-                                matches
-                                    ? (this.props.IsAutoPaging && <GridPage numPage={pageCount} currentPage={this.state.PageNumber} maxPageShow={10} onChangePage={this.onChangePageHandle} />)
-                                    : (this.props.IsAutoPaging && <GridPage numPage={pageCount} currentPage={this.state.PageNumber} maxPageShow={5} onChangePage={this.onChangePageHandle} />)
-                            }
-                        </Media>
+
+                        {
+                            this.props.isPaginationServer == true ?
+                                (this.props.IsAutoPaging && <GridPage numPage={pageCount} currentPage={this.state.PageNumber} onChangePage={this.onChangePageToServerHandle} />)
+                                :
+                                <Media query={{ minWidth: 768 }}>
+                                    {matches =>
+                                        matches
+                                            ? (this.props.IsAutoPaging && <GridPage numPage={pageCount} currentPage={this.state.PageNumber} maxPageShow={10} onChangePage={this.onChangePageHandle} />)
+                                            : (this.props.IsAutoPaging && <GridPage numPage={pageCount} currentPage={this.state.PageNumber} maxPageShow={5} onChangePage={this.onChangePageHandle} />)
+                                    }
+                                </Media>
+                        }
+
+
 
                         {HideHeaderToolbarGroupTextBox &&
                             <div className="flexbox mb-20 ">
