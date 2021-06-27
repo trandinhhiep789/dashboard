@@ -147,10 +147,10 @@ class SearchCom extends React.Component {
                     "op": "array"
                 },
                 {
-                 
+
                     "name": "V_VIRTUALSTOREIDLIST",
                     "value": this.getValueKeyConfig("RECONCILIATION_VIRTUALSTOREIDLIST").toString(),//"3","9375",
-                    "op": "array"   
+                    "op": "array"
                 },
                 {
                     "name": "V_ISCHECKVIEWDIFFERENCE",
@@ -161,8 +161,8 @@ class SearchCom extends React.Component {
             ]
         }
         console.log("objDataNewol", objDataNewol)
-       this.callSearchData(objDataNewol)
-        // }
+        this.callSearchData(objDataNewol)
+
     }
 
     callSearchData(searchData) {

@@ -30,4 +30,4 @@ export const MAX_PAGE_SHOW = 10;
 
 export const DEFAULT_ROW_PER_PAGE = 6;
 export const CDN_LOGO_IMAGE = "http://wfimagecdn.tterpbeta.vn/";
-export const CDN_DOWNLOAD_FILE = "http://wfimagecdn.tterpbeta.vn/";
+export const CDN_DOWNLOAD_FILE = "http://expfilecdn.tterpbeta.vn/";
