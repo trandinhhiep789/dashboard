@@ -307,8 +307,9 @@ export const DataGridModalQuantityHanOverDone = [
 export const DataGridModalQuantityHanOverDoing = [
     {
         Name: "AdvanceRequestID",
-        Type: "text",
+        Type: "texttolinkNewBlank",
         Caption: "Yêu cầu tạm ứng",
+        Link: "/AdvanceRequest/Edit/",
         DataSourceMember: "AdvanceRequestID",
         Width: 100
     },
