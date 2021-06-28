@@ -1221,6 +1221,13 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    {
+                        MenuName: 'MonthlySaleOrder',
+                        MenuTitle: ' Bảng kê chi tiết dịch vụ lắp đặt',
+                        LinkTo: '/MonthlySaleOrder',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
 
                 ]
             },
@@ -1270,13 +1277,7 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-            {
-                MenuName: 'MonthlySaleOrder',
-                MenuTitle: 'Xem bảng kê job Tự động tính doanh thu',
-                LinkTo: '/MonthlySaleOrder',
-                MenuIcon: '',
-                SubMenu: []
-            },
+            
 
 
         ]
