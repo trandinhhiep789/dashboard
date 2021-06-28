@@ -400,7 +400,7 @@ class SearchCom extends React.Component {
                 break;
             case 5:
                 dataExcel = data.map(item => {
-                    const result = DataGridModalChangeTotalQuantity.reduce((acc, val) => {
+                    const result = DataGridModalQuantityExpend.reduce((acc, val) => {
                         acc[val.Caption] = item[val.DataSourceMember]
 
                         return acc;
