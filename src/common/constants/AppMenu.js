@@ -430,6 +430,13 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    {
+                        MenuName: 'RewardPosImportSchedule',
+                        MenuTitle: 'Lịch đồng bộ chức vụ',
+                        LinkTo: '/RewardPosImportSchedule',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
                     // {
                     //     MenuName: 'PNServicePriceTable',
                     //     MenuTitle: 'Bảng giá dịch vụ của đối tác',
