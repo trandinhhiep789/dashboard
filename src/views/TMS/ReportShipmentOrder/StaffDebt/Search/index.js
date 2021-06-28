@@ -156,7 +156,7 @@ class SearchCom extends React.Component {
         const { SearchData } = this.state
 
         const listMLObject = Object.assign([], SearchData, {
-            [6]: {
+            [4]: {
                 SearchKey: "@PAGEINDEX",
                 SearchValue: PageNumber - 1
             }
