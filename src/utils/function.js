@@ -59,6 +59,14 @@ export const formatNumberNew = (num) => {
 
 }
 
+export const toIsoStringAnt = (dateTime) => {
+       
+        // const dateTime1 = new Date(dateTime);
+        const aaaa =  dateTime.split(" ");
+        // console.log("aa",dateTime, dateTime1, aaaa )
+        return aaaa[0] + 'T' + aaaa[1];
+}
+
 export const toIsoStringCus = (dateTime) => {
     const dateTime1 = new Date(dateTime);
     const a = new Date();

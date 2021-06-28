@@ -348,12 +348,12 @@ class ShipmentOrderDetailCom extends Component {
                     DeliverydateUpdateTypeID: 2,
                     DeliverydateUpdateReasonID: formData.DeliverydateUpdateReasonID,
                     OldExpectedDeliveryDate: this.props.ShipmentOrderDetail.ExpectedDeliveryDate,
-                    NewExpectedDeliveryDate: new Date(formData.NewExpectedDeliveryDate),//formData.NewExpectedDeliveryDate,
+                    NewExpectedDeliveryDate: toIsoStringAnt(formData.NewExpectedDeliveryDate),//formData.NewExpectedDeliveryDate,
                     DeliverydateUpdateReasonNote: formData.DeliverydateUpdateReasonNote,
-
+                    // NewExpectedDeliveryDateNew: new Date(formData.NewExpectedDeliveryDate),
                     // NewExpectedDeliveryDateNew: toIsoStringCus(new Date(formData.NewExpectedDeliveryDate).toISOString()),
                 }
-                //  console.log("param", objDLDateLog, formData)
+                 console.log("param", objDLDateLog, formData)
                 this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder_DLDateLog/Add', objDLDateLog).then((apiResult) => {
                     this.addNotification(apiResult.Message, apiResult.IsError);
                     if (!apiResult.IsError) {
