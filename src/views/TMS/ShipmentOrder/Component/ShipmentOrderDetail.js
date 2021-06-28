@@ -15,6 +15,8 @@ import { ExportStringDate } from "../../../../common/library/ultils";
 import { MODAL_TYPE_CONFIRMATIONNEW, MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import ReactTooltip from 'react-tooltip';
 
+import { toIsoStringCus } from '../../../../utils/function'
+
 import { DatePicker, Menu, Dropdown, Button } from 'antd';
 import {
     APIHostName,
@@ -332,10 +334,11 @@ class ShipmentOrderDetailCom extends Component {
             dtExpectedDeliveryDate: mod
         })
     }
+
     handleUpdateExpectedDelivery() {
         const dtFromdate = new Date()
         this.props.showModal(MODAL_TYPE_CONFIRMATIONNEW, {
-            title: 'Cập nhật thời gian giao dự kiến',
+            title: 'Cập nhật thời gian giao dự kiến 1111',
             onConfirmNew: (isConfirmed, formData) => {
                 let objDLDateLog =
                 {
@@ -345,10 +348,12 @@ class ShipmentOrderDetailCom extends Component {
                     DeliverydateUpdateTypeID: 2,
                     DeliverydateUpdateReasonID: formData.DeliverydateUpdateReasonID,
                     OldExpectedDeliveryDate: this.props.ShipmentOrderDetail.ExpectedDeliveryDate,
-                    NewExpectedDeliveryDate: formData.NewExpectedDeliveryDate,
-                    DeliverydateUpdateReasonNote: formData.DeliverydateUpdateReasonNote
-                }
+                    NewExpectedDeliveryDate: toIsoStringCus(new Date(formData.NewExpectedDeliveryDate).toISOString()),//formData.NewExpectedDeliveryDate,
+                    DeliverydateUpdateReasonNote: formData.DeliverydateUpdateReasonNote,
 
+                    // NewExpectedDeliveryDateNew: toIsoStringCus(new Date(formData.NewExpectedDeliveryDate).toISOString()),
+                }
+                // console.log("param", objDLDateLog)
                 this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder_DLDateLog/Add', objDLDateLog).then((apiResult) => {
                     this.addNotification(apiResult.Message, apiResult.IsError);
                     if (!apiResult.IsError) {
