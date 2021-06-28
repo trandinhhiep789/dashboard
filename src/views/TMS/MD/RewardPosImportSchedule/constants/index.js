@@ -323,24 +323,24 @@ export const DataGridColumnList = [
         Width: 120
     },
     {
-        Name: "IsCompletedCompute",
+        Name: "IsCompletedImport",
         Type: "checkicon",
         Caption: "Kết thúc đồng bộ VTT",
-        DataSourceMember: "IsCompletedCompute",
+        DataSourceMember: "IsCompletedImport",
         Width: 120
     },
     {
-        Name: "ComputeIntervalString",
+        Name: "ImportIntervalString",
         Type: "text",
         Caption: "Thời gian tính",
-        DataSourceMember: "ComputeIntervalString",
+        DataSourceMember: "ImportIntervalString",
         Width: 150
     },
     {
-        Name: "IsComputeError",
+        Name: "ImportError",
         Type: "checkicon",
         Caption: "Lỗi đồng bộ VTT",
-        DataSourceMember: "IsComputeError",
+        DataSourceMember: "ImportError",
         Width: 100
     },
     {
@@ -358,10 +358,10 @@ export const DataGridColumnList = [
         Width: 140
     },
     {
-        Name: "UpdatedUserFullName",
+        Name: "UpdatedUser",
         Type: "text",
         Caption: "Người cập nhật",
-        DataSourceMember: "UpdatedUserFullName",
+        DataSourceMember: "UpdatedUser",
         Width: 140
     },
     {
