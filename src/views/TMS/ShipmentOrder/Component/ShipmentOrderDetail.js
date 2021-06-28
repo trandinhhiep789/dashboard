@@ -15,7 +15,7 @@ import { ExportStringDate } from "../../../../common/library/ultils";
 import { MODAL_TYPE_CONFIRMATIONNEW, MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import ReactTooltip from 'react-tooltip';
 
-import { toIsoStringCus } from '../../../../utils/function'
+import { toIsoStringCus, toIsoStringAnt } from '../../../../utils/function'
 
 import { DatePicker, Menu, Dropdown, Button } from 'antd';
 import {
@@ -348,12 +348,12 @@ class ShipmentOrderDetailCom extends Component {
                     DeliverydateUpdateTypeID: 2,
                     DeliverydateUpdateReasonID: formData.DeliverydateUpdateReasonID,
                     OldExpectedDeliveryDate: this.props.ShipmentOrderDetail.ExpectedDeliveryDate,
-                    NewExpectedDeliveryDate: toIsoStringCus(new Date(formData.NewExpectedDeliveryDate).toISOString()),//formData.NewExpectedDeliveryDate,
+                    NewExpectedDeliveryDate: new Date(formData.NewExpectedDeliveryDate),//formData.NewExpectedDeliveryDate,
                     DeliverydateUpdateReasonNote: formData.DeliverydateUpdateReasonNote,
 
                     // NewExpectedDeliveryDateNew: toIsoStringCus(new Date(formData.NewExpectedDeliveryDate).toISOString()),
                 }
-                // console.log("param", objDLDateLog)
+                //  console.log("param", objDLDateLog, formData)
                 this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder_DLDateLog/Add', objDLDateLog).then((apiResult) => {
                     this.addNotification(apiResult.Message, apiResult.IsError);
                     if (!apiResult.IsError) {
