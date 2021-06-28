@@ -338,8 +338,9 @@ class ShipmentOrderDetailCom extends Component {
     handleUpdateExpectedDelivery() {
         const dtFromdate = new Date()
         this.props.showModal(MODAL_TYPE_CONFIRMATIONNEW, {
-            title: 'Cập nhật thời gian giao dự kiến 1111',
+            title: 'Cập nhật thời gian giao dự kiến',
             onConfirmNew: (isConfirmed, formData) => {
+                
                 let objDLDateLog =
                 {
                     ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID,
@@ -348,12 +349,14 @@ class ShipmentOrderDetailCom extends Component {
                     DeliverydateUpdateTypeID: 2,
                     DeliverydateUpdateReasonID: formData.DeliverydateUpdateReasonID,
                     OldExpectedDeliveryDate: this.props.ShipmentOrderDetail.ExpectedDeliveryDate,
-                    NewExpectedDeliveryDate: toIsoStringAnt(formData.NewExpectedDeliveryDate),//formData.NewExpectedDeliveryDate,
+                    NewExpectedDeliveryDate: formData.NewExpectedDeliveryDate,//formData.NewExpectedDeliveryDate,
                     DeliverydateUpdateReasonNote: formData.DeliverydateUpdateReasonNote,
                     // NewExpectedDeliveryDateNew: new Date(formData.NewExpectedDeliveryDate),
                     // NewExpectedDeliveryDateNew: toIsoStringCus(new Date(formData.NewExpectedDeliveryDate).toISOString()),
                 }
-                 console.log("param", objDLDateLog, formData)
+
+              
+                
                 this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder_DLDateLog/Add', objDLDateLog).then((apiResult) => {
                     this.addNotification(apiResult.Message, apiResult.IsError);
                     if (!apiResult.IsError) {
