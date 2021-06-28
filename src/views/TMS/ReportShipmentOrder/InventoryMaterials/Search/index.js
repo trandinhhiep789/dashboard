@@ -410,7 +410,7 @@ class SearchCom extends React.Component {
                             Month={Month}
                             listColumn={DataGridModalQuantityExpend}
                             dataSource={data}
-                            fileName={"Sử dụng trong kỳ"}
+                            fileName={"Tiêu hao khác"}
                             dataExport={dataExcel}
                         />
                     },
