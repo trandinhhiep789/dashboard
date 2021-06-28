@@ -1296,6 +1296,13 @@ const AppMenu = [
         MenuIcon: '',
         SubMenu: []
     },
+    {
+        MenuName: 'Documents',
+        MenuTitle: 'Tài liệu',
+        LinkTo: '/Documents',
+        MenuIcon: '',
+        SubMenu: []
+    },
 
 ];
 
