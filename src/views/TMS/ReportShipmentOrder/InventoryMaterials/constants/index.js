@@ -372,6 +372,8 @@ export const DataGridModalChangeTotalQuantity = [
         Type: "text",
         Caption: "Mã vận đơn",
         DataSourceMember: "ShipmentOrderID",
+        Link: "/ShipmentOrder/Detail/",
+        Type: "texttolinkNewBlank",
         Width: 100
     },
     {
@@ -393,9 +395,11 @@ export const DataGridModalChangeTotalQuantity = [
 export const DataGridModalQuantityExpend = [
     {
         Name: "MTReturnRequestID",
-        Type: "text",
+        // Type: "text",
         Caption: "Mã yêu cầu nhập trả vật tư",
         DataSourceMember: "MTReturnRequestID",
+        Link: "/MTReturnRequest/Detail/",
+        Type: "texttolinkNewBlank",
         Width: 100
     },
     {

@@ -300,6 +300,8 @@ class SearchCom extends React.Component {
                             listColumn={DataGridModalQuantityHanOverDone}
                             dataSource={data}
                             fileName={"Nhận trong kỳ"}
+                            idSelectColumnName={"AdvanceRequestID"}
+                            pkColumnName={"AdvanceRequestID"}
                             dataExport={dataExcel}
                         />
                     },
@@ -328,6 +330,8 @@ class SearchCom extends React.Component {
                             listColumn={DataGridModalQuantityHanOverDoing}
                             dataSource={data}
                             fileName={"Chờ bàn giao"}
+                            idSelectColumnName={"AdvanceRequestID"}
+                            pkColumnName={"AdvanceRequestID"}
                             dataExport={dataExcel}
                         />
                     },
@@ -356,6 +360,8 @@ class SearchCom extends React.Component {
                             listColumn={DataGridModalQuantityReturn}
                             dataSource={data}
                             fileName={"Nhập trả"}
+                            idSelectColumnName={"SaleOrderID"}
+                            pkColumnName={"SaleOrderID"}
                             dataExport={dataExcel}
                         />
                     },
@@ -384,6 +390,8 @@ class SearchCom extends React.Component {
                             listColumn={DataGridModalChangeTotalQuantity}
                             dataSource={data}
                             fileName={"Sử dụng trong kỳ"}
+                            idSelectColumnName={"ShipmentOrderID"}
+                            pkColumnName={"ShipmentOrderID"}
                             dataExport={dataExcel}
                         />
                     },
@@ -411,6 +419,8 @@ class SearchCom extends React.Component {
                             listColumn={DataGridModalQuantityExpend}
                             dataSource={data}
                             fileName={"Tiêu hao khác"}
+                            idSelectColumnName={"MTReturnRequestID"}
+                            pkColumnName={"MTReturnRequestID"}
                             dataExport={dataExcel}
                         />
                     },
