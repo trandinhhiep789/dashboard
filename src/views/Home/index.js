@@ -166,6 +166,9 @@ import DataExportTemplate_Format from "../TMS/MD/DataExportTemplate_Format";
 import SvTimeConvert from "../TMS/MD/SvTimeConvert";
 import MonthlySaleOrder from "../TMS/ReportShipmentOrder/MonthlySaleOrder";
 
+
+import Documents from "../TMS/Documents";
+
 class HomeCom extends React.Component {
     constructor(props) {
         super(props);
@@ -414,7 +417,8 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/SvTimeConvert" component={SvTimeConvert} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/MonthlySaleOrder" component={MonthlySaleOrder} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
-
+                                    <PrivateRoute path="/Documents" component={Documents} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    
 
                                     <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
