@@ -13,7 +13,7 @@ export const SearchAPIPath = "api/MonthlySaleOrder/SearchReport";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách đơn hàng tổng hợp hàng tháng cho đối tác" }
+    { Link: "", Title: "Bảng kê chi tiết dịch vụ lắp đặt" }
 ];
 
 
