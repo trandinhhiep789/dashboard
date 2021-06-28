@@ -68,7 +68,6 @@ export default class ModalBox extends Component {
         const { UserName, Month, listColumn, dataSource, fileName, dataExport } = this.props;
 
         const { isExportFile } = this.state;
-
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -94,8 +93,8 @@ export default class ModalBox extends Component {
                 <DataGrid
                     listColumn={listColumn}
                     dataSource={dataSource}
-                    IDSelectColumnName={"AdvanceRequestID"}
-                    PKColumnName={"AdvanceRequestID"}
+                    IDSelectColumnName={this.props.idSelectColumnName}
+                    PKColumnName={this.props.pkColumnName}
                     IsDelete={false}
                     IsAutoPaging={true}
                     IsShowButtonAdd={false}
