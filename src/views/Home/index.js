@@ -140,6 +140,7 @@ import AppFeedBackGroup from "../TMS/MD/AppFeedBack/AppFeedBackGroup";
 import AppFeedBackCategory from "../TMS/MD/AppFeedBack/AppFeedBackCategory";
 import AppFeedBackType from "../TMS/MD/AppFeedBack/AppFeedBackType";
 import RewardComputeSchedule from "../TMS/MD/RewardComputeSchedule";
+import RewardPosImportSchedule from "../TMS/MD/RewardPosImportSchedule";
 import RewardComputeLog from "../TMS/MD/RewardComputeLog";
 import ShipmentOrderStepGroup from "../TMS/MD/ShipmentOrderStepGroup";
 import TMSConfig from "../TMS/MD/TMSConfig";
@@ -165,6 +166,9 @@ import DataExportTemplate from "../TMS/MD/DataExportTemplate";
 import DataExportTemplate_Format from "../TMS/MD/DataExportTemplate_Format";
 import SvTimeConvert from "../TMS/MD/SvTimeConvert";
 import MonthlySaleOrder from "../TMS/ReportShipmentOrder/MonthlySaleOrder";
+
+
+import Documents from "../TMS/Documents";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -379,6 +383,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/RewardComputeSchedule" component={RewardComputeSchedule} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/RewardComputeLog" component={RewardComputeLog} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/PosToRWPosTable" component={PosToRWPosTable} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/RewardPosImportSchedule" component={RewardPosImportSchedule} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="/AppFeedBackPriority" component={AppFeedBackPriority} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/AppFeedBackStatus" component={AppFeedBackStatus} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
@@ -414,7 +419,8 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/SvTimeConvert" component={SvTimeConvert} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/MonthlySaleOrder" component={MonthlySaleOrder} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
-
+                                    <PrivateRoute path="/Documents" component={Documents} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    
 
                                     <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 

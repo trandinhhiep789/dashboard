@@ -40,7 +40,7 @@ export const InitSearchParams = [
     },
     {
         SearchKey: "@PAGESIZE",
-        SearchValue: 20
+        SearchValue: 50
     },
     {
         SearchKey: "@PAGEINDEX",
