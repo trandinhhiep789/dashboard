@@ -40,7 +40,7 @@ export const InitSearchParams = [
     },
     {
         SearchKey: "@PAGESIZE",
-        SearchValue: 20
+        SearchValue: 50
     },
     {
         SearchKey: "@PAGEINDEX",
@@ -294,28 +294,28 @@ export const DataGirdStaffDebtColumnList = [
         Type: "datetime",
         Caption: "Thời gian xuất hàng",
         DataSourceMember: "OutputDate",
-        Width: "8%"
+        Width: "7%"
     },
     {
         Name: "CollectedTime",
         Type: "datetime",
         Caption: "Thời gian thu",
         DataSourceMember: "CollectedTime",
-        Width: "8%"
+        Width: "7%"
     },
     {
         Name: "TotalCOD",
         Type: "textCurrency",
         Caption: "Tiền COD",
         DataSourceMember: "TotalCOD",
-        Width: "8%"
+        Width: "7%"
     },
     {
         Name: "TotalSaleMaterialMoney",
         Type: "textCurrency",
         Caption: "Tiền vật tư",
         DataSourceMember: "TotalSaleMaterialMoney",
-        Width: "8%"
+        Width: "7%"
     },
     {
         Name: "TotalMoney",
@@ -329,7 +329,7 @@ export const DataGirdStaffDebtColumnList = [
         Type: "textCurrency",
         Caption: "Tiền đã thu KH",
         DataSourceMember: "CollectedTotalMoney",
-        Width: "10%"
+        Width: "8%"
     },
     {
         Name: "DebtInterval",
@@ -343,8 +343,16 @@ export const DataGirdStaffDebtColumnList = [
         Type: "checkicon",
         Caption: "Đã quá hạn nộp tiền",
         DataSourceMember: "IsOverDueDebt",
-        Width: "10%"
+        Width: "8%"
     },
+    {
+        Name: "CarrierTypeName",
+        Type: "text",
+        Caption: "Phương tiện vận chuyển",
+        DataSourceMember: "CarrierTypeName",
+        Width: "8%"
+    },
+    
     {
         Name: "DeliveryStatus",
         Type: "textCustom",

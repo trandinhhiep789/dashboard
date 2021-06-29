@@ -9,14 +9,15 @@ import { showModal, hideModal } from '../../../../actions/modal';
 import { GetMLObjectData } from "../../../../common/library/form/FormLib";
 import Collapsible from 'react-collapsible';
 import {
-    AddAPIPath, UpdateAPIPath, DeleteAPIPath,
-    ModalColumnList_Insert, ModalColumnList_Edit, DataGridColumnList, MLObjectDefinition
+    AddAPIPath, UpdateAPIPath, DeleteAPIPath, AddByFileAPIPath, APIHostName,
+    ModalColumnList_Insert, ModalColumnList_Edit, DataGridColumnList, MLObjectDefinition, schema, DataTemplateExport
 } from "./constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_STORE, ERPCOMMONCACHE_MAINGROUP, ERPCOMMONCACHE_SUBGROUP, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE } from "../../../../constants/keyCache";
-
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 class Skill_InstallAbilityCom extends React.Component {
     constructor(props) {
         super(props);
@@ -38,8 +39,10 @@ class Skill_InstallAbilityCom extends React.Component {
             SkillID: this.props.SkillID,
             IsInsert: true,
             ModalColumnList_Insert: ModalColumnList_Insert,
-            ModalColumnList_Edit: ModalColumnList_Edit
+            ModalColumnList_Edit: ModalColumnList_Edit,
+            DataTemplateExport
         };
+        this.notificationDOMRef = React.createRef();
     }
 
 
@@ -48,15 +51,49 @@ class Skill_InstallAbilityCom extends React.Component {
         if (nextProps.SkillID !== this.state.SkillID) {
             this.setState({ SkillID: nextProps.SkillID });
         }
-        // if(nextProps.Store !== this.state.Store){
-        //     this.setState({ Store: nextProps.Store });
-        // }
+
+        if(nextProps.SkillInstallAbilityDataSource !== this.state.SkillInstallAbilityDataSource){
+            this.setState({ SkillInstallAbilityDataSource: nextProps.SkillInstallAbilityDataSource });
+        }
     }
 
     componentDidMount() {
         this.initCache();
 
     }
+
+    addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
+        if (!IsError) {
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
+        } else {
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
+
+
+
 
 
 
@@ -381,6 +418,59 @@ class Skill_InstallAbilityCom extends React.Component {
 
     }
 
+    handleExportFileTemplate(result) {
+        this.addNotification(result.Message, result.IsError);
+    }
+
+    handleImportFile(resultRows, errors) {
+
+        const CreatedUser = this.props.AppInfo.LoginInfo.Username;
+        const LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        const SkillID = this.props.SkillID;
+        const importData = resultRows.map(item => {
+            //const { UserName, IsSystem } = item
+            return {
+                ...item,
+                SkillID,
+                CreatedUser,
+                LoginLogID
+                //ProvinceFullName: `${ProvinceID} - ${ProvinceName}`,
+                //WardFullName: `${WardID} - ${WardName}`
+            }
+        })
+
+        let data = [];
+        let _isError = false;
+        importData.map((itemObject, index) => {
+            if ((!itemObject.SubGroupID || !itemObject.TechspecsID || !itemObject.TechspecsValueID) && _isError == false) {
+                this.addNotification("Vui lòng nhập đầy đủ mã nhóm hàng, thông số kỹ thuật, giá trị thông số kỹ thuật.", true);
+                _isError = true;
+            } else {
+                data.push(itemObject);
+            }
+        });
+
+
+        if (_isError) {
+            return;
+        }
+
+
+        this.props.callFetchAPI(APIHostName, AddByFileAPIPath, data).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            if (!apiResult.IsError) {
+                //this.props.callClearLocalCache(ERPCOMMONCACHE_MATERIALGROUP);
+                if (this.props.onReload) {
+                    this.props.onReload();
+                }
+            }
+
+            this.addNotification(apiResult.Message, apiResult.IsError);
+
+        });
+
+    }
+
     render() {
         let datasource = this.state.SkillInstallAbilityDataSource.filter(item => item.IsDeleted == undefined || item.IsDeleted == false);
         datasource = this.initDatasource(datasource);
@@ -407,6 +497,7 @@ class Skill_InstallAbilityCom extends React.Component {
 
         return (
             <div className="sub-grid">
+                <ReactNotification ref={this.notificationDOMRef} />
                 <DataGrid listColumn={DataGridColumnList}
                     dataSource={datasource}
                     modalElementList={ModalColumnList_Insert}
@@ -420,6 +511,14 @@ class Skill_InstallAbilityCom extends React.Component {
                     RowsPerPage={10}
                     IsCustomAddLink={true}
                     headingTitle={"Năng lực lắp đặt"}
+
+                    IsImportFile={true}
+                    SchemaData={schema}
+                    onImportFile={this.handleImportFile.bind(this)}
+                    isExportFileTemplate={true}
+                    DataTemplateExport={this.state.DataTemplateExport}
+                    fileNameTemplate={"Danh sách năng lực lắp đặt"}
+                    onExportFileTemplate={this.handleExportFileTemplate.bind(this)}
                 />
             </div>
 

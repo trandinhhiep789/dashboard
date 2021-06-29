@@ -430,6 +430,13 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    {
+                        MenuName: 'RewardPosImportSchedule',
+                        MenuTitle: 'Lịch đồng bộ chức vụ',
+                        LinkTo: '/RewardPosImportSchedule',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
                     // {
                     //     MenuName: 'PNServicePriceTable',
                     //     MenuTitle: 'Bảng giá dịch vụ của đối tác',
@@ -1221,6 +1228,13 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    {
+                        MenuName: 'MonthlySaleOrder',
+                        MenuTitle: ' Bảng kê chi tiết dịch vụ lắp đặt',
+                        LinkTo: '/MonthlySaleOrder',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
 
                 ]
             },
@@ -1270,13 +1284,7 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-            {
-                MenuName: 'MonthlySaleOrder',
-                MenuTitle: 'Xem bảng kê job Tự động tính doanh thu',
-                LinkTo: '/MonthlySaleOrder',
-                MenuIcon: '',
-                SubMenu: []
-            },
+            
 
 
         ]
@@ -1285,6 +1293,13 @@ const AppMenu = [
         MenuName: 'InvestigationShipmentOrderStatus',
         MenuTitle: 'Tra cứu vận đơn',
         LinkTo: '/InvestigationShipmentOrderStatus',
+        MenuIcon: '',
+        SubMenu: []
+    },
+    {
+        MenuName: 'Documents',
+        MenuTitle: 'Tài liệu',
+        LinkTo: '/Documents',
         MenuIcon: '',
         SubMenu: []
     },

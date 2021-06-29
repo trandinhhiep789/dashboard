@@ -370,13 +370,11 @@ export const MLObjectDefinition = [
         BindControlName: "txtPosToRWPosTableName",
         DataSourceMember: "PosToRWPosTableName"
     },
-
-
     {
-        Name: "PosToRWPosTableName",
+        Name: "DelayDays",
         DefaultValue: "",
-        BindControlName: "txtPosToRWPosTableName",
-        DataSourceMember: "PosToRWPosTableName"
+        BindControlName: "txtDelayDays",
+        DataSourceMember: "DelayDays"
     },
     {
         Name: "DepartmentID",

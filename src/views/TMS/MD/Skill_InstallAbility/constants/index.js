@@ -1,6 +1,8 @@
+export const APIHostName = "TMSAPI";
 export const AddAPIPath = "api/Skill_InstallAbility/Add";
 export const UpdateAPIPath = "api/Skill_InstallAbility/Update";
 export const DeleteAPIPath = "api/Skill_InstallAbility/Delete";
+export const AddByFileAPIPath ="api/Skill_InstallAbility/AddByFile";
 
 export const ModalColumnList_Insert = [
     {
@@ -337,5 +339,43 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "CreatedUser",
         DataSourceMember: "CreatedUser"
+    }
+];
+
+export const schema = {
+    'Mã nhóm hàng': {
+        prop: 'SubGroupID',
+        type: Number,
+        required: true
+    },
+    'Mã thông số kỹ thuật': {
+        prop: 'TechspecsID',
+        type: Number,
+        required: true
+    },
+    'Mã giá trị thông số kỹ thuật': {
+        prop: 'TechspecsValueID',
+        type: Number,
+        required: true
+    },
+    'Ghi chú': {
+        prop: 'Note',
+        type: String,
+        required: false
+    },
+    'Kích hoạt': {
+        prop: 'IsActived',
+        type: Number
+    }
+
+}
+
+export const DataTemplateExport = [
+    {
+        "Mã nhóm hàng": 1411,
+        "Mã thông số kỹ thuật": 28,
+        "Mã giá trị thông số kỹ thuật": 1070,
+        "Ghi chú": 'note',
+        "Kích hoạt": 1
     }
 ];

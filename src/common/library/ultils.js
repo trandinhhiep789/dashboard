@@ -82,7 +82,7 @@ export const ExportStringDate = (dateString, notGetTime) => {
             let dateConvertMoment = dataMoment1[2] + "-" + dataMoment1[1] + "-" + dataMoment1[0]
 
             if (notGetTime) {
-                dateConvertMoment = dateConvertMoment + " " + dataMoment[1];
+                dateConvertMoment = dateConvertMoment + "T" + dataMoment[1];
             }
             return dateConvertMoment;
         } catch (error) {

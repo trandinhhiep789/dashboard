@@ -193,7 +193,7 @@ class FormContainerCom extends Component {
             const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
             FormDataContolLstd[elementname].ErrorLst = validationObject;
         }
-       
+
 
         if (typeof namelabel != "undefined" && namelabel != "") {
             FormDataContolLstd[namelabel].value = valuelabel;
@@ -209,6 +209,20 @@ class FormContainerCom extends Component {
         }
 
     }
+
+    //file upload
+    handleSelectedFile(file, nameValue, isDeletetedFile) {
+
+        console.log("file upload", file, nameValue, isDeletetedFile)
+        // if (this.props.onHandleSelectedFile != null) {
+        //     this.props.onHandleSelectedFile(file, nameValue, isDeletetedFile);
+        // }
+
+
+    }
+
+
+
 
     handleInputChangeMulti(elementname, elementvalue) {
         const FormDataContolLstd = this.state.FormData;
@@ -252,7 +266,7 @@ class FormContainerCom extends Component {
     validationFormNew() {
         const FormDataContolLst = this.state.FormData;
         for (const key in FormDataContolLst) {
-            if (typeof FormDataContolLst[key].validatonList != "undefined"  &&  FormDataContolLst[key].validatonList.length > 0) {
+            if (typeof FormDataContolLst[key].validatonList != "undefined" && FormDataContolLst[key].validatonList.length > 0) {
                 const validation = ValidationField(FormDataContolLst[key].validatonList, FormDataContolLst[key].value, FormDataContolLst[key].label, FormDataContolLst[key]);
                 const validationObject = { IsValidatonError: validation.IsError, ValidatonErrorMessage: validation.Message };
                 FormDataContolLst[key].ErrorLst = validationObject;
@@ -494,6 +508,19 @@ class FormContainerCom extends Component {
                                         key={index}
                                     />
                                 );
+                            case "singleFileUpload":
+                                return (
+                                    <ElementModal.UploadAvatar
+                                        onValueChange={this.handleSelectedFile.bind(this)}
+
+                                        validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                        inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
+                                        {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
+                                        disabled={this.state.isDisabled}
+                                        key={index}
+                                    />
+                                );
                             case "TextNumber":
                                 return (
                                     <ElementModal.ElementModalNumber
@@ -610,10 +637,10 @@ class FormContainerCom extends Component {
         }
 
         let cssSearchButton = "";
-       
+
         let isDisabledButtonSubmit = false;
-        if( this.props.IsDisabledSubmitForm){
-            isDisabledButtonSubmit= true
+        if (this.props.IsDisabledSubmitForm) {
+            isDisabledButtonSubmit = true
         }
         // console.log("this.props.isSubmitForm ", this.props.isSubmitFrom )
         return (

@@ -12,33 +12,33 @@ import {
     EditElementList,
     MLObjectDefinition,
     BackLink,
-    EditPagePath
+    EditPagePath,
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { SKILL_UPDATE } from "../../../../../constants/functionLists";
+import { REWARDCOMPUTESCHEDULE_UPDATE } from "../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import Skill_InstallAbility from "../../Skill_InstallAbility";
-import Skill_SkillRank from "../../Skill_SkillRank";
+import { ERPCOMMONCACHE_AREATYPE, ERPCOMMONCACHE_MATERIALGROUP } from "../../../../../constants/keyCache";
+import { toIsoStringCus } from "../../../../../utils/function";
+
+
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-        this.onSkillInstallAbilityChange = this.onSkillInstallAbilityChange.bind(this);
-        this.onSkillSkillRankChange = this.onSkillSkillRankChange.bind(this);
-        this.onReload = this.onReload.bind(this);
+        this.callLoadData = this.callLoadData.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
             FormContent: "",
             IsLoadDataComplete: false,
             IsCloseForm: false,
-            EditElementList: EditElementList,
-            SkillInstallAbility: []
+            MaterialGroup_InstallCond: [],
+            MaterialGroup_Product: [],
         };
-        
     }
+
 
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
@@ -46,7 +46,7 @@ class EditCom extends React.Component {
 
     }
 
-    callLoadData(){
+    callLoadData() {
         const id = this.props.match.params.id;
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
             if (apiResult.IsError) {
@@ -55,11 +55,14 @@ class EditCom extends React.Component {
                 });
                 this.showMessage(apiResult.Message);
             } else {
-                this.setState({ 
-                    DataSource: apiResult.ResultObject, 
-                    SkillInstallAbility: apiResult.ResultObject.SkillInstallAbility ? apiResult.ResultObject.SkillInstallAbility : [],
-                    SkillSkillRank: apiResult.ResultObject.SkillSkillRank ? apiResult.ResultObject.SkillSkillRank : [], 
-                });
+                if (apiResult.ResultObject.IsAutoAdd) {
+                    this.showMessage("Lịch tự động thêm, không thể chỉnh sửa.");
+                    this.setState({ IsCloseForm: true });
+                } else {
+                    this.setState({
+                        DataSource: apiResult.ResultObject
+                    });
+                }
             }
             this.setState({
                 IsLoadDataComplete: true
@@ -67,33 +70,26 @@ class EditCom extends React.Component {
         });
     }
 
-    onReload(){
-        this.callLoadData();
-    }
-    
-    onSkillInstallAbilityChange(list) {
-        this.setState({ SkillInstallAbility: list });
-        //console.log("onSkillInstallAbilityChange", list);
-    }
 
-    onSkillSkillRankChange(list){
-        this.setState({ SkillSkillRank: list });
-        //console.log("onSkillSkillRankChange", list);
-    }
 
     handleSubmit(formData, MLObject) {
-        MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
+        MLObject.RewardPosImportScheduleID = this.props.match.params.id;
+        MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        MLObject.SkillInstallAbility = this.state.SkillInstallAbility;
-        MLObject.SkillSkillRank = this.state.SkillSkillRank;
+
+        if (MLObject.ImportDate.getMonth) {
+            MLObject.ImportDate = toIsoStringCus(new Date(MLObject.ImportDate).toISOString());
+        } else {
+            MLObject.ImportDate = this.state.DataSource.ImportDate;
+        }
+
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
-            this.showMessage(apiResult.Message);
             if (!apiResult.IsError) {
-                //this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNER);
+                //this.props.callClearLocalCache(ERPCOMMONCACHE_MATERIALGROUP);
             }
+            this.showMessage(apiResult.Message);
         });
-        //console.log("MLObject",MLObject);
     }
 
     handleCloseMessage() {
@@ -117,37 +113,19 @@ class EditCom extends React.Component {
         }
         if (this.state.IsLoadDataComplete) {
             return (
-                <React.Fragment>
-                    <SimpleForm
-                        FormName="Cập nhật kỹ năng"
-                        MLObjectDefinition={MLObjectDefinition}
-                        listelement={this.state.EditElementList}
-                        onSubmit={this.handleSubmit}
-                        FormMessage={this.state.CallAPIMessage}
-                        IsErrorMessage={this.state.IsCallAPIError}
-                        dataSource={this.state.DataSource}
-                        BackLink={BackLink}
-                        RequirePermission={SKILL_UPDATE}
-                        ref={this.searchref}>
+                <SimpleForm
+                    FormName="Cập nhật lịch tính thưởng"
+                    MLObjectDefinition={MLObjectDefinition}
+                    listelement={EditElementList}
+                    onSubmit={this.handleSubmit}
+                    FormMessage={this.state.CallAPIMessage}
+                    IsErrorMessage={this.state.IsCallAPIError}
+                    dataSource={this.state.DataSource}
+                    BackLink={BackLink}
+                    RequirePermission={REWARDCOMPUTESCHEDULE_UPDATE}
+                    ref={this.searchref}
+                />
 
-                        <br />
-                        <Skill_InstallAbility
-                            SkillID={this.props.match.params.id}
-                            SkillInstallAbilityDataSource={this.state.SkillInstallAbility}
-                            onSkillInstallAbilityChange={this.onSkillInstallAbilityChange}
-                            onReload = {this.onReload}
-                        />
-                        <br />
-                        <Skill_SkillRank
-                            SkillID={this.props.match.params.id}
-                            SkillSkillRankDataSource={this.state.SkillSkillRank}
-                            onSkillSkillRankChange={this.onSkillSkillRankChange}
-                        />
-                    </SimpleForm>
-
-
-
-                </React.Fragment>
             );
         }
         return (
@@ -179,7 +157,6 @@ const mapDispatchToProps = dispatch => {
         callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID));
         }
-
     };
 };
 
