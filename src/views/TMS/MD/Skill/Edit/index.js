@@ -27,6 +27,7 @@ class EditCom extends React.Component {
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.onSkillInstallAbilityChange = this.onSkillInstallAbilityChange.bind(this);
         this.onSkillSkillRankChange = this.onSkillSkillRankChange.bind(this);
+        this.onReload = this.onReload.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -36,10 +37,16 @@ class EditCom extends React.Component {
             EditElementList: EditElementList,
             SkillInstallAbility: []
         };
+        
     }
 
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
+        this.callLoadData();
+
+    }
+
+    callLoadData(){
         const id = this.props.match.params.id;
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
             if (apiResult.IsError) {
@@ -58,7 +65,10 @@ class EditCom extends React.Component {
                 IsLoadDataComplete: true
             });
         });
+    }
 
+    onReload(){
+        this.callLoadData();
     }
     
     onSkillInstallAbilityChange(list) {
@@ -125,6 +135,7 @@ class EditCom extends React.Component {
                             SkillID={this.props.match.params.id}
                             SkillInstallAbilityDataSource={this.state.SkillInstallAbility}
                             onSkillInstallAbilityChange={this.onSkillInstallAbilityChange}
+                            onReload = {this.onReload}
                         />
                         <br />
                         <Skill_SkillRank
