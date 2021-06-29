@@ -52,7 +52,6 @@ class SearchCom extends React.Component {
             iconNotification: "",
             PageNumber: 1,
             IsLoadDataComplete: false,
-            dataExport: []
 
         };
         this.gridref = React.createRef();
@@ -62,7 +61,7 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
-        // this.callSearchData(this.state.SearchData);
+        this.callSearchData(this.state.SearchData);
     }
 
     callSearchData(searchData) {
@@ -75,117 +74,8 @@ class SearchCom extends React.Component {
             }
             else {
 
-                const result = apiResult.ResultObject.map((item) => {
-
-                    item.ExtendLable = item.ExtendedDate ? formatDate(item.ExtendedDate, true) : 'Chưa gia hạn';
-                    let currentDate = new Date();
-                    if (item.ExtendedDate != null) {
-                        const ExtendedDate = new Date(item.ExtendedDate);
-                        var timeDiff = Math.abs(currentDate.getTime() - ExtendedDate.getTime());
-                        var diffDays = parseInt((timeDiff / (1000 * 3600 * 24)));
-
-                        if (ExtendedDate.getTime() - currentDate.getTime() < 0) {
-                            item.StatusLable = <span className='lblstatus text-danger'>Hết hạn</span>;
-                        }
-                        else {
-                            if (diffDays < 30) {
-                                item.StatusLable = <span className='lblstatus text-warning'>Còn {diffDays} ngày</span>;
-                            }
-                            else {
-                                item.StatusLable = <span className='lblstatus text-success'>Còn hạn</span>;
-                            }
-                        }
-                    }
-                    else {
-
-                        const ExpiredDate = new Date(item.ExpiredDate);
-                        var timeDiff = Math.abs(currentDate.getTime() - ExpiredDate.getTime());
-                        var diffDays = parseInt((timeDiff / (1000 * 3600 * 24)));
-                        if (ExpiredDate.getTime() - currentDate.getTime() < 0) {
-                            item.StatusLable = <span className='lblstatus text-danger'>Hết hạn</span>;
-                        }
-                        else {
-                            if (diffDays < 30) {
-                                item.StatusLable = <span className='lblstatus text-warning'>Còn {diffDays} ngày</span>;
-                            }
-                            else {
-                                item.StatusLable = <span className='lblstatus text-success'>Còn hạn</span>;
-                            }
-                        }
-                    }
-
-                    if (item.IsdePOSited) {
-                        item.DepositedLable = "Đã ký";
-                    }
-                    else {
-                        item.DepositedLable = "Chưa ký";
-                    }
-                    return item;
-
-                })
-
-                const tempData = apiResult.ResultObject.map((item, index) => {
-                    item.ExtendAgreement = item.ExtendedDate ? formatDate(item.ExtendedDate) : 'Chưa gia hạn';
-
-                    const ExpiredDate = new Date(item.ExpiredDate);
-                    let currentDate = new Date();
-
-
-                    if (item.ExtendedDate != null) {
-                        const ExtendedDate = new Date(item.ExtendedDate);
-                        var timeDiff = Math.abs(currentDate.getTime() - ExtendedDate.getTime());
-                        var diffDays = parseInt((timeDiff / (1000 * 3600 * 24)));
-
-                        if (ExtendedDate.getTime() - currentDate.getTime() < 0) {
-                            item.StatusAgreement = "Hết hạn";
-                        }
-                        else {
-                            if (diffDays < 30) {
-                                item.StatusAgreement = `Còn ${diffDays} ngày`;
-                            }
-                            else {
-                                item.StatusAgreement = "Còn hạn";
-                            }
-                        }
-                    }
-                    else {
-
-                        const ExpiredDate = new Date(item.ExpiredDate);
-                        var timeDiff = Math.abs(currentDate.getTime() - ExpiredDate.getTime());
-                        var diffDays = parseInt((timeDiff / (1000 * 3600 * 24)));
-                        if (ExpiredDate.getTime() - currentDate.getTime() < 0) {
-                            item.StatusAgreement = "Hết hạn";
-                        }
-                        else {
-                            var timeDiff = Math.abs(currentDate.getTime() - ExpiredDate.getTime());
-                            var diffDays = parseInt((timeDiff / (1000 * 3600 * 24)));
-                            if (diffDays < 30) {
-                                item.StatusAgreement = `Còn ${diffDays} ngày`;
-                            }
-                            else {
-                                item.StatusAgreement = "Còn hạn";
-                            }
-                        }
-                    }
-
-                    let element = {
-                        "Số hợp đồng": item.ServiceAgreementNumber,
-                        "Đối tác": item.PartnerName,
-                        "Loại dịch vụ": item.ServiceTypeName,
-                        "Khu vực": item.AreaName,
-                        "Ngày ký hợp đồng": item.SignedDate,
-                        "Ngày hết hạn hợp đồng": item.ExpiredDate,
-                        "Gia hạn đến": item.ExtendAgreement,
-                        "Trạng thái": item.StatusAgreement
-                    };
-
-                    return element;
-
-                })
-
                 this.setState({
-                    gridDataSource: result,
-                    dataExport: tempData,
+                    gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
                 });
             }
@@ -259,27 +149,27 @@ class SearchCom extends React.Component {
         const DataSearch = [
             {
                 SearchKey: "@Keyword",
-                SearchValue: MLObject.Keyword
+                SearchValue: ""
             },
             {
-                SearchKey: "@SERVICETYPEID",
-                SearchValue: MLObject.ServiceTypeID
+                SearchKey: "@DOCUMENTTYPEID",
+                SearchValue: "-1"
             },
             {
-                SearchKey: "@AREAID",
-                SearchValue: MLObject.AreaID
+                SearchKey: "@FROMDATE",
+                SearchValue: new Date()
             },
             {
-                SearchKey: "@FromDate",
-                SearchValue: MLObject.SignedDate
+                SearchKey: "@TODATE",
+                SearchValue: new Date()
             },
             {
-                SearchKey: "@ToDate",
-                SearchValue: MLObject.ExpiredDate
+                SearchKey: "@PAGESIZE",
+                SearchValue: 50
             },
             {
-                SearchKey: "@STATUS",
-                SearchValue: MLObject.ServiceStatusID
+                SearchKey: "@PAGEINDEX",
+                SearchValue: 1
             }
 
         ];
@@ -295,10 +185,7 @@ class SearchCom extends React.Component {
         this.addNotification(result.Message, result.IsError);
     }
 
-    handleImportFile(resultRows, errors) {
-        // this.props.callFetchAPI(APIHostName, AddAutoAPIPath, resultRows).then(apiResult => {
-        // });
-    }
+
 
     render() {
         return (
@@ -323,11 +210,9 @@ class SearchCom extends React.Component {
                     IsDelete={true}
                     IsAutoPaging={true}
                     RowsPerPage={20}
-                    RequirePermission={DOCUMENT_VIEW}
-                    DeletePermission={DOCUMENT_DELETE}
+                    // RequirePermission={DOCUMENT_VIEW}
+                    // DeletePermission={DOCUMENT_DELETE}
                     IsExportFile={false}
-                    DataExport={this.state.dataExport}
-                    fileName="Danh sách hợp đồng"
                     IsImportFile={false}
 
                 />

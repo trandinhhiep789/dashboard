@@ -919,6 +919,12 @@ class ElementDatetimeCom extends Component {
         if (ValidatonErrorMessage && ValidatonErrorMessage != "") {
             className += " is-invalid";
         }
+        // var yesterday = moment().subtract(3, 'month');
+        // var valid = function (current) {
+        //     // return current.isAfter(yesterday);
+        //     return current.day() !== 0 && current.day() !== 6;
+        // };
+        // console.log("yesterday", yesterday, valid)
         return (
             <div className={colspanClassName}  >
                 <div className="form-group form-group-input form-group-input-date">
@@ -931,8 +937,10 @@ class ElementDatetimeCom extends Component {
                             onChange={(moment) => this.handleValueChange(name, moment)}
                             defaultValue={value}
                             timeFormat={timeFormat}
-                            dateFormat={dateFormat} >
-                        </Datetime>
+                            dateFormat={dateFormat}
+                            // isValidDate={valid}
+                        />
+
                         <div className="invalid-feedback">{ValidatonErrorMessage}</div>
                     </div>
                 </div>
