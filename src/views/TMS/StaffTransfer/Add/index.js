@@ -1,34 +1,40 @@
-import React, { Fragment } from "react";
-import { Redirect } from "react-router-dom";
+import React from "react";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
-import FormContainer from "../../../../common/components/FormContainer";
+
 import { MessageModal } from "../../../../common/components/Modal";
-import FormControl from "../../../../common/components/FormContainer/FormControl";
-
-
-import Select from 'react-select';
-
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
-import { formatDate, formatDateNew } from "../../../../common/library/CommonLib.js";
+import { formatDate } from "../../../../common/library/CommonLib.js";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { STAFFTRANSFERTYPE_ADD } from "../../../../constants/functionLists";
-import { AddPagePath, APIHostName, APILoadInfo, MLObjectDefinition, BackLink } from './constants'
-import StaffTransferType_rvLevelCom from './StaffTransferType_rvLevel'
+import { AddPagePath, APIHostName, APILoadInfo, MLObjectDefinition, BackLink, APIAdd } from './constants';
+
+import FormControl from "../../../../common/components/FormContainer/FormControl";
+import StaffTransferType_rvLevelCom from './StaffTransferType_rvLevel';
+import StaffTransferDetailCom from './StaffTransferDetail';
+import MyContext from './Context';
+import FormContainer from "../../../../common/components/FormContainer";
+
 
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            StaffTransferData: null
+            StaffTransferData: null,
+            StaffTransferDetailData: [],
+            StaffTransferType_rvLevelData: []
         }
 
         this.fetchStaffTransferType_rvLevelData = this.fetchStaffTransferType_rvLevelData.bind(this);
+        this.showMessage = this.showMessage.bind(this);
+
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleChangeStaffTransferType_rvLevel = this.handleChangeStaffTransferType_rvLevel.bind(this);
+        this.handleAddStaffTransferDetailData = this.handleAddStaffTransferDetailData.bind(this);
+        this.handleDelStaffTransferDetailData = this.handleDelStaffTransferDetailData.bind(this);
+        this.handelStaffTransferType_rvLevelData = this.handelStaffTransferType_rvLevelData.bind(this);
     }
 
     componentDidMount() {
@@ -62,23 +68,59 @@ class AddCom extends React.Component {
         );
     }
 
-    handleChangeStaffTransferType_rvLevel(name, value) {
+    handleSubmit(formData, MLObject) {
+        const { StaffTransferTypeID, RequestStoreID } = this.props.location.state;
+        const { StaffTransferData, StaffTransferDetailData, StaffTransferType_rvLevelData } = this.state;
+
+        const postData = {
+            ...MLObject,
+            StaffTransferTypeID,
+            RequestStoreID,
+            RequestDate: new Date(),
+            RequestUser: this.props.AppInfo.LoginInfo.Username,
+            IsReviewed: StaffTransferData.IsAutoReview,
+            ReviewedDate: StaffTransferData.IsAutoReview == true ? new Date() : "",
+            IsTransfered: StaffTransferData.IsAutoTransfer,
+            TransferedDate: StaffTransferData.IsAutoTransfer == true ? new Date() : "",
+            IsSystem: StaffTransferData.IsSystem,
+            CreatedUser: this.props.AppInfo.LoginInfo.Username,
+            ListStaffTransferDetail: StaffTransferDetailData,
+            ListStaffTransferType_rvLevel: StaffTransferType_rvLevelData
+        };
+
+        this.props.callFetchAPI(APIHostName, APIAdd, postData).then(apiResult => {
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.MessageDetail);
+            } else {
+                this.showMessage(apiResult.MessageDetail);
+                this.props.history.push("/StaffTransfer");
+            }
+        });
+    }
+
+    handleAddStaffTransferDetailData(data) {
         this.setState({
-            [name]: value
+            StaffTransferDetailData: [
+                ...this.state.StaffTransferDetailData,
+                ...data
+            ]
         })
     }
 
-    handleSubmit(formData, MLObject) {
-        console.log("🚀 ~ file: index.js ~ line 65 ~ AddCom ~ handleSubmit ~ formData, MLObject", formData, MLObject)
-        const { StaffTransferData } = this.state;
+    handleDelStaffTransferDetailData(data) {
+        this.setState({
+            StaffTransferDetailData: data
+        })
+    }
 
-        const arrStaffTransferType_rvLevel = StaffTransferData.ListStaffTransferType_rvLevel.filter(item => item.UserName == this.state[item.ReviewLevelID]);
-
-        console.log(arrStaffTransferType_rvLevel)
+    handelStaffTransferType_rvLevelData(data) {
+        this.setState({
+            StaffTransferType_rvLevelData: data
+        })
     }
 
     render() {
-        const { StaffTransferData } = this.state;
+        const { StaffTransferData, StaffTransferDetailData } = this.state;
 
         if (StaffTransferData == null) {
             return (
@@ -186,16 +228,33 @@ class AddCom extends React.Component {
                             </div>
                         </div>
 
+                        <MyContext.Provider
+                            value={{
+                                StaffTransferDetail: StaffTransferDetailData,
+                                handleAddStaffTransferDetailData: this.handleAddStaffTransferDetailData,
+                                handleDelStaffTransferDetailData: this.handleDelStaffTransferDetailData
+                            }}
+                        >
+                            <div className="mb-4">
+                                <StaffTransferDetailCom />
+                            </div>
+                        </MyContext.Provider>
+
                         {
-                            (StaffTransferData.ListStaffTransferType_rvLevel != null && StaffTransferData.ListStaffTransferType_rvLevel[0].IsAutoReview_StaffTransferType == false)
-                                ? <div className="row">
-                                    <StaffTransferType_rvLevelCom
-                                        dataSource={StaffTransferData.ListStaffTransferType_rvLevel}
-                                        onChangeSelect={this.handleChangeStaffTransferType_rvLevel}
-                                    />
-                                </div>
-                                : <React.Fragment></React.Fragment>
+                            StaffTransferData.IsAutoReview
+                                ? <React.Fragment></React.Fragment>
+                                : <MyContext.Provider
+                                    value={{
+                                        StaffTransferData,
+                                        handelStaffTransferType_rvLevelData: this.handelStaffTransferType_rvLevelData
+                                    }}
+                                >
+                                    <div className="mb-4">
+                                        <StaffTransferType_rvLevelCom />
+                                    </div>
+                                </MyContext.Provider>
                         }
+
                     </FormContainer>
                 </React.Fragment>
             )

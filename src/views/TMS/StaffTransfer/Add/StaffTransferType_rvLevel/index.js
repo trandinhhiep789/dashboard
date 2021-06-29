@@ -1,31 +1,36 @@
 import React from "react";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
-
-import { MessageModal } from "../../../../../common/components/Modal";
 import Select from "react-select";
 
+import { MessageModal } from "../../../../../common/components/Modal";
+import MyContext from '../Context';
+import { map } from "jquery";
+
 class StaffTransferType_rvLevelCom extends React.Component {
+    static contextType = MyContext;
+
     constructor(props) {
         super(props);
 
         this.state = {
-            optionsDataSource: []
+            dataGrid: []
         }
 
-        this.handleOptionsDataSource = this.handleOptionsDataSource.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleSetDataGrid = this.handleSetDataGrid.bind(this);
+        this.handleDataSubmit = this.handleDataSubmit.bind(this);
     }
 
     componentDidMount() {
-        this.handleOptionsDataSource();
+        this.handleSetDataGrid();
     }
 
-    handleOptionsDataSource() {
-        try {
-            const { dataSource } = this.props;
+    handleSetDataGrid() {
+        const { StaffTransferData, handelStaffTransferType_rvLevelData } = this.context;
 
-            const data = dataSource.reduce((acc, val) => {
+        try {
+            const data = StaffTransferData.ListStaffTransferType_rvLevel.reduce((acc, val) => {
 
                 const found = acc.findIndex(element => element.ReviewLevelID == val.ReviewLevelID);
 
@@ -52,24 +57,63 @@ class StaffTransferType_rvLevelCom extends React.Component {
                 }
             }, []);
 
-            this.setState({
-                optionsDataSource: data
+            const dataSubmit = data.map(item => {
+                const found = StaffTransferData.ListStaffTransferType_rvLevel.find(element => item.ReviewLevelID == element.ReviewLevelID && item.options[0].value == element.UserName)
+
+                return found;
             })
+
+            handelStaffTransferType_rvLevelData(dataSubmit);
+
+            data.forEach(item => {
+                this.setState({
+                    [item.ReviewLevelID]: item.options[0].value
+                })
+            })
+
+            this.setState({
+                dataGrid: data
+            })
+
         } catch (error) {
-            this.showMessage("Lỗi lấy danh sách user của một mức duyệt");
+            this.setState({
+                dataGrid: []
+            })
+
+            handelStaffTransferType_rvLevelData([]);
         }
     }
 
     handleChange(...data) {
         try {
             const { value } = data[0], { name } = data[1];
+
+            this.handleDataSubmit(name, value);
+
             this.setState({
                 [name]: value
             })
-
-            this.props.onChangeSelect(name, value);
         } catch (error) {
 
+        }
+    }
+
+    handleDataSubmit(name, value) {
+        const { StaffTransferData, handelStaffTransferType_rvLevelData } = this.context;
+
+        try {
+            const dataSubmit = StaffTransferData.ListStaffTransferType_rvLevel.filter(item => {
+                if (item.ReviewLevelID == name) {
+                    return value == item.UserName;
+                } else {
+                    return this.state[item.ReviewLevelID] == item.UserName;
+                }
+
+            });
+
+            handelStaffTransferType_rvLevelData(dataSubmit);
+        } catch (error) {
+            handelStaffTransferType_rvLevelData([]);
         }
     }
 
@@ -85,7 +129,7 @@ class StaffTransferType_rvLevelCom extends React.Component {
     }
 
     render() {
-        const { optionsDataSource } = this.state;
+        const { dataGrid } = this.state;
 
         return (
             <div className="col-lg-12 SearchForm">
@@ -103,7 +147,7 @@ class StaffTransferType_rvLevelCom extends React.Component {
                             </thead>
                             <tbody>
                                 {
-                                    optionsDataSource.map(item => {
+                                    dataGrid.map(item => {
                                         return (
                                             <tr key={item.ReviewLevelID}>
                                                 <td>{item.ReviewLevelName}</td>
