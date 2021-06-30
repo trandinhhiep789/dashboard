@@ -22,7 +22,7 @@ import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_SERVICETYPE, ERPCOMMONCACHE_TMSREWARDTYPE } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_SERVICETYPE, ERPCOMMONCACHE_SMSTEMPLATE, ERPCOMMONCACHE_TMSREWARDTYPE } from "../../../../../constants/keyCache";
 import { SERVICETYPE_VIEW, SERVICETYPE_DELETE, REWARDTYPE_VIEW, REWARDTYPE_DELETE, SMSTEMPLATE_VIEW, SMSTEMPLATE_DELETE } from "../../../../../constants/functionLists";
 
 class SearchCom extends React.Component {
@@ -64,7 +64,7 @@ class SearchCom extends React.Component {
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
-                //this.props.callClearLocalCache(ERPCOMMONCACHE_TMSREWARDTYPE);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_SMSTEMPLATE);
                 // this.handleSubmitInsertLog();
             }
         });

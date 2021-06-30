@@ -9,7 +9,7 @@ import { showModal, hideModal } from '../../../../actions/modal';
 import { GetMLObjectData } from "../../../../common/library/form/FormLib";
 import Collapsible from 'react-collapsible';
 import {
-    AddAPIPath, UpdateAPIPath, DeleteAPIPath, APIHostName, AddByFileAPIPath, 
+    AddAPIPath, UpdateAPIPath, DeleteAPIPath, APIHostName, AddByFileAPIPath,
     ModalColumnList_Insert, ModalColumnList_Edit, DataGridColumnList, MLObjectDefinition, schema, DataTemplateExport
 } from "./constants";
 import ReactNotification from "react-notifications-component";
@@ -19,6 +19,7 @@ import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache, callGetUserCache } from "../../../../actions/cacheAction";
 import { GET_CACHE_USER_FUNCTION_LIST, DESTROYREQUESTTYPE_ADD, DESTROYREQUESTTYPE_DELETE, DESTROYREQUESTTYPE_UPDATE, COORDINATORGROUP_ADD, COORDINATORGROUP_UPDATE, COORDINATORGROUP_DELETE } from "../../../../constants/functionLists";
 import CoordinatorUser from "./Components/CoordinatorUser";
+import { ERPCOMMONCACHE_STORE } from "../../../../constants/keyCache";
 
 class CoordinatorGroup_StoreCom extends React.Component {
     constructor(props) {
@@ -58,10 +59,26 @@ class CoordinatorGroup_StoreCom extends React.Component {
 
     componentDidMount() {
         this.checkPermission();
+        this.getDataCache();
     }
 
     handleCloseMessage() {
         //if (!this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
+    }
+
+    getDataCache() {
+        this.props.callGetCache(ERPCOMMONCACHE_STORE).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                //console.log("FormElement listOption: ", listOption)
+                let temp = result.ResultObject.CacheData.filter(x => x.CompanyID == 1 && x.IsActive == true);
+                let Store = temp.map((item) => {
+                    return { value: item.StoreID, name: item.StoreName }
+                })
+                this.setState({
+                    Store
+                });
+            }
+        });
     }
 
     showMessage(message) {
@@ -194,6 +211,19 @@ class CoordinatorGroup_StoreCom extends React.Component {
         }
         this.setState({ IsInsert: true });
         //console.log("DataSource", this.state.DataSource);
+
+
+        let _ModalColumnList = this.state.ModalColumnList_Insert;
+        _ModalColumnList.forEach(function (objElement) {
+            if (objElement.Name == "SenderStoreID") {
+                objElement.listoption = this.state.Store;
+                objElement.value = "-1";
+            }
+
+        }.bind(this));
+
+
+
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
             title: 'Thêm mới kho gửi nhóm điều phối',
             autoCloseModal: false,
@@ -202,12 +232,13 @@ class CoordinatorGroup_StoreCom extends React.Component {
             onConfirm: (isConfirmed, formData) => {
                 if (isConfirmed) {
                     let MLObject = GetMLObjectData(MLObjectDefinition, formData, dataSource);
-                    if (MLObject) {  
+                    if (MLObject) {
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
                         MLObject.CoordinatorGroupID = this.props.CoordinatorGroupID;
+                        MLObject.SenderStoreID = MLObject.SenderStoreID && Array.isArray(MLObject.SenderStoreID) ? MLObject.SenderStoreID[0] : MLObject.SenderStoreID;
 
-                       
+
 
                         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
                             if (!apiResult.IsError) {
@@ -225,7 +256,7 @@ class CoordinatorGroup_StoreCom extends React.Component {
                     }
                 }
             },
-            modalElementList: this.state.ModalColumnList_Insert,
+            modalElementList: _ModalColumnList,
         });
     }
 
@@ -412,13 +443,13 @@ class CoordinatorGroup_StoreCom extends React.Component {
                     IsCustomAddLink={true}
                     headingTitle={"Kho gửi của nhóm điều phối"}
 
-                    // IsImportFile={true}
-                    // SchemaData={schema}
-                    // onImportFile={this.handleImportFile.bind(this)}
-                    // isExportFileTemplate={true}
-                    // DataTemplateExport={this.state.DataTemplateExport}
-                    // fileNameTemplate={"Danh sách trưởng nhóm thuộc nhóm điều phối"}
-                    // onExportFileTemplate={this.handleExportFileTemplate.bind(this)}
+                // IsImportFile={true}
+                // SchemaData={schema}
+                // onImportFile={this.handleImportFile.bind(this)}
+                // isExportFileTemplate={true}
+                // DataTemplateExport={this.state.DataTemplateExport}
+                // fileNameTemplate={"Danh sách trưởng nhóm thuộc nhóm điều phối"}
+                // onExportFileTemplate={this.handleExportFileTemplate.bind(this)}
                 />
             </div>
         );
