@@ -901,7 +901,7 @@ class ElementDatetimeCom extends Component {
     }
 
     render() {
-        let { name, label, timeFormat, dateFormat, colspan, value, ValidatonErrorMessage, classNameCol } = this.props;
+        let { name, label, timeFormat, dateFormat, colspan, value, ValidatonErrorMessage, classNameCol, isValidDate } = this.props;
         let className = "";
         let colspanClassName = "col-md-3";
         if (colspan) {
@@ -919,12 +919,7 @@ class ElementDatetimeCom extends Component {
         if (ValidatonErrorMessage && ValidatonErrorMessage != "") {
             className += " is-invalid";
         }
-        // var yesterday = moment().subtract(3, 'month');
-        // var valid = function (current) {
-        //     // return current.isAfter(yesterday);
-        //     return current.day() !== 0 && current.day() !== 6;
-        // };
-        // console.log("yesterday", yesterday, valid)
+      
         return (
             <div className={colspanClassName}  >
                 <div className="form-group form-group-input form-group-input-date">
@@ -938,7 +933,8 @@ class ElementDatetimeCom extends Component {
                             defaultValue={value}
                             timeFormat={timeFormat}
                             dateFormat={dateFormat}
-                            // isValidDate={valid}
+                            isValidDate={isValidDate}
+                            
                         />
 
                         <div className="invalid-feedback">{ValidatonErrorMessage}</div>

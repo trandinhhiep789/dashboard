@@ -13,6 +13,7 @@ import {
     APIHostName,
     SearchAPIPath,
     DataGridModalAdvanceMaterial,
+    DataGridModalAdvanceMaterialNew,
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -86,30 +87,30 @@ class SearchCom extends React.Component {
         //     this.showMessage("Vui lòng chọn nghiệp vụ cần tìm kiếm.")
         // }
         // else {
-            var fromDate = MLObject.FromDate._d;
-            if(fromDate == null)
-                fromDate = MLObject.FromDate;
-            var toDate = MLObject.ToDate._d;
-            if(toDate == null)
-                toDate = MLObject.ToDate;
+        var fromDate = MLObject.FromDate._d;
+        if (fromDate == null)
+            fromDate = MLObject.FromDate;
+        var toDate = MLObject.ToDate._d;
+        if (toDate == null)
+            toDate = MLObject.ToDate;
 
         console.log("fromDate", fromDate);
         console.log("toDate", toDate);
 
-          
+
         const objParams = {
-                FromDate: fromDate.getTime() ,
-                ToDate: toDate.getTime(), //Date.parse(MLObject.ToDate),
-                BusinessID: MLObject.BusinessID,
-                Difference: MLObject.Difference
-            }
-       
-      /* const objParams = {
-            FromDate: Date.parse(toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false)),
-            ToDate: Date.parse(toIsoStringCusNew(new Date(MLObject.ToDate).toISOString(), false)), //Date.parse(MLObject.ToDate),
+            FromDate: fromDate.getTime(),
+            ToDate: toDate.getTime(), //Date.parse(MLObject.ToDate),
             BusinessID: MLObject.BusinessID,
             Difference: MLObject.Difference
-        }*/
+        }
+
+        /* const objParams = {
+              FromDate: Date.parse(toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false)),
+              ToDate: Date.parse(toIsoStringCusNew(new Date(MLObject.ToDate).toISOString(), false)), //Date.parse(MLObject.ToDate),
+              BusinessID: MLObject.BusinessID,
+              Difference: MLObject.Difference
+          }*/
 
         this.setState({
             params: objParams,
@@ -292,21 +293,40 @@ class SearchCom extends React.Component {
     onShowModal(data, typeDataGrid, date) {
         const { params, widthPercent, Difference, cacheConfig } = this.state;
         let titleName = "";
+        let listColumn = DataGridModalAdvanceMaterial;
+        let idSelectColumnName = ""
+        let pkIDSelectColumnName = ""
         switch (typeDataGrid) {
             case 1:
                 titleName = "Báo cáo chi tiết tạm ứng vật tư";
+                listColumn = DataGridModalAdvanceMaterial;
+                idSelectColumnName = "voucherconcern"
+                pkIDSelectColumnName = "voucherconcern"
+
                 break
             case 2:
                 titleName = "Báo cáo chi tiết nhập trả tạm ứng";
+                listColumn = DataGridModalAdvanceMaterialNew;
+                idSelectColumnName = "";
+                pkIDSelectColumnName = "";
                 break
             case 3:
                 titleName = "Báo cáo chi tiết xuất tiêu hao vật";
+                listColumn = DataGridModalAdvanceMaterialNew;
+                idSelectColumnName = "";
+                pkIDSelectColumnName = "";
                 break
             case 4:
                 titleName = "Báo cáo chi tiết xuất bán vật tư cho khách";
+                listColumn = DataGridModalAdvanceMaterialNew;
+                idSelectColumnName = "";
+                pkIDSelectColumnName = "";
                 break
             default:
                 titleName = "Báo cáo chi tiết tạm ứng vật tư";
+                listColumn = DataGridModalAdvanceMaterialNew;
+                idSelectColumnName = "";
+                pkIDSelectColumnName = "";
                 break
         }
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
@@ -314,9 +334,11 @@ class SearchCom extends React.Component {
             content: {
                 text: <ModalDetail
                     param={params}
-                    listColumn={DataGridModalAdvanceMaterial}
+                    listColumn={listColumn}
                     dataSource={[]}
                     date={date}
+                    IDSelectColumnName={idSelectColumnName}
+                    PKColumnName={pkIDSelectColumnName}
                     typeDataGrid={typeDataGrid}
                     Difference={Difference}
                     cacheConfig={cacheConfig}

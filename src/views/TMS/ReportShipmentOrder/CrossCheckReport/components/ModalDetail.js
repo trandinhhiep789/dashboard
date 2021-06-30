@@ -803,8 +803,9 @@ class ModalDetailCom extends Component {
     }
 
     render() {
-        const { UserName, Month, listColumn, dataSource, fileName, dataExport } = this.props;
+        const { UserName, Month, listColumn, dataSource, fileName, dataExport, PKColumnName, IDSelectColumnName } = this.props;
         const { isExportFile, DataSource, IsLoadDataComplete, SearchElementDetailList, IsShowButtonExport } = this.state;
+        console.log("modal", this.props)
         if (IsLoadDataComplete) {
             return (
                 <React.Fragment>
@@ -826,8 +827,8 @@ class ModalDetailCom extends Component {
                     <DataGrid
                         listColumn={listColumn}
                         dataSource={DataSource}
-                        IDSelectColumnName={""}
-                        PKColumnName={""}
+                        IDSelectColumnName={IDSelectColumnName}
+                        PKColumnName={PKColumnName}
                         IsDelete={false}
                         IsAutoPaging={true}
                         IsShowButtonAdd={false}
