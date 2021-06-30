@@ -20,7 +20,7 @@ import { formatDateNew } from '../../../../common/library/CommonLib.js';
 import { ExportStringToDate, ExportStringDate } from "../../../../common/library/ultils";
 import { Base64 } from 'js-base64';
 import { el } from 'date-fns/locale';
-
+import draftToHtml from 'draftjs-to-html';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
@@ -2334,12 +2334,19 @@ class UploadAvatar extends React.Component {
         let isValidAcceptedFile = this.checkIsValidAcceptedFile(event.target.files[0].name);
 
         this.setState({ value: event.target.files[0].name, src: URL.createObjectURL(event.target.files[0]) });
+        if (this.props.isReturnInline) {
+            if (this.props.onHandleSelectedFile != null && isValidAcceptedFile) {
+                this.props.onHandleSelectedFile(event.target.files[0], this.props.nameMember, false);
+            }
+        }
+        else {
+            if (this.props.onValueChange != null && isValidAcceptedFile) {
+                this.props.onValueChange(this.props.name, event.target.files[0].name, this.props.nameMember, "", undefined);
 
-        // if (this.props.onValueChange != null && isValidAcceptedFile) {
-        //     this.props.onValueChange(event.target.files[0], this.props.nameMember, false);
+                //console.log("selipfile", event.target.files[0]);
+            }
+        }
 
-        //     //console.log("selipfile", event.target.files[0]);
-        // }
     }
 
 
@@ -2348,6 +2355,11 @@ class UploadAvatar extends React.Component {
         console.log("resetFile")
         let id = this.props.name;
         document.getElementById(id).value = "";
+        if (this.props.isReturnInline) {
+            if (this.props.onHandleSelectedFile != null && isValidAcceptedFile) {
+                this.props.onHandleSelectedFile(null, this.props.nameMember, true);
+            }
+        }
         this.setState({
             src: this.state.defaultImage,
             value: "",
@@ -2358,8 +2370,6 @@ class UploadAvatar extends React.Component {
 
 
     render() {
-        console.log('this.props.label', this.props, this.state)
-
 
         let className = "form-control form-control-sm";
         if (this.props.CSSClassName != null)
@@ -2462,7 +2472,6 @@ class TextEditor extends React.Component {
     constructor(props) {
         super(props);
         this.handleValueChange = this.handleValueChange.bind(this);
-        this.handKeyDown = this.handKeyDown.bind(this);
         this.state = {
             editorState: EditorState.createEmpty(),
         };
@@ -2479,15 +2488,12 @@ class TextEditor extends React.Component {
     // }
 
     handleValueChange = (editorState) => {
-        console.log("editorState", editorState)
-        this.setState({ editorState });
-    }
+        // console.log("editorState", this.props, editorState, draftToHtml(convertToRaw(this.state.editorState.getCurrentContent())))
 
-    handKeyDown(e) {
-        if (e.key == 'Enter') {
-            if (this.props.onhandKeyDown != null) {
-                this.props.onhandKeyDown(e.target.name, e.target.value, "", e, this.props.validatonList);
-            }
+        const value = draftToHtml(convertToRaw(editorState.getCurrentContent())).toString();
+        this.setState({ editorState });
+        if (this.props.onValueChange != null) {
+            this.props.onValueChange(this.props.name, value, this.props.namelabel, "", undefined);
         }
     }
 
@@ -2578,6 +2584,7 @@ class TextEditor extends React.Component {
                                 editorClassName="editor-class"
                                 toolbarClassName="toolbar-class"
                                 placeholder="Enter some text..."
+                                name={this.props.name}
                                 onEditorStateChange={this.handleValueChange}
                             />
                         </div>

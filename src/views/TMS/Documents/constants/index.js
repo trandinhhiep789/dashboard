@@ -2,7 +2,7 @@ export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/Document/Search";
 export const LoadAPIPath = "";
 export const LoadNewAPIPath = "";
-export const AddAPIPath = "";
+export const AddAPIPath = "api/Document/Add";
 export const AddAutoAPIPath = "";
 export const UpdateAPIPath = "";
 export const DeleteNewAPIPath = "";
@@ -12,7 +12,7 @@ export const UpdateOrderAPIPath = "";
 export const BackLink = "/Documents";
 export const AddLink = "/Documents/Add";
 export const IDSelectColumnName = "chkSelect";
-export const PKColumnName = "Documents";
+export const PKColumnName = "DocumentID";
 
 export const TitleFormSearch = "Tìm kiếm danh sách tài liệu";
 export const TitleFormAdd = "Thêm tài liệu";
@@ -79,51 +79,51 @@ export const DataGridColumnList = [
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "ServiceAgreementID",
+        DataSourceMember: "DocumentID",
         Width: 60
     },
     {
-        Name: "ServiceAgreementID",
+        Name: "DocumentName",
         Type: "texttolink",
         Caption: "Tên tài liệu",
-        DataSourceMember: "ServiceAgreementID",
+        DataSourceMember: "DocumentName",
         Link: "/Documents/Detail/",
         Width: 70
     },
    
     {
-        Name: "PartnerName",
+        Name: "DocumentFolderName",
         Type: "text",
         Caption: "Danh mục",
-        DataSourceMember: "PartnerName",
+        DataSourceMember: "DocumentFolderName",
         Width: 150
     },
     {
-        Name: "ServiceTypeName",
-        Type: "text",
+        Name: "IsPubliShed",
+        Type: "checkicon",
         Caption: "Công bố",
-        DataSourceMember: "ServiceTypeName",
-        Width:  200
+        DataSourceMember: "IsPubliShed",
+        Width:  100
     },
     {
-        Name: "AreaName",
-        Type: "text",
+        Name: "PubliShedDate",
+        Type: "date",
         Caption: "Ngày xuất bản",
-        DataSourceMember: "AreaName",
+        DataSourceMember: "PubliShedDate",
         Width: 100
     },
     {
-        Name: "SignedDate",
+        Name: "DocumentTypeName",
         Type: "text",
         Caption: "Loại tài liệu",
-        DataSourceMember: "SignedDate",
+        DataSourceMember: "DocumentTypeName",
         Width: 130
     },
     {
-        Name: "ExpiredDate",
+        Name: "FileName",
         Type: "text",
         Caption: "Tập tin",
-        DataSourceMember: "ExpiredDate",
+        DataSourceMember: "FileName",
         Width: 130
     },
     {
@@ -134,10 +134,10 @@ export const DataGridColumnList = [
         Width: 150
     },
     {
-        Name: "DepositedLable",
-        Type: "text",
+        Name: "ModifyDate",
+        Type: "date",
         Caption: "Cập nhật lần cuối",
-        DataSourceMember: "DepositedLable",
+        DataSourceMember: "ModifyDate",
         Width: 100
     },
   
@@ -145,7 +145,7 @@ export const DataGridColumnList = [
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
-        DataSourceMember: "ServiceAgreementID",
+        DataSourceMember: "DocumentID",
         Width: 100,
         Link: "/Documents/Edit/",
         LinkText: "Chỉnh sửa"
@@ -244,6 +244,12 @@ export const MLObjectDefinition = [
         DataSourceMember: "DocumentID"
     },
     {
+        Name: "DocumentName",
+        DefaultValue: "",
+        BindControlName: "txtDocumentName",
+        DataSourceMember: "DocumentName"
+    },
+    {
         Name: "SearchKeyword",
         DefaultValue: "",
         BindControlName: "txtSearchKeyword",
@@ -274,15 +280,8 @@ export const MLObjectDefinition = [
     {
         Name: "FileContent1",
         DefaultValue: "",
-        BindControlName: "txtFileContent1",
+        BindControlName: "txtEditorFileContent1",
         DataSourceMember: "FileContent1"
-    },
-
-    {
-        Name: "FileContent2",
-        DefaultValue: "",
-        BindControlName: "txtFileContent2",
-        DataSourceMember: "FileContent2"
     },
 
     {
@@ -297,7 +296,12 @@ export const MLObjectDefinition = [
         BindControlName: "txtFileName",
         DataSourceMember: "FileName"
     },
-
+    {
+        Name: "FileContent2",
+        DefaultValue: "",
+        BindControlName: "txtEditorFileContent2",
+        DataSourceMember: "FileContent2"
+    },
     {
         Name: "IsLockComment",
         DefaultValue: false,
