@@ -111,7 +111,8 @@ class GridCell extends Component {
         let linkTo;
         if (link) {
             linkTo = listValue.reduce((link, item, index, listValue) => {
-                return link + item.value.toString().trim() + "/"
+                let value = (item.value == "" || item.value == undefined || item.value == null) ? item.value : item.value.toString().trim();
+                return link + value + "/"
             }, link)
 
         }
@@ -384,6 +385,8 @@ class GridCell extends Component {
                     destinationHyperlink = hyperLink.AREdit
                 } else if (RelatedVoucherID.includes("RR")) {
                     destinationHyperlink = hyperLink.MTRDetail
+                } else if (RelatedVoucherID.includes("INV")) {
+                    destinationHyperlink = hyperLink.INVRequest
                 } else {
                     destinationHyperlink = hyperLink.SODetail
                 }
