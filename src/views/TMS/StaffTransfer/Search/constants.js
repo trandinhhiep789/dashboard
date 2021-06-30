@@ -1,10 +1,10 @@
+import { ERPCOMMONCACHE_STAFFTRANSFERTYPE, ERPCOMMONCACHE_USER_COOSTORE_BYUSER } from "../../../../constants/keyCache";
+
 let dtFromDate = new Date();
 dtFromDate.setDate(new Date().getDate() - 30);
 
 export const APIHostName = "TMSAPI";
 export const APISearch = "api/StaffTransfer/Search";
-
-export const FormName = "Tìm kiếm danh sách loại hình thuyên chuyển nhân viên";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
@@ -70,9 +70,9 @@ export const MLObjectDefinition = [
         BindControlName: "dtToDate"
     },
     {
-        Name: "IsreViewed",
+        Name: "IsReviewed",
         DefaultValue: "",
-        BindControlName: "cbIsreViewed"
+        BindControlName: "cbIsReviewed"
     },
     {
         Name: "IsTransfered",
@@ -103,7 +103,7 @@ export const listelement = [
         placeholder: "---Vui lòng chọn---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.STAFFTRANSFERTYPEID",
+        LoadItemCacheKeyID: ERPCOMMONCACHE_STAFFTRANSFERTYPE,
         ValueMember: "StaffTransferTypeID",
         NameMember: "StaffTransferTypeName",
 
@@ -119,7 +119,7 @@ export const listelement = [
         placeholder: "---Vui lòng chọn---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.USER_COOSTORE_BYUSER",
+        LoadItemCacheKeyID: ERPCOMMONCACHE_USER_COOSTORE_BYUSER,
         ValueMember: "StoreID",
         NameMember: "StoreName"
 
@@ -146,8 +146,8 @@ export const listelement = [
     },
     {
         type: "ComboBox",
-        name: "cbIsreViewed",
-        DataSourceMember: "IsreViewed",
+        name: "cbIsReviewed",
+        DataSourceMember: "IsReviewed",
         label: "Trạng thái duyệt",
         colspan: 2,
         value: -1,
@@ -155,8 +155,8 @@ export const listelement = [
         placeholder: "--Tất cả--",
         listoption: [
             { value: -1, label: '--Tất cả--' },
-            { value: 1, label: 'Chưa duyệt' },
-            { value: 2, label: 'Đã duyệt' },
+            { value: 0, label: 'Chưa duyệt' },
+            { value: 1, label: 'Đã duyệt' },
         ]
     },
     {
@@ -170,8 +170,8 @@ export const listelement = [
         placeholder: "--Tất cả--",
         listoption: [
             { value: -1, label: '--Tất cả--' },
-            { value: 1, label: 'Chưa thuyên chuyển' },
-            { value: 2, label: 'Đã thuyên chuyển' },
+            { value: 0, label: 'Chưa thuyên chuyển' },
+            { value: 1, label: 'Đã thuyên chuyển' },
         ]
     },
 ];
@@ -200,25 +200,24 @@ export const listColumn = [
         Width: 300
     },
     {
-        Name: "StoreName",
+        Name: "RequestStoreID_Name",
         Type: "text",
         Caption: "Kho yêu cầu",
-        DataSourceMember: "StoreName",
+        DataSourceMember: "RequestStoreID_Name",
         Width: 180
+    },
+    {
+        Name: "RequestUserID_Name",
+        Type: "text",
+        Caption: "Người yêu cầu",
+        DataSourceMember: "RequestUserID_Name",
+        Width: 150
     },
     {
         Name: "RequestDate",
         Type: "date",
         Caption: "Ngày yêu cầu",
         DataSourceMember: "RequestDate",
-        Width: 150
-    },
-
-    {
-        Name: "ApproverName",
-        Type: "text",
-        Caption: "Người yêu cầu",
-        DataSourceMember: "ApproverName",
         Width: 150
     },
     {
@@ -229,10 +228,10 @@ export const listColumn = [
         Width: 130
     },
     {
-        Name: "OutputStatusLable",
+        Name: "TransferedStatusLable",
         Type: "text",
-        Caption: " Đã xuất",
-        DataSourceMember: "OutputStatusLable",
+        Caption: "Đã thuyên chuyển",
+        DataSourceMember: "TransferedStatusLable",
         Width: 130
     },
     {
@@ -241,7 +240,7 @@ export const listColumn = [
         Caption: "Tác vụ",
         DataSourceMember: "InventoryRequestID",
         Width: 100,
-        Link: "/InventoryRequest/Edit/",
+        Link: "/StaffTransfer/Edit/",
         LinkText: "Chỉnh sửa"
     },
 ];

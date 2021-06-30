@@ -21,6 +21,9 @@ import { ExportStringToDate, ExportStringDate } from "../../../../common/library
 import { Base64 } from 'js-base64';
 import { el } from 'date-fns/locale';
 
+import { Editor } from 'react-draft-wysiwyg';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+
 
 //#region connect
 const mapStateToProps = state => {
@@ -2179,7 +2182,7 @@ class FormControlComboBoxNewCom extends Component {
                 if (!isMultiSelect)
                     listoptionnew = [{ value: -1, label: "--Vui lòng chọn--" }];
                 // this.state.Data.filter(n => n[filterobj] == nextProps.filterValue).map((cacheItem) => {
-                    this.state.Data.filter(item => nextProps.filterValue.includes(item[filterobj])).map((cacheItem) => {
+                this.state.Data.filter(item => nextProps.filterValue.includes(item[filterobj])).map((cacheItem) => {
                     listoptionnew.push({ value: cacheItem[valuemember], label: cacheItem[valuemember] + "-" + cacheItem[nameMember], name: cacheItem[nameMember] });
                 }
                 );
@@ -2268,8 +2271,329 @@ class FormControlComboBoxNewCom extends Component {
 }
 export const FormControlComboBoxNew = connect(mapStateToProps, mapDispatchToProps)(FormControlComboBoxNewCom);
 
+
+
+const singleFileUploadImage = {
+    maxWidth: "100px",
+    minWidth: "100px",
+    minHeight: "50px",
+    marginRight: "20px"
+};
+
+const singleFileUploadDeletebtn = {
+    fontSize: "37px",
+    color: "red",
+    cursor: "pointer",
+    marginRight: "10px"
+};
+
+class UploadAvatar extends React.Component {
+    constructor(props) {
+        super(props);
+        this.checkIsValidAcceptedFile = this.checkIsValidAcceptedFile.bind(this);
+        this.handleSelectedFile = this.handleSelectedFile.bind(this);
+        this.state = {
+            value: this.props.value,
+            ValidationError: "",
+            IsSystem: this.props.IsSystem,
+            src: this.props.cdn + this.props.value,
+            content: "",
+            acceptType: "image/*",
+            defaultImage: "/src/img/avatar/noimage.gif"
+        };
+    }
+    static defaultProps = {
+        controltype: 'InputControl'
+    }
+
+    componentDidMount() {
+
+        //singlefileupload
+        if (!this.props.value || this.state.src == "" || this.state.src == NaN) {
+            this.setState({ src: this.state.defaultImage });
+        }
+    }
+
+
+    checkIsValidAcceptedFile(filename) {
+        console.log("filename", filename)
+        var _fileName = filename;
+        var idxDot = _fileName.lastIndexOf(".") + 1;
+        var extFile = _fileName.substr(idxDot, _fileName.length).toLowerCase();
+        if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
+    handleSelectedFile(event) {
+        console.log("handleSelectedFile", event.target.files[0])
+        let isValidAcceptedFile = this.checkIsValidAcceptedFile(event.target.files[0].name);
+
+        this.setState({ value: event.target.files[0].name, src: URL.createObjectURL(event.target.files[0]) });
+
+        // if (this.props.onValueChange != null && isValidAcceptedFile) {
+        //     this.props.onValueChange(event.target.files[0], this.props.nameMember, false);
+
+        //     //console.log("selipfile", event.target.files[0]);
+        // }
+    }
+
+
+
+    resetFile() {
+        console.log("resetFile")
+        let id = this.props.name;
+        document.getElementById(id).value = "";
+        this.setState({
+            src: this.state.defaultImage,
+            value: "",
+        });
+    }
+
+
+
+
+    render() {
+        console.log('this.props.label', this.props, this.state)
+
+
+        let className = "form-control form-control-sm";
+        if (this.props.CSSClassName != null)
+            className = this.props.CSSClassName;
+        let formGroupClassName = "form-group col-md-4";
+        if (this.props.colspan != null) {
+            formGroupClassName = "form-group col-md-" + this.props.colspan;
+        }
+        let labelDivClassName = "form-group col-md-2";
+        if (this.props.labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
+        }
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
+            star = '*'
+        }
+
+        let formRowClassName = "form-row ";
+        if (this.props.classNameCustom != null) {
+            formRowClassName += this.props.classNameCustom;
+        }
+        // console.log('this.props.label', this.props.label)
+        if (this.props.validationErrorMessage != "" && this.props.validationErrorMessage != undefined) {
+            className += " is-invalid";
+
+            return (
+                <div className={formRowClassName} >
+                    {this.props.label.length > 0 ?
+                        <div className={labelDivClassName}>
+                            <label className="col-form-label 2">
+                                {this.props.label}<span className="text-danger"> {star}</span>
+                            </label>
+                        </div>
+                        : ""
+                    }
+
+                    <div className={formGroupClassName}>
+                        <input type="text" name={this.props.name}
+                            onChange={this.handleValueChange}
+                            onBlur={this.handKeyDown}
+                            value={this.props.value}
+                            key={this.props.name}
+                            className={className}
+                            autoFocus={true}
+                            ref={this.props.inputRef}
+                            placeholder={this.props.placeholder}
+                            disabled={this.props.readOnly}
+                            maxLength={this.props.maxSize}
+                        />
+                        <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
+                    </div>
+                </div>
+            );
+        }
+        else {
+            return (
+                <div className={formRowClassName} >
+                    {this.props.label.length > 0 ?
+                        <div className={labelDivClassName}>
+                            <label className="col-form-label 2">
+                                {this.props.label}<span className="text-danger"> {star}</span>
+                            </label>
+                        </div>
+                        : ""
+                    }
+                    <div className={formGroupClassName}>
+                        {/* <input type="text" name={this.props.name}
+                            onChange={this.handleValueChange}
+                            onKeyPress={(event) => this.handKeyDown(event)}
+                            value={this.props.value}
+                            key={this.props.name}
+                            className={className}
+                            autoFocus={false}
+                            ref={this.props.inputRef}
+                            placeholder={this.props.placeholder}
+                            disabled={this.props.readOnly}
+                            maxLength={this.props.maxSize}
+                        /> */}
+
+                        <div className="input-group file-group">
+                            <img src={this.state.src} alt="No image" style={singleFileUploadImage} />
+                            <input type="file" id={this.props.name} onChange={this.handleSelectedFile} accept={this.state.acceptType} disabled={this.state.IsSystem} />
+                            {this.state.value != null && this.state.value != "" ? <i className="fa fa-remove" onClick={this.resetFile.bind(this)}></i> : ""}
+                            <span className="input-group-append" >
+                                <label className="btn btn-light file-browser" htmlFor={this.props.name} >
+                                    <i className="fa fa-upload"></i>
+                                </label>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+    }
+}
+
+import { EditorState, ContentState, convertToRaw, createWithContent, convertFromHTML } from 'draft-js';
+
+class TextEditor extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+        this.handKeyDown = this.handKeyDown.bind(this);
+        this.state = {
+            editorState: EditorState.createEmpty(),
+        };
+    }
+    static defaultProps = {
+        controltype: 'InputControl'
+    }
+
+    // handleValueChange(e) {
+    //     if (this.props.onValueChange != null) {
+    //         this.props.onValueChange(e.target.name, e.target.value, "", e, undefined);
+    //     }
+
+    // }
+
+    handleValueChange = (editorState) => {
+        console.log("editorState", editorState)
+        this.setState({ editorState });
+    }
+
+    handKeyDown(e) {
+        if (e.key == 'Enter') {
+            if (this.props.onhandKeyDown != null) {
+                this.props.onhandKeyDown(e.target.name, e.target.value, "", e, this.props.validatonList);
+            }
+        }
+    }
+
+    render() {
+
+        let className = "form-control form-control-sm";
+        if (this.props.CSSClassName != null)
+            className = this.props.CSSClassName;
+        let formGroupClassName = "form-group col-md-4";
+        if (this.props.colspan != null) {
+            formGroupClassName = "form-group col-md-" + this.props.colspan;
+        }
+        let labelDivClassName = "form-group col-md-2";
+        if (this.props.labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
+        }
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("required") == true) {
+            star = '*'
+        }
+
+        let formRowClassName = "form-row ";
+        if (this.props.classNameCustom != null) {
+            formRowClassName += this.props.classNameCustom;
+        }
+        // console.log('this.props.label', this.props.label)
+        if (this.props.validationErrorMessage != "" && this.props.validationErrorMessage != undefined) {
+            className += " is-invalid";
+
+            return (
+                <div className={formRowClassName} >
+                    {this.props.label.length > 0 ?
+                        <div className={labelDivClassName}>
+                            <label className="col-form-label 2">
+                                {this.props.label}<span className="text-danger"> {star}</span>
+                            </label>
+                        </div>
+                        : ""
+                    }
+
+                    <div className={formGroupClassName}>
+                        <input type="text" name={this.props.name}
+                            onChange={this.handleValueChange}
+                            onBlur={this.handKeyDown}
+                            value={this.props.value}
+                            key={this.props.name}
+                            className={className}
+                            autoFocus={true}
+                            ref={this.props.inputRef}
+                            placeholder={this.props.placeholder}
+                            disabled={this.props.readOnly}
+                            maxLength={this.props.maxSize}
+                        />
+                        <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
+                    </div>
+                </div>
+            );
+        }
+        else {
+            return (
+                <div className={formRowClassName} >
+                    {this.props.label.length > 0 ?
+                        <div className={labelDivClassName}>
+                            <label className="col-form-label 2">
+                                {this.props.label}<span className="text-danger"> {star}</span>
+                            </label>
+                        </div>
+                        : ""
+                    }
+                    <div className={formGroupClassName}>
+                        {/* <input type="text" name={this.props.name}
+                            onChange={this.handleValueChange}
+                            onKeyPress={(event) => this.handKeyDown(event)}
+                            value={this.props.value}
+                            key={this.props.name}
+                            className={className}
+                            autoFocus={false}
+                            ref={this.props.inputRef}
+                            placeholder={this.props.placeholder}
+                            disabled={this.props.readOnly}
+                            maxLength={this.props.maxSize}
+                        /> */}
+
+                        <div className='editor'>
+                            <Editor
+                                editorState={this.state.editorState}
+                                wrapperClassName="wrapper-class"
+                                editorClassName="editor-class"
+                                toolbarClassName="toolbar-class"
+                                placeholder="Enter some text..."
+                                onEditorStateChange={this.handleValueChange}
+                            />
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+    }
+}
+
+
+
+
+
 export default {
-    FormControlTextBox, TextBox, TextArea, CheckBox, modal, TextBoxCurrency, TextBoxNew,
+    FormControlTextBox, TextBox, TextArea, CheckBox, modal, TextBoxCurrency, TextBoxNew, UploadAvatar, TextEditor,
     FormControlComboBox,
     FormControlComboBoxNew,
     FormControlComboBoxUser,

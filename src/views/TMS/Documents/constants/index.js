@@ -1,5 +1,5 @@
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "";
+export const SearchAPIPath = "api/Document/Search";
 export const LoadAPIPath = "";
 export const LoadNewAPIPath = "";
 export const AddAPIPath = "";
@@ -9,11 +9,10 @@ export const DeleteNewAPIPath = "";
 export const DeleteAPIPath = "";
 export const DeleteAbilityAPIPath = "";
 export const UpdateOrderAPIPath = "";
-export const BackLink = "/ServiceAgreement";
-export const AddLink = "/ServiceAgreement/Add";
-export const AddLogAPIPath = "api/UserActivity/Add";
+export const BackLink = "/Documents";
+export const AddLink = "/Documents/Add";
 export const IDSelectColumnName = "chkSelect";
-export const PKColumnName = "ServiceAgreementID";
+export const PKColumnName = "Documents";
 
 export const TitleFormSearch = "Tìm kiếm danh sách tài liệu";
 export const TitleFormAdd = "Thêm tài liệu";
@@ -54,25 +53,25 @@ export const InitSearchParams = [
         SearchValue: ""
     },
     {
-        SearchKey: "@SERVICETYPEID",
-        SearchValue: "-1"
-    },
-    {
-        SearchKey: "@AREAID",
+        SearchKey: "@DOCUMENTTYPEID",
         SearchValue: "-1"
     },
     {
         SearchKey: "@FROMDATE",
-        SearchValue: dtFromdate
+        SearchValue: new Date()
     },
     {
         SearchKey: "@TODATE",
         SearchValue: new Date()
     },
     {
-        SearchKey: "@STATUS",
-        SearchValue: "-1"
+        SearchKey: "@PAGESIZE",
+        SearchValue: 50
     },
+    {
+        SearchKey: "@PAGEINDEX",
+        SearchValue: 1
+    }
 ];
 
 export const DataGridColumnList = [
@@ -199,8 +198,8 @@ export const SearchElementList = [
     },
     {
         type: "ComboBox",
-        name: "cbServiceTypeID",
-        DataSourceMember: "ServiceTypeID",
+        name: "cbDocumentTypeID",
+        DataSourceMember: "DocumentTypeID",
         label: "Loại tài liệu",
         colspan: 2,
         value: -1,
@@ -208,9 +207,9 @@ export const SearchElementList = [
         placeholder: "---Vui lòng chọn---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.SERVICETYPE",
-        ValueMember: "ServiceTypeID",
-        NameMember: "ServiceTypeName",
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.DOCUMENTTYPE",
+        ValueMember: "DocumentTypeID",
+        NameMember: "DocumentTypeName",
 
     },
     {
@@ -234,4 +233,76 @@ export const SearchElementList = [
         colspan: 2,
     },
     
+];
+
+
+export const MLObjectDefinition = [
+    {
+        Name: "DocumentID",
+        DefaultValue: "",
+        BindControlName: "txtDocumentID",
+        DataSourceMember: "DocumentID"
+    },
+    {
+        Name: "SearchKeyword",
+        DefaultValue: "",
+        BindControlName: "txtSearchKeyword",
+        DataSourceMember: "SearchKeyword"
+    },
+
+    {
+        Name: "DocumentFolderID",
+        DefaultValue: "",
+        BindControlName: "cbDocumentFolderID",
+        DataSourceMember: "DocumentFolderID"
+    },
+
+    {
+        Name: "DocumentTypeID",
+        DefaultValue: "",
+        BindControlName: "cbDocumentTypeID",
+        DataSourceMember: "DocumentTypeID"
+    },
+
+    {
+        Name: "Description",
+        DefaultValue: "",
+        BindControlName: "txtDescription",
+        DataSourceMember: "Description"
+    },
+
+    {
+        Name: "FileContent1",
+        DefaultValue: "",
+        BindControlName: "txtFileContent1",
+        DataSourceMember: "FileContent1"
+    },
+
+    {
+        Name: "FileContent2",
+        DefaultValue: "",
+        BindControlName: "txtFileContent2",
+        DataSourceMember: "FileContent2"
+    },
+
+    {
+        Name: "DocumentImageURL",
+        DefaultValue: "",
+        BindControlName: "txtDocumentImageURL",
+        DataSourceMember: "DocumentImageURL"
+    },
+    {
+        Name: "FileName",
+        DefaultValue: "",
+        BindControlName: "txtFileName",
+        DataSourceMember: "FileName"
+    },
+
+    {
+        Name: "IsLockComment",
+        DefaultValue: false,
+        BindControlName: "chkIsLockComment",
+        DataSourceMember: "IsLockComment"
+    },
+
 ];

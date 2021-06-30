@@ -1,5 +1,6 @@
 export const APIHostName = "TMSAPI";
 export const APILoadInfo = "api/StaffTransfer/LoadNew";
+export const APIAdd = "api/StaffTransfer/AddNew";
 
 export const BackLink = "/StaffTransfer"
 

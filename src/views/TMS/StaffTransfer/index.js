@@ -7,8 +7,8 @@ import { connect } from "react-redux";
 import { callFetchAPI } from "../../../actions/fetchAPIAction";
 import Search from "./Search";
 import Add from "./Add";
-// import Edit from "./Edit";
-// import Detail from "./Detail";
+import Edit from "./Edit";
+import Detail from "./Detail";
 import NotFound from '../../NotFound';
 
 
@@ -20,8 +20,8 @@ class StaffTransferCom extends React.Component {
             <Switch>
                 <Route exact path="/StaffTransfer" component={Search} />
                 <Route exact path="/StaffTransfer/Add" component={Add} />
-                {/* <Route exact path="/StaffTransfer/Edit/:id" component={Edit} /> */}
-                {/* <Route exact path="/StaffTransfer/Detail/:id" component={Detail} /> */}
+                <Route exact path="/StaffTransfer/Edit/:id" component={Edit} />
+                <Route exact path="/StaffTransfer/Detail/:id" component={Detail} />
 
                 <Route path="*" component={NotFound} />
             </Switch>
