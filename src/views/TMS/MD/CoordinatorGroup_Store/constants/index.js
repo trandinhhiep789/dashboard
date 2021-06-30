@@ -4,11 +4,31 @@ export const UpdateAPIPath = "api/CoordinatorGroup_Store/Update";
 export const DeleteAPIPath = "api/CoordinatorGroup_Store/Delete";
 export const GetUserAPIPath = "api/CoordinatorGroup_Store/GetUserByStoreID";
 export const BackLink = "/CoordinatorGroup";
-export const AddByFileAPIPath ="api/CoordinatorGroup_Store/AddByFile";
+export const AddByFileAPIPath = "api/CoordinatorGroup_Store/AddByFile";
 
 export const ModalColumnList_Insert = [
+    // {
+    //     type: "select",
+    //     Name: "SenderStoreID",
+    //     label: "kho đối tác",
+    //     value: -1,
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: [],
+    //     DataSourceMember: "SenderStoreID",
+    //     readonly: false,
+    //     validatonList: ["Comborequired"],
+    //     IsAutoLoadItemFromCache: true,
+    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
+    //     ValueMember: "StoreID",
+    //     NameMember: "StoreName",
+    //     KeyFilter: "CompanyID",
+    //     ValueFilter: 1
+
+    // },
+
     {
-        type: "select",
+        type: "multiselect",
         Name: "SenderStoreID",
         label: "kho đối tác",
         value: -1,
@@ -18,13 +38,13 @@ export const ModalColumnList_Insert = [
         DataSourceMember: "SenderStoreID",
         readonly: false,
         validatonList: ["Comborequired"],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
-        ValueMember: "StoreID",
-        NameMember: "StoreName",
-        KeyFilter: "CompanyID",
-        ValueFilter: 10
-
+        isMulti: false,
+        IsAutoLoadItemFromCache: false,
+        // LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
+        // ValueMember: "StoreID",
+        // NameMember: "StoreName",
+        // KeyFilter: "CompanyID",
+        // ValueFilter: 1
     },
 ];
 

@@ -14,9 +14,11 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
+import { AREATYPE_ADD } from "../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_SERVICETYPE, ERPCOMMONCACHE_SMSTEMPLATE, ERPCOMMONCACHE_TMSREWARDTYPE } from "../../../../../constants/keyCache";
-import { REWARDTYPE_ADD, SERVICETYPE_ADD, SMSTEMPLATE_ADD } from "../../../../../constants/functionLists";
+import { ERPCOMMONCACHE_AREATT, ERPCOMMONCACHE_AREATYPE, ERPCOMMONCACHE_DOCUMENTTYPE } from "../../../../../constants/keyCache";
+
+
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
@@ -33,14 +35,14 @@ class AddCom extends React.Component {
         this.props.updatePagePath(AddPagePath);
     }
 
+
     handleSubmit(formData, MLObject) {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if(!apiResult.IsError){
-                this.props.callClearLocalCache(ERPCOMMONCACHE_SMSTEMPLATE);
-                //this.handleSubmitInsertLog(MLObject);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_DOCUMENTTYPE);
             }            
             this.showMessage(apiResult.Message);
         });
@@ -70,7 +72,7 @@ class AddCom extends React.Component {
         }
         return (
             <SimpleForm
-                FormName="Thêm template tin nhắn SMS"
+                FormName="Thêm loại khu vực"
                 MLObjectDefinition={MLObjectDefinition} 
                 listelement={AddElementList}
                 onSubmit={this.handleSubmit}
@@ -78,7 +80,7 @@ class AddCom extends React.Component {
                 IsErrorMessage={this.state.IsCallAPIError}
                 dataSource={dataSource}
                 BackLink={BackLink}
-                RequirePermission={SMSTEMPLATE_ADD}
+                RequirePermission={AREATYPE_ADD}
                 ref={this.searchref}
             />
         );

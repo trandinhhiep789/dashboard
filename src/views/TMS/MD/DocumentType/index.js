@@ -1,28 +1,26 @@
 import React from "react";
 import {
+    BrowserRouter as Router,
     Route,
     Switch
 } from "react-router-dom";
 import { connect } from "react-redux";
-import { callFetchAPI } from "../../../actions/fetchAPIAction";
+import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import Search from "./Search";
 import Add from "./Add";
 import Edit from "./Edit";
-import Detail from "./Detail";
-import NotFound from '../../NotFound';
-
-
-class StaffTransferCom extends React.Component {
-
+import NotFound from '../../../NotFound'
+class DocumentsTypeCom extends React.Component {
+    constructor(props) {
+        super(props);
+    }
 
     render() {
         return (
             <Switch>
-                <Route exact path="/StaffTransfer" component={Search} />
-                <Route exact path="/StaffTransfer/Add" component={Add} />
-                <Route exact path="/StaffTransfer/Edit/:id" component={Edit} />
-                <Route exact path="/StaffTransfer/Detail/:id" component={Detail} />
-
+                <Route exact path="/DocumentsType" component={Search} />
+                <Route exact path="/DocumentsType/Add" component={Add} />
+                <Route exact path="/DocumentsType/Edit/:id" component={Edit} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );
@@ -44,5 +42,8 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const StaffTransfer = connect(mapStateToProps, mapDispatchToProps)(StaffTransferCom);
-export default StaffTransfer;
+const DocumentsType = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(DocumentsTypeCom);
+export default DocumentsType;

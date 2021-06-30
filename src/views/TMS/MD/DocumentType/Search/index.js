@@ -19,11 +19,11 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
+import { AREATYPE_VIEW, AREATYPE_DELETE } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_SERVICETYPE, ERPCOMMONCACHE_SMSTEMPLATE, ERPCOMMONCACHE_TMSREWARDTYPE } from "../../../../../constants/keyCache";
-import { SERVICETYPE_VIEW, SERVICETYPE_DELETE, REWARDTYPE_VIEW, REWARDTYPE_DELETE, SMSTEMPLATE_VIEW, SMSTEMPLATE_DELETE } from "../../../../../constants/functionLists";
+import { ERPCOMMONCACHE_AREATT, ERPCOMMONCACHE_AREATYPE, ERPCOMMONCACHE_DOCUMENTTYPE } from "../../../../../constants/keyCache";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -64,8 +64,7 @@ class SearchCom extends React.Component {
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
-                this.props.callClearLocalCache(ERPCOMMONCACHE_SMSTEMPLATE);
-                // this.handleSubmitInsertLog();
+                this.props.callClearLocalCache(ERPCOMMONCACHE_DOCUMENTTYPE);
             }
         });
     }
@@ -95,7 +94,6 @@ class SearchCom extends React.Component {
                 this.showMessage(apiResult.Message);
                 this.setState({ IsShowForm: false });
             }
-
         });
     }
 
@@ -155,7 +153,7 @@ class SearchCom extends React.Component {
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
-                        FormName="Tìm kiếm danh sách template tin nhắn SMS"
+                        FormName="Tìm kiếm loại khu vực"
                         MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
@@ -169,14 +167,15 @@ class SearchCom extends React.Component {
                         PKColumnName={PKColumnName}
                         onDeleteClick={this.handleDelete}
                         ref={this.gridref}
-                        RequirePermission={SMSTEMPLATE_VIEW}
-                        DeletePermission={SMSTEMPLATE_DELETE}
+                        RequirePermission={AREATYPE_VIEW}
+                        DeletePermission={AREATYPE_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                     />
                 </React.Fragment>
             );
-        } else {
+        }
+        else {
             return (
                 <div>
                     <label>Đang nạp dữ liệu ......</label>

@@ -12,13 +12,13 @@ import {
     EditElementList,
     MLObjectDefinition,
     BackLink,
-    EditPagePath
+    EditPagePath,
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
+import { AREATYPE_UPDATE } from "../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_SERVICETYPE, ERPCOMMONCACHE_SMSTEMPLATE, ERPCOMMONCACHE_TMSREWARDTYPE } from "../../../../../constants/keyCache";
-import { REWARDTYPE_UPDATE, SERVICETYPE_UPDATE, SMSTEMPLATE_UPDATE } from "../../../../../constants/functionLists";
+import { ERPCOMMONCACHE_AREATT, ERPCOMMONCACHE_AREATYPE, ERPCOMMONCACHE_DOCUMENTTYPE } from "../../../../../constants/keyCache";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -52,14 +52,15 @@ class EditCom extends React.Component {
             });
     }
 
+    
+
     handleSubmit(formData, MLObject) {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
                 this.setState({ IsCallAPIError: apiResult.IsError });
                 if(!apiResult.IsError){
-                    this.props.callClearLocalCache(ERPCOMMONCACHE_SMSTEMPLATE);
-                    // this.handleSubmitInsertLog(MLObject);
+                    this.props.callClearLocalCache(ERPCOMMONCACHE_DOCUMENTTYPE);
                 }      
                 this.showMessage(apiResult.Message);
             });
@@ -87,7 +88,7 @@ class EditCom extends React.Component {
         if (this.state.IsLoadDataComplete) {
             return (
                 <SimpleForm
-                    FormName="Cập nhật template tin nhắn SMS"
+                    FormName="Cập nhật loại khu vực"
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={EditElementList}
                     onSubmit={this.handleSubmit}
@@ -95,7 +96,7 @@ class EditCom extends React.Component {
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
-                    RequirePermission={SMSTEMPLATE_UPDATE}
+                    RequirePermission={AREATYPE_UPDATE}
                     ref={this.searchref}
                 />
             );

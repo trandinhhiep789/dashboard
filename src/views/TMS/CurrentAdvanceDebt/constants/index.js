@@ -100,6 +100,7 @@ export const DataGridHistoryColumnList = [
             AREdit: "AdvanceRequest/Edit",
             SODetail: "ShipmentOrder/Detail",
             MTRDetail: "MTReturnRequest/Detail",
+            INVRequest: "InventoryRequest/Detail"
         }
     },
 
