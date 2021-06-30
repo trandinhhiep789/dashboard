@@ -168,15 +168,16 @@ class ShowDownloadFileCom extends React.Component {
                                         <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                             <thead className="thead-light">
                                                 <tr>
-                                                    <th className="jsgrid-header-cell" style={{ width: "15%" }}>Thời gian xuất</th>
-                                                    <th className="jsgrid-header-cell" style={{ width: "15%" }}>Ngày hết hạn</th>
-                                                    <th className="jsgrid-header-cell" style={{ width: "36%" }}>Tên file xuất</th>
-                                                    <th className="jsgrid-header-cell" style={{ width: "8%" }}> kích thước tập tin</th>
-                                                    <th className="jsgrid-header-cell" style={{ width: "8%" }}>Xuất dữ liệu</th>
-                                                    <th className="jsgrid-header-cell" style={{ width: "8%" }}>Pass</th>
-                                                    <th className="jsgrid-header-cell" style={{ width: "8%" }}>Thời gian load</th>
-                                                    <th className="jsgrid-header-cell" style={{ width: "8%" }}>Tổng thời gian</th>
-                                                    <th className="jsgrid-header-cell" style={{ width: "8%" }}>Dowload</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: "9%" }}>Thời gian xuất</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: "9%" }}>Ngày hết hạn</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: "20%" }}>Nội dung</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: "20%" }}>Tên file xuất</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: "5%" }}>Tập tin</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: "5%" }}>Dữ liệu</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: "5%" }}>Pass</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: "7%" }}>Thời gian load</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: "7%" }}>Tổng thời gian</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: "4%" }}>Dowload</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -187,6 +188,7 @@ class ShowDownloadFileCom extends React.Component {
                                                         >
                                                             <td>{formatDate(item.QueueDate)}</td>
                                                             <td>{formatDate(item.ExpiredDate)}</td>
+                                                            <td>{item.ExportDataParamsDescription}</td>
                                                             <td>{item.ExportedFileName}</td>
                                                             <td>{item.ExportedCompressFileSizeStr}</td>
                                                             <td>{item.IsExportedError == true ? "có lỗi" : "không lỗi"}</td>

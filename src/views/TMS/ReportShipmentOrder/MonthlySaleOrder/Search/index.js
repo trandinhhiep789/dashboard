@@ -32,8 +32,7 @@ import { Base64 } from 'js-base64';
 //import DataGirdStaffDebt from "../DataGirdStaffDebt";
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
-//import DataGirdHistoryStaffDebt from "../DataGirdHistoryStaffDebt";
-//import ChangeActiveModal from '../ChangeActiveModal';
+import { MODAL_TYPE_DOWNLOAD_EXCEL, MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -44,6 +43,7 @@ class SearchCom extends React.Component {
         this.callDataThroughtPage = this.callDataThroughtPage.bind(this);
         this.handleExportCSV = this.handleExportCSV.bind(this);
         this.updateStaffDebtStatus = this.updateStaffDebtStatus.bind(this);
+        this.handleHistorySearch = this.handleHistorySearch.bind(this);
 
         this.state = {
             IsCallAPIError: false,
@@ -62,7 +62,7 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
-        this.checkPermission();
+      //  this.checkPermission();
         //this.callDataFirstPage(this.state.SearchData)
         window.addEventListener("resize", this.updateWindowDimensions);
     }
@@ -101,31 +101,7 @@ class SearchCom extends React.Component {
             {
                 SearchKey: "@SALEMONTH",
                 SearchValue: toIsoStringCus(new Date(MLObject.SaleMonth).toISOString())
-            },
-            // {
-            //     SearchKey: "@TODATE",
-            //     SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString())
-            // },
-            // {
-            //     SearchKey: "@USERNAME",
-            //     SearchValue: MLObject.UserName == -1 ? MLObject.UserName : MLObject.UserName.value
-            // },
-            // {
-            //     SearchKey: "@STOREID",
-            //     SearchValue: MLObject.CoordinatorStoreID != "" ? MLObject.CoordinatorStoreID : -1
-            // },
-            // {
-            //     SearchKey: "@ISLOCKDELIVERY",
-            //     SearchValue: MLObject.DeliveryStatus
-            // },
-            // {
-            //     SearchKey: "@PAGESIZE",
-            //     SearchValue: 50
-            // },
-            // {
-            //     SearchKey: "@PAGEINDEX",
-            //     SearchValue: 0
-            // }
+            }
 
         ];
 
@@ -138,7 +114,6 @@ class SearchCom extends React.Component {
 
     callDataFirstPage(searchData) {
         this.props.callFetchAPI(APIHostName, SearchWithinPaginationAPI, searchData).then(apiResult => {
-            console.log("object", apiResult)
             if (!apiResult.IsError) {
                 let objStaffDebtID = {}
                 const tempData = apiResult.ResultObject.map((item, index) => {
@@ -221,37 +196,6 @@ class SearchCom extends React.Component {
             PageNumber
         })
     }
-
-    // callSearchData(searchData) {
-
-    //     this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-    //         if (!apiResult.IsError) {
-
-    //             const tempDataExport = apiResult.ResultObject.map((item, index) => {
-    //                 let element = {
-    //                     "Mã NV nợ": item.FullNameMember,
-    //                     "Kho điều phối": item.StoreID + "-" + item.StoreName,
-    //                     "Tổng tiền phải thu hộ": item.TotalCOD,
-    //                     "Tổng tiền phải thu vật tư": item.TotlSleMaterialMoney,
-    //                     "Tổng tiền phải thu": item.TotalMoney,
-    //                     "Tổng tiền đã thu của khách hàng": item.CollectedTotalMoney,
-    //                     "Tổng vận đơn còn nợ": item.TotalDebtOrders,
-    //                     "Tổng vận đơn nợ quá hạn": item.TotALoverDueDebtOrders,
-    //                     "Tình trạng": item.IsLockDelivery == false ? "Hoạt động" : "Đã khóa",
-    //                 };
-
-    //                 return element;
-    //             })
-
-    //             this.setState({
-    //                 dataExport: tempDataExport
-    //             })
-    //         }
-    //         else {
-    //             this.showMessage(apiResult.MessageDetail)
-    //         }
-    //     });
-    // }
 
     showMessage(message) {
         ModalManager.open(
@@ -432,70 +376,40 @@ class SearchCom extends React.Component {
 
     handleExportSubmit(formData, MLObject) {
 
-        if(!this.state.IsAllowedAdd){
-            this.addNotification("Bạn không có quyền!", true);
-            return;
-        }
-
         const searchData = [
             {
                 SearchKey: "@SALEMONTH",
                 SearchValue: toIsoStringCus(new Date(MLObject.SaleMonth).toISOString())
-            },
-            // {
-            //     SearchKey: "@TODATE",
-            //     SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString())
-            // },
-            // {
-            //     SearchKey: "@USERNAME",
-            //     SearchValue: MLObject.UserName == -1 ? MLObject.UserName : MLObject.UserName.value
-            // },
-            // {
-            //     SearchKey: "@STOREID",
-            //     SearchValue: MLObject.CoordinatorStoreID != "" ? MLObject.CoordinatorStoreID : -1
-            // },
-            // {
-            //     SearchKey: "@ISLOCKDELIVERY",
-            //     SearchValue: MLObject.DeliveryStatus
-            // }
+            }
         ];
-
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            //console.log("apiResult",apiResult);
-
+        const postData={
+            DataExportTemplateID:2,
+            LoadDataStoreName:'TMS.TMS_MONTHLYSALEORDER_REPORT',
+            KeyCached:"SHIPMENTORDER_REPORT_EXPORT",
+            SearchParamList:searchData,
+            ExportDataParamsDescription:"Tháng" + toIsoStringCus(new Date(MLObject.SaleMonth).toISOString())
+        }
+        this.props.callFetchAPI(APIHostName, "api/DataExportQueue/AddQueueExport", postData).then(apiResult => {
             if (!apiResult.IsError) {
-                if (apiResult.ResultObject.length > 0) {
-                    const tempDataExport = apiResult.ResultObject.map((item, index) => {
-                        let element = {
-                            "Mã vận đơn" : item.ShipmentOrderID,
-                            "Ngày hẹn giao" : item.ExpectedDeliveryDate,
-                            "Ngày hoàn tất" : item.CompletedDeliveryDate,
-                            "Đơn hàng gốc" : item.SaleOrderID,
-                            "Mã kho xuất" : item.OutputStoreID,
-                            "Tên kho xuất" : item.OutputStoreName,
-                            "Đơn vật tư" : item.OuputForParnerSaleOrderID,
-                            "Sản phẩm chính" : item.MainProductName,
-                            "Mã sản phẩm" : item.ProductID,
-                            "Tên sản phẩm" : item.ProductName,
-                            "Số lượng" : item.Quantity,
-                            "Đơn giá" : item.SalePrice,
-                            "Thành tiền" : item.dTotalMoney,      
-                        };
-
-                        return element;
-                    })
-                    this.handleExportCSV(tempDataExport);
-                }
-                else {
-                    this.showMessage("Dữ liệu không tồn tại nên không thể xuất.")
-                }
+                this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
+                    title: "Tải file",
+                    maxWidth: '1200px',
+                    ParamRequest: {DataExportTemplateID:2}
+                });
             }
             else {
                 this.showMessage(apiResult.Message)
             }
-        })
+        });
     }
-
+    handleHistorySearch()
+    {
+        this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
+            title: "Tải file",
+            maxWidth: '1200px',
+            ParamRequest:{DataExportTemplateID:2}
+        });
+    }
 
     handleExportCSV(dataExport) {
         const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
@@ -528,6 +442,8 @@ class SearchCom extends React.Component {
                     onSubmit={this.handleSearchSubmit}
                     IsShowButtonSearch ={false}
                     IsButtonExport={true}
+                    IsButtonhistory={true}
+                    onHistorySubmit={this.handleHistorySearch}
                     onExportSubmit={this.handleExportSubmit.bind(this)}
                     TitleButtonExport="Xuất dữ liệu"
                     ref={this.searchref}
