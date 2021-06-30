@@ -384,6 +384,8 @@ class GridCell extends Component {
                     destinationHyperlink = hyperLink.AREdit
                 } else if (RelatedVoucherID.includes("RR")) {
                     destinationHyperlink = hyperLink.MTRDetail
+                } else if (RelatedVoucherID.includes("INV")) {
+                    destinationHyperlink = hyperLink.INVRequest
                 } else {
                     destinationHyperlink = hyperLink.SODetail
                 }
