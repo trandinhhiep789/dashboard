@@ -687,12 +687,28 @@ const AppMenu = [
                 ]
             },
             {
+                MenuName: 'Document',
+                MenuTitle: 'Tài liệu',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'DocumentsType',
+                        MenuTitle: 'Loại tài liệu',
+                        LinkTo: '/DocumentsType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    }
+                ]
+            },
+            {
                 MenuName: 'TMSConfig',
                 MenuTitle: 'Cấu hình hệ thống TMS',
                 LinkTo: '/TMSConfig',
                 MenuIcon: '',
                 SubMenu: []
             },
+            
 
 
 
@@ -1302,13 +1318,7 @@ const AppMenu = [
         LinkTo: '/Documents',
         MenuIcon: '',
         SubMenu: [
-            {
-                MenuName: 'DocumentsType',
-                MenuTitle: 'Loại tài liệu',
-                LinkTo: '/DocumentsType',
-                MenuIcon: '',
-                SubMenu: []
-            }
+            
         ]
     },
 
