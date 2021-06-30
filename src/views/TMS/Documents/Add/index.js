@@ -29,6 +29,7 @@ import moment from 'moment';
 import { ExportStringToDate } from "../../../../common/library/ultils";
 import { ERPCOMMONCACHE_DOCUMENTFOLDER, ERPCOMMONCACHE_DOCUMENTTYPE, ERPCOMMONCACHE_SERVICEAGREEMENTTYPE } from "../../../../constants/keyCache";
 import { Base64 } from 'js-base64';
+import { TMS_MTRETURNREQUEST_DELETE } from "../../../../constants/functionLists";
 
 
 class AddCom extends React.Component {
@@ -43,6 +44,7 @@ class AddCom extends React.Component {
             IsExtended: false,
             IsLiquidated: false,
             IsDeposited: false,
+            Files: {},
         };
     }
 
@@ -51,46 +53,28 @@ class AddCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
-        console.log("MLObject", MLObject)
-        if (MLObject.IsExtended) {
-            if (MLObject.ExtendedDate == '') {
-                formData.dtExtendedDate.ErrorLst.IsValidatonError = true;
-                formData.dtExtendedDate.ErrorLst.ValidatonErrorMessage = "Ngày gia hạn hợp đồng không được để trống";
-                return;
-            }
-        }
+        console.log("MLObject", formData, MLObject)
+        const { Files } = this.state;
 
-        if (MLObject.IsLiquidated) {
-            if (MLObject.Liquidateddate == '') {
-                formData.dtLiquidateddate.ErrorLst.IsValidatonError = true;
-                formData.dtLiquidateddate.ErrorLst.ValidatonErrorMessage = "Ngày thanh lý hợp đồng không được để trống";
-                return;
-            }
+        // MLObject.FileContent1 = MLObject.FileContent1.replaceAll("<", "&lt;");
+        // MLObject.FileContent2 = "";
+        let data = new FormData();
+        data.append("DocumentImageURL", Files.DocumentImageURL);
+        data.append("DocumentObj", JSON.stringify(MLObject));
 
-        }
-
-        if (MLObject.IsDeposited) {
-            if (MLObject.DepositedDate == '') {
-                formData.dtDepositedDate.ErrorLst.IsValidatonError = true;
-                formData.dtDepositedDate.ErrorLst.ValidatonErrorMessage = "Ngày kí quỹ không được để trống";
-                return;
-            }
-        }
-        MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-        MLObject.DeputyUserName = MLObject.ShipmentOrder_DeliverUserList != undefined ? MLObject.ShipmentOrder_DeliverUserList[0].UserName : "";
-        // MLObject.SignedDate = new Date(ExportStringToDate(MLObject.SignedDate));
-        // MLObject.ExpiredDate = new Date(ExportStringToDate(MLObject.ExpiredDate));
-
-        MLObject.ServiceAgreementNumber = MLObject.ServiceAgreementNumber.replace(/\s/g, '')
-        //  console.log("MLObject", MLObject)
-
-        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, AddAPIPath, data).then(apiResult => {
+            console.log("data",apiResult)
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
 
         });
     }
 
+    handleSelectedFile(file, nameValue, isDeletetedFile) {
+        console.log("gfile", file, nameValue, isDeletetedFile)
+        const filelist = { [nameValue]: file };
+        this.setState({ Files: filelist });
+    }
 
     handleCloseMessage() {
         if (!this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
@@ -181,13 +165,13 @@ class AddCom extends React.Component {
                             name="cbDocumentTypeID"
                             colspan="8"
                             labelcolspan="4"
-                            label="thư mục"
+                            label="Loại tài liệu"
                             validatonList={["Comborequired"]}
                             placeholder="-- Vui lòng chọn --"
                             isautoloaditemfromcache={true}
                             loaditemcachekeyid={ERPCOMMONCACHE_DOCUMENTTYPE}
                             valuemember="DocumentTypeID"
-                            nameMember="DocumentTypeIDName"
+                            nameMember="DocumentTypeName"
                             controltype="InputControl"
                             value={""}
                             listoption={null}
@@ -211,10 +195,10 @@ class AddCom extends React.Component {
                     </div>
 
                     <div className="col-md-12">
-                        <FormControl.TextArea
+                        <FormControl.TextEditor
                             labelcolspan={2}
                             colspan={10}
-                            name="txtFileContent1"
+                            name="txtEditorFileContent1"
                             label="Nội dung"
                             placeholder="Nội dung"
                             datasourcemember="FileContent1"
@@ -228,25 +212,10 @@ class AddCom extends React.Component {
 
 
                     <div className="col-md-12">
-                        <FormControl.TextArea
-                            labelcolspan={2}
-                            colspan={10}
-                            name="txtFileContent2"
-                            label="Nội dung"
-                            placeholder="Nội dung"
-                            datasourcemember="FileContent2"
-                            controltype="InputControl"
-                            rows={6}
-                            maxSize={500}
-                            classNameCustom="customcontrol"
-                        />
-                    </div>
-                    
-                    <div className="col-md-12">
                         <FormControl.TextEditor
                             labelcolspan={2}
                             colspan={10}
-                            name="txtFileContent2"
+                            name="txtEditorFileContent2"
                             label="Nội dung"
                             placeholder="Nội dung"
                             datasourcemember="FileContent2"
@@ -256,12 +225,12 @@ class AddCom extends React.Component {
                             classNameCustom="customcontrol"
                         />
                     </div>
-                    
+
 
                     <div className="col-md-6">
                         <FormControl.UploadAvatar
                             name="txtDocumentImageURL"
-                            nameMember="PictureURL"
+                            nameMember="DocumentImageURL"
                             colspan="8"
                             labelcolspan="4"
                             readOnly={false}
@@ -270,7 +239,9 @@ class AddCom extends React.Component {
                             controltype="InputControl"
                             cdn={CDN_LOGO_IMAGE}
                             value=""
+                            isReturnInline={true}
                             datasourcemember="DocumentImageURL"
+                            onHandleSelectedFile={this.handleSelectedFile.bind(this)}
                         // validatonList={['required']}
                         />
                     </div>

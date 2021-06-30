@@ -508,6 +508,19 @@ class FormContainerCom extends Component {
                                         key={index}
                                     />
                                 );
+                            case "TextEditor":
+                                return (
+                                    <ElementModal.TextEditor
+                                        onValueChange={this.handleInputChange}
+
+                                        validationErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                        inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
+                                        {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
+                                        disabled={this.state.isDisabled}
+                                        key={index}
+                                    />
+                                );
                             case "singleFileUpload":
                                 return (
                                     <ElementModal.UploadAvatar
