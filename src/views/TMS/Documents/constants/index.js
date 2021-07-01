@@ -1,14 +1,10 @@
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/Document/Search";
-export const LoadAPIPath = "";
-export const LoadNewAPIPath = "";
+export const LoadAPIPath = "api/Document/Load";
 export const AddAPIPath = "api/Document/Add";
-export const AddAutoAPIPath = "";
+export const UpdatePulishAPIPath= "api/Document/UpdatePulished";
 export const UpdateAPIPath = "";
-export const DeleteNewAPIPath = "";
-export const DeleteAPIPath = "";
-export const DeleteAbilityAPIPath = "";
-export const UpdateOrderAPIPath = "";
+export const DeleteNewAPIPath = "api/Document/Delete";
 export const BackLink = "/Documents";
 export const AddLink = "/Documents/Add";
 export const IDSelectColumnName = "chkSelect";
@@ -45,7 +41,7 @@ export const DetailAPIPath = [
 
 
 const dtFromdate = new Date();
-dtFromdate.setDate(new Date().getDate() - 365);
+dtFromdate.setDate(new Date().getDate() - 30);
 
 export const InitSearchParams = [
     {
@@ -58,7 +54,7 @@ export const InitSearchParams = [
     },
     {
         SearchKey: "@FROMDATE",
-        SearchValue: new Date()
+        SearchValue: dtFromdate
     },
     {
         SearchKey: "@TODATE",
@@ -159,30 +155,22 @@ export const SearchMLObjectDefinition = [
         BindControlName: "txtKeyword"
     },
     {
-        Name: "ServiceTypeID",
+        Name: "DocumentTypeID",
         DefaultValue: "",
-        BindControlName: "cbServiceTypeID"
+        BindControlName: "cbDocumentTypeID"
+    },
+
+    {
+        Name: "FromDate",
+        DefaultValue: "",
+        BindControlName: "dtFromDate"
     },
     {
-        Name: "AreaID",
+        Name: "ToDate",
         DefaultValue: "",
-        BindControlName: "cbAreaID"
+        BindControlName: "dtToDate"
     },
-    {
-        Name: "SignedDate",
-        DefaultValue: "",
-        BindControlName: "dtSignedDate"
-    },
-    {
-        Name: "ExpiredDate",
-        DefaultValue: "",
-        BindControlName: "dtExpiredDate"
-    },
-    {
-        Name: "ServiceStatusID",
-        DefaultValue: "",
-        BindControlName: "cbServiceStatusID"
-    },
+
 ];
 
 export const SearchElementList = [
@@ -214,8 +202,8 @@ export const SearchElementList = [
     },
     {
         type: "Datetime",
-        name: "dtSignedDate",
-        DataSourceMember: "SignedDate",
+        name: "dtFromDate",
+        DataSourceMember: "FromDate",
         label: "Từ ngày",
         value: new Date(),
         timeFormat: false,
@@ -224,8 +212,8 @@ export const SearchElementList = [
     },
     {
         type: "Datetime",
-        name: "dtExpiredDate",
-        DataSourceMember: "ExpiredDate",
+        name: "dtToDate",
+        DataSourceMember: "ToDate",
         label: "Đến ngày",
         value: new Date(),
         timeFormat: false,

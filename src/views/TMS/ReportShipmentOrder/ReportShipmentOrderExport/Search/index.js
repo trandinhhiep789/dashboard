@@ -169,7 +169,6 @@ class SearchCom extends React.Component {
                     TitleButton="Xuất dữ liệu"
                     IsShowButtonSearch ={false}
                     IsButtonExport={true}
-                    IsButtonExport={true}
                     IsButtonhistory={true}
                     onHistorySubmit={this.handleHistorySearch.bind(this)}
                     onSubmit={this.handleSearchSubmit.bind(this)}

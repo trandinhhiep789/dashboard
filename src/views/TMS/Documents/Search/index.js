@@ -62,6 +62,7 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(PagePath);
         this.callSearchData(this.state.SearchData);
+        //this.callSearchDataMobi();
     }
 
 
@@ -71,9 +72,14 @@ class SearchCom extends React.Component {
             PageIndex: 1,
             PageZise: 10
         }
-        this.props.callFetchAPI(APIHostName, "api/Document/SearchMobi", params).then(apiResult => {
-            console.log("callSearchDataMobi", params, apiResult)
+        // this.props.callFetchAPI(APIHostName, "api/Document/SearchMobi", params).then(apiResult => {
+        //     console.log("callSearchDataMobi", params, apiResult)
+        // });
+        const intDocumentID = 4;
+        this.props.callFetchAPI(APIHostName, "api/Document/Load", intDocumentID).then(apiResult => {
+            console.log("LoadMobi", params, apiResult)
         });
+
     }
 
     callSearchData(searchData) {
@@ -86,7 +92,6 @@ class SearchCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
-
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
@@ -106,6 +111,7 @@ class SearchCom extends React.Component {
     }
 
     handleDelete(deleteList, pkColumnName) {
+        console.log("delete", deleteList, pkColumnName)
         let listMLObject = [];
         deleteList.map((row, index) => {
             let MLObject = {};
@@ -115,6 +121,9 @@ class SearchCom extends React.Component {
             MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
             listMLObject.push(MLObject);
         });
+  
+
+        console.log("listMLObject", listMLObject)
 
         this.props.callFetchAPI(APIHostName, DeleteNewAPIPath, listMLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
@@ -159,22 +168,23 @@ class SearchCom extends React.Component {
 
 
     handleSearchSubmit(formData, MLObject) {
+        console.log("MLObject", formData, MLObject)
         const DataSearch = [
             {
                 SearchKey: "@Keyword",
-                SearchValue: ""
+                SearchValue: MLObject.Keyword
             },
             {
                 SearchKey: "@DOCUMENTTYPEID",
-                SearchValue: "-1"
+                SearchValue: MLObject.DocumentTypeID
             },
             {
                 SearchKey: "@FROMDATE",
-                SearchValue: new Date()
+                SearchValue: MLObject.FromDate
             },
             {
                 SearchKey: "@TODATE",
-                SearchValue: new Date()
+                SearchValue: MLObject.ToDate
             },
             {
                 SearchKey: "@PAGESIZE",

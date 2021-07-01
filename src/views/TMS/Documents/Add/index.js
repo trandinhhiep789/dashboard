@@ -58,6 +58,8 @@ class AddCom extends React.Component {
 
         // MLObject.FileContent1 = MLObject.FileContent1.replaceAll("<", "&lt;");
         // MLObject.FileContent2 = "";
+        MLObject.FileContent1= "";
+        MLObject.FileContent2 = "";
         let data = new FormData();
         data.append("DocumentImageURL", Files.DocumentImageURL);
         data.append("DocumentObj", JSON.stringify(MLObject));
