@@ -62,6 +62,7 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(PagePath);
         this.callSearchData(this.state.SearchData);
+        //this.callSearchDataMobi();
     }
 
 
@@ -75,7 +76,7 @@ class SearchCom extends React.Component {
         //     console.log("callSearchDataMobi", params, apiResult)
         // });
         const intDocumentID = 4;
-        this.props.callFetchAPI(APIHostName, "api/Document/LoadMobi", intDocumentID).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, "api/Document/Load", intDocumentID).then(apiResult => {
             console.log("LoadMobi", params, apiResult)
         });
 

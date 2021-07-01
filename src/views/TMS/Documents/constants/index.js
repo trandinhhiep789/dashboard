@@ -1,7 +1,8 @@
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/Document/Search";
-export const LoadAPIPath = "";
+export const LoadAPIPath = "api/Document/Load";
 export const AddAPIPath = "api/Document/Add";
+export const UpdatePulishAPIPath= "api/Document/UpdatePulished";
 export const UpdateAPIPath = "";
 export const DeleteNewAPIPath = "api/Document/Delete";
 export const BackLink = "/Documents";
