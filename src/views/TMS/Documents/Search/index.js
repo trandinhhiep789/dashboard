@@ -64,8 +64,21 @@ class SearchCom extends React.Component {
         this.callSearchData(this.state.SearchData);
     }
 
+
+
+    callSearchDataMobi() {
+        const params = {
+            PageIndex: 1,
+            PageZise: 10
+        }
+        this.props.callFetchAPI(APIHostName, "api/Document/SearchMobi", params).then(apiResult => {
+            console.log("callSearchDataMobi", params, apiResult)
+        });
+    }
+
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            console.log("callSearchDataMobi", searchData, apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError

@@ -12,7 +12,7 @@ export const PagePath = [
 
 
 const dtFromdate = new Date();
-dtFromdate.setDate(new Date().getDate() - 30);
+dtFromdate.setDate(new Date().getDate() - 1);
 
 
 
@@ -37,6 +37,14 @@ export const SearchMLObjectDefinitionDetail = [
     },
 ]
 
+import moment from 'moment';
+
+var yesterday = moment().subtract(1, 'day');
+var valid = function (current) {
+    // return current.isAfter(yesterday);
+    return current.isBefore(yesterday);
+    //return current.day() !== 0 && current.day() !== 6;
+};
 
 export const SearchElementList = [
 
@@ -45,9 +53,10 @@ export const SearchElementList = [
         name: "dtFromDate",
         DataSourceMember: "FromDate",
         label: "Từ Ngày",
-        value: new Date(),//new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()),
+        value: dtFromdate,//new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()),
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
+        isValidDate: valid,
         colspan: 2,
     },
     {
@@ -55,9 +64,10 @@ export const SearchElementList = [
         name: "dtToDate",
         DataSourceMember: "ToDate",
         label: "Đến Ngày",
-        value: new Date(),
+        value: dtFromdate,
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
+        isValidDate: valid,
         colspan: 2,
     },
     {
@@ -180,6 +190,60 @@ export const GridColumnList = [
 
 
 export const DataGridModalAdvanceMaterial = [
+    {
+        Name: "date",
+        Type: "text",
+        Caption: "Ngày",
+        DataSourceMember: "date",
+        Width: "10%"
+    },
+    {
+        Name: "voucherconcern",
+        // Type: "text",
+        Caption: "Chứng từ liên quan",
+        Type: "texttolinkNewBlank",
+        Link: "/AdvanceRequest/Edit/",
+        DataSourceMember: "voucherconcern",
+        Width: "10%"
+    },
+    {
+        Name: "ovtms",
+        Type: "text",
+        Caption: "Mã phiếu TMS ",
+        DataSourceMember: "ovtms",
+        Width: "20%"
+    },
+    {
+        Name: "overp",
+        Type: "text",
+        Caption: "Mã phiếu ERP",
+        DataSourceMember: "overp",
+        Width: "20%"
+    },
+    {
+        Name: "quantitytms",
+        Type: "textTwoNumber",
+        Caption: "Số lượng TMS",
+        DataSourceMember: "quantitytms",
+        Width: "10%"
+    },
+    {
+        Name: "quantityerp",
+        Type: "textTwoNumber",
+        Caption: "Số lượng ERP",
+        DataSourceMember: "quantityerp",
+        Width: "10%"
+    },
+    {
+        Name: "differencequantity",
+        Type: "textTwoNumber",
+        Caption: "Chênh lệch",
+        DataSourceMember: "differencequantity",
+        Width: "10%"
+    },
+]
+
+export const DataGridModalAdvanceMaterialNew = [
     {
         Name: "date",
         Type: "text",

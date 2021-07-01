@@ -111,7 +111,8 @@ class GridCell extends Component {
         let linkTo;
         if (link) {
             linkTo = listValue.reduce((link, item, index, listValue) => {
-                return link + item.value.toString().trim() + "/"
+                let value = (item.value == "" || item.value == undefined || item.value == null) ? item.value : item.value.toString().trim();
+                return link + value + "/"
             }, link)
 
         }
