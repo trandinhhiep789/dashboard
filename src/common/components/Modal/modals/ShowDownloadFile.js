@@ -195,7 +195,7 @@ class ShowDownloadFileCom extends React.Component {
                                                             <td>{item.ExportedFilePassword}</td>
                                                             <td>{item.LoadDataIntervalStr}</td>
                                                             <td>{item.TotalExportDataIntervalStr}</td>
-                                                            <td>
+                                                            <td className="action-download">
                                                                 {(item.IsExported == true && item.IsExportedError == false) ?
                                                                     (
                                                                         <a
