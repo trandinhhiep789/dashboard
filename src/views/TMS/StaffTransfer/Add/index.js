@@ -72,6 +72,11 @@ class AddCom extends React.Component {
         const { StaffTransferTypeID, RequestStoreID } = this.props.location.state;
         const { StaffTransferData, StaffTransferDetailData, StaffTransferType_rvLevelData } = this.state;
 
+        if (StaffTransferDetailData.length == 0) {
+            this.showMessage("Danh sách nhân viên thuyên chuyển không được để trống");
+            return;
+        }
+
         const postData = {
             ...MLObject,
             StaffTransferTypeID,
