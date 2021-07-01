@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
 import ReactNotification from "react-notifications-component";
 
-import { PagePath, APIHostName, APIUpdate, MLObjectDefinition } from './constants';
+import { PagePath, APIHostName, APIUpdate, MLObjectDefinition, LoadInfoEdit } from './constants';
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { updatePagePath } from "../../../../actions/pageAction";
@@ -90,7 +90,7 @@ class EditCom extends React.Component {
     fetchStaffTransferDetail() {
         let { id } = this.props.match.params;
 
-        this.props.callFetchAPI(APIHostName, "api/StaffTransfer/LoadInfoEdit", id).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, LoadInfoEdit, id).then(apiResult => {
             if (apiResult.IsError) {
                 this.showMessage(apiResult.Message);
             } else {
@@ -183,7 +183,6 @@ class EditCom extends React.Component {
             ListStaffTransferDetail: this.handleSetStaffTransferDetailSubmit(),
             ListStaffTransfer_ReviewList: stateStaffTransfer_ReviewList
         }
-        console.log(postData.ListStaffTransferDetail)
 
         this.props.callFetchAPI(APIHostName, APIUpdate, postData).then(apiResult => {
             if (apiResult.IsError) {
@@ -214,15 +213,15 @@ class EditCom extends React.Component {
                         BackLink={"/StaffTransfer"}
                         onSubmit={this.handleSubmit}
                     >
-                        <div className="row">
+                        <div className="row mb-4">
                             <div className="col-md-6">
                                 <FormControl.TextBox
                                     name="txtStaffTransferID"
                                     colspan="8"
                                     labelcolspan="4"
                                     readOnly={true}
-                                    label="mã thuyên chuyển"
-                                    placeholder="Mã thuyên chuyển"
+                                    label="mã yêu cầu thuyên Chuyển"
+                                    placeholder="Mã yêu cầu thuyên Chuyển"
                                     controltype="InputControl"
                                     value={""}
                                     datasourcemember="StaffTransferID"
@@ -235,7 +234,7 @@ class EditCom extends React.Component {
                                     name="cboStaffTransferTypeID"
                                     colspan="8"
                                     labelcolspan="4"
-                                    label="loại yêu cầu hủy vật tư"
+                                    label="loại yêu cầu thuyên chuyển"
                                     validatonList={["Comborequired"]}
                                     placeholder="-- Vui lòng chọn --"
                                     isautoloaditemfromcache={true}
@@ -336,7 +335,9 @@ class EditCom extends React.Component {
                             </div>
 
                             <div className="mb-4">
-                                <StaffTransfer_ReviewListCom />
+                                {
+                                    !dataSource.IsAutoReview && <StaffTransfer_ReviewListCom />
+                                }
                             </div>
                         </MyContext.Provider>
                     </FormContainer>

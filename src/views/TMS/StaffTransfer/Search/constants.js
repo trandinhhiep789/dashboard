@@ -5,6 +5,7 @@ dtFromDate.setDate(new Date().getDate() - 30);
 
 export const APIHostName = "TMSAPI";
 export const APISearch = "api/StaffTransfer/Search";
+export const APIDelete = "api/StaffTransfer/DeleteMany";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },

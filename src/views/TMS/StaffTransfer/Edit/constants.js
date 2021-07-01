@@ -1,4 +1,5 @@
 export const APIHostName = "TMSAPI";
+export const LoadInfoEdit = "api/StaffTransfer/LoadInfoEdit";
 export const APIUpdate = "api/StaffTransfer/Update";
 
 export const PagePath = [

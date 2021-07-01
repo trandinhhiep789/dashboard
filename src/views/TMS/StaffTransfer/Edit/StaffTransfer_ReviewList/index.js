@@ -57,14 +57,15 @@ class StaffTransfer_ReviewList extends React.Component {
             }, []);
 
             stateStaffTransfer_ReviewList.forEach(element => {
-                const { ReviewLevelID, UserName } = element;
+                const { ReviewLevelID, UserName, IsReviewed } = element;
 
                 const foundItem = data.find(item => item.ReviewLevelID == ReviewLevelID);
                 const index = foundItem.options.findIndex(item => item.value == UserName);
 
                 this.setState({
                     [element.ReviewLevelID]: element.UserName,
-                    [`defaultValue_${element.ReviewLevelID}`]: index
+                    [`defaultValue_${element.ReviewLevelID}`]: index,
+                    [`isDisabled_${element.ReviewLevelID}`]: IsReviewed || ReviewLevelID <= stateStaffTransfer.CurrentReviewLevelID
                 })
             });
 
@@ -125,7 +126,7 @@ class StaffTransfer_ReviewList extends React.Component {
 
     render() {
         const { dataGrid } = this.state;
-        const { stateStaffTransfer } = this.context;
+        const { stateStaffTransfer, stateStaffTransfer_ReviewList } = this.context;
 
         return (
             <div className="col-lg-12 SearchForm">
@@ -154,7 +155,7 @@ class StaffTransfer_ReviewList extends React.Component {
                                                         options={item.options}
                                                         defaultValue={item.options[this.state[`defaultValue_${item.ReviewLevelID}`]]}
                                                         onChange={this.handleChange}
-                                                        isDisabled={item.ReviewLevelID <= stateStaffTransfer.CurrentReviewLevelID ? true : false}
+                                                        isDisabled={this.state[`isDisabled_${item.ReviewLevelID}`]}
                                                     />
                                                 </td>
                                             </tr>
