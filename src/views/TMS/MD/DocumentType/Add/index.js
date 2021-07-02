@@ -14,7 +14,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { AREATYPE_ADD } from "../../../../../constants/functionLists";
+import { AREATYPE_ADD, DOCUMENT_ADD } from "../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_AREATT, ERPCOMMONCACHE_AREATYPE, ERPCOMMONCACHE_DOCUMENTTYPE } from "../../../../../constants/keyCache";
 
@@ -72,7 +72,7 @@ class AddCom extends React.Component {
         }
         return (
             <SimpleForm
-                FormName="Thêm loại khu vực"
+                FormName="Thêm loại tài liệu"
                 MLObjectDefinition={MLObjectDefinition} 
                 listelement={AddElementList}
                 onSubmit={this.handleSubmit}
@@ -80,7 +80,7 @@ class AddCom extends React.Component {
                 IsErrorMessage={this.state.IsCallAPIError}
                 dataSource={dataSource}
                 BackLink={BackLink}
-                RequirePermission={AREATYPE_ADD}
+                RequirePermission={DOCUMENT_ADD}
                 ref={this.searchref}
             />
         );

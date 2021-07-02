@@ -170,6 +170,7 @@ import MonthlySaleOrder from "../TMS/ReportShipmentOrder/MonthlySaleOrder";
 
 import Documents from "../TMS/Documents";
 import DocumentsType from "../TMS/MD/DocumentType";
+import DocumentsFolder from "../TMS/MD/DocumentFolder";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -420,6 +421,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/SvTimeConvert" component={SvTimeConvert} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/MonthlySaleOrder" component={MonthlySaleOrder} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
+                                    <PrivateRoute path="/DocumentsFolder" component={DocumentsFolder} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/DocumentsType" component={DocumentsType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/Documents" component={Documents} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     

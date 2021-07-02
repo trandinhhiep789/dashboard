@@ -15,15 +15,17 @@ import {
     IDSelectColumnName,
     PKColumnName,
     InitSearchParams,
-    PagePath
+    PagePath,
+    ExportAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { AREATYPE_VIEW, AREATYPE_DELETE, DOCUMENT_VIEW, DOCUMENT_DELETE } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_AREATT, ERPCOMMONCACHE_AREATYPE, ERPCOMMONCACHE_DOCUMENTTYPE } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_AREATT, ERPCOMMONCACHE_DOCUMENTFOLDER, ERPCOMMONCACHE_PARTNER } from "../../../../../constants/keyCache";
+import { AREA_VIEW, AREA_DELETE, DOCUMENT_VIEW, DOCUMENT_DELETE } from "../../../../../constants/functionLists";
+import { formatDate } from "../../../../../common/library/CommonLib";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -36,8 +38,7 @@ class SearchCom extends React.Component {
             gridDataSource: [],
             IsCallAPIError: false,
             SearchData: InitSearchParams,
-            cssNotification: "",
-            iconNotification: ""
+            dataExport: []
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -46,8 +47,14 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.callSearchData(this.state.SearchData);
+        //this.callExportData();
         this.props.updatePagePath(PagePath);
     }
+
+    handleExportFile(result) {
+        this.addNotification(result.Message, result.IsError);
+    }
+
 
     handleDelete(deleteList, pkColumnName) {
         let listMLObject = [];
@@ -64,7 +71,9 @@ class SearchCom extends React.Component {
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
-                this.props.callClearLocalCache(ERPCOMMONCACHE_DOCUMENTTYPE);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_DOCUMENTFOLDER);
+                // this.handleClearLocalCache();
+                // this.handleSubmitInsertLog();
             }
         });
     }
@@ -74,11 +83,55 @@ class SearchCom extends React.Component {
             {
                 SearchKey: "@Keyword",
                 SearchValue: MLObject.Keyword
-            }
+            },
+            // {
+            //     SearchKey: "@AreaTypeID",
+            //     SearchValue: MLObject.AreaTypeID
+            // }
         ];
         this.setState({ SearchData: postData });
         this.callSearchData(postData);
         //this.gridref.current.clearData();
+    }
+
+    callExportData() {
+        this.props.callFetchAPI(APIHostName, ExportAPIPath, null).then(apiResult => {
+            //this.searchref.current.changeLoadComplete();
+            //this.setState({ IsCallAPIError: apiResult.IsError });
+            if (!apiResult.IsError) {
+                // xuất exel
+                const exelData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Mã khu vực": item.AreaID,
+                        "Tên khu vực": item.AreaName,
+                        "Loại khu vực": item.AreaTypeName,
+                        "Khu vực cha": item.ParentName,
+                        "Mã kho điều phối": item.StoreID,
+                        "Tên kho điều phối": item.StoreName,
+                        //"Tỉnh thành": item.ProvinceName,
+                        "Mô tả": item.Description,
+                        "Kích hoạt": item.IsActived ? "Có" : "Không",
+                        "Ngày cập nhật": formatDate(item.UpdatedDate),
+                        "Người cập nhật": item.UpdatedUserFullName
+                    };
+                    return element;
+
+                })
+
+                this.setState({
+                    dataExport: exelData,
+                    // IsCallAPIError: apiResult.IsError,
+                    // IsLoadDataComplete: true,
+                    // IsShowForm: true
+                });
+            } else {
+                this.showMessage(apiResult.Message);
+                this.setState({
+                    //IsShowForm: false,
+                    dataExport: []
+                });
+            }
+        });
     }
 
     callSearchData(searchData) {
@@ -115,23 +168,20 @@ class SearchCom extends React.Component {
     }
 
     addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
         if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
         } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={this.state.cssNotification}>
+                <div className={cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
+                        <i className={iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -147,13 +197,14 @@ class SearchCom extends React.Component {
         });
     }
 
+
     render() {
         if (this.state.IsShowForm) {
             return (
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
-                        FormName="Tìm kiếm loại tài liệu"
+                        FormName="Tìm kiếm danh mục tài liệu"
                         MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
@@ -169,19 +220,24 @@ class SearchCom extends React.Component {
                         ref={this.gridref}
                         RequirePermission={DOCUMENT_VIEW}
                         DeletePermission={DOCUMENT_DELETE}
+                        //ExportPermission={AREA_VIEW}
                         IsAutoPaging={true}
                         RowsPerPage={10}
+                        // IsExportFile={true}
+                        // DataExport={this.state.dataExport}
+                        // fileName="Danh mục tài liệu"
+                        // onExportFile={this.handleExportFile.bind(this)}
                     />
                 </React.Fragment>
             );
-        }
-        else {
+        } else {
             return (
                 <div>
                     <label>Đang nạp dữ liệu ......</label>
                 </div>
             )
         }
+
 
     }
 }

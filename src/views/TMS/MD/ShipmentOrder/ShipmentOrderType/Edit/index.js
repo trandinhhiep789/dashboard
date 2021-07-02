@@ -28,7 +28,7 @@ import { convertNodeToElement } from "react-html-parser";
 import Collapsible from 'react-collapsible';
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 import {
-    ERPCOMMONCACHE_SHIPMENTORDERTYPE, ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE, ERPCOMMONCACHE_SERVICEGROUP, ERPUSERCACHE_PAYABLETYPE, ERPCOMMONCACHE_SHIPMENTORDERTYPE_WF, ERPCOMMONCACHE_SHIPMENTOT_WF_NEXT, ERPCOMMONCACHE_SVTIMECONVERT
+    ERPCOMMONCACHE_SHIPMENTORDERTYPE, ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_SHIPMENTORDERSTATUS, ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE, ERPCOMMONCACHE_SERVICEGROUP, ERPUSERCACHE_PAYABLETYPE, ERPCOMMONCACHE_SHIPMENTORDERTYPE_WF, ERPCOMMONCACHE_SHIPMENTOT_WF_NEXT, ERPCOMMONCACHE_SVTIMECONVERT, ERPCOMMONCACHE_SMSTEMPLATE
 } from "../../../../../../constants/keyCache";
 
 import FixShipmentFee from "../../FixShipmentFee/";
@@ -759,6 +759,16 @@ class EditCom extends React.Component {
                                 IsLabelDiv={true} controltype="InputControl"
                                 isautoloaditemfromcache={true} loaditemcachekeyid={ERPCOMMONCACHE_SVTIMECONVERT} valuemember="SVTimeConvertID" nameMember="SVTimeConvertName"
                                 listoption={[]} datasourcemember="SvTimeConvertID"
+                                isMulti={false}
+                            //SelectedOption={this.state.SelectedServiceGroupList ? this.state.SelectedServiceGroupList : []}
+                            //onValueChangeCus={this.changeSelectServiceGroup}
+                            />
+
+                            <FormControl.MultiSelectComboBox name="NotContactableSMSTemplateID" label="Mẫu tin nhắn không liên hệ được với khách"
+                                labelcolspan={4} colspan={8} rowspan={8}
+                                IsLabelDiv={true} controltype="InputControl"
+                                isautoloaditemfromcache={true} loaditemcachekeyid={ERPCOMMONCACHE_SMSTEMPLATE} valuemember="SMSTemplateID" nameMember="SMSTemplateName"
+                                listoption={[]} datasourcemember="NotContactableSMSTemplateID"
                                 isMulti={false}
                             //SelectedOption={this.state.SelectedServiceGroupList ? this.state.SelectedServiceGroupList : []}
                             //onValueChangeCus={this.changeSelectServiceGroup}
