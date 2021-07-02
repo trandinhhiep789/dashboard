@@ -361,6 +361,12 @@ export const MLObjectDefinition = [
         DataSourceMember: "SvTimeConvertID"
     },
     {
+        Name: "NotContactableSMSTemplateID",
+        DefaultValue: "",
+        BindControlName: "NotContactableSMSTemplateID",
+        DataSourceMember: "NotContactableSMSTemplateID"
+    },
+    {
         Name: "Description",
         DefaultValue: "",
         Label: "Mô tả",

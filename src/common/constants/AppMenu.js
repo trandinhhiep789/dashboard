@@ -698,6 +698,13 @@ const AppMenu = [
                         LinkTo: '/DocumentsType',
                         MenuIcon: '',
                         SubMenu: []
+                    },
+                    {
+                        MenuName: 'DocumentsFolder',
+                        MenuTitle: 'Danh mục tài liệu',
+                        LinkTo: '/DocumentsFolder',
+                        MenuIcon: '',
+                        SubMenu: []
                     }
                 ]
             },

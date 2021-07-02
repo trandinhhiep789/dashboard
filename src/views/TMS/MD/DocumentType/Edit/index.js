@@ -16,7 +16,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { AREATYPE_UPDATE } from "../../../../../constants/functionLists";
+import { AREATYPE_UPDATE, DOCUMENT_UPDATE } from "../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_AREATT, ERPCOMMONCACHE_AREATYPE, ERPCOMMONCACHE_DOCUMENTTYPE } from "../../../../../constants/keyCache";
 
@@ -88,7 +88,7 @@ class EditCom extends React.Component {
         if (this.state.IsLoadDataComplete) {
             return (
                 <SimpleForm
-                    FormName="Cập nhật loại khu vực"
+                    FormName="Cập nhật loại tài liệu"
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={EditElementList}
                     onSubmit={this.handleSubmit}
@@ -96,7 +96,7 @@ class EditCom extends React.Component {
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
-                    RequirePermission={AREATYPE_UPDATE}
+                    RequirePermission={DOCUMENT_UPDATE}
                     ref={this.searchref}
                 />
             );
