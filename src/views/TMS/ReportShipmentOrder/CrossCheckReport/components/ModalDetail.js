@@ -713,7 +713,7 @@ class ModalDetailCom extends Component {
 
 
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/CrossCheckReportDetail", searchData).then(apiResult => {
-            console.log("export api", searchData, apiResult)
+            // console.log("export api", searchData, apiResult)
             if (!apiResult.IsError) {
                 const exelData = apiResult.ResultObject.map((item, index) => {
                     let element = {

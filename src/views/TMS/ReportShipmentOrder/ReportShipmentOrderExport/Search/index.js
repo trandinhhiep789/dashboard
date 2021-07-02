@@ -9,7 +9,7 @@ import "react-notifications-component/dist/theme.css";
 // import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
 import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
 import { MessageModal } from "../../../../../common/components/Modal";
-import DataGrid from "../../../../../common/components/DataGrid";
+import { MODAL_TYPE_DOWNLOAD_EXCEL, MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
 import {
     PagePath,
     APIHostName,
@@ -20,7 +20,6 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { SHIPMENTORDER_REPORT_VIEW } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { formatDate } from "../../../../../common/library/CommonLib";
@@ -42,45 +41,7 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        console.log("search:", formData, MLObject)
-        // const postData = [
-
-        //     {
-        //         SearchKey: "@FROMDATE",
-        //         SearchValue: MLObject.FromDate
-        //     },
-        //     {
-        //         SearchKey: "@TODATE",
-        //         SearchValue: MLObject.ToDate
-        //     },
-        //     {
-        //         SearchKey: "@RECEIVERPROVINCEID",
-        //         SearchValue: MLObject.ReceiverProvinceID
-        //     },
-        //     {
-        //         SearchKey: "@RECEIVERDISTRICTID",
-        //         SearchValue: MLObject.ReceiverDistrictID
-        //     },
-        //     {
-        //         SearchKey: "@SENDERSTOREID",
-        //         SearchValue: MLObject.SenderStoreID
-        //     },
-        //     {
-        //         SearchKey: "@COORDINATORSTOREID",
-        //         SearchValue: MLObject.CoordinatorStoreID
-        //     },
-        //     {
-        //         SearchKey: "@USERNAME",
-        //         SearchValue: MLObject.UserName == -1 ? MLObject.UserName : MLObject.UserName.value
-        //     },
-
-        // ];
-
-        const dtFromdate = new Date();
-        dtFromdate.setDate(new Date().getDate() - 30);
-
         const postDataNew = [
-
             {
                 SearchKey: "@FROMDATE",
                 SearchValue: MLObject.FromDate
@@ -93,67 +54,34 @@ class SearchCom extends React.Component {
 
         ];
 
-        this.callSearchData(postDataNew);
-
-    }
-
-    callSearchData(postData) {
-        //api/ShipmentOrder/SearchReportExport
-        this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchReportExportNew", postData).then(apiResult => {
-            console.log("postData:", postData, apiResult)
+        const postData={
+            DataExportTemplateID:3,
+            LoadDataStoreName:'TMS.TMS_SHIPMENT_ITEM_REPORT',
+            KeyCached:"SHIPMENTORDER_REPORT_EXPORT",
+            SearchParamList:postDataNew,
+            ExportDataParamsDescription:"FROMDATE: " + formatDate(MLObject.FromDate) +" - TODATE: "+ formatDate(MLObject.ToDate)
+        }
+        this.props.callFetchAPI(APIHostName, "api/DataExportQueue/AddQueueExport", postData).then(apiResult => {
             if (!apiResult.IsError) {
-                if (apiResult.ResultObject.length > 0) {
-                    const exelData = apiResult.ResultObject.map((item, index) => {
-                        let element = {
-                            "Mã vận đơn": item.ShipmentOrderID,
-                            "Thời gian tạo": formatDate(item.CreatedOrderTime, false),
-                            "Mã đơn hàng": item.PartnerSaleOrderID,
-                            "Thời gian hẹn giao": formatDate(item.ExpectedDeliveryDate, false),
-                            "Thời gian thực giao": formatDate(item.ActualDeliveryDate, false),
-                            "Tên khách hàng": item.ReceiverFullName,
-                            "Mã quận": item.ReceiverDistrictID,
-                            "Tên quận": item.DistrictName,
-                            "Địa chỉ": item.ReceiverFullAddress,
-                            "Nhân viên giao": item.DeliverUserFullNameList,
-                            "Mã phương tiện(1 XM,2.XT)": item.CarrierTypeID,
-                            "Km giao dự kiến": item.EstimateDeliveryDistance,
-                            "Km giao thực tế": item.ActualDeliveryDistance,
-                            "Nhân viên điều phối": item.CoordinatorUserName,
-                            "Sản phẩm giao chính": item.PrimaryShipItemName,
-                            "Tổng COD": item.TotalCOD,
-                            "Mã ngành hàng": item.MainGroupID,
-                            "Mã nhóm hàng": item.SubGroupID,
-                            "Mã sản phẩm": item.ProductID,
-                            "Tên sản phẩm": item.ProductName,
-                            "Số lượng": item.Quantity,
-                            "Giá": item.Price,
-                            "Có lắp đặt": item.IsInstallItem,
-                            "Đã hoàn thành": item.IsCompleteDeliverIed,
-                            "Đã hủy giao": item.IsCancelDelivery,
-                            "Trạng thái giao hàng": item.ShipmentOrderStatusName,
-
-                            "Mã kho điều phối": item.CoordinatorStoreID,
-                            "Tên kho điều phối": item.StoreName,
-                            "Kho tạo": item.RequestStoreID,
-                            "Mã khu vực": item.BCNBAreaID,
-                            "Tên khu vực": item.AreaName,
-                           
-                            "Mã nhân viên tạo": item.CreatedUser,
-                            "Nhân viên tạo": item.FullName
-                        };
-                        return element;
-
-                    })
-
-                    this.handleExportCSV(exelData);
-                    // this.showMessage("Chức năng đang phát triển chưa.")
-                } else {
-                    this.showMessage("Dữ liệu không tồn tại nên không thể xuất.")
-                }
+                this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
+                    title: "Tải file",
+                    maxWidth: '1200px',
+                    ParamRequest: {DataExportTemplateID:3}
+                });
             }
             else {
                 this.showMessage(apiResult.Message)
             }
+        });
+
+    }
+
+    handleHistorySearch()
+    {
+        this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
+            title: "Tải file",
+            maxWidth: '1200px',
+            ParamRequest:{DataExportTemplateID:3}
         });
     }
 
@@ -239,7 +167,12 @@ class SearchCom extends React.Component {
                     MLObjectDefinition={SearchMLObjectDefinitionNew}
                     listelement={SearchElementListNew}
                     TitleButton="Xuất dữ liệu"
+                    IsShowButtonSearch ={false}
+                    IsButtonExport={true}
+                    IsButtonhistory={true}
+                    onHistorySubmit={this.handleHistorySearch.bind(this)}
                     onSubmit={this.handleSearchSubmit.bind(this)}
+                    onExportSubmit={this.handleSearchSubmit.bind(this)}
                     ref={this.searchref}
                     className="multiple"
                 />

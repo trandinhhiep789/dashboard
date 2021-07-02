@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 import ReactNotification from "react-notifications-component";
 
-import { MLObjectDefinition, listelement, PagePath, InitSearchParams, APIHostName, APISearch, listColumn } from './constants'
+import { MLObjectDefinition, listelement, PagePath, InitSearchParams, APIHostName, APISearch, listColumn, APIDelete } from './constants'
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { updatePagePath } from "../../../../actions/pageAction";
@@ -202,8 +202,26 @@ class SearchCom extends React.Component {
         this.addNotification(result.Message, result.IsError);
     }
 
-    handleDelete() {
-        this.showMessage("Tính năng đang phát triển")
+    handleDelete(listDeleteID, ListPKColumnName) {
+        const arrDelete = listDeleteID.map(item => {
+            const { pkColumnName } = item;
+            return {
+                [pkColumnName[0].key]: pkColumnName[0].value,
+                IsDeleted: true,
+                DeletedUser: this.props.AppInfo.LoginInfo.Username,
+                DeletedDate: new Date()
+            }
+        })
+
+
+        this.props.callFetchAPI(APIHostName, APIDelete, arrDelete).then(apiResult => {
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.Message);
+            } else {
+                this.showMessage(apiResult.Message);
+                this.callSearchData(this.state.SearchData);
+            }
+        })
     }
 
     render() {

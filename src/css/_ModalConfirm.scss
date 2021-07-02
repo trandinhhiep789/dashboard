@@ -94,13 +94,29 @@
     &.modal-list-down{
         .table{
             tbody{
-                .btn-download-file{
-                    margin-bottom: 0;
-                    img {
-                        clear: both;
-                        width: 20px;
+                .action-download {
+                    padding: 0 ;
+                    position: relative;
+                    .btn-download-file{
+                        position: absolute;
+                        width: 100%;
+                        height: 100%;
+                        left: 0;
+                        right: 0;
+                        top: 0;
+                        bottom: 0;
+                        margin: auto;
+                        z-index: 999;
+                        img {
+                            width: 40%;
+                            position: absolute;
+                            left: 0;
+                            right: 0;
+                            margin: 0 auto;
+                        }
                     }
                 }
+
             }
         }
     }

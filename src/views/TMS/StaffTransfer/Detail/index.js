@@ -2,29 +2,49 @@ import React from "react";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
 import ReactNotification from "react-notifications-component";
+import { Link } from "react-router-dom";
 
-import { PagePath } from './constants'
+import { PagePath, APIHostName, LoadInfoEdit, AddAPIComment, SearchAPIComment, AddAPIAttachment, APIUpdateBrowse } from './constants';
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache } from "../../../../actions/cacheAction";
 import { MessageModal } from "../../../../common/components/Modal";
 
+import MyContext from "./Context";
+import StaffTransferCom from './StaffTransfer';
+import StaffTransferDetailCom from './StaffTransferDetail';
+import StaffTransfer_ReviewListCom from './StaffTransfer_ReviewList';
+import Attachment from "../../../../common/components/Attachment";
+import Comment from "../../../../common/components/Comment";
+
 class DetailCom extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            dataSource: null
+            stateDataSource: null,
+            stateDataComment: null,
+            stateDataAttachment: null,
         };
 
         this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
+
+        this.fetchStaffTransferDetail = this.fetchStaffTransferDetail.bind(this);
+        this.fetchCommentData = this.fetchCommentData.bind(this);
+        this.handleAgreeOrRefuse = this.handleAgreeOrRefuse.bind(this);
+        this.handleSelectFile = this.handleSelectFile.bind(this);
+        this.handleDeleteFile = this.handleDeleteFile.bind(this);
+        this.handleCommentChange = this.handleCommentChange.bind(this);
+        this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
-        this.showMessage("Tính năng đang phát triển");
+        this.fetchStaffTransferDetail();
+        this.fetchCommentData();
     }
 
     showMessage(message) {
@@ -68,10 +88,152 @@ class DetailCom extends React.Component {
         });
     }
 
-    render() {
-        const { dataSource } = this.state;
+    fetchStaffTransferDetail() {
+        let { id } = this.props.match.params;
 
-        if (dataSource == null) {
+        this.props.callFetchAPI(APIHostName, LoadInfoEdit, id).then(apiResult => {
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.Message);
+            } else {
+                this.setState({
+                    stateDataSource: apiResult.ResultObject
+                })
+            }
+        })
+    }
+
+    fetchCommentData() {
+        const { id } = this.props.match.params;
+
+        this.props.callFetchAPI(APIHostName, SearchAPIComment, id).then((apiResult) => {
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.Message);
+            }
+            else {
+                this.setState({
+                    stateDataComment: apiResult.ResultObject
+                })
+            }
+        })
+    }
+
+    handleAgreeOrRefuse(data) {
+        const { stateDataSource } = this.state;
+        const { ListStaffTransfer_ReviewList } = stateDataSource;
+
+        const postListStaffTransfer_ReviewList = ListStaffTransfer_ReviewList.reduce((acc, val) => {
+            if (val.ReviewLevelID == data.ReviewLevelID) {
+                return [
+                    ...acc,
+                    {
+                        StaffTransferID: data.StaffTransferID,
+                        ReviewLevelID: data.ReviewLevelID,
+                        ReviewStatus: data.ReviewStatus,
+                        IsReviewed: data.IsReviewed,
+                        ReviewedDate: data.ReviewedDate,
+                        ReviewedNote: data.ReviewedNote,
+                        UserName: data.UserName
+                    }
+                ]
+            } else {
+                return acc;
+            }
+        }, []);
+
+        const postData = {
+            StaffTransferID: stateDataSource.StaffTransferID,
+            StaffTransferTypeID: stateDataSource.StaffTransferTypeID,
+            StaffTransferTypeID: stateDataSource.StaffTransferTypeID,
+            UpdatedUser: this.props.AppInfo.LoginInfo.Username,
+            CurrentReviewLevelID: data.ReviewLevelID,
+            IsReviewed: data.ReviewLevelID == ListStaffTransfer_ReviewList[ListStaffTransfer_ReviewList.length - 1].ReviewLevelID,
+            ReviewedDate: data.ReviewedDate,
+            ReviewedUser: this.props.AppInfo.LoginInfo.Username,
+            ListStaffTransfer_ReviewList: postListStaffTransfer_ReviewList
+        }
+
+        console.log(postData)
+
+        this.props.callFetchAPI(APIHostName, APIUpdateBrowse, postData).then((apiResult) => {
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.Message);
+            }
+            else {
+                this.showMessage(apiResult.Message);
+                this.fetchStaffTransferDetail();
+            }
+        })
+    }
+
+    handleSelectFile(e) {
+        // const { stateDataSource } = this.state;
+
+        // let data = new FormData();
+        // const MLObject = {
+        //     StaffTransferID: stateDataSource.StaffTransferID,
+        //     RequestDate: stateDataSource.RequestDate,
+        //     CreatedUser: this.props.AppInfo.LoginInfo.Username
+        // };
+
+        // data.append('file', e.target.files[0])
+        // data.append("ObjStaffTransfer_Attachment", JSON.stringify(MLObject));
+
+        // this.props.callFetchAPI(APIHostName, AddAPIAttachment, data).then((apiResult) => {
+        //     if (apiResult.IsError) {
+        //         this.showMessage(apiResult.Message);
+        //     }
+        //     else {
+        //         this.showMessage("ok")
+        //     }
+        // })
+        this.showMessage("Tính năng đang phát triển")
+    }
+
+    handleDeleteFile() {
+
+    }
+
+    handleCommentChange() {
+
+    }
+
+    handleCommentSubmit(valueCommentContent) {
+        const { stateDataSource } = this.state;
+
+        if (valueCommentContent.trim().length > 0) {
+            const MLObject = {
+                StaffTransferID: stateDataSource.StaffTransferID,
+                RequestDate: stateDataSource.RequestDate,
+                CommentDate: new Date(),
+                CommentContent: valueCommentContent,
+                CreatedUser: this.props.AppInfo.LoginInfo.Username,
+                LoginLogID: JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID
+            }
+
+            console.log(MLObject)
+
+            this.props.callFetchAPI(APIHostName, AddAPIComment, MLObject).then((apiResult) => {
+                if (apiResult.IsError) {
+                    this.showMessage(apiResult.Message);
+                }
+                else {
+                    this.fetchCommentData();
+                }
+            })
+        }
+        else {
+            this.showMessage('Vui lòng nhập nội dụng bình luận')
+        }
+    }
+
+    handleSubmit() {
+
+    }
+
+    render() {
+        const { stateDataSource, stateDataComment } = this.state;
+
+        if (stateDataSource == null || stateDataComment == null) {
             return (
                 <React.Fragment></React.Fragment>
             )
@@ -79,6 +241,50 @@ class DetailCom extends React.Component {
             return (
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
+                    <div className="col-lg-12">
+                        <div className="card">
+                            <h4 className="card-title">
+                                <strong>Thông tin yêu cầu thuyên chuyển</strong>
+                            </h4>
+                            <div className="card-body">
+                                <MyContext.Provider value={{
+                                    contextStaffTransfer: stateDataSource,
+                                    handleAgreeOrRefuse: this.handleAgreeOrRefuse
+                                }}>
+                                    <div className="mb-4">
+                                        <StaffTransferCom />
+                                    </div>
+                                    <div className="mb-4">
+                                        <StaffTransferDetailCom />
+                                    </div>
+                                    {
+                                        !stateDataSource.IsAutoReview
+                                        && <div className="mb-4"><StaffTransfer_ReviewListCom /></div>
+                                    }
+                                </MyContext.Provider>
+
+                                <Attachment
+                                    IsAttachment={true}
+                                    onSelectFile={this.handleSelectFile}
+                                    onDeletefile={this.handleDeleteFile}
+                                    DataAttachment={[]}
+                                />
+
+                                <Comment
+                                    DataComments={stateDataComment}
+                                    IsComment={true}
+                                    onChangeValue={this.handleCommentChange}
+                                    onKeyPressSumit={this.handleCommentSubmit}
+                                />
+                            </div>
+
+                            <div className="d-flex justify-content-end mr-4 mb-4">
+                                <Link to="/StaffTransfer">
+                                    <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
                 </React.Fragment>
             );
         }

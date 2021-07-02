@@ -25,6 +25,7 @@ import {
 } from "../constants";
 import { MessageModal } from "../../../../../../common/components/Modal";
 import RewardPriceTableInfo from "./RewardPriceTableInfo";
+import { formatDate } from "../../../../../../common/library/CommonLib.js";
 
 import { showModal, hideModal } from '../../../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../../../constants/actionTypes';
@@ -67,7 +68,7 @@ class DetailCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
-            //console.log('apiResult', apiResult)
+            // console.log('apiResult', apiResult)
             if (apiResult.IsError) {
 
                 this.setState({
@@ -91,7 +92,9 @@ class DetailCom extends React.Component {
                         "Giá trị TSKT đến": item.ToTechspecsValue,
                         "Sản phẩm": item.ProductName,
                         "Giá": item.RewardPrice,
-                        "Giá không lắp đặt": item.RewardPriceWithoutInstall
+                        "Giá không lắp đặt": item.RewardPriceWithoutInstall,
+                        "Người cập nhật": item.UpdatedUserFullName,
+                        "Ngày cập nhật": formatDate(item.UpdatedDate, true),
                     };
                     return element;
 
@@ -105,7 +108,9 @@ class DetailCom extends React.Component {
                         "Số lượng từ": item.FromQuantity,
                         "Số lượng đến": item.ToQuantity,
                         "Giá": item.RewardPrice,
-                        "Giá không lắp đặt": item.RewardPriceWithoutInstall
+                        "Giá không lắp đặt": item.RewardPriceWithoutInstall,
+                        "Người cập nhật": item.UpdatedUserFullName,
+                        "Ngày cập nhật": formatDate(item.UpdatedDate, true),
                     };
                     return element;
 

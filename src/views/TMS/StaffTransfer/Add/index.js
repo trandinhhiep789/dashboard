@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
+import { Link } from 'react-router'
 
 import { MessageModal } from "../../../../common/components/Modal";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
@@ -71,6 +72,16 @@ class AddCom extends React.Component {
     handleSubmit(formData, MLObject) {
         const { StaffTransferTypeID, RequestStoreID } = this.props.location.state;
         const { StaffTransferData, StaffTransferDetailData, StaffTransferType_rvLevelData } = this.state;
+
+        if (StaffTransferDetailData.length == 0) {
+            this.showMessage("Danh sách nhân viên thuyên chuyển không được để trống");
+            return;
+        }
+
+        if (StaffTransferData.IsAutoReview == false && StaffTransferType_rvLevelData.length == 0) {
+            this.showMessage(`Danh sách mức duyệt trống, vui lòng khai báo mức duyệt. Mã Loại yêu cầu thuyên chuyển: ${StaffTransferTypeID}`);
+            return;
+        }
 
         const postData = {
             ...MLObject,

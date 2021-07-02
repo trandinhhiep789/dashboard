@@ -26,6 +26,8 @@ import { toIsoStringCus, toIsoStringCusNew, formatNumber, formatNumberNew, toIso
 import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_DOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
 import ModalDetail from '../components/ModalDetail'
 import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../../constants/keyCache";
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -417,6 +419,163 @@ class SearchCom extends React.Component {
 
     }
 
+    handleExportSubmit(formData, MLObject) {
+        //console.log("MLObject", MLObject, toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false), Date.parse(toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false)))
+        console.log("MLObject.FromDate", MLObject.FromDate);
+        console.log("MLObject.ToDate", MLObject.ToDate);
+        const { cacheConfig } = this.state;
+        // if (MLObject.BusinessID < 0) {
+
+        //     this.showMessage("Vui lòng chọn nghiệp vụ cần tìm kiếm.")
+        // }
+        // else {
+        var fromDate = MLObject.FromDate._d;
+        if (fromDate == null)
+            fromDate = MLObject.FromDate;
+        var toDate = MLObject.ToDate._d;
+        if (toDate == null)
+            toDate = MLObject.ToDate;
+
+        // console.log("fromDate", fromDate);
+        // console.log("toDate", toDate);
+
+
+        const objParams = {
+            FromDate: fromDate.getTime(),
+            ToDate: toDate.getTime(), //Date.parse(MLObject.ToDate),
+            BusinessID: MLObject.BusinessID,
+            Difference: MLObject.Difference
+        }
+
+        /* const objParams = {
+              FromDate: Date.parse(toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false)),
+              ToDate: Date.parse(toIsoStringCusNew(new Date(MLObject.ToDate).toISOString(), false)), //Date.parse(MLObject.ToDate),
+              BusinessID: MLObject.BusinessID,
+              Difference: MLObject.Difference
+          }*/
+
+        this.setState({
+            params: objParams,
+            Difference: MLObject.Difference == true ? 1 : 0,
+        })
+        //console.log("object", toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false))
+        const objDataNewol = {
+            "storedName": "ERP_TMS_ADVANCEREQUEST",
+            "params": [
+                {
+                    "name": "V_FROMDATE",
+                    "value": Date.parse(toIsoStringCusNew(new Date(MLObject.FromDate).toISOString(), false)),
+                    "op": "timestamp"
+                },
+                {
+                    "name": "V_TODATE",
+                    "value": Date.parse(toIsoStringCusNew(new Date(MLObject.ToDate).toISOString(), false)),
+                    "op": "timestamp"
+                },
+                {
+                    "name": "V_REPORTIDLIST",
+                    "value": (MLObject.BusinessID < 0 || MLObject.BusinessID == "") ? "1,2,3,4" : MLObject.BusinessID,
+                    "op": "array"
+                },
+                {
+                    "name": "V_OUTINPUTTYPEIDREPORT1LIST",
+                    "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEOUTPUTTYPEIDLIST").toString(),//"2223",
+                    "op": "array"
+                },
+                {
+                    "name": "V_OUTINPUTTYPEIDREPORT2LIST",
+                    "value": this.getValueKeyConfig("RECONCILIATION_ADVANCEINPUTTYPEIDLIST").toString(),//"2064",
+                    "op": "array"
+                },
+                {
+                    "name": "V_OUTINPUTTYPEIDREPORT3LIST",
+                    "value": this.getValueKeyConfig("RECONCILIATION_CONSUMPOUTPUTTYPEIDLIST").toString(),//"2503",
+                    "op": "array"
+                },
+                {
+                    "name": "V_OUTINPUTTYPEIDREPORT4LIST",
+                    "value": this.getValueKeyConfig("RECONCILIATION_SALEOUTPUTTYPEIDLIST").toString(),//"3",
+                    "op": "array"
+                },
+                {
+                    "name": "V_OUTINPUTTYPEIDREPORT5LIST",
+                    "value": this.getValueKeyConfig("RECONCILIATION_INVENTORYOUTPUTTYPEIDLIST").toString(),//"2223,9,12",
+                    "op": "array"
+                },
+                {
+                    "name": "V_OUTINPUTTYPEIDREPORT6LIST",
+                    "value": this.getValueKeyConfig("RECONCILIATION_INVENTORYINPUTTYPEIDLIST").toString(),//"2223,9,12",
+                    "op": "array"
+                },
+                {
+
+                    "name": "V_VIRTUALSTOREIDLIST",
+                    "value": this.getValueKeyConfig("RECONCILIATION_VIRTUALSTOREIDLIST").toString(),//"3","9375",
+                    "op": "array"
+                },
+                {
+                    "name": "V_ISCHECKVIEWDIFFERENCE",
+                    "value": MLObject.Difference == true ? 1 : 0,
+                    "op": "array"
+                }
+
+            ]
+        }
+        this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/CrossCheckReport", objDataNewol).then(apiResult => {
+            if (!apiResult.IsError) {
+  
+                // xuất exel
+                const exelData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Nghiệp vụ": item.reportname,
+                        "Ngày": item.date,
+                        "TMS": formatNumberNew(item.quantitytms),
+                        "ERP": formatNumberNew(item.quantityerp),
+                        "Chênh lệch": formatNumberNew(item.differencequantity),
+                       
+                    };
+                    return element;
+
+                })
+                this.handleExportCSV(exelData)
+
+            }
+            else {
+              
+                this.showMessage("Lỗi hệ thống. Vui lòng liên hệ quản trị viên.")
+            }
+        });
+
+    }
+
+    handleExportCSV(Data) {
+        const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+        const fileExtension = '.xlsx';
+        let result;
+        if (Data.length == 0) {
+            result = {
+                IsError: true,
+                Message: "Dữ liệu không tồn tại. Không thể xuất file!"
+            };
+        }
+        else {
+
+            const ws = XLSX.utils.json_to_sheet(Data);
+            const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+            const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+            const data = new Blob([excelBuffer], { type: fileType });
+
+
+            FileSaver.saveAs(data, "Báo cáo đối soát" + fileExtension);
+
+            result = {
+                IsError: false,
+                Message: "Xuất file thành công!"
+            };
+        }
+        this.showMessage(result.Message)
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -428,6 +587,8 @@ class SearchCom extends React.Component {
                     onSubmit={this.handleSearchSubmit}
                     ref={this.searchref}
                     className="multiple"
+                    IsButtonExport={true}
+                    onExportSubmit={this.handleExportSubmit.bind(this)}
                 />
 
 
