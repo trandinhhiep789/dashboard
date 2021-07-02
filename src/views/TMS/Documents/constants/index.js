@@ -95,17 +95,17 @@ export const DataGridColumnList = [
         Width: 150
     },
     {
-        Name: "IsPubliShed",
+        Name: "IsPublished",
         Type: "checkicon",
         Caption: "Công bố",
-        DataSourceMember: "IsPubliShed",
+        DataSourceMember: "IsPublished",
         Width:  100
     },
     {
-        Name: "PubliShedDate",
+        Name: "PublishedDate",
         Type: "date",
         Caption: "Ngày xuất bản",
-        DataSourceMember: "PubliShedDate",
+        DataSourceMember: "PublishedDate",
         Width: 100
     },
     {

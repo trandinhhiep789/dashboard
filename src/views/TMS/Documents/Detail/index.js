@@ -139,7 +139,6 @@ class DetailCom extends React.Component {
             IsPublished,
             IsLockComment
         } = this.state;
-        console.log("IsPubliShed", IsPublished)
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
