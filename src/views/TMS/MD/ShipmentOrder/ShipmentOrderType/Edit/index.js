@@ -270,6 +270,7 @@ class EditCom extends React.Component {
         param.AddFunctionID = param.AddFunctionID && Array.isArray(param.AddFunctionID) ? param.AddFunctionID[0] : param.AddFunctionID;
         param.MTOuputPayableTypeID = param.MTOuputPayableTypeID && Array.isArray(param.MTOuputPayableTypeID) ? param.MTOuputPayableTypeID[0] : param.MTOuputPayableTypeID;
         param.SvTimeConvertID = param.SvTimeConvertID && Array.isArray(param.SvTimeConvertID) ? param.SvTimeConvertID[0] : param.SvTimeConvertID;
+        param.NotContactableSMSTemplateID = param.NotContactableSMSTemplateID && Array.isArray(param.NotContactableSMSTemplateID) ? param.NotContactableSMSTemplateID[0] : param.NotContactableSMSTemplateID;
         param.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         param.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         if (param.ShipmentOrderTypeWorkflow) {

@@ -1,4 +1,4 @@
-import { ERPCOMMONCACHE_SVTIMECONVERT, ERPUSERCACHE_PAYABLETYPE } from "../../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_SMSTEMPLATE, ERPCOMMONCACHE_SVTIMECONVERT, ERPUSERCACHE_PAYABLETYPE } from "../../../../../../constants/keyCache";
 
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/ShipmentOrderType/Search";
@@ -190,6 +190,18 @@ export const AddModalColumnList = [
         LoadItemCacheKeyID: ERPCOMMONCACHE_SVTIMECONVERT,
         ValueMember: "SVTimeConvertID",
         NameMember: "SVTimeConvertName",
+    },
+    {
+        Name: "NotContactableSMSTemplateID",
+        type: "select",
+        label: "Mẫu tin nhắn không liên hệ được với khách",
+        DataSourceMember: "NotContactableSMSTemplateID",
+        readonly: false,
+        validatonList: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: ERPCOMMONCACHE_SMSTEMPLATE,
+        ValueMember: "SMSTemplateID",
+        NameMember: "SMSTemplateName",
     },
 
 
