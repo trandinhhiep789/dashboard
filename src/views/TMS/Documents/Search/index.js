@@ -75,26 +75,26 @@ class SearchCom extends React.Component {
         // this.props.callFetchAPI(APIHostName, "api/Document/SearchMobi", params).then(apiResult => {
         //     console.log("callSearchDataMobi", params, apiResult)
         // });
-        const intDocumentID = 7;
+        const intDocumentID = 6;
         this.props.callFetchAPI(APIHostName, "api/Document/LoadMobi", intDocumentID).then(apiResult => {
             console.log("LoadMobi", params, apiResult)
         });
 
-        const paramsComment = {
-            DocumentID: 7,
-            Content: "Tài liệu hay và đầy đủ thông tin. Cảm ơn đồng đội...."
-        }
+        // const paramsComment = {
+        //     DocumentID: 7,
+        //     Content: "Tài liệu hay và đầy đủ thông tin. Cảm ơn đồng đội...."
+        // }
         // this.props.callFetchAPI(APIHostName, "api/Document_Comment/AddMobi", paramsComment).then(apiResult => {
         //     console.log("paramsComment", paramsComment, apiResult)
         // });
 
-        const paramsLike = {
-            DocumentID: 7,
-            IsLike: 1
-        }
-        this.props.callFetchAPI(APIHostName, "api/Document_Like/AddLike", paramsLike).then(apiResult => {
-            console.log("paramsComment", paramsLike, apiResult)
-        });
+        // const paramsLike = {
+        //     DocumentID: 6,
+        //     IsLike: true
+        // }
+        // this.props.callFetchAPI(APIHostName, "api/Document_Like/AddLike", paramsLike).then(apiResult => {
+        //     console.log("paramsComment", paramsLike, apiResult)
+        // });
         
 
         // const strCommentID = "C61C29408EB95504E053D105010A63D8       ";
@@ -114,7 +114,7 @@ class SearchCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
-                // this.callSearchDataMobi();
+                this.callSearchDataMobi();
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
@@ -231,7 +231,7 @@ class SearchCom extends React.Component {
         this.addNotification(result.Message, result.IsError);
     }
 
-
+    
 
     render() {
         return (

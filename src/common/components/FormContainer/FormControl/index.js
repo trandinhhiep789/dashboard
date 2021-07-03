@@ -2274,10 +2274,6 @@ export const FormControlComboBoxNew = connect(mapStateToProps, mapDispatchToProp
 
 
 const singleFileUploadImage = {
-    maxWidth: "100px",
-    minWidth: "100px",
-    minHeight: "50px",
-    marginRight: "20px"
 };
 
 const singleFileUploadDeletebtn = {
@@ -2316,7 +2312,6 @@ class UploadAvatar extends React.Component {
 
 
     checkIsValidAcceptedFile(filename) {
-        console.log("filename", filename)
         var _fileName = filename;
         var idxDot = _fileName.lastIndexOf(".") + 1;
         var extFile = _fileName.substr(idxDot, _fileName.length).toLowerCase();
@@ -2330,9 +2325,7 @@ class UploadAvatar extends React.Component {
 
 
     handleSelectedFile(event) {
-        console.log("handleSelectedFile", event.target.files[0])
         let isValidAcceptedFile = this.checkIsValidAcceptedFile(event.target.files[0].name);
-
         this.setState({ value: event.target.files[0].name, src: URL.createObjectURL(event.target.files[0]) });
         if (this.props.isReturnInline) {
             if (this.props.onHandleSelectedFile != null && isValidAcceptedFile) {
@@ -2352,31 +2345,35 @@ class UploadAvatar extends React.Component {
 
 
     resetFile() {
-        console.log("resetFile")
+
         let id = this.props.name;
         document.getElementById(id).value = "";
-        if (this.props.isReturnInline) {
-            if (this.props.onHandleSelectedFile != null && isValidAcceptedFile) {
-                this.props.onHandleSelectedFile(null, this.props.nameMember, true);
-            }
-        }
+        // if (this.props.isReturnInline) {
+        //     if (this.props.onHandleSelectedFile != null && isValidAcceptedFile) {
+        //         this.props.onHandleSelectedFile(null, this.props.nameMember, true);
+        //     }
+        // }
         this.setState({
             src: this.state.defaultImage,
             value: "",
         });
     }
 
-
+    showFile() {
+        const { src } = this.state;
+        if (this.props.showImage != null)
+            this.props.showImage(src)
+    }
 
 
     render() {
-
+        console.log("aaa", this.state, this.props)
         let className = "form-control form-control-sm";
         if (this.props.CSSClassName != null)
             className = this.props.CSSClassName;
         let formGroupClassName = "form-group col-md-4";
         if (this.props.colspan != null) {
-            formGroupClassName = "form-group col-md-" + this.props.colspan;
+            formGroupClassName = "form-group groupAction col-md-" + this.props.colspan;
         }
         let labelDivClassName = "form-group col-md-2";
         if (this.props.labelcolspan != null) {
@@ -2392,77 +2389,39 @@ class UploadAvatar extends React.Component {
             formRowClassName += this.props.classNameCustom;
         }
         // console.log('this.props.label', this.props.label)
-        if (this.props.validationErrorMessage != "" && this.props.validationErrorMessage != undefined) {
-            className += " is-invalid";
 
-            return (
-                <div className={formRowClassName} >
-                    {this.props.label.length > 0 ?
-                        <div className={labelDivClassName}>
-                            <label className="col-form-label 2">
-                                {this.props.label}<span className="text-danger"> {star}</span>
-                            </label>
-                        </div>
-                        : ""
-                    }
-
-                    <div className={formGroupClassName}>
-                        <input type="text" name={this.props.name}
-                            onChange={this.handleValueChange}
-                            onBlur={this.handKeyDown}
-                            value={this.props.value}
-                            key={this.props.name}
-                            className={className}
-                            autoFocus={true}
-                            ref={this.props.inputRef}
-                            placeholder={this.props.placeholder}
-                            disabled={this.props.readOnly}
-                            maxLength={this.props.maxSize}
-                        />
-                        <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
+        return (
+            <div className={formRowClassName} >
+                {this.props.label.length > 0 ?
+                    <div className={labelDivClassName}>
+                        <label className="col-form-label 2">
+                            {this.props.label}<span className="text-danger"> {star}</span>
+                        </label>
                     </div>
-                </div>
-            );
-        }
-        else {
-            return (
-                <div className={formRowClassName} >
-                    {this.props.label.length > 0 ?
-                        <div className={labelDivClassName}>
-                            <label className="col-form-label 2">
-                                {this.props.label}<span className="text-danger"> {star}</span>
-                            </label>
-                        </div>
-                        : ""
-                    }
-                    <div className={formGroupClassName}>
-                        {/* <input type="text" name={this.props.name}
-                            onChange={this.handleValueChange}
-                            onKeyPress={(event) => this.handKeyDown(event)}
-                            value={this.props.value}
-                            key={this.props.name}
-                            className={className}
-                            autoFocus={false}
-                            ref={this.props.inputRef}
-                            placeholder={this.props.placeholder}
-                            disabled={this.props.readOnly}
-                            maxLength={this.props.maxSize}
-                        /> */}
+                    : ""
+                }
+                <div className={formGroupClassName}>
+                    <div className="input-group file-group">
+                        <img src={this.state.src} alt="No image" style={singleFileUploadImage} />
+                        <input type="file" id={this.props.name} onChange={this.handleSelectedFile} accept={this.state.acceptType} disabled={this.state.IsSystem} />
 
-                        <div className="input-group file-group">
-                            <img src={this.state.src} alt="No image" style={singleFileUploadImage} />
-                            <input type="file" id={this.props.name} onChange={this.handleSelectedFile} accept={this.state.acceptType} disabled={this.state.IsSystem} />
-                            {this.state.value != null && this.state.value != "" ? <i className="fa fa-remove" onClick={this.resetFile.bind(this)}></i> : ""}
-                            <span className="input-group-append" >
-                                <label className="btn btn-light file-browser" htmlFor={this.props.name} >
-                                    <i className="fa fa-upload"></i>
+                        {(this.state.value != null && this.state.value != "" && this.props.isButtonDelete == true) ? <i className="fa fa-remove bnt-remove" onClick={this.resetFile.bind(this)}></i> : ""}
+                        <span className="input-group-append group-action">
+                            <label className="btn btn-light file-browser" htmlFor={this.props.name} >
+                                <i className="fa fa-upload"></i>
+                            </label>
+                            {
+                                (this.state.value != null && this.state.value != "") ? <label className="btn btn-light file-zoom" onClick={this.showFile.bind(this)} >
+                                    <i className="ti-zoom-in" onClick={this.showFile.bind(this)}></i>
                                 </label>
-                            </span>
-                        </div>
+                                    : ""
+                            }
+
+                        </span>
                     </div>
                 </div>
-            );
-        }
+            </div>
+        );
     }
 }
 

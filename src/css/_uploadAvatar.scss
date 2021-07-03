@@ -1,0 +1,104 @@
+.uploadAvatar{
+    .groupAction{
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        .file-group{
+            position: relative;
+            max-width: 200px;
+            transition: all 0.3s ease;
+            img{
+                max-width: 200px;
+                
+            }
+            .bnt-remove{
+                clear: both;
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                padding: 0;
+                height: 30px;
+                width: 30px;
+                text-align: center;
+                line-height: 30px;
+                z-index: 9999;
+                cursor: pointer;
+                background-color: transparent;
+                color: #fff;
+                &:hover{
+                    background-color: #383433c7;
+                }
+            }
+            .input-group-append {
+                position: absolute;
+                z-index: 99;
+                width: 100%;
+                max-width: 200px;
+                height: 100%;
+                background: #8a868670;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                .file-browser {
+                    background-color: transparent;
+                    border-color: transparent;
+                    color: #ffffffc2;
+                    font-size: 30px;
+                    width: 100%;
+                    height: 100%;
+                    padding: 0;
+                    margin-bottom: 0;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    -webkit-transition: background-color 2s ease-out;
+                    -moz-transition: background-color 2s ease-out;
+                    -o-transition: background-color 2s ease-out;
+                    transition: background-color 2s ease-out;
+                    i{
+                        display: none;
+                    }
+                }
+                .file-zoom {
+                    position: absolute;
+                    bottom: 0;
+                    right: 0;
+                    margin-bottom: 0;
+                    background: transparent;
+                    border-color: transparent;
+                    color: #fff;
+                    padding: 0;
+                    height: 30px;
+                    width: 30px;
+                    text-align: center;
+                    line-height: 30px;
+                    z-index: 9999;
+                    cursor: pointer;
+                    background-color: transparent;
+             
+                    &:hover{
+                        background-color: #383433c7;
+                    }
+                }
+                &.group-action{
+                    clear: both;
+                }
+            }
+            &:hover {
+                transform: scale(1.05);
+                .input-group-append {
+                    .file-browser {
+                        background-color: #71544cb5;
+                        -webkit-transition: background-color 2s ease-out;
+                        -moz-transition: background-color 2s ease-out;
+                        -o-transition: background-color 2s ease-out;
+                        transition: background-color 2s ease-out;
+                       i{
+                        display: block;
+                       }
+                    }
+                }
+            }
+        }
+    }
+}
