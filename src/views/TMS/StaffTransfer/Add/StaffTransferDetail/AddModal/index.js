@@ -261,6 +261,7 @@ class AddModal extends Component {
                                                                 isClearable={true}
                                                                 value={this.state[item.UserName]}
                                                                 onChange={this.handleChangeNewCoordinatorGroup}
+                                                                placeholder={"--Chọn nhân viên--"}
                                                             />
                                                             {
                                                                 (this.state[item.UserName] == null && this.state[`APPLYDATE_${item.UserName}`] != "")
@@ -275,6 +276,7 @@ class AddModal extends Component {
                                                                 size={"large"}
                                                                 onChange={(...data) => this.handleChangeDatePicker(...data, item.UserName)}
                                                                 disabledDate={this.disabledDate}
+                                                                placeholder={"--Chọn ngày--"}
                                                             />
                                                             {
                                                                 (this.state[item.UserName] != null && this.state[`APPLYDATE_${item.UserName}`] == "")

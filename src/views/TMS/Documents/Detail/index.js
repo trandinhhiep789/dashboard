@@ -11,6 +11,8 @@ import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import FormContainer from "../../../../common/components/FormContainer";
 import DataGrid from "../../../../common/components/DataGrid/getdataserver.js";
+import Document_CommentListCom from './Document_CommentList';
+import Document_LikeListCom from './Document_LikeList';
 
 import {
     APIHostName,
@@ -118,16 +120,16 @@ class DetailCom extends React.Component {
     handlePublish(id) {
         console.log("pulish", id)
 
-        const param={
+        const param = {
             DocumentID: this.props.match.params.id,
             IsPublished: id
         }
 
         this.props.callFetchAPI(APIHostName, UpdatePulishAPIPath, param).then((apiResult) => {
             console.log("handlePublish", param, apiResult)
-           
+
             this.addNotification(apiResult.Message, apiResult.IsError);
-            
+
         });
     }
 
@@ -137,9 +139,8 @@ class DetailCom extends React.Component {
             DocumentItem,
             IsLoadDataComplete,
             IsPublished,
-            IsLockComment
+            IsLockComment, DataSource
         } = this.state;
-        console.log("IsPubliShed", IsPublished)
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -152,15 +153,29 @@ class DetailCom extends React.Component {
                             </h4>
                             <div className="card-body">
 
-                                <DocumentInfo
-                                    DocumentItem={DocumentItem}
-                                />
+                                <div className="mb-4">
+                                    <DocumentInfo
+                                        DocumentItem={DocumentItem}
+                                    />
+                                </div>
+
+                                <div className="mb-4">
+                                    <Document_CommentListCom
+                                        propsDocument_CommentList={DataSource.Document_CommentList}
+                                    />
+                                </div>
+
+                                <div className="mb-4">
+                                    <Document_LikeListCom
+                                        propsDocument_LikeList={DataSource.Document_LikeList}
+                                    />
+                                </div>
 
                             </div>
                             <footer className="card-footer text-right">
 
                                 {
-                                   !!IsPublished && IsPublished == false ?
+                                    !!IsPublished && IsPublished == false ?
                                         <button className="btn btn-primary mr-3" type="button" onClick={() => this.handlePublish(0)}>Công bố</button>
                                         : <button className="btn btn-primary mr-3" type="button" onClick={() => this.handlePublish(1)}>Không công bố</button>
                                 }

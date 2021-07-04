@@ -25,7 +25,6 @@ export class DocumentInfo extends Component {
 
     render() {
         const { DocumentInfo } = this.state;
-        console.log("DocumentInfo", DocumentInfo)
         return (
             <React.Fragment>
                 <div className="form-row">
@@ -136,7 +135,7 @@ export class DocumentInfo extends Component {
                         <label className="col-form-label bold">Người cập nhật lần cuối:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        {DocumentInfo.modIfyUser}
+                        {DocumentInfo.ModifyFullName}
                     </div>
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Ngày cập nhật lần cuối:</label>
@@ -148,6 +147,26 @@ export class DocumentInfo extends Component {
                     </div>
                 </div>
 
+                <div className="form-row">
+                    <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Người upload đầu tiên:</label>
+                    </div>
+                    <div className="form-group col-md-4">
+                        <label className="col-form-label">
+                            {DocumentInfo.UpLoadFullName}
+                        </label>
+                        
+                    </div>
+                    <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Ngày upload đầu tiên:</label>
+                    </div>
+                    <div className="form-group col-md-4">
+                        <label className="col-form-label">
+                            {formatDate(DocumentInfo.UpLoadDate, false)}
+                        </label>
+                    </div>
+
+                </div>
 
 
                 <div className="form-row">
@@ -181,7 +200,7 @@ export class DocumentInfo extends Component {
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">
-                            {DocumentInfo.PublishedUser}
+                            {DocumentInfo.PublishedFullName}
                         </label>
                     </div>
                 </div>

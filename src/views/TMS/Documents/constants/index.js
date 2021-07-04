@@ -2,7 +2,7 @@ export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/Document/Search";
 export const LoadAPIPath = "api/Document/Load";
 export const AddAPIPath = "api/Document/Add";
-export const UpdatePulishAPIPath= "api/Document/UpdatePulished";
+export const UpdatePulishAPIPath = "api/Document/UpdatePulished";
 export const UpdateAPIPath = "";
 export const DeleteNewAPIPath = "api/Document/Delete";
 export const BackLink = "/Documents";
@@ -17,18 +17,18 @@ export const TitleFormDetail = "Thông tin tài liệu";
 
 
 export const PagePath = [
-    { Link: "/", Title: "Trang chủ",  icon: "fa fa-home"  },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "", Title: "Danh sách tài liệu" }
 ];
 
 export const EditPagePath = [
-    { Link: "/", Title: "Trang chủ",  icon: "fa fa-home"  },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/Documents", Title: "Danh sách tài liệu" },
     { Link: "", Title: "Cập nhật" }
 ];
 
 export const AddPagePath = [
-    { Link: "/", Title: "Trang chủ",  icon: "fa fa-home"  },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/Documents", Title: "Danh sách tài liệu" },
     { Link: "", Title: "Thêm" }
 ];
@@ -86,7 +86,7 @@ export const DataGridColumnList = [
         Link: "/Documents/Detail/",
         Width: 70
     },
-   
+
     {
         Name: "DocumentFolderName",
         Type: "text",
@@ -95,17 +95,17 @@ export const DataGridColumnList = [
         Width: 150
     },
     {
-        Name: "IsPubliShed",
+        Name: "IsPublished",
         Type: "checkicon",
         Caption: "Công bố",
-        DataSourceMember: "IsPubliShed",
-        Width:  100
+        DataSourceMember: "IsPublished",
+        Width: 100
     },
     {
-        Name: "PubliShedDate",
+        Name: "PublishedDate",
         Type: "date",
         Caption: "Ngày xuất bản",
-        DataSourceMember: "PubliShedDate",
+        DataSourceMember: "PublishedDate",
         Width: 100
     },
     {
@@ -136,7 +136,7 @@ export const DataGridColumnList = [
         DataSourceMember: "ModifyDate",
         Width: 100
     },
-  
+
     {
         Name: "Action",
         Type: "link",
@@ -220,7 +220,7 @@ export const SearchElementList = [
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
     },
-    
+
 ];
 
 
@@ -298,3 +298,59 @@ export const MLObjectDefinition = [
     },
 
 ];
+
+
+export const listColumnDocument_CommentList = [
+    {
+        Name: "Content",
+        Type: "text",
+        Caption: "Nội dung",
+        DataSourceMember: "Content"
+    },
+    {
+        Name: "CommentedUser",
+        Type: "text",
+        Caption: "Mã nhân viên",
+        DataSourceMember: "CommentedUser"
+    },
+    {
+        Name: "CommentedFullName",
+        Type: "text",
+        Caption: "Tên nhân viên",
+        DataSourceMember: "CommentedFullName"
+    },
+    {
+        Name: "CommentedDate",
+        Type: "datetime",
+        Caption: "Ngày bình luận",
+        DataSourceMember: "CommentedDate"
+    },
+]
+
+
+export const listColumnDocument_LikeList = [
+    {
+        Name: "LikeID",
+        Type: "text",
+        Caption: "LikeID",
+        DataSourceMember: "LikeID"
+    },
+    {
+        Name: "LikedUser",
+        Type: "text",
+        Caption: "Mã nhân viên",
+        DataSourceMember: "LikedUser"
+    },
+    {
+        Name: "LikedFullName",
+        Type: "text",
+        Caption: "Tên nhân viên",
+        DataSourceMember: "LikedFullName"
+    },
+    {
+        Name: "LikedDate",
+        Type: "datetime",
+        Caption: "Ngày like",
+        DataSourceMember: "LikedDate"
+    },
+]

@@ -30,13 +30,15 @@ import { ExportStringToDate } from "../../../../common/library/ultils";
 import { ERPCOMMONCACHE_DOCUMENTFOLDER, ERPCOMMONCACHE_DOCUMENTTYPE, ERPCOMMONCACHE_SERVICEAGREEMENTTYPE } from "../../../../constants/keyCache";
 import { Base64 } from 'js-base64';
 import { TMS_MTRETURNREQUEST_DELETE } from "../../../../constants/functionLists";
-
-
+import FileAttachment from "../../../../common/components/Form/FileAttachment/inde";
+import { showModal, hideModal } from '../../../../actions/modal';
+import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_IMAGE_SLIDE } from '../../../../constants/actionTypes';
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
+        this.getCacheDocumentType = this.getCacheDocumentType.bind(this)
         this.state = {
             IsCallAPIError: false,
             IsCloseForm: false,
@@ -45,11 +47,28 @@ class AddCom extends React.Component {
             IsLiquidated: false,
             IsDeposited: false,
             Files: {},
+            DocumentTypeID: "",
+            AttachmentList: [],
         };
     }
 
     componentDidMount() {
         this.props.updatePagePath(AddPagePath);
+        this.getCacheDocumentType();
+    }
+
+    getCacheDocumentType() {
+        this.props.callGetCache(ERPCOMMONCACHE_DOCUMENTTYPE).then(apiResult => {
+            console.log("data", apiResult)
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.Message)
+            }
+            else {
+                this.setState({
+                    DocumentTypeID: apiResult.ResultObject.CacheData[0].DocumentTypeID
+                })
+            }
+        })
     }
 
     handleSubmit(formData, MLObject) {
@@ -58,14 +77,14 @@ class AddCom extends React.Component {
 
         // MLObject.FileContent1 = MLObject.FileContent1.replaceAll("<", "&lt;");
         // MLObject.FileContent2 = "";
-        MLObject.FileContent1= "";
+        MLObject.FileContent1 = "";
         MLObject.FileContent2 = "";
         let data = new FormData();
         data.append("DocumentImageURL", Files.DocumentImageURL);
         data.append("DocumentObj", JSON.stringify(MLObject));
 
         this.props.callFetchAPI(APIHostName, AddAPIPath, data).then(apiResult => {
-            console.log("data",apiResult)
+            console.log("data", apiResult)
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
 
@@ -93,15 +112,47 @@ class AddCom extends React.Component {
         );
     }
 
+    handleChangeForm(formData, MLObject) {
+        console.log("change", formData, MLObject)
+        this.setState({
+            DocumentTypeID: formData.cbDocumentTypeID.value
+        })
+    }
+    handleSelectFile(e) {
+        console.log("handleSelectFile", e, e.target.files)
+        // data.append('file', e.target.files[0])
+        // data.append("ObjMTReturnRequest_Attachment", JSON.stringify(MLObject));
+        this.setState({
+            AttachmentList: e.target.files
+        })
 
+    }
+    handleDeletefile(id) {
+        console.log("handleDeletefile", id)
+        this.setState({
+            AttachmentList: []
+        })
+    }
 
+    handleShowImage(src) {
+        console.log("src", src)
+       
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Hình ảnh đại diện',
+            content: {
+                text: <div className="bg-avatar" style={{ backgroundImage: `url(${src})` }}></div>
+
+            },
+            maxWidth: 800 + 'px'
+        });
+    }
 
     render() {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
 
-        const { } = this.state;
+        const { DocumentTypeID, AttachmentList } = this.state;
 
         return (
             <FormContainer
@@ -110,6 +161,7 @@ class AddCom extends React.Component {
                 listelement={[]}
                 BackLink={BackLink}
                 onSubmit={this.handleSubmit}
+                onchange={this.handleChangeForm.bind(this)}
             >
 
                 <div className="row">
@@ -196,7 +248,27 @@ class AddCom extends React.Component {
                         />
                     </div>
 
-                    <div className="col-md-12">
+                    <div className="col-md-6">
+
+                        <FileAttachment
+                            name="FileAttachmentData"
+                            labelcolspan={4}
+                            colspan={8}
+                            label="Chọn file"
+                            IsAttachment={true}
+                            onSelectFile={this.handleSelectFile.bind(this)}
+                            onDeletefile={this.handleDeletefile.bind(this)}
+                            DataAttachment={AttachmentList}
+                            IsAttachment={DocumentTypeID == 1 ? true : false}
+                        />
+
+                    </div>
+
+                    <div className="col-md-6">
+                        <p>Video</p>
+                    </div>
+
+                    {/* <div className="col-md-12">
                         <FormControl.TextEditor
                             labelcolspan={2}
                             colspan={10}
@@ -226,7 +298,7 @@ class AddCom extends React.Component {
                             maxSize={500}
                             classNameCustom="customcontrol"
                         />
-                    </div>
+                    </div> */}
 
 
                     <div className="col-md-6">
@@ -242,9 +314,11 @@ class AddCom extends React.Component {
                             cdn={CDN_LOGO_IMAGE}
                             value=""
                             isReturnInline={true}
+                            isButtonDelete={true}
                             datasourcemember="DocumentImageURL"
                             onHandleSelectedFile={this.handleSelectedFile.bind(this)}
-                        // validatonList={['required']}
+                            showImage={this.handleShowImage.bind(this)}
+                            classNameCustom="uploadAvatar"
                         />
                     </div>
 
@@ -298,7 +372,7 @@ class AddCom extends React.Component {
 
                 </div>
 
-            </FormContainer>
+            </FormContainer >
         );
     }
 }
@@ -323,6 +397,12 @@ const mapDispatchToProps = dispatch => {
         },
         callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
+        },
+        hideModal: () => {
+            dispatch(hideModal());
         }
     };
 };

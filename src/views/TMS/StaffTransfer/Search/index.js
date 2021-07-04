@@ -10,6 +10,7 @@ import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache } from "../../../../actions/cacheAction";
 import { MessageModal } from "../../../../common/components/Modal";
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
+import { STAFFTRANSFER_VIEW, STAFFTRANSFERID_DELETE, STAFFTRANSFERID_EXPORT } from '../../../../constants/functionLists';
 import { formatDate } from "../../../../common/library/CommonLib.js";
 
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
@@ -261,9 +262,9 @@ class SearchCom extends React.Component {
                         IsExportFile={true}
                         onExportFile={this.handleExportFile}
                         DataExport={dataExport}
-                    // RequirePermission={}
-                    // DeletePermission={}
-                    // ExportPermission={}
+                        RequirePermission={STAFFTRANSFER_VIEW}
+                        DeletePermission={STAFFTRANSFERID_DELETE}
+                        ExportPermission={STAFFTRANSFERID_EXPORT}
                     />
                 </React.Fragment>
             );
