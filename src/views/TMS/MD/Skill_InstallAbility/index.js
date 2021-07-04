@@ -442,8 +442,8 @@ class Skill_InstallAbilityCom extends React.Component {
         let data = [];
         let _isError = false;
         importData.map((itemObject, index) => {
-            if ((!itemObject.SubGroupID || !itemObject.TechspecsID || !itemObject.TechspecsValueID) && _isError == false) {
-                this.addNotification("Vui lòng nhập đầy đủ mã nhóm hàng, thông số kỹ thuật, giá trị thông số kỹ thuật.", true);
+            if ((!itemObject.SubGroupID) && _isError == false) {
+                this.addNotification("Vui lòng nhập đầy đủ mã nhóm hàng.", true);
                 _isError = true;
             } else {
                 data.push(itemObject);
