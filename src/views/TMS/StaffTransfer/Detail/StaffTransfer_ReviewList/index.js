@@ -73,7 +73,7 @@ class StaffTransfer_ReviewList extends React.Component {
             if (item.UserName != Username) return true;
             else {
                 const arrSlice = dataGrid.slice(0, index);
-                if (arrSlice.every(element => element.IsReviewed)) return false;
+                if (arrSlice.every(element => element.IsReviewed) && item.IsReviewed == false) return false;
                 else return true;
             }
         } else {

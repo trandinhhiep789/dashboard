@@ -147,18 +147,19 @@ class DetailCom extends React.Component {
             UpdatedUser: this.props.AppInfo.LoginInfo.Username,
             CurrentReviewLevelID: data.ReviewLevelID,
             IsReviewed: data.ReviewLevelID == ListStaffTransfer_ReviewList[ListStaffTransfer_ReviewList.length - 1].ReviewLevelID,
+            IsTransfered: (data.ReviewLevelID == ListStaffTransfer_ReviewList[ListStaffTransfer_ReviewList.length - 1].ReviewLevelID && data.ReviewStatus == 1) ? true : false,
             ReviewedDate: data.ReviewedDate,
             ReviewedUser: this.props.AppInfo.LoginInfo.Username,
             ListStaffTransfer_ReviewList: postListStaffTransfer_ReviewList
         }
 
-        console.log(postData)
-
         this.props.callFetchAPI(APIHostName, APIUpdateBrowse, postData).then((apiResult) => {
             if (apiResult.IsError) {
                 this.showMessage(apiResult.Message);
-            }
-            else {
+            } else {
+                this.setState({
+                    stateDataSource: null
+                })
                 this.showMessage(apiResult.Message);
                 this.fetchStaffTransferDetail();
             }
