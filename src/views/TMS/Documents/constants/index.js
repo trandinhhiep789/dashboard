@@ -330,12 +330,6 @@ export const listColumnDocument_CommentList = [
 
 export const listColumnDocument_LikeList = [
     {
-        Name: "LikeID",
-        Type: "text",
-        Caption: "LikeID",
-        DataSourceMember: "LikeID"
-    },
-    {
         Name: "LikedUser",
         Type: "text",
         Caption: "Mã nhân viên",
