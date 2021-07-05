@@ -27,18 +27,19 @@ import { formatDate, formatDateNew } from "../../../../common/library/CommonLib.
 import DeliverUserList from "../../ShipmentOrder/Component/DeliverUserList";
 import moment from 'moment';
 import { ExportStringToDate } from "../../../../common/library/ultils";
-import { ERPCOMMONCACHE_DOCUMENTFOLDER, ERPCOMMONCACHE_DOCUMENTTYPE, ERPCOMMONCACHE_SERVICEAGREEMENTTYPE } from "../../../../constants/keyCache";
+import { ERPCOMMONCACHE_DOCUMENTFOLDER, ERPCOMMONCACHE_DOCUMENTTYPE, ERPCOMMONCACHE_SERVICEAGREEMENTTYPE, ERPCOMMONCACHE_TMSCONFIG } from "../../../../constants/keyCache";
 import { Base64 } from 'js-base64';
 import { TMS_MTRETURNREQUEST_DELETE } from "../../../../constants/functionLists";
 import FileAttachment from "../../../../common/components/Form/FileAttachment/inde";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_IMAGE_SLIDE } from '../../../../constants/actionTypes';
+import { el } from "date-fns/locale";
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-        this.getCacheDocumentType = this.getCacheDocumentType.bind(this)
+        this.getCacheKeyConfig = this.getCacheKeyConfig.bind(this)
         this.state = {
             IsCallAPIError: false,
             IsCloseForm: false,
@@ -49,37 +50,47 @@ class AddCom extends React.Component {
             Files: {},
             DocumentTypeID: "",
             AttachmentList: [],
+            AttachmentListData: [],
+            fileSize: 0,
+            keyUploadFile: "",
+            keyUploadVideo: "",
+            keyUploadLink: "",
+
         };
     }
 
     componentDidMount() {
         this.props.updatePagePath(AddPagePath);
-        this.getCacheDocumentType();
+        this.getCacheKeyConfig();
     }
 
-    getCacheDocumentType() {
-        this.props.callGetCache(ERPCOMMONCACHE_DOCUMENTTYPE).then(apiResult => {
-            console.log("data", apiResult)
+    getCacheKeyConfig() {
+        this.props.callGetCache(ERPCOMMONCACHE_TMSCONFIG).then(apiResult => {
             if (apiResult.IsError) {
                 this.showMessage(apiResult.Message)
             }
             else {
+                let keyUploadFile = apiResult.ResultObject.CacheData.filter(x => x.TMSConfigID == "DOCUMENT_UPLOAD_FILE");
+                let keyUploadVideo = apiResult.ResultObject.CacheData.filter(x => x.TMSConfigID == "DOCUMENT_UPLOAD_VIDEO");
+                let keyUploadLink = apiResult.ResultObject.CacheData.filter(x => x.TMSConfigID == "DOCUMENT_UPLOAD_LINK");
                 this.setState({
-                    DocumentTypeID: apiResult.ResultObject.CacheData[0].DocumentTypeID
+                    keyUploadFile: keyUploadFile[0].TMSConfigValue,
+                    keyUploadVideo: keyUploadVideo[0].TMSConfigValue,
+                    keyUploadLink: keyUploadLink[0].TMSConfigValue,
                 })
             }
         })
     }
 
     handleSubmit(formData, MLObject) {
-        console.log("MLObject", formData, MLObject)
-        const { Files } = this.state;
+        const { Files, AttachmentList, DocumentTypeID, fileSize } = this.state;
 
-        // MLObject.FileContent1 = MLObject.FileContent1.replaceAll("<", "&lt;");
-        // MLObject.FileContent2 = "";
-        MLObject.FileContent1 = "";
-        MLObject.FileContent2 = "";
+        MLObject.FileSize = fileSize;
+
+        console.log("MLObject", AttachmentList, MLObject, fileSize);
+
         let data = new FormData();
+        data.append("DocumentFileURL", AttachmentList.DocumentFileURL);
         data.append("DocumentImageURL", Files.DocumentImageURL);
         data.append("DocumentObj", JSON.stringify(MLObject));
 
@@ -92,7 +103,6 @@ class AddCom extends React.Component {
     }
 
     handleSelectedFile(file, nameValue, isDeletetedFile) {
-        console.log("gfile", file, nameValue, isDeletetedFile)
         const filelist = { [nameValue]: file };
         this.setState({ Files: filelist });
     }
@@ -113,30 +123,65 @@ class AddCom extends React.Component {
     }
 
     handleChangeForm(formData, MLObject) {
-        console.log("change", formData, MLObject)
+        const { keyUploadFile, keyUploadVideo, keyUploadLink } = this.state;
         this.setState({
             DocumentTypeID: formData.cbDocumentTypeID.value
         })
+        switch (formData.cbDocumentTypeID.value) {
+            case parseInt(keyUploadFile):
+                formData.txtFileURL.value = "";
+                formData.txtEditorFileContent1.value = "";
+                formData.txtEditorFileContent2.value = "";
+                break;
+            case parseInt(keyUploadVideo):
+                this.setState({
+                    AttachmentList: [],
+                    AttachmentListData: [],
+                    fileSize: 0
+                })
+                break;
+            case parseInt(keyUploadLink):
+                this.setState({
+                    AttachmentList: [],
+                    AttachmentListData: [],
+                    fileSize: 0
+                })
+                break;
+            default:
+                formData.txtFileURL.value = "";
+                formData.txtEditorFileContent1.value = "";
+                formData.txtEditorFileContent2.value = "";
+                this.setState({
+                    AttachmentList: [],
+                    AttachmentListData: [],
+                    fileSize: 0
+                })
+                break
+        }
     }
-    handleSelectFile(e) {
-        console.log("handleSelectFile", e, e.target.files)
-        // data.append('file', e.target.files[0])
-        // data.append("ObjMTReturnRequest_Attachment", JSON.stringify(MLObject));
+
+
+    handleSelectFile(file, nameValue) {
+        // console.log("file", file[0], file, nameValue)
+        const filelist = { [nameValue]: file[0] };
         this.setState({
-            AttachmentList: e.target.files
+            AttachmentList: filelist,
+            AttachmentListData: file,
+            fileSize: file[0].size
+
         })
 
     }
+
     handleDeletefile(id) {
-        console.log("handleDeletefile", id)
         this.setState({
-            AttachmentList: []
+            AttachmentListData: [],
+            AttachmentList: [],
+            fileSize: 0
         })
     }
 
     handleShowImage(src) {
-        console.log("src", src)
-       
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Hình ảnh đại diện',
             content: {
@@ -152,7 +197,7 @@ class AddCom extends React.Component {
             return <Redirect to={BackLink} />;
         }
 
-        const { DocumentTypeID, AttachmentList } = this.state;
+        const { DocumentTypeID, AttachmentListData, keyUploadFile, keyUploadVideo, keyUploadLink } = this.state;
 
         return (
             <FormContainer
@@ -196,7 +241,7 @@ class AddCom extends React.Component {
                     </div>
 
                     <div className="col-md-6">
-                        <FormControl.ComboBoxSelect
+                        <FormControl.ComboBoxTreeSelect
                             name="cbDocumentFolderID"
                             colspan="8"
                             labelcolspan="4"
@@ -208,6 +253,9 @@ class AddCom extends React.Component {
                             valuemember="DocumentFolderID"
                             nameMember="DocumentFolderName"
                             controltype="InputControl"
+                            rootID={-1}
+                            rootKey="ParentID"
+                            bordered={true}
                             value={""}
                             listoption={null}
                             datasourcemember="DocumentFolderID" />
@@ -252,21 +300,87 @@ class AddCom extends React.Component {
 
                         <FileAttachment
                             name="FileAttachmentData"
+                            nameMember="DocumentFileURL"
                             labelcolspan={4}
                             colspan={8}
                             label="Chọn file"
-                            IsAttachment={true}
+                            IsMultiple={false}
                             onSelectFile={this.handleSelectFile.bind(this)}
                             onDeletefile={this.handleDeletefile.bind(this)}
-                            DataAttachment={AttachmentList}
-                            IsAttachment={DocumentTypeID == 1 ? true : false}
+                            DataAttachment={AttachmentListData}
+                            IsAttachment={DocumentTypeID == parseInt(keyUploadFile) ? true : false}
                         />
 
                     </div>
 
                     <div className="col-md-6">
-                        <p>Video</p>
+                        <FormControl.TextBox
+                            name="txtFileURL"
+                            colspan="8"
+                            labelcolspan="4"
+                            label="Đương dẫn URL"
+                            placeholder="Đường dẫn URL"
+                            controltype="InputControl"
+                            value=""
+                            datasourcemember="FileURL"
+                            readOnly={(DocumentTypeID == parseInt(keyUploadVideo)  || DocumentTypeID == parseInt(keyUploadLink) ) ? false : true}
+                            disabled={(DocumentTypeID == parseInt(keyUploadVideo)  || DocumentTypeID == parseInt(keyUploadLink) ) ? false : true}
+                        />
                     </div>
+
+                    {/* <div className="col-md-6">
+                        <VideoAttachment
+                            name="VideoAttachmentData"
+                            nameMember="DocumentVideoURL"
+                            labelcolspan={4}
+                            colspan={8}
+                            label="Chọn tệp Video"
+                            IsMultiple={false}
+                            getVideo={getVideo}
+                            videoAttribute={videoAttribute}
+                            fileName={fileVideoName}
+                            onSelectFile={this.handleSelectVideo.bind(this)}
+                            onDeletefile={this.handleDeleteVideo.bind(this)}
+                            DataAttachment={AttachmentVideoData}
+                            IsVideoAttachment={DocumentTypeID == 2 ? true : false}
+                        />
+                    </div> */}
+
+                    <div className="col-md-12">
+                        <FormControl.TextArea
+                            labelcolspan={2}
+                            colspan={10}
+                            name="txtEditorFileContent1"
+                            label="Nội dung"
+                            placeholder="Nội dung"
+                            datasourcemember="FileContent1"
+                            controltype="InputControl"
+                            rows={8}
+                            maxSize={500}
+                            readOnly={(DocumentTypeID == parseInt(keyUploadVideo)  || DocumentTypeID == parseInt(keyUploadLink) ) ? false : true}
+                            disabled={(DocumentTypeID == parseInt(keyUploadVideo)  || DocumentTypeID == parseInt(keyUploadLink) ) ? false : true}
+                            classNameCustom="customcontrol"
+                        />
+                    </div>
+
+
+                    <div className="col-md-12">
+                        <FormControl.TextArea
+                            labelcolspan={2}
+                            colspan={10}
+                            name="txtEditorFileContent2"
+                            label="Nội dung"
+                            placeholder="Nội dung"
+                            datasourcemember="FileContent2"
+                            controltype="InputControl"
+                            rows={8}
+                            maxSize={500}
+                            readOnly={(DocumentTypeID == parseInt(keyUploadVideo)  || DocumentTypeID == parseInt(keyUploadLink) ) ? false : true}
+                            disabled={(DocumentTypeID == parseInt(keyUploadVideo)  || DocumentTypeID == parseInt(keyUploadLink) ) ? false : true}
+                            classNameCustom="customcontrol"
+                        />
+                    </div>
+
 
                     {/* <div className="col-md-12">
                         <FormControl.TextEditor
@@ -324,7 +438,7 @@ class AddCom extends React.Component {
 
 
 
-                    <div className="col-md-6">
+                    {/* <div className="col-md-6">
                         <FormControl.TextBox
                             name="txtFileName"
                             colspan="8"
@@ -337,7 +451,7 @@ class AddCom extends React.Component {
                             datasourcemember="FileName"
                         // validatonList={['required']}
                         />
-                    </div>
+                    </div> */}
 
 
                     {/* <div className="col-md-6">

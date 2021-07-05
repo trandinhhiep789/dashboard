@@ -72,7 +72,7 @@ class Document_LikeListCom extends React.Component {
                 <ReactNotification ref={this.notificationDOMRef} />
 
                 <DataGrid
-                    headingTitle="Danh sách bình luận"
+                    headingTitle="Danh sách người thích"
                     listColumn={listColumnDocument_LikeList}
                     dataSource={propsDocument_LikeList}
                     PKColumnName={"CommentID"}
