@@ -24,7 +24,6 @@ import draftToHtml from 'draftjs-to-html';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
-
 //#region connect
 const mapStateToProps = state => {
     return {
@@ -2273,6 +2272,228 @@ export const FormControlComboBoxNew = connect(mapStateToProps, mapDispatchToProp
 
 
 
+class ComboBoxTreeSelectCom extends Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+        this.state = { Listoption: [], value: [] }
+    }
+    handleValueChange(selectedOption) {
+        const comboValues = this.getComboValue(selectedOption);
+        if (this.props.onValueChange != null) {
+            this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption.name, this.props.filterrest);
+
+        }
+
+        if (this.props.onValueChangeCustom != null)
+            this.props.onValueChangeCustom(this.props.name, comboValues);
+    }
+
+    bindcombox(value, listOption) {
+        let values = value;
+        let selectedOption = [];
+        if (values == null || values === -1)
+            return { value: -1, label: "--Vui lòng chọn--" };
+        if (typeof values.toString() == "string")
+            values = values.toString().split();
+        for (let i = 0; i < values.length; i++) {
+            for (let j = 0; j < listOption.length; j++) {
+                if (values[i] == listOption[j].value) {
+                    selectedOption.push({ value: listOption[j].value, label: listOption[j].label });
+                }
+            }
+        }
+        return selectedOption;
+    }
+    getComboValue(selectedOption) {
+        let values = [];
+        if (selectedOption == null)
+            return -1;
+        if (this.props.isMultiSelect) {
+            for (let i = 0; i < selectedOption.length; i++) {
+                values.push(selectedOption[i].value);
+            }
+        } else {
+            return selectedOption.value;
+        }
+
+        return values;
+    }
+    //#endregion tree category
+
+
+    componentDidMount() {
+        let listOption = this.props.listoption;
+        let treeData = this.props.listoption ? this.props.listoption : [];
+        if (this.props.isautoloaditemfromcache) {
+            const cacheKeyID = this.props.loaditemcachekeyid;
+            const valueMember = this.props.valuemember;
+            const nameMember = this.props.nameMember;
+            if (this.props.isusercache == true) {
+                this.props.callGetUserCache(cacheKeyID).then((result) => {
+                    if (!result.IsError && result.ResultObject.CacheData != null) {
+                        listOption = createListTree(result.ResultObject.CacheData, rootID, rootKey, valuemember, nameMember);
+                        listOption.unshift({
+                            ParentID: -1,
+                            [valuemember]: -1,
+                            [nameMember]: "- Vui lòng chọn - -",
+                            key: -1,
+                            value: -1,
+                            title: "- - Vui lòng chọn - -",
+                        })
+                        this.setState({ Listoption: listOption });
+                    }
+                    else {
+                        this.setState({ Listoption: listOption });
+
+                    }
+                });
+
+            }
+            else {
+                const { valuemember, nameMember, rootID, rootKey } = this.props
+                this.props.callGetCache(cacheKeyID).then((result) => {
+                    console.log("cache", result, this.props)
+                    console.log("this.props.isautoloaditemfromcach2: ", this.props.loaditemcachekeyid, this.state.Listoption, result);
+                    if (!result.IsError && result.ResultObject.CacheData != null) {
+                        listOption = createListTree(result.ResultObject.CacheData, rootID, rootKey, valuemember, nameMember);
+                        listOption.unshift({
+                            ParentID: -1,
+                            [valuemember]: -1,
+                            [nameMember]: "- Vui lòng chọn - -",
+                            key: -1,
+                            value: -1,
+                            title: "- - Vui lòng chọn - -",
+                        })
+                    }
+
+                    this.setState({ Listoption: listOption, });
+                });
+            }
+
+        }
+        else {
+            this.setState({ Listoption: listOption });
+            const aa = this.bindcombox(this.props.value, listOption);
+            this.setState({ SelectedOption: aa });
+        }
+    }
+
+
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) {
+            const aa = this.bindcombox(nextProps.value, this.state.Listoption);
+            this.setState({ SelectedOption: aa });
+        }
+    }
+
+    onSelect = value => {
+        console.log("Select:", value);
+    };
+
+    onChange = (inputname, inputvalue) => {
+        if (this.props.onValueChange != null) {
+            this.props.onValueChange(inputname, inputvalue, this.props.namelabel, this.props.label, this.props.filterrest);
+        }
+        this.setState({ value: inputvalue });
+
+    };
+
+    render() {
+        let { name, label, icon, colspan, isMultiSelect, ValidatonErrorMessage, placeholder, listoption } = this.props;
+
+        let formRowClassName = "form-row";
+        if (this.props.rowspan != null) {
+            formRowClassName = "form-row col-md-" + this.props.rowspan;
+        }
+
+        let formGroupClassName = "form-group col-md-4";
+        if (this.props.colspan != null) {
+            formGroupClassName = "form-group col-md-" + this.props.colspan;
+        }
+        let labelDivClassName = "form-group col-md-2";
+        if (this.props.labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
+        }
+        let star;
+        if (this.props.validatonList != undefined && this.props.validatonList.includes("Comborequired") == true) {
+            star = '*'
+        }
+        let className = "react-tree-select-cus";
+        if (this.props.validationErrorMessage != undefined && this.props.validationErrorMessage != "") {
+            className += " is-invalid";
+        }
+
+        const value = this.state.value;
+        const listOption = this.state.Listoption;
+
+        if (this.props.validationErrorMessage != "") {
+            return (
+                <div className={formRowClassName} >
+                    <div className={labelDivClassName}>
+                        <label className="col-form-label 6">
+                            {this.props.label}<span className="text-danger"> {star}</span>
+                        </label>
+                    </div>
+
+                    <div className={formGroupClassName}>
+                        <TreeSelect
+                            className={className}
+                            disabled={this.props.disabled}
+                            bordered={this.props.bordered == true ? true : false}
+                            ref={this.props.inputRef}
+                            value={this.state.value}
+                            dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+                            treeData={listOption}
+                            placeholder={placeholder}
+                            treeDefaultExpandAll
+                            onChange={(value) => this.onChange(this.props.name, value)}
+                            onSelect={this.onSelect}
+                            dropdownClassName="tree-select-custom"
+                        // multiple
+                        />
+                        <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
+                    </div>
+                </div>
+            );
+        }
+        else {
+            return (
+                <div className={formRowClassName} >
+                    <div className={labelDivClassName}>
+                        <label className="col-form-label 6">
+                            {this.props.label}<span className="text-danger"> {star}</span>
+                        </label>
+                    </div>
+
+                    <div className={formGroupClassName}>
+                        <TreeSelect
+                            className={className}
+                            disabled={this.props.disabled}
+                            bordered={this.props.bordered == true ? true : false}
+                            ref={this.props.inputRef}
+                            // style={{ width: 300 }}
+                            value={this.state.value}
+                            dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+                            treeData={listOption}
+                            placeholder={placeholder}
+                            treeDefaultExpandAll
+                            onChange={(value) => this.onChange(this.props.name, value)}
+                            onSelect={this.onSelect}
+                            dropdownClassName="tree-select-custom"
+                            
+                        // multiple
+                        />
+                    </div>
+                </div>
+            );
+        }
+
+    }
+}
+export const ComboBoxTreeSelect = connect(mapStateToProps, mapDispatchToProps)(ComboBoxTreeSelectCom);
+
+
 const singleFileUploadImage = {
 };
 
@@ -2526,6 +2747,7 @@ export default {
     ComboBoxPartner,
     ComboboxQTQHPX,
     ComboBoxSelect,
+    ComboBoxTreeSelect,
     MultiUserComboBox,
     FormControlHour
 };

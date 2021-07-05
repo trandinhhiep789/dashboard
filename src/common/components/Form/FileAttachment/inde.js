@@ -20,7 +20,8 @@ class FileAttachmentCom extends Component {
     }
 
     handleSelectedFile(e) {
-        this.props.onSelectFile(e)
+        e.preventDefault();
+        this.props.onSelectFile(e.target.files, this.props.nameMember)
     }
 
     handleDeleteFile(e) {
@@ -50,9 +51,10 @@ class FileAttachmentCom extends Component {
         if (Attachments.length > 0) {
 
             arrTemp = Object.assign([], Attachments)
-            console.log("arrTemp", arrTemp)
 
         }
+
+
 
         return (
             <div className={formRowClassName}>
@@ -72,14 +74,23 @@ class FileAttachmentCom extends Component {
                             (!!arrTemp && arrTemp.length == 0) && <li>
                                 {this.props.IsAttachment == true ?
                                     (<div className="addFile" >
-                                        <input multiple={true} name='file' type='file' id="files" hidden className='attachmentitem' onChange={this.handleSelectedFile.bind(this)}></input>
-                                        <i>+</i><label htmlFor="files" className='attachmentitem'>Thêm file</label>
+                                        <input
+                                            multiple={this.props.IsMultiple == true ? true : false}
+                                            name='file'
+                                            type='file'
+                                            id={"files_" +this.props.name}
+                                            hidden
+                                            className='attachmentitem'
+                                            onChange={this.handleSelectedFile.bind(this)} />
+
+
+                                        <i>+</i><label htmlFor={"files_" +this.props.name} className='attachmentitem'>Thêm file</label>
                                     </div>) :
                                     (
                                         <React.Fragment>
                                             <div className="addFile" data-tip data-for="btnAttachmentID">
                                                 <i>+</i>
-                                                <h3 htmlFor="files">Thêm file</h3>
+                                                <h3 htmlFor={"files_" +this.props.name}>Thêm file</h3>
                                             </div>
                                             <ReactTooltip id="btnAttachmentID" type='warning'>
                                                 <span>Bạn không file được.</span>
@@ -95,11 +106,10 @@ class FileAttachmentCom extends Component {
                             (!!arrTemp && arrTemp.length > 0) && arrTemp.map((item, index) => {
                                 const listTypeFile = ["docx", "doc", "zip", "xlsx", "pdf", "png", "jpg"]
                                 let typeFile = listTypeFile.find(i => i == item.name.split(".")[1].trim())
+
                                 if (typeFile == undefined) {
                                     typeFile = "default"
                                 }
-                                console.log("typeFile", typeFile)
-
                                 return (
                                     <li key={index}>
                                         {this.props.IsAttachment == true ?
