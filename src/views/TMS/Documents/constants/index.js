@@ -278,6 +278,13 @@ export const MLObjectDefinition = [
         BindControlName: "txtDocumentImageURL",
         DataSourceMember: "DocumentImageURL"
     },
+    
+    {
+        Name: "FileURL",
+        DefaultValue: "",
+        BindControlName: "txtFileURL",
+        DataSourceMember: "FileURL"
+    },
     {
         Name: "FileName",
         DefaultValue: "",
