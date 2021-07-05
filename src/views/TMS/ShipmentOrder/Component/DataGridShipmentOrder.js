@@ -658,7 +658,7 @@ class DataGridShipmentOderCom extends Component {
                     </div>
                 </div>
             ),
-            dismiss: { duration: 2000 },
+            dismiss: { duration: 4000 },
             dismissable: { click: true }
         });
     }

@@ -85,6 +85,10 @@ class ListShipCoordinatorCom extends Component {
             });
         })
 
+        const result = this.state.ShipmentOrder.find(({ TotalCOD }) => TotalCOD > 0);
+        console.log("this.state.ShipmentOrder", this.state.ShipmentOrder, result);
+        console.log("UserIsLockDelivery", listStaffDebtObject);
+
         if (selectedOption1) {
             this.props.callFetchAPI(APIHostName, 'api/StaffDebt/UserIsLockDelivery', listStaffDebtObject).then((apiResult) => {
                 if (!apiResult.IsError) {
@@ -104,6 +108,7 @@ class ListShipCoordinatorCom extends Component {
         }
     }
 
+
     handleOnValueChangeDeliverUser(name, value, selectedOption) {
         let objMultiDeliverUser = [];
         let listStaffDebtObject = [];
@@ -115,6 +120,11 @@ class ListShipCoordinatorCom extends Component {
                 StoreID: this.state.ShipmentOrder[0].CoordinatorStoreID
             });
         })
+        const result = this.state.ShipmentOrder.find(({ TotalCOD }) => TotalCOD > 0);
+        console.log("this.state.ShipmentOrder", this.state.ShipmentOrder, result);
+        console.log("UserIsLockDelivery", listStaffDebtObject);
+
+
         if (selectedOption) {
             this.props.callFetchAPI(APIHostName, 'api/StaffDebt/UserIsLockDelivery', listStaffDebtObject).then((apiResult) => {
                 if (!apiResult.IsError) {
@@ -152,10 +162,23 @@ class ListShipCoordinatorCom extends Component {
         );
     }
 
+    groupByNew(data, fields, sumBy = 'TotalCOD') {
+        let r = [], cmp = (x, y) => fields.reduce((a, b) => a && x[b] == y[b], true);
+        data.forEach(x => {
+            let y = r.find(z => cmp(x, z));
+            let w = [...fields, sumBy].reduce((a, b) => (a[b] = x[b], a), {})
+            y ? y[sumBy] = +y[sumBy] + (+x[sumBy]) : r.push(w);
+        });
+        return r;
+    }
+
     handleShipWorkFlowInsert() {
         let elementobject = {};
+        let element = [];
+        console.log("ShipmentOrder", this.state.ShipmentOrder)
         this.state.ShipmentOrder.map((row, indexRow) => {
-          
+            //   console.log("TotalCOD",row["TotalCOD"],row["ShipmentOrder_DeliverUserList"].length)
+            //   console.log("COD",row["TotalCOD"]/row["ShipmentOrder_DeliverUserList"].length)
             if (row["CarrierTypeID"] == -1 || row["CarrierTypeID"] == "-1") {
                 const validationObject = { IsValidatonError: true, ValidationErrorMessage: "Vui lòng chọn phương tiện" };
                 elementobject = Object.assign({}, elementobject, { ["CarrierTypeID-" + indexRow]: validationObject });
@@ -164,11 +187,25 @@ class ListShipCoordinatorCom extends Component {
                 const validationObject = { IsValidatonError: false, ValidationErrorMessage: "" };
                 elementobject = Object.assign({}, elementobject, { ["CarrierTypeID-" + indexRow]: validationObject });
             }
+            if (row["TotalCOD"] > 0) {
+                row["ShipmentOrder_DeliverUserList"].map((item, indexRow) => {
+                    let objMultDeliverUser = { UserName: item.UserName,CarrierTypeID:row["CarrierTypeID"], TotalCOD: row["TotalCOD"] / row["ShipmentOrder_DeliverUserList"].length }
+                    element.push(objMultDeliverUser)
+                    console.log("UserName", row["ShipmentOrderID"], item.UserName, row["TotalCOD"] / row["ShipmentOrder_DeliverUserList"].length)
+                });
+            }
+
+            //   row["COD"] = row["TotalCOD"] / row["ShipmentOrder_DeliverUserList"].length;
         });
+
+        console.log("element", this.groupByNew(element,['UserName','CarrierTypeID']))
+        this.state.ShipmentOrder[0].DeliverUserTotalCODList=this.groupByNew(element,['UserName','CarrierTypeID']);
         this.setState({ FormValidation: elementobject });
 
         if (this.checkInputName(elementobject) != "")
             return;
+
+        console.log("ShipmentOrdernew",this.state.ShipmentOrder)
         this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/AddInfoCoordinatorLst', this.state.ShipmentOrder).then((apiResult) => {
             if (this.props.onChangeValue != null)
                 this.props.onChangeValue(apiResult);
@@ -182,7 +219,7 @@ class ListShipCoordinatorCom extends Component {
             if (formValidation[key] != undefined) {
                 // console.log("validation:", key, this.elementItemRefs[key]);
                 if (formValidation[key] != [] && formValidation[key].IsValidatonError) {
-                   
+
                     return key;
                 }
             }
@@ -206,7 +243,7 @@ class ListShipCoordinatorCom extends Component {
             let listStaffDebtObject = [];
             rowvalue && rowvalue.map((item, index) => {
                 if (item.value != -1 && item.value != 0) {
-                    let objShipmentOrder_DeliverUser = { UserName: item.value,FullName: item.FullName }
+                    let objShipmentOrder_DeliverUser = { UserName: item.value, FullName: item.FullName }
                     objDeliverUser.push(objShipmentOrder_DeliverUser)
                     listStaffDebtObject.push({
                         UserName: item.value,
