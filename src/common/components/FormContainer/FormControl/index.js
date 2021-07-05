@@ -1255,7 +1255,7 @@ class TextArea extends React.Component {
                         className={className}
                         placeholder={this.props.placeholder}
                         readOnly={this.props.readonly}
-                        rows="5"
+                        rows={(this.props.rows == undefined || this.props.rows == "") ? "5" : this.props.rows}
                         disabled={this.props.disabled}
                     />
                 </div>
@@ -2367,7 +2367,6 @@ class UploadAvatar extends React.Component {
 
 
     render() {
-        console.log("aaa", this.state, this.props)
         let className = "form-control form-control-sm";
         if (this.props.CSSClassName != null)
             className = this.props.CSSClassName;
@@ -2479,78 +2478,33 @@ class TextEditor extends React.Component {
             formRowClassName += this.props.classNameCustom;
         }
         // console.log('this.props.label', this.props.label)
-        if (this.props.validationErrorMessage != "" && this.props.validationErrorMessage != undefined) {
-            className += " is-invalid";
 
-            return (
-                <div className={formRowClassName} >
-                    {this.props.label.length > 0 ?
-                        <div className={labelDivClassName}>
-                            <label className="col-form-label 2">
-                                {this.props.label}<span className="text-danger"> {star}</span>
-                            </label>
-                        </div>
-                        : ""
-                    }
+        return (
+            <div className={formRowClassName} >
+                {this.props.label.length > 0 ?
+                    <div className={labelDivClassName}>
+                        <label className="col-form-label 2">
+                            {this.props.label}<span className="text-danger"> {star}</span>
+                        </label>
+                    </div>
+                    : ""
+                }
+                <div className={formGroupClassName}>
 
-                    <div className={formGroupClassName}>
-                        <input type="text" name={this.props.name}
-                            onChange={this.handleValueChange}
-                            onBlur={this.handKeyDown}
-                            value={this.props.value}
-                            key={this.props.name}
-                            className={className}
-                            autoFocus={true}
-                            ref={this.props.inputRef}
-                            placeholder={this.props.placeholder}
-                            disabled={this.props.readOnly}
-                            maxLength={this.props.maxSize}
+                    <div className='editor'>
+                        <Editor
+                            editorState={this.state.editorState}
+                            wrapperClassName="wrapper-class"
+                            editorClassName="editor-class"
+                            toolbarClassName="toolbar-class"
+                            placeholder="Enter some text..."
+                            name={this.props.name}
+                            onEditorStateChange={this.handleValueChange}
                         />
-                        <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
                     </div>
                 </div>
-            );
-        }
-        else {
-            return (
-                <div className={formRowClassName} >
-                    {this.props.label.length > 0 ?
-                        <div className={labelDivClassName}>
-                            <label className="col-form-label 2">
-                                {this.props.label}<span className="text-danger"> {star}</span>
-                            </label>
-                        </div>
-                        : ""
-                    }
-                    <div className={formGroupClassName}>
-                        {/* <input type="text" name={this.props.name}
-                            onChange={this.handleValueChange}
-                            onKeyPress={(event) => this.handKeyDown(event)}
-                            value={this.props.value}
-                            key={this.props.name}
-                            className={className}
-                            autoFocus={false}
-                            ref={this.props.inputRef}
-                            placeholder={this.props.placeholder}
-                            disabled={this.props.readOnly}
-                            maxLength={this.props.maxSize}
-                        /> */}
-
-                        <div className='editor'>
-                            <Editor
-                                editorState={this.state.editorState}
-                                wrapperClassName="wrapper-class"
-                                editorClassName="editor-class"
-                                toolbarClassName="toolbar-class"
-                                placeholder="Enter some text..."
-                                name={this.props.name}
-                                onEditorStateChange={this.handleValueChange}
-                            />
-                        </div>
-                    </div>
-                </div>
-            );
-        }
+            </div>
+        );
     }
 }
 
