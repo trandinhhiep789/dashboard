@@ -53,7 +53,6 @@ class DetailCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            console.log("aaaa", id, apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -118,17 +117,17 @@ class DetailCom extends React.Component {
 
 
     handlePublish(id) {
-        console.log("pulish", id)
-
         const param = {
             DocumentID: this.props.match.params.id,
-            IsPublished: id
+            IsPublished: id == 0 ? 1 : 0
         }
 
         this.props.callFetchAPI(APIHostName, UpdatePulishAPIPath, param).then((apiResult) => {
-            console.log("handlePublish", param, apiResult)
-
             this.addNotification(apiResult.Message, apiResult.IsError);
+            if (!apiResult.IsError) {
+                this.callLoadData(this.props.match.params.id);
+            }
+
 
         });
     }
@@ -175,7 +174,7 @@ class DetailCom extends React.Component {
                             <footer className="card-footer text-right">
 
                                 {
-                                    !!IsPublished && IsPublished == false ?
+                                    IsPublished == false ?
                                         <button className="btn btn-primary mr-3" type="button" onClick={() => this.handlePublish(0)}>Công bố</button>
                                         : <button className="btn btn-primary mr-3" type="button" onClick={() => this.handlePublish(1)}>Không công bố</button>
                                 }
