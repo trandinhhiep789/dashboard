@@ -30,7 +30,7 @@ import { ExportStringToDate } from "../../../../common/library/ultils";
 import { ERPCOMMONCACHE_DOCUMENTFOLDER, ERPCOMMONCACHE_DOCUMENTTYPE, ERPCOMMONCACHE_SERVICEAGREEMENTTYPE, ERPCOMMONCACHE_TMSCONFIG } from "../../../../constants/keyCache";
 import { Base64 } from 'js-base64';
 import { TMS_MTRETURNREQUEST_DELETE } from "../../../../constants/functionLists";
-import FileAttachment from "../../../../common/components/Form/FileAttachment/inde";
+import FileAttachment from "../../../../common/components/Form/FileAttachment";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_IMAGE_SLIDE } from '../../../../constants/actionTypes';
 import { el } from "date-fns/locale";

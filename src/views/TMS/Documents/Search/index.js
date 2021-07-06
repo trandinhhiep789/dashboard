@@ -72,9 +72,9 @@ class SearchCom extends React.Component {
             PageIndex: 1,
             PageZise: 10
         }
-        // this.props.callFetchAPI(APIHostName, "api/Document/SearchMobi", params).then(apiResult => {
-        //     console.log("callSearchDataMobi", params, apiResult)
-        // });
+        this.props.callFetchAPI(APIHostName, "api/Document/SearchMobi", params).then(apiResult => {
+            console.log("callSearchDataMobi", params, apiResult)
+        });
         const intDocumentID = 6;
         this.props.callFetchAPI(APIHostName, "api/Document/LoadMobi", intDocumentID).then(apiResult => {
             console.log("LoadMobi", params, apiResult)

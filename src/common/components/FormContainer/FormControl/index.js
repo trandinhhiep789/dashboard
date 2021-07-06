@@ -2277,8 +2277,9 @@ class ComboBoxTreeSelectCom extends Component {
     constructor(props) {
         super(props);
         this.handleValueChange = this.handleValueChange.bind(this);
-        this.state = { Listoption: [], value: [] }
+        this.state = { Listoption: [], value: [], SelectedOption: [] }
     }
+
     handleValueChange(selectedOption) {
         const comboValues = this.getComboValue(selectedOption);
         if (this.props.onValueChange != null) {
@@ -2300,12 +2301,13 @@ class ComboBoxTreeSelectCom extends Component {
         for (let i = 0; i < values.length; i++) {
             for (let j = 0; j < listOption.length; j++) {
                 if (values[i] == listOption[j].value) {
-                    selectedOption.push({ value: listOption[j].value, label: listOption[j].label });
+                    selectedOption.push({ value: listOption[j].value, label: listOption[j].label, title: listOption[j].title });
                 }
             }
         }
         return selectedOption;
     }
+
     getComboValue(selectedOption) {
         let values = [];
         if (selectedOption == null)
@@ -2354,7 +2356,6 @@ class ComboBoxTreeSelectCom extends Component {
             else {
                 const { valuemember, nameMember, rootID, rootKey } = this.props
                 this.props.callGetCache(cacheKeyID).then((result) => {
-                    console.log("cache", result, this.props)
                     console.log("this.props.isautoloaditemfromcach2: ", this.props.loaditemcachekeyid, this.state.Listoption, result);
                     if (!result.IsError && result.ResultObject.CacheData != null) {
                         listOption = createListTree(result.ResultObject.CacheData, rootID, rootKey, valuemember, nameMember);
@@ -2367,8 +2368,11 @@ class ComboBoxTreeSelectCom extends Component {
                             title: "- - Vui lòng chọn - -",
                         })
                     }
-
-                    this.setState({ Listoption: listOption, });
+                    const strSelectedOption = this.bindcombox(this.props.value, listOption);
+                    this.setState({
+                        Listoption: listOption,
+                        SelectedOption: strSelectedOption
+                    });
                 });
             }
 
@@ -2384,7 +2388,10 @@ class ComboBoxTreeSelectCom extends Component {
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) {
             const aa = this.bindcombox(nextProps.value, this.state.Listoption);
-            this.setState({ SelectedOption: aa });
+            this.setState({
+                SelectedOption: aa,
+                value: nextProps.value
+            });
         }
     }
 
@@ -2401,6 +2408,7 @@ class ComboBoxTreeSelectCom extends Component {
     };
 
     render() {
+        // console.log("tree", this.props, this.state)
         let { name, label, icon, colspan, isMultiSelect, ValidatonErrorMessage, placeholder, listoption } = this.props;
 
         let formRowClassName = "form-row";
@@ -2482,7 +2490,7 @@ class ComboBoxTreeSelectCom extends Component {
                             onChange={(value) => this.onChange(this.props.name, value)}
                             onSelect={this.onSelect}
                             dropdownClassName="tree-select-custom"
-                            
+
                         // multiple
                         />
                     </div>
@@ -2514,7 +2522,7 @@ class UploadAvatar extends React.Component {
             value: this.props.value,
             ValidationError: "",
             IsSystem: this.props.IsSystem,
-            src: this.props.cdn + this.props.value,
+            src: this.props.value,
             content: "",
             acceptType: "image/*",
             defaultImage: "/src/img/avatar/noimage.gif"
@@ -2529,6 +2537,16 @@ class UploadAvatar extends React.Component {
         //singlefileupload
         if (!this.props.value || this.state.src == "" || this.state.src == NaN) {
             this.setState({ src: this.state.defaultImage });
+        }
+    }
+
+
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) {
+            this.setState({
+                src: nextProps.value,
+                value: nextProps.value
+            })
         }
     }
 
@@ -2579,6 +2597,10 @@ class UploadAvatar extends React.Component {
             src: this.state.defaultImage,
             value: "",
         });
+
+        if (this.props.onValueChange != null && isValidAcceptedFile) {
+            this.props.onValueChange(this.props.name, "", this.props.nameMember, "", undefined);
+        }
     }
 
     showFile() {
@@ -2609,8 +2631,7 @@ class UploadAvatar extends React.Component {
         if (this.props.classNameCustom != null) {
             formRowClassName += this.props.classNameCustom;
         }
-        // console.log('this.props.label', this.props.label)
-
+        console.log("object", this.state, this.props)
         return (
             <div className={formRowClassName} >
                 {this.props.label.length > 0 ?

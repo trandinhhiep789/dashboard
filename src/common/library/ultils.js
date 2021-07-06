@@ -47,6 +47,7 @@ export const createListTree = (resultRoot, rootID, rootKey, childrenKey, childre
                 key: e[childrenKey],
                 value: e[childrenKey],
                 title: `${e[childrenKey]} - ${e[childrenName]}`,
+                label: `${e[childrenKey]} - ${e[childrenName]}`,
                 children: []
             }
             element.children = createListTree(resultRoot, e[childrenKey], rootKey, childrenKey, childrenName)
