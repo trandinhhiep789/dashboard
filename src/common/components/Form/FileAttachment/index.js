@@ -25,6 +25,7 @@ class FileAttachmentCom extends Component {
     }
 
     handleDeleteFile(e) {
+        debugger
         e.preventDefault();
         const id = e.target.dataset.id;
         this.props.onDeletefile(id)
@@ -53,8 +54,6 @@ class FileAttachmentCom extends Component {
             arrTemp = Object.assign([], Attachments)
 
         }
-
-
 
         return (
             <div className={formRowClassName}>
@@ -105,18 +104,19 @@ class FileAttachmentCom extends Component {
                         {
                             (!!arrTemp && arrTemp.length > 0) && arrTemp.map((item, index) => {
                                 const listTypeFile = ["docx", "doc", "zip", "xlsx", "pdf", "png", "jpg"]
-                                let typeFile = listTypeFile.find(i => i == item.name.split(".")[1].trim())
-
-                                if (typeFile == undefined) {
-                                    typeFile = "default"
+                                let typeFile =  "default"
+                                if(item.name  != "" && item.name != undefined){
+                                    typeFile = listTypeFile.find(i => i == item.name.split(".")[1].trim())
+                                    
                                 }
+
                                 return (
                                     <li key={index}>
                                         {this.props.IsAttachment == true ?
                                             (<div className="delIcon" data-id={index} onClick={this.handleDeleteFile.bind(this)} >˟</div>) :
                                             (<div className="delIcon" >˟</div>)
                                         }
-                                        <a href="#" target="_blank" download >
+                                        <a href={item.src} target="_blank" download >
                                             <div className="pull-left fileType"><span className={`doctype ${typeFile}`}></span></div>
                                             <div className="attachName">
                                                 <div className="hideCont bold">{item.name}</div>

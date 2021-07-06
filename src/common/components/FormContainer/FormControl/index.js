@@ -2535,13 +2535,17 @@ class UploadAvatar extends React.Component {
     componentDidMount() {
 
         //singlefileupload
-        if (!this.props.value || this.state.src == "" || this.state.src == NaN) {
-            this.setState({ src: this.state.defaultImage });
+        if (!this.props.value || this.props.value == "" || this.state.src == "" || this.state.src == NaN) {
+            this.setState({
+                src: this.state.defaultImage,
+                value: ""
+            });
         }
     }
 
 
     componentWillReceiveProps(nextProps) {
+
         if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) {
             this.setState({
                 src: nextProps.value,
@@ -2566,7 +2570,11 @@ class UploadAvatar extends React.Component {
 
     handleSelectedFile(event) {
         let isValidAcceptedFile = this.checkIsValidAcceptedFile(event.target.files[0].name);
-        this.setState({ value: event.target.files[0].name, src: URL.createObjectURL(event.target.files[0]) });
+        // console.log("change", isValidAcceptedFile, event.target.files[0].name)
+        this.setState({
+            value: event.target.files[0].name,
+            src: URL.createObjectURL(event.target.files[0])
+        });
         if (this.props.isReturnInline) {
             if (this.props.onHandleSelectedFile != null && isValidAcceptedFile) {
                 this.props.onHandleSelectedFile(event.target.files[0], this.props.nameMember, false);
@@ -2588,19 +2596,18 @@ class UploadAvatar extends React.Component {
 
         let id = this.props.name;
         document.getElementById(id).value = "";
-        // if (this.props.isReturnInline) {
-        //     if (this.props.onHandleSelectedFile != null && isValidAcceptedFile) {
-        //         this.props.onHandleSelectedFile(null, this.props.nameMember, true);
-        //     }
-        // }
+
         this.setState({
             src: this.state.defaultImage,
             value: "",
         });
-
-        if (this.props.onValueChange != null && isValidAcceptedFile) {
-            this.props.onValueChange(this.props.name, "", this.props.nameMember, "", undefined);
+        if (this.props.isReturnInline) {
+            if (this.props.onHandleSelectedFile != null && isValidAcceptedFile) {
+                this.props.onHandleSelectedFile("", this.props.nameMember, false);
+            }
         }
+
+
     }
 
     showFile() {
@@ -2611,6 +2618,7 @@ class UploadAvatar extends React.Component {
 
 
     render() {
+
         let className = "form-control form-control-sm";
         if (this.props.CSSClassName != null)
             className = this.props.CSSClassName;
@@ -2631,7 +2639,20 @@ class UploadAvatar extends React.Component {
         if (this.props.classNameCustom != null) {
             formRowClassName += this.props.classNameCustom;
         }
-        console.log("object", this.state, this.props)
+
+        let value = "";
+        let src = ""
+        if (this.state.value == "") {
+            value = ""
+            src = this.state.defaultImage;
+        }
+        else {
+            value = this.state.value;
+            src = this.state.src;
+        }
+
+        // console.log("state", this.state, this.props)
+
         return (
             <div className={formRowClassName} >
                 {this.props.label.length > 0 ?
@@ -2644,16 +2665,16 @@ class UploadAvatar extends React.Component {
                 }
                 <div className={formGroupClassName}>
                     <div className="input-group file-group">
-                        <img src={this.state.src} alt="No image" style={singleFileUploadImage} />
+                        <img src={src} alt="No image" style={singleFileUploadImage} />
                         <input type="file" id={this.props.name} onChange={this.handleSelectedFile} accept={this.state.acceptType} disabled={this.state.IsSystem} />
 
-                        {(this.state.value != null && this.state.value != "" && this.props.isButtonDelete == true) ? <i className="fa fa-remove bnt-remove" onClick={this.resetFile.bind(this)}></i> : ""}
+                        {(value != null && value != "" && this.props.isButtonDelete == true) ? <i className="fa fa-remove bnt-remove" onClick={this.resetFile.bind(this)}></i> : ""}
                         <span className="input-group-append group-action">
                             <label className="btn btn-light file-browser" htmlFor={this.props.name} >
                                 <i className="fa fa-upload"></i>
                             </label>
                             {
-                                (this.state.value != null && this.state.value != "") ? <label className="btn btn-light file-zoom" onClick={this.showFile.bind(this)} >
+                                (value != null && value != "") ? <label className="btn btn-light file-zoom" onClick={this.showFile.bind(this)} >
                                     <i className="ti-zoom-in" onClick={this.showFile.bind(this)}></i>
                                 </label>
                                     : ""

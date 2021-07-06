@@ -72,13 +72,13 @@ class SearchCom extends React.Component {
             PageIndex: 1,
             PageZise: 10
         }
-        this.props.callFetchAPI(APIHostName, "api/Document/SearchMobi", params).then(apiResult => {
-            console.log("callSearchDataMobi", params, apiResult)
-        });
-        const intDocumentID = 6;
-        this.props.callFetchAPI(APIHostName, "api/Document/LoadMobi", intDocumentID).then(apiResult => {
-            console.log("LoadMobi", params, apiResult)
-        });
+        // this.props.callFetchAPI(APIHostName, "api/Document/SearchMobi", params).then(apiResult => {
+        //     console.log("callSearchDataMobi", params, apiResult)
+        // });
+        // const intDocumentID = 6;
+        // this.props.callFetchAPI(APIHostName, "api/Document/LoadMobi", intDocumentID).then(apiResult => {
+        //     console.log("LoadMobi", params, apiResult)
+        // });
 
         // const paramsComment = {
         //     DocumentID: 7,
@@ -256,8 +256,8 @@ class SearchCom extends React.Component {
                     IsDelete={true}
                     IsAutoPaging={true}
                     RowsPerPage={20}
-                    // RequirePermission={DOCUMENT_VIEW}
-                    // DeletePermission={DOCUMENT_DELETE}
+                    RequirePermission={DOCUMENT_VIEW}
+                    DeletePermission={DOCUMENT_DELETE}
                     IsExportFile={false}
                     IsImportFile={false}
 

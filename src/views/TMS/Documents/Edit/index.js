@@ -13,6 +13,7 @@ import {
     BackLink,
     AddPagePath,
     TitleFormAdd,
+    UpdateAPIPath
 
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
@@ -61,8 +62,9 @@ class EditCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(AddPagePath);
+        this.getCacheKeyConfig();
 
-        this.getDataByID(this.props.match.params.id);
+
     }
 
     getCacheKeyConfig() {
@@ -79,37 +81,49 @@ class EditCom extends React.Component {
                     keyUploadVideo: keyUploadVideo[0].TMSConfigValue,
                     keyUploadLink: keyUploadLink[0].TMSConfigValue,
                 })
+                this.getDataByID(this.props.match.params.id);
             }
         })
     }
 
     getDataByID(id) {
-        const { AttachmentListData,keyUploadFile } = this.state;
+        const { AttachmentListData, keyUploadFile } = this.state;
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
-            console.log("data", apiResult)
+
             if (apiResult.IsError) {
                 this.showMessage(apiResult.Message)
             }
             else {
+
+                let File = {};
+                let item = {};
                 if (apiResult.ResultObject.DocumentTypeID == parseInt(keyUploadFile)) {
-                    AttachmentListData.name = apiResult.ResultObject.FileName;
-                    AttachmentListData.src = apiResult.ResultObject.FileURL;
-                    AttachmentListData.size = apiResult.ResultObject.FileSize
-                    apiResult.ResultObject.FileURL = "";
+                    if (apiResult.ResultObject.FileName != "") {
+                        File.name = apiResult.ResultObject.FileName;
+                        File.src = apiResult.ResultObject.FileURL;
+                        File.size = apiResult.ResultObject.FileSize
+                        apiResult.ResultObject.FileURLNew = "";
+                        AttachmentListData.push(File);
+                    }
+
+                    item = apiResult.ResultObject;
+                    item.FileURL = "";
                     this.setState({
                         AttachmentListData
                     })
                 }
-                else{
-
+                else {
+                    item = apiResult.ResultObject;
+                    this.setState({
+                        AttachmentListData: []
+                    })
                 }
 
-
                 this.setState({
-                    DataSource: apiResult.ResultObject,
+                    DataSource: item,
+                    DocumentTypeID: apiResult.ResultObject.DocumentTypeID,
                     IsLoadDataComplete: true,
                 })
-                this.getCacheKeyConfig();
             }
 
         });
@@ -119,7 +133,8 @@ class EditCom extends React.Component {
         const { Files, AttachmentList, DocumentTypeID, fileSize } = this.state;
 
         MLObject.FileSize = fileSize;
-
+        MLObject.DocumentID = this.props.match.params.id;
+        console.log("Files", Files)
         console.log("MLObject", AttachmentList, MLObject, fileSize);
 
 
@@ -128,15 +143,16 @@ class EditCom extends React.Component {
         data.append("DocumentImageURL", Files.DocumentImageURL);
         data.append("DocumentObj", JSON.stringify(MLObject));
 
-        // this.props.callFetchAPI(APIHostName, AddAPIPath, data).then(apiResult => {
-        //     console.log("data", apiResult)
-        //     this.setState({ IsCallAPIError: apiResult.IsError });
-        //     this.showMessage(apiResult.Message);
+        this.props.callFetchAPI(APIHostName, UpdateAPIPath, data).then(apiResult => {
+            console.log("data", apiResult)
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.showMessage(apiResult.Message);
 
-        // });
+        });
     }
 
     handleSelectedFile(file, nameValue, isDeletetedFile) {
+        console.log("object", file, nameValue, isDeletetedFile)
         const filelist = { [nameValue]: file };
         this.setState({ Files: filelist });
     }
@@ -230,9 +246,7 @@ class EditCom extends React.Component {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
-
         const { DocumentTypeID, AttachmentListData, keyUploadFile, keyUploadVideo, keyUploadLink } = this.state;
-
         return (
             <FormContainer
                 FormName={TitleFormAdd}
@@ -410,7 +424,7 @@ class EditCom extends React.Component {
                             controltype="InputControl"
                             value=""
                             isReturnInline={true}
-                            isButtonDelete={true}
+                            isButtonDelete={false}
                             datasourcemember="DocumentImageURL"
                             onHandleSelectedFile={this.handleSelectedFile.bind(this)}
                             showImage={this.handleShowImage.bind(this)}
