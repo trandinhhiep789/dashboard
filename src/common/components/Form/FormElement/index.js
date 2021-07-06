@@ -695,7 +695,7 @@ class FormElementCom extends Component {
                         case 3:
                             titleStatus = "medium"
                             titleNameStatus = "Trung bình";
-                            progressStatus= "active"
+                            progressStatus= "normal"
                             progressPercent = 50;
                             break;
                         case 4:
@@ -708,7 +708,7 @@ class FormElementCom extends Component {
                         case 5:
                             titleStatus = "veryStrong"
                             titleNameStatus = "Quá mạnh";
-                            progressStatus= "active"
+                            progressStatus= "success"
                             progressPercent = 100;
                             break;
                         default:
@@ -722,7 +722,7 @@ class FormElementCom extends Component {
                     control = <React.Fragment>
                         <input className={controlCSSClassName} name={this.props.name} type={this.props.type} placeholder={this.props.placeholder} defaultValue={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} ref={this.props.inputRef} />
                         {
-                            PasswordStrength > 0 && <div className="pass-status"><Progress percent={progressPercent} size="small" status={progressStatus} /> <span className={"title " + titleStatus}>{titleNameStatus}</span> </div>
+                            PasswordStrength > 0 && <div className="pass-status"><Progress steps={10}  percent={progressPercent}  status={progressStatus} /> <span className={"title " + titleStatus}>{titleNameStatus}</span> </div>
                         }
 
                     </React.Fragment>;

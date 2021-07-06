@@ -50,7 +50,30 @@ textarea {
 .form-group {
 
     margin-bottom: 0.5rem !important;
-
+    .pass-status{
+        clear: both;
+        .ant-progress-line{
+            width: 50%;
+        }
+        .title {
+            font-size: 12px;
+            &.veryWeak{
+                color: #dc3545
+            }
+            &.weak{
+                color: #dc3545
+            }
+            &.medium{
+                color: #1890ff
+            }
+            &.strong{
+                color: #1890ff
+            }
+            &.veryStrong{
+                color: #52c41a
+            }
+        }
+    }
     input,
     textarea {
         border-color: #d9d9d9d9;
