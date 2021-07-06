@@ -35,6 +35,7 @@ export const ElementList = [
     label: "Mật khẩu mới",
     value: "",
     placeholder: "",
+    isCheckPasswork: true,
     icon: "",
     listoption: {},
     validatonList: ["required"]

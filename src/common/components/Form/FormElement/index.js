@@ -12,6 +12,9 @@ import ProductComboBox from "../../FormContainer/FormControl/MultiSelectComboBox
 import "../../../../../node_modules/react-datetime/css/react-datetime.css";
 import JoditEditor from "jodit-react";
 
+import { getPasswordStrength } from "../../../library/PasswordUtils.js";
+import { Progress } from 'antd';
+
 import { TreeSelect } from "antd";
 import "antd/dist/antd.css";
 
@@ -407,7 +410,6 @@ class FormElementCom extends Component {
             star = '*'
         }
 
-
         let control;
         switch (type) {
             case 'groupTextAndSelect':
@@ -668,6 +670,68 @@ class FormElementCom extends Component {
                     />
                 );
                 break;
+            case "password":
+                const isCheckPasswork = this.props.elementItem.isCheckPasswork
+                if (isCheckPasswork) {
+                    const PasswordStrength = getPasswordStrength(this.props.value)
+                    console.log("isCheckPasswork", isCheckPasswork, PasswordStrength)
+                    let titleStatus = "blank";
+                    let titleNameStatus = "Yếu";
+                    let progressPercent = 0;
+                    let progressStatus= "exception"
+                    switch (PasswordStrength) {
+                        case 1:
+                            titleStatus = "veryWeak"
+                            titleNameStatus = "Quá yếu";
+                            progressStatus= "exception"
+                            progressPercent = 10;
+                            break;
+                        case 2:
+                            titleStatus = "weak";
+                            titleNameStatus = "Yếu";
+                            progressStatus= "exception"
+                            progressPercent = 20;
+                            break;
+                        case 3:
+                            titleStatus = "medium"
+                            titleNameStatus = "Trung bình";
+                            progressStatus= "active"
+                            progressPercent = 50;
+                            break;
+                        case 4:
+                            titleStatus = "strong"
+                            titleNameStatus = "Mạnh";
+                            progressStatus= "active"
+                            progressPercent = 85;
+
+                            break;
+                        case 5:
+                            titleStatus = "veryStrong"
+                            titleNameStatus = "Quá mạnh";
+                            progressStatus= "active"
+                            progressPercent = 100;
+                            break;
+                        default:
+                            titleStatus = "blank"
+                            titleNameStatus = "Quá yếu";
+                            progressStatus= "exception"
+                            progressPercent = 0;
+                            break
+                    }
+
+                    control = <React.Fragment>
+                        <input className={controlCSSClassName} name={this.props.name} type={this.props.type} placeholder={this.props.placeholder} defaultValue={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} ref={this.props.inputRef} />
+                        {
+                            PasswordStrength > 0 && <div className="pass-status"><Progress percent={progressPercent} size="small" status={progressStatus} /> <span className={"title " + titleStatus}>{titleNameStatus}</span> </div>
+                        }
+
+                    </React.Fragment>;
+                }
+                else {
+                    control = <input className={controlCSSClassName} name={this.props.name} type={this.props.type} placeholder={this.props.placeholder} defaultValue={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} ref={this.props.inputRef} />;
+                }
+
+                break
             default:
                 control = <input className={controlCSSClassName} name={this.props.name} type={this.props.type} placeholder={this.props.placeholder} defaultValue={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} ref={this.props.inputRef} />;
                 break;
