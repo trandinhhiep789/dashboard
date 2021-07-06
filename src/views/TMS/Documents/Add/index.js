@@ -291,7 +291,7 @@ class AddCom extends React.Component {
                             datasourcemember="Description"
                             controltype="InputControl"
                             rows={6}
-                            maxSize={500}
+                            maxSize={250}
                             classNameCustom="customcontrol"
                         />
                     </div>
@@ -356,7 +356,7 @@ class AddCom extends React.Component {
                             datasourcemember="FileContent1"
                             controltype="InputControl"
                             rows={8}
-                            maxSize={500}
+                            maxSize={3900}
                             readOnly={(DocumentTypeID == parseInt(keyUploadVideo)  || DocumentTypeID == parseInt(keyUploadLink) ) ? false : true}
                             disabled={(DocumentTypeID == parseInt(keyUploadVideo)  || DocumentTypeID == parseInt(keyUploadLink) ) ? false : true}
                             classNameCustom="customcontrol"
@@ -374,7 +374,7 @@ class AddCom extends React.Component {
                             datasourcemember="FileContent2"
                             controltype="InputControl"
                             rows={8}
-                            maxSize={500}
+                            maxSize={3900}
                             readOnly={(DocumentTypeID == parseInt(keyUploadVideo)  || DocumentTypeID == parseInt(keyUploadLink) ) ? false : true}
                             disabled={(DocumentTypeID == parseInt(keyUploadVideo)  || DocumentTypeID == parseInt(keyUploadLink) ) ? false : true}
                             classNameCustom="customcontrol"

@@ -1256,6 +1256,7 @@ class TextArea extends React.Component {
                         readOnly={this.props.readonly}
                         rows={(this.props.rows == undefined || this.props.rows == "") ? "5" : this.props.rows}
                         disabled={this.props.disabled}
+                        maxlength={this.props.maxSize}
                     />
                 </div>
             </div>

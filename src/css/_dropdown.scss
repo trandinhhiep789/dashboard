@@ -72,4 +72,12 @@
 .react-tree-select-cus{
     clear: both;
     width: 100%;
+    &.is-invalid{
+        .ant-select-selector{
+            border: 1px solid #ff0000;
+        }
+        & ~ .invalid-feedback {
+            display: block;
+        }
+    }
 }
