@@ -17,7 +17,7 @@ import SearchForm from "../../../../../../common/components/FormContainer/Search
 import MyContext from '../../Context';
 
 
-class AddModal extends Component {
+class AddModalCom extends Component {
     static contextType = MyContext;
 
     constructor(props) {
@@ -64,7 +64,7 @@ class AddModal extends Component {
     }
 
     handleSubmit() {
-        const { dataGrid } = this.state;
+        const { dataGrid, CoordinatorGroupData } = this.state;
 
         let errorFlag = false;
         dataGrid.forEach(item => {
@@ -90,7 +90,9 @@ class AddModal extends Component {
                         UserName: val.UserName,
                         FullName: val.FullName,
                         FromCoordinatorGroupID: parseInt(val.CoordinatorGroupID),
+                        FromCoordinatorGroupID_Name: `${val.CoordinatorGroupID} - ${CoordinatorGroupData.CoordinatorGroupName}`,
                         ToCoordinatorGroupID: this.state[val.UserName].value,
+                        ToCoordinatorGroupID_Name: this.state[val.UserName].label,
                         ApplyDate: new Date(this.state[`APPLYDATE_${val.UserName}`]),
                         IsSystem: val.IsSystem,
                         CreatedUser: this.props.AppInfo.LoginInfo.Username
@@ -184,7 +186,7 @@ class AddModal extends Component {
     handleChangeDatePicker(...data) {
         try {
             this.setState({
-                [`APPLYDATE_${data[2]}`]: data[1]
+                [`APPLYDATE_${data[2]}`]: data[0]
             })
         } catch (error) {
             this.setState({
@@ -277,6 +279,7 @@ class AddModal extends Component {
                                                                 onChange={(...data) => this.handleChangeDatePicker(...data, item.UserName)}
                                                                 disabledDate={this.disabledDate}
                                                                 placeholder={"--Chọn ngày--"}
+                                                                format={"DD/MM/YYYY"}
                                                             />
                                                             {
                                                                 (this.state[item.UserName] != null && this.state[`APPLYDATE_${item.UserName}`] == "")
@@ -338,4 +341,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AddModal));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AddModalCom));

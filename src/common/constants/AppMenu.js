@@ -473,6 +473,13 @@ const AppMenu = [
                         LinkTo: '/StaffTransferType',
                         MenuIcon: '',
                         SubMenu: []
+                    },
+                    {
+                        MenuName: 'StaffTransfer',
+                        MenuTitle: 'Danh sách thuyên chuyển nhân viên',
+                        LinkTo: '/StaffTransfer',
+                        MenuIcon: '',
+                        SubMenu: []
                     }
                 ]
             },
@@ -662,6 +669,13 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    {
+                        MenuName: 'ShipmentQualityAssess',
+                        MenuTitle: 'Danh sách tiêu chí đánh giá chất lượng',
+                        LinkTo: '/ShipmentQualityAssess',
+                        MenuIcon: '',
+                        SubMenu: []
+                    }
                 ]
             },
             {
@@ -715,7 +729,7 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-            
+
 
 
 
@@ -1002,20 +1016,6 @@ const AppMenu = [
                 MenuName: 'DeliveryAbility',
                 MenuTitle: 'Khai báo tổng tải',
                 LinkTo: '/DeliveryAbility',
-                MenuIcon: '',
-                SubMenu: []
-            },
-            {
-                MenuName: 'ShipmentQualityAssess',
-                MenuTitle: 'Đánh giá chất lượng giao hàng',
-                LinkTo: '/ShipmentQualityAssess',
-                MenuIcon: '',
-                SubMenu: []
-            },
-            {
-                MenuName: 'StaffTransfer',
-                MenuTitle: 'Điều chuyển nhân sự',
-                LinkTo: '/StaffTransfer',
                 MenuIcon: '',
                 SubMenu: []
             }
@@ -1307,7 +1307,7 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-            
+
 
 
         ]
@@ -1325,7 +1325,7 @@ const AppMenu = [
         LinkTo: '/Documents',
         MenuIcon: '',
         SubMenu: [
-            
+
         ]
     },
 

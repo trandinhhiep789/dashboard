@@ -14,7 +14,7 @@ import AddModalCom from './AddModal';
 import MyContext from '../Context';
 
 
-class StaffTransferDetail extends React.Component {
+class StaffTransferDetailCom extends React.Component {
     static contextType = MyContext;
 
     constructor(props) {
@@ -113,4 +113,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(StaffTransferDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(StaffTransferDetailCom);

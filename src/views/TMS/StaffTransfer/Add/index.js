@@ -79,7 +79,7 @@ class AddCom extends React.Component {
         }
 
         if (StaffTransferData.IsAutoReview == false && StaffTransferType_rvLevelData.length == 0) {
-            this.showMessage(`Danh sách mức duyệt trống, vui lòng khai báo mức duyệt. Mã Loại yêu cầu thuyên chuyển: ${StaffTransferTypeID}`);
+            this.showMessage(`Danh sách mức duyệt trống, vui lòng khai báo mức duyệt. Mã loại yêu cầu thuyên chuyển: ${StaffTransferTypeID}`);
             return;
         }
 
