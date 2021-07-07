@@ -39,6 +39,7 @@ import { ERPCOMMONCACHE_PARTNERUSER, ERPCOMMONCACHE_TMSCONFIG } from "../../../.
 import { toIsoStringCus } from "../../../../../../utils/function";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
+import { isStrongPassword } from "../../../../../../common/library/PasswordUtils";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -534,11 +535,25 @@ class EditCom extends React.Component {
     handleSubmit(formData, MLObject) {
         //check password valid
         let { PassWord, PassWordConfirm } = this.state;
-        if (PassWord && PassWord != PassWordConfirm) {
-            this.setState({ IsCallAPIError: true });
-            this.addNotification("Xác nhận mật khẩu chưa đúng.", true);
-            return false;
+
+
+        if (PassWord) {
+            let _isStrongPassword = isStrongPassword(PassWord);
+            if (!_isStrongPassword) {
+                this.setState({ IsCallAPIError: true });
+                this.addNotification("Mật khẩu mới chưa đủ mạnh (cần phải có ít nhất 8 ký tự bao gồm chữ hoa, chữ thường, số hoặc ký tự đặt biệt).", true);
+                return false;
+            }
+
+            if (PassWord != PassWordConfirm) {
+                this.setState({ IsCallAPIError: true });
+                this.addNotification("Xác nhận mật khẩu chưa đúng.", true);
+                return false;
+            }
         }
+
+
+
 
 
 
@@ -565,14 +580,14 @@ class EditCom extends React.Component {
             let myDate = new Date(temp[1] + '/' + temp[0] + '/' + temp[2]);
             MLObject.Birthday = myDate;
         }
-        
+
 
         ///kiểm tra người dùng đủ 18 tuổi
         let validYearOld = (new Date()).getFullYear() - (new Date(MLObject.Birthday)).getFullYear();
         if (validYearOld < 18) {
             this.addNotification("Yêu cầu người dùng trên 18 tuổi.", true);
             return;
-        }else if(validYearOld > 100){
+        } else if (validYearOld > 100) {
             this.addNotification("Yêu cầu người dùng dưới 100 tuổi.", true);
             return;
         }

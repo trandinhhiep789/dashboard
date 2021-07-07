@@ -8,6 +8,7 @@ import { MessageModal } from "../../common/components/Modal";
 import { ElementList, MLObjectDefinition, PagePath } from "./constants"
 import { callFetchAPI } from "../../actions/fetchAPIAction";
 import { updatePagePath } from "../../actions/pageAction";
+import { isStrongPassword } from "../../common/library/PasswordUtils.js";
 class ChangePasswordCom extends React.Component {
     constructor(props) {
         super(props);
@@ -58,15 +59,26 @@ class ChangePasswordCom extends React.Component {
     handleSubmit(formData, MLObject) {
         //check password valid
         let { PassWord, PassWordConfirm } = this.state;
+
+        let _isStrongPassword = isStrongPassword(PassWord);
+        if (!_isStrongPassword) {
+            this.setState({ IsCallAPIError: true });
+            this.showMessage("Mật khẩu mới chưa đủ mạnh (cần phải có ít nhất 8 ký tự bao gồm chữ hoa, chữ thường, số hoặc ký tự đặt biệt).");
+            return false;
+        }
+
         if (PassWord != PassWordConfirm) {
             this.setState({ IsCallAPIError: true });
             this.showMessage("Xác nhận mật khẩu chưa đúng.");
             return false;
         }
 
+
+
+
         const hostname = "TMSAPI";
         //const apiPath = "api/PartnerUser/UpdatePassWordUserPartner";
-        const apiPath  = "api/PartnerUser/UpdatePassWordUserPartnerMobile";
+        const apiPath = "api/PartnerUser/UpdatePassWordUserPartnerMobile";
         let userLogin = this.props.AppInfo.LoginInfo.Username;
         const postData = {
             Username: userLogin,
