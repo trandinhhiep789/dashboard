@@ -64,7 +64,7 @@ class AddModal extends Component {
     }
 
     handleSubmit() {
-        const { dataGrid } = this.state;
+        const { dataGrid, CoordinatorGroupData } = this.state;
 
         let errorFlag = false;
         dataGrid.forEach(item => {
@@ -89,8 +89,10 @@ class AddModal extends Component {
                         RequestDate: new Date(),
                         UserName: val.UserName,
                         FullName: val.FullName,
-                        FromCoordinatorGroupID: parseInt(val.CoordinatorGroupID),
+                        FromCoordinatorGroupID: parseInt(CoordinatorGroupData.CoordinatorGroupID),
+                        FromCoordinatorGroupID_Name: `${CoordinatorGroupData.CoordinatorGroupID} - ${CoordinatorGroupData.CoordinatorGroupName}`,
                         ToCoordinatorGroupID: this.state[val.UserName].value,
+                        ToCoordinatorGroupID_Name: this.state[val.UserName].label,
                         ApplyDate: new Date(this.state[`APPLYDATE_${val.UserName}`]),
                         IsSystem: val.IsSystem,
                         CreatedUser: this.props.AppInfo.LoginInfo.Username
@@ -184,7 +186,7 @@ class AddModal extends Component {
     handleChangeDatePicker(...data) {
         try {
             this.setState({
-                [`APPLYDATE_${data[2]}`]: data[1]
+                [`APPLYDATE_${data[2]}`]: data[0]
             })
         } catch (error) {
             this.setState({
@@ -275,6 +277,8 @@ class AddModal extends Component {
                                                                 size={"large"}
                                                                 onChange={(...data) => this.handleChangeDatePicker(...data, item.UserName)}
                                                                 disabledDate={this.disabledDate}
+                                                                format="DD/MM/YYYY"
+                                                                placeholder={"--Chọn ngày--"}
                                                             />
                                                             {
                                                                 (this.state[item.UserName] != null && this.state[`APPLYDATE_${item.UserName}`] == "")

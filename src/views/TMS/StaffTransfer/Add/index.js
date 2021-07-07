@@ -10,6 +10,7 @@ import { callGetCache, callClearLocalCache } from "../../../../actions/cacheActi
 import { formatDate } from "../../../../common/library/CommonLib.js";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { STAFFTRANSFERTYPE_ADD } from "../../../../constants/functionLists";
+import { ERPCOMMONCACHE_STAFFTRANSFERTYPE } from "../../../../constants/keyCache";
 import { AddPagePath, APIHostName, APILoadInfo, MLObjectDefinition, BackLink, APIAdd } from './constants';
 
 import FormControl from "../../../../common/components/FormContainer/FormControl";
@@ -79,7 +80,7 @@ class AddCom extends React.Component {
         }
 
         if (StaffTransferData.IsAutoReview == false && StaffTransferType_rvLevelData.length == 0) {
-            this.showMessage(`Danh sách mức duyệt trống, vui lòng khai báo mức duyệt. Mã Loại yêu cầu thuyên chuyển: ${StaffTransferTypeID}`);
+            this.showMessage(`Danh sách mức duyệt trống, vui lòng khai báo mức duyệt. Mã loại yêu cầu thuyên chuyển: ${StaffTransferTypeID}`);
             return;
         }
 
@@ -150,13 +151,12 @@ class AddCom extends React.Component {
                         onSubmit={this.handleSubmit}
                     >
                         <div className="row mb-4">
-                            <div className="col-md-6">
+                            <div className="col-md-6 mb-2">
                                 <FormControl.FormControlComboBox
                                     name="cboStaffTransferTypeID"
                                     colspan="8"
                                     labelcolspan="4"
                                     label="loại hình thuyên chuyển nhân viên"
-                                    validatonList={["Comborequired"]}
                                     placeholder="-- Vui lòng chọn --"
                                     isautoloaditemfromcache={true}
                                     disabled={true}
@@ -169,7 +169,7 @@ class AddCom extends React.Component {
                                     datasourcemember="cboStaffTransferTypeID"
                                 />
                             </div>
-                            <div className="col-md-6">
+                            <div className="col-md-6 mb-2">
                                 <FormControl.FormControlDatetimeNew
                                     name="dtRequestDate"
                                     colspan="8"
@@ -183,8 +183,27 @@ class AddCom extends React.Component {
                                     placeholder={formatDate(new Date(), true)}
                                     controltype="InputControl"
                                     value={new Date()}
-                                    validatonList={["required"]}
                                     datasourcemember="RequestDate"
+                                />
+                            </div>
+                            <div className="col-md-6">
+                                <FormControl.CheckBox
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    label="Tự động duyệt"
+                                    name="cbIsAutoReview"
+                                    value={StaffTransferData.IsAutoReview}
+                                    disabled={true}
+                                />
+                            </div>
+                            <div className="col-md-6">
+                                <FormControl.CheckBox
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    label="Tự động thuyên chuyển"
+                                    name="cbIsAutoTransfer"
+                                    value={StaffTransferData.IsAutoTransfer}
+                                    disabled={true}
                                 />
                             </div>
                             <div className="col-md-12">
@@ -194,7 +213,6 @@ class AddCom extends React.Component {
                                     labelcolspan="2"
                                     label="kho yêu cầu"
                                     disabled={true}
-                                    validatonList={["Comborequired"]}
                                     placeholder="-- Vui lòng chọn --"
                                     isautoloaditemfromcache={true}
                                     isusercache={true}

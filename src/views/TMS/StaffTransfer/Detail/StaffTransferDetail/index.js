@@ -11,17 +11,48 @@ class StaffTransferDetailCom extends React.Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            stateStaffTransferDetail: []
+        }
+
+        this.handleInitStaffTransferDetail = this.handleInitStaffTransferDetail.bind(this);
+    }
+
+    componentDidMount() {
+        this.handleInitStaffTransferDetail();
+    }
+
+    handleInitStaffTransferDetail() {
+        const { contextStaffTransfer } = this.context;
+
+        try {
+            const arrResult = contextStaffTransfer.ListStaffTransferDetail.map(item => {
+                return {
+                    ...item,
+                    FromCoordinatorGroupID_Name: `${item.FromCoordinatorGroupID} - ${item.FromCoordinatorGroupName}`,
+                    ToCoordinatorGroupID_Name: `${item.ToCoordinatorGroupID} - ${item.ToCoordinatorGroupName}`,
+                }
+            });
+            this.setState({
+                stateStaffTransferDetail: arrResult
+            })
+        } catch (error) {
+            this.setState({
+                stateStaffTransferDetail: contextStaffTransfer.ListStaffTransferDetail
+            })
+        }
     }
 
     render() {
-        const { contextStaffTransfer } = this.context;
+        const { stateStaffTransferDetail } = this.state;
 
         return (
             <React.Fragment>
                 <DataGrid
                     headingTitle="Danh sách nhân viên thuyên chuyển"
                     listColumn={listColumn}
-                    dataSource={contextStaffTransfer.ListStaffTransferDetail}
+                    dataSource={stateStaffTransferDetail}
                     IDSelectColumnName={"chkSelectUserName"}
                     PKColumnName={"UserName"}
                     IsShowButtonAdd={false}

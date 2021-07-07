@@ -23,7 +23,8 @@ import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 import { toIsoStringCus } from '../../../../../utils/function'
 import { showModal, hideModal } from '../../../../../actions/modal';
-import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_DOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
+import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_DOWNLOAD_EXCEL, MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
+import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../../constants/keyCache";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -31,12 +32,14 @@ class SearchCom extends React.Component {
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
         this.handleCallData = this.handleCallData.bind(this);
+        this.getCacheKeyConfig = this.getCacheKeyConfig.bind(this)
 
         this.state = {
             IsCallAPIError: false,
             gridDataSource: [],
             IsLoadDataComplete: false,
-            dataExport: []
+            dataExport: [],
+            templateID: ""
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -44,7 +47,22 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
-        // this.handleCallData();
+         this.getCacheKeyConfig();
+    }
+
+
+    getCacheKeyConfig() {
+        this.props.callGetCache(ERPCOMMONCACHE_TMSCONFIG).then(apiResult => {
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.Message)
+            }
+            else {
+                let templateID = apiResult.ResultObject.CacheData.filter(x => x.TMSConfigID == "TEMPLATE_EXPORT_REWARDDETAIL");
+                this.setState({
+                    templateID: templateID[0].TMSConfigValue,
+                })
+            }
+        })
     }
 
 
@@ -97,7 +115,16 @@ class SearchCom extends React.Component {
                 SearchValue: result2 //MLObject.RewardPositionID
             }
         ];
-        this.callSearchData(postData);
+
+        const postDataNew = {
+            DataExportTemplateID: this.state.templateID,
+            LoadDataStoreName: 'TMS.TMS_RWD_EXP',
+            KeyCached: "TMS_TMSREWARD_EXPORT",
+            SearchParamList: postData,
+            ExportDataParamsDescription: "FROMDATE: " + toIsoStringCus(new Date(MLObject.FromDate).toISOString()) + " - TODATE: " + toIsoStringCus(new Date(MLObject.ToDate).toISOString()) + " - REWARDTYPEID: " + result + " - REWARDPOSITIONID: " + result2
+        }
+
+        this.callSearchData(postDataNew);
     }
 
 
@@ -112,7 +139,7 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
 
-        this.props.callFetchAPI(APIHostName, "api/TMSRewardDetail/SearchExportRewardDetailNew", searchData).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, "api/DataExportQueue/AddQueueExport", searchData).then(apiResult => {
             console.log("apiResult", apiResult, searchData)
             if (!apiResult.IsError) {
 
@@ -138,7 +165,13 @@ class SearchCom extends React.Component {
 
                 // })
                 // this.handleExportCSV(tempDataExport)
-                this.onShowModalDownloadFile(apiResult.Message)
+                // this.onShowModalDownloadFile(apiResult.Message)
+
+                this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
+                    title: "Tải file",
+                    maxWidth: '1200px',
+                    ParamRequest: { DataExportTemplateID: this.state.templateID }
+                });
             }
             else {
                 this.showMessage(apiResult.Message)
