@@ -671,10 +671,10 @@ class FormElementCom extends Component {
                 );
                 break;
             case "password":
-                const isCheckPasswork = this.props.elementItem.isCheckPasswork
-                if (isCheckPasswork) {
+                const isCheckPassword = this.props.elementItem.isCheckPassword
+                if (isCheckPassword) {
                     const PasswordStrength = getPasswordStrength(this.props.value)
-                    console.log("isCheckPasswork", isCheckPasswork, PasswordStrength)
+                    //console.log("isCheckPassword", isCheckPassword, PasswordStrength)
                     let titleStatus = "blank";
                     let titleNameStatus = "Yếu";
                     let progressPercent = 0;

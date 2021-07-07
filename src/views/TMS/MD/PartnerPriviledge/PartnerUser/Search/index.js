@@ -38,6 +38,7 @@ import { PARTNERUSER_VIEW, PARTNERUSER_DELETE, PARTNERUSER_ADD, GET_CACHE_USER_F
 import { ERPCOMMONCACHE_PARTNERUSER, ERPCOMMONCACHE_TMSCONFIG } from "../../../../../../constants/keyCache";
 import MD5Digest from "../../../../../../common/library/cryptography/MD5Digest";
 import { toIsoStringCus } from "../../../../../../utils/function";
+import { isStrongPassword } from "../../../../../../common/library/PasswordUtils";
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
@@ -234,6 +235,14 @@ class SearchCom extends React.Component {
                     if (MLObject) {
                         //check password valid
                         let { PassWord, PassWordConfirm } = this.state;
+
+                        let _isStrongPassword = isStrongPassword(PassWord);
+                        if (!_isStrongPassword) {
+                            this.setState({ IsCallAPIError: true });
+                            this.showMessage("Mật khẩu mới chưa đủ mạnh (cần phải có ít nhất 8 ký tự bao gồm chữ hoa, chữ thường, số hoặc ký tự đặt biệt).");
+                            return false;
+                        }
+
                         if (PassWord != PassWordConfirm) {
                             this.setState({ IsCallAPIError: true });
                             this.showMessage("Xác nhận mật khẩu chưa đúng.");
@@ -272,13 +281,13 @@ class SearchCom extends React.Component {
                             let myDate = new Date(temp[1] + '/' + temp[0] + '/' + temp[2]);
                             MLObject.Birthday = myDate;
                         }
-                        
+
                         ///kiểm tra người dùng đủ 18 tuổi
                         let validYearOld = (new Date()).getFullYear() - (new Date(MLObject.Birthday)).getFullYear();
                         if (validYearOld < 18) {
                             this.addNotification("Yêu cầu người dùng trên 18 tuổi.", true);
                             return;
-                        }else if(validYearOld > 100){
+                        } else if (validYearOld > 100) {
                             this.addNotification("Yêu cầu người dùng dưới 100 tuổi.", true);
                             return;
                         }
