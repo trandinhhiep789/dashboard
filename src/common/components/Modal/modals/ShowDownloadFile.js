@@ -100,7 +100,6 @@ class ShowDownloadFileCom extends React.Component {
         return <h4 className="modal-title" id="myModalLabel">{title}</h4>
     }
     get close() {
-        console.log("bbb")
         const { onClose } = this.props;
         return onClose ?
             <button className='close' onClick={this.handleClose} ><span aria-hidden="true">×</span></button>
