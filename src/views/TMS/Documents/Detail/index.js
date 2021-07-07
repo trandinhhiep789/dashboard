@@ -123,6 +123,7 @@ class DetailCom extends React.Component {
         }
 
         this.props.callFetchAPI(APIHostName, UpdatePulishAPIPath, param).then((apiResult) => {
+            console.log("pulish", apiResult)
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
                 this.callLoadData(this.props.match.params.id);
