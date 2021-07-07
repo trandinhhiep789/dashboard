@@ -6,10 +6,10 @@
     width: 100%;
     button {
         &.btnActionConfirm {
-            border: 1px solid #1c9536;
+            border: none;
             text-align: center;
             cursor: pointer;
-            background-color: #1c9536;
+            background-color: transparent;
             border-radius: 4px;
             color: #fff;
             font-size: 11px;
@@ -19,7 +19,22 @@
                 box-shadow: none;
                 outline: none;
             }
+            i{
+                font-size: 10px;
+            }
+            .lbl-unConfirm {
+                background: #dc3545;
+                padding: 5px 5px;
+                border-radius: 5px;
+            }
+            .lbl-confirm {
+                background: #1c9536;
+                padding: 5px 5px;
+                border-radius: 5px;
+            }
+            
         }
+       
     }
     
 }

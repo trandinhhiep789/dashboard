@@ -2,7 +2,7 @@ export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/RewardComputeList/Search";
 export const ConfirmAPIPath = "api/RewardComputeList/Confirm";
 export const SearchConfirmLogAPIPath = "api/RewardComputeList_CFLog/Search";
-
+import { toIsoStringCus } from '../../../../../utils/function'
 
 
 
@@ -17,6 +17,26 @@ const dtFromdate = new Date();
 dtFromdate.setDate(new Date().getDate() - 30);
 
 export const SearchElementList = [
+    {
+        type: "Datetime",
+        name: "dtFromDate",
+        DataSourceMember: "FromDate",
+        label: "Từ ngày",
+        value: new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()),
+        timeFormat: false,
+        dateFormat: "DD/MM/YYYY",
+        colspan: 2,
+    },
+    {
+        type: "Datetime",
+        name: "dtToDate",
+        DataSourceMember: "ToDate",
+        label: "Đến ngày",
+        value: new Date(),
+        timeFormat: false,
+        dateFormat: "DD/MM/YYYY",
+        colspan: 2,
+    },
     {
         type: "ComboBoxNewChange",
         name: "cbRewardComputeTypeID",
@@ -52,6 +72,7 @@ export const SearchElementList = [
         NameMember: "IscomPutedName"
 
     },
+    
 ];
 
 export const MLObjectChangeConfirmModal = [
@@ -72,7 +93,17 @@ export const  SearchMLObjectDefinition = [
         Name: "IscomPuted",
         DefaultValue: "",
         BindControlName: "cbIscomPuted"
-    }
+    },
+    {
+        Name: "FromDate",
+        DefaultValue: "",
+        BindControlName: "dtFromDate"
+    },
+    {
+        Name: "ToDate",
+        DefaultValue: "",
+        BindControlName: "dtToDate"
+    },
 ]
 
 export const InitSearchParams = [
@@ -83,6 +114,14 @@ export const InitSearchParams = [
     {
         SearchKey: "@ISCOMPUTED",
         SearchValue: ""
+    },
+    {
+        SearchKey: "@FROMDATE",
+        SearchValue:  toIsoStringCus(new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()))
+    },
+    {
+        SearchKey: "@TODATE",
+        SearchValue: new Date()
     },
 ];
 

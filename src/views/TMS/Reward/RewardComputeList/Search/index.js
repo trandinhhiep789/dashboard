@@ -76,7 +76,14 @@ class SearchCom extends React.Component {
 
 
         const postData = [
-
+            {
+                SearchKey: "@FROMDATE",
+                SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString())
+            },
+            {
+                SearchKey: "@TODATE",
+                SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString())
+            },
             {
                 SearchKey: "@REWARDCOMPUTETYPEID",
                 SearchValue: MLObject.RewardComputeTypeID
@@ -97,11 +104,17 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("data", apiResult)
+            console.log("data",searchData, apiResult)
             if (!apiResult.IsError) {
 
                 const tempData = apiResult.ResultObject.map((item, index) => {
-                    item.IsConfirmStatus = <span className='lbl-confirm'>Chốt thưởng</span>;
+                    if(item.IsConfirm){
+                        item.IsConfirmStatus = <span className='lbl-unConfirm'><i className="ti-close"></i> Bỏ chốt</span>;
+                    }
+                    else{
+                        item.IsConfirmStatus = <span className='lbl-confirm'><i className="ti-check"></i> Chốt thưởng</span>;
+                    }
+                    
                     return item;
                 })
                 this.setState({
