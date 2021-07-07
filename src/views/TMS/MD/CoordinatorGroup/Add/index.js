@@ -78,7 +78,7 @@ class AddCom extends React.Component {
         }
         return (
             <SimpleForm
-                FormName="Thêm nhóm điều phối"
+                FormName="Thêm nhóm chi nhánh quản lý"
                 MLObjectDefinition={MLObjectDefinition}
                 listelement={AddElementList}
                 onSubmit={this.handleSubmit}

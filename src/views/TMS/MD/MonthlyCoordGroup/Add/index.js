@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
@@ -7,20 +6,18 @@ import SimpleForm from "../../../../../common/components/Form/SimpleForm";
 import { MessageModal } from "../../../../../common/components/Modal";
 import {
     APIHostName,
-    LoadAPIPath,
-    UpdateAPIPath,
-    EditElementList,
+    AddAPIPath,
+    AddElementList,
     MLObjectDefinition,
     BackLink,
-    EditPagePath
+    AddPagePath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_SHIPMENTFEETYPE } from "../../../../../constants/keyCache";
-import { SHIPMENTFEETYPE_UPDATE, DESTROYREQUESTTYPE_UPDATE, COORDINATORGROUP_UPDATE } from "../../../../../constants/functionLists";
-
-class EditCom extends React.Component {
+import { SHIPMENTFEETYPE_ADD, DESTROYREQUESTTYPE_ADD, COORDINATORGROUP_ADD } from "../../../../../constants/functionLists";
+class AddCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -28,32 +25,16 @@ class EditCom extends React.Component {
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
-            FormContent: "",
-            IsLoadDataComplete: false,
             IsCloseForm: false
         };
     }
 
     componentDidMount() {
-        this.props.updatePagePath(EditPagePath);
-        const id = this.props.match.params.id;
-        this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
-            if (apiResult.IsError) {
-                this.setState({
-                    IsCallAPIError: apiResult.IsError
-                });
-                this.showMessage(apiResult.Message);
-            } else {
-                this.setState({ DataSource: apiResult.ResultObject });
-            }
-            this.setState({
-                IsLoadDataComplete: true
-            });
-        });
+        this.props.updatePagePath(AddPagePath);
     }
 
     handleSubmit(formData, MLObject) {
-        MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
+        MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.AddFunctionID = MLObject.AddFunctionID && Array.isArray(MLObject.AddFunctionID) ? MLObject.AddFunctionID[0] : MLObject.AddFunctionID;
 
@@ -61,11 +42,11 @@ class EditCom extends React.Component {
             this.setState({ IsCallAPIError: true });
             this.showMessage("Phải có tự động duyệt thì mới có tự động xuất.");
         } else {
-            this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
+            this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
                 this.setState({ IsCallAPIError: apiResult.IsError });
                 if (!apiResult.IsError) {
                     //this.props.callClearLocalCache(ERPCOMMONCACHE_SHIPMENTFEETYPE);
-                    // this.handleSubmitInsertLog(MLObject);
+                    //this.handleSubmitInsertLog(MLObject);
                 }
                 this.showMessage(apiResult.Message);
             });
@@ -89,29 +70,25 @@ class EditCom extends React.Component {
     }
 
     render() {
+        const dataSource = {
+            IsActived: true
+        };
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
-        if (this.state.IsLoadDataComplete) {
-            return (
-                <SimpleForm
-                    FormName="Cập nhật nhóm chi nhánh quản lý"
-                    MLObjectDefinition={MLObjectDefinition}
-                    listelement={EditElementList}
-                    onSubmit={this.handleSubmit}
-                    FormMessage={this.state.CallAPIMessage}
-                    IsErrorMessage={this.state.IsCallAPIError}
-                    dataSource={this.state.DataSource}
-                    BackLink={BackLink}
-                    RequirePermission={COORDINATORGROUP_UPDATE}
-                    ref={this.searchref}
-                />
-            );
-        }
         return (
-            <div>
-                <label>Đang nạp dữ liệu...</label>
-            </div>
+            <SimpleForm
+                FormName="Thêm nhóm điều phối"
+                MLObjectDefinition={MLObjectDefinition}
+                listelement={AddElementList}
+                onSubmit={this.handleSubmit}
+                FormMessage={this.state.CallAPIMessage}
+                IsErrorMessage={this.state.IsCallAPIError}
+                dataSource={dataSource}
+                BackLink={BackLink}
+                RequirePermission={COORDINATORGROUP_ADD}
+                ref={this.searchref}
+            />
         );
     }
 }
@@ -140,8 +117,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const Edit = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(EditCom);
-export default Edit;
+const Add = connect(mapStateToProps, mapDispatchToProps)(AddCom);
+export default Add;

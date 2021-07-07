@@ -35,7 +35,6 @@ class CoordinatorGroup_MemberCom extends React.Component {
             cssNotification: "",
             iconNotification: "",
             DataSource: this.props.DataSource ? this.props.DataSource : [],
-            DataSource: this.props.DataSource ? this.props.DataSource : [],
             CoordinatorGroupID: this.props.CoordinatorGroupID,
             IsInsert: true,
             ModalColumnList_Insert: ModalColumnList_Insert,
@@ -203,7 +202,7 @@ class CoordinatorGroup_MemberCom extends React.Component {
         }
 
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: 'Thêm trưởng nhóm thuộc nhóm điều phối',
+            title: 'Thêm trưởng nhóm thuộc nhóm chi nhánh quản lý',
             content: {
                 text: <CoordinatorUser
                     //ReviewLevelOptions={reviewLevelOption}
@@ -244,7 +243,7 @@ class CoordinatorGroup_MemberCom extends React.Component {
         //console.log("_DataSource", _DataSource)
 
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: 'Cập nhật trưởng nhóm thuộc nhóm điều phối',
+            title: 'Cập nhật trưởng nhóm thuộc nhóm chi nhánh quản lý',
             content: {
                 text: <CoordinatorUser
                     //ReviewLevelOptions={reviewLevelOption}
@@ -399,14 +398,14 @@ class CoordinatorGroup_MemberCom extends React.Component {
                     IsAutoPaging={false}
                     //RowsPerPage={10}
                     IsCustomAddLink={true}
-                    headingTitle={"Trưởng nhóm thuộc nhóm điều phối"}
+                    headingTitle={"Trưởng nhóm thuộc nhóm chi nhánh quản lý"}
 
                     IsImportFile={true}
                     SchemaData={schema}
                     onImportFile={this.handleImportFile.bind(this)}
                     isExportFileTemplate={true}
                     DataTemplateExport={this.state.DataTemplateExport}
-                    fileNameTemplate={"Danh sách trưởng nhóm thuộc nhóm điều phối"}
+                    fileNameTemplate={"Danh sách trưởng nhóm thuộc nhóm chi nhánh quản lý"}
                     onExportFileTemplate={this.handleExportFileTemplate.bind(this)}
                 />
             </div>

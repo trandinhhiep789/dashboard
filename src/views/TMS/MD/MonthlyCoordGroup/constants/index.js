@@ -1,17 +1,17 @@
 import { ERPCOMMONCACHE_AREATT } from "../../../../../constants/keyCache";
 
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "api/CoordinatorGroup/Search";
-export const LoadAPIPath = "api/CoordinatorGroup/Load";
-export const AddAPIPath = "api/CoordinatorGroup/Add";
-export const UpdateAPIPath = "api/CoordinatorGroup/Update";
-export const DeleteAPIPath = "api/CoordinatorGroup/Delete";
-export const UpdateOrderAPIPath = "api/CoordinatorGroup/UpdateOrder";
-export const BackLink = "/CoordinatorGroup";
-export const AddLink = "/CoordinatorGroup/Add";
+export const SearchAPIPath = "api/MonthlyCoordGroup/Search";
+export const LoadAPIPath = "api/MonthlyCoordGroup/Load";
+export const AddAPIPath = "api/MonthlyCoordGroup/Add";
+export const UpdateAPIPath = "api/MonthlyCoordGroup/Update";
+export const DeleteAPIPath = "api/MonthlyCoordGroup/Delete";
+export const UpdateOrderAPIPath = "api/MonthlyCoordGroup/UpdateOrder";
+export const BackLink = "/MonthlyCoordGroup";
+export const AddLink = "/MonthlyCoordGroup/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";
 export const IDSelectColumnName = "chkSelect";
-export const PKColumnName = "CoordinatorGroupID";
+export const PKColumnName = "MonthlyCoordGroupID";
 export const InitSearchParams = [
     { SearchKey: "@Keyword", SearchValue: "" },
     { SearchKey: "@AreaID", SearchValue: -1 }
@@ -19,25 +19,25 @@ export const InitSearchParams = [
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Nhóm chi nhánh quản lý" }
+    { Link: "", Title: "Nhóm chi nhánh quản lý theo tháng" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/CoordinatorGroup", Title: "Nhóm chi nhánh quản lý" },
+    { Link: "/MonthlyCoordGroup", Title: "Nhóm chi nhánh quản lý theo tháng" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/CoordinatorGroup", Title: "Nhóm chi nhánh quản lý" },
+    { Link: "/MonthlyCoordGroup", Title: "Nhóm chi nhánh quản lý theo tháng" },
     { Link: "", Title: "Thêm" }
 ];
 
 export const DetailPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/CoordinatorGroup", Title: "Nhóm chi nhánh quản lý" },
-    { Link: "", Title: "Chi tiết nhóm chi nhánh quản lý" }
+    { Link: "/MonthlyCoordGroup", Title: "Nhóm chi nhánh quản lý theo tháng" },
+    { Link: "", Title: "Chi tiết nhóm chi nhánh quản lý theo tháng" }
 ];
 
 export const SearchElementList = [
@@ -72,27 +72,27 @@ export const SearchElementList = [
 export const AddElementList = [
     // {
     //     type: "text",
-    //     name: "txtCoordinatorGroupID",
-    //     label: "mã nhóm chi nhánh quản lý",
+    //     name: "txtMonthlyCoordGroupID",
+    //     label: "mã nhóm điều phối",
     //     value: "",
     //     maxSize: "9",
     //     placeholder: "",
     //     icon: "",
     //     listoption: {},
-    //     DataSourceMember: "CoordinatorGroupID",
+    //     DataSourceMember: "MonthlyCoordGroupID",
     //     readonly: false,
     //     validatonList: ["required", "number"]
     // },
     {
         type: "text",
-        name: "txtCoordinatorGroupName",
-        label: "tên nhóm chi nhánh quản lý",
+        name: "txtMonthlyCoordGroupName",
+        label: "tên nhóm điều phối",
         value: "",
         maxSize: "200",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "CoordinatorGroupName",
+        DataSourceMember: "MonthlyCoordGroupName",
         readonly: false,
         validatonList: ["required"],
     },
@@ -166,27 +166,27 @@ export const AddElementList = [
 export const EditElementList = [
     {
         type: "text",
-        name: "txtCoordinatorGroupID",
-        label: "mã nhóm chi nhánh quản lý",
+        name: "txtMonthlyCoordGroupID",
+        label: "mã nhóm điều phối",
         value: "",
         maxSize: "9",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "CoordinatorGroupID",
+        DataSourceMember: "MonthlyCoordGroupID",
         readonly: true,
         validatonList: ["required", "number"]
     },
     {
         type: "text",
-        name: "txtCoordinatorGroupName",
-        label: "tên nhóm chi nhánh quản lý",
+        name: "txtMonthlyCoordGroupName",
+        label: "tên nhóm điều phối",
         value: "",
         maxSize: "200",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "CoordinatorGroupName",
+        DataSourceMember: "MonthlyCoordGroupName",
         readonly: false,
         validatonList: ["required"],
     },
@@ -275,16 +275,16 @@ export const SearchMLObjectDefinition = [
 
 export const MLObjectDefinition = [
     {
-        Name: "CoordinatorGroupID",
+        Name: "MonthlyCoordGroupID",
         DefaultValue: "",
-        BindControlName: "txtCoordinatorGroupID",
-        DataSourceMember: "CoordinatorGroupID"
+        BindControlName: "txtMonthlyCoordGroupID",
+        DataSourceMember: "MonthlyCoordGroupID"
     },
     {
-        Name: "CoordinatorGroupName",
+        Name: "MonthlyCoordGroupName",
         DefaultValue: "",
-        BindControlName: "txtCoordinatorGroupName",
-        DataSourceMember: "CoordinatorGroupName"
+        BindControlName: "txtMonthlyCoordGroupName",
+        DataSourceMember: "MonthlyCoordGroupName"
     },
     {
         Name: "AreaID",
@@ -347,23 +347,30 @@ export const DataGridColumnList = [
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "CoordinatorGroupID",
+        DataSourceMember: "MonthlyCoordGroupID",
         Width: 60
+    },
+    {
+        Name: "MonthlyCoordGroupID",
+        Type: "texttolink",
+        Link: "/MonthlyCoordGroup/Detail/",
+        Caption: "Mã nhóm chi nhánh quản lý theo tháng",
+        DataSourceMember: "MonthlyCoordGroupID",
+        Width: 180
     },
     {
         Name: "CoordinatorGroupID",
         Type: "text",
         Caption: "Mã nhóm chi nhánh quản lý",
         DataSourceMember: "CoordinatorGroupID",
-        Width: 200
+        Width: 180
     },
     {
         Name: "CoordinatorGroupName",
-        Type: "texttolink",
-        Link: "/CoordinatorGroup/Detail/",
+        Type: "text",
         Caption: "Tên nhóm chi nhánh quản lý",
         DataSourceMember: "CoordinatorGroupName",
-        Width: 300
+        Width: 250
     },
     {
         Name: "AreaName",
@@ -400,13 +407,13 @@ export const DataGridColumnList = [
         DataSourceMember: "UpdatedUserFullName",
         Width: 140
     },
-    {
-        Name: "Action",
-        Type: "link",
-        Caption: "Tác vụ",
-        DataSourceMember: "CoordinatorGroupID",
-        Width: 100,
-        Link: "/CoordinatorGroup/Edit/",
-        LinkText: "Chỉnh sửa"
-    }
+    // {
+    //     Name: "Action",
+    //     Type: "link",
+    //     Caption: "Tác vụ",
+    //     DataSourceMember: "MonthlyCoordGroupID",
+    //     Width: 100,
+    //     Link: "/MonthlyCoordGroup/Edit/",
+    //     LinkText: "Chỉnh sửa"
+    // }
 ];

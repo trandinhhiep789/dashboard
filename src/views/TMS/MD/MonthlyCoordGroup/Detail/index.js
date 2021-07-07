@@ -19,9 +19,9 @@ import { formatDate } from "../../../../../common/library/CommonLib";
 import DestroyRequestType_Product from "../../DestroyRequestType_Product";
 import DestroyRequestType_ReviewLevel from "../../DestroyRequestType_ReviewLevel";
 import DestroyRequestType_ReviewLevel_User from "../../DestroyRequestType_ReviewLevel_User";
-import CoordinatorGroup_Member from "../../CoordinatorGroup_Member";
-import CoordinatorGroup_DUser from "../../CoordinatorGroup_DUser";
-import CoordinatorGroup_Store from "../../CoordinatorGroup_Store";
+import MonthlyCoordGroup_Member from "../../MonthlyCoordGroup_Member";
+import MonthlyCoordGroup_DUser from "../../MonthlyCoordGroup_DUser";
+
 
 
 class DetailCom extends React.Component {
@@ -94,7 +94,7 @@ class DetailCom extends React.Component {
                     <div className="col-md-12 col-sm-12 col-xs-12">
                         <div className="x_panel">
                             <div className="x_title">
-                                <h2>Thông tin nhóm chi nhánh quản lý</h2>
+                                <h2>Thông tin nhóm chi nhánh quản lý theo tháng</h2>
                                 <div className="clearfix"></div>
                             </div>
 
@@ -102,13 +102,13 @@ class DetailCom extends React.Component {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Mã nhóm chi nhánh quản lý: </span>
+                                            <span>Mã nhóm chi nhánh quản lý theo tháng: </span>
                                             <span className="xcode">{this.state.DataSource.CoordinatorGroupID}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Tên nhóm chi nhánh quản lý: </span>
+                                            <span>Tên nhóm chi nhánh quản lý theo tháng: </span>
                                             <span>{this.state.DataSource.CoordinatorGroupName}</span>
                                         </div>
                                     </div>
@@ -135,6 +135,7 @@ class DetailCom extends React.Component {
                                         </div>
                                     </div>
                                 </div>
+
 
                                 <div className="row">
                                     <div className="col-md-6">
@@ -173,23 +174,25 @@ class DetailCom extends React.Component {
                         </div>
                     </div>
 
-                    <CoordinatorGroup_Member
-                        CoordinatorGroupID={this.props.match.params.id}
-                        DataSource={this.state.DataSource.ListCoordinatorGroup_Member ? this.state.DataSource.ListCoordinatorGroup_Member : []}
+                    <MonthlyCoordGroup_Member
+                        MonthlyCoordGroupID={this.props.match.params.id}
+                        CoordinatorGroupID={this.state.DataSource.CoordinatorGroupID}
+                        DataSource={this.state.DataSource.ListMonthlyCoordGroup_Member ? this.state.DataSource.ListMonthlyCoordGroup_Member : []}
                         onComponentChange={this.onComponentChange}
                     />
 
-                    <CoordinatorGroup_DUser
-                        CoordinatorGroupID={this.props.match.params.id}
-                        DataSource={this.state.DataSource.ListCoordinatorGroup_DUser ? this.state.DataSource.ListCoordinatorGroup_DUser : []}
+                    <MonthlyCoordGroup_DUser
+                        MonthlyCoordGroupID={this.props.match.params.id}
+                        CoordinatorGroupID={this.state.DataSource.CoordinatorGroupID}
+                        DataSource={this.state.DataSource.ListMonthlyCoordGroup_DUser ? this.state.DataSource.ListMonthlyCoordGroup_DUser : []}
                         onComponentChange={this.onComponentChange}
                     />
 
-                    <CoordinatorGroup_Store
+                    {/* <CoordinatorGroup_Store
                         CoordinatorGroupID={this.props.match.params.id}
                         DataSource={this.state.DataSource.ListCoordinatorGroup_Store ? this.state.DataSource.ListCoordinatorGroup_Store : []}
                         onComponentChange={this.onComponentChange}
-                    />
+                    /> */}
                 </React.Fragment >
             );
         }

@@ -1,10 +1,10 @@
 export const APIHostName = "TMSAPI";
-export const AddAPIPath = "api/CoordinatorGroup_Member/Add";
-export const UpdateAPIPath = "api/CoordinatorGroup_Member/Update";
-export const DeleteAPIPath = "api/CoordinatorGroup_Member/Delete";
-export const GetUserAPIPath = "api/CoordinatorGroup_Member/GetUserByStoreID";
+export const AddAPIPath = "api/MonthlyCoordGroup_Member/Add";
+export const UpdateAPIPath = "api/MonthlyCoordGroup_Member/Update";
+export const DeleteAPIPath = "api/MonthlyCoordGroup_Member/Delete";
+export const GetUserAPIPath = "api/MonthlyCoordGroup_Member/GetUserByStoreID";
 export const BackLink = "/CoordinatorGroup";
-export const AddByFileAPIPath ="api/CoordinatorGroup_Member/AddByFile";
+export const AddByFileAPIPath ="api/MonthlyCoordGroup_Member/AddByFile";
 
 export const ModalColumnList_Insert = [
     {
@@ -72,7 +72,7 @@ export const DataGridColumnList = [
         Name: "chkSelectUserName",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "UserName",
+        DataSourceMember: "MonthlyCoordGroupID,UserName",
         Width: 60
     },
     {
@@ -128,6 +128,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "CSID",
         DataSourceMember: "CSID"
+    },
+    {
+        Name: "MonthlyCoordGroupID",
+        DefaultValue: "",
+        BindControlName: "MonthlyCoordGroupID",
+        DataSourceMember: "MonthlyCoordGroupID"
     },
     {
         Name: "CoordinatorGroupID",

@@ -1,10 +1,10 @@
 export const APIHostName = "TMSAPI";
-export const AddAPIPath = "api/CoordinatorGroup_Member/Add";
-export const UpdateAPIPath = "api/CoordinatorGroup_Member/Update";
-export const DeleteAPIPath = "api/CoordinatorGroup_Member/Delete";
-export const GetUserAPIPath = "api/CoordinatorGroup_Member/GetUserByStoreID";
+export const AddAPIPath = "api/MonthlyCoordGroup_DUser/Add";
+export const UpdateAPIPath = "api/MonthlyCoordGroup_DUser/Update";
+export const DeleteAPIPath = "api/MonthlyCoordGroup_DUser/Delete";
+export const GetUserAPIPath = "api/MonthlyCoordGroup_DUser/GetUserByStoreID";
 export const BackLink = "/CoordinatorGroup";
-export const AddByFileAPIPath ="api/CoordinatorGroup_Member/AddByFile";
+export const AddByFileAPIPath ="api/MonthlyCoordGroup_DUser/AddByFile";
 
 export const ModalColumnList_Insert = [
     {
@@ -72,20 +72,20 @@ export const DataGridColumnList = [
         Name: "chkSelectUserName",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "UserName",
+        DataSourceMember: "MonthlyCoordGroupID,UserName",
         Width: 60
     },
     {
         Name: "UserName",
         Type: "text",
-        Caption: "Mã trưởng nhóm",
+        Caption: "Mã nhân viên giao hàng",
         DataSourceMember: "UserName",
         Width: 150
     },
     {
         Name: "FullName",
         Type: "text",
-        Caption: "Tên trưởng nhóm",
+        Caption: "Tên nhân viên giao hàng",
         DataSourceMember: "FullName",
         Width: 150
     },
@@ -130,6 +130,12 @@ export const MLObjectDefinition = [
         DataSourceMember: "CSID"
     },
     {
+        Name: "MonthlyCoordGroupID",
+        DefaultValue: "",
+        BindControlName: "MonthlyCoordGroupID",
+        DataSourceMember: "MonthlyCoordGroupID"
+    },
+    {
         Name: "CoordinatorGroupID",
         DefaultValue: "",
         BindControlName: "CoordinatorGroupID",
@@ -168,8 +174,9 @@ export const MLObjectDefinition = [
 ];
 
 
+
 export const schema = {
-    'Mã trưởng nhóm': {
+    'Mã nhân viên giao hàng': {
         prop: 'UserName',
         type: String,
         required: true
@@ -178,6 +185,6 @@ export const schema = {
 
 export const DataTemplateExport = [
     {
-        "Mã trưởng nhóm": '98138'
+        "Mã nhân viên giao hàng": '98138'
     }
 ];

@@ -462,8 +462,15 @@ const AppMenu = [
                     },
                     {
                         MenuName: 'CoordinatorGroup',
-                        MenuTitle: 'Nhóm điều phối',
+                        MenuTitle: 'Nhóm chi nhánh quản lý',
                         LinkTo: '/CoordinatorGroup',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'MonthlyCoordGroup',
+                        MenuTitle: 'Nhóm chi nhánh quản lý theo tháng',
+                        LinkTo: '/MonthlyCoordGroup',
                         MenuIcon: '',
                         SubMenu: []
                     },

@@ -158,7 +158,7 @@ class SearchCom extends React.Component {
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
-                        FormName="Tìm kiếm danh sách nhóm chi nhánh quản lý"
+                        FormName="Tìm kiếm danh sách nhóm điều phối"
                         MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
@@ -178,6 +178,8 @@ class SearchCom extends React.Component {
                         ref={this.gridref}
                         RequirePermission={COORDINATORGROUP_VIEW}
                         DeletePermission={COORDINATORGROUP_DELETE}
+                        IsShowButtonAdd={false}
+                        IsShowButtonDelete={false}
                         IsAutoPaging={true}
                         RowsPerPage={20}
                     />
