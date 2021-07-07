@@ -9,7 +9,7 @@ import { showModal, hideModal } from '../../../../actions/modal';
 import { GetMLObjectData } from "../../../../common/library/form/FormLib";
 import Collapsible from 'react-collapsible';
 import {
-    AddAPIPath, UpdateAPIPath, DeleteAPIPath, APIHostName, AddByFileAPIPath,
+    AddAPIPath, UpdateAPIPath, DeleteAPIPath, APIHostName, AddByFileAPIPath, 
     ModalColumnList_Insert, ModalColumnList_Edit, DataGridColumnList, MLObjectDefinition, schema, DataTemplateExport
 } from "./constants";
 import ReactNotification from "react-notifications-component";
@@ -20,7 +20,7 @@ import { callGetCache, callClearLocalCache, callGetUserCache } from "../../../..
 import { GET_CACHE_USER_FUNCTION_LIST, DESTROYREQUESTTYPE_ADD, DESTROYREQUESTTYPE_DELETE, DESTROYREQUESTTYPE_UPDATE, COORDINATORGROUP_ADD, COORDINATORGROUP_UPDATE, COORDINATORGROUP_DELETE } from "../../../../constants/functionLists";
 import CoordinatorUser from "./Components/CoordinatorUser";
 
-class CoordinatorGroup_DUserCom extends React.Component {
+class CoordinatorGroup_MemberCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
@@ -35,6 +35,7 @@ class CoordinatorGroup_DUserCom extends React.Component {
             cssNotification: "",
             iconNotification: "",
             DataSource: this.props.DataSource ? this.props.DataSource : [],
+            MonthlyCoordGroupID: this.props.MonthlyCoordGroupID,
             CoordinatorGroupID: this.props.CoordinatorGroupID,
             IsInsert: true,
             ModalColumnList_Insert: ModalColumnList_Insert,
@@ -202,10 +203,11 @@ class CoordinatorGroup_DUserCom extends React.Component {
         }
 
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: 'Thêm trưởng nhóm thuộc nhóm điều phối',
+            title: 'Thêm trưởng nhóm thuộc nhóm chi nhánh quản lý theo tháng',
             content: {
                 text: <CoordinatorUser
                     //ReviewLevelOptions={reviewLevelOption}
+                    MonthlyCoordGroupID={this.props.MonthlyCoordGroupID}
                     CoordinatorGroupID={this.props.CoordinatorGroupID}
                     onComponentChange={this.props.onComponentChange}
                     onComplete={this.onComplete.bind(this)}
@@ -243,7 +245,7 @@ class CoordinatorGroup_DUserCom extends React.Component {
         //console.log("_DataSource", _DataSource)
 
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: 'Cập nhật trưởng nhóm thuộc nhóm điều phối',
+            title: 'Cập nhật trưởng nhóm thuộc nhóm chi nhánh quản lý theo tháng',
             content: {
                 text: <CoordinatorUser
                     //ReviewLevelOptions={reviewLevelOption}
@@ -308,7 +310,7 @@ class CoordinatorGroup_DUserCom extends React.Component {
         });
 
 
-        //console.log("listMLObject", listMLObject);
+        console.log("listMLObject", listMLObject);
 
         this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
             if (!apiResult.IsError) {
@@ -323,6 +325,7 @@ class CoordinatorGroup_DUserCom extends React.Component {
 
     }
 
+
     handleExportFileTemplate(result) {
         this.addNotification(result.Message, result.IsError);
     }
@@ -331,11 +334,13 @@ class CoordinatorGroup_DUserCom extends React.Component {
 
         const CreatedUser = this.props.AppInfo.LoginInfo.Username;
         const LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        const MonthlyCoordGroupID = this.props.MonthlyCoordGroupID;
         const CoordinatorGroupID = this.props.CoordinatorGroupID;
         const importData = resultRows.map(item => {
             const { UserName, IsSystem } = item
             return {
                 ...item,
+                MonthlyCoordGroupID,
                 CoordinatorGroupID,
                 CreatedUser,
                 LoginLogID
@@ -390,21 +395,21 @@ class CoordinatorGroup_DUserCom extends React.Component {
                     modalElementList={ModalColumnList_Insert}
                     MLObjectDefinition={MLObjectDefinition}
                     IDSelectColumnName={"chkSelectUserName"}
-                    PKColumnName={"UserName"}
+                    PKColumnName={"MonthlyCoordGroupID,UserName"}
                     onDeleteClick={this.handleDelete}
                     onInsertClick={this.handleInsert}
                     onInsertClickEdit={this.handleEdit}
                     IsAutoPaging={false}
                     //RowsPerPage={10}
                     IsCustomAddLink={true}
-                    headingTitle={"Nhân viên giao hàng thuộc 1 nhóm chi nhánh quản lý"}
+                    headingTitle={"Trưởng nhóm thuộc nhóm chi nhánh quản lý theo tháng"}
 
                     IsImportFile={true}
                     SchemaData={schema}
                     onImportFile={this.handleImportFile.bind(this)}
                     isExportFileTemplate={true}
                     DataTemplateExport={this.state.DataTemplateExport}
-                    fileNameTemplate={"Danh sách nhân viên giao hàng thuộc 1 nhóm chi nhánh quản lý"}
+                    fileNameTemplate={"Danh sách trưởng nhóm thuộc nhóm chi nhánh quản lý theo tháng"}
                     onExportFileTemplate={this.handleExportFileTemplate.bind(this)}
                 />
             </div>
@@ -449,5 +454,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const CoordinatorGroup_DUser = connect(mapStateToProps, mapDispatchToProps)(CoordinatorGroup_DUserCom);
-export default CoordinatorGroup_DUser;
+const CoordinatorGroup_Member = connect(mapStateToProps, mapDispatchToProps)(CoordinatorGroup_MemberCom);
+export default CoordinatorGroup_Member;

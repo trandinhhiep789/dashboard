@@ -441,7 +441,7 @@ class CoordinatorGroup_StoreCom extends React.Component {
                     IsAutoPaging={false}
                     //RowsPerPage={10}
                     IsCustomAddLink={true}
-                    headingTitle={"Kho gửi của nhóm điều phối"}
+                    headingTitle={"Kho gửi của nhóm chi nhánh quản lý"}
 
                 // IsImportFile={true}
                 // SchemaData={schema}

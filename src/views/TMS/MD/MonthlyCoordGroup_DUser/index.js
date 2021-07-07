@@ -35,6 +35,7 @@ class CoordinatorGroup_DUserCom extends React.Component {
             cssNotification: "",
             iconNotification: "",
             DataSource: this.props.DataSource ? this.props.DataSource : [],
+            MonthlyCoordGroupID: this.props.MonthlyCoordGroupID,
             CoordinatorGroupID: this.props.CoordinatorGroupID,
             IsInsert: true,
             ModalColumnList_Insert: ModalColumnList_Insert,
@@ -202,10 +203,11 @@ class CoordinatorGroup_DUserCom extends React.Component {
         }
 
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: 'Thêm trưởng nhóm thuộc nhóm điều phối',
+            title: 'Thêm trưởng nhóm thuộc nhóm chi nhánh quản lý theo tháng',
             content: {
                 text: <CoordinatorUser
                     //ReviewLevelOptions={reviewLevelOption}
+                    MonthlyCoordGroupID={this.props.MonthlyCoordGroupID}
                     CoordinatorGroupID={this.props.CoordinatorGroupID}
                     onComponentChange={this.props.onComponentChange}
                     onComplete={this.onComplete.bind(this)}
@@ -243,7 +245,7 @@ class CoordinatorGroup_DUserCom extends React.Component {
         //console.log("_DataSource", _DataSource)
 
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: 'Cập nhật trưởng nhóm thuộc nhóm điều phối',
+            title: 'Cập nhật trưởng nhóm thuộc nhóm chi nhánh quản lý theo tháng',
             content: {
                 text: <CoordinatorUser
                     //ReviewLevelOptions={reviewLevelOption}
@@ -331,11 +333,13 @@ class CoordinatorGroup_DUserCom extends React.Component {
 
         const CreatedUser = this.props.AppInfo.LoginInfo.Username;
         const LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        const MonthlyCoordGroupID = this.props.MonthlyCoordGroupID;
         const CoordinatorGroupID = this.props.CoordinatorGroupID;
         const importData = resultRows.map(item => {
             const { UserName, IsSystem } = item
             return {
                 ...item,
+                MonthlyCoordGroupID,
                 CoordinatorGroupID,
                 CreatedUser,
                 LoginLogID
@@ -390,21 +394,21 @@ class CoordinatorGroup_DUserCom extends React.Component {
                     modalElementList={ModalColumnList_Insert}
                     MLObjectDefinition={MLObjectDefinition}
                     IDSelectColumnName={"chkSelectUserName"}
-                    PKColumnName={"UserName"}
+                    PKColumnName={"MonthlyCoordGroupID,UserName"}
                     onDeleteClick={this.handleDelete}
                     onInsertClick={this.handleInsert}
                     onInsertClickEdit={this.handleEdit}
                     IsAutoPaging={false}
                     //RowsPerPage={10}
                     IsCustomAddLink={true}
-                    headingTitle={"Nhân viên giao hàng thuộc 1 nhóm chi nhánh quản lý"}
+                    headingTitle={"Nhân viên giao hàng thuộc nhóm chi nhánh quản lý theo tháng"}
 
                     IsImportFile={true}
                     SchemaData={schema}
                     onImportFile={this.handleImportFile.bind(this)}
                     isExportFileTemplate={true}
                     DataTemplateExport={this.state.DataTemplateExport}
-                    fileNameTemplate={"Danh sách nhân viên giao hàng thuộc 1 nhóm chi nhánh quản lý"}
+                    fileNameTemplate={"Danh sách nhân viên giao hàng thuộc nhóm chi nhánh quản lý theo tháng"}
                     onExportFileTemplate={this.handleExportFileTemplate.bind(this)}
                 />
             </div>
