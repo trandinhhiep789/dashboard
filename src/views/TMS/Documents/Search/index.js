@@ -62,7 +62,7 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(PagePath);
         this.callSearchData(this.state.SearchData);
-        // this.callSearchDataMobi();
+         //this.callSearchDataMobi();
     }
 
 
@@ -75,10 +75,10 @@ class SearchCom extends React.Component {
         // this.props.callFetchAPI(APIHostName, "api/Document/SearchMobi", params).then(apiResult => {
         //     console.log("callSearchDataMobi", params, apiResult)
         // });
-        // const intDocumentID = 6;
-        // this.props.callFetchAPI(APIHostName, "api/Document/LoadMobi", intDocumentID).then(apiResult => {
-        //     console.log("LoadMobi", params, apiResult)
-        // });
+      const intDocumentID = 34;
+        this.props.callFetchAPI(APIHostName, "api/Document/LoadMobi", intDocumentID).then(apiResult => {
+            console.log("LoadMobi", params, apiResult)
+        });  
 
         // const paramsComment = {
         //     DocumentID: 7,
@@ -89,8 +89,8 @@ class SearchCom extends React.Component {
         // });
 
         // const paramsLike = {
-        //     DocumentID: 6,
-        //     IsLike: true
+        //     DocumentID: 35,
+        //     IsLike: false
         // }
         // this.props.callFetchAPI(APIHostName, "api/Document_Like/AddLike", paramsLike).then(apiResult => {
         //     console.log("paramsComment", paramsLike, apiResult)
@@ -107,6 +107,7 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            console.log("aa",apiResult )
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -114,7 +115,7 @@ class SearchCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
-                this.callSearchDataMobi();
+                // this.callSearchDataMobi();
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,

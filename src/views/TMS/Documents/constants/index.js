@@ -349,6 +349,13 @@ export const listColumnDocument_LikeList = [
         DataSourceMember: "LikedFullName"
     },
     {
+        Name: "IsLike",
+        Type: "checkicon",
+        Caption: "Thích",
+        DataSourceMember: "IsLike",
+        Width: 200
+    },
+    {
         Name: "LikedDate",
         Type: "datetime",
         Caption: "Ngày like",

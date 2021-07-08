@@ -66,7 +66,6 @@ class Document_LikeListCom extends React.Component {
 
     render() {
         const { propsDocument_LikeList } = this.props;
-
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -75,7 +74,7 @@ class Document_LikeListCom extends React.Component {
                     headingTitle="Danh sách người thích"
                     listColumn={listColumnDocument_LikeList}
                     dataSource={propsDocument_LikeList}
-                    PKColumnName={"CommentID"}
+                    PKColumnName={"LikeID"}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
                     IsExportFile={false}
