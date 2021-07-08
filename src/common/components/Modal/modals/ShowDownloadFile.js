@@ -205,15 +205,15 @@ class ShowDownloadFileCom extends React.Component {
                                                                 {(item.IsExported == true && item.IsExportedError == false) ?
                                                                     <React.Fragment>
                                                                         {(showbuttonDownload == true) ?
-                                                                            <Link
+                                                                            <a
                                                                                 target="_blank"
                                                                                 className="btn-download-file"
-                                                                                to={item.ExportedFileURL}
+                                                                                href={item.ExportedFileURL}
                                                                                 data-url={item.ExportedFileURL}
                                                                                 download
                                                                             >
                                                                                 <img className="item" src="/src/img/icon/icon-down.gif" alt="download file icon" />
-                                                                            </Link>
+                                                                            </a>
                                                                             : <label>Hết hạn</label>
                                                                         }
                                                                     </React.Fragment>
