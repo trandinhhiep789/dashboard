@@ -92,7 +92,7 @@ class FileAttachmentCom extends Component {
                                                 <h3 htmlFor={"files_" +this.props.name}>Thêm file</h3>
                                             </div>
                                             <ReactTooltip id="btnAttachmentID" type='warning'>
-                                                <span>Bạn không file được.</span>
+                                                <span>Bạn không thêm được file.</span>
                                             </ReactTooltip>
                                         </React.Fragment>
 
