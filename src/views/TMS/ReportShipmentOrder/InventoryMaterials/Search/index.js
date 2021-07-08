@@ -27,7 +27,7 @@ import { SHIPMENTORDER_REPORT_EXPORT, SHIPMENTORDER_REPORT_VIEW } from "../../..
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../../constants/keyCache";
-import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_DOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
+import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_DOWNLOAD_EXCEL, MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
 import ModalBox from "../components/ModalBox";
 // import ModalDownloadFile from "../components/ModalDownloadFile";
 
@@ -49,6 +49,7 @@ class SearchCom extends React.Component {
             Month: "",
             MLObject: {},
             ConfigValueMTReturn: "",
+            exportTemplateID: ""
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -97,7 +98,12 @@ class SearchCom extends React.Component {
                         ConfigValueMTReturn: _configValue1[0].TMSConfigValue
                     })
                 }
-
+                let _configValueTemplateID = result.ResultObject.CacheData.filter(x => x.TMSConfigID == "TEMPLATE_EXPORT_INVENTORYMATERIAL");
+                if (_configValueTemplateID) {
+                    this.setState({
+                        exportTemplateID: _configValueTemplateID[0].TMSConfigValue
+                    })
+                }
 
             }
 
@@ -540,15 +546,57 @@ class SearchCom extends React.Component {
     }
 
     handleExportFileFormSearch(FormData, MLObject) {
+        const { exportTemplateID } = this.state;
         const objData = {
-            UserName: MLObject.UserName == -1 ? "" : MLObject.UserName.value,
-            Month: MLObject.Month
+            UserName: (MLObject.UserName == -1 || MLObject.UserName == null) ? "" : MLObject.UserName.value,
+            Month: MLObject.Month,
+            AreaID: MLObject.AreaID
 
         }
 
-        this.props.callFetchAPI(APIHostName, "api/BeginTermAdvanceDebt/LoadInStockExport", objData).then(apiResult => {
+        const userName = (MLObject.UserName == -1 || MLObject.UserName == null) ? "" : MLObject.UserName.value;
+
+
+        const postData = [
+            {
+                SearchKey: "@USERNAME",
+                SearchValue: userName
+            },
+            {
+                SearchKey: "@MONTH",
+                SearchValue: MLObject.Month
+            },
+            {
+                SearchKey: "@AREAID",
+                SearchValue: MLObject.AreaID
+            },
+            {
+                SearchKey: "@PAGEINDEX",
+                SearchValue: -1
+            },
+            {
+                SearchKey: "@PAGESIZE",
+                SearchValue: -1
+            }
+        ];
+
+
+        const postDataNew = {
+            DataExportTemplateID: exportTemplateID,
+            LoadDataStoreName: 'TMS.RPT_TMS_ADVANCEREQUEST_INSTOCK',
+            KeyCached: "SHIPMENTORDER_REPORT_VIEW",
+            SearchParamList: postData,
+            ExportDataParamsDescription: "USERNAME: " + userName + " - MONTH: " + MLObject.Month + " - AREAID: " + MLObject.AreaID + " - PAGEINDEX: " + "-1" + " - PAGESIZE: " + "-1",
+        }
+
+        this.props.callFetchAPI(APIHostName, "api/DataExportQueue/AddQueueExport", postDataNew).then(apiResult => {
             if (!apiResult.IsError) {
-                this.onShowModalDownloadFile(apiResult.Message)
+                // console.log("aa", exportTemplateID, postDataNew, apiResult)
+                this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
+                    title: "Tải file",
+                    maxWidth: '1200px',
+                    ParamRequest: { DataExportTemplateID: exportTemplateID }
+                });
             }
             else {
                 this.showMessage(apiResult.Message)
@@ -568,7 +616,7 @@ class SearchCom extends React.Component {
                     onSubmit={this.handleSearchSubmit.bind(this)}
                     ref={this.searchref}
                     className="multiple"
-                    IsButtonExport={false}
+                    IsButtonExport={true}
                     onExportSubmit={this.handleExportFileFormSearch.bind(this)}
                 />
 
