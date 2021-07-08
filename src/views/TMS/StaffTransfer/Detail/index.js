@@ -38,7 +38,7 @@ class DetailCom extends React.Component {
         this.handleDeleteFile = this.handleDeleteFile.bind(this);
         this.handleCommentChange = this.handleCommentChange.bind(this);
         this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleTransferButton = this.handleTransferButton.bind(this);
     }
 
     componentDidMount() {
@@ -140,17 +140,33 @@ class DetailCom extends React.Component {
             }
         }, []);
 
-        const postData = {
+        let postData = {
             StaffTransferID: stateDataSource.StaffTransferID,
             StaffTransferTypeID: stateDataSource.StaffTransferTypeID,
             StaffTransferTypeID: stateDataSource.StaffTransferTypeID,
             UpdatedUser: this.props.AppInfo.LoginInfo.Username,
             CurrentReviewLevelID: data.ReviewLevelID,
-            IsReviewed: data.ReviewLevelID == ListStaffTransfer_ReviewList[ListStaffTransfer_ReviewList.length - 1].ReviewLevelID,
-            IsTransfered: (data.ReviewLevelID == ListStaffTransfer_ReviewList[ListStaffTransfer_ReviewList.length - 1].ReviewLevelID && data.ReviewStatus == 1) ? true : false,
             ReviewedDate: data.ReviewedDate,
             ReviewedUser: this.props.AppInfo.LoginInfo.Username,
             ListStaffTransfer_ReviewList: postListStaffTransfer_ReviewList
+        }
+
+        if (data.ReviewLevelID == ListStaffTransfer_ReviewList[ListStaffTransfer_ReviewList.length - 1].ReviewLevelID) {
+            postData = {
+                ...postData,
+                IsReviewed: true,
+                IsTransfered: true,
+                TransferedDate: new Date(),
+                TransferedUser: this.props.AppInfo.LoginInfo.Username
+            }
+        } else {
+            postData = {
+                ...postData,
+                IsReviewed: false,
+                IsTransfered: false,
+                TransferedDate: stateDataSource.TransferedDate,
+                TransferedUser: stateDataSource.TransferedUser
+            }
         }
 
         this.props.callFetchAPI(APIHostName, APIUpdateBrowse, postData).then((apiResult) => {
@@ -227,8 +243,35 @@ class DetailCom extends React.Component {
         }
     }
 
-    handleSubmit() {
+    handleTransferButton() {
+        const { stateDataSource } = this.state;
 
+        const postData = {
+            StaffTransferID: stateDataSource.StaffTransferID,
+            StaffTransferTypeID: stateDataSource.StaffTransferTypeID,
+            StaffTransferTypeID: stateDataSource.StaffTransferTypeID,
+            UpdatedUser: this.props.AppInfo.LoginInfo.Username,
+            CurrentReviewLevelID: stateDataSource.CurrentReviewLevelID,
+            IsReviewed: true,
+            IsTransfered: true,
+            TransferedDate: new Date(),
+            TransferedUser: this.props.AppInfo.LoginInfo.Username,
+            ReviewedDate: stateDataSource.ReviewedDate,
+            ReviewedUser: stateDataSource.ReviewedUser,
+            ListStaffTransfer_ReviewList: []
+        }
+
+        this.props.callFetchAPI(APIHostName, APIUpdateBrowse, postData).then((apiResult) => {
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.Message);
+            } else {
+                this.setState({
+                    stateDataSource: null
+                })
+                this.showMessage("Cập nhật thuyên chuyển thành công");
+                this.fetchStaffTransferDetail();
+            }
+        })
     }
 
     render() {
@@ -260,7 +303,8 @@ class DetailCom extends React.Component {
                                     </div>
                                     {
                                         !stateDataSource.IsAutoReview
-                                        && <div className="mb-4"><StaffTransfer_ReviewListCom /></div>
+                                            ? <div className="mb-4"><StaffTransfer_ReviewListCom /></div>
+                                            : <React.Fragment></React.Fragment>
                                     }
                                 </MyContext.Provider>
 
@@ -280,6 +324,14 @@ class DetailCom extends React.Component {
                             </div>
 
                             <div className="d-flex justify-content-end mr-4 mb-4">
+                                {
+                                    (stateDataSource.IsAutoReview && !stateDataSource.IsAutoTransfer)
+                                        ? <button className="btn btn-primary mr-3" type="button" onClick={this.handleTransferButton} disabled={stateDataSource.IsTransfered}>
+                                            Thuyên chuyển
+                                        </button>
+                                        : <React.Fragment></React.Fragment>
+                                }
+
                                 <Link to="/StaffTransfer">
                                     <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button>
                                 </Link>
