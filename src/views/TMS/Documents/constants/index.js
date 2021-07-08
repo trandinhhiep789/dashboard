@@ -314,12 +314,12 @@ export const listColumnDocument_CommentList = [
         Caption: "Nội dung",
         DataSourceMember: "Content"
     },
-    {
-        Name: "CommentedUser",
-        Type: "text",
-        Caption: "Mã nhân viên",
-        DataSourceMember: "CommentedUser"
-    },
+    // {
+    //     Name: "CommentedUser",
+    //     Type: "text",
+    //     Caption: "Mã nhân viên",
+    //     DataSourceMember: "CommentedUser"
+    // },
     {
         Name: "CommentedFullName",
         Type: "text",
@@ -336,12 +336,12 @@ export const listColumnDocument_CommentList = [
 
 
 export const listColumnDocument_LikeList = [
-    {
-        Name: "LikedUser",
-        Type: "text",
-        Caption: "Mã nhân viên",
-        DataSourceMember: "LikedUser"
-    },
+    // {
+    //     Name: "LikedUser",
+    //     Type: "text",
+    //     Caption: "Mã nhân viên",
+    //     DataSourceMember: "LikedUser"
+    // },
     {
         Name: "LikedFullName",
         Type: "text",
