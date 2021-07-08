@@ -280,7 +280,8 @@ class SearchCom extends React.Component {
         }
     }
 
-    onShowModal(data, typeDataGrid) {
+    onShowModal(data, typeDataGrid, userName) {
+        console.log("object", data, userName)
         const { widthPercent, MLObject, Month, ConfigValueMTReturn } = this.state;
         let dataExcel = [];
 
@@ -301,7 +302,7 @@ class SearchCom extends React.Component {
                     title: "Nhận trong kỳ",
                     content: {
                         text: <ModalBox
-                            UserName={(MLObject.UserName == -1 || MLObject.UserName == null) ? "" : MLObject.UserName.label}
+                            UserName={userName}
                             Month={Month}
                             listColumn={DataGridModalQuantityHanOverDone}
                             dataSource={data}
@@ -331,7 +332,7 @@ class SearchCom extends React.Component {
                     title: "Chờ bàn giao",
                     content: {
                         text: <ModalBox
-                            UserName={(MLObject.UserName == -1 || MLObject.UserName == null) ? "" : MLObject.UserName.label}
+                            UserName={userName}
                             Month={Month}
                             listColumn={DataGridModalQuantityHanOverDoing}
                             dataSource={data}
@@ -361,7 +362,7 @@ class SearchCom extends React.Component {
                     title: "Nhập trả",
                     content: {
                         text: <ModalBox
-                            UserName={(MLObject.UserName == -1 || MLObject.UserName == null) ? "" : MLObject.UserName.label}
+                            UserName={userName}
                             Month={Month}
                             listColumn={DataGridModalQuantityReturn}
                             dataSource={data}
@@ -391,7 +392,7 @@ class SearchCom extends React.Component {
                     title: "Sử dụng trong kỳ",
                     content: {
                         text: <ModalBox
-                            UserName={(MLObject.UserName == -1 || MLObject.UserName == null) ? "" : MLObject.UserName.label}
+                            UserName={userName}
                             Month={Month}
                             listColumn={DataGridModalChangeTotalQuantity}
                             dataSource={data}
@@ -420,7 +421,7 @@ class SearchCom extends React.Component {
                     title: "Tiêu hao khác",
                     content: {
                         text: <ModalBox
-                            UserName={(MLObject.UserName == -1 || MLObject.UserName == null) ? "" : MLObject.UserName.label}
+                            UserName={userName}
                             Month={Month}
                             listColumn={DataGridModalQuantityExpend}
                             dataSource={data}
@@ -458,7 +459,7 @@ class SearchCom extends React.Component {
             this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/LoadByHandOverMaterial", objData).then(apiResult => {
                 console.log("Nhận trong kỳ", objData, apiResult)
                 if (!apiResult.IsError) {
-                    this.onShowModal(apiResult.ResultObject, status);
+                    this.onShowModal(apiResult.ResultObject, status, rowItem.RequestUser);
                 }
                 else {
                     this.showMessage(apiResult.MessageDetail)
@@ -475,7 +476,7 @@ class SearchCom extends React.Component {
             }
             this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/LoadByHandOverMaterial", objData).then(apiResult => {
                 if (!apiResult.IsError) {
-                    this.onShowModal(apiResult.ResultObject, status);
+                    this.onShowModal(apiResult.ResultObject, status,rowItem.RequestUser);
                 }
                 else {
                     this.showMessage(apiResult.MessageDetail)
@@ -495,7 +496,7 @@ class SearchCom extends React.Component {
             this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/GetExchangeOrderByUser", objData).then(apiResult => {
                 console.log("Nhập trả", objData, apiResult)
                 if (!apiResult.IsError) {
-                    this.onShowModal(apiResult.ResultObject, status);
+                    this.onShowModal(apiResult.ResultObject, status, rowItem.RequestUser);
                 }
                 else {
                     this.showMessage(apiResult.MessageDetail)
@@ -510,7 +511,7 @@ class SearchCom extends React.Component {
             }
             this.props.callFetchAPI(APIHostName, "api/AdvanceDebtFlow/LoadAdvanceDebtFlowUsing", objData).then(apiResult => {
                 if (!apiResult.IsError) {
-                    this.onShowModal(apiResult.ResultObject, status);
+                    this.onShowModal(apiResult.ResultObject, status, rowItem.RequestUser);
                 }
                 else {
                     this.showMessage(apiResult.MessageDetail)
@@ -527,7 +528,7 @@ class SearchCom extends React.Component {
             this.props.callFetchAPI(APIHostName, "api/AdvanceDebtFlow/LoadQuantityExpend", objData).then(apiResult => {
                 console.log("Tiêu hao khác", objData, apiResult)
                 if (!apiResult.IsError) {
-                    this.onShowModal(apiResult.ResultObject, status);
+                    this.onShowModal(apiResult.ResultObject, status, rowItem.RequestUser);
                 }
                 else {
                     this.showMessage(apiResult.MessageDetail)

@@ -341,21 +341,21 @@ export const DataGridModalQuantityReturn = [
         Name: "SaleOrderID",
         Type: "text",
         Caption: "Yêu cầu xuất",
-        DataSourceMember: "SALEORDERID",
+        DataSourceMember: "SaleOrderID",
         Width: 100
     },
     {
         Name: "OutputVoucherID",
         Type: "text",
         Caption: "Mã phiếu xuất ",
-        DataSourceMember: "OUTPUTVOUCHERID",
+        DataSourceMember: "OutputVoucherID",
         Width: 100
     },
     {
         Name: "ExchangeOrderID",
         Type: "text",
         Caption: "Mã nhập trả",
-        DataSourceMember: "EXCHANGEORDERID",
+        DataSourceMember: "ExchangeOrderID",
         Width: 100
     },
     {
