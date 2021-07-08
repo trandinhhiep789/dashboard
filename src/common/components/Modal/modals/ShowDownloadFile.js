@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { hideModal } from '../../../../actions/modal';
 import { formatDate, formatMonthDate } from "../../../../common/library/CommonLib.js";
+import { Link } from "react-router-dom";
+
 const Overlay = styled.div`
   position: fixed;
   top: 0;
@@ -203,14 +205,15 @@ class ShowDownloadFileCom extends React.Component {
                                                                 {(item.IsExported == true && item.IsExportedError == false) ?
                                                                     <React.Fragment>
                                                                         {(showbuttonDownload == true) ?
-                                                                            <a
+                                                                            <Link
                                                                                 target="_blank"
                                                                                 className="btn-download-file"
-                                                                                href={item.ExportedFileURL}
+                                                                                to={item.ExportedFileURL}
                                                                                 data-url={item.ExportedFileURL}
+                                                                                download
                                                                             >
                                                                                 <img className="item" src="/src/img/icon/icon-down.gif" alt="download file icon" />
-                                                                            </a>
+                                                                            </Link>
                                                                             : <label>Hết hạn</label>
                                                                         }
                                                                     </React.Fragment>
