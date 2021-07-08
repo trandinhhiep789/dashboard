@@ -269,7 +269,7 @@ class DetailCom extends React.Component {
                     stateDataSource: null
                 })
                 this.showMessage("Cập nhật thuyên chuyển thành công");
-                this.fetchStaffTransferDetail();
+                this.props.history.push("/StaffTransfer");
             }
         })
     }
