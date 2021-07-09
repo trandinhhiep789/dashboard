@@ -176,8 +176,8 @@ class DetailCom extends React.Component {
 
                                 {
                                     IsPublished == false ?
-                                        <button className="btn btn-primary mr-3" type="button" onClick={() => this.handlePublish(0)}>Công bố</button>
-                                        : <button className="btn btn-primary mr-3" type="button" onClick={() => this.handlePublish(1)}>Không công bố</button>
+                                        <button className="btn btn-primary mr-3" type="button" onClick={() => this.handlePublish(0)}>Triển khai</button>
+                                        : <button className="btn btn-primary mr-3" type="button" onClick={() => this.handlePublish(1)}>Không triển khai</button>
                                 }
 
 
