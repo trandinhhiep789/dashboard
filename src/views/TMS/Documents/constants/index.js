@@ -103,7 +103,7 @@ export const DataGridColumnList = [
     },
     {
         Name: "PublishedDate",
-        Type: "date",
+        Type: "datetime",
         Caption: "Ngày xuất bản",
         DataSourceMember: "PublishedDate",
         Width: 100
@@ -131,7 +131,7 @@ export const DataGridColumnList = [
     },
     {
         Name: "ModifyDate",
-        Type: "date",
+        Type: "datetime",
         Caption: "Cập nhật lần cuối",
         DataSourceMember: "ModifyDate",
         Width: 100
