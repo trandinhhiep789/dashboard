@@ -198,8 +198,8 @@ class EditCom extends React.Component {
         switch (formData.cbDocumentTypeID.value) {
             case parseInt(keyUploadFile):
                 formData.txtFileURL.value = "";
-                formData.txtEditorFileContent1.value = "";
-                formData.txtEditorFileContent2.value = "";
+                // formData.txtEditorFileContent1.value = "";
+                // formData.txtEditorFileContent2.value = "";
                 break;
             case parseInt(keyUploadVideo):
                 this.setState({
@@ -217,8 +217,8 @@ class EditCom extends React.Component {
                 break;
             default:
                 formData.txtFileURL.value = "";
-                formData.txtEditorFileContent1.value = "";
-                formData.txtEditorFileContent2.value = "";
+                // formData.txtEditorFileContent1.value = "";
+                // formData.txtEditorFileContent2.value = "";
                 this.setState({
                     AttachmentList: [],
                     AttachmentListData: [],
@@ -407,8 +407,8 @@ class EditCom extends React.Component {
                             controltype="InputControl"
                             rows={8}
                             maxSize={3900}
-                            readOnly={(DocumentTypeID == parseInt(keyUploadVideo) || DocumentTypeID == parseInt(keyUploadLink)) ? false : true}
-                            disabled={(DocumentTypeID == parseInt(keyUploadVideo) || DocumentTypeID == parseInt(keyUploadLink)) ? false : true}
+                            // readOnly={(DocumentTypeID == parseInt(keyUploadVideo) || DocumentTypeID == parseInt(keyUploadLink)) ? false : true}
+                            // disabled={(DocumentTypeID == parseInt(keyUploadVideo) || DocumentTypeID == parseInt(keyUploadLink)) ? false : true}
                             classNameCustom="customcontrol"
                         />
                     </div>
@@ -425,8 +425,8 @@ class EditCom extends React.Component {
                             controltype="InputControl"
                             rows={8}
                             maxSize={3900}
-                            readOnly={(DocumentTypeID == parseInt(keyUploadVideo) || DocumentTypeID == parseInt(keyUploadLink)) ? false : true}
-                            disabled={(DocumentTypeID == parseInt(keyUploadVideo) || DocumentTypeID == parseInt(keyUploadLink)) ? false : true}
+                            // readOnly={(DocumentTypeID == parseInt(keyUploadVideo) || DocumentTypeID == parseInt(keyUploadLink)) ? false : true}
+                            // disabled={(DocumentTypeID == parseInt(keyUploadVideo) || DocumentTypeID == parseInt(keyUploadLink)) ? false : true}
                             classNameCustom="customcontrol"
                         />
                     </div>

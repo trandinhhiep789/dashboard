@@ -130,8 +130,8 @@ class AddCom extends React.Component {
         switch (formData.cbDocumentTypeID.value) {
             case parseInt(keyUploadFile):
                 formData.txtFileURL.value = "";
-                formData.txtEditorFileContent1.value = "";
-                formData.txtEditorFileContent2.value = "";
+                // formData.txtEditorFileContent1.value = "";
+                // formData.txtEditorFileContent2.value = "";
                 break;
             case parseInt(keyUploadVideo):
                 this.setState({
@@ -149,8 +149,8 @@ class AddCom extends React.Component {
                 break;
             default:
                 formData.txtFileURL.value = "";
-                formData.txtEditorFileContent1.value = "";
-                formData.txtEditorFileContent2.value = "";
+                // formData.txtEditorFileContent1.value = "";
+                // formData.txtEditorFileContent2.value = "";
                 this.setState({
                     AttachmentList: [],
                     AttachmentListData: [],
@@ -160,6 +160,17 @@ class AddCom extends React.Component {
         }
     }
 
+
+    checkIsValidAcceptedFile(filename) {
+        var _fileName = filename;
+        var idxDot = _fileName.lastIndexOf(".") + 1;
+        var extFile = _fileName.substr(idxDot, _fileName.length).toLowerCase();
+        if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     handleSelectFile(file, nameValue) {
         // console.log("file", file[0], file, nameValue)
@@ -358,8 +369,8 @@ class AddCom extends React.Component {
                             controltype="InputControl"
                             rows={8}
                             maxSize={3900}
-                            readOnly={(DocumentTypeID == parseInt(keyUploadVideo)  || DocumentTypeID == parseInt(keyUploadLink) ) ? false : true}
-                            disabled={(DocumentTypeID == parseInt(keyUploadVideo)  || DocumentTypeID == parseInt(keyUploadLink) ) ? false : true}
+                            // readOnly={(DocumentTypeID == parseInt(keyUploadVideo)  || DocumentTypeID == parseInt(keyUploadLink) ) ? false : true}
+                            // disabled={(DocumentTypeID == parseInt(keyUploadVideo)  || DocumentTypeID == parseInt(keyUploadLink) ) ? false : true}
                             classNameCustom="customcontrol"
                         />
                     </div>
@@ -376,8 +387,8 @@ class AddCom extends React.Component {
                             controltype="InputControl"
                             rows={8}
                             maxSize={3900}
-                            readOnly={(DocumentTypeID == parseInt(keyUploadVideo)  || DocumentTypeID == parseInt(keyUploadLink) ) ? false : true}
-                            disabled={(DocumentTypeID == parseInt(keyUploadVideo)  || DocumentTypeID == parseInt(keyUploadLink) ) ? false : true}
+                            // readOnly={(DocumentTypeID == parseInt(keyUploadVideo)  || DocumentTypeID == parseInt(keyUploadLink) ) ? false : true}
+                            // disabled={(DocumentTypeID == parseInt(keyUploadVideo)  || DocumentTypeID == parseInt(keyUploadLink) ) ? false : true}
                             classNameCustom="customcontrol"
                         />
                     </div>
@@ -481,7 +492,7 @@ class AddCom extends React.Component {
                             colspan={10}
                             labelcolspan={2}
                             classNameCustom="customCheckbox"
-                            value={true}
+                            value={false}
                         />
                     </div>
 
