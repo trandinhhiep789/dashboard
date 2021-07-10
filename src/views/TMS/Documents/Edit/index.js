@@ -265,7 +265,6 @@ class EditCom extends React.Component {
             return <Redirect to={BackLink} />;
         }
         const { DocumentTypeID, AttachmentListData, keyUploadFile, keyUploadVideo, keyUploadLink, fileURL } = this.state;
-        console.log("DataSource", this.state.DataSource, fileURL)
         return (
             <FormContainer
                 FormName={TitleFormAdd}
