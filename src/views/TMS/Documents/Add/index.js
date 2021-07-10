@@ -234,6 +234,7 @@ class AddCom extends React.Component {
                             value=""
                             datasourcemember="DocumentName"
                             validatonList={['required']}
+                            maxSize={190}
                         />
                     </div>
 
@@ -315,7 +316,7 @@ class AddCom extends React.Component {
                             nameMember="DocumentFileURL"
                             labelcolspan={4}
                             colspan={8}
-                            label="Chọn file"
+                            label="Upload file"
                             IsMultiple={false}
                             onSelectFile={this.handleSelectFile.bind(this)}
                             onDeletefile={this.handleDeletefile.bind(this)}
@@ -330,7 +331,7 @@ class AddCom extends React.Component {
                             name="txtFileURL"
                             colspan="8"
                             labelcolspan="4"
-                            label="Đương dẫn URL"
+                            label="Đường dẫn URL"
                             placeholder="Đường dẫn URL"
                             controltype="InputControl"
                             value=""
@@ -364,7 +365,7 @@ class AddCom extends React.Component {
                             colspan={10}
                             name="txtEditorFileContent1"
                             label="Nội dung"
-                            placeholder="Nội dung"
+                            placeholder="Nội dung chỉ giới hạn 3900 ký tự"
                             datasourcemember="FileContent1"
                             controltype="InputControl"
                             rows={8}
@@ -381,8 +382,8 @@ class AddCom extends React.Component {
                             labelcolspan={2}
                             colspan={10}
                             name="txtEditorFileContent2"
-                            label="Nội dung"
-                            placeholder="Nội dung"
+                            label="Nội dung tiếp theo"
+                            placeholder="Nội dung chỉ giới hạn 3900 ký tự"
                             datasourcemember="FileContent2"
                             controltype="InputControl"
                             rows={8}

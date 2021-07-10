@@ -18,24 +18,24 @@ export const TitleFormDetail = "Thông tin tài liệu";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách tài liệu" }
+    { Link: "", Title: "Danh mục tài liệu" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/Documents", Title: "Danh sách tài liệu" },
+    { Link: "/Documents", Title: "Danh mục tài liệu" },
     { Link: "", Title: "Cập nhật" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/Documents", Title: "Danh sách tài liệu" },
+    { Link: "/Documents", Title: "Danh mục tài liệu" },
     { Link: "", Title: "Thêm" }
 ];
 
 export const DetailAPIPath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/Documents", Title: "Danh sách tài liệu" },
+    { Link: "/Documents", Title: "Danh mục tài liệu" },
     { Link: "", Title: "Chi tiết" }
 ];
 
@@ -77,6 +77,14 @@ export const DataGridColumnList = [
         Caption: "Chọn",
         DataSourceMember: "DocumentID",
         Width: 60
+    },
+    {
+        Name: "DocumentID",
+        Type: "text",
+        Caption: "Mã tài liệu",
+        DataSourceMember: "DocumentID",
+        // Link: "/Documents/Detail/",
+        Width: 70
     },
     {
         Name: "DocumentName",
