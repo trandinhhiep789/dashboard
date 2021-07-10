@@ -337,7 +337,7 @@ export const listColumnDocument_CommentList = [
     {
         Name: "CommentedDate",
         Type: "datetime",
-        Caption: "Ngày bình luận",
+        Caption: "Ngày",
         DataSourceMember: "CommentedDate"
     },
 ]
@@ -366,7 +366,7 @@ export const listColumnDocument_LikeList = [
     {
         Name: "LikedDate",
         Type: "datetime",
-        Caption: "Ngày like",
+        Caption: "Ngày",
         DataSourceMember: "LikedDate"
     },
 ]
