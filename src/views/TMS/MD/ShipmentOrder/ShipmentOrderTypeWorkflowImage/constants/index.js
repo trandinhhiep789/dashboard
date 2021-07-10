@@ -67,6 +67,33 @@ export const ModalColumnList_Insert = [
         validatonList: ["number"]
     },
     {
+        Name: "IsRestrictCaptureInterval",
+        type: "checkbox",
+        label: "Có giới hạn khoảng thời gian chụp hình",
+        DataSourceMember: "IsRestrictCaptureInterval",
+        readonly: false,
+        validatonList: [],
+        value: false
+    },
+    {
+        Name: "CompareSampleImageID",
+        type: "text",
+        label: "Mã hình mẫu cần so sánh giới hạn",
+        maxSize: "200",
+        DataSourceMember: "CompareSampleImageID",
+        readonly: false,
+        validatonList: ["number"]
+    },
+    {
+        Name: "RestrictInterval",
+        type: "text",
+        label: "Khoảng thời gian giới hạn(tính bằng giây)",
+        maxSize: "20",
+        DataSourceMember: "RestrictInterval",
+        readonly: false,
+        validatonList: ["number"]
+    },
+    {
         Name: "InstructionNote",
         type: "textarea",
         label: "Hướng dẫn chụp hình",
@@ -145,6 +172,33 @@ export const ModalColumnList_Edit = [
         maxSize: "9",
         value: 0,
         DataSourceMember: "OrderIndex",
+        readonly: false,
+        validatonList: ["number"]
+    },
+    {
+        Name: "IsRestrictCaptureInterval",
+        type: "checkbox",
+        label: "Có giới hạn khoảng thời gian chụp hình",
+        DataSourceMember: "IsRestrictCaptureInterval",
+        readonly: false,
+        validatonList: [],
+        value: false
+    },
+    {
+        Name: "CompareSampleImageID",
+        type: "text",
+        label: "Mã hình mẫu cần so sánh giới hạn",
+        maxSize: "200",
+        DataSourceMember: "CompareSampleImageID",
+        readonly: false,
+        validatonList: ["number"]
+    },
+    {
+        Name: "RestrictInterval",
+        type: "text",
+        label: "Khoảng thời gian giới hạn(tính bằng giây)",
+        maxSize: "20",
+        DataSourceMember: "RestrictInterval",
         readonly: false,
         validatonList: ["number"]
     },
@@ -282,6 +336,24 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "SampleImageFileURL",
         DataSourceMember: "SampleImageFileURL"
+    },
+    {
+        Name: "IsRestrictCaptureInterval",
+        DefaultValue: 0,
+        BindControlName: "IsRestrictCaptureInterval",
+        DataSourceMember: "IsRestrictCaptureInterval"
+    },
+    {
+        Name: "CompareSampleImageID",
+        DefaultValue: 0,
+        BindControlName: "CompareSampleImageID",
+        DataSourceMember: "CompareSampleImageID"
+    },
+    {
+        Name: "RestrictInterval",
+        DefaultValue: 0,
+        BindControlName: "RestrictInterval",
+        DataSourceMember: "RestrictInterval"
     },
     {
         Name: "InstructionNote",
