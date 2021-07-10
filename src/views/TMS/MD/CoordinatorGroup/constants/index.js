@@ -453,6 +453,12 @@ export const lstColImportExcelModal = [
         DataSourceMember: "UserName"
     },
     {
+        Name: "FullName",
+        Type: "text",
+        Caption: "Tên nhân viên",
+        DataSourceMember: "FullName"
+    },
+    {
         Name: "ErrorContent",
         Type: "text",
         Caption: "Nội dung lỗi",
