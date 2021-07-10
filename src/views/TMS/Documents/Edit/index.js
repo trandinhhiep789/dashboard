@@ -47,7 +47,7 @@ class EditCom extends React.Component {
             IsExtended: false,
             IsLiquidated: false,
             IsDeposited: false,
-            Files: {},
+            Files: [],
             DocumentTypeID: "",
             AttachmentList: [],
             AttachmentListData: [],
@@ -107,7 +107,7 @@ class EditCom extends React.Component {
                     }
 
                     item = apiResult.ResultObject;
-                    item.FileURL = "";
+                    // item.FileURL = apiResult.ResultObject.FileURL;
                     this.setState({
                         AttachmentListData
                     })
@@ -130,17 +130,32 @@ class EditCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
-        const { Files, AttachmentList, DocumentTypeID, fileSize } = this.state;
+        const { Files, AttachmentList, DocumentTypeID, fileSize, DataSource } = this.state;
+
 
         MLObject.FileSize = fileSize;
         MLObject.DocumentID = this.props.match.params.id;
-        console.log("Files", Files)
-        console.log("MLObject", AttachmentList, MLObject, fileSize);
+        // console.log("Files", Files, this.props)
+        // console.log("MLObject", AttachmentList, MLObject, fileSize, DataSource);
 
 
         let data = new FormData();
-        data.append("DocumentFileURL", AttachmentList.DocumentFileURL);
-        data.append("DocumentImageURL", Files.DocumentImageURL);
+        if (AttachmentList.length != 0) {
+            data.append("DocumentFileURL", AttachmentList.DocumentFileURL);
+        }
+        else {
+            MLObject.FileURL = DataSource.FileURL;
+            MLObject.FileName = DataSource.FileName;
+            MLObject.FileSize = DataSource.FileSize;
+        }
+
+        if (Files.length != 0) {
+            data.append("DocumentImageURL", Files.DocumentImageURL);
+        }
+        else {
+            MLObject.DocumentImageURL = DataSource.DocumentImageURL;
+        }
+
         data.append("DocumentObj", JSON.stringify(MLObject));
 
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, data).then(apiResult => {
@@ -247,6 +262,7 @@ class EditCom extends React.Component {
             return <Redirect to={BackLink} />;
         }
         const { DocumentTypeID, AttachmentListData, keyUploadFile, keyUploadVideo, keyUploadLink } = this.state;
+        console.log("DataSource", this.state.DataSource)
         return (
             <FormContainer
                 FormName={TitleFormAdd}
