@@ -97,7 +97,7 @@ class EditCom extends React.Component {
             else {
 
                 let File = {};
-                let item = {};  
+                let item = {};
                 this.setState({
                     fileURL: apiResult.ResultObject.FileURL
                 })
@@ -134,7 +134,7 @@ class EditCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
-        const { Files, AttachmentList, DocumentTypeID, fileSize, DataSource , fileURL} = this.state;
+        const { Files, AttachmentList, DocumentTypeID, fileSize, DataSource, fileURL } = this.state;
 
 
         MLObject.FileSize = fileSize;
@@ -159,7 +159,7 @@ class EditCom extends React.Component {
             MLObject.DocumentImageURL = DataSource.DocumentImageURL;
         }
 
-        data.append("DocumentObj", MLObject, JSON.stringify(MLObject));
+        data.append("DocumentObj", JSON.stringify(MLObject));
 
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, data).then(apiResult => {
             console.log("data", apiResult)
