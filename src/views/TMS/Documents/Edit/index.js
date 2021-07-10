@@ -56,6 +56,7 @@ class EditCom extends React.Component {
             keyUploadVideo: "",
             keyUploadLink: "",
             IsLoadDataComplete: false,
+            fileURL: ""
 
         };
     }
@@ -96,7 +97,10 @@ class EditCom extends React.Component {
             else {
 
                 let File = {};
-                let item = {};
+                let item = {};  
+                this.setState({
+                    fileURL: apiResult.ResultObject.FileURL
+                })
                 if (apiResult.ResultObject.DocumentTypeID == parseInt(keyUploadFile)) {
                     if (apiResult.ResultObject.FileName != "") {
                         File.name = apiResult.ResultObject.FileName;
@@ -107,9 +111,9 @@ class EditCom extends React.Component {
                     }
 
                     item = apiResult.ResultObject;
-                    // item.FileURL = apiResult.ResultObject.FileURL;
+                    item.FileURL = "";
                     this.setState({
-                        AttachmentListData
+                        AttachmentListData,
                     })
                 }
                 else {
@@ -130,7 +134,7 @@ class EditCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
-        const { Files, AttachmentList, DocumentTypeID, fileSize, DataSource } = this.state;
+        const { Files, AttachmentList, DocumentTypeID, fileSize, DataSource , fileURL} = this.state;
 
 
         MLObject.FileSize = fileSize;
@@ -138,13 +142,12 @@ class EditCom extends React.Component {
         // console.log("Files", Files, this.props)
         // console.log("MLObject", AttachmentList, MLObject, fileSize, DataSource);
 
-
         let data = new FormData();
         if (AttachmentList.length != 0) {
             data.append("DocumentFileURL", AttachmentList.DocumentFileURL);
         }
         else {
-            MLObject.FileURL = DataSource.FileURL;
+            MLObject.FileURL = fileURL;
             MLObject.FileName = DataSource.FileName;
             MLObject.FileSize = DataSource.FileSize;
         }
@@ -156,14 +159,14 @@ class EditCom extends React.Component {
             MLObject.DocumentImageURL = DataSource.DocumentImageURL;
         }
 
-        data.append("DocumentObj", JSON.stringify(MLObject));
+        data.append("DocumentObj", MLObject, JSON.stringify(MLObject));
 
-        this.props.callFetchAPI(APIHostName, UpdateAPIPath, data).then(apiResult => {
-            console.log("data", apiResult)
-            this.setState({ IsCallAPIError: apiResult.IsError });
-            this.showMessage(apiResult.Message);
+        // this.props.callFetchAPI(APIHostName, UpdateAPIPath, data).then(apiResult => {
+        //     console.log("data", apiResult)
+        //     this.setState({ IsCallAPIError: apiResult.IsError });
+        //     this.showMessage(apiResult.Message);
 
-        });
+        // });
     }
 
     handleSelectedFile(file, nameValue, isDeletetedFile) {
@@ -261,8 +264,8 @@ class EditCom extends React.Component {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
-        const { DocumentTypeID, AttachmentListData, keyUploadFile, keyUploadVideo, keyUploadLink } = this.state;
-        console.log("DataSource", this.state.DataSource)
+        const { DocumentTypeID, AttachmentListData, keyUploadFile, keyUploadVideo, keyUploadLink, fileURL } = this.state;
+        console.log("DataSource", this.state.DataSource, fileURL)
         return (
             <FormContainer
                 FormName={TitleFormAdd}
