@@ -161,12 +161,12 @@ class EditCom extends React.Component {
 
         data.append("DocumentObj", MLObject, JSON.stringify(MLObject));
 
-        // this.props.callFetchAPI(APIHostName, UpdateAPIPath, data).then(apiResult => {
-        //     console.log("data", apiResult)
-        //     this.setState({ IsCallAPIError: apiResult.IsError });
-        //     this.showMessage(apiResult.Message);
+        this.props.callFetchAPI(APIHostName, UpdateAPIPath, data).then(apiResult => {
+            console.log("data", apiResult)
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.showMessage(apiResult.Message);
 
-        // });
+        });
     }
 
     handleSelectedFile(file, nameValue, isDeletetedFile) {
