@@ -47,7 +47,7 @@ class EditCom extends React.Component {
             IsExtended: false,
             IsLiquidated: false,
             IsDeposited: false,
-            Files: {},
+            Files: [],
             DocumentTypeID: "",
             AttachmentList: [],
             AttachmentListData: [],
@@ -56,6 +56,7 @@ class EditCom extends React.Component {
             keyUploadVideo: "",
             keyUploadLink: "",
             IsLoadDataComplete: false,
+            fileURL: ""
 
         };
     }
@@ -97,6 +98,9 @@ class EditCom extends React.Component {
 
                 let File = {};
                 let item = {};
+                this.setState({
+                    fileURL: apiResult.ResultObject.FileURL
+                })
                 if (apiResult.ResultObject.DocumentTypeID == parseInt(keyUploadFile)) {
                     if (apiResult.ResultObject.FileName != "") {
                         File.name = apiResult.ResultObject.FileName;
@@ -109,7 +113,7 @@ class EditCom extends React.Component {
                     item = apiResult.ResultObject;
                     item.FileURL = "";
                     this.setState({
-                        AttachmentListData
+                        AttachmentListData,
                     })
                 }
                 else {
@@ -130,17 +134,31 @@ class EditCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
-        const { Files, AttachmentList, DocumentTypeID, fileSize } = this.state;
+        const { Files, AttachmentList, DocumentTypeID, fileSize, DataSource, fileURL } = this.state;
+
 
         MLObject.FileSize = fileSize;
         MLObject.DocumentID = this.props.match.params.id;
-        console.log("Files", Files)
-        console.log("MLObject", AttachmentList, MLObject, fileSize);
-
+        // console.log("Files", Files, this.props)
+        // console.log("MLObject", AttachmentList, MLObject, fileSize, DataSource);
 
         let data = new FormData();
-        data.append("DocumentFileURL", AttachmentList.DocumentFileURL);
-        data.append("DocumentImageURL", Files.DocumentImageURL);
+        if (AttachmentList.length != 0) {
+            data.append("DocumentFileURL", AttachmentList.DocumentFileURL);
+        }
+        else {
+            MLObject.FileURL = fileURL;
+            MLObject.FileName = DataSource.FileName;
+            MLObject.FileSize = DataSource.FileSize;
+        }
+
+        if (Files.length != 0) {
+            data.append("DocumentImageURL", Files.DocumentImageURL);
+        }
+        else {
+            MLObject.DocumentImageURL = DataSource.DocumentImageURL;
+        }
+
         data.append("DocumentObj", JSON.stringify(MLObject));
 
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, data).then(apiResult => {
@@ -180,8 +198,8 @@ class EditCom extends React.Component {
         switch (formData.cbDocumentTypeID.value) {
             case parseInt(keyUploadFile):
                 formData.txtFileURL.value = "";
-                formData.txtEditorFileContent1.value = "";
-                formData.txtEditorFileContent2.value = "";
+                // formData.txtEditorFileContent1.value = "";
+                // formData.txtEditorFileContent2.value = "";
                 break;
             case parseInt(keyUploadVideo):
                 this.setState({
@@ -199,8 +217,8 @@ class EditCom extends React.Component {
                 break;
             default:
                 formData.txtFileURL.value = "";
-                formData.txtEditorFileContent1.value = "";
-                formData.txtEditorFileContent2.value = "";
+                // formData.txtEditorFileContent1.value = "";
+                // formData.txtEditorFileContent2.value = "";
                 this.setState({
                     AttachmentList: [],
                     AttachmentListData: [],
@@ -246,7 +264,7 @@ class EditCom extends React.Component {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
-        const { DocumentTypeID, AttachmentListData, keyUploadFile, keyUploadVideo, keyUploadLink } = this.state;
+        const { DocumentTypeID, AttachmentListData, keyUploadFile, keyUploadVideo, keyUploadLink, fileURL } = this.state;
         return (
             <FormContainer
                 FormName={TitleFormAdd}
@@ -270,6 +288,7 @@ class EditCom extends React.Component {
                             placeholder="Tên tài liệu"
                             controltype="InputControl"
                             value=""
+                            maxSize={190}
                             datasourcemember="DocumentName"
                             validatonList={['required']}
                         />
@@ -353,7 +372,7 @@ class EditCom extends React.Component {
                             nameMember="DocumentFileURL"
                             labelcolspan={4}
                             colspan={8}
-                            label="Chọn file"
+                            label="Upload file"
                             IsMultiple={false}
                             onSelectFile={this.handleSelectFile.bind(this)}
                             onDeletefile={this.handleDeletefile.bind(this)}
@@ -368,7 +387,7 @@ class EditCom extends React.Component {
                             name="txtFileURL"
                             colspan="8"
                             labelcolspan="4"
-                            label="Đương dẫn URL"
+                            label="Đường dẫn URL"
                             placeholder="Đường dẫn URL"
                             controltype="InputControl"
                             value=""
@@ -384,13 +403,13 @@ class EditCom extends React.Component {
                             colspan={10}
                             name="txtEditorFileContent1"
                             label="Nội dung"
-                            placeholder="Nội dung"
+                            placeholder="Nội dung chỉ giới hạn 3900 ký tự"
                             datasourcemember="FileContent1"
                             controltype="InputControl"
                             rows={8}
                             maxSize={3900}
-                            readOnly={(DocumentTypeID == parseInt(keyUploadVideo) || DocumentTypeID == parseInt(keyUploadLink)) ? false : true}
-                            disabled={(DocumentTypeID == parseInt(keyUploadVideo) || DocumentTypeID == parseInt(keyUploadLink)) ? false : true}
+                            // readOnly={(DocumentTypeID == parseInt(keyUploadVideo) || DocumentTypeID == parseInt(keyUploadLink)) ? false : true}
+                            // disabled={(DocumentTypeID == parseInt(keyUploadVideo) || DocumentTypeID == parseInt(keyUploadLink)) ? false : true}
                             classNameCustom="customcontrol"
                         />
                     </div>
@@ -401,14 +420,14 @@ class EditCom extends React.Component {
                             labelcolspan={2}
                             colspan={10}
                             name="txtEditorFileContent2"
-                            label="Nội dung"
-                            placeholder="Nội dung"
+                            label="Nội dung tiếp theo"
+                            placeholder="Nội dung chỉ giới hạn 3900 ký tự"
                             datasourcemember="FileContent2"
                             controltype="InputControl"
                             rows={8}
                             maxSize={3900}
-                            readOnly={(DocumentTypeID == parseInt(keyUploadVideo) || DocumentTypeID == parseInt(keyUploadLink)) ? false : true}
-                            disabled={(DocumentTypeID == parseInt(keyUploadVideo) || DocumentTypeID == parseInt(keyUploadLink)) ? false : true}
+                            // readOnly={(DocumentTypeID == parseInt(keyUploadVideo) || DocumentTypeID == parseInt(keyUploadLink)) ? false : true}
+                            // disabled={(DocumentTypeID == parseInt(keyUploadVideo) || DocumentTypeID == parseInt(keyUploadLink)) ? false : true}
                             classNameCustom="customcontrol"
                         />
                     </div>

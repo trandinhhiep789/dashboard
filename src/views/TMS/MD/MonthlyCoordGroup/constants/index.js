@@ -7,6 +7,7 @@ export const AddAPIPath = "api/MonthlyCoordGroup/Add";
 export const UpdateAPIPath = "api/MonthlyCoordGroup/Update";
 export const DeleteAPIPath = "api/MonthlyCoordGroup/Delete";
 export const UpdateOrderAPIPath = "api/MonthlyCoordGroup/UpdateOrder";
+export const ExelDataAPIPath = "api/MonthlyCoordGroup/ExelData";
 export const BackLink = "/MonthlyCoordGroup";
 export const AddLink = "/MonthlyCoordGroup/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";
@@ -299,6 +300,18 @@ export const MLObjectDefinition = [
         DataSourceMember: "AreaName"
     },
     {
+        Name: "CoordinatorMonth",
+        DefaultValue: "",
+        BindControlName: "",
+        DataSourceMember: "CoordinatorMonth"
+    },
+    {
+        Name: "CoordinatorMonthString",
+        DefaultValue: "",
+        BindControlName: "",
+        DataSourceMember: "CoordinatorMonthString"
+    },
+    {
         Name: "Description",
         DefaultValue: "",
         BindControlName: "txtDescription",
@@ -377,6 +390,13 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Khu vực",
         DataSourceMember: "AreaName",
+        Width: 150
+    },
+    {
+        Name: "CoordinatorMonthString",
+        Type: "text",
+        Caption: "Tháng điều phối",
+        DataSourceMember: "CoordinatorMonthString",
         Width: 150
     },
     // {

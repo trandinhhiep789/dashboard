@@ -213,7 +213,9 @@ class ShipmentOrderTypeWorkflowImageCom extends React.Component {
                         MLObject.SubGroupID = MLObject.SubGroupID && Array.isArray(MLObject.SubGroupID) ? MLObject.SubGroupID[0] : MLObject.SubGroupID;
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-
+                        
+                        MLObject.CompareSampleImageID = MLObject.CompareSampleImageID ? MLObject.CompareSampleImageID : 0;
+                        MLObject.RestrictInterval = MLObject.RestrictInterval ? MLObject.RestrictInterval : 0;
                         
                         // if (this.state.Files.length > 0) {
                         //     this.state.Files.map((item, index) => {
@@ -293,6 +295,9 @@ class ShipmentOrderTypeWorkflowImageCom extends React.Component {
                         MLObject.SubGroupID = MLObject.SubGroupID && Array.isArray(MLObject.SubGroupID) ? MLObject.SubGroupID[0] : MLObject.SubGroupID;
                         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+
+                        MLObject.CompareSampleImageID = MLObject.CompareSampleImageID ? MLObject.CompareSampleImageID : 0;
+                        MLObject.RestrictInterval = MLObject.RestrictInterval ? MLObject.RestrictInterval : 0;
 
                         var data = new FormData();
                         if (this.state.Files.length > 0) {

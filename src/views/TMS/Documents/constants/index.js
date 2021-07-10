@@ -18,24 +18,24 @@ export const TitleFormDetail = "Thông tin tài liệu";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách tài liệu" }
+    { Link: "", Title: "Danh mục tài liệu" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/Documents", Title: "Danh sách tài liệu" },
+    { Link: "/Documents", Title: "Danh mục tài liệu" },
     { Link: "", Title: "Cập nhật" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/Documents", Title: "Danh sách tài liệu" },
+    { Link: "/Documents", Title: "Danh mục tài liệu" },
     { Link: "", Title: "Thêm" }
 ];
 
 export const DetailAPIPath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/Documents", Title: "Danh sách tài liệu" },
+    { Link: "/Documents", Title: "Danh mục tài liệu" },
     { Link: "", Title: "Chi tiết" }
 ];
 
@@ -79,6 +79,14 @@ export const DataGridColumnList = [
         Width: 60
     },
     {
+        Name: "DocumentID",
+        Type: "text",
+        Caption: "Mã tài liệu",
+        DataSourceMember: "DocumentID",
+        // Link: "/Documents/Detail/",
+        Width: 70
+    },
+    {
         Name: "DocumentName",
         Type: "texttolink",
         Caption: "Tên tài liệu",
@@ -103,7 +111,7 @@ export const DataGridColumnList = [
     },
     {
         Name: "PublishedDate",
-        Type: "date",
+        Type: "datetime",
         Caption: "Ngày xuất bản",
         DataSourceMember: "PublishedDate",
         Width: 100
@@ -131,7 +139,7 @@ export const DataGridColumnList = [
     },
     {
         Name: "ModifyDate",
-        Type: "date",
+        Type: "datetime",
         Caption: "Cập nhật lần cuối",
         DataSourceMember: "ModifyDate",
         Width: 100
