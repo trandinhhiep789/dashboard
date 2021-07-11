@@ -116,6 +116,7 @@ class ImportExcelModalCom extends React.Component {
                             CoordinatorGroupID: val[0],
                             CoordinatorGroupName: foundCoordinatorGroup == undefined ? "" : foundCoordinatorGroup.CoordinatorGroupName,
                             UserName: val[1],
+                            FullName: foundUser == undefined ? "" : foundUser.FullName,
                             IsError: foundCoordinatorGroup == undefined || foundUser == undefined ? true : false,
                             ErrorContent
                         }
@@ -146,6 +147,7 @@ class ImportExcelModalCom extends React.Component {
                             CoordinatorGroupID: val[0],
                             CoordinatorGroupName: foundCoordinatorGroup == undefined ? "" : foundCoordinatorGroup.CoordinatorGroupName,
                             UserName: val[1],
+                            FullName: foundUser == undefined ? "" : foundUser.FullName,
                             IsError: foundCoordinatorGroup == undefined || foundUser == undefined ? true : false,
                             ErrorContent
                         }
@@ -252,8 +254,7 @@ class ImportExcelModalCom extends React.Component {
 
     render() {
         const { stateCoordinatorGroupMember, stateCoordinatorGroupDUser, stateListUsers } = this.state;
-        // if (stateCoordinatorGroupMember.length == 0 || stateCoordinatorGroupDUser.length == 0 || stateListUsers == null) {
-        if (stateCoordinatorGroupMember.length == 0 || stateCoordinatorGroupDUser.length == 0) {
+        if (stateCoordinatorGroupMember.length == 0 || stateCoordinatorGroupDUser.length == 0 || stateListUsers == null) {
             return <React.Fragment>...</React.Fragment>
         } else {
             return (
