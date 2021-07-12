@@ -26,6 +26,7 @@ import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
 import ConfirmModal from '../ConfirmModal'
 import { showModal, hideModal } from '../../../../../actions/modal';
 import DataGirdHistory from '../DataGirdHistory'
+import ConfirmListModal from '../ConfirmModal/ConfirmListModal.js'
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -73,7 +74,7 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-
+        console.log("search", formData, MLObject)
 
         const postData = [
             {
@@ -90,7 +91,7 @@ class SearchCom extends React.Component {
             },
             {
                 SearchKey: "@ISCOMPUTED",
-                SearchValue: MLObject.IscomPuted
+                SearchValue: MLObject.IsComputed
             },
 
         ];
@@ -104,17 +105,17 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("data",searchData, apiResult)
+            console.log("data", searchData, apiResult)
             if (!apiResult.IsError) {
 
                 const tempData = apiResult.ResultObject.map((item, index) => {
-                    if(item.IsConfirm){
+                    if (item.IsConfirm) {
                         item.IsConfirmStatus = <span className='lbl-unConfirm'><i className="ti-close"></i> Bỏ chốt</span>;
                     }
-                    else{
+                    else {
                         item.IsConfirmStatus = <span className='lbl-confirm'><i className="ti-check"></i> Chốt thưởng</span>;
                     }
-                    
+
                     return item;
                 })
                 this.setState({
@@ -185,7 +186,7 @@ class SearchCom extends React.Component {
             return n.RewardComputeListID == objId[0].value
         });
 
-        if (dataFind.IsComPuted > 0) {
+        if (dataFind.IsComputed) {
             this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
                 title: "Chốt thưởng",
                 content: {
@@ -227,7 +228,7 @@ class SearchCom extends React.Component {
             }
             else {
 
-                if(apiResult.ResultObject.length > 0){
+                if (apiResult.ResultObject.length > 0) {
                     const tempData = apiResult.ResultObject.map((item, index) => {
 
                         if (item.ConfirmLogType == 1) {
@@ -240,10 +241,10 @@ class SearchCom extends React.Component {
                     })
                     this.onShowModalHistory(tempData, dataFind);
                 }
-                else{
+                else {
                     this.showMessage("Không tồn tại lịch sử chốt thưởng.");
                 }
-                
+
             }
         })
 
@@ -262,6 +263,50 @@ class SearchCom extends React.Component {
             },
             maxWidth: widthPercent + 'px'
         });
+    }
+    onHandleConfirmListItem(confirmListID, pkColumnName) {
+        const { gridDataSource } = this.state;
+        let listMLObject = [];
+        confirmListID.map((row, index) => {
+            let MLObject = {};
+            pkColumnName.map((pkItem, pkIndex) => {
+                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
+            });
+            MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
+            listMLObject.push(MLObject);
+        });
+
+        let isComputed = true;
+
+        const dataFind = gridDataSource.filter(item1 => {
+            return listMLObject.find(item2 => item1.RewardComputeListID == item2.RewardComputeListID)
+        });
+
+
+        dataFind.map((item, index) => {
+            if(!item.IsComputed){
+                isComputed= false
+            }
+        })
+        console.log("arrTemp", dataFind, isComputed)
+
+
+        if (isComputed) {
+            this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+                title: "Chốt thưởng",
+                content: {
+                    text: <ConfirmListModal
+                        dataSource={dataFind}
+                        ObjDataRequest={this.HandleConfirmResult}
+                    />
+                },
+                maxWidth: '800px'
+            });
+        }
+        else {
+            this.showMessage("Loại tính thưởng này chưa tính nên không được chốt thưởng.")
+        }
+
     }
 
 
@@ -298,6 +343,9 @@ class SearchCom extends React.Component {
                     RequirePermission={TMS_REWARDCOMPUTELIST_VIEW}
                     IsExportFile={false}
                     ref={this.gridref}
+                    IsUpdateListItem={true}
+                    onUpdateListItem={this.onHandleConfirmListItem.bind(this)}
+
                 />
             </React.Fragment>
         );
