@@ -294,7 +294,7 @@ class SearchCom extends React.Component {
                     IsPrint={false}
                     IsExportFile={false}
                     IsAutoPaging={true}
-                    RowsPerPage={20}
+                    RowsPerPage={31}
                     RequirePermission={TMS_REWARDCOMPUTELIST_VIEW}
                     IsExportFile={false}
                     ref={this.gridref}
