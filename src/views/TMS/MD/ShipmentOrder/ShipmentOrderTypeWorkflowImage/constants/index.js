@@ -126,6 +126,15 @@ export const ModalColumnList_Insert = [
 
 export const ModalColumnList_Edit = [
     {
+        Name: "SampleImageID",
+        type: "text",
+        label: "Mã hình mẫu",
+        //maxSize: "200",
+        DataSourceMember: "SampleImageID",
+        readonly: true,
+        validatonList: []
+    },
+    {
         Name: "SampleImageName",
         type: "text",
         label: "Tên hình mẫu",
@@ -242,18 +251,25 @@ export const DataGridColumnList = [
         Width: 60
     },
     {
+        Name: "SampleImageID",
+        Type: "text",
+        Caption: "Mã hình mẫu",
+        DataSourceMember: "SampleImageID",
+        Width: 100
+    },
+    {
         Name: "SampleImageName",
         Type: "text",
         Caption: "Tên hình mẫu",
         DataSourceMember: "SampleImageName",
-        Width: 200
+        Width: 250
     },
     {
         Name: "SubGroupName",
         Type: "text",
         Caption: "Nhóm hàng",
         DataSourceMember: "SubGroupName",
-        Width: 200
+        Width: 250
     },
     {
         Name: "SampleImageFileURL",
@@ -289,7 +305,7 @@ export const DataGridColumnList = [
         Type: "edit",
         Caption: "Sửa",
         DataSourceMember: "SampleImageID",
-        Width: 100
+        Width: 60
     }
 
 ];
