@@ -137,7 +137,7 @@ export const GridColumnList = [
     {
         Name: "RewardComputeTypeName",
         Type: "text",
-        Caption: "Mã loại tính thưởng",
+        Caption: "Loại tính thưởng",
         DataSourceMember: "RewardComputeTypeName",
         Width: "10%"
     },
