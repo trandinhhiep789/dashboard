@@ -6,6 +6,7 @@ import DataGrid from "../../../../../../common/components/DataGrid";
 import { lstColImportExcelModal, APIHostName } from '../../constants';
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { MessageModal } from "../../../../../../common/components/Modal";
+import { hideModal } from '../../../../../../actions/modal';
 
 class ImportExcelModalCom extends React.Component {
     constructor(props) {
@@ -24,11 +25,12 @@ class ImportExcelModalCom extends React.Component {
         this.handleSetPropsExportData = this.handleSetPropsExportData.bind(this);
         this.handleAcceptBtnInHeadingTitle = this.handleAcceptBtnInHeadingTitle.bind(this);
         this.handleGetListFromPropsExportData = this.handleGetListFromPropsExportData.bind(this);
+        this.handleCloseMessageModal = this.handleCloseMessageModal.bind(this);
         this.returnHeadingTitle = this.returnHeadingTitle.bind(this);
     }
 
     componentDidMount() {
-        const cautionMess = <p>Khi bạn nhấn ĐỒNG Ý sẽ <span className="text-danger">xóa hết danh sách nhân viên</span> có trong nhóm chi nhánh quản lý tương ứng và thay thế hoàn toàn bằng danh sách nhân viên nhập từ excel</p>;
+        const cautionMess = <span>Khi bạn nhấn ĐỒNG Ý sẽ <span className="text-danger">xóa hết danh sách nhân viên</span> có trong nhóm chi nhánh quản lý tương ứng và thay thế hoàn toàn bằng danh sách nhân viên nhập từ excel</span>;
         this.showMessage(cautionMess);
         this.handleGetListFromPropsExportData();
     }
@@ -39,7 +41,7 @@ class ImportExcelModalCom extends React.Component {
                 title="Thông báo"
                 message={message}
                 onRequestClose={() => true}
-                onCloseModal={this.handleCloseMessage}
+                onCloseModal={this.handleCloseMessageModal}
             />
         );
     }
@@ -57,6 +59,13 @@ class ImportExcelModalCom extends React.Component {
                 })
             }
         });
+    }
+
+    handleCloseMessageModal() {
+        const { stateMemberDisableAcceptBtn, stateDUserDisableAcceptBtn } = this.state;
+        if (stateMemberDisableAcceptBtn == true && stateDUserDisableAcceptBtn == true) {
+            this.props.hideModal();
+        }
     }
 
     handleGetListFromPropsExportData() {
@@ -177,7 +186,7 @@ class ImportExcelModalCom extends React.Component {
                 LoginLogID: JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID
             }
         });
-        console.log(postData)
+
         switch (handleType) {
             case "CoordinatorGroupMember":
                 this.props.callFetchAPI(APIHostName, "api/CoordinatorGroup_Member/AddByFile2", postData).then(apiResult => {
@@ -302,6 +311,9 @@ const mapDispatchToProps = dispatch => {
     return {
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
+        },
+        hideModal: (type, props) => {
+            dispatch(hideModal(type, props));
         }
     };
 };
