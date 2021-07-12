@@ -9,7 +9,7 @@ import { showModal, hideModal } from '../../../../actions/modal';
 import { GetMLObjectData } from "../../../../common/library/form/FormLib";
 import Collapsible from 'react-collapsible';
 import {
-    AddAPIPath, UpdateAPIPath, DeleteAPIPath, APIHostName, AddByFileAPIPath, 
+    AddAPIPath, UpdateAPIPath, DeleteAPIPath, APIHostName, AddByFileAPIPath,
     ModalColumnList_Insert, ModalColumnList_Edit, DataGridColumnList, MLObjectDefinition, schema, DataTemplateExport
 } from "./constants";
 import ReactNotification from "react-notifications-component";
@@ -360,7 +360,6 @@ class CoordinatorGroup_MemberCom extends React.Component {
         if (_isError) {
             return;
         }
-
 
         this.props.callFetchAPI(APIHostName, AddByFileAPIPath, data).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });

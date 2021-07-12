@@ -711,6 +711,11 @@ class DataGridCom extends Component {
     }
 
     handleExportFileTemplate() {
+        if (this.props.propsIsCustomXLSX) {
+            this.props.onExportFileTemplate();
+            return;
+        }
+
         const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
         const fileExtension = '.xlsx';
         let result;
@@ -736,6 +741,11 @@ class DataGridCom extends Component {
     }
 
     handleImportFile() {
+        if (this.props.propsIsCustomXLSX) {
+            this.props.onImportFile();
+            return;
+        }
+
         const input = document.getElementById('buttonImportFile');
         input.click();
 
@@ -984,6 +994,10 @@ class DataGridCom extends Component {
         );
     }
 }
+
+DataGridCom.defaultProps = {
+    propsIsCustomXLSX: false
+};
 
 const mapStateToProps = state => {
     return {

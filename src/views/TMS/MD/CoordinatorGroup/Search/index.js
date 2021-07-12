@@ -1,6 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+import readXlsxFile from 'read-excel-file';
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
+
 import SearchForm from "../../../../../common/components/Form/SearchForm";
 import DataGrid from "../../../../../common/components/DataGrid";
 import { MessageModal } from "../../../../../common/components/Modal";
@@ -15,15 +21,18 @@ import {
     IDSelectColumnName,
     PKColumnName,
     InitSearchParams,
-    PagePath
+    PagePath,
+    SchemaData,
+    DataTemplateExport
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_SHIPMENTFEETYPE } from "../../../../../constants/keyCache";
 import { SHIPMENTFEETYPE_VIEW, SHIPMENTFEETYPE_DELETE, DESTROYREQUESTTYPE_VIEW, DESTROYREQUESTTYPE_DELETE, COORDINATORGROUP_VIEW, COORDINATORGROUP_DELETE } from "../../../../../constants/functionLists";
+import { showModal } from '../../../../../actions/modal';
+import { MODAL_TYPE_COMMONTMODALS } from '../../../../../constants/actionTypes';
+import ImportExcelModalCom from './ImportExcelModal';
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -31,6 +40,9 @@ class SearchCom extends React.Component {
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleExportFileTemplate = this.handleExportFileTemplate.bind(this);
+        this.handleImportFile = this.handleImportFile.bind(this);
+        this.handleSetImportData = this.handleSetImportData.bind(this);
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
@@ -84,6 +96,72 @@ class SearchCom extends React.Component {
         this.setState({ SearchData: postData });
         this.callSearchData(postData);
         //this.gridref.current.clearData();
+    }
+
+    handleExportFileTemplate() {
+        try {
+            const ws = XLSX.utils.json_to_sheet([{}]);
+            XLSX.utils.sheet_add_json(ws, DataTemplateExport);
+
+            const wb = {
+                Sheets: { "Danh sách trưởng nhóm": ws, "Danh sách nhân viên": ws },
+                SheetNames: ["Danh sách trưởng nhóm", "Danh sách nhân viên"]
+            };
+            const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+            const data = new Blob(
+                [excelBuffer],
+                { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' }
+            );
+            FileSaver.saveAs(data, "Mẫu danh sách nhóm chi nhánh quản lý.xlsx");
+
+            this.addNotification("Xuất file thành công!", false);
+        } catch (error) {
+            this.addNotification("Lỗi xuất file!", true);
+        }
+    }
+
+    handleImportFile() {
+        const input = document.getElementById("inputImportFile");
+        input.click();
+
+        input.addEventListener("change", () => {
+            const myPromise1 = new Promise((resolve, reject) => {
+                readXlsxFile(input.files[0], { sheet: "Danh sách trưởng nhóm" }).then((data) => {
+                    resolve({ CoordinatorGroupMember: data });
+                }).catch(error => reject(error));
+            });
+
+            const myPromise2 = new Promise((resolve, reject) => {
+                readXlsxFile(input.files[0], { sheet: "Danh sách nhân viên" }).then((data) => {
+                    resolve({ CoordinatorGroupDUser: data });
+                }).catch(error => reject(error));
+            });
+
+            Promise.all([myPromise1, myPromise2]).then((values) => {
+                if (values.length > 0) {
+                    this.handleSetImportData(values);
+                }
+            }).catch(error => {
+                alert("File vừa chọn lỗi. Vui lòng chọn file khác");
+            }).finally(() => {
+                input.value = "";
+            })
+        }, { once: true })
+    }
+
+    handleSetImportData(exportData) {
+        const { gridDataSource } = this.state;
+
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Kết quả nhập từ excel',
+            content: {
+                text: <ImportExcelModalCom
+                    propsExportData={exportData}
+                    propsMDCoordinatorGroup={gridDataSource}
+                />
+            },
+            maxWidth: '1000px'
+        })
     }
 
     callSearchData(searchData) {
@@ -180,7 +258,15 @@ class SearchCom extends React.Component {
                         DeletePermission={COORDINATORGROUP_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={20}
+
+                        propsIsCustomXLSX={true}
+                        IsImportFile={true}
+                        onImportFile={this.handleImportFile}
+                        isExportFileTemplate={true}
+                        onExportFileTemplate={this.handleExportFileTemplate}
                     />
+
+                    <input type="file" id="inputImportFile" style={{ display: "none" }} />
                 </React.Fragment>
             );
         }
@@ -215,6 +301,9 @@ const mapDispatchToProps = dispatch => {
         },
         callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
         }
     };
 };

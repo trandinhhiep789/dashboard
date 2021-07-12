@@ -410,3 +410,58 @@ export const DataGridColumnList = [
         LinkText: "Chỉnh sửa"
     }
 ];
+
+export const SchemaData = {
+    "Mã nhóm chi nhánh quản lý": {
+        prop: 'CoordinatorGroupID',
+        type: String,
+        required: true
+    },
+    "Mã nhân viên": {
+        prop: 'UserName',
+        type: String,
+        required: true
+    }
+}
+
+export const DataTemplateExport = [
+    {
+        "Mã nhóm chi nhánh quản lý": ""
+    },
+    {
+        "Mã nhân viên": ""
+    }
+];
+
+export const lstColImportExcelModal = [
+    {
+        Name: "CoordinatorGroupID",
+        Type: "text",
+        Caption: "Mã nhóm chi nhánh quản lý",
+        DataSourceMember: "CoordinatorGroupID"
+    },
+    {
+        Name: "CoordinatorGroupName",
+        Type: "text",
+        Caption: "Tên nhóm chi nhánh quản lý",
+        DataSourceMember: "CoordinatorGroupName"
+    },
+    {
+        Name: "UserName",
+        Type: "text",
+        Caption: "Mã nhân viên",
+        DataSourceMember: "UserName"
+    },
+    {
+        Name: "FullName",
+        Type: "text",
+        Caption: "Tên nhân viên",
+        DataSourceMember: "FullName"
+    },
+    {
+        Name: "ErrorContent",
+        Type: "text",
+        Caption: "Nội dung lỗi",
+        DataSourceMember: "ErrorContent"
+    },
+]
