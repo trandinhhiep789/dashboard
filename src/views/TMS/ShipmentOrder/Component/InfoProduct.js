@@ -143,13 +143,13 @@ class InfoProductCom extends Component {
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
                 this.state.ShipmentOrder.TotalCOD = apiResult.ResultObject;
-            this.setState({ ShipmentOrder: this.state.ShipmentOrder });
+                this.setState({ ShipmentOrder: this.state.ShipmentOrder });
             }
             else {
                 this.addNotification(apiResult.Message, apiResult.IsError);
             }
-           
-           
+
+
         });
     }
 
@@ -313,7 +313,7 @@ class InfoProductCom extends Component {
         }
         return (
             <React.Fragment>
-                     <ReactNotification ref={this.notificationDOMRef} />
+                <ReactNotification ref={this.notificationDOMRef} />
                 <Collapsible trigger="Thông tin vận đơn" easing="ease-in" open={false}>
                     <div className="card-body">
                         <div className="form-row">
@@ -370,17 +370,26 @@ class InfoProductCom extends Component {
                             <div className="form-group col-md-2">
                                 <label className="col-form-label bold">Tổng tiền COD:</label>
                             </div>
-                            <div className="form-group col-md-4">
+                            <div className="form-group col-md-4 groupCOD">
                                 <label className="col-form-label lbl-currency">
                                     {formatMoney(this.state.ShipmentOrder.TotalCOD, 0)}đ
 
                                 </label>
-                                <button className="btn btn-icon-modal" onClick={this.handleShowCodUpdLog.bind(this)}>
-                                    <i className="fa fa-eye"></i>
-                                </button>
-                                <button className="btn btn-update-submit" onClick={this.handleCODSubmit.bind(this)}>
-                                <i className="ti ti-pencil-alt"></i>
-                                </button>
+                                <div className="group-changeCOD">
+                                    <button className="btn btn-icon-modal btn-history" data-tip data-for="btn-history-updateCOD" data-id="btn-history-updateCOD" onClick={this.handleShowCodUpdLog.bind(this)}>
+                                        <i className="fa fa-eye"></i>
+                                    </button>
+                                    <ReactTooltip id="btn-history-updateCOD" type='warning'>
+                                        <span>Xem lịch sử cập nhật COD</span>
+                                    </ReactTooltip>
+                                    <button className="btn btn-update-submit btn-update" data-tip data-for="btn-updateCOD" data-id="btn-updateCOD" onClick={this.handleCODSubmit.bind(this)}>
+                                        <i className="ti ti-pencil-alt"></i>
+                                    </button>
+                                    <ReactTooltip id="btn-updateCOD" type='warning'>
+                                        <span>Cập nhật COD</span>
+                                    </ReactTooltip>
+                                </div>
+
                             </div>
                             <div className="form-group col-md-2">
                                 <label className="col-form-label bold">Xem thông tin phí dịch vụ:</label>
