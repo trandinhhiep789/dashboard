@@ -987,8 +987,8 @@ class DataGridCom extends Component {
                                         {
 
                                             this.props.IsUpdateListItem == true ?
-                                                <button type="button" className="btn btn-export ml-10" title="Cập nhật" data-provide="tooltip" data-original-title="Cập nhật" onClick={this.handleUpdateListItem.bind(this)}>
-                                                    <span className="fa fa-file-excel-o"> {(this.props.TitleUpdateListItem != "" && this.props.TitleUpdateListItem != undefined) ? this.props.TitleUpdateListItem : "Cập nhật"}  </span>
+                                                <button type="button" className="btn btn-info ml-10" title="Cập nhật" data-provide="tooltip" data-original-title="Cập nhật" onClick={this.handleUpdateListItem.bind(this)}>
+                                                    <span className="ti-check"> {(this.props.TitleUpdateListItem != "" && this.props.TitleUpdateListItem != undefined) ? this.props.TitleUpdateListItem : "Cập nhật"}  </span>
                                                 </button>
                                                 : ""
                                         }
@@ -996,8 +996,8 @@ class DataGridCom extends Component {
                                         {
 
                                             this.props.IsUpdateList == true ?
-                                                <button type="button" className="btn btn-export ml-10" title="Cập nhật" data-provide="tooltip" data-original-title="Cập nhật" onClick={this.handleUpdateList.bind(this)}>
-                                                    <span className="fa fa-file-excel-o"> {(this.props.TitleUpdateList != "" && this.props.TitleUpdateList != undefined) ? this.props.TitleUpdateList : "Cập nhật"}  </span>
+                                                <button type="button" className="btn btn-info ml-10" title="Cập nhật" data-provide="tooltip" data-original-title="Cập nhật" onClick={this.handleUpdateList.bind(this)}>
+                                                    <span className="ti-plus"> {(this.props.TitleUpdateList != "" && this.props.TitleUpdateList != undefined) ? this.props.TitleUpdateList : "Cập nhật"}  </span>
                                                 </button>
                                                 : ""
                                         }

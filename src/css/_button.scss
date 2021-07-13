@@ -97,6 +97,26 @@ button {
             transition: all 0.3s ease;
         }
     }
+    &.btn.btn-confirm{
+        line-height: 20px;
+        height: 30px;
+        padding: 0px 5px;
+        border-radius: 4px !important;
+
+        &:focus {
+            box-shadow: none;
+        }
+
+        &.tofixedButton{
+            position: fixed;
+            top: 106px;
+            left: 40px;
+            z-index: 99;
+            -webkit-transition: all 0.3s ease;
+            -moz-transition: all 0.3s ease;
+            transition: all 0.3s ease;
+        }
+    }
     &.btn-search-custom {
         background-color: #33cabb;
         border-color: #33cabb;
