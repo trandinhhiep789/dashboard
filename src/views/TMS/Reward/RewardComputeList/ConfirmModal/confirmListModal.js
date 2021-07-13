@@ -4,20 +4,18 @@ import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 import ReactNotification from "react-notifications-component";
 
 import { MessageModal } from "../../../../../common/components/Modal";
-import { APIHostName, MLObjectChangeConfirmModal, ConfirmAPIPath } from '../constants'
+import { APIHostName, MLObjectChangeConfirmModal, ConfirmListAPIPath } from '../constants'
 import FormContainer from "../../../../../common/components/FormContainer";
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
 
-class ConfirmModalCom extends Component {
+class ConfirmListModalCom extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             dataSource: this.props.dataSource,
-            objId: this.props.objId,
-            value: this.props.dataSource.IsConfirm == true ? 2 : 1,
         };
 
         this.showMessage = this.showMessage.bind(this);
@@ -68,25 +66,25 @@ class ConfirmModalCom extends Component {
     }
 
     handleSubmit(FormData, MLObject) {
-        const { dataSource, objId } = this.state;
+        const { dataSource } = this.state;
 
 
-        let objDataRequest = {}
+        let objDataRequest = []
 
-
-        if (MLObject.IsConfirm == 1) {
-            objDataRequest.IsConfirm = true
-            objDataRequest.IsUnConfirm = false
-        } else {
-            objDataRequest.IsConfirm = false
-            objDataRequest.IsUnConfirm = true
-        }
-        objDataRequest.RewardComputeListID = dataSource.RewardComputeListID;
-        objDataRequest.RewardDate = dataSource.RewardDate;
-
+        dataSource.map((item, index)=>{
+            if (MLObject.IsConfirm == 1) {
+                item.IsConfirm = true
+                item.IsUnConfirm = false
+            } else {
+                item.IsConfirm = false
+                item.IsUnConfirm = true
+            }
+            objDataRequest.push(item)
+        })
+        // console.log("data",objDataRequest, MLObject)
         // console.log("objDataRequest", objDataRequest)
-        this.props.callFetchAPI(APIHostName, ConfirmAPIPath, objDataRequest).then(apiResult => {
-            // console.log("data", apiResult)
+        this.props.callFetchAPI(APIHostName, ConfirmListAPIPath, objDataRequest).then(apiResult => {
+            // console.log("data",objDataRequest, apiResult)
             if (!apiResult.IsError) {
                 this.props.ObjDataRequest(apiResult);
             }
@@ -99,7 +97,6 @@ class ConfirmModalCom extends Component {
 
     render() {
         // console.log("object", this.props)
-        const { value } = this.state;
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -119,7 +116,7 @@ class ConfirmModalCom extends Component {
                             datasourcemember="IsConfirm"
                             controltype="InputControl"
                             rows={6}
-                            value={value}
+                            value={-1}
                             isMultiSelect={false}
                             isautoloaditemfromcache={false}
                             listoption={[
@@ -129,6 +126,7 @@ class ConfirmModalCom extends Component {
                             classNameCustom="customcontrol"
                             readOnly={this.state.IsSystem}
                             disabled={this.state.IsSystem}
+                            validatonList={["Comborequired"]}
                         />
                     </div>
 
@@ -155,5 +153,5 @@ const mapDispatchToProps = dispatch => {
     }
 };
 
-const ConfirmModal = connect(mapStateToProps, mapDispatchToProps)(ConfirmModalCom);
-export default ConfirmModal;
+const ConfirmListModal = connect(mapStateToProps, mapDispatchToProps)(ConfirmListModalCom);
+export default ConfirmListModal;

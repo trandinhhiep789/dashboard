@@ -41,7 +41,10 @@ class SearchCom extends React.Component {
             param: {},
             dataExport: [],
             pageIndex: 1,
-            exportTemplateID: ""
+            exportTemplateID: "",
+            RewardTypeID: -1,
+            fromDate: toIsoStringCus(new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()).toISOString()),
+            toDate: new Date()
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -89,7 +92,11 @@ class SearchCom extends React.Component {
             RewardTypeID: MLObject.RewardTypeID
         }
         this.setState({
-            params: param
+            params: param,
+            pageIndex: 1,
+            RewardTypeID: MLObject.RewardTypeID,
+            fromDate: toIsoStringCus(new Date(MLObject.FromDate).toISOString()),
+            toDate: toIsoStringCus(new Date(MLObject.ToDate).toISOString())
         })
 
         const postData = [
@@ -107,7 +114,7 @@ class SearchCom extends React.Component {
             },
             {
                 SearchKey: "@PAGEINDEX",
-                SearchValue: this.state.pageIndex
+                SearchValue: 1
             },
             {
                 SearchKey: "@PAGESIZE",
@@ -204,12 +211,39 @@ class SearchCom extends React.Component {
     }
 
     handleonChangePage(pageNum) {
-        console.log("pageNum", pageNum)
+        // console.log("pageNum", pageNum)
         let listMLObject = [];
-        const aa = { SearchKey: "@PAGEINDEX", SearchValue: pageNum };
-        listMLObject = Object.assign([], this.state.SearchData, { [3]: aa });
+        // const aa = { SearchKey: "@PAGEINDEX", SearchValue: pageNum };
+        // listMLObject = Object.assign([], this.state.SearchData, { [3]: aa });
         // 
-        this.callSearchData(listMLObject)
+        const { RewardTypeID, fromDate, toDate } = this.state;
+
+        const postData = [
+            {
+                SearchKey: "@FROMDATE",
+                SearchValue: fromDate //MLObject.FromDate
+            },
+            {
+                SearchKey: "@TODATE",
+                SearchValue: toDate //MLObject.ToDate
+            },
+            {
+                SearchKey: "@REWARDTYPEID",
+                SearchValue: RewardTypeID
+            },
+            {
+                SearchKey: "@PAGEINDEX",
+                SearchValue: pageNum
+            },
+            {
+                SearchKey: "@PAGESIZE",
+                SearchValue: 31
+            },
+
+        ];
+        this.callSearchData(postData);
+
+        // this.callSearchData(listMLObject)
         this.setState({
             pageIndex: pageNum
         });

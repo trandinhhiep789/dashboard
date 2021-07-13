@@ -107,8 +107,8 @@ class SearchCom extends React.Component {
             }
         });
 
-        this.props.callFetchAPI(APIHostName, ExelDataAPIPath, null).then(apiResult => {
-            console.log("apiResult",apiResult);
+        this.props.callFetchAPI(APIHostName, ExelDataAPIPath, searchData).then(apiResult => {
+            //console.log("apiResult", apiResult);
             if (!apiResult.IsError && apiResult.ResultObject && apiResult.ResultObject.length > 0) {
                 // xuất exel
                 const exelData = apiResult.ResultObject.map((item, index) => {
@@ -122,7 +122,7 @@ class SearchCom extends React.Component {
                         "Nhân viên giao hàng": item.DeliveryUser,
                         "Ngày cập nhật": formatDate(item.UpdatedDate),
                         "Người cập nhật": item.UpdatedUserFullName
-              
+
                         // "Mô tả": item.Description,
                         // "Kích hoạt": item.IsActived ? "Có" : "Không",
                         // "Ngày tạo": formatDate(item.CreatedDate),
@@ -134,9 +134,12 @@ class SearchCom extends React.Component {
 
                 this.setState({
                     dataExport: exelData,
-
                 });
 
+            } else {
+                this.setState({
+                    dataExport: []
+                });
             }
         });
     }
