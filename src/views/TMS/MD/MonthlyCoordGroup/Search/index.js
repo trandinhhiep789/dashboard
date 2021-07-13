@@ -108,7 +108,7 @@ class SearchCom extends React.Component {
         });
 
         this.props.callFetchAPI(APIHostName, ExelDataAPIPath, searchData).then(apiResult => {
-            console.log("apiResult", apiResult);
+            //console.log("apiResult", apiResult);
             if (!apiResult.IsError && apiResult.ResultObject && apiResult.ResultObject.length > 0) {
                 // xuất exel
                 const exelData = apiResult.ResultObject.map((item, index) => {
