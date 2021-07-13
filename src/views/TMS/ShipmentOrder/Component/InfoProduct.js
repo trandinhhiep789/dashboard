@@ -145,11 +145,6 @@ class InfoProductCom extends Component {
                 this.state.ShipmentOrder.TotalCOD = apiResult.ResultObject;
                 this.setState({ ShipmentOrder: this.state.ShipmentOrder });
             }
-            else {
-                this.addNotification(apiResult.Message, apiResult.IsError);
-            }
-
-
         });
     }
 
