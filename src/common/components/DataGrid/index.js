@@ -988,7 +988,7 @@ class DataGridCom extends Component {
 
                                             this.props.IsUpdateListItem == true ?
                                                 <button type="button" className="btn btn-info ml-10" title="Cập nhật" data-provide="tooltip" data-original-title="Cập nhật" onClick={this.handleUpdateListItem.bind(this)}>
-                                                    <span className="ti-check"> {(this.props.TitleUpdateListItem != "" && this.props.TitleUpdateListItem != undefined) ? this.props.TitleUpdateListItem : "Cập nhật"}  </span>
+                                                    <span className="ti-lock"> {(this.props.TitleUpdateListItem != "" && this.props.TitleUpdateListItem != undefined) ? this.props.TitleUpdateListItem : "Cập nhật"}  </span>
                                                 </button>
                                                 : ""
                                         }
