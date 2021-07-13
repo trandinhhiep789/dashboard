@@ -332,6 +332,30 @@ class DataGridCom extends Component {
 
     }
 
+    handleUpdateList() {
+
+        const idSelectColumnName = this.props.IDSelectColumnName;
+        let listID = [];
+        const idDeleteListObject = this.state.GridData[idSelectColumnName];
+        idDeleteListObject.map((item, index) => {
+            if (item.IsChecked) {
+                listID.push(item);
+            }
+        });
+        if (listID.length == 0) {
+            this.showMessage("Vui lòng chọn ít nhất một dòng cần cập nhật!");
+            return;
+        }
+        const confir = confirm("Bạn có chắc rằng muốn cập nhật?");
+        if (confir == 1) {
+            this.props.onUpdateList(listID, this.state.ListPKColumnName);
+            this.setState({
+                IsCheckAll: false
+            });
+        }
+
+    }
+
     handleDeleteClick() {
         var doDelete = () => {
             const idSelectColumnName = this.props.IDSelectColumnName;
@@ -857,7 +881,7 @@ class DataGridCom extends Component {
             return <p className="col-md-12">Lỗi khi kiểm tra quyền, vui lòng thử lại</p>
         }
 
-        
+
         return (
 
             <div className="col-lg-12 SearchForm">
@@ -964,7 +988,16 @@ class DataGridCom extends Component {
 
                                             this.props.IsUpdateListItem == true ?
                                                 <button type="button" className="btn btn-export ml-10" title="Cập nhật" data-provide="tooltip" data-original-title="Cập nhật" onClick={this.handleUpdateListItem.bind(this)}>
-                                                    <span className="fa fa-file-excel-o"> Cập nhật </span>
+                                                    <span className="fa fa-file-excel-o"> {(this.props.TitleUpdateListItem != "" && this.props.TitleUpdateListItem != undefined) ? this.props.TitleUpdateListItem : "Cập nhật"}  </span>
+                                                </button>
+                                                : ""
+                                        }
+
+                                        {
+
+                                            this.props.IsUpdateList == true ?
+                                                <button type="button" className="btn btn-export ml-10" title="Cập nhật" data-provide="tooltip" data-original-title="Cập nhật" onClick={this.handleUpdateList.bind(this)}>
+                                                    <span className="fa fa-file-excel-o"> {(this.props.TitleUpdateList != "" && this.props.TitleUpdateList != undefined) ? this.props.TitleUpdateList : "Cập nhật"}  </span>
                                                 </button>
                                                 : ""
                                         }
