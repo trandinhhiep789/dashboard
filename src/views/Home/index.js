@@ -126,6 +126,7 @@ import TotalRewardExport from "../TMS/Reward/TotalRewardExport";
 import RewardDetailExport from "../TMS/Reward/RewardDetailExport";
 import RewardPointReview from "../TMS/Reward/RewardPointReview";
 import RewardComputeList from "../TMS/Reward/RewardComputeList";
+// import FuelSubsIDizePeriod from "../TMS/Reward/FuelSubsIDizePeriod";
 import PosToRWPosTable from "../TMS/MD/PosToRWPosTable";
 import RewardComputeType from "../TMS/MD/RewardComputeType";
 import ServicePriceTable from "../TMS/MD/ServicePriceTable";
@@ -346,6 +347,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/RewardDetailExport" component={RewardDetailExport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/RewardPointReview" component={RewardPointReview} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/RewardComputeList" component={RewardComputeList} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    {/* <PrivateRoute path="/FuelSubsIDizePeriod" component={FuelSubsIDizePeriod} isLoggedIn={isLoggedIn} isRelogin={isRelogin} /> */}
                                     <PrivateRoute path="/RewardComputeType" component={RewardComputeType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
 
@@ -426,7 +428,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/DocumentsFolder" component={DocumentsFolder} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/DocumentsType" component={DocumentsType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/Documents" component={Documents} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
-                                    
+
 
                                     <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
