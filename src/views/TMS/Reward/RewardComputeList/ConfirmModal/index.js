@@ -124,7 +124,7 @@ class ConfirmModalCom extends Component {
                             isautoloaditemfromcache={false}
                             listoption={[
                                 { value: 1, label: "Chốt thưởng" },
-                                { value: 2, label: "Không chốt thưởng" }
+                                { value: 2, label: "Bỏ chốt thưởng" }
                             ]}
                             classNameCustom="customcontrol"
                             readOnly={this.state.IsSystem}

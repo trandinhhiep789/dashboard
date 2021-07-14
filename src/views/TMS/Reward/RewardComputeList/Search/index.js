@@ -181,7 +181,7 @@ class SearchCom extends React.Component {
 
     onhandleUpdateItem(objId) {
 
-        const { gridDataSource } = this.state;
+        const { gridDataSource, SearchData } = this.state;
         const dataFind = gridDataSource.find(n => {
             return n.RewardComputeListID == objId[0].value
         });
@@ -264,6 +264,49 @@ class SearchCom extends React.Component {
             maxWidth: widthPercent + 'px'
         });
     }
+
+    onHandleConfirmList(confirmListID, pkColumnName) {
+        const { gridDataSource, SearchData } = this.state;
+        let listMLObject = [];
+        confirmListID.map((row, index) => {
+            let MLObject = {};
+            pkColumnName.map((pkItem, pkIndex) => {
+                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
+            });
+            MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
+            listMLObject.push(MLObject);
+        });
+
+        let isComputed = true;
+
+        const dataFind = gridDataSource.filter(item1 => {
+            return listMLObject.find(item2 => item1.RewardComputeListID == item2.RewardComputeListID)
+        });
+
+
+        dataFind.map((item, index) => {
+            if(!item.IsComputed){
+                isComputed= false
+            }
+        })
+        if (isComputed) {
+            this.props.callFetchAPI(APIHostName, "api/RewardComputeSchedule/AddList", dataFind).then(apiResult => {
+                console.log("addd",dataFind, apiResult)
+                if (!apiResult.IsError) {
+                    this.addNotification(apiResult.Message, apiResult.IsError)
+                    this.callSearchData(SearchData);
+                }
+                else {
+                    this.showMessage(apiResult.Message)
+                }
+            });
+        }
+          else {
+            this.showMessage("Ngày tính thưởng này chưa tính nên không được thêm vào danh sách lịch tính thưởng.")
+        }
+            
+    }
+
     onHandleConfirmListItem(confirmListID, pkColumnName) {
         const { gridDataSource } = this.state;
         let listMLObject = [];
@@ -345,6 +388,10 @@ class SearchCom extends React.Component {
                     ref={this.gridref}
                     IsUpdateListItem={true}
                     onUpdateListItem={this.onHandleConfirmListItem.bind(this)}
+                    TitleUpdateListItem="Chốt thưởng"
+                    IsUpdateList={true}
+                    onUpdateList={this.onHandleConfirmList.bind(this)}
+                    TitleUpdateList="Thêm lịch tính thưởng"
 
                 />
             </React.Fragment>

@@ -284,7 +284,20 @@ export const DataGridColumnItemListRPTDetail = [
         DataSourceMember: "RewardPriceWithoutInstall",
         Width: 100
     },
-
+    {
+        Name: "UpdatedDate",
+        Type: "date",
+        Caption: "Ngày cập nhật",
+        DataSourceMember: "UpdatedDate",
+        Width: 100
+    },
+    {
+        Name: "UpdatedUserFullName",
+        Type: "text",
+        Caption: "Người cập nhật",
+        DataSourceMember: "UpdatedUserFullName",
+        Width: 100
+    },
     {
         Name: "Action",
         Type: "editnew",
@@ -421,7 +434,20 @@ export const DataGridColumnItemListRPTException = [
         DataSourceMember: "RewardPriceWithoutInstall",
         Width: 100
     },
-
+    {
+        Name: "UpdatedDate",
+        Type: "date",
+        Caption: "Ngày cập nhật",
+        DataSourceMember: "UpdatedDate",
+        Width: 100
+    },
+    {
+        Name: "UpdatedUserFullName",
+        Type: "text",
+        Caption: "Người cập nhật",
+        DataSourceMember: "UpdatedUserFullName",
+        Width: 100
+    },
     {
         Name: "Action",
         Type: "editnew",

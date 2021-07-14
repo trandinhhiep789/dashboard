@@ -641,21 +641,66 @@ $font-weight-600: 600;
     }
 }
 
-.row {
-    .page-detail {
-        .Collapsible {
+.page-detail {
+    .Collapsible {
 
-            .card-body {
-                .form-row {
-                    .table-responsive {
-                        .table {
-                            .row-main-product {
-                                background-color: #ececec;
-                            }
+        .card-body {
+            .form-row {
+                .table-responsive {
+                    .table {
+                        .row-main-product {
+                            background-color: #ececec;
                         }
                     }
                 }
             }
+        }
+
+        .groupCOD{
+            display: inline-flex;
+            justify-content: flex-start;
+            align-items: center;
+            .group-changeCOD{
+                border: 1px solid;
+                margin-left: 10px;
+                border-radius: 3px;
+                height: 20px;
+                width: 60px;
+                display: inline-flex;
+                justify-content: space-around;
+                align-items: center;
+                border-color: transparent;
+                button{
+                    height: 100%;
+                    padding: 0;
+                    border: none;
+                    width: 50%;
+                    text-align: center;
+                    display: inline-flex;
+                    justify-content: center;
+                    align-items: center;
+                    &.btn-history{
+                        background: #58575a;
+                        border-radius: 3px 0 0 3px;
+                        color: #fff;
+                        &:hover{
+                            background: #333;
+                        }
+                    }
+                    &.btn-update{
+                        background: #1c9536;
+                        color: #fff;
+                        border-radius: 0 3px 3px 0;
+                        &:hover{
+                            background: #333;
+                        }
+                    }
+                    i{
+                        font-size: 10px;
+                    }
+                }
+            }
+            
         }
     }
 }
