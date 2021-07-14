@@ -124,5 +124,14 @@ export const listColumn = [
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
         Width: 200
+    },
+    {
+        Name: "Action",
+        Type: "link",
+        Caption: "Tác vụ",
+        DataSourceMember: "FuelSubsidizePeriodID",
+        Width: 100,
+        Link: "/FuelSubsIDizePeriod/Edit/",
+        LinkText: "Chỉnh sửa"
     }
 ]

@@ -6,6 +6,7 @@ import {
 import { connect } from "react-redux";
 import Search from "./Search";
 import Add from "./Add";
+import Edit from "./Edit";
 import NotFound from '../../../NotFound';
 
 class FuelSubsIDizePeriodCom extends React.Component {
@@ -18,6 +19,7 @@ class FuelSubsIDizePeriodCom extends React.Component {
             <Switch>
                 <Route exact path="/FuelSubsIDizePeriod" component={Search} />
                 <Route exact path="/FuelSubsIDizePeriod/Add" component={Add} />
+                <Route exact path="/FuelSubsIDizePeriod/Edit/:id" component={Edit} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );

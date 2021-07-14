@@ -1,13 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
-import ReactNotification from "react-notifications-component";
 import { Modal, ModalManager, Effect } from 'react-dynamic-modal';
 import { DatePicker } from 'antd';
 import moment from 'moment';
 
-import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
 import { MessageModal } from "../../../../../common/components/Modal";
-import DataGrid from "../../../../../common/components/DataGrid";
 import { PagePath, APIHostName, APIAdd, dtFromDate } from "./constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -115,10 +112,14 @@ class AddCom extends React.Component {
             ToDate: stateDates[1],
             Note: stateNote
         };
-        console.log(postData)
-        // return
+
         this.props.callFetchAPI(APIHostName, APIAdd, postData).then(apiResult => {
-            this.showMessage(apiResult.Message);
+            if (!apiResult.IsError) {
+                this.showMessage(apiResult.Message);
+                this.props.history.push("/FuelSubsIDizePeriod");
+            } else {
+                this.showMessage(apiResult.Message);
+            }
         });
     }
 
