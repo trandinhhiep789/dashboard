@@ -1085,6 +1085,13 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
+            {
+                MenuName: 'TMSFuelSubsidize',
+                MenuTitle: 'Phụ cấp xăng',
+                LinkTo: '/TMSFuelSubsidize',
+                MenuIcon: '',
+                SubMenu: []
+            },
         ]
     },
     {

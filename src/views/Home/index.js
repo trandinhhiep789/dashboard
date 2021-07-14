@@ -172,6 +172,7 @@ import MonthlySaleOrder from "../TMS/ReportShipmentOrder/MonthlySaleOrder";
 import Documents from "../TMS/Documents";
 import DocumentsType from "../TMS/MD/DocumentType";
 import DocumentsFolder from "../TMS/MD/DocumentFolder";
+import TMSFuelSubsidize from "../TMS/MD/TMSFuelSubsidize";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -426,7 +427,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/DocumentsFolder" component={DocumentsFolder} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/DocumentsType" component={DocumentsType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/Documents" component={Documents} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
-                                    
+                                    <PrivateRoute path="/TMSFuelSubsidize" component={TMSFuelSubsidize} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
