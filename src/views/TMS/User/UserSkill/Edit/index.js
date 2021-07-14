@@ -255,6 +255,7 @@ class EditCom extends React.Component {
                                                     isMultiSelect={false}
                                                     datasourcemember="User"
                                                     validationErrorMessage={''}
+                                                    isCheckPartner={true}
                                                 />
                                             </div>
 
