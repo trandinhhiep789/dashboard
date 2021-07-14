@@ -174,6 +174,7 @@ class SearchCom extends React.Component {
                     onSubmit={this.handleSearchSubmit.bind(this)}
                     onExportSubmit={this.handleSearchSubmit.bind(this)}
                     ref={this.searchref}
+                    colGroupAction={8}
                     className="multiple"
                 />
             </React.Fragment>
