@@ -4,7 +4,8 @@ import { ValidationField } from "../../../library/validation";
 import MultiSelectUserComboBox from "../FormControl/MultiSelectComboBox/MultiSelectUserComboBox";
 import ProductComboBox from "../FormControl/MultiSelectComboBox/ProductComboBox";
 import MultiTreeSelect from '../FormControl/MultiSelectComboBox/MultiTreeSelect'
-import MultiStoreSearchComboBox from '../FormControl/MultiSelectComboBox/MultiStoreSearchComboBox'
+import MultiStoreSearchComboBox from '../FormControl/MultiSelectComboBox/MultiStoreSearchComboBox';
+import ReactTooltip from 'react-tooltip';
 
 export default class SearchForm extends Component {
     constructor(props) {
@@ -375,8 +376,13 @@ export default class SearchForm extends Component {
                             // && <button type="button" className="btn btn-history ml-1"  onClick={this.handlehistorySubmit.bind(this)} title="" data-provide="tooltip" data-original-title="Xem lịch sử">
                             //     <i className="ti-eye"> Lịch sử tải</i>
                             // </button>
+                            <React.Fragment>
+                                <button data-tip data-for="btn-historyExport" data-id="btn-historyExport"  type="button" onClick={this.handlehistorySubmit.bind(this)} className="btn btn-square btn-git ml-1"><i className="ti-eye"></i></button>
+                                <ReactTooltip id="btn-historyExport" type='warning'>
+                                    <span>Lịch sử xuất dữ liệu</span>
+                                </ReactTooltip>
+                            </React.Fragment>
 
-                            <button type="button" onClick={this.handlehistorySubmit.bind(this)} className="btn btn-square btn-git ml-1"><i className="ti-eye"></i></button>
 
                         }
 
