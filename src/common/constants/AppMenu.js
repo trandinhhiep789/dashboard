@@ -1092,6 +1092,13 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
+            {
+                MenuName: 'TMSFuelSubsidizeCompute',
+                MenuTitle: 'Tính phụ cấp xăng',
+                LinkTo: '/TMSFuelSubsidizeCompute',
+                MenuIcon: '',
+                SubMenu: []
+            },
         ]
     },
     {
