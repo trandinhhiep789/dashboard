@@ -117,6 +117,12 @@ import OverdueStaffDebt from '../TMS/ReportShipmentOrder/OverdueStaffDebt';
 import ControlStatusReport from '../TMS/ReportShipmentOrder/ControlStatusReport';
 import CrossCheckReport from '../TMS/ReportShipmentOrder/CrossCheckReport';
 
+import QualityReportAll from '../TMS/ReportShipmentOrder/QualityReport/QualityReportAll';
+import QualityReportBranch from '../TMS/ReportShipmentOrder/QualityReport/QualityReportBranch';
+import QualityReportMainGroup from '../TMS/ReportShipmentOrder/QualityReport/QualityReportMainGroup';
+import QualityReportUser from '../TMS/ReportShipmentOrder/QualityReport/QualityReportUser';
+
+
 import RewardShipmentOrderByType from "../TMS/Reward/RewardShipmentOrderByType";
 import RewardShipmentOrder from "../TMS/Reward/RewardShipmentOrder";
 import OtherRewardTotal from "../TMS/Reward/OtherRewardTotal";
@@ -337,6 +343,10 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/ControlStatusReport" component={ControlStatusReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/CrossCheckReport" component={CrossCheckReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
+                                    <PrivateRoute path="/QualityReportAll" component={QualityReportAll} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/QualityReportBranch" component={QualityReportBranch} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/QualityReportMainGroup" component={QualityReportMainGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/QualityReportUser" component={QualityReportUser} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="/RewardShipmentOrderByType" component={RewardShipmentOrderByType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/RewardShipmentOrder" component={RewardShipmentOrder} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />

@@ -3,15 +3,15 @@ import { connect } from 'react-redux';
 import ReactNotification from "react-notifications-component";
 import { ModalManager } from 'react-dynamic-modal';
 
-import { updatePagePath } from "../../../../../actions/pageAction";
+import { updatePagePath } from "../../../../../../actions/pageAction";
 import {
     APIHostName, PagePath, SearchElementList,
     SearchMLObjectDefinition, SearchAPIPath
 } from '../constants';
-import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
-import DataGrid from "../../../../../common/components/DataGrid";
-import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
-import { MessageModal } from "../../../../../common/components/Modal";
+import SearchForm from "../../../../../../common/components/FormContainer/SearchForm";
+import DataGrid from "../../../../../../common/components/DataGrid";
+import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
+import { MessageModal } from "../../../../../../common/components/Modal";
 
 export class Search extends Component {
     constructor(props) {
