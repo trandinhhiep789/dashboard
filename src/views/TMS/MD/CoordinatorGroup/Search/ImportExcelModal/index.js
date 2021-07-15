@@ -132,7 +132,7 @@ class ImportExcelModalCom extends React.Component {
                     ]
                 }
             }, []);
-            arrCoordinatorGroupMember.sort((a, b) => a.CoordinatorGroupID - b.CoordinatorGroupID);
+            arrCoordinatorGroupMember.sort((a, b) => b.IsError - a.IsError || a.CoordinatorGroupID - b.CoordinatorGroupID);
 
             const arrCoordinatorGroupDUser = CoordinatorGroupDUser.reduce((acc, val, index) => {
                 if (index == 0) {
@@ -163,7 +163,7 @@ class ImportExcelModalCom extends React.Component {
                     ]
                 }
             }, []);
-            arrCoordinatorGroupDUser.sort((a, b) => a.CoordinatorGroupID - b.CoordinatorGroupID);
+            arrCoordinatorGroupDUser.sort((a, b) => b.IsError - a.IsError || a.CoordinatorGroupID - b.CoordinatorGroupID);
 
             this.setState({
                 stateCoordinatorGroupMember: arrCoordinatorGroupMember,
