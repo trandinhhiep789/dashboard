@@ -7,52 +7,45 @@ export const PagePath = [
 
 export const SearchAPIPath = "api/...";
 
+import moment from 'moment';
+var yesterday = moment().subtract(1, 'day');
+var valid = function (current) {
+    // return current.isAfter(yesterday);
+    return current.isBefore(yesterday);
+    //return current.day() !== 0 && current.day() !== 6;
+};
+
 export const SearchElementList = [
     {
         type: "Datetime",
         label: "Từ ngày",
-        name: "cbStartDate",
-        DataSourceMember: "StartDate",
+        name: "cbFromDate",
+        DataSourceMember: "FromDate",
         placeholder: "Từ ngày",
         value: new Date(),
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
-        classNameCol: "col-custom"
+        classNameCol: "col-custom",
+        isValidDate: valid,
     },
     {
         type: "Datetime",
         label: "Đến ngày",
-        name: "cbEndDate",
-        DataSourceMember: "EndDate",
+        name: "cbToDate",
+        DataSourceMember: "ToDate",
         placeholder: "Đến ngày",
         value: new Date(),
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
+        isValidDate: valid,
         classNameCol: "col-custom"
     },
+    
     {
         type: "ComboBox",
-        label: "Nhóm kho",
-        name: "cbStore",
-        DataSourceMember: "Store",
-        colspan: 2,
-        value: -1,
-        isMultiSelect: false,
-        placeholder: "---Kho điều phối---",
-        listoption: [],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
-        ValueMember: "StoreID",
-        NameMember: "StoreName",
-        filterValue: 10,
-        filterobj: "CompanyID",
-        classNameCol: "col-custom"
-    },
-    {
-        type: "ComboBox",
-        name: "cbAreaID",
+        name: "cbArea",
         DataSourceMember: "AreaID",
         label: "Khu vực",
         colspan: 2,
@@ -65,49 +58,125 @@ export const SearchElementList = [
         ValueMember: "AreaID",
         NameMember: "AreaName"
     },
+  
     {
-        type: "MultiSelectUser",
-        name: "cbUser",
-        DataSourceMember: "User",
-        label: "Nhân viên",
-        colspan: 12,
-        rowspan: 3,
-        labelcolspan: 12,
-        IsLabelDiv: true,
+        type: "ComboBox",
+        name: "cbMainGroup",
+        label: "Ngành hàng",
         value: -1,
-        placeholder: "---Chọn nhân viên---",
+        colspan: 2,
+        placeholder: "",
+        icon: "",
         listoption: [],
+        datasourcemember: "MainGroupID",
+        readonly: false,
+        // validatonList: ["Comborequired"],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.MAINGROUP",
+        ValueMember: "MainGroupID",
+        NameMember: "MainGroupName",
+        filterrest: "cbSubGroup",
+        OrderIndex: 5
+    },
+    {
+        type: "ComboBox",
+        name: "cbSubGroup",
+        label: "Nhóm hàng",
+        value: -1,
+        colspan: 2,
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        datasourcemember: "SubGroupID",
+        readonly: false,
+        // validatonList: ["Comborequired"],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.SUBGROUP",
+        ValueMember: "SubGroupID",
+        NameMember: "SubGroupName",
+        filterName: "cbMainGroup",
+        filterValue: "",
+        filterobj: "MainGroupID",
+        filterrest: "",
+        OrderIndex: 6
+    },
+  
+    {
+        type: "ComboBox",
+        name: "cbReportQualityType",
+        DataSourceMember: "ReportQualityTypeID",
+        label: "Loại báo cáo",
+        colspan: 2,
+        value: 1,
+        isMultiSelect: false,
+        placeholder: "--Tất cả--",
+        listoption: [
+            { value: 1, label: 'Báo cáo chất lượng toàn quốc' },
+            { value: 2, label: 'Báo cáo tổng hợp các ngành hàng, nhóm hàng' },
+            { value: 3, label: 'Báo cáo theo chi nhánh' },
+            { value: 4, label: 'Báo cáo tổng hợp theo chi nhánh' },
+            { value: 5, label: 'Báo cáo theo user' },
+        ],
+        ValueMember: "ReportQualityTypeID",
+        NameMember: "ReportQualityTypeName"
+
+    },
+
+    {
+        type: "MGCOOMultiTreeSelect",
+        name: "cbMonthlyCoordGropup",
+        DataSourceMember: "MonthlyCoordGropupID",
+        label: "Danh sách nhóm",
+        colspan: 3,
+        rowspan: 2,
+        value: -1,
+        maxTagCount: 1,
+        IsLabelDiv: true,
+        isMultiSelect: false,
+        placeholder: "---Vui lòng chọn---",
         IsAutoLoadItemFromCache: false,
-        isMultiSelect: true,
-        IsPermission: false,
-        // PermissionKey:
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.AREA",
+        ValueMember: "MonthlyCoordGropupID",
+        NameMember: "MonthlyCoordGropupName",
+        listoption: [],
+        classNameCol: "col-custom"
     },
 ];
 
 export const SearchMLObjectDefinition = [
     {
-        Name: "StartDate",
+        Name: "FromDate",
         DefaultValue: "",
-        BindControlName: "cbStartDate"
+        BindControlName: "cbFromDate"
     },
     {
-        Name: "EndDate",
+        Name: "ToDate",
         DefaultValue: "",
-        BindControlName: "cbEndDate"
+        BindControlName: "cbToDate"
     },
     {
-        Name: "Store",
+        Name: "ReportQualityTypeID",
         DefaultValue: "",
-        BindControlName: "cbStore"
+        BindControlName: "cbReportQualityType"
     },
     {
         Name: "AreaID",
         DefaultValue: "",
-        BindControlName: "cbAreaID"
+        BindControlName: "cbArea"
     },
     {
-        Name: "User",
+        Name: "MainGroupID",
         DefaultValue: "",
-        BindControlName: "cbUser"
-    }
+        BindControlName: "cbMainGroup"
+    },
+    {
+        Name: "SubGroupID",
+        DefaultValue: "",
+        BindControlName: "cbSubGroup"
+    },
+    {
+        Name: "MonthlyCoordGropupID",
+        DefaultValue: "",
+        BindControlName: "cbMonthlyCoordGropup"
+    },
 ];

@@ -14,6 +14,7 @@ import { MODAL_TYPE_VIEW } from "../../../constants/actionTypes";
 import { showModal, hideModal } from '../../../actions/modal';
 import { TreeSelect, DatePicker } from 'antd';
 import SOPrintTemplate from "../../../common/components/PrintTemplate/SOPrintTemplate";
+import ContentModalRight from "./components/ContentModalRight";
 const { SHOW_PARENT } = TreeSelect;
 
 const treeData = [
@@ -80,7 +81,7 @@ class PageUICom extends React.Component {
 
     updateWindowDimensions = () => {
         this.setState({
-            widthPercent: (window.innerWidth * 35) / 100
+            widthPercent: (window.innerWidth * 70) / 100
         })
     };
 
@@ -96,12 +97,13 @@ class PageUICom extends React.Component {
         const { widthPercent } = this.state;
         console.log("widthPercent", widthPercent)
         this.props.showModal(MODAL_TYPE_VIEW, {
-            title: "aaa",
+            title: "Phân tuyến đơn hàng",
+            isShowOverlay: false,
             content: {
-                text: <div>aaa aaa aaa</div>
+                text: <ContentModalRight />
 
             },
-            maxWidth: '500px'
+            maxWidth: widthPercent + 'px'
         });
     }
 
@@ -313,7 +315,7 @@ class PageUICom extends React.Component {
                                             <div className="input-group">
                                                 <button id="btnUserCoordinator" type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info mr-10" title="" data-provide="tooltip" data-original-title="Thêm">
                                                     <i className="fa fa-plus"></i> Gán NV giao hàng
-                                            </button>
+                                                </button>
                                                 <div className="groupActionRemember mr-10">
                                                     <button type="button" className="btn " title="" data-provide="tooltip" data-original-title="Ghi nhớ">
                                                         <i className="fa fa-save"></i>
