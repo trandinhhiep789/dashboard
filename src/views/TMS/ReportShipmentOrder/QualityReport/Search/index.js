@@ -145,6 +145,28 @@ export class Search extends Component {
             AreaID: -1
         }
 
+        this.setState({
+            IsLoadDataComplete: false
+        });
+
+        const listoption = [
+
+            { value: 1, label: 'Báo cáo chất lượng toàn quốc' },
+            { value: 2, label: 'Báo cáo tổng hợp các ngành hàng, nhóm hàng' },
+
+        ];
+        let _SearchElementList = this.state.SearchElementList;
+        _SearchElementList.forEach(function (objElement) {
+            if (objElement.type == 'MGCOOMultiTreeSelect') {
+                objElement.listoption = listoption;
+                objElement.value = -1;
+            }
+        });
+
+        this.setState({
+            SearchElementList: _SearchElementList,
+            IsLoadDataComplete: true
+        });
 
 
     }

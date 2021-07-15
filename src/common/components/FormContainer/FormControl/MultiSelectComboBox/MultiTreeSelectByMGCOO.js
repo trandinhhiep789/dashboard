@@ -58,13 +58,20 @@ class MultiTreeSelectCom extends React.Component {
             this.setState({ SelectedOption: aa });
         }
     }
+
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) // Check if it's a new user, you can also use some unique property, like the ID
         {
             const aa = this.bindcombox(nextProps.value, this.state.ListOption);
             this.setState({ SelectedOption: aa });
         }
+
+        if (JSON.stringify(this.props.listoption) !== JSON.stringify(nextProps.listoption)) // Check if it's a new user, you can also use some unique property, like the ID
+        {   
+            this.setState({ ListOption: nextProps.listoption });
+        }
     }
+    
     bindcombox(value, listOption) {
         let values = value;
         let selectedOption = [];
@@ -145,7 +152,7 @@ class MultiTreeSelectCom extends React.Component {
                 return item.title.toLowerCase().indexOf(search.toLowerCase()) >= 0;
             }
         };
-        console.log("multi", this.props)
+       
         return (
             <div className={formRowClassName} >
                 {
