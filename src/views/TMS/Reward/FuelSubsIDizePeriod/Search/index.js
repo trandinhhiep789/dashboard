@@ -2,18 +2,24 @@ import React from "react";
 import { connect } from "react-redux";
 import ReactNotification from "react-notifications-component";
 import { Modal, ModalManager, Effect } from 'react-dynamic-modal';
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+import readXlsxFile from 'read-excel-file';
+import moment from 'moment';
 
 import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
 import { MessageModal } from "../../../../../common/components/Modal";
 import DataGrid from "../../../../../common/components/DataGrid";
 import {
     PagePath, listColumn, APIHostName, MLObjectDefinition, listelement, initSearchArgument,
-    APISearch, APIDeleteList
+    APISearch, APIDeleteList, APIExportFile, DataTemplateExport, schema
 } from "./constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
+import ImportExcelModalCom from './ImportExcelModal';
+import { MODAL_TYPE_COMMONTMODALS } from '../../../../../constants/actionTypes';
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -29,10 +35,18 @@ class SearchCom extends React.Component {
         this.gridref = React.createRef();
         this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
-        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+        this.showMessage = this.showMessage.bind(this);
+        this.addNotification = this.addNotification.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
+        this.callImportFile = this.callImportFile.bind(this);
+        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleChangePage = this.handleChangePage.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleExportFile = this.handleExportFile.bind(this);
+        this.handleImportFile = this.handleImportFile.bind(this);
+        this.handleExportFileTemplate = this.handleExportFileTemplate.bind(this);
+        this.handleSetImportData = this.handleSetImportData.bind(this);
+        this.handleCheckErrorImportFile = this.handleCheckErrorImportFile.bind(this);
     }
 
     componentDidMount() {
@@ -92,6 +106,16 @@ class SearchCom extends React.Component {
                 this.setState({
                     stateDataSource: setResultObject
                 })
+            } else {
+                this.showMessage(apiResult.Message);
+            }
+        });
+    }
+
+    callImportFile(postData) {
+        this.props.callFetchAPI(APIHostName, APISearch, postData).then(apiResult => {
+            if (!apiResult.IsError) {
+
             } else {
                 this.showMessage(apiResult.Message);
             }
@@ -160,6 +184,161 @@ class SearchCom extends React.Component {
         });
     }
 
+    handleExportFile() {
+        const { stateInitSearchArgument } = this.state;
+        const postData = stateInitSearchArgument.filter(item => {
+            return item.SearchKey != "@PAGENUMBER" && item.SearchKey != "@PAGESIZE";
+        })
+
+        this.props.callFetchAPI(APIHostName, APIExportFile, postData).then(apiResult => {
+            if (!apiResult.IsError) {
+                const arrExportData = apiResult.ResultObject.map(item => {
+                    return {
+                        "Nhân viên": `${item.UserName} - ${item.UserFullName}`,
+                        "Từ ngày": moment(item.FromDate).format("DD/MM/YYYY"),
+                        "Đến ngày": moment(item.ToDate).format("DD/MM/YYYY"),
+                        "Nhân viên tạo": `${item.CreatedUser} - ${item.CreatedUserFullName}`,
+                        "Ngày tạo": moment(item.CreatedDate).format("DD/MM/YYYY"),
+                        "Ghi chú": item.Note
+                    }
+                })
+
+                const ws = XLSX.utils.json_to_sheet(arrExportData);
+
+                const wb = {
+                    Sheets: { "Sheet1": ws },
+                    SheetNames: ["Sheet1"]
+                };
+                const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+                const data = new Blob(
+                    [excelBuffer],
+                    { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' }
+                );
+                FileSaver.saveAs(data, "Danh sách khoảng thời gian nhân viên được phụ cấp xăng.xlsx");
+
+                this.addNotification("Xuất file thành công!", false);
+            } else {
+                this.addNotification("Xuất file lỗi!", true);
+            }
+        });
+    }
+
+    handleExportFileTemplate() {
+        try {
+            const ws = XLSX.utils.json_to_sheet([{}]);
+            XLSX.utils.sheet_add_json(ws, DataTemplateExport);
+
+            const wb = {
+                Sheets: { "Sheet1": ws },
+                SheetNames: ["Sheet1"]
+            };
+            const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+            const data = new Blob(
+                [excelBuffer],
+                { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' }
+            );
+            FileSaver.saveAs(data, "Mẫu danh sách khoảng thời gian nhân viên được phụ cấp xăng.xlsx");
+
+            this.addNotification("Xuất file thành công!", false);
+        } catch (error) {
+            this.addNotification("Lỗi xuất file!", true);
+        }
+    }
+
+    handleCheckErrorImportFile(rows) {
+        //kiểm tra những row lỗi cơ bản
+        const patternUserName = /^[0-9]{4,}$/;
+        const arrRows = rows.map(item => {
+            let IsError = false, MessageError = "";
+            if (!item.UserName || !patternUserName.test(item.UserName)) {
+                IsError = true;
+                MessageError = "Mã User không hợp lệ";
+            } else if (!item.FromDate) {
+                IsError = true;
+                MessageError = "Cột từ ngày không hợp lệ";
+            } else if (!item.ToDate) {
+                IsError = true;
+                MessageError = "Cột đến ngày không hợp lệ";
+            } else if (item.FromDate.getTime() > item.ToDate.getTime()) {
+                IsError = true;
+                MessageError = "Khoảng thời gian không hợp lệ";
+            }
+            return {
+                ...item,
+                IsError,
+                MessageError
+            }
+        });
+        arrRows.sort((a, b) => b.IsError - a.IsError || a.UserName - b.UserName || a.FromDate - b.FromDate);
+
+        //lấy danh sách user không bị lỗi
+        const arrNoError = arrRows.filter(item => !item.IsError);
+
+        //Nhóm item có cùng username
+        const objGroupUser = arrNoError.reduce((result, currentValue) => {
+            ((result[currentValue.UserName] = result[currentValue.UserName] || [])).push(currentValue);
+            return result;
+        }, {});
+
+        //in ra object mã user cùng trạng thái lỗi có hay không
+        let objIsTimeOverlap = {};
+        for (const key in objGroupUser) {
+            if (Object.hasOwnProperty.call(objGroupUser, key)) {
+                const element = objGroupUser[key];
+
+                const isTimeOverlap = element.some((item, index) => {
+                    if (index == 0) return false;
+                    else return item.FromDate.getTime() < element[index - 1].ToDate.getTime()
+                })
+                objIsTimeOverlap[key] = isTimeOverlap;
+            }
+        }
+
+        //lấy danh sách user bị lỗi
+        const arrError = arrRows.filter(item => item.IsError);
+
+        //update lại danh sách user không bị lỗi (gán lỗi cho những row có khoảng thời gian trùng nhau)
+        const arrUpdateNoError = arrNoError.map(item => {
+            return {
+                ...item,
+                IsError: objIsTimeOverlap[item.UserName],
+                MessageError: objIsTimeOverlap[item.UserName] ? "Trùng khoảng thời gian" : ""
+            }
+        })
+
+        //update lại danh sách user import
+
+        this.handleSetImportData([...arrError, ...arrUpdateNoError]);
+    }
+
+    handleImportFile(event) {
+        const input = document.getElementById("inputImportFile");
+        input.click();
+
+        input.addEventListener("change", () => {
+            readXlsxFile(input.files[0], { schema }).then(({ rows, errors }) => {
+                this.handleCheckErrorImportFile(rows);
+            }).catch(error => {
+                console.log(error)
+                alert("File vừa chọn lỗi. Vui lòng chọn file khác");
+            }).finally(() => {
+                input.value = "";
+            });
+        }, { once: true })
+    }
+
+    handleSetImportData(exportData) {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Kết quả nhập từ excel',
+            content: {
+                text: <ImportExcelModalCom
+                    propsExportData={exportData}
+                />
+            },
+            maxWidth: '1000px'
+        })
+    }
+
     render() {
         const { stateDataSource, statePageNumber } = this.state;
         if (stateDataSource == null) {
@@ -190,16 +369,23 @@ class SearchCom extends React.Component {
                         IsShowButtonDelete={true}
                         IsDelete={true}
                         onDeleteClick={this.handleDelete}
-                        IsShowButtonPrint={false}
-                        IsPrint={false}
-                        IsExportFile={false}
+                        IsExportFile={true}
+                        onExportFile={this.handleExportFile}
                         IsAutoPaging={true}
                         RowsPerPage={50}
                         PageNumber={statePageNumber}
                         isPaginationServer={true}
                         onChangePage={this.handleChangePage}
                         ref={this.gridref}
+
+                        propsIsCustomXLSX={true}
+                        IsImportFile={true}
+                        onImportFile={this.handleImportFile}
+                        isExportFileTemplate={true}
+                        onExportFileTemplate={this.handleExportFileTemplate}
                     />
+
+                    <input type="file" id="inputImportFile" style={{ display: "none" }} />
                 </React.Fragment>
             );
         }
