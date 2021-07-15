@@ -75,7 +75,7 @@ export const SearchElementList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.MAINGROUP",
         ValueMember: "MainGroupID",
         NameMember: "MainGroupName",
-        filterrest: "cbSubGroupID",
+        filterrest: "cbSubGroup",
         OrderIndex: 5
     },
     {
@@ -134,11 +134,11 @@ export const SearchElementList = [
         IsLabelDiv: true,
         isMultiSelect: false,
         placeholder: "---Vui lòng chọn---",
-        listoption: [],
-        IsAutoLoadItemFromCache: true,
+        IsAutoLoadItemFromCache: false,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.AREA",
-        ValueMember: "AreaID",
-        NameMember: "AreaName",
+        ValueMember: "MonthlyCoordGropupID",
+        NameMember: "MonthlyCoordGropupName",
+        listoption: [],
         classNameCol: "col-custom"
     },
 ];
@@ -157,7 +157,7 @@ export const SearchMLObjectDefinition = [
     {
         Name: "ReportQualityTypeID",
         DefaultValue: "",
-        BindControlName: "cbReportQualityTypeID"
+        BindControlName: "cbReportQualityType"
     },
     {
         Name: "AreaID",
@@ -175,7 +175,7 @@ export const SearchMLObjectDefinition = [
         BindControlName: "cbSubGroup"
     },
     {
-        Name: "MonthlyCoordGropupaID",
+        Name: "MonthlyCoordGropupID",
         DefaultValue: "",
         BindControlName: "cbMonthlyCoordGropup"
     },

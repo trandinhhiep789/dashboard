@@ -24,6 +24,8 @@ export class Search extends Component {
             iconNotification: "",
             dataSource: [],
             ReportQualityTypeID: 1,
+            SearchElementList: SearchElementList,
+            IsLoadDataComplete: false
         }
 
         this.searchref = React.createRef();
@@ -36,7 +38,34 @@ export class Search extends Component {
     componentDidMount() {
         this.props.updatePagePath(PagePath);
         // this.showMessage("Tính năng đang phát triển");
-    };
+
+        const listoption = [
+
+            { value: 1, label: 'Báo cáo chất lượng toàn quốc' },
+            { value: 2, label: 'Báo cáo tổng hợp các ngành hàng, nhóm hàng' },
+            { value: 3, label: 'Báo cáo theo chi nhánh' },
+            { value: 4, label: 'Báo cáo tổng hợp theo chi nhánh' },
+            { value: 5, label: 'Báo cáo theo user' },
+
+        ];
+        let _SearchElementList = this.state.SearchElementList;
+        _SearchElementList.forEach(function (objElement) {
+            if (objElement.type == 'MGCOOMultiTreeSelect') {
+                objElement.listoption = listoption;
+                objElement.value = -1;
+            }
+        });
+
+        this.setState({
+            SearchElementList: _SearchElementList,
+            IsLoadDataComplete: true
+        });
+
+        // this.props.callFetchAPI(APIHostName, "", postData).then(apiResult => {
+        //     this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderStatusGroupID').value = this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : "1,2,3"
+        // });
+        // this.state.SearchElementList.find(n => n.name == 'cbMonthlyCoordGropup').listoption = listoption;
+    }
 
     showMessage(message) {
         ModalManager.open(<MessageModal title="Thông báo"
@@ -110,6 +139,14 @@ export class Search extends Component {
     }
     handleChangeSearch(FormData, MLObject) {
         console.log("change", FormData, MLObject)
+        const postData = {
+            FromDate: "",
+            ToDate: "",
+            AreaID: -1
+        }
+
+
+
     }
 
     renderGirdData() {
@@ -117,7 +154,7 @@ export class Search extends Component {
         let girdData;
         switch (ReportQualityTypeID) {
             case 1:
-                girdData = <QuanlityReportAll dataSource = {[]} />
+                girdData = <QuanlityReportAll dataSource={[]} />
                 break;
             default:
                 break;
@@ -128,38 +165,46 @@ export class Search extends Component {
     render() {
 
         let girdData = this.renderGirdData();
-
-        return (
-            <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
-
-                <SearchForm
-                    FormName="Tìm kiếm báo cáo chất lượng dịch vụ"
-                    listelement={SearchElementList}
-                    MLObjectDefinition={SearchMLObjectDefinition}
-                    onSubmit={this.handleSearchSubmit}
-                    ref={this.searchref}
-                    colGroupAction={9}
-                    IsButtonExport={true}
-                    IsButtonhistory={true}
-                    onHistorySubmit={this.handleHistorySearch.bind(this)}
-                    onExportSubmit={this.handleExportSubmit.bind(this)}
-                    onchange={this.handleChangeSearch.bind(this)}
-                    className="multiple"
-                />
-
-                <div className="col-lg-12">
-                    <div className="card">
-                        <div className="card-body">
-                            <div className=" table-responsive">
-                                {girdData}
+        console.log("state", this.state.SearchElementList)
+        if (this.state.IsLoadDataComplete) {
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
+    
+                    <SearchForm
+                        FormName="Tìm kiếm báo cáo chất lượng dịch vụ"
+                        listelement={this.state.SearchElementList}
+                        MLObjectDefinition={SearchMLObjectDefinition}
+                        onSubmit={this.handleSearchSubmit}
+                        ref={this.searchref}
+                        colGroupAction={9}
+                        IsButtonExport={true}
+                        IsButtonhistory={true}
+                        onHistorySubmit={this.handleHistorySearch.bind(this)}
+                        onExportSubmit={this.handleExportSubmit.bind(this)}
+                        onchange={this.handleChangeSearch.bind(this)}
+                        className="multiple "
+                    />
+    
+                    <div className="col-lg-12">
+                        <div className="card">
+                            <div className="card-body">
+                                <div className=" table-responsive">
+                                    {girdData}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
+    
+                </React.Fragment>
+            )
+        }
+        return (
+            <React.Fragment>
+                <label>Đang nạp dữ liệu...</label>
             </React.Fragment>
-        )
+        );
+        
     }
 }
 
