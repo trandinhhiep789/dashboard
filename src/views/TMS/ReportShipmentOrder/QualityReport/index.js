@@ -5,12 +5,12 @@ import {
     Switch
 } from "react-router-dom";
 import { connect } from "react-redux";
-import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
+import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import Search from "./Search";
 
-import NotFound from '../../../../NotFound';
+import NotFound from '../../../NotFound';
 
-class QualityReportMainGroupCom extends React.Component {
+class QualityReportCom extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -18,7 +18,7 @@ class QualityReportMainGroupCom extends React.Component {
     render() {
         return (
             <Switch>
-                <Route exact path="/QualityReportMainGroup" component={Search} />
+                <Route exact path="/QualityReport" component={Search} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );
@@ -40,5 +40,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const QualityReportMainGroup = connect(mapStateToProps,mapDispatchToProps)(QualityReportMainGroupCom);
-export default QualityReportMainGroup;
+const QualityReport = connect(mapStateToProps,mapDispatchToProps)(QualityReportCom);
+export default QualityReport;

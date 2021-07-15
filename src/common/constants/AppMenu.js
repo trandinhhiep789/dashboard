@@ -1287,36 +1287,7 @@ const AppMenu = [
                 MenuTitle: 'Báo cáo chất lượng',
                 LinkTo: '/QualityReport',
                 MenuIcon: '',
-                SubMenu: [
-                    {
-                        MenuName: 'QualityReportAll',
-                        MenuTitle: 'Báo cáo toàn quốc',
-                        LinkTo: '/QualityReportAll',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    {
-                        MenuName: 'QualityReportBranch',
-                        MenuTitle: 'Báo cáo theo chi nhánh',
-                        LinkTo: '/QualityReportBranch',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    {
-                        MenuName: 'QualityReportMainGroup',
-                        MenuTitle: 'Báo cáo theo ngàng hàng',
-                        LinkTo: '/QualityReportMainGroup',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    {
-                        MenuName: 'QualityReportUser',
-                        MenuTitle: 'Báo cáo theo nhân viên',
-                        LinkTo: '/QualityReportUser',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                ]
+                SubMenu: []
             },
             {
                 MenuName: 'DebtByUser',
