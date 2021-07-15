@@ -1171,6 +1171,13 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
+            {
+                MenuName: 'FuelSubsIDizePeriod',
+                MenuTitle: 'Danh sách khoảng thời gian nhân viên được phụ cấp xăng',
+                LinkTo: '/FuelSubsIDizePeriod',
+                MenuIcon: '',
+                SubMenu: []
+            },
 
         ]
     },
@@ -1283,6 +1290,13 @@ const AppMenu = [
                 ]
             },
             {
+                MenuName: 'QualityReport',
+                MenuTitle: 'Báo cáo chất lượng',
+                LinkTo: '/QualityReport',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
                 MenuName: 'DebtByUser',
                 MenuTitle: 'Thống kê công nợ theo NV',
                 LinkTo: '/DebtByUser',
@@ -1328,6 +1342,8 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
+
+            
 
 
 

@@ -4,7 +4,8 @@ import { ValidationField } from "../../../library/validation";
 import MultiSelectUserComboBox from "../FormControl/MultiSelectComboBox/MultiSelectUserComboBox";
 import ProductComboBox from "../FormControl/MultiSelectComboBox/ProductComboBox";
 import MultiTreeSelect from '../FormControl/MultiSelectComboBox/MultiTreeSelect'
-import MultiStoreSearchComboBox from '../FormControl/MultiSelectComboBox/MultiStoreSearchComboBox'
+import MultiStoreSearchComboBox from '../FormControl/MultiSelectComboBox/MultiStoreSearchComboBox';
+import ReactTooltip from 'react-tooltip';
 
 export default class SearchForm extends Component {
     constructor(props) {
@@ -127,8 +128,7 @@ export default class SearchForm extends Component {
         }
     }
 
-    handlehistorySubmit()
-    {
+    handlehistorySubmit() {
         if (this.props.onHistorySubmit != null) {
             this.props.onHistorySubmit();
         }
@@ -141,11 +141,13 @@ export default class SearchForm extends Component {
         const listElement = this.props.listelement;
         let cssSearchButton = "";
         let classNamebtnSearch;
+        let colGroupAction = (this.props.colGroupAction == "" || this.props.colGroupAction == undefined) ? 2 : this.props.colGroupAction;
+
         if (this.props.classNamebtnSearch) {
-            classNamebtnSearch = "col-md-2 item  col-custom " + this.props.classNamebtnSearch;
+            classNamebtnSearch = "col-md-" + colGroupAction + " item  col-custom " + this.props.classNamebtnSearch;
         }
         else {
-            classNamebtnSearch = "col-md-2 item  col-custom";
+            classNamebtnSearch = "col-md-" + colGroupAction + " item  col-custom";
         }
         return (
             <div className="row">
@@ -353,25 +355,34 @@ export default class SearchForm extends Component {
                             }
 
                         </button>
-
                         {
                             // this.props.IsButtonExport != undefined && this.props.IsButtonExport == true && <button className="btn btn-export ml-1" type="button" onClick={this.handleExportSubmit.bind(this)}>
                             this.props.IsButtonExport != undefined
-                            && this.props.IsButtonExport == true
-                            && <button
-                                className={this.props.btnExport ? this.props.btnExport : "btn btn-export ml-1"} type="button"
-                                onClick={this.handleExportSubmit.bind(this)}
-                            >
-                                {
-                                    !!this.props.TitleButtonExport ? <span className="ti ti-export"> {this.props.TitleButtonExport}</span> : <span className="ti ti-export"> Xuất dữ liệu</span>
-                                }
+                            && this.props.IsButtonExport == true &&
+                            // && <button
+                            //     className={this.props.btnExport ? this.props.btnExport : "btn btn-export ml-1"} type="button"
+                            //     onClick={this.handleExportSubmit.bind(this)}
+                            // >
+                            //     {
+                            //         !!this.props.TitleButtonExport ? <span className="ti ti-export"> {this.props.TitleButtonExport}</span> : <span className="ti ti-export"> Xuất dữ liệu</span>
+                            //     }
+                            // </button>
+                            <button type="button" className={this.props.btnExport ? this.props.btnExport : "btn btn-label btn-info btn-export-cus  ml-1"} onClick={this.handleExportSubmit.bind(this)}>
+                                <label><i className="ti-export"></i></label> Xuất dữ liệu
                             </button>
                         }
                         {
-                            this.props.IsButtonhistory == true
-                            && <button type="button" className="btn "  onClick={this.handlehistorySubmit.bind(this)} title="" data-provide="tooltip" data-original-title="Xem lịch sử">
-                                <i className="fa fa-history"></i>
-                            </button>
+                            this.props.IsButtonhistory == true &&
+                            // && <button type="button" className="btn btn-history ml-1"  onClick={this.handlehistorySubmit.bind(this)} title="" data-provide="tooltip" data-original-title="Xem lịch sử">
+                            //     <i className="ti-eye"> Lịch sử tải</i>
+                            // </button>
+                            <React.Fragment>
+                                <button data-tip data-for="btn-historyExport" data-id="btn-historyExport"  type="button" onClick={this.handlehistorySubmit.bind(this)} className="btn btn-square btn-git ml-1"><i className="ti-eye"></i></button>
+                                <ReactTooltip id="btn-historyExport" type='warning'>
+                                    <span>Lịch sử xuất dữ liệu</span>
+                                </ReactTooltip>
+                            </React.Fragment>
+
 
                         }
 

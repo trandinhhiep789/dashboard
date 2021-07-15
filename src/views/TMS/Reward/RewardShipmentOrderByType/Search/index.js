@@ -302,6 +302,15 @@ class SearchCom extends React.Component {
         });
     };
 
+    handleHistorySearch() {
+        const { exportTemplateID } = this.state;
+        this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
+            title: "Tải file",
+            maxWidth: '1200px',
+            ParamRequest: { DataExportTemplateID: exportTemplateID }
+        });
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -315,6 +324,9 @@ class SearchCom extends React.Component {
                     className="multiple"
                     IsButtonExport={true}
                     onExportSubmit={this.handleExportFileFormSearch.bind(this)}
+                    IsButtonhistory={true}
+                    colGroupAction={5}
+                    onHistorySubmit={this.handleHistorySearch.bind(this)}
                 />
 
                 <DataGrid
