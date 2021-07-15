@@ -7,6 +7,8 @@ import MultiTreeSelect from '../FormControl/MultiSelectComboBox/MultiTreeSelect'
 import MultiStoreSearchComboBox from '../FormControl/MultiSelectComboBox/MultiStoreSearchComboBox';
 import ReactTooltip from 'react-tooltip';
 
+import MultiTreeSelectByMGCOO from '../FormControl/MultiSelectComboBox/MultiTreeSelectByMGCOO'
+
 export default class SearchForm extends Component {
     constructor(props) {
         super(props);
@@ -327,6 +329,17 @@ export default class SearchForm extends Component {
                                         key={index}
                                     />
                                 );
+                            case "MGCOOMultiTreeSelect":
+                                return (
+                                    <MultiTreeSelectByMGCOO
+                                        onValueChange={this.onValueChange}
+                                        ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                        inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
+                                        {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
+                                        key={index}
+                                    />
+                                );
 
                             case "StoreComboBox":
                                 return (
@@ -377,7 +390,7 @@ export default class SearchForm extends Component {
                             //     <i className="ti-eye"> Lịch sử tải</i>
                             // </button>
                             <React.Fragment>
-                                <button data-tip data-for="btn-historyExport" data-id="btn-historyExport"  type="button" onClick={this.handlehistorySubmit.bind(this)} className="btn btn-square btn-git ml-1"><i className="ti-eye"></i></button>
+                                <button data-tip data-for="btn-historyExport" data-id="btn-historyExport" type="button" onClick={this.handlehistorySubmit.bind(this)} className="btn btn-square btn-git ml-1"><i className="ti-eye"></i></button>
                                 <ReactTooltip id="btn-historyExport" type='warning'>
                                     <span>Lịch sử xuất dữ liệu</span>
                                 </ReactTooltip>

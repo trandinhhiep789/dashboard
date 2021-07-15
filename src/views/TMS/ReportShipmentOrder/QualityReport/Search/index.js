@@ -12,7 +12,9 @@ import SearchForm from "../../../../../common/components/FormContainer/SearchFor
 import DataGrid from "../../../../../common/components/DataGrid";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { MessageModal } from "../../../../../common/components/Modal";
-
+import { MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from '../../../../../constants/actionTypes';
+import { showModal, hideModal } from '../../../../../actions/modal';
+import QuanlityReportAll from '../components/QuanlityReportAll'
 export class Search extends Component {
     constructor(props) {
         super(props);
@@ -20,18 +22,20 @@ export class Search extends Component {
         this.state = {
             cssNotification: "",
             iconNotification: "",
-            dataSource: []
+            dataSource: [],
+            ReportQualityTypeID: 1,
         }
 
         this.searchref = React.createRef();
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.showMessage = this.showMessage.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
+        this.renderGirdData = this.renderGirdData.bind(this)
     };
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
-        this.showMessage("Tính năng đang phát triển");
+        // this.showMessage("Tính năng đang phát triển");
     };
 
     showMessage(message) {
@@ -56,74 +60,99 @@ export class Search extends Component {
     };
 
     handleSearchSubmit(formData, MLObject) {
+        console.log("submit", MLObject)
         const postData = [];
-        this.callSearchData(postData);
+        //this.callSearchData(postData);
     };
 
+    handleHistorySearch() {
+        this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
+            title: "Tải file",
+            maxWidth: '1200px',
+            ParamRequest: { DataExportTemplateID: 3 }
+        });
+    }
+
+    handleExportSubmit(formData, MLObject) {
+        console.log("export", MLObject)
+        const postDataNew = [
+            {
+                SearchKey: "@FROMDATE",
+                SearchValue: MLObject.FromDate
+            },
+            {
+                SearchKey: "@TODATE",
+                SearchValue: MLObject.ToDate
+            },
+
+
+        ];
+
+        const postData = {
+            DataExportTemplateID: 3,
+            LoadDataStoreName: 'TMS.TMS_SHIPMENT_ITEM_REPORT',
+            KeyCached: "SHIPMENTORDER_REPORT_EXPORT",
+            SearchParamList: postDataNew,
+            ExportDataParamsDescription: "FROMDATE: " + formatDate(MLObject.FromDate) + " - TODATE: " + formatDate(MLObject.ToDate)
+        }
+        this.props.callFetchAPI(APIHostName, "api/DataExportQueue/AddQueueExport", postData).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
+                    title: "Tải file",
+                    maxWidth: '1200px',
+                    ParamRequest: { DataExportTemplateID: 3 }
+                });
+            }
+            else {
+                this.showMessage(apiResult.Message)
+            }
+        });
+    }
+    handleChangeSearch(FormData, MLObject) {
+        console.log("change", FormData, MLObject)
+    }
+
+    renderGirdData() {
+        const { ReportQualityTypeID } = this.state;
+        let girdData;
+        switch (ReportQualityTypeID) {
+            case 1:
+                girdData = <QuanlityReportAll dataSource = {[]} />
+                break;
+            default:
+                break;
+        }
+        return girdData;
+    }
+
     render() {
+
+        let girdData = this.renderGirdData();
+
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
 
                 <SearchForm
-                    FormName="Tìm kiếm báo cáo đơn hàng"
+                    FormName="Tìm kiếm báo cáo chất lượng dịch vụ"
                     listelement={SearchElementList}
                     MLObjectDefinition={SearchMLObjectDefinition}
                     onSubmit={this.handleSearchSubmit}
                     ref={this.searchref}
-                    className="multiple multiple-custom"
+                    colGroupAction={9}
+                    IsButtonExport={true}
+                    IsButtonhistory={true}
+                    onHistorySubmit={this.handleHistorySearch.bind(this)}
+                    onExportSubmit={this.handleExportSubmit.bind(this)}
+                    onchange={this.handleChangeSearch.bind(this)}
+                    className="multiple"
                 />
 
                 <div className="col-lg-12">
                     <div className="card">
                         <div className="card-body">
                             <div className=" table-responsive">
-                                <table className="table table-sm table-striped table-bordered table-hover table-condensed">
-                                    <thead className="thead-light">
-                                        <tr>
-                                            <th className="jsgrid-header-cell text-center" rowSpan={2}>Khu vực</th>
-                                            <th className="jsgrid-header-cell text-center" rowSpan={2}>Nhóm kho</th>
-                                            <th className="jsgrid-header-cell text-center" colSpan={3}>GHLĐ ĐMX</th>
-                                            <th className="jsgrid-header-cell text-center" colSpan={2}>Dịch vụ</th>
-                                            <th className="jsgrid-header-cell text-center" colSpan={2}>Bảo hành</th>
-                                            <th className="jsgrid-header-cell text-center" colSpan={2}>Tổng</th>
-                                            <th className="jsgrid-header-cell text-center" rowSpan={2}>Tỷ lệ Ngoài ĐMX/ĐMX</th>
-                                            <th className="jsgrid-header-cell text-center" rowSpan={2}>Định mức</th>
-                                            <th className="jsgrid-header-cell text-center" rowSpan={2}>Đánh giá</th>
-                                        </tr>
-                                        <tr>
-                                            <th className="jsgrid-header-cell text-center">Máy lạnh</th>
-                                            <th className="jsgrid-header-cell text-center">ĐHK</th>
-                                            <th className="jsgrid-header-cell text-center">BHTN</th>
-                                            <th className="jsgrid-header-cell text-center">Có phí</th>
-                                            <th className="jsgrid-header-cell text-center">Miễn phí</th>
-                                            <th className="jsgrid-header-cell text-center">Ủy quyền</th>
-                                            <th className="jsgrid-header-cell text-center">OEM</th>
-                                            <th className="jsgrid-header-cell text-center">ĐMX</th>
-                                            <th className="jsgrid-header-cell text-center">Ngoài ĐMX</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                           
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                {girdData}
                             </div>
                         </div>
                     </div>
@@ -149,6 +178,12 @@ const mapDispatchToProps = dispatch => {
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
         },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
+        },
+        hideModal: (type, props) => {
+            dispatch(hideModal(type, props));
+        }
     };
 };
 

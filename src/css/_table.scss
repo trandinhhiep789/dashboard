@@ -22,6 +22,12 @@
             tr {
                 width: 100%;
                 display: flex;
+                &.sum-total{
+                    td {
+                        background: #7b7b7b;
+                        color: #fff;
+                    }
+                }
             }
         }
     }
@@ -53,6 +59,16 @@
     }
 
     tbody {
+        tr{
+            clear: both;
+            &.sum-total{
+                clear: both;
+                td {
+                    background: #7b7b7b;
+                    color: #fff;
+                }
+            }
+        }
         td {
             .textCustom {
                 display: flex;
