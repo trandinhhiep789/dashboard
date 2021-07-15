@@ -15,9 +15,9 @@ const CommontModals = ({ title, afterClose, hideModal, content, id, maxWidth }) 
             afterClose();
         }
     };
-    
+    console.log("a11", PropTypes)
     return (
-        <ModalRight title={title} onClose={onClose} id={"modalid-" + id} maxWidth={maxWidth}>
+        <ModalRight title={title} onClose={onClose} id={"modalid-" + id} maxWidth={maxWidth} >
             <div>{content.text}</div>
         </ModalRight>
     );
@@ -26,6 +26,7 @@ const CommontModals = ({ title, afterClose, hideModal, content, id, maxWidth }) 
 CommontModals.propTypes = {
     title: PropTypes.string,
     onClose: PropTypes.func,
+
     // content: PropTypes.node
 };
 

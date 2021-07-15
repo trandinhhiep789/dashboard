@@ -38,6 +38,29 @@ const Content = styled.div`
     
   }
 `;
+const ContentNew = styled.div`
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10000;
+  overflow: auto;
+  text-align: center;
+  overflow-scrolling: touch;
+  padding: 4px;
+  cursor: pointer;
+  max-width: ${props => props.customStyle.maxWidth};
+  margin: auto 0 auto auto;
+  &:after {
+    vertical-align: middle;
+    display: inline-block;
+    height: 100%;
+    margin-left: -.05em;
+    content: '';
+    
+  }
+`;
 const Dialog = styled.div`
   position: absolute;
   top: 0;
@@ -152,6 +175,7 @@ class ModalRightCom extends React.Component {
 
     onOverlayClick() {
         //this.props.onClose();
+        console.log("onOverlayClick")
     };
 
     onDialogClick(event) {
@@ -308,21 +332,45 @@ class ModalRightCom extends React.Component {
         if (this.props.modalElementList) elmentRender = this.renderModalFormElement();
         if (this.props.typeMedia) elmentRender = this.renderModalPreviewMedia();
         if (this.props.maxWidth) maxWidth = this.props.maxWidth;
+        let IsShowOverlay = true;
+        if (!this.props.isShowOverlay) {
+            IsShowOverlay = false
+        }
+        console.log("ModalRight", this.props, IsShowOverlay, this.props.isShowOverlay)
         return (
             <div className='modals mfp-zoom-out modalconfirmcus modalRight'>
-                <Overlay />
-                <Content onClick={this.onOverlayClick}>
-                    <Dialog onClick={this.onDialogClick} customStyle={{ maxWidth: maxWidth }}>
-                        <div className="modal-header">
-                            {this.title}
-                            {this.close}
-                        </div>
-                        <Body>
-                            {elmentRender}
-                            {this.props.children}
-                        </Body>
-                    </Dialog>
-                </Content>
+                {this.props.isShowOverlay == true ?
+                    <React.Fragment>
+                        <Overlay />
+                        <Content onClick={this.onOverlayClick}>
+                            <Dialog onClick={this.onDialogClick} customStyle={{ maxWidth: maxWidth }}>
+                                <div className="modal-header">
+                                    {this.title}
+                                    {this.close}
+                                </div>
+                                <Body>
+                                    {elmentRender}
+                                    {this.props.children}
+                                </Body>
+                            </Dialog>
+                        </Content>
+                    </React.Fragment>
+
+                    :
+                    <ContentNew onClick={this.onOverlayClick} customStyle={{ maxWidth: maxWidth }}>
+                        <Dialog onClick={this.onDialogClick} customStyle={{ maxWidth: maxWidth }}>
+                            <div className="modal-header">
+                                {this.title}
+                                {this.close}
+                            </div>
+                            <Body>
+                                {elmentRender}
+                                {this.props.children}
+                            </Body>
+                        </Dialog>
+                    </ContentNew>
+                }
+
             </div>
         );
     }
