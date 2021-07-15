@@ -146,7 +146,7 @@ class ContentModalRightCom extends Component {
                         /> */}
                         <div className="card">
                             <div className="card-body">
-                                â
+                                tesdt
                             </div>
                         </div>
                     </div>
