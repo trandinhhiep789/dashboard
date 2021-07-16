@@ -588,11 +588,14 @@ class FormControlComboBoxCom extends Component {
         const listOption = this.state.Listoption;
         return (
             <div className={formRowClassName} >
-                <div className={labelDivClassName}>
+                { (this.props.isShowLable == false  || this.props.isShowLable == undefined) && <div className={labelDivClassName}>
                     <label className="col-form-label 6">
                         {label}<span className="text-danger"> {star}</span>
                     </label>
                 </div>
+                    
+                }
+                
                 <div className={formGroupClassName}>
 
                     {

@@ -56,14 +56,30 @@ export class Search extends Component {
             }
         });
 
+        const objData = {
+            "storedName": "MD_COORDINATORGROUP_CACHE",
+            "params": [
+                {
+                    "name": "V_DATE",
+                    "value": 1626368400000.0,
+                    "op": "timestamp"
+                },
+                {
+                    "name": "V_AREAIDLIST",
+                    "value": 1,
+                    "op": "array"
+                }
+            ]
+        }
+
         this.setState({
             SearchElementList: _SearchElementList,
             IsLoadDataComplete: true
         });
 
-        // this.props.callFetchAPI(APIHostName, "", postData).then(apiResult => {
-        //     this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderStatusGroupID').value = this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : "1,2,3"
-        // });
+        this.props.callFetchAPI(APIHostName, "api/CoordinatorGroup/GetDataCooGroupByArea", objData).then(apiResult => {
+            console.log("aaa", )
+        });
         // this.state.SearchElementList.find(n => n.name == 'cbMonthlyCoordGropup').listoption = listoption;
     }
 
