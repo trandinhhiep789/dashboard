@@ -135,28 +135,35 @@ export const listColumn = [
         Type: "text",
         Caption: "Nhân viên",
         DataSourceMember: "UserIDName",
-        Width: 200
+        // Width: 200
     },
     {
         Name: "FromDate",
         Type: "date",
         Caption: "Từ ngày",
         DataSourceMember: "FromDate",
-        Width: 200
+        // Width: 200
     },
     {
         Name: "ToDate",
         Type: "date",
         Caption: "Đến ngày",
         DataSourceMember: "ToDate",
-        Width: 200
+        // Width: 200
+    },
+    {
+        Name: "UserIDName",
+        Type: "text",
+        Caption: "Người tạo",
+        DataSourceMember: "UserIDName",
+        // Width: 200
     },
     {
         Name: "CreatedDate",
         Type: "date",
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
-        Width: 200
+        // Width: 200
     },
     {
         Name: "Action",
