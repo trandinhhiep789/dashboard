@@ -97,7 +97,7 @@ class PageUICom extends React.Component {
         const { widthPercent } = this.state;
         console.log("widthPercent", widthPercent)
         this.props.showModal(MODAL_TYPE_VIEW, {
-            title: "Phân tuyến đơn hàng",
+            title: "Phân tuyến điều phối vận đơn",
             isShowOverlay: false,
             content: {
                 text: <ContentModalRight />
