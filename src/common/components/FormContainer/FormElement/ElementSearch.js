@@ -919,7 +919,7 @@ class ElementDatetimeCom extends Component {
         if (ValidatonErrorMessage && ValidatonErrorMessage != "") {
             className += " is-invalid";
         }
-      
+
         return (
             <div className={colspanClassName}  >
                 <div className="form-group form-group-input form-group-input-date">
@@ -934,7 +934,7 @@ class ElementDatetimeCom extends Component {
                             timeFormat={timeFormat}
                             dateFormat={dateFormat}
                             isValidDate={isValidDate}
-                            
+                            {...this.props}
                         />
 
                         <div className="invalid-feedback">{ValidatonErrorMessage}</div>

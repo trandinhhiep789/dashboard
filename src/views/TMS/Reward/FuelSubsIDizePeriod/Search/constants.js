@@ -77,7 +77,8 @@ export const listelement = [
         placeholder: "---Vui lòng chọn---",
         listoption: [],
         IsAutoLoadItemFromCache: false,
-        isMultiSelect: true
+        isMultiSelect: false,
+        isClearable: true
     },
     {
         type: "Datetime",
@@ -88,6 +89,7 @@ export const listelement = [
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
+        utc: true
     },
     {
         type: "Datetime",
@@ -98,6 +100,7 @@ export const listelement = [
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
+        utc: true
     }
 ];
 
