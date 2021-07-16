@@ -12,6 +12,9 @@ import MultiSelectUserComboBox from "../FormControl/MultiSelectComboBox/MultiSel
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 
 
+import { TreeSelect } from 'antd';
+const { SHOW_PARENT } = TreeSelect;
+
 class ElementTextCom extends Component {
     constructor(props) {
         super(props);
@@ -1558,11 +1561,214 @@ class ElementTextdropdownNewCom extends Component {
 
 const ElementTextdropdownNew = connect(null, null)(ElementTextdropdownNewCom);
 
+
+class ElementTreeSelectCom extends Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+
+        this.state = {
+            ListOption: [],
+            Data: [],
+            SelectedOption: []
+        }
+
+    }
+
+    bindcombox(value, listOption) {
+        let values = value;
+        let selectedOption = [];
+        if (values == null || values === -1)
+            return { value: -1, label: this.props.placeholder };
+        if (typeof values.toString() == "string")
+            values = values.toString().split();
+        for (let i = 0; i < values.length; i++) {
+            for (let j = 0; j < listOption.length; j++) {
+                if (values[i] == listOption[j].value) {
+                    selectedOption.push({ value: listOption[j].value, label: listOption[j].label });
+                }
+            }
+        }
+        return selectedOption;
+    }
+    componentDidMount() {
+        let { listoption, IsAutoLoadItemFromCache, LoadItemCacheKeyID, ValueMember, NameMember, filterName, filterValue, filterobj } = this.props;
+        // console.log("this.props.isautoloaditemfromcachess: ", this.props.isautoloaditemfromcache,this.props.loaditemcachekeyid,this.props.listoption)
+        if (IsAutoLoadItemFromCache) {
+            // console.log("ValueMember ", ValueMember, NameMember, this.props);
+
+            if (this.props.isUsercache == true) {
+                this.props.callGetUserCache(LoadItemCacheKeyID).then((result) => {
+                    // console.log("this.props.isautoloaditemfromcach2: ", this.props.LoadItemCacheKeyID, this.state.Listoption, result);
+                    // listoption = [{ value: -1, label: this.props.placeholder }];
+                    listoption = []
+                    if (!result.IsError && result.ResultObject.CacheData != null) {
+                        result.ResultObject.CacheData.map((cacheItem) => {
+                            listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
+                        }
+                        );
+
+                        this.setState({ ListOption: listoption });
+                        const aa = this.bindcombox(this.props.value, listoption);
+                        this.setState({ SelectedOption: aa });
+
+                    }
+                    else {
+                        this.setState({ ListOption: listoption });
+
+                    }
+                    //  console.log("this.props.isautoloaditemfromcachess: ",this.props.loaditemcachekeyid, this.state.Listoption);
+                });
+
+            }
+            else {
+                this.props.callGetCache(LoadItemCacheKeyID).then((result) => {
+
+                    // console.log("this.props.isautoloaditemfromcach2: ", result);
+                    // listoption = [{ value: -1, label: this.props.placeholder }];
+                    listoption = []
+                    if (!result.IsError && result.ResultObject.CacheData != null) {
+                        if (typeof filterobj != undefined) {
+                            // console.log(filterobj,result.ResultObject.CacheData,result.ResultObject.CacheData.filter(n => n.filterobj == 1))
+                            result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
+                                listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
+                            }
+                            );
+
+                        }
+                        else {
+                            result.ResultObject.CacheData.map((cacheItem) => {
+                                listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
+                            }
+                            );
+                        }
+
+                        this.setState({ ListOption: listoption, Data: result.ResultObject.CacheData });
+                        const aa = this.bindcombox(this.props.value, listoption);
+                        this.setState({ SelectedOption: aa });
+                    }
+                    else {
+                        this.setState({ ListOption: listoption });
+                    }
+                    //  console.log("this.props.isautoloaditemfromcachess: ",this.props.loaditemcachekeyid, this.state.Listoption);
+                });
+            }
+
+        }
+        else {
+            //console.log("this.props.isautoloaditemfromcache1: ",this.props.loaditemcachekeyid, this.state.Listoption);
+            this.setState({ ListOption: listoption });
+            const aa = this.bindcombox(this.props.value, listoption);
+            this.setState({ SelectedOption: aa });
+        }
+    }
+
+
+
+    getComboValue(selectedOption) {
+        let result = "";
+        if (selectedOption != -1 && selectedOption != null && selectedOption != "") {
+            result = selectedOption.reduce((data, item, index) => {
+                const comma = data.length ? "," : "";
+                return data + comma + item;
+            }, '');
+        }
+        return result;
+    }
+
+    handleValueChange(selectedOption) {
+
+        let comboValues = [];
+        if (Array.isArray(selectedOption)) {
+            comboValues = this.getComboValue(selectedOption);
+        }
+        if (this.props.onValueChange)
+            this.props.onValueChange(this.props.name, comboValues, this.props.filterrest);
+    }
+
+    componentWillReceiveProps(nextProps) {
+
+        if (JSON.stringify(this.props.filterValue) !== JSON.stringify(nextProps.filterValue)) // Check if it's a new user, you can also use some unique property, like the ID
+        {
+            let { filterName, filterobj, ValueMember, NameMember } = this.props;
+            if (typeof filterobj != undefined) {
+                let listoptionnew = [{ value: -1, label: this.props.placeholder }];
+                //  console.log(filterobj,this.state.Data.filter(n => n[filterobj] == nextProps.filterValue))
+                this.state.Data.filter(n => n[filterobj] == nextProps.filterValue).map((cacheItem) => {
+                    listoptionnew.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
+                }
+                );
+                this.setState({ ListOption: listoptionnew });
+            }
+
+        }
+        if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) // Check if it's a new user, you can also use some unique property, like the ID
+        {
+            const aa = this.bindcombox(nextProps.value, this.state.ListOption);
+            this.setState({ SelectedOption: aa });
+        }
+    }
+
+    render() {
+        let { name, label, icon, colspan, isMultiSelect, ValidatonErrorMessage, placeholder, classNameCol, maxTagCount } = this.props;
+        let className = "select";
+        let colspanClassName = "col-md-3";
+        if (colspan) {
+            if (classNameCol) {
+                colspanClassName = "col-md-" + this.props.colspan + " " + classNameCol;
+            }
+            else {
+                colspanClassName = "col-md-" + this.props.colspan;
+            }
+        }
+        let labeldiv;
+        if (label) {
+            labeldiv = <label className="col-form-label" htmlFor="input-normal">{label}</label>;
+        }
+
+        if (ValidatonErrorMessage && ValidatonErrorMessage != "") {
+
+            className += " is-invalid";
+        }
+        const selectedOption = this.state.SelectedOption;
+
+        const tProps = {
+            treeData: this.state.ListOption,
+            value: this.state.SelectedOption,
+            onChange: this.handleValueChange,
+            treeCheckable: true,
+            showCheckedStrategy: SHOW_PARENT,
+            maxTagCount: maxTagCount,
+            placeholder: placeholder,
+            style: {
+                width: '100%',
+            },
+            filterTreeNode: (search, item) => {
+                return item.title.toLowerCase().indexOf(search.toLowerCase()) >= 0;
+            }
+        };
+
+        return (
+            <div className={colspanClassName}  >
+                <div className="form-group form-group-input form-group-input-select">
+                    {labeldiv}
+                    <TreeSelect {...tProps} />
+                    <div className="invalid-feedback">{ValidatonErrorMessage}</div>
+                </div>
+            </div>
+        );
+    }
+}
+
+const ElementTreeSelect = connect(null, mapDispatchToProps)(ElementTreeSelectCom);
+
+
 export default {
     ElementText,
     ElementTextdropdown,
     ElementCheckbox,
     ElementComboBox,
+    ElementTreeSelect,
     ElementComboBoxByCompany,
     ElementDatetime,
     ElementDatetimeFromTo,

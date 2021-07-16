@@ -81,7 +81,7 @@ class PageUICom extends React.Component {
 
     updateWindowDimensions = () => {
         this.setState({
-            widthPercent: (window.innerWidth * 70) / 100
+            widthPercent: (window.innerWidth * 50) / 100
         })
     };
 
@@ -97,7 +97,7 @@ class PageUICom extends React.Component {
         const { widthPercent } = this.state;
         console.log("widthPercent", widthPercent)
         this.props.showModal(MODAL_TYPE_VIEW, {
-            title: "Phân tuyến đơn hàng",
+            title: "Phân tuyến điều phối vận đơn",
             isShowOverlay: false,
             content: {
                 text: <ContentModalRight />

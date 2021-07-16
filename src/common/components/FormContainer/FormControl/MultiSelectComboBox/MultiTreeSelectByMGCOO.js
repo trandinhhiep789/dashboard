@@ -23,7 +23,6 @@ class MultiTreeSelectCom extends React.Component {
 
     componentDidMount() {
         let { listoption, IsAutoLoadItemFromCache, LoadItemCacheKeyID, ValueMember, NameMember, filterName, filterValue, filterobj } = this.props;
-        console.log("aa", this.props)
         if (IsAutoLoadItemFromCache) {
             this.props.callGetCache(LoadItemCacheKeyID).then((result) => {
                 let listoptionnew = [];
@@ -53,8 +52,14 @@ class MultiTreeSelectCom extends React.Component {
 
         }
         else {
-            this.setState({ ListOption: listoption });
-            const aa = this.bindcombox(this.props.value, listoption);
+            let listoptionnew = [];
+            if (listoption.length > 0) {
+                listoption.map((item) => {
+                    listoptionnew.push({ value: item[ValueMember], key: item[ValueMember], label: item[ValueMember] + " - " + item[NameMember] })
+                })
+            }
+            this.setState({ ListOption: listoptionnew });
+            const aa = this.bindcombox(this.props.value, listoptionnew);
             this.setState({ SelectedOption: aa });
         }
     }
@@ -67,11 +72,11 @@ class MultiTreeSelectCom extends React.Component {
         }
 
         if (JSON.stringify(this.props.listoption) !== JSON.stringify(nextProps.listoption)) // Check if it's a new user, you can also use some unique property, like the ID
-        {   
+        {
             this.setState({ ListOption: nextProps.listoption });
         }
     }
-    
+
     bindcombox(value, listOption) {
         let values = value;
         let selectedOption = [];
@@ -152,7 +157,7 @@ class MultiTreeSelectCom extends React.Component {
                 return item.title.toLowerCase().indexOf(search.toLowerCase()) >= 0;
             }
         };
-       
+
         return (
             <div className={formRowClassName} >
                 {
@@ -174,7 +179,7 @@ class MultiTreeSelectCom extends React.Component {
 }
 
 MultiTreeSelectCom.defaultProps = {
-    divClassNameLabel: 'form-group form-group-input-select-label'
+    divClassNameLabel: 'form-group-input-select-label '
 };
 
 const mapStateToProps = state => {

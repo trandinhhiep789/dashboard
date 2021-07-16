@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import FormControl from "../../../../common/components/FormContainer/FormControl";
-
+import { showModal, hideModal } from '../../../../actions/modal';
 class ContentModalRightCom extends Component {
     constructor(props) {
         super(props);
@@ -15,18 +15,26 @@ class ContentModalRightCom extends Component {
 
 
     }
+    handleClose() {
+        this.props.hideModal();
+    }
+
+    handleConfirm() {
+        console.log("submit")
+    }
+
     render() {
 
         return (
             <React.Fragment>
                 <div className="card">
                     <div className="card-body">
-                        <div className="stepper">
+                        <div className="stepper mb-10">
                             <div className="stepper-item step-completed">
                                 <span className="stepLabel">
                                     <span className="step-icon">
                                         <div className="icon">
-                                            <i className="fa fa-gift" aria-hidden='true'></i>
+                                            <i className="ti-check" aria-hidden='true'></i>
                                         </div>
                                     </span>
                                     <span className="step-label">Khởi tạo</span>
@@ -41,7 +49,7 @@ class ContentModalRightCom extends Component {
                                 <span className="stepLabel">
                                     <span className="step-icon">
                                         <div className="icon">
-                                            <i className="fa fa-gift" aria-hidden='true'></i>
+                                            <i className="" aria-hidden='true'></i>
                                         </div>
                                     </span>
                                     <span className="step-label">Tiếp nhận vận đơn</span>
@@ -54,7 +62,7 @@ class ContentModalRightCom extends Component {
                                 <span className="stepLabel">
                                     <span className="step-icon">
                                         <div className="icon">
-                                            <i className="fa fa-gift" aria-hidden='true'></i>
+                                            <i className="" aria-hidden='true'></i>
                                         </div>
                                     </span>
                                     <span className="step-label">Khởi tạo</span>
@@ -67,19 +75,15 @@ class ContentModalRightCom extends Component {
                                 <span className="stepLabel">
                                     <span className="step-icon">
                                         <div className="icon">
-                                            <i className="fa fa-gift" aria-hidden='true'></i>
+                                            <i className="" aria-hidden='true'></i>
                                         </div>
                                     </span>
                                     <span className="step-label">Khởi tạo</span>
                                 </span>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <div className="card modalForm">
-                    <div className="card-body">
-                        <div className="form-row">
+                        <div className="form-row mt-20">
                             <div className="col-md-6">
                                 <FormControl.ComboBoxPartner
                                     name="CarrierPartnerID"
@@ -134,24 +138,666 @@ class ContentModalRightCom extends Component {
                             placeholder="---Vui lòng chọn---"
                             isMultiSelect={true}
                         />
-                        {/* <InputGridChageControl
-                            name="ShipmentOrder_ItemList"
-                            controltype="InputGridControl"
-                            title="Danh sách vận đơn"
-                            listColumn={DataGridColumnItemList}
-                            dataSource={this.state.ShipmentOrder}
-                            FormValidation={this.state.FormValidation}
-                            onDeleteClick={this.handleDeleteID.bind(this)}
-                            onValueChange={this.handleonValueChange.bind(this)}
-                        /> */}
-                        <div className="card">
-                            <div className="card-body">
-                                â
+                        
+                        <div className="row  mt-20">
+                            <div className="col-12 group-shipingorder">
+
+                                <div className="jsgrid">
+                                    <div className="jsgrid-grid-header jsgrid-header-scrollbar">
+                                        <table className="jsgrid-table">
+                                            <thead className="jsgrid-header-row">
+                                                <tr>
+                                                    <th className="jsgrid-header-cell" style={{ width: '1%' }}></th>
+                                                    <th className="jsgrid-header-cell" style={{ width: '27%' }}>Mã vận đợn</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: '31%' }}>Đối tác</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: '31%' }}>Phương tiện</th>
+                                                    <th className="jsgrid-header-cell" style={{ width: '10%' }}>Tác vụ</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div className="jsgrid-grid-body">
+                                        <table className="jsgrid-table">
+                                            <tbody>
+                                                <tr className="jsgrid-row">
+                                                    <td className="jsgrid-cell high-priority" style={{ width: '1%' }}>
+
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '27%' }}>
+                                                        210714000000199
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '31%' }}>
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '31%' }}>
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+
+                                                    <td className="jsgrid-cell " style={{ width: '10%' }}>
+                                                        <a class="table-action hover-danger item-action">
+                                                            <i class="ti-trash"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr className="jsgrid-row">
+                                                    <td className="jsgrid-cell high-priority" style={{ width: '1%' }}>
+
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '27%' }}>
+                                                        210714000000199
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '31%' }}>
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '31%' }}>
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+
+                                                    <td className="jsgrid-cell " style={{ width: '10%' }}>
+                                                        <a class="table-action hover-danger item-action">
+                                                            <i class="ti-trash"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr className="jsgrid-row">
+                                                    <td className="jsgrid-cell high-priority" style={{ width: '1%' }}>
+
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '27%' }}>
+                                                        210714000000199
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '31%' }}>
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '31%' }}>
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+
+                                                    <td className="jsgrid-cell " style={{ width: '10%' }}>
+                                                        <a class="table-action hover-danger item-action">
+                                                            <i class="ti-trash"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr className="jsgrid-row">
+                                                    <td className="jsgrid-cell high-priority" style={{ width: '1%' }}>
+
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '27%' }}>
+                                                        210714000000199
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '31%' }}>
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '31%' }}>
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+
+                                                    <td className="jsgrid-cell " style={{ width: '10%' }}>
+                                                        <a class="table-action hover-danger item-action">
+                                                            <i class="ti-trash"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr className="jsgrid-row">
+                                                    <td className="jsgrid-cell medium-priority" style={{ width: '1%' }}>
+
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '27%' }}>
+                                                        210714000000199
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '31%' }}>
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '31%' }}>
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+
+                                                    <td className="jsgrid-cell " style={{ width: '10%' }}>
+                                                        <a class="table-action hover-danger item-action">
+                                                            <i class="ti-trash"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr className="jsgrid-row">
+                                                    <td className="jsgrid-cell medium-priority" style={{ width: '1%' }}>
+
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '27%' }}>
+                                                        210714000000199
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '31%' }}>
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '31%' }}>
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+
+                                                    <td className="jsgrid-cell " style={{ width: '10%' }}>
+                                                        <a class="table-action hover-danger item-action">
+                                                            <i class="ti-trash"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr className="jsgrid-row">
+                                                    <td className="jsgrid-cell medium-priority" style={{ width: '1%' }}>
+
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '27%' }}>
+                                                        210714000000199
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '31%' }}>
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '31%' }}>
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+
+                                                    <td className="jsgrid-cell " style={{ width: '10%' }}>
+                                                        <a class="table-action hover-danger item-action">
+                                                            <i class="ti-trash"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr className="jsgrid-row">
+                                                    <td className="jsgrid-cell medium-priority" style={{ width: '1%' }}>
+
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '27%' }}>
+                                                        210714000000199
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '31%' }}>
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '31%' }}>
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+
+                                                    <td className="jsgrid-cell " style={{ width: '10%' }}>
+                                                        <a class="table-action hover-danger item-action">
+                                                            <i class="ti-trash"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr className="jsgrid-row">
+                                                    <td className="jsgrid-cell low-priority" style={{ width: '1%' }}>
+
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '27%' }}>
+                                                        210714000000199
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '31%' }}>
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '31%' }}>
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+
+                                                    <td className="jsgrid-cell " style={{ width: '10%' }}>
+                                                        <a class="table-action hover-danger item-action">
+                                                            <i class="ti-trash"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr className="jsgrid-row">
+                                                    <td className="jsgrid-cell low-priority" style={{ width: '1%' }}>
+
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '27%' }}>
+                                                        210714000000199
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '31%' }}>
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '31%' }}>
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+
+                                                    <td className="jsgrid-cell " style={{ width: '10%' }}>
+                                                        <a class="table-action hover-danger item-action">
+                                                            <i class="ti-trash"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr className="jsgrid-row">
+                                                    <td className="jsgrid-cell low-priority" style={{ width: '1%' }}>
+
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '27%' }}>
+                                                        210714000000199
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '31%' }}>
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '31%' }}>
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+
+                                                    <td className="jsgrid-cell " style={{ width: '10%' }}>
+                                                        <a class="table-action hover-danger item-action">
+                                                            <i class="ti-trash"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr className="jsgrid-row">
+                                                    <td className="jsgrid-cell low-priority" style={{ width: '1%' }}>
+
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '27%' }}>
+                                                        210714000000199
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '31%' }}>
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '31%' }}>
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+
+                                                    <td className="jsgrid-cell " style={{ width: '10%' }}>
+                                                        <a class="table-action hover-danger item-action">
+                                                            <i class="ti-trash"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
+
+                    </div>
                 </div>
+                <div className="modal-footer modal-footer-center">
+                    <button className="btn btn-w-md btn-round btn-secondary" type="button" onClick={this.handleClose.bind(this)}>Bỏ qua</button>
+                    <button className="btn btn-w-md btn-round btn-info ml-50" type="button" onClick={this.handleConfirm.bind(this)}>Cập nhật</button>
+                </div>
+
             </React.Fragment>
 
         );
@@ -169,7 +815,11 @@ const mapDispatchToProps = dispatch => {
     return {
         showModal: (type, props) => {
             dispatch(showModal(type, props));
-        }
+        },
+        hideModal: (type, props) => {
+            dispatch(hideModal(type, props));
+        },
+
     }
 }
 

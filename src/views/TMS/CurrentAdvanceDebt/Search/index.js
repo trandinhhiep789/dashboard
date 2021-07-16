@@ -12,7 +12,6 @@ import "react-notifications-component/dist/theme.css";
 import { TMS_CURRENTADVANCEDEBT_EXPORT, TMS_CURRENTADVANCEDEBT_VIEW } from "../../../../constants/functionLists";
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
-
 import {
     SearchElementList,
     SearchMLObjectDefinition,
@@ -332,6 +331,7 @@ class SearchCom extends React.Component {
                     ref={this.searchref}
                     className="multiple"
                     classNamebtnSearch="groupAction"
+                    colGroupAction={8}
 
                 />
                 <DataGrid
