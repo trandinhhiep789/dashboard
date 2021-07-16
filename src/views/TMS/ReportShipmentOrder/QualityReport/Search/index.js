@@ -33,6 +33,7 @@ export class Search extends Component {
         this.showMessage = this.showMessage.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
         this.renderGirdData = this.renderGirdData.bind(this)
+        this.getComboxDataCooGroupByArea = this.getComboxDataCooGroupByArea.bind(this)
     };
 
     componentDidMount() {
@@ -48,13 +49,7 @@ export class Search extends Component {
             { value: 5, label: 'Báo cáo theo user' },
 
         ];
-        let _SearchElementList = this.state.SearchElementList;
-        _SearchElementList.forEach(function (objElement) {
-            if (objElement.type == 'MGCOOMultiTreeSelect') {
-                objElement.listoption = listoption;
-                objElement.value = -1;
-            }
-        });
+
 
         const objData = {
             "storedName": "MD_COORDINATORGROUP_CACHE",
@@ -72,15 +67,35 @@ export class Search extends Component {
             ]
         }
 
-        this.setState({
-            SearchElementList: _SearchElementList,
-            IsLoadDataComplete: true
-        });
+        this.getComboxDataCooGroupByArea(objData)
+
+
+        // this.state.SearchElementList.find(n => n.name == 'cbMonthlyCoordGropup').listoption = listoption;
+    }
+
+    getComboxDataCooGroupByArea(objData) {
+        let _SearchElementList = this.state.SearchElementList;
 
         this.props.callFetchAPI(APIHostName, "api/CoordinatorGroup/GetDataCooGroupByArea", objData).then(apiResult => {
-            console.log("aaa", )
+            console.log("aaa", apiResult)
+            if (apiResult.IsError) {
+                this.showMessage("Lỗi lấy danh sách cache.")
+            }
+            else {
+
+                _SearchElementList.forEach(function (objElement) {
+                    if (objElement.type == 'MGCOOMultiTreeSelect') {
+                        objElement.listoption = apiResult.ResultObject;
+                        objElement.value = -1;
+                    }
+                });
+                this.setState({
+                    SearchElementList: _SearchElementList,
+                    IsLoadDataComplete: true
+                });
+            }
+
         });
-        // this.state.SearchElementList.find(n => n.name == 'cbMonthlyCoordGropup').listoption = listoption;
     }
 
     showMessage(message) {
@@ -161,28 +176,28 @@ export class Search extends Component {
             AreaID: -1
         }
 
-        this.setState({
-            IsLoadDataComplete: false
-        });
+        // this.setState({
+        //     IsLoadDataComplete: false
+        // });
 
-        const listoption = [
 
-            { value: 1, label: 'Báo cáo chất lượng toàn quốc' },
-            { value: 2, label: 'Báo cáo tổng hợp các ngành hàng, nhóm hàng' },
+        // const objData = {
+        //     "storedName": "MD_COORDINATORGROUP_CACHE",
+        //     "params": [
+        //         {
+        //             "name": "V_DATE",
+        //             "value": 1626368400000.0,
+        //             "op": "timestamp"
+        //         },
+        //         {
+        //             "name": "V_AREAIDLIST",
+        //             "value": 1,
+        //             "op": "array"
+        //         }
+        //     ]
+        // }
 
-        ];
-        let _SearchElementList = this.state.SearchElementList;
-        _SearchElementList.forEach(function (objElement) {
-            if (objElement.type == 'MGCOOMultiTreeSelect') {
-                objElement.listoption = listoption;
-                objElement.value = -1;
-            }
-        });
-
-        this.setState({
-            SearchElementList: _SearchElementList,
-            IsLoadDataComplete: true
-        });
+        // this.getComboxDataCooGroupByArea(objData)
 
 
     }
@@ -203,12 +218,12 @@ export class Search extends Component {
     render() {
 
         let girdData = this.renderGirdData();
-        console.log("state", this.state.SearchElementList)
+        // console.log("state", this.state.SearchElementList)
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
-    
+
                     <SearchForm
                         FormName="Tìm kiếm báo cáo chất lượng dịch vụ"
                         listelement={this.state.SearchElementList}
@@ -223,7 +238,7 @@ export class Search extends Component {
                         onchange={this.handleChangeSearch.bind(this)}
                         className="multiple "
                     />
-    
+
                     <div className="col-lg-12">
                         <div className="card">
                             <div className="card-body">
@@ -233,7 +248,7 @@ export class Search extends Component {
                             </div>
                         </div>
                     </div>
-    
+
                 </React.Fragment>
             )
         }
@@ -242,7 +257,7 @@ export class Search extends Component {
                 <label>Đang nạp dữ liệu...</label>
             </React.Fragment>
         );
-        
+
     }
 }
 

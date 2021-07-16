@@ -44,12 +44,15 @@ export const SearchElementList = [
     },
     
     {
-        type: "ComboBox",
+        type: "MultiTreeSelect",
         name: "cbArea",
         DataSourceMember: "AreaID",
         label: "Khu vực",
+        rowspan: 2,
         colspan: 2,
+        IsLabelDiv: true,
         value: -1,
+        maxTagCount: 1,
         isMultiSelect: false,
         placeholder: "---Vui lòng chọn---",
         listoption: [],
@@ -124,8 +127,8 @@ export const SearchElementList = [
 
     {
         type: "MGCOOMultiTreeSelect",
-        name: "cbMonthlyCoordGropup",
-        DataSourceMember: "MonthlyCoordGropupID",
+        name: "cbCoordinatorGroup",
+        DataSourceMember: "CoordinatorGroupID",
         label: "Danh sách nhóm",
         colspan: 3,
         rowspan: 2,
@@ -136,8 +139,8 @@ export const SearchElementList = [
         placeholder: "---Vui lòng chọn---",
         IsAutoLoadItemFromCache: false,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.AREA",
-        ValueMember: "MonthlyCoordGropupID",
-        NameMember: "MonthlyCoordGropupName",
+        ValueMember: "CoordinatorGroupID",
+        NameMember: "CoordinatorGroupName",
         listoption: [],
         classNameCol: "col-custom"
     },
@@ -175,8 +178,8 @@ export const SearchMLObjectDefinition = [
         BindControlName: "cbSubGroup"
     },
     {
-        Name: "MonthlyCoordGropupID",
+        Name: "CoordinatorGroupID",
         DefaultValue: "",
-        BindControlName: "cbMonthlyCoordGropup"
+        BindControlName: "cbCoordinatorGroup"
     },
 ];
