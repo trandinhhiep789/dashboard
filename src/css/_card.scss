@@ -277,6 +277,17 @@
     }
 
     .card-body {
+        .group-shipingorder{
+            max-height: 300px;
+            height: 300px;
+            overflow-y: auto;
+            .modal-footer{
+                clear: both;
+                &.modal-footer-center{
+                    clear: both;
+                }
+            }
+        }
         .form-row {
             .form-group {
                 margin-bottom: .5rem;

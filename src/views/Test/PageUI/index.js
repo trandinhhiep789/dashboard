@@ -81,7 +81,7 @@ class PageUICom extends React.Component {
 
     updateWindowDimensions = () => {
         this.setState({
-            widthPercent: (window.innerWidth * 70) / 100
+            widthPercent: (window.innerWidth * 50) / 100
         })
     };
 

@@ -42,6 +42,21 @@
 
         }
     }
+
+    
+    &.modalRight{
+        clear: both;
+        .modal-footer{
+            position: absolute;
+            top: auto;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            border-color: #aaa2a2;
+            display: inline-flex;
+            justify-content: center;
+        }
+    }
 }
 
 .modal-content{

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import FormControl from "../../../../common/components/FormContainer/FormControl";
-
+import { showModal, hideModal } from '../../../../actions/modal';
 class ContentModalRightCom extends Component {
     constructor(props) {
         super(props);
@@ -15,13 +15,21 @@ class ContentModalRightCom extends Component {
 
 
     }
+    handleClose() {
+        this.props.hideModal();
+    }
+
+    handleConfirm() {
+        console.log("submit")
+    }
+
     render() {
 
         return (
             <React.Fragment>
                 <div className="card">
                     <div className="card-body">
-                        <div className="stepper">
+                        <div className="stepper mb-10">
                             <div className="stepper-item step-completed">
                                 <span className="stepLabel">
                                     <span className="step-icon">
@@ -74,11 +82,7 @@ class ContentModalRightCom extends Component {
                                 </span>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <div className="card modalForm">
-                    <div className="card-body">
                         <div className="form-row">
                             <div className="col-md-6">
                                 <FormControl.ComboBoxPartner
@@ -134,24 +138,21 @@ class ContentModalRightCom extends Component {
                             placeholder="---Vui lòng chọn---"
                             isMultiSelect={true}
                         />
-                        {/* <InputGridChageControl
-                            name="ShipmentOrder_ItemList"
-                            controltype="InputGridControl"
-                            title="Danh sách vận đơn"
-                            listColumn={DataGridColumnItemList}
-                            dataSource={this.state.ShipmentOrder}
-                            FormValidation={this.state.FormValidation}
-                            onDeleteClick={this.handleDeleteID.bind(this)}
-                            onValueChange={this.handleonValueChange.bind(this)}
-                        /> */}
-                        <div className="card">
-                            <div className="card-body">
-                                tesdt
+
+                        <div className="col-12 group-shipingorder">
+                            
+                            <div className="item">
+                                data gird
                             </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
+                <div className="modal-footer modal-footer-center">
+                    <button className="btn btn-w-md btn-round btn-secondary" type="button" onClick={this.handleClose.bind(this)}>Bỏ qua</button>
+                    <button className="btn btn-w-md btn-round btn-info ml-50" type="button" onClick={this.handleConfirm.bind(this)}>Cập nhật</button>
+                </div>
+
             </React.Fragment>
 
         );
@@ -169,7 +170,11 @@ const mapDispatchToProps = dispatch => {
     return {
         showModal: (type, props) => {
             dispatch(showModal(type, props));
-        }
+        },
+        hideModal: (type, props) => {
+            dispatch(hideModal(type, props));
+        },
+
     }
 }
 

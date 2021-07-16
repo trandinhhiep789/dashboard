@@ -242,6 +242,8 @@ class ModalRightCom extends React.Component {
         });
 
     }
+
+
     renderModalFormElement() {
         const modalElementList = this.props.modalElementList;
         //console.log("modalElementList",modalElementList);
@@ -367,6 +369,7 @@ class ModalRightCom extends React.Component {
                                 {elmentRender}
                                 {this.props.children}
                             </Body>
+                            
                         </Dialog>
                     </ContentNew>
                 }
