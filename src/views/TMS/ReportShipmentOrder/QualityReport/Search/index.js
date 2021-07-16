@@ -14,7 +14,9 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { MessageModal } from "../../../../../common/components/Modal";
 import { MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from '../../../../../constants/actionTypes';
 import { showModal, hideModal } from '../../../../../actions/modal';
-import QuanlityReportAll from '../components/QuanlityReportAll'
+import QuanlityReportAll from '../components/QuanlityReportAll';
+
+import { toIsoStringCus, toIsoStringCusNew, formatNumber, formatNumberNew, toIsoStringNew } from '../../../../../utils/function'
 export class Search extends Component {
     constructor(props) {
         super(props);
@@ -25,7 +27,10 @@ export class Search extends Component {
             dataSource: [],
             ReportQualityTypeID: 1,
             SearchElementList: SearchElementList,
-            IsLoadDataComplete: false
+            IsLoadDataComplete: false,
+            fromDate: "",
+            toDate: "",
+            AreaIDList: ""
         }
 
         this.searchref = React.createRef();
@@ -40,15 +45,8 @@ export class Search extends Component {
         this.props.updatePagePath(PagePath);
         // this.showMessage("Tính năng đang phát triển");
 
-        const listoption = [
+      console.log("state",this.state.SearchElementList, Date.parse(toIsoStringCusNew(new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()).toISOString(), false)))
 
-            { value: 1, label: 'Báo cáo chất lượng toàn quốc' },
-            { value: 2, label: 'Báo cáo tổng hợp các ngành hàng, nhóm hàng' },
-            { value: 3, label: 'Báo cáo theo chi nhánh' },
-            { value: 4, label: 'Báo cáo tổng hợp theo chi nhánh' },
-            { value: 5, label: 'Báo cáo theo user' },
-
-        ];
 
 
         const objData = {
@@ -107,22 +105,52 @@ export class Search extends Component {
 
     callSearchData(searchData) {
 
-        // this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-        //     if (!apiResult.IsError) {
-        //         this.setState({
-        //             dataSource: apiResult.ResultObject
-        //         });
-        //     }
-        //     else {
-        //         this.showMessage(apiResult.Message, apiResult.IsError);
-        //     }
-        // });
+        this.props.callFetchAPI(APIHostName, "api/QualityAssessmentReport/Search", searchData).then(apiResult => {
+            console.log("searh",apiResult )
+            if (!apiResult.IsError) {
+                this.setState({
+                    dataSource: apiResult.ResultObject
+                });
+            }
+            else {
+                this.showMessage(apiResult.Message, apiResult.IsError);
+            }
+        });
+
     };
 
     handleSearchSubmit(formData, MLObject) {
         console.log("submit", MLObject)
-        const postData = [];
-        //this.callSearchData(postData);
+        const postData = [
+            {
+                SearchKey: "@FROMDATE",
+                SearchValue: MLObject.FromDate
+            },
+            {
+                SearchKey: "@TODATE",
+                SearchValue: MLObject.ToDate
+            },
+            {
+                SearchKey: "@AREAIDLIST",
+                SearchValue: MLObject.AreaID
+            },
+            {
+                SearchKey: "@COORDINATORGROUPIDLIST",
+                SearchValue: MLObject.CoordinatorGroupID
+            },
+
+            {
+                SearchKey: "@MAINGROUPIDLIST",
+                SearchValue: MLObject.MainGroupID
+            },
+            {
+                SearchKey: "@SUBGROUPIDLIST",
+                SearchValue: MLObject.SubGroupID
+            },
+
+
+        ];
+        this.callSearchData(postData);
     };
 
     handleHistorySearch() {
@@ -169,7 +197,7 @@ export class Search extends Component {
         });
     }
     handleChangeSearch(FormData, MLObject) {
-        console.log("change", FormData, MLObject)
+        console.log("change", FormData.cbFromDate.value)
         const postData = {
             FromDate: "",
             ToDate: "",

@@ -22,7 +22,7 @@ export const SearchElementList = [
         name: "cbFromDate",
         DataSourceMember: "FromDate",
         placeholder: "Từ ngày",
-        value: new Date(),
+        value: new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()),
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
@@ -42,7 +42,7 @@ export const SearchElementList = [
         isValidDate: valid,
         classNameCol: "col-custom"
     },
-    
+
     {
         type: "MultiTreeSelect",
         name: "cbArea",
@@ -51,7 +51,7 @@ export const SearchElementList = [
         rowspan: 2,
         colspan: 2,
         IsLabelDiv: true,
-        value: -1,
+        value: 0,
         maxTagCount: 1,
         isMultiSelect: false,
         placeholder: "---Vui lòng chọn---",
@@ -61,7 +61,51 @@ export const SearchElementList = [
         ValueMember: "AreaID",
         NameMember: "AreaName"
     },
-  
+    // {
+    //     type: "ComboTreeSelect",
+    //     name: "cbMainGroup",
+    //     DataSourceMember: "MainGroupID",
+    //     label: "Ngành hàng",
+    //     colspan: 2,
+    //     rowspan: 2,
+    //     value: -1,
+    //     maxTagCount: 1,
+    //     IsLabelDiv: true,
+    //     isMultiSelect: true,
+    //     placeholder: "---Vui lòng chọn---",
+    //     IsAutoLoadItemFromCache: true,
+    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.MAINGROUP",
+    //     ValueMember: "MainGroupID",
+    //     NameMember: "MainGroupName",
+    //     listoption: [],
+    //     classNameCol: "col-custom",
+    //     filterrest: "cbSubGroup",
+    // },
+    // {
+    //     type: "ComboTreeSelect",
+    //     name: "cbSubGroup",
+    //     DataSourceMember: "SubGroupID",
+    //     label: "Nhóm hàng",
+    //     colspan: 2,
+    //     rowspan: 2,
+    //     value: -1,
+    //     maxTagCount: 1,
+    //     IsLabelDiv: true,
+    //     isMultiSelect: false,
+    //     placeholder: "---Vui lòng chọn---",
+    //     IsAutoLoadItemFromCache: true,
+    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.SUBGROUP",
+    //     ValueMember: "SubGroupID",
+    //     NameMember: "cbMainGroup",
+    //     listoption: [],
+    //     classNameCol: "col-custom",
+    //     filterrest: "cbSubGroup",
+    //     filterName: "cbMainGroup",
+    //     filterValue: "",
+    //     filterobj: "MainGroupID",
+    //     filterrest: "",
+    // },
+
     {
         type: "ComboBox",
         name: "cbMainGroup",
@@ -72,6 +116,7 @@ export const SearchElementList = [
         icon: "",
         listoption: [],
         datasourcemember: "MainGroupID",
+        placeholder: "---Vui lòng chọn---",
         readonly: false,
         // validatonList: ["Comborequired"],
         IsAutoLoadItemFromCache: true,
@@ -92,6 +137,8 @@ export const SearchElementList = [
         listoption: [],
         datasourcemember: "SubGroupID",
         readonly: false,
+        isMultiSelect: false,
+        placeholder: "---Vui lòng chọn---",
         // validatonList: ["Comborequired"],
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.SUBGROUP",
@@ -103,7 +150,7 @@ export const SearchElementList = [
         filterrest: "",
         OrderIndex: 6
     },
-  
+
     {
         type: "ComboBox",
         name: "cbReportQualityType",
