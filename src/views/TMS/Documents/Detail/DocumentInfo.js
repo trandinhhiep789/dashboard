@@ -36,7 +36,7 @@ export class DocumentInfo extends Component {
                             {DocumentInfo.DocumentName}
                         </label>
                     </div>
-                 
+
 
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Từ khóa tìm kiếm:</label>
@@ -66,7 +66,7 @@ export class DocumentInfo extends Component {
                         </label>
                     </div>
 
-                   
+
                 </div>
 
                 <div className="form-row">
@@ -119,7 +119,7 @@ export class DocumentInfo extends Component {
                         <label className="col-form-label">
                             {DocumentInfo.UpLoadFullName}
                         </label>
-                        
+
                     </div>
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Ngày upload đầu tiên:</label>
@@ -150,7 +150,7 @@ export class DocumentInfo extends Component {
                     </div>
                 </div>
 
-               
+
 
                 <div className="form-row">
                     <div className="form-group col-md-2">
@@ -197,6 +197,17 @@ export class DocumentInfo extends Component {
                                 </span>
                             </label>
                         </div>
+                    </div>
+                </div>
+
+                <div className="form-row">
+                    <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Nội dung:</label>
+                    </div>
+                    <div className="form-group col-md-10">
+                        <p className="col-form-label">
+                            {DocumentInfo.FileContent1}
+                        </p>
                     </div>
                 </div>
             </React.Fragment>
