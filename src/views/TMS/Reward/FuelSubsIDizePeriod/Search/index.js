@@ -20,6 +20,7 @@ import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import ImportExcelModalCom from './ImportExcelModal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../../constants/actionTypes';
+import { FUELSUBSIDIZEPERIOD_VIEW, FUELSUBSIDIZEPERIOD_ADD, FUELSUBSIDIZEPERIOD_DEL, FUELSUBSIDIZEPERIOD_EXPORT } from '../../../../../constants/functionLists'
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -126,7 +127,7 @@ class SearchCom extends React.Component {
         const postData = [
             {
                 SearchKey: "@USERNAME",
-                SearchValue: MLObject.UserName[0] ? MLObject.UserName[0].value : -1
+                SearchValue: MLObject.UserName ? MLObject.UserName.value : -1
             },
             {
                 SearchKey: "@FROMDATE",
@@ -145,6 +146,7 @@ class SearchCom extends React.Component {
                 SearchValue: 50
             }
         ]
+
         this.setState({
             stateInitSearchArgument: postData
         })
@@ -319,7 +321,6 @@ class SearchCom extends React.Component {
             readXlsxFile(input.files[0], { schema }).then(({ rows, errors }) => {
                 this.handleCheckErrorImportFile(rows);
             }).catch(error => {
-                console.log(error)
                 alert("File vừa chọn lỗi. Vui lòng chọn file khác");
             }).finally(() => {
                 input.value = "";
@@ -383,6 +384,10 @@ class SearchCom extends React.Component {
                         onImportFile={this.handleImportFile}
                         isExportFileTemplate={true}
                         onExportFileTemplate={this.handleExportFileTemplate}
+
+                        RequirePermission={FUELSUBSIDIZEPERIOD_VIEW}
+                        DeletePermission={FUELSUBSIDIZEPERIOD_DEL}
+                        ExportPermission={FUELSUBSIDIZEPERIOD_EXPORT}
                     />
 
                     <input type="file" id="inputImportFile" style={{ display: "none" }} />
