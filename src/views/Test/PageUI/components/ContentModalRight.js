@@ -161,26 +161,10 @@ class ContentModalRightCom extends Component {
                                                         </ul>
                                                     </td>
                                                     <td className="jsgrid-cell " style={{ width: '31%' }}>
+                                                     
                                                         <FormControl.FormControlComboBox
                                                             name="CarrierTypeID"
-                                                            colspan="6"
-                                                            labelcolspan="2"
-                                                            label=""
-                                                            isautoloaditemfromcache={true}
-                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
-                                                            valuemember="CarrierTypeID"
-                                                            nameMember="CarrierTypeName"
-                                                            controltype="InputControl"
-                                                            value="-1"
-                                                            listoption={null}
-                                                            datasourcemember="CarrierTypeID"
-                                                            placeholder="---Vui lòng chọn---"
-                                                            isMultiSelect={false}
-                                                            isShowLable={true}
-                                                        />
-                                                        <FormControl.FormControlComboBox
-                                                            name="CarrierTypeID"
-                                                            colspan="6"
+                                                            colspan="12"
                                                             labelcolspan="2"
                                                             label=""
                                                             isautoloaditemfromcache={true}
@@ -241,23 +225,6 @@ class ContentModalRightCom extends Component {
                                                         </ul>
                                                     </td>
                                                     <td className="jsgrid-cell " style={{ width: '31%' }}>
-                                                        <FormControl.FormControlComboBox
-                                                            name="CarrierTypeID"
-                                                            colspan="12"
-                                                            labelcolspan="4"
-                                                            label=""
-                                                            isautoloaditemfromcache={true}
-                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
-                                                            valuemember="CarrierTypeID"
-                                                            nameMember="CarrierTypeName"
-                                                            controltype="InputControl"
-                                                            value="-1"
-                                                            listoption={null}
-                                                            datasourcemember="CarrierTypeID"
-                                                            placeholder="---Vui lòng chọn---"
-                                                            isMultiSelect={false}
-                                                            isShowLable={true}
-                                                        />
                                                         <FormControl.FormControlComboBox
                                                             name="CarrierTypeID"
                                                             colspan="12"
