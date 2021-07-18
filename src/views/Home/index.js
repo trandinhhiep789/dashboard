@@ -39,6 +39,7 @@ import ShipmentOrderType from '../../views/TMS/MD/ShipmentOrder/ShipmentOrderTyp
 import ShipmentOrderStep from '../../views/TMS/MD/ShipmentOrderStep';
 import PartnerPriviledgeGroup from '../../views/TMS/MD/PartnerPriviledge/PartnerPriviledgeGroup';
 import ShipmentOrder from '../../views/TMS/ShipmentOrder';
+import ShipmentRoute from '../../views/TMS/ShipmentRoute';
 import WorkingPlan from '../../views/TMS/WorkingPlan';
 import ShipmentOrderControl from '../../views/TMS/ShipmentOrderControl';
 import ManagerShipmentOrder from '../../views/TMS/ManagerShipmentOrder';
@@ -360,7 +361,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/AreaType" component={AreaType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/Area" component={Area} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ShipmentOrder" component={ShipmentOrder} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
-
+                                    <PrivateRoute path="/ShipmentRoute" component={ShipmentRoute} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ManagerShipmentOrder" component={ManagerShipmentOrder} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ShipmentOrderControl" component={ShipmentOrderControl} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/Maps" component={MapContainer} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />

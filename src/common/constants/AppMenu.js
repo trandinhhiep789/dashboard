@@ -1073,6 +1073,13 @@ const AppMenu = [
         SubMenu: []
     },
     {
+        MenuName: 'ShipmentRoute',
+        MenuTitle: 'Phân tuyến giao hàng',
+        LinkTo: '/ShipmentRoute',
+        MenuIcon: '',
+        SubMenu: []
+    },
+    {
         MenuName: 'Price',
         MenuTitle: 'Giá',
         LinkTo: '',
