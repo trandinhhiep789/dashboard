@@ -62,7 +62,7 @@ export const SearchElementList = [
         NameMember: "AreaName"
     },
     // {
-    //     type: "ComboTreeSelect",
+    //     tyvse: "ComboTreeSelect",
     //     name: "cbMainGroup",
     //     DataSourceMember: "MainGroupID",
     //     label: "Ngành hàng",

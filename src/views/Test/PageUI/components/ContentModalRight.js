@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import FormControl from "../../../../common/components/FormContainer/FormControl";
 import { showModal, hideModal } from '../../../../actions/modal';
+import { Link } from "react-router-dom";
+import ReactTooltip from 'react-tooltip';
 class ContentModalRightCom extends Component {
     constructor(props) {
         super(props);
@@ -78,7 +80,7 @@ class ContentModalRightCom extends Component {
                             </div>
                         </div> */}
 
-                        <div className="form-row mt-20">
+                        <div className="form-row">
                             <div className="col-md-6">
                                 <FormControl.ComboBoxPartner
                                     name="CarrierPartnerID"
@@ -145,23 +147,37 @@ class ContentModalRightCom extends Component {
                                                     <td className="jsgrid-cell high-priority" style={{ width: '1%' }}>
                                                     </td>
 
-                                                    <td className="jsgrid-cell group-products" style={{ width: '25%' }}>
+                                                    <td className="jsgrid-cell group-products" style={{ width: '50%' }}>
                                                         <ul>
-                                                            <li className="item lstProducts">
-                                                                <span>210714000000199</span> <span> 08:00</span>
+                                                            <li className="item infoOder">
+                                                                <span className="nameOrder">
+                                                                    <Link
+                                                                        className="linktext blank"
+                                                                        target="_blank"
+                                                                        to={{ pathname: "/ShipmentOrder/Detail/" + 210714000000199 }}>
+                                                                        210714000000199 </Link>
+                                                                </span>
+                                                                <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
                                                             </li>
-                                                            <li className="item lstProducts">
-                                                                <span>Tivi LED Sony KD-49X8000H</span>
-                                                                <span>Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                            <li className="item infoProduict">
+                                                                <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
+                                                                <ReactTooltip id="producname1" type='warning'>
+                                                                    <span>Tivi LED Sony KD-49X8000H</span>
+                                                                </ReactTooltip>
+                                                                <span data-tip data-for="producname2" data-id="producname2">Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                                <ReactTooltip id="producname2" type='warning'>
+                                                                    <span>Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                                </ReactTooltip>
                                                             </li>
-                                                            <li className="item status">
-                                                                <i className="fa fa-location-arrow"></i>
-                                                                <span>Xe máy &amp; Xe tải</span>
+                                                            <li className="item delivery-status">
+
+                                                                <span class="badge badge-secondary badge-active mr-10"><i className="fa fa-motorcycle"></i> Xe máy</span>
+                                                                <span class="badge badge-secondary"><i className="fa fa-truck"></i> Xe tải</span>
                                                             </li>
                                                         </ul>
                                                     </td>
-                                                    <td className="jsgrid-cell " style={{ width: '31%' }}>
-                                                     
+                                                    <td className="jsgrid-cell " style={{ width: '44%' }}>
+
                                                         <FormControl.FormControlComboBox
                                                             name="CarrierTypeID"
                                                             colspan="12"
@@ -179,7 +195,7 @@ class ContentModalRightCom extends Component {
                                                             isMultiSelect={false}
                                                             isShowLable={true}
                                                         />
-                                                          <FormControl.FormControlComboBox
+                                                        <FormControl.FormControlComboBox
                                                             name="CarrierTypeID"
                                                             colspan="12"
                                                             labelcolspan="4"
@@ -198,37 +214,56 @@ class ContentModalRightCom extends Component {
                                                         />
                                                     </td>
                                                     <td className="jsgrid-cell " style={{ width: '5%' }}>
-                                                        <a class="table-action hover-danger item-action">
-                                                            <i class="ti-trash"></i>
-                                                        </a>
-                                                        <a class="table-action hover-danger item-action">
-                                                            <i class="ti-trash"></i>
-                                                        </a>
+                                                        <div className="group-action">
+                                                            <a class="table-action hover-danger item-action">
+                                                                <i class="ti-trash"></i>
+                                                            </a>
+                                                            <a class="table-action hover-danger item-action">
+                                                                <i class="ti-trash"></i>
+                                                            </a>
+                                                        </div>
+
                                                     </td>
                                                 </tr>
                                                 <tr className="jsgrid-row">
                                                     <td className="jsgrid-cell high-priority" style={{ width: '1%' }}>
                                                     </td>
 
-                                                    <td className="jsgrid-cell group-products" style={{ width: '25%' }}>
+                                                    <td className="jsgrid-cell group-products" style={{ width: '50%' }}>
                                                         <ul>
-                                                            <li className="item lstProducts">
-                                                                <span>210714000000199</span>
+                                                            <li className="item infoOder">
+                                                                <span className="nameOrder">
+                                                                    <Link
+                                                                        className="linktext blank"
+                                                                        target="_blank"
+                                                                        to={{ pathname: "/ShipmentOrder/Detail/" + 210714000000199 }}>
+                                                                        210714000000199 </Link>
+                                                                </span>
+                                                                <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
                                                             </li>
-                                                            <li className="item lstProducts">
-                                                                <span>Tivi LED Sony KD-49X8000H</span>
-                                                                <span>Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                            <li className="item infoProduict">
+                                                                <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
+                                                                <ReactTooltip id="producname1" type='warning'>
+                                                                    <span>Tivi LED Sony KD-49X8000H</span>
+                                                                </ReactTooltip>
+                                                                <span data-tip data-for="producname2" data-id="producname2">Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                                <ReactTooltip id="producname2" type='warning'>
+                                                                    <span>Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                                </ReactTooltip>
                                                             </li>
-                                                            <li className="item note">
-                                                                <span> 08:00</span>
+                                                            <li className="item delivery-status">
+
+                                                                <span class="badge badge-secondary badge-active mr-10"><i className="fa fa-motorcycle"></i> Xe máy</span>
+                                                                <span class="badge badge-secondary"><i className="fa fa-truck"></i> Xe tải</span>
                                                             </li>
                                                         </ul>
                                                     </td>
-                                                    <td className="jsgrid-cell " style={{ width: '31%' }}>
+                                                    <td className="jsgrid-cell " style={{ width: '44%' }}>
+
                                                         <FormControl.FormControlComboBox
                                                             name="CarrierTypeID"
                                                             colspan="12"
-                                                            labelcolspan="4"
+                                                            labelcolspan="2"
                                                             label=""
                                                             isautoloaditemfromcache={true}
                                                             loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
@@ -242,7 +277,7 @@ class ContentModalRightCom extends Component {
                                                             isMultiSelect={false}
                                                             isShowLable={true}
                                                         />
-                                                          <FormControl.FormControlComboBox
+                                                        <FormControl.FormControlComboBox
                                                             name="CarrierTypeID"
                                                             colspan="12"
                                                             labelcolspan="4"
@@ -261,38 +296,56 @@ class ContentModalRightCom extends Component {
                                                         />
                                                     </td>
                                                     <td className="jsgrid-cell " style={{ width: '5%' }}>
-                                                        <a class="table-action hover-danger item-action">
-                                                            <i class="ti-trash"></i>
-                                                        </a>
-                                                        <a class="table-action hover-danger item-action">
-                                                            <i class="ti-trash"></i>
-                                                        </a>
+                                                        <div className="group-action">
+                                                            <a class="table-action hover-danger item-action">
+                                                                <i class="ti-trash"></i>
+                                                            </a>
+                                                            <a class="table-action hover-danger item-action">
+                                                                <i class="ti-trash"></i>
+                                                            </a>
+                                                        </div>
+
                                                     </td>
                                                 </tr>
-                                             
                                                 <tr className="jsgrid-row">
                                                     <td className="jsgrid-cell high-priority" style={{ width: '1%' }}>
                                                     </td>
 
-                                                    <td className="jsgrid-cell group-products" style={{ width: '25%' }}>
+                                                    <td className="jsgrid-cell group-products" style={{ width: '50%' }}>
                                                         <ul>
-                                                            <li className="item lstProducts">
-                                                                <span>210714000000199</span>
+                                                            <li className="item infoOder">
+                                                                <span className="nameOrder">
+                                                                    <Link
+                                                                        className="linktext blank"
+                                                                        target="_blank"
+                                                                        to={{ pathname: "/ShipmentOrder/Detail/" + 210714000000199 }}>
+                                                                        210714000000199 </Link>
+                                                                </span>
+                                                                <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
                                                             </li>
-                                                            <li className="item lstProducts">
-                                                                <span>Tivi LED Sony KD-49X8000H</span>
-                                                                <span>Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                            <li className="item infoProduict">
+                                                                <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
+                                                                <ReactTooltip id="producname1" type='warning'>
+                                                                    <span>Tivi LED Sony KD-49X8000H</span>
+                                                                </ReactTooltip>
+                                                                <span data-tip data-for="producname2" data-id="producname2">Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                                <ReactTooltip id="producname2" type='warning'>
+                                                                    <span>Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                                </ReactTooltip>
                                                             </li>
-                                                            <li className="item note">
-                                                                <span> 08:00</span>
+                                                            <li className="item delivery-status">
+
+                                                                <span class="badge badge-secondary badge-active mr-10"><i className="fa fa-motorcycle"></i> Xe máy</span>
+                                                                <span class="badge badge-secondary"><i className="fa fa-truck"></i> Xe tải</span>
                                                             </li>
                                                         </ul>
                                                     </td>
-                                                    <td className="jsgrid-cell " style={{ width: '31%' }}>
+                                                    <td className="jsgrid-cell " style={{ width: '44%' }}>
+
                                                         <FormControl.FormControlComboBox
                                                             name="CarrierTypeID"
                                                             colspan="12"
-                                                            labelcolspan="4"
+                                                            labelcolspan="2"
                                                             label=""
                                                             isautoloaditemfromcache={true}
                                                             loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
@@ -307,23 +360,6 @@ class ContentModalRightCom extends Component {
                                                             isShowLable={true}
                                                         />
                                                         <FormControl.FormControlComboBox
-                                                            name="CarrierTypeID"
-                                                            colspan="12"
-                                                            labelcolspan="4"
-                                                            label=""
-                                                            isautoloaditemfromcache={true}
-                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
-                                                            valuemember="CarrierTypeID"
-                                                            nameMember="CarrierTypeName"
-                                                            controltype="InputControl"
-                                                            value="-1"
-                                                            listoption={null}
-                                                            datasourcemember="CarrierTypeID"
-                                                            placeholder="---Vui lòng chọn---"
-                                                            isMultiSelect={false}
-                                                            isShowLable={true}
-                                                        />
-                                                          <FormControl.FormControlComboBox
                                                             name="CarrierTypeID"
                                                             colspan="12"
                                                             labelcolspan="4"
@@ -342,15 +378,17 @@ class ContentModalRightCom extends Component {
                                                         />
                                                     </td>
                                                     <td className="jsgrid-cell " style={{ width: '5%' }}>
-                                                        <a class="table-action hover-danger item-action">
-                                                            <i class="ti-trash"></i>
-                                                        </a>
-                                                        <a class="table-action hover-danger item-action">
-                                                            <i class="ti-trash"></i>
-                                                        </a>
+                                                        <div className="group-action">
+                                                            <a class="table-action hover-danger item-action">
+                                                                <i class="ti-trash"></i>
+                                                            </a>
+                                                            <a class="table-action hover-danger item-action">
+                                                                <i class="ti-trash"></i>
+                                                            </a>
+                                                        </div>
+
                                                     </td>
                                                 </tr>
-                                             
                                             </tbody>
                                         </table>
                                     </div>
