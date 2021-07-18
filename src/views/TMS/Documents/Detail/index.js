@@ -61,7 +61,7 @@ class DetailCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
-
+                apiResult.ResultObject.FileContent1 = apiResult.ResultObject.FileContent1 + apiResult.ResultObject.FileContent2;
 
                 this.setState({
                     IsPublished: apiResult.ResultObject.IsPublished,

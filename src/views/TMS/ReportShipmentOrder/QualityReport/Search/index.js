@@ -14,7 +14,9 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { MessageModal } from "../../../../../common/components/Modal";
 import { MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from '../../../../../constants/actionTypes';
 import { showModal, hideModal } from '../../../../../actions/modal';
-import QuanlityReportAll from '../components/QuanlityReportAll'
+import QuanlityReportAll from '../components/QuanlityReportAll';
+
+import { toIsoStringCus, toIsoStringCusNew, formatNumber, formatNumberNew, toIsoStringNew } from '../../../../../utils/function'
 export class Search extends Component {
     constructor(props) {
         super(props);
@@ -25,7 +27,10 @@ export class Search extends Component {
             dataSource: [],
             ReportQualityTypeID: 1,
             SearchElementList: SearchElementList,
-            IsLoadDataComplete: false
+            IsLoadDataComplete: false,
+            fromDate: "",
+            toDate: "",
+            AreaIDList: ""
         }
 
         this.searchref = React.createRef();
@@ -33,28 +38,16 @@ export class Search extends Component {
         this.showMessage = this.showMessage.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
         this.renderGirdData = this.renderGirdData.bind(this)
+        this.getComboxDataCooGroupByArea = this.getComboxDataCooGroupByArea.bind(this)
     };
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
         // this.showMessage("Tính năng đang phát triển");
 
-        const listoption = [
+      console.log("state",this.state.SearchElementList, Date.parse(toIsoStringCusNew(new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()).toISOString(), false)))
 
-            { value: 1, label: 'Báo cáo chất lượng toàn quốc' },
-            { value: 2, label: 'Báo cáo tổng hợp các ngành hàng, nhóm hàng' },
-            { value: 3, label: 'Báo cáo theo chi nhánh' },
-            { value: 4, label: 'Báo cáo tổng hợp theo chi nhánh' },
-            { value: 5, label: 'Báo cáo theo user' },
 
-        ];
-        let _SearchElementList = this.state.SearchElementList;
-        _SearchElementList.forEach(function (objElement) {
-            if (objElement.type == 'MGCOOMultiTreeSelect') {
-                objElement.listoption = listoption;
-                objElement.value = -1;
-            }
-        });
 
         const objData = {
             "storedName": "MD_COORDINATORGROUP_CACHE",
@@ -72,15 +65,35 @@ export class Search extends Component {
             ]
         }
 
-        this.setState({
-            SearchElementList: _SearchElementList,
-            IsLoadDataComplete: true
-        });
+        this.getComboxDataCooGroupByArea(objData)
+
+
+        // this.state.SearchElementList.find(n => n.name == 'cbMonthlyCoordGropup').listoption = listoption;
+    }
+
+    getComboxDataCooGroupByArea(objData) {
+        let _SearchElementList = this.state.SearchElementList;
 
         this.props.callFetchAPI(APIHostName, "api/CoordinatorGroup/GetDataCooGroupByArea", objData).then(apiResult => {
-            console.log("aaa", )
+            console.log("aaa", apiResult)
+            if (apiResult.IsError) {
+                this.showMessage("Lỗi lấy danh sách cache.")
+            }
+            else {
+
+                _SearchElementList.forEach(function (objElement) {
+                    if (objElement.type == 'MGCOOMultiTreeSelect') {
+                        objElement.listoption = apiResult.ResultObject;
+                        objElement.value = -1;
+                    }
+                });
+                this.setState({
+                    SearchElementList: _SearchElementList,
+                    IsLoadDataComplete: true
+                });
+            }
+
         });
-        // this.state.SearchElementList.find(n => n.name == 'cbMonthlyCoordGropup').listoption = listoption;
     }
 
     showMessage(message) {
@@ -92,22 +105,52 @@ export class Search extends Component {
 
     callSearchData(searchData) {
 
-        // this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-        //     if (!apiResult.IsError) {
-        //         this.setState({
-        //             dataSource: apiResult.ResultObject
-        //         });
-        //     }
-        //     else {
-        //         this.showMessage(apiResult.Message, apiResult.IsError);
-        //     }
-        // });
+        this.props.callFetchAPI(APIHostName, "api/QualityAssessmentReport/Search", searchData).then(apiResult => {
+            console.log("searh",apiResult )
+            if (!apiResult.IsError) {
+                this.setState({
+                    dataSource: apiResult.ResultObject
+                });
+            }
+            else {
+                this.showMessage(apiResult.Message, apiResult.IsError);
+            }
+        });
+
     };
 
     handleSearchSubmit(formData, MLObject) {
         console.log("submit", MLObject)
-        const postData = [];
-        //this.callSearchData(postData);
+        const postData = [
+            {
+                SearchKey: "@FROMDATE",
+                SearchValue: MLObject.FromDate
+            },
+            {
+                SearchKey: "@TODATE",
+                SearchValue: MLObject.ToDate
+            },
+            {
+                SearchKey: "@AREAIDLIST",
+                SearchValue: MLObject.AreaID
+            },
+            {
+                SearchKey: "@COORDINATORGROUPIDLIST",
+                SearchValue: MLObject.CoordinatorGroupID
+            },
+
+            {
+                SearchKey: "@MAINGROUPIDLIST",
+                SearchValue: MLObject.MainGroupID
+            },
+            {
+                SearchKey: "@SUBGROUPIDLIST",
+                SearchValue: MLObject.SubGroupID
+            },
+
+
+        ];
+        this.callSearchData(postData);
     };
 
     handleHistorySearch() {
@@ -154,35 +197,35 @@ export class Search extends Component {
         });
     }
     handleChangeSearch(FormData, MLObject) {
-        console.log("change", FormData, MLObject)
+        console.log("change", FormData.cbFromDate.value)
         const postData = {
             FromDate: "",
             ToDate: "",
             AreaID: -1
         }
 
-        this.setState({
-            IsLoadDataComplete: false
-        });
+        // this.setState({
+        //     IsLoadDataComplete: false
+        // });
 
-        const listoption = [
 
-            { value: 1, label: 'Báo cáo chất lượng toàn quốc' },
-            { value: 2, label: 'Báo cáo tổng hợp các ngành hàng, nhóm hàng' },
+        // const objData = {
+        //     "storedName": "MD_COORDINATORGROUP_CACHE",
+        //     "params": [
+        //         {
+        //             "name": "V_DATE",
+        //             "value": 1626368400000.0,
+        //             "op": "timestamp"
+        //         },
+        //         {
+        //             "name": "V_AREAIDLIST",
+        //             "value": 1,
+        //             "op": "array"
+        //         }
+        //     ]
+        // }
 
-        ];
-        let _SearchElementList = this.state.SearchElementList;
-        _SearchElementList.forEach(function (objElement) {
-            if (objElement.type == 'MGCOOMultiTreeSelect') {
-                objElement.listoption = listoption;
-                objElement.value = -1;
-            }
-        });
-
-        this.setState({
-            SearchElementList: _SearchElementList,
-            IsLoadDataComplete: true
-        });
+        // this.getComboxDataCooGroupByArea(objData)
 
 
     }
@@ -203,12 +246,12 @@ export class Search extends Component {
     render() {
 
         let girdData = this.renderGirdData();
-        console.log("state", this.state.SearchElementList)
+        // console.log("state", this.state.SearchElementList)
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
-    
+
                     <SearchForm
                         FormName="Tìm kiếm báo cáo chất lượng dịch vụ"
                         listelement={this.state.SearchElementList}
@@ -223,7 +266,7 @@ export class Search extends Component {
                         onchange={this.handleChangeSearch.bind(this)}
                         className="multiple "
                     />
-    
+
                     <div className="col-lg-12">
                         <div className="card">
                             <div className="card-body">
@@ -233,7 +276,7 @@ export class Search extends Component {
                             </div>
                         </div>
                     </div>
-    
+
                 </React.Fragment>
             )
         }
@@ -242,7 +285,7 @@ export class Search extends Component {
                 <label>Đang nạp dữ liệu...</label>
             </React.Fragment>
         );
-        
+
     }
 }
 

@@ -1106,6 +1106,13 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
+            {
+                MenuName: 'FuelSubsIDizePeriod',
+                MenuTitle: 'Danh sách khoảng thời gian nhân viên được phụ cấp xăng',
+                LinkTo: '/FuelSubsIDizePeriod',
+                MenuIcon: '',
+                SubMenu: []
+            },
         ]
     },
     {
@@ -1178,13 +1185,7 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-            {
-                MenuName: 'FuelSubsIDizePeriod',
-                MenuTitle: 'Danh sách khoảng thời gian nhân viên được phụ cấp xăng',
-                LinkTo: '/FuelSubsIDizePeriod',
-                MenuIcon: '',
-                SubMenu: []
-            },
+
 
         ]
     },
@@ -1350,7 +1351,7 @@ const AppMenu = [
                 SubMenu: []
             },
 
-            
+
 
 
 
