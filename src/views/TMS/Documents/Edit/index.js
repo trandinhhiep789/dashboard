@@ -90,7 +90,7 @@ class EditCom extends React.Component {
     getDataByID(id) {
         const { AttachmentListData, keyUploadFile } = this.state;
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
-
+            console.log("get id", apiResult)
             if (apiResult.IsError) {
                 this.showMessage(apiResult.Message)
             }
@@ -98,6 +98,7 @@ class EditCom extends React.Component {
 
                 let File = {};
                 let item = {};
+                apiResult.ResultObject.FileContent1 = apiResult.ResultObject.FileContent1 + apiResult.ResultObject.FileContent2;
                 this.setState({
                     fileURL: apiResult.ResultObject.FileURL
                 })
@@ -109,7 +110,7 @@ class EditCom extends React.Component {
                         apiResult.ResultObject.FileURLNew = "";
                         AttachmentListData.push(File);
                     }
-
+                    
                     item = apiResult.ResultObject;
                     item.FileURL = "";
                     this.setState({
@@ -117,6 +118,7 @@ class EditCom extends React.Component {
                     })
                 }
                 else {
+                   
                     item = apiResult.ResultObject;
                     this.setState({
                         AttachmentListData: []
@@ -141,6 +143,17 @@ class EditCom extends React.Component {
         MLObject.DocumentID = this.props.match.params.id;
         // console.log("Files", Files, this.props)
         // console.log("MLObject", AttachmentList, MLObject, fileSize, DataSource);
+
+        const strDecs =  MLObject.FileContent1;
+
+        if (MLObject.FileContent1.length > 2900) {
+            MLObject.FileContent1 = strDecs.substr(0, 2900);
+            MLObject.FileContent2 = strDecs.substr(2900, 2900)
+        }
+        else {
+            MLObject.FileContent1 = MLObject.FileContent1;
+            MLObject.FileContent2 = ""
+        }
 
         let data = new FormData();
         if (AttachmentList.length != 0) {
@@ -407,14 +420,14 @@ class EditCom extends React.Component {
                             datasourcemember="FileContent1"
                             controltype="InputControl"
                             rows={8}
-                            maxSize={3900}
+                            maxSize={5800}
                             // readOnly={(DocumentTypeID == parseInt(keyUploadVideo) || DocumentTypeID == parseInt(keyUploadLink)) ? false : true}
                             // disabled={(DocumentTypeID == parseInt(keyUploadVideo) || DocumentTypeID == parseInt(keyUploadLink)) ? false : true}
                             classNameCustom="customcontrol"
                         />
                     </div>
 
-
+                    {/* 
                     <div className="col-md-12">
                         <FormControl.TextArea
                             labelcolspan={2}
@@ -430,7 +443,7 @@ class EditCom extends React.Component {
                             // disabled={(DocumentTypeID == parseInt(keyUploadVideo) || DocumentTypeID == parseInt(keyUploadLink)) ? false : true}
                             classNameCustom="customcontrol"
                         />
-                    </div>
+                    </div> */}
 
                     <div className="col-md-6">
                         <FormControl.UploadAvatar

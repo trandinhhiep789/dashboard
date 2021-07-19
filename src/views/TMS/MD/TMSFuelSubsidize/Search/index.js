@@ -222,7 +222,7 @@ class SearchCom extends React.Component {
                         ExportPermission={FUELPRICE_VIEW}
                         //DeletePermission={CANCELDELIVERYREASON_DELETE}
                         IsAutoPaging={true}
-                        RowsPerPage={10}
+                        RowsPerPage={50}
 
                         IsExportFile={true}
                         DataExport={this.state.dataExport}

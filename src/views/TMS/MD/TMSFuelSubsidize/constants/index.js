@@ -210,14 +210,14 @@ export const DataGridColumnList = [
     },
     {
         Name: "FuelPrice",
-        Type: "text",
+        Type: "textCurrency",
         Caption: "Đơn giá xăng",
         DataSourceMember: "FuelPrice",
         Width: 150
     },
     {
         Name: "TotalSubsidize",
-        Type: "text",
+        Type: "textCurrency",
         Caption: "Tổng tiền phụ cấp",
         DataSourceMember: "TotalSubsidize",
         Width: 150
