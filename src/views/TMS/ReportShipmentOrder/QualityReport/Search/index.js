@@ -6,7 +6,9 @@ import { ModalManager } from 'react-dynamic-modal';
 import { updatePagePath } from "../../../../../actions/pageAction";
 import {
     APIHostName, PagePath, SearchElementList,
-    SearchMLObjectDefinition, SearchAPIPath
+    SearchMLObjectDefinition, SearchAPIPath,
+    PageMainGroupPath, PageBranchPath, PageBranchGeneralPath, PageUserPath,
+    SearchByUserElementList, SearchByUserMLObjectDefinition
 } from '../constants';
 import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
 import DataGrid from "../../../../../common/components/DataGrid";
@@ -15,6 +17,10 @@ import { MessageModal } from "../../../../../common/components/Modal";
 import { MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from '../../../../../constants/actionTypes';
 import { showModal, hideModal } from '../../../../../actions/modal';
 import QuanlityReportAll from '../components/QuanlityReportAll';
+import QualityReportMainGroup from '../components/QualityReportMainGroup';
+import QualityReportBranch from '../components/QualityReportBranch'
+import QualityReportBranchGeneral from '../components/QualityReportBranchGeneral '
+import QualityReportByUser from '../components/QualityReportByUser'
 
 import { toIsoStringCus, toIsoStringCusNew, formatNumber, formatNumberNew, toIsoStringNew } from '../../../../../utils/function'
 export class Search extends Component {
@@ -25,12 +31,19 @@ export class Search extends Component {
             cssNotification: "",
             iconNotification: "",
             dataSource: [],
-            ReportQualityTypeID: 1,
+            ReportQualityTypeID: 5,
             SearchElementList: SearchElementList,
+            SearchByUserElementList: SearchByUserElementList,
             IsLoadDataComplete: false,
             fromDate: "",
             toDate: "",
-            AreaIDList: ""
+            AreaIDList: "",
+            pageNumber: 1,
+            pageSize: 3,
+            FromDate: "",
+            ToDate: "",
+            AreaID: "",
+            CoordinatorGroupID: ""
         }
 
         this.searchref = React.createRef();
@@ -39,13 +52,18 @@ export class Search extends Component {
         this.callSearchData = this.callSearchData.bind(this);
         this.renderGirdData = this.renderGirdData.bind(this)
         this.getComboxDataCooGroupByArea = this.getComboxDataCooGroupByArea.bind(this)
+        this.renderFormSeach = this.renderFormSeach.bind(this)
     };
+
+    componentWillReceiveProps(nextProps) {
+
+    }
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
         // this.showMessage("Tính năng đang phát triển");
 
-      console.log("state",this.state.SearchElementList, Date.parse(toIsoStringCusNew(new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()).toISOString(), false)))
+        console.log("state", this.state.SearchElementList, Date.parse(toIsoStringCusNew(new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()).toISOString(), false)))
 
 
 
@@ -73,6 +91,7 @@ export class Search extends Component {
 
     getComboxDataCooGroupByArea(objData) {
         let _SearchElementList = this.state.SearchElementList;
+        let _SearchByUserElementList = this.state.SearchByUserElementList;
 
         this.props.callFetchAPI(APIHostName, "api/CoordinatorGroup/GetDataCooGroupByArea", objData).then(apiResult => {
             console.log("aaa", apiResult)
@@ -87,8 +106,16 @@ export class Search extends Component {
                         objElement.value = -1;
                     }
                 });
+                _SearchByUserElementList.forEach(function (objElement) {
+                    if (objElement.type == 'MGCOOMultiTreeSelect') {
+                        objElement.listoption = apiResult.ResultObject;
+                        objElement.value = -1;
+                    }
+                });
+
                 this.setState({
                     SearchElementList: _SearchElementList,
+                    SearchByUserElementList: _SearchByUserElementList,
                     IsLoadDataComplete: true
                 });
             }
@@ -106,8 +133,15 @@ export class Search extends Component {
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, "api/QualityAssessmentReport/Search", searchData).then(apiResult => {
-            console.log("searh",apiResult )
+            console.log("searh", searchData, apiResult)
+            let sumItem = {};
             if (!apiResult.IsError) {
+
+                const totalCOD = apiResult.ResultObject.reduce((sum, curValue, curIndex, []) => {
+                    sum += curValue.TotalQuantityLike
+                    return sum
+                }, 0);
+                console.log("searh", totalCOD)
                 this.setState({
                     dataSource: apiResult.ResultObject
                 });
@@ -120,36 +154,173 @@ export class Search extends Component {
     };
 
     handleSearchSubmit(formData, MLObject) {
-        console.log("submit", MLObject)
-        const postData = [
-            {
-                SearchKey: "@FROMDATE",
-                SearchValue: MLObject.FromDate
-            },
-            {
-                SearchKey: "@TODATE",
-                SearchValue: MLObject.ToDate
-            },
-            {
-                SearchKey: "@AREAIDLIST",
-                SearchValue: MLObject.AreaID
-            },
-            {
-                SearchKey: "@COORDINATORGROUPIDLIST",
-                SearchValue: MLObject.CoordinatorGroupID
-            },
+        const { ReportQualityTypeID } = this.state;
+        let postData;
+        switch (ReportQualityTypeID) {
+            case 1:
+                postData = [
+                    {
+                        SearchKey: "@FROMDATE",
+                        SearchValue: MLObject.FromDate
+                    },
+                    {
+                        SearchKey: "@TODATE",
+                        SearchValue: MLObject.ToDate
+                    },
+                    {
+                        SearchKey: "@AREAIDLIST",
+                        SearchValue: MLObject.AreaID
+                    },
+                    {
+                        SearchKey: "@COORDINATORGROUPIDLIST",
+                        SearchValue: MLObject.CoordinatorGroupID
+                    },
 
-            {
-                SearchKey: "@MAINGROUPIDLIST",
-                SearchValue: MLObject.MainGroupID
-            },
-            {
-                SearchKey: "@SUBGROUPIDLIST",
-                SearchValue: MLObject.SubGroupID
-            },
+                    {
+                        SearchKey: "@MAINGROUPIDLIST",
+                        SearchValue: MLObject.MainGroupID
+                    },
+                    {
+                        SearchKey: "@SUBGROUPIDLIST",
+                        SearchValue: MLObject.SubGroupID
+                    },
 
 
-        ];
+                ];
+                break;
+            case 2:
+                postData = [
+                    {
+                        SearchKey: "@FROMDATE",
+                        SearchValue: MLObject.FromDate
+                    },
+                    {
+                        SearchKey: "@TODATE",
+                        SearchValue: MLObject.ToDate
+                    },
+                    {
+                        SearchKey: "@AREAIDLIST",
+                        SearchValue: MLObject.AreaID
+                    },
+                    {
+                        SearchKey: "@COORDINATORGROUPIDLIST",
+                        SearchValue: MLObject.CoordinatorGroupID
+                    },
+
+                    {
+                        SearchKey: "@MAINGROUPIDLIST",
+                        SearchValue: MLObject.MainGroupID
+                    },
+                    {
+                        SearchKey: "@SUBGROUPIDLIST",
+                        SearchValue: MLObject.SubGroupID
+                    },
+
+
+                ];
+                break;
+            case 3:
+                postData = [
+                    {
+                        SearchKey: "@FROMDATE",
+                        SearchValue: MLObject.FromDate
+                    },
+                    {
+                        SearchKey: "@TODATE",
+                        SearchValue: MLObject.ToDate
+                    },
+                    {
+                        SearchKey: "@AREAIDLIST",
+                        SearchValue: MLObject.AreaID
+                    },
+                    {
+                        SearchKey: "@COORDINATORGROUPIDLIST",
+                        SearchValue: MLObject.CoordinatorGroupID
+                    },
+
+                    {
+                        SearchKey: "@MAINGROUPIDLIST",
+                        SearchValue: MLObject.MainGroupID
+                    },
+                    {
+                        SearchKey: "@SUBGROUPIDLIST",
+                        SearchValue: MLObject.SubGroupID
+                    },
+
+
+                ];
+                break;
+            case 4:
+                postData = [
+                    {
+                        SearchKey: "@FROMDATE",
+                        SearchValue: MLObject.FromDate
+                    },
+                    {
+                        SearchKey: "@TODATE",
+                        SearchValue: MLObject.ToDate
+                    },
+                    {
+                        SearchKey: "@AREAIDLIST",
+                        SearchValue: MLObject.AreaID
+                    },
+                    {
+                        SearchKey: "@COORDINATORGROUPIDLIST",
+                        SearchValue: MLObject.CoordinatorGroupID
+                    },
+
+                    {
+                        SearchKey: "@MAINGROUPIDLIST",
+                        SearchValue: MLObject.MainGroupID
+                    },
+                    {
+                        SearchKey: "@SUBGROUPIDLIST",
+                        SearchValue: MLObject.SubGroupID
+                    },
+
+
+                ];
+                break;
+            case 5:
+                this.setState({
+                    FromDate: MLObject.FromDate,
+                    ToDate: MLObject.ToDate,
+                    AreaID: "",
+                    CoordinatorGroupID: ""
+                })
+                postData = [
+                    {
+                        SearchKey: "@FROMDATE",
+                        SearchValue: MLObject.FromDate
+                    },
+                    {
+                        SearchKey: "@TODATE",
+                        SearchValue: MLObject.ToDate
+                    },
+                    {
+                        SearchKey: "@AREAIDLIST",
+                        SearchValue: "" //MLObject.AreaID
+                    },
+                    {
+                        SearchKey: "@COORDINATORGROUPIDLIST",
+                        SearchValue: ""// MLObject.CoordinatorGroupID 
+                    },
+                    {
+                        SearchKey: "@PAGEINDEX",
+                        SearchValue: this.state.pageNumber
+                    },
+                    {
+                        SearchKey: "@PAGESIZE",
+                        SearchValue: 3
+                    },
+
+
+                ];
+                break;
+            default:
+                break;
+        }
+
         this.callSearchData(postData);
     };
 
@@ -196,17 +367,18 @@ export class Search extends Component {
             }
         });
     }
+
     handleChangeSearch(FormData, MLObject) {
-        console.log("change", FormData.cbFromDate.value)
+        console.log("change", FormData, MLObject)
         const postData = {
             FromDate: "",
             ToDate: "",
             AreaID: -1
         }
-
-        // this.setState({
-        //     IsLoadDataComplete: false
-        // });
+        const ReportQualityTypeID = FormData.cbReportQualityType.value
+        this.setState({
+            ReportQualityTypeID: ReportQualityTypeID
+        });
 
 
         // const objData = {
@@ -230,12 +402,205 @@ export class Search extends Component {
 
     }
 
-    renderGirdData() {
+    handleChangePage(numPage) {
+        console.log("handleChangePage", numPage)
+
+
+        this.setState({
+            pageNumber: numPage
+        });
+
         const { ReportQualityTypeID } = this.state;
+
+        let postData;
+        switch (ReportQualityTypeID) {
+            case 1:
+                postData = [
+                    {
+                        SearchKey: "@FROMDATE",
+                        SearchValue: MLObject.FromDate
+                    },
+                    {
+                        SearchKey: "@TODATE",
+                        SearchValue: MLObject.ToDate
+                    },
+                    {
+                        SearchKey: "@AREAIDLIST",
+                        SearchValue: MLObject.AreaID
+                    },
+                    {
+                        SearchKey: "@COORDINATORGROUPIDLIST",
+                        SearchValue: MLObject.CoordinatorGroupID
+                    },
+
+                    {
+                        SearchKey: "@MAINGROUPIDLIST",
+                        SearchValue: MLObject.MainGroupID
+                    },
+                    {
+                        SearchKey: "@SUBGROUPIDLIST",
+                        SearchValue: MLObject.SubGroupID
+                    },
+
+
+                ];
+                break;
+            case 2:
+                postData = [
+                    {
+                        SearchKey: "@FROMDATE",
+                        SearchValue: MLObject.FromDate
+                    },
+                    {
+                        SearchKey: "@TODATE",
+                        SearchValue: MLObject.ToDate
+                    },
+                    {
+                        SearchKey: "@AREAIDLIST",
+                        SearchValue: MLObject.AreaID
+                    },
+                    {
+                        SearchKey: "@COORDINATORGROUPIDLIST",
+                        SearchValue: MLObject.CoordinatorGroupID
+                    },
+
+                    {
+                        SearchKey: "@MAINGROUPIDLIST",
+                        SearchValue: MLObject.MainGroupID
+                    },
+                    {
+                        SearchKey: "@SUBGROUPIDLIST",
+                        SearchValue: MLObject.SubGroupID
+                    },
+
+
+                ];
+                break;
+            case 3:
+                postData = [
+                    {
+                        SearchKey: "@FROMDATE",
+                        SearchValue: MLObject.FromDate
+                    },
+                    {
+                        SearchKey: "@TODATE",
+                        SearchValue: MLObject.ToDate
+                    },
+                    {
+                        SearchKey: "@AREAIDLIST",
+                        SearchValue: MLObject.AreaID
+                    },
+                    {
+                        SearchKey: "@COORDINATORGROUPIDLIST",
+                        SearchValue: MLObject.CoordinatorGroupID
+                    },
+
+                    {
+                        SearchKey: "@MAINGROUPIDLIST",
+                        SearchValue: MLObject.MainGroupID
+                    },
+                    {
+                        SearchKey: "@SUBGROUPIDLIST",
+                        SearchValue: MLObject.SubGroupID
+                    },
+
+
+                ];
+                break;
+            case 4:
+                postData = [
+                    {
+                        SearchKey: "@FROMDATE",
+                        SearchValue: MLObject.FromDate
+                    },
+                    {
+                        SearchKey: "@TODATE",
+                        SearchValue: MLObject.ToDate
+                    },
+                    {
+                        SearchKey: "@AREAIDLIST",
+                        SearchValue: MLObject.AreaID
+                    },
+                    {
+                        SearchKey: "@COORDINATORGROUPIDLIST",
+                        SearchValue: MLObject.CoordinatorGroupID
+                    },
+
+                    {
+                        SearchKey: "@MAINGROUPIDLIST",
+                        SearchValue: MLObject.MainGroupID
+                    },
+                    {
+                        SearchKey: "@SUBGROUPIDLIST",
+                        SearchValue: MLObject.SubGroupID
+                    },
+
+
+                ];
+                break;
+            case 5:
+                postData = [
+                    {
+                        SearchKey: "@FROMDATE",
+                        SearchValue: this.state.FromDate
+                    },
+                    {
+                        SearchKey: "@TODATE",
+                        SearchValue: this.state.ToDate
+                    },
+                    {
+                        SearchKey: "@AREAIDLIST",
+                        SearchValue: this.state.AreaID
+                    },
+                    {
+                        SearchKey: "@COORDINATORGROUPIDLIST",
+                        SearchValue: this.state.CoordinatorGroupID
+                    },
+                    {
+                        SearchKey: "@PAGEINDEX",
+                        SearchValue: numPage
+                    },
+                    {
+                        SearchKey: "@PAGESIZE",
+                        SearchValue: this.state.pageSize
+                    },
+
+
+                ];
+                break;
+            default:
+                break;
+        }
+        console.log("change page:", postData, this.state)
+        this.callSearchData(postData);
+
+
+
+    }
+
+    renderGirdData() {
+        const { ReportQualityTypeID, dataSource } = this.state;
         let girdData;
         switch (ReportQualityTypeID) {
             case 1:
-                girdData = <QuanlityReportAll dataSource={[]} />
+                girdData = <QuanlityReportAll dataSource={dataSource} />
+                break;
+            case 2:
+                girdData = <QualityReportMainGroup dataSource={dataSource} />
+                break;
+            case 3:
+                girdData = <QualityReportBranch dataSource={dataSource} />
+                break;
+            case 4:
+                girdData = <QualityReportBranchGeneral dataSource={dataSource} />
+                break;
+            case 5:
+                girdData = <QualityReportByUser
+                    dataSource={dataSource}
+                    pageNumber={this.state.pageNumber}
+                    onChangePage={this.handleChangePage.bind(this)}
+                    RowsPerPage={3}
+                />
                 break;
             default:
                 break;
@@ -243,29 +608,129 @@ export class Search extends Component {
         return girdData;
     }
 
+    renderFormSeach() {
+        const { ReportQualityTypeID } = this.state;
+ 
+        let formSearch;
+        console.log("render search", ReportQualityTypeID)
+        switch (ReportQualityTypeID) {
+            case 1:
+                formSearch = <SearchForm
+                    FormName="Tìm kiếm báo cáo chất lượng toàn quốc"
+                    listelement={this.state.SearchElementList}
+                    MLObjectDefinition={SearchMLObjectDefinition}
+                    onSubmit={this.handleSearchSubmit}
+                    ref={this.searchref}
+                    colGroupAction={9}
+                    IsButtonExport={true}
+                    IsButtonhistory={true}
+                    onHistorySubmit={this.handleHistorySearch.bind(this)}
+                    onExportSubmit={this.handleExportSubmit.bind(this)}
+                    onchange={this.handleChangeSearch.bind(this)}
+                    className="multiple "
+                />
+
+                break;
+            case 2:
+                formSearch = <SearchForm
+                    FormName="Tìm kiếm báo cáo chất lượng theo nghành hàng và nhóm hàng"
+                    listelement={this.state.SearchElementList}
+                    MLObjectDefinition={SearchMLObjectDefinition}
+                    onSubmit={this.handleSearchSubmit}
+                    ref={this.searchref}
+                    colGroupAction={9}
+                    IsButtonExport={true}
+                    IsButtonhistory={true}
+                    onHistorySubmit={this.handleHistorySearch.bind(this)}
+                    onExportSubmit={this.handleExportSubmit.bind(this)}
+                    onchange={this.handleChangeSearch.bind(this)}
+                    className="multiple "
+                />
+
+                break;
+            case 3:
+                formSearch = <SearchForm
+                    FormName="Tìm kiếm báo cáo chất lượng theo chi nhánh"
+                    listelement={this.state.SearchElementList}
+                    MLObjectDefinition={SearchMLObjectDefinition}
+                    onSubmit={this.handleSearchSubmit}
+                    ref={this.searchref}
+                    colGroupAction={9}
+                    IsButtonExport={true}
+                    IsButtonhistory={true}
+                    onHistorySubmit={this.handleHistorySearch.bind(this)}
+                    onExportSubmit={this.handleExportSubmit.bind(this)}
+                    onchange={this.handleChangeSearch.bind(this)}
+                    className="multiple "
+                />
+
+                break;
+            case 4:
+                formSearch = <SearchForm
+                    FormName="Tìm kiếm báo cáo chất lượng tổng hợp theo chi nhanh"
+                    listelement={this.state.SearchElementList}
+                    MLObjectDefinition={SearchMLObjectDefinition}
+                    onSubmit={this.handleSearchSubmit}
+                    ref={this.searchref}
+                    colGroupAction={9}
+                    IsButtonExport={true}
+                    IsButtonhistory={true}
+                    onHistorySubmit={this.handleHistorySearch.bind(this)}
+                    onExportSubmit={this.handleExportSubmit.bind(this)}
+                    onchange={this.handleChangeSearch.bind(this)}
+                    className="multiple "
+                />
+
+                break;
+            case 5:
+                formSearch = <SearchForm
+                    FormName="Tìm kiếm báo cáo chất lượng theo nhân viên"
+                    listelement={this.state.SearchByUserElementList}
+                    MLObjectDefinition={SearchByUserMLObjectDefinition}
+                    onSubmit={this.handleSearchSubmit}
+                    ref={this.searchref}
+                    colGroupAction={9}
+                    IsButtonExport={true}
+                    IsButtonhistory={true}
+                    onHistorySubmit={this.handleHistorySearch.bind(this)}
+                    onExportSubmit={this.handleExportSubmit.bind(this)}
+                    onchange={this.handleChangeSearch.bind(this)}
+                    className="multiple "
+                />
+
+                break;
+            default:
+                formSearch = <SearchForm
+                    FormName="Tìm kiếm báo cáo chất lượng toàn quốc"
+                    listelement={this.state.SearchElementList}
+                    MLObjectDefinition={SearchMLObjectDefinition}
+                    onSubmit={this.handleSearchSubmit}
+                    ref={this.searchref}
+                    colGroupAction={9}
+                    IsButtonExport={true}
+                    IsButtonhistory={true}
+                    onHistorySubmit={this.handleHistorySearch.bind(this)}
+                    onExportSubmit={this.handleExportSubmit.bind(this)}
+                    onchange={this.handleChangeSearch.bind(this)}
+                    className="multiple "
+                />
+
+                break;
+        }
+    
+        return formSearch;
+     
+    }
+
     render() {
 
         let girdData = this.renderGirdData();
-        // console.log("state", this.state.SearchElementList)
+        let formSearch = this.renderFormSeach()
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
-
-                    <SearchForm
-                        FormName="Tìm kiếm báo cáo chất lượng dịch vụ"
-                        listelement={this.state.SearchElementList}
-                        MLObjectDefinition={SearchMLObjectDefinition}
-                        onSubmit={this.handleSearchSubmit}
-                        ref={this.searchref}
-                        colGroupAction={9}
-                        IsButtonExport={true}
-                        IsButtonhistory={true}
-                        onHistorySubmit={this.handleHistorySearch.bind(this)}
-                        onExportSubmit={this.handleExportSubmit.bind(this)}
-                        onchange={this.handleChangeSearch.bind(this)}
-                        className="multiple "
-                    />
+                    {formSearch}
 
                     <div className="col-lg-12">
                         <div className="card">
