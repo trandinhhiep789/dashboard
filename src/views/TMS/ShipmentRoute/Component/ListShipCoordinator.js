@@ -347,6 +347,14 @@ class ListShipCoordinatorCom extends Component {
         console.log("submit")
     }
 
+    handleChangeCourse = (CarrierTypeID, rowIndex) => e => {
+        let { ShipmentOrder } = this.state;
+        ShipmentOrder[rowIndex]["DriverUser"] = "";
+        ShipmentOrder[rowIndex]["DriverUserFull"] = "";
+        ShipmentOrder[rowIndex].VehicleID = -1;
+        ShipmentOrder[rowIndex]['CarrierTypeID'] = CarrierTypeID;
+        this.setState({ ShipmentOrder: ShipmentOrder });
+    };
     render() {
         let { ShipmentOrder } = this.state;
         console.log("ShipmentOrder", ShipmentOrder)
@@ -442,17 +450,17 @@ class ListShipCoordinatorCom extends Component {
                                                                         </li>
                                                                         <li className="item delivery-status">
                                                                             {item.CarrierTypeID == 1 ? (
-                                                                                <span className="badge badge-secondary  mr-10 badge-active"><i className="fa fa-motorcycle"></i> Xe máy</span>
+                                                                                <span className="badge badge-secondary  mr-10 badge-active" onClick={this.handleChangeCourse(1, index)}><i className="fa fa-motorcycle"></i> Xe máy</span>
                                                                             ) :
                                                                                 (
-                                                                                    <span className="badge badge-secondary mr-10"><i className="fa fa-motorcycle"></i> Xe máy</span>
+                                                                                    <span className="badge badge-secondary mr-10" onClick={this.handleChangeCourse(1, index)}><i className="fa fa-motorcycle"></i> Xe máy</span>
                                                                                 )
                                                                             }
                                                                             {item.CarrierTypeID == 1 ? (
-                                                                                <span className="badge badge-secondary "><i className="fa fa-truck"></i> Xe tải</span>
+                                                                                <span className="badge badge-secondary " onClick={this.handleChangeCourse(2, index)}><i className="fa fa-truck"></i> Xe tải</span>
                                                                             ) :
                                                                                 (
-                                                                                    <span className="badge badge-secondary badge-active"><i className="fa fa-truck"></i> Xe tải</span>
+                                                                                    <span className="badge badge-secondary badge-active" onClick={this.handleChangeCourse(2, index)}><i className="fa fa-truck"></i> Xe tải</span>
                                                                                 )
                                                                             }
 
@@ -524,237 +532,9 @@ class ListShipCoordinatorCom extends Component {
                     <button className="btn btn-w-md btn-round btn-secondary" type="button" onClick={this.handleClose.bind(this)}>Bỏ qua</button>
                     <button className="btn btn-w-md btn-round btn-info ml-50" type="button" onClick={this.handleConfirm.bind(this)}>Cập nhật</button>
                 </div>
-
             </React.Fragment>
-
         );
     }
-
-    // render() {
-    //     const DataGridColumnItemList = [
-    //         {
-    //             name: "ShipmentOrderID",
-    //             type: "text",
-    //             caption: "Mã vận đơn",
-    //             dataSourcemember: "ShipmentOrderID",
-    //             width: 50
-    //         },
-    //         {
-    //             name: "CarrierPartnerID",
-    //             type: "ComboBox",
-    //             caption: "Đối tác",
-    //             dataSourcemember: "CarrierPartnerID",
-    //             width: 250,
-    //             isautoloaditemfromcache: true,
-    //             loaditemcachekeyid: "ERPCOMMONCACHE.PARTNER",
-    //             valuemember: "PartnerID",
-    //             nameMember: "PartnerName",
-    //             value: -1,
-    //             listoption: null,
-    //             filterValue: "2",
-    //             filterobj: "PartnerTypeID",
-    //             placeholder: "---Vui lòng chọn---",
-    //             isMultiSelect: false,
-    //             disabled: false
-    //         },
-    //         {
-    //             name: "ShipmentOrder_DeliverUserList",
-    //             type: "ComboUserBox",
-    //             caption: "Nhân viên giao nhận",
-    //             dataSourcemember: "ShipmentOrder_DeliverUserList",
-    //             width: 250,
-    //             isautoloaditemfromcache: true,
-    //             loaditemcachekeyid: "ERPCOMMONCACHE.PARTNERUSER",
-    //             valuemember: "UserName",
-    //             nameMember: "FullName",
-    //             value: -1,
-    //             listoption: null,
-    //             placeholder: "---Nhân viên giao nhận---",
-    //             isMultiSelect: true,
-    //             disabled: false,
-    //             isPartner: true,
-    //             filterValue: "-1",
-    //             filterobj: "PartnerID",
-    //             filterrest: "CarrierPartnerID"
-    //         },
-    //         {
-    //             name: "CarrierTypeID",
-    //             type: "ComboBox",
-    //             caption: "Phương tiện",
-    //             dataSourcemember: "CarrierTypeID",
-    //             width: 150,
-    //             isautoloaditemfromcache: true,
-    //             loaditemcachekeyid: "ERPCOMMONCACHE.CARRIERTYPE",
-    //             valuemember: "CarrierTypeID",
-    //             nameMember: "CarrierTypeName",
-    //             value: -1,
-    //             listoption: null,
-    //             placeholder: "---Phương tiện---",
-    //             isMultiSelect: false,
-    //             disabled: false
-    //         },
-    //         {
-    //             name: "VehicleID",
-    //             type: "ComboBox",
-    //             caption: "Xe tải",
-    //             dataSourcemember: "VehicleID",
-    //             width: 150,
-    //             isautoloaditemfromcache: true,
-    //             loaditemcachekeyid: "ERPCOMMONCACHE.VEHICLE",
-    //             valuemember: "VehicleID",
-    //             nameMember: "LicensePlateNumber",
-    //             value: -1,
-    //             listoption: null,
-    //             filterValue: "4121",
-    //             filterobj: "MaincoordinAtorStoreID",
-    //             placeholder: "---Chọn---",
-    //             isMultiSelect: false,
-    //             disabled: false
-    //         },
-    //         {
-    //             name: "DriverUser",
-    //             type: "ComboUserDriverUserBox",
-    //             caption: "Tài xế",
-    //             dataSourcemember: "DriverUser",
-    //             width: 150,
-    //             isautoloaditemfromcache: false,
-    //             value: -1,
-    //             listoption: null,
-    //             placeholder: "---Nhân viên tài xế---",
-    //             isMultiSelect: false,
-    //             disabled: false,
-    //         },
-    //         {
-    //             name: "ShipmentOrderID",
-    //             type: "edit",
-    //             caption: "Tác vụ",
-    //             dataSourcemember: "ShipmentOrderID",
-    //             width: 50
-
-    //         },
-    //         {
-    //             name: "IsPermission",
-    //             type: "text",
-    //             caption: "Mã vận đơn",
-    //             dataSourcemember: "IsPermission",
-    //             width: 50,
-    //             hideInput: false
-    //         }
-    //         // },
-    //         // {
-    //         //     Name: "Action",
-    //         //     Type: "editnew",
-    //         //     Caption: "Tác vụ",
-    //         //     label:"Mã vận đơn",
-    //         //     DataSourceMember: "CarrierPartnerID",
-    //         //     Width: 70,
-    //         //     iputpop: false
-    //         // }
-    //     ];
-    //     return (
-    //         <div className="card modalForm">
-    //             <ReactNotification ref={this.notificationDOMRef} />
-    //             <div className="card-body" style={{ minHeight: 430 }}>
-    //                 <div className="form-row">
-    //                     <div className="col-md-6">
-    //                         <FormControl.ComboBoxPartner
-    //                             name="CarrierPartnerID"
-    //                             colspan="8"
-    //                             labelcolspan="4"
-    //                             label="Đối tác vận chuyển:"
-    //                             isautoloaditemfromcache={true}
-    //                             loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
-    //                             valuemember="PartnerID"
-    //                             nameMember="PartnerName"
-    //                             controltype="InputControl"
-    //                             onChange={this.handleOnValueChange}
-    //                             value={this.state.objCoordinator.CarrierPartnerID}
-    //                             listoption={null}
-    //                             datasourcemember="CarrierPartnerID"
-    //                             placeholder="---Vui lòng chọn---"
-    //                             isMultiSelect={false}
-    //                             disabled={!this.props.IsCoordinator}
-    //                         />
-    //                     </div>
-    //                     <div className="col-md-6">
-    //                         <FormControl.FormControlComboBox
-    //                             name="CarrierTypeID"
-    //                             colspan="8"
-    //                             labelcolspan="4"
-    //                             label="phương tiện"
-    //                             isautoloaditemfromcache={true}
-    //                             loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
-    //                             valuemember="CarrierTypeID"
-    //                             nameMember="CarrierTypeName"
-    //                             controltype="InputControl"
-    //                             onValueChange={this.handleOnValueChange}
-    //                             value={this.state.objCoordinator.CarrierTypeID}
-    //                             listoption={null}
-    //                             datasourcemember="CarrierTypeID"
-    //                             placeholder="---Vui lòng chọn---"
-    //                             isMultiSelect={false}
-    //                             disabled={!this.props.IsCoordinator}
-    //                         />
-    //                     </div>
-    //                 </div>
-    //                 {(this.state.objCoordinator.CarrierPartnerID == -1 || this.state.objCoordinator.CarrierPartnerID == 0) ?
-    //                     <MultiSelectComboBox
-    //                         name="ShipmentOrder_DeliverUserList"
-    //                         colspan="10"
-    //                         labelcolspan="2"
-    //                         label="Nhân viên giao"
-    //                         disabled={!this.props.IsUserCoordinator}
-    //                         IsLabelDiv={true}
-    //                         isSelectedOption={true}
-    //                         isautoloaditemfromcache={false}
-    //                         controltype="InputControl"
-    //                         onChange={this.handleValueChange1}
-    //                         value={this.state.selectedOption}
-    //                         listoption={this.state.selectedOption}
-    //                         isMultiSelect={true}
-    //                         isPartner={true}
-    //                         datasourcemember="ShipmentOrder_DeliverUserList"
-    //                     /> :
-    //                     <FormControl.FormControlComboBoxUser
-    //                         name="ShipmentOrder_DeliverUserList"
-    //                         colspan="10"
-    //                         labelcolspan="2"
-    //                         label="Nhân viên giao"
-    //                         validatonList={["Comborequired"]}
-    //                         isautoloaditemfromcache={true}
-    //                         loaditemcachekeyid="ERPCOMMONCACHE.PARTNERUSER"
-    //                         valuemember="UserName"
-    //                         nameMember="FullName"
-    //                         controltype="InputControl"
-    //                         value={this.state.objDeliverUser}
-    //                         onValueChange={this.handleOnValueChangeDeliverUser}
-    //                         listoption={null}
-    //                         datasourcemember="PartnerID"
-    //                         placeholder="---Vui lòng chọn---"
-    //                         isMultiSelect={true}
-    //                         filterValue={this.state.objCoordinator.CarrierPartnerID}
-    //                         filterobj="PartnerID"
-    //                         disabled={!this.props.IsCoordinator}
-    //                     />
-    //                 }
-    //                 <InputGridChageControl
-    //                     name="ShipmentOrder_ItemList"
-    //                     controltype="InputGridControl"
-    //                     title="Danh sách vận đơn"
-    //                     listColumn={DataGridColumnItemList}
-    //                     dataSource={this.state.ShipmentOrder}
-    //                     FormValidation={this.state.FormValidation}
-    //                     onDeleteClick={this.handleDeleteID.bind(this)}
-    //                     onValueChange={this.handleonValueChange.bind(this)}
-    //                 />
-    //             </div>
-    //             <div className="modal-footer">
-    //                 <button className="btn btnEditCard" onClick={this.handleShipWorkFlowInsert.bind(this)} type="submit" > Cập nhật</button>
-    //                 <button type="button" className="btn btn-export ml-10" title="" onClick={this.handleCloseModal.bind(this)}>Đóng</button>
-    //             </div>
-    //         </div>
-    //     );
-    // }
 }
 
 const mapStateToProps = state => {
