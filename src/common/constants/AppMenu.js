@@ -1091,14 +1091,7 @@ const AppMenu = [
                 LinkTo: '/ServicePriceTable',
                 MenuIcon: '',
                 SubMenu: []
-            },
-            {
-                MenuName: 'FuelSubsIDizePeriod',
-                MenuTitle: 'Danh sách khoảng thời gian nhân viên được phụ cấp xăng',
-                LinkTo: '/FuelSubsIDizePeriod',
-                MenuIcon: '',
-                SubMenu: []
-            },
+            }
         ]
     },
     {
@@ -1210,6 +1203,13 @@ const AppMenu = [
                         MenuName: 'TMSFuelSubsidizeCompute',
                         MenuTitle: 'Tính phụ cấp xăng',
                         LinkTo: '/TMSFuelSubsidizeCompute',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'FuelSubsIDizePeriod',
+                        MenuTitle: 'Danh sách khoảng thời gian nhân viên được phụ cấp xăng',
+                        LinkTo: '/FuelSubsIDizePeriod',
                         MenuIcon: '',
                         SubMenu: []
                     },
