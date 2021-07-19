@@ -178,6 +178,8 @@ import DocumentsType from "../TMS/MD/DocumentType";
 import DocumentsFolder from "../TMS/MD/DocumentFolder";
 import TMSFuelSubsidize from "../TMS/MD/TMSFuelSubsidize";
 import TMSFuelSubsidizeCompute from "../TMS/MD/TMSFuelSubsidize/Compute";
+import TMSGroupReward from "../TMS/MD/TMSGroupReward";
+import TMSGroupRewardCompute from "../TMS/MD/TMSGroupReward/Compute";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -436,6 +438,9 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/Documents" component={Documents} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/TMSFuelSubsidize" component={TMSFuelSubsidize} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/TMSFuelSubsidizeCompute" component={TMSFuelSubsidizeCompute} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+
+                                    <PrivateRoute path="/TMSGroupReward" component={TMSGroupReward} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/TMSGroupRewardCompute" component={TMSGroupRewardCompute} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 

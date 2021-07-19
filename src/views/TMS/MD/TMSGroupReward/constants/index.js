@@ -1,29 +1,29 @@
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "api/TMSFuelSubsidize/Search";
-export const LoadAPIPath = "api/TMSFuelSubsidize/Load";
-export const AddAPIPath = "api/TMSFuelSubsidize/Add";
-export const UpdateAPIPath = "api/TMSFuelSubsidize/Update";
-export const DeleteAPIPath = "api/TMSFuelSubsidize/Delete";
-export const UpdateOrderAPIPath = "api/TMSFuelSubsidize/UpdateOrder";
-export const BackLink = "/TMSFuelSubsidize";
-export const AddLink = "/TMSFuelSubsidize/Add";
+export const SearchAPIPath = "api/TMSGroupReward/Search";
+export const LoadAPIPath = "api/TMSGroupReward/Load";
+export const AddAPIPath = "api/TMSGroupReward/Add";
+export const UpdateAPIPath = "api/TMSGroupReward/Update";
+export const DeleteAPIPath = "api/TMSGroupReward/Delete";
+export const UpdateOrderAPIPath = "api/TMSGroupReward/UpdateOrder";
+export const BackLink = "/TMSGroupReward";
+export const AddLink = "/TMSGroupReward/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";
 export const IDSelectColumnName = "chkSelect";
-export const PKColumnName = "TMSFuelSubsidizeID";
+export const PKColumnName = "TMSGroupRewardID";
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Thông tin phụ cấp xăng" }
+    { Link: "", Title: "Thông tin thưởng nhóm điều phối" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/TMSFuelSubsidize", Title: "Thông tin phụ cấp xăng" },
+    { Link: "/TMSGroupReward", Title: "Thông tin thưởng nhóm điều phối" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/TMSFuelSubsidize", Title: "Thông tin phụ cấp xăng" },
+    { Link: "/TMSGroupReward", Title: "Thông tin thưởng nhóm điều phối" },
     { Link: "", Title: "Thêm" }
 ];
 
@@ -41,22 +41,22 @@ export const InitSearchParams = [
         SearchKey: "@FromDate",
         SearchValue: dtFromdate
     },
-    {
-        SearchKey: "@ToDate",
-        SearchValue: dtTodate
-    }
+    // {
+    //     SearchKey: "@ToDate",
+    //     SearchValue: dtTodate
+    // }
 ];
 
 export const SearchElementList = [
-    {
-        type: "text",
-        name: "txtKeyword",
-        label: "Từ khóa:",
-        value: "",
-        placeholder: "",
-        icon: "",
-        listoption: {}
-    },
+    // {
+    //     type: "text",
+    //     name: "txtKeyword",
+    //     label: "Từ khóa:",
+    //     value: "",
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: {}
+    // },
     // {
     //     type: "select",
     //     name: "IsResponseError",
@@ -72,19 +72,19 @@ export const SearchElementList = [
     // },
     // {
     //     type: "select",
-    //     name: "slTMSFuelSubsidizeTypeID",
+    //     name: "slTMSGroupRewardTypeID",
     //     label: "Loại giao dịch",
     //     value: -1,
     //     placeholder: "",
     //     icon: "",
     //     listoption: [],
-    //     DataSourceMember: "TMSFuelSubsidizeTypeID",
+    //     DataSourceMember: "TMSGroupRewardTypeID",
     //     readonly: false,
     //     validatonList: [],
     //     IsAutoLoadItemFromCache: true,
-    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.TMSFuelSubsidizeTYPE",
-    //     ValueMember: "TMSFuelSubsidizeTypeID",
-    //     NameMember: "TMSFuelSubsidizeTypeName"
+    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.TMSGroupRewardTYPE",
+    //     ValueMember: "TMSGroupRewardTypeID",
+    //     NameMember: "TMSGroupRewardTypeName"
     // },
     // {
     //     type: "select",
@@ -102,46 +102,68 @@ export const SearchElementList = [
     //     ValueMember: "PartnerID",
     //     NameMember: "PartnerName"
     // },
+    // {
+    //     type: "datetime",
+    //     name: "dtFromDate",
+    //     label: "Từ ngày",
+    //     value: dtFromdate,
+    //     placeholder: "",
+    //     icon: "",
+    //     DataSourceMember: "FromDate",
+    //     ValueMember: "FromDate",
+    //     NameMember: "FromDate"
+    // },
+    // {
+    //     type: "datetime",
+    //     name: "dtToDate",
+    //     label: "Đến ngày",
+    //     value: dtTodate,
+    //     placeholder: "",
+    //     icon: "",
+    //     DataSourceMember: "ToDate",
+    //     ValueMember: "ToDate",
+    //     NameMember: "ToDate"
+    // }
+    // {
+    //     type: "monthpicker",
+    //     name: "dtFromDate",
+    //     label: "Từ ngày",
+    //     value: dtFromdate,
+    //     placeholder: "",
+    //     icon: "",
+    //     DataSourceMember: "FromDate",
+    //     ValueMember: "FromDate",
+    //     NameMember: "FromDate"
+    // },
     {
-        type: "datetime",
+        type: "MonthPicker",
         name: "dtFromDate",
-        label: "Từ ngày",
-        value: dtFromdate,
-        placeholder: "",
-        icon: "",
-        DataSourceMember: "FromDate",
-        ValueMember: "FromDate",
-        NameMember: "FromDate"
+        DataSourceMember: "SaleMonth",
+        label: "Tháng thưởng",
+        //value: new Date((new Date().getMonth()) + "/" + '01' + "/" + new Date().getFullYear()),
+        value: new Date(),
+        format: "MM-YYYY",
+        colspan: 2,
+        placeholder: "MM-YYYY",
     },
-    {
-        type: "datetime",
-        name: "dtToDate",
-        label: "Đến ngày",
-        value: dtTodate,
-        placeholder: "",
-        icon: "",
-        DataSourceMember: "ToDate",
-        ValueMember: "ToDate",
-        NameMember: "ToDate"
-    }
 ];
 
 
 export const SearchMLObjectDefinition = [
-    {
-        Name: "Keyword",
-        DefaultValue: "",
-        BindControlName: "txtKeyword"
-    },
+    // {
+    //     Name: "Keyword",
+    //     DefaultValue: "",
+    //     BindControlName: "txtKeyword"
+    // },
     // {
     //     Name: "IsResponseError",
     //     DefaultValue: "",
     //     BindControlName: "IsResponseError"
     // },
     // {
-    //     Name: "TMSFuelSubsidizeTypeID",
+    //     Name: "TMSGroupRewardTypeID",
     //     DefaultValue: -1,
-    //     BindControlName: "slTMSFuelSubsidizeTypeID"
+    //     BindControlName: "slTMSGroupRewardTypeID"
     // },
     // {
     //     Name: "PartnerID",
@@ -153,38 +175,60 @@ export const SearchMLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "dtFromDate"
     },
-    {
-        Name: "ToDate",
-        DefaultValue: "",
-        BindControlName: "dtToDate"
-    }
+    // {
+    //     Name: "ToDate",
+    //     DefaultValue: "",
+    //     BindControlName: "dtToDate"
+    // }
 ];
 
 
 
 export const DataGridColumnList = [
     // {
-    //     Name: "TMSFuelSubsidizeID",
+    //     Name: "TMSGroupRewardID",
     //     Type: "texttolink",
     //     Caption: "Mã phụ cấp",
-    //     Link: "/TMSFuelSubsidize/Edit/",
-    //     DataSourceMember: "TMSFuelSubsidizeID",
+    //     Link: "/TMSGroupReward/Edit/",
+    //     DataSourceMember: "TMSGroupRewardID",
     //     //Width: 
     // },
     // {
-    //     Name: "TMSFuelSubsidizeTypeName",
+    //     Name: "TMSGroupRewardTypeName",
     //     Type: "text",
-    //     //Link: "/TMSFuelSubsidize/Edit/",
+    //     //Link: "/TMSGroupReward/Edit/",
     //     Caption: "Loại giao dịch",
-    //     DataSourceMember: "TMSFuelSubsidizeTypeName",
+    //     DataSourceMember: "TMSGroupRewardTypeName",
     //     Width: 300
     // },
+
+
     {
-        Name: "SubsidizeDateString",
+        Name: "AreaID",
         Type: "text",
-        //Link: "/TMSFuelSubsidize/Edit/",
-        Caption: "Ngày phụ cấp",
-        DataSourceMember: "SubsidizeDateString",
+        Caption: "Mã khu vực",
+        DataSourceMember: "AreaID",
+        Width: 100
+    },
+    {
+        Name: "AreaName",
+        Type: "text",
+        Caption: "Tên khu vực",
+        DataSourceMember: "AreaName",
+        Width: 150
+    },
+    {
+        Name: "CoordinatorGroupID",
+        Type: "text",
+        Caption: "Mã nhóm ĐP",
+        DataSourceMember: "CoordinatorGroupID",
+        Width: 100
+    },
+    {
+        Name: "CoordinatorGroupName",
+        Type: "text",
+        Caption: "Tên nhóm ĐP",
+        DataSourceMember: "CoordinatorGroupName",
         Width: 150
     },
     {
@@ -195,33 +239,54 @@ export const DataGridColumnList = [
         Width: 150
     },
     {
-        Name: "UserFullName",
+        Name: "FullName",
         Type: "text",
         Caption: "Tên nhân viên",
-        DataSourceMember: "UserFullName",
+        DataSourceMember: "FullName",
         Width: 150
     },
     {
-        Name: "TimeKeepIngHour",
+        Name: "TotalMainHour",
         Type: "text",
-        Caption: "Số giờ công",
-        DataSourceMember: "TimeKeepIngHour",
+        Caption: "Giờ công tống",
+        DataSourceMember: "TotalMainHour",
         Width: 150
     },
     {
-        Name: "FuelPrice",
-        Type: "textCurrency",
-        Caption: "Đơn giá xăng",
-        DataSourceMember: "FuelPrice",
+        Name: "MemberMainHour",
+        Type: "text",
+        Caption: "Giờ công đóng góp",
+        DataSourceMember: "MemberMainHour",
         Width: 150
     },
     {
-        Name: "TotalSubsidize",
-        Type: "textCurrency",
-        Caption: "Tổng tiền phụ cấp",
-        DataSourceMember: "TotalSubsidize",
+        Name: "TotalReward",
+        Type: "text",
+        Caption: "Tổng thưởng nhóm",
+        DataSourceMember: "TotalReward",
         Width: 150
     },
+    {
+        Name: "MemberTotalReward",
+        Type: "text",
+        Caption: "Thưởng NVĐP",
+        DataSourceMember: "MemberTotalReward",
+        Width: 150
+    },
+
+
+
+
+    // {
+    //     Name: "SubsidizeDateString",
+    //     Type: "text",
+    //     //Link: "/TMSGroupReward/Edit/",
+    //     Caption: "Ngày phụ cấp",
+    //     DataSourceMember: "SubsidizeDateString",
+    //     Width: 150
+    // },
+    
+    
     // {
     //     Name: "UpdatedDate",
     //     Type: "date",
