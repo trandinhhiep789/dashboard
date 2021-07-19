@@ -42,6 +42,7 @@ class DataGridShipmentOderCom extends Component {
         this.handleOneInsertClick = this.handleOneInsertClick.bind(this);
         this.handleonClickDelete = this.handleonClickDelete.bind(this);
 
+        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
         this.checkAll = this.checkAll.bind(this);
         this.getCheckList = this.getCheckList.bind(this);
         const pkColumnName = this.props.PKColumnName.split(',');
@@ -63,6 +64,8 @@ class DataGridShipmentOderCom extends Component {
 
 
     componentDidMount() {
+        this.updateWindowDimensions();
+        window.addEventListener("resize", this.updateWindowDimensions);
         if (this.props.dataSource) {
             const gridData = this.getCheckList(this.props.dataSource);
             this.setState({ GridData: gridData });
@@ -75,10 +78,20 @@ class DataGridShipmentOderCom extends Component {
             this.setState({ IsPermision: result });
         })
 
-        this.updateWindowDimensions();
-        window.addEventListener("resize", this.updateWindowDimensions);
+
 
     }
+
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.updateWindowDimensions);
+    }
+
+    updateWindowDimensions = () => {
+        this.setState({
+            widthPercent: (window.innerWidth * 60) / 100
+        })
+    };
+
 
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.dataSource) !== JSON.stringify(nextProps.dataSource)) // Check if it's a new user, you can also use some unique property, like the ID
@@ -101,16 +114,7 @@ class DataGridShipmentOderCom extends Component {
 
     }
 
-    componentWillUnmount() {
-        window.removeEventListener("resize", this.updateWindowDimensions);
-    }
-
-    updateWindowDimensions = () => {
-        this.setState({
-            widthPercent: (window.innerWidth * 60) / 100
-        })
-    };
-
+   
 
     handleCloseMessage() {
 
@@ -500,6 +504,7 @@ class DataGridShipmentOderCom extends Component {
     }
     handleUserCoordinator() {
         const { widthPercent } = this.state;
+        console.log("widthPercent",widthPercent)
         if (this.state.GridDataShip.length > 0) {
             this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderLst", this.state.GridDataShip).then(apiResult => {
                 if (!apiResult.IsError) {
