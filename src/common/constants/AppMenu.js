@@ -1091,28 +1091,7 @@ const AppMenu = [
                 LinkTo: '/ServicePriceTable',
                 MenuIcon: '',
                 SubMenu: []
-            },
-            {
-                MenuName: 'TMSFuelSubsidize',
-                MenuTitle: 'Phụ cấp xăng',
-                LinkTo: '/TMSFuelSubsidize',
-                MenuIcon: '',
-                SubMenu: []
-            },
-            {
-                MenuName: 'TMSFuelSubsidizeCompute',
-                MenuTitle: 'Tính phụ cấp xăng',
-                LinkTo: '/TMSFuelSubsidizeCompute',
-                MenuIcon: '',
-                SubMenu: []
-            },
-            {
-                MenuName: 'FuelSubsIDizePeriod',
-                MenuTitle: 'Danh sách khoảng thời gian nhân viên được phụ cấp xăng',
-                LinkTo: '/FuelSubsIDizePeriod',
-                MenuIcon: '',
-                SubMenu: []
-            },
+            }
         ]
     },
     {
@@ -1185,8 +1164,61 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
+            {
+                MenuName: 'GroupReward',
+                MenuTitle: 'Nhóm điều phối',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'TMSGroupReward',
+                        MenuTitle: 'Thưởng nhóm điều phối',
+                        LinkTo: '/TMSGroupReward',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'TMSGroupRewardCompute',
+                        MenuTitle: 'Tính thưởng nhóm điều phối',
+                        LinkTo: '/TMSGroupRewardCompute',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                ]
+            },
+            {
+                MenuName: 'TMSFS',
+                MenuTitle: 'Phụ cấp xăng',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'TMSFuelSubsidize',
+                        MenuTitle: 'Danh sách phụ cấp xăng',
+                        LinkTo: '/TMSFuelSubsidize',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'TMSFuelSubsidizeCompute',
+                        MenuTitle: 'Tính phụ cấp xăng',
+                        LinkTo: '/TMSFuelSubsidizeCompute',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'FuelSubsIDizePeriod',
+                        MenuTitle: 'Danh sách khoảng thời gian nhân viên được phụ cấp xăng',
+                        LinkTo: '/FuelSubsIDizePeriod',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+        
+                ]
+            },
 
 
+            
         ]
     },
     {

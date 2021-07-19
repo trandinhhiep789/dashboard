@@ -1,7 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
-import SearchForm from "../../../../../common/components/Form/SearchForm";
+//import SearchForm from "../../../../../common/components/Form/SearchForm";
+import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
 import DataGrid from "../../../../../common/components/DataGrid";
 import { MessageModal } from "../../../../../common/components/Modal";
 import {
@@ -20,7 +21,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { FUELPRICE_VIEW, PARTNERTRANSACTION_VIEW } from "../../../../../constants/functionLists";
+import { COORDINATORGROUP_VIEW, FUELPRICE_VIEW, PARTNERTRANSACTION_VIEW } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
@@ -80,10 +81,10 @@ class SearchCom extends React.Component {
 
     handleSearchSubmit(formData, MLObject) {
         const postData = [
-            {
-                SearchKey: "@Keyword",
-                SearchValue: MLObject.Keyword
-            },
+            // {
+            //     SearchKey: "@Keyword",
+            //     SearchValue: MLObject.Keyword
+            // },
             // {
             //     SearchKey: "@IsResponseError",
             //     SearchValue: MLObject.IsResponseError
@@ -97,13 +98,13 @@ class SearchCom extends React.Component {
             //     SearchValue: MLObject.PartnerID
             // },
             {
-                SearchKey: "@FromDate",
+                SearchKey: "@REWARDMONTH",
                 SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString())
             },
-            {
-                SearchKey: "@ToDate",
-                SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString())
-            }
+            // {
+            //     SearchKey: "@ToDate",
+            //     SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString())
+            // }
         ];
 
 
@@ -121,12 +122,16 @@ class SearchCom extends React.Component {
                 // xuất exel
                 const exelData = apiResult.ResultObject.map((item, index) => {
                     let element = {
-                        "Ngày phụ cấp": item.SubsidizeDateString,
+                        "Mã khu vực": item.AreaID,
+                        "Tên khu vực": item.AreaName,
+                        "Mã nhóm ĐP": item.CoordinatorGroupID,
+                        "Tên nhóm ĐP": item.CoordinatorGroupName,           
                         "Mã nhân viên": item.UserName,
-                        "Tên nhân viên": item.UserFullName,
-                        "Số giờ công": item.TimeKeepIngHour,
-                        "Đơn giá xăng": item.FuelPrice,
-                        "Tổng tiền phụ cấp": item.TotalSubsidize
+                        "Tên nhân viên": item.FullName,
+                        "Giờ công tống": item.TotalMainHour,
+                        "Giờ công đóng góp": item.MemberMainHour,
+                        "Tổng thưởng nhóm": item.TotalReward,
+                        "Thưởng NVĐP": item.MemberTotalReward
                     };
                     return element;
 
@@ -201,12 +206,27 @@ class SearchCom extends React.Component {
             return (
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
-                    <SearchForm
-                        FormName="Tìm kiếm thông tin phụ cấp xăng"
+                    {/* <SearchForm
+                        FormName="Tìm kiếm thông thưởng nhóm điều phối"
                         MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
                         ref={this.searchref}
+                    /> */}
+                    <SearchForm
+                        FormName="Tìm kiếm thông tin thưởng nhóm điều phối"
+                        MLObjectDefinition={SearchMLObjectDefinition}
+                        listelement={SearchElementList}
+                        onSubmit={this.handleSearchSubmit}
+                        IsShowButtonSearch={true}
+                        // IsButtonExport={true}
+                        // IsButtonhistory={true}
+                        // onHistorySubmit={this.handleHistorySearch}
+                        // onExportSubmit={this.handleExportSubmit.bind(this)}
+                        // TitleButtonExport="Xuất dữ liệu"
+                        ref={this.searchref}
+                        //className="multiple"
+                        classNamebtnSearch="groupAction"
                     />
                     <DataGrid
                         listColumn={DataGridColumnList}
@@ -218,15 +238,15 @@ class SearchCom extends React.Component {
                         PKColumnName={PKColumnName}
                         //onDeleteClick={this.handleDelete}
                         ref={this.gridref}
-                        RequirePermission={FUELPRICE_VIEW}
-                        ExportPermission={FUELPRICE_VIEW}
+                        RequirePermission={COORDINATORGROUP_VIEW}
+                        ExportPermission={COORDINATORGROUP_VIEW}
                         //DeletePermission={CANCELDELIVERYREASON_DELETE}
                         IsAutoPaging={true}
-                        RowsPerPage={50}
+                        RowsPerPage={10}
 
                         IsExportFile={true}
                         DataExport={this.state.dataExport}
-                        fileName="Danh sách phụ cấp xăng"
+                        fileName="Danh sách thưởng nhóm điều phối"
                         onExportFile={this.handleExportFile.bind(this)}
                     />
                 </React.Fragment>
