@@ -368,17 +368,19 @@ class ListShipCoordinatorCom extends Component {
                                     name="CarrierPartnerID"
                                     colspan="8"
                                     labelcolspan="4"
-                                    label="Đối tác:"
+                                    label="Đối tác vận chuyển:"
                                     isautoloaditemfromcache={true}
                                     loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
                                     valuemember="PartnerID"
                                     nameMember="PartnerName"
                                     controltype="InputControl"
-                                    value="-1"
+                                    onChange={this.handleOnValueChange}
+                                    value={this.state.objCoordinator.CarrierPartnerID}
                                     listoption={null}
                                     datasourcemember="CarrierPartnerID"
                                     placeholder="---Vui lòng chọn---"
                                     isMultiSelect={false}
+                                    disabled={!this.props.IsCoordinator}
                                 />
                             </div>
                             <div className="col-md-6">
@@ -400,23 +402,46 @@ class ListShipCoordinatorCom extends Component {
                                 />
                             </div>
                         </div>
-                        <FormControl.FormControlComboBoxUser
-                            name="ShipmentOrder_DeliverUserList"
-                            colspan="10"
-                            labelcolspan="2"
-                            label="Nhân viên giao"
-                            validatonList={["Comborequired"]}
-                            isautoloaditemfromcache={true}
-                            loaditemcachekeyid="ERPCOMMONCACHE.PARTNERUSER"
-                            valuemember="UserName"
-                            nameMember="FullName"
-                            controltype="InputControl"
-                            value="-1"
-                            listoption={null}
-                            datasourcemember="PartnerID"
-                            placeholder="---Vui lòng chọn---"
-                            isMultiSelect={true}
-                        />
+                        {(this.state.objCoordinator.CarrierPartnerID == -1 || this.state.objCoordinator.CarrierPartnerID == 0) ?
+                            <MultiSelectComboBox
+                                name="ShipmentOrder_DeliverUserList"
+                                colspan="10"
+                                labelcolspan="2"
+                                label="Nhân viên giao"
+                                disabled={!this.props.IsUserCoordinator}
+                                IsLabelDiv={true}
+                                isSelectedOption={true}
+                                isautoloaditemfromcache={false}
+                                controltype="InputControl"
+                                onChange={this.handleValueChange1}
+                                value={this.state.selectedOption}
+                                listoption={this.state.selectedOption}
+                                isMultiSelect={true}
+                                isPartner={true}
+                                datasourcemember="ShipmentOrder_DeliverUserList"
+                            /> :
+                            <FormControl.FormControlComboBoxUser
+                                name="ShipmentOrder_DeliverUserList"
+                                colspan="10"
+                                labelcolspan="2"
+                                label="Nhân viên giao"
+                                validatonList={["Comborequired"]}
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid="ERPCOMMONCACHE.PARTNERUSER"
+                                valuemember="UserName"
+                                nameMember="FullName"
+                                controltype="InputControl"
+                                value={this.state.objDeliverUser}
+                                onValueChange={this.handleOnValueChangeDeliverUser}
+                                listoption={null}
+                                datasourcemember="PartnerID"
+                                placeholder="---Vui lòng chọn---"
+                                isMultiSelect={true}
+                                filterValue={this.state.objCoordinator.CarrierPartnerID}
+                                filterobj="PartnerID"
+                                disabled={!this.props.IsCoordinator}
+                            />
+                        }
 
                         <div className="row  mt-20">
                             <div className="col-12 group-shipingorder">
