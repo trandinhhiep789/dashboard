@@ -506,6 +506,7 @@ class DataGridShipmentOderCom extends Component {
                     this.setState({ GridDataShip: apiResult.ResultObject });
                     this.props.showModal(MODAL_TYPE_VIEW, {
                         title: 'Điều phối nhân viên ',
+                        isShowOverlay: false,
                         content: {
                             text: <ListShipCoordinator
                                 ShipmentOrderID={0}

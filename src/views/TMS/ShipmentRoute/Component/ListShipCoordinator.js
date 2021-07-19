@@ -487,8 +487,8 @@ class ListShipCoordinatorCom extends Component {
                                                             </li>
                                                             <li className="item delivery-status">
 
-                                                                <span class="badge badge-secondary badge-active mr-10"><i className="fa fa-motorcycle"></i> Xe máy</span>
-                                                                <span class="badge badge-secondary"><i className="fa fa-truck"></i> Xe tải</span>
+                                                                <span className="badge badge-secondary badge-active mr-10"><i className="fa fa-motorcycle"></i> Xe máy</span>
+                                                                <span className="badge badge-secondary"><i className="fa fa-truck"></i> Xe tải</span>
                                                             </li>
                                                         </ul>
                                                     </td>
@@ -531,11 +531,11 @@ class ListShipCoordinatorCom extends Component {
                                                     </td>
                                                     <td className="jsgrid-cell " style={{ width: '5%' }}>
                                                         <div className="group-action">
-                                                            <a class="table-action hover-danger item-action">
-                                                                <i class="ti-trash"></i>
+                                                            <a className="table-action hover-danger item-action">
+                                                                <i className="ti-trash"></i>
                                                             </a>
-                                                            <a class="table-action hover-danger item-action">
-                                                                <i class="ti-trash"></i>
+                                                            <a className="table-action hover-danger item-action">
+                                                                <i className="ti-trash"></i>
                                                             </a>
                                                         </div>
 
@@ -569,8 +569,8 @@ class ListShipCoordinatorCom extends Component {
                                                             </li>
                                                             <li className="item delivery-status">
 
-                                                                <span class="badge badge-secondary badge-active mr-10"><i className="fa fa-motorcycle"></i> Xe máy</span>
-                                                                <span class="badge badge-secondary"><i className="fa fa-truck"></i> Xe tải</span>
+                                                                <span className="badge badge-secondary badge-active mr-10"><i className="fa fa-motorcycle"></i> Xe máy</span>
+                                                                <span className="badge badge-secondary"><i className="fa fa-truck"></i> Xe tải</span>
                                                             </li>
                                                         </ul>
                                                     </td>
@@ -614,10 +614,10 @@ class ListShipCoordinatorCom extends Component {
                                                     <td className="jsgrid-cell " style={{ width: '5%' }}>
                                                         <div className="group-action">
                                                             <a class="table-action hover-danger item-action">
-                                                                <i class="ti-trash"></i>
+                                                                <i className="ti-trash"></i>
                                                             </a>
-                                                            <a class="table-action hover-danger item-action">
-                                                                <i class="ti-trash"></i>
+                                                            <a className="table-action hover-danger item-action">
+                                                                <i className="ti-trash"></i>
                                                             </a>
                                                         </div>
 
@@ -651,8 +651,8 @@ class ListShipCoordinatorCom extends Component {
                                                             </li>
                                                             <li className="item delivery-status">
 
-                                                                <span class="badge badge-secondary badge-active mr-10"><i className="fa fa-motorcycle"></i> Xe máy</span>
-                                                                <span class="badge badge-secondary"><i className="fa fa-truck"></i> Xe tải</span>
+                                                                <span className="badge badge-secondary badge-active mr-10"><i className="fa fa-motorcycle"></i> Xe máy</span>
+                                                                <span className="badge badge-secondary"><i className="fa fa-truck"></i> Xe tải</span>
                                                             </li>
                                                         </ul>
                                                     </td>
@@ -695,11 +695,11 @@ class ListShipCoordinatorCom extends Component {
                                                     </td>
                                                     <td className="jsgrid-cell " style={{ width: '5%' }}>
                                                         <div className="group-action">
-                                                            <a class="table-action hover-danger item-action">
-                                                                <i class="ti-trash"></i>
+                                                            <a className="table-action hover-danger item-action">
+                                                                <i className="ti-trash"></i>
                                                             </a>
-                                                            <a class="table-action hover-danger item-action">
-                                                                <i class="ti-trash"></i>
+                                                            <a className="table-action hover-danger item-action">
+                                                                <i className="ti-trash"></i>
                                                             </a>
                                                         </div>
 
