@@ -95,10 +95,14 @@ class AddCom extends React.Component {
     }
 
     handleSubmit(FormData, MLObject) {
-        const { lstShipmentQualityAssess_rvk } = this.state;
+        const { lstShipmentQualityAssess_rvk, stateQualityAssessType } = this.state;
 
-        if (lstShipmentQualityAssess_rvk.length == 0) {
+        if (stateQualityAssessType.ListQualityAssessType_ReviewLevel.length != 0 && lstShipmentQualityAssess_rvk.length == 0) {
             this.showMessage("Vui lòng chọn nhân viên duyệt");
+            return;
+        }
+        if (parseInt(MLObject.QualityAssessValue) < 4 || parseInt(MLObject.QualityAssessValue) > 10) {
+            this.showMessage("Giá trị đánh giá nằm trong khoảng từ 4 đến 10");
             return;
         }
 
@@ -113,7 +117,9 @@ class AddCom extends React.Component {
     }
 
     render() {
-        if (this.state.stateQualityAssessType == null) {
+        const { stateQualityAssessType } = this.state;
+
+        if (stateQualityAssessType == null) {
             return <React.Fragment>...</React.Fragment>
         } else {
             return (
@@ -195,9 +201,13 @@ class AddCom extends React.Component {
                             </div>
                         </div>
 
-                        <MyContext.Provider value={{ contextQualityAssessType: this.state.stateQualityAssessType, contextHandleSelectUser: this.handleSelectUser }}>
-                            <QualityAssessTypeRVLevelCom />
-                        </MyContext.Provider>
+                        {
+                            stateQualityAssessType.ListQualityAssessType_ReviewLevel.length != 0
+                                ? <MyContext.Provider value={{ contextQualityAssessType: stateQualityAssessType, contextHandleSelectUser: this.handleSelectUser }}>
+                                    <QualityAssessTypeRVLevelCom />
+                                </MyContext.Provider>
+                                : <React.Fragment></React.Fragment>
+                        }
                     </FormContainer>
                 </React.Fragment>
             );

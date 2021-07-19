@@ -388,7 +388,7 @@ class SearchCom extends Component {
                                     </table>
                                 </div>
 
-                                <GridPage numPage={dataGrid[0].TotalNumPages} currentPage={currentPage} onChangePage={this.handleChangePage} />
+                                <GridPage numPage={dataGrid[0] ? dataGrid[0].TotalNumPages : 1} currentPage={currentPage} onChangePage={this.handleChangePage} />
                             </div>
                         </div>
                     </div>

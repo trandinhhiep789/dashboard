@@ -6,7 +6,7 @@ import Select from 'react-select'
 import { MessageModal } from "../../../../common/components/Modal";
 import MyContext from './Context';
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
-import { APIHostName, APIQualityAssessTypeRVLLoadList } from './constants';
+import { APIHostName } from './constants';
 
 class QualityAssessTypeRVLevelCom extends React.Component {
     static contextType = MyContext;
@@ -16,16 +16,16 @@ class QualityAssessTypeRVLevelCom extends React.Component {
 
         this.state = {
             stateQualityAssessTypeReviewLevel: null,
-            stateDataTable: []
+            stateDataTable: [],
+            stateObjSelectedUsers: {}
         };
 
-        this.gridref = React.createRef();
-        this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
         this.showMessage = this.showMessage.bind(this);
         this.addNotification = this.addNotification.bind(this);
         this.fetchMDQualityAssessTypeRLUser = this.fetchMDQualityAssessTypeRLUser.bind(this);
         this.handleSetDataTable = this.handleSetDataTable.bind(this);
+        this.handleSetDefaultValue = this.handleSetDefaultValue.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -74,6 +74,8 @@ class QualityAssessTypeRVLevelCom extends React.Component {
     }
 
     handleSetDataTable(argumentData) {
+        const { contextObjShipmentQualityAssess_rvk } = this.context;
+
         const arrDataTable = argumentData.reduce((acc, val) => {
             const foundIndex = acc.findIndex(element => element.ReviewLevelID == val.ReviewLevelID);
             if (foundIndex != -1) {
@@ -95,40 +97,40 @@ class QualityAssessTypeRVLevelCom extends React.Component {
             }
         }, []);
 
-        arrDataTable.forEach(item => {
-            this.setState({
-                [item.ReviewLevelID]: item.options[0].value
-            })
+        this.setState({
+            stateObjSelectedUsers: contextObjShipmentQualityAssess_rvk
         })
 
         return arrDataTable;
     }
 
-    handleChange(value, name) {
-        const { stateQualityAssessTypeReviewLevel } = this.state;
+    handleSetDefaultValue(item) {
+        const { contextObjShipmentQualityAssess_rvk } = this.context;
+        const found = item.options.find(i => i.value == contextObjShipmentQualityAssess_rvk[item.ReviewLevelID]);
+        return found;
+    }
 
-        const arrSelectedUser = stateQualityAssessTypeReviewLevel.filter(item => {
-            if (item.ReviewLevelID == name.name) {
-                return item.UserName == value.value;
-            } else {
-                return item.UserName == this.state[item.ReviewLevelID];
-            }
-        });
+    handleChange(value, name) {
+        const { stateQualityAssessTypeReviewLevel, stateObjSelectedUsers } = this.state;
+
+        const tempObjSelectedUsers = { ...stateObjSelectedUsers, [name.name]: value.value };
+
+        const arrSelectedUser = stateQualityAssessTypeReviewLevel.filter(item => item.UserName == tempObjSelectedUsers[item.ReviewLevelID]);
 
         this.setState({
-            [name.name]: value.value
+            stateObjSelectedUsers: tempObjSelectedUsers
         })
 
-        this.context.contextHandleSelectUser(arrSelectedUser);
+        this.context.contextHandleSelectUser(arrSelectedUser, tempObjSelectedUsers);
     }
 
     fetchMDQualityAssessTypeRLUser() {
-        const { contextQualityAssessType } = this.context;
+        const { contextShipmentQualityAssess } = this.context;
 
-        const arrReviewLevelId = contextQualityAssessType.ListQualityAssessType_ReviewLevel.map(item => item.ReviewLevelID);
+        const arrReviewLevelId = contextShipmentQualityAssess.lstShipmentQualityAssess_rvk.map(item => item.ReviewLevelID);
         const strReviewLevelIds = arrReviewLevelId.join();
 
-        this.props.callFetchAPI(APIHostName, APIQualityAssessTypeRVLLoadList, strReviewLevelIds).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, "api/QualityAssessType_ReviewLevel/LoadList", strReviewLevelIds).then(apiResult => {
             if (!apiResult.IsError) {
                 const arrQualityAssessTypeReviewLevel = [...apiResult.ResultObject];
                 arrQualityAssessTypeReviewLevel.sort((a, b) => a.ReviewLevelID - b.ReviewLevelID);
@@ -176,6 +178,7 @@ class QualityAssessTypeRVLevelCom extends React.Component {
                                                                 options={item.options}
                                                                 onChange={this.handleChange}
                                                                 placeholder="Mã nhân viên"
+                                                                defaultValue={this.handleSetDefaultValue(item)}
                                                             />
                                                         </td>
                                                     </tr>

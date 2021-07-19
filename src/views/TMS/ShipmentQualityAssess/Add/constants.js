@@ -1,6 +1,7 @@
 export const APIHostName = "TMSAPI";
 export const APIAdd = "api/ShipmentQualityAssess/Add";
 export const APIQualityAssessTypeLoad = "api/QualityAssessType/Load";
+export const APIQualityAssessTypeRVLLoadList = "api/QualityAssessType_ReviewLevel/LoadList";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
