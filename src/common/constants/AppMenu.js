@@ -1321,7 +1321,7 @@ const AppMenu = [
                     },
                     {
                         MenuName: 'MonthlySaleOrder',
-                        MenuTitle: ' Bảng kê chi tiết dịch vụ lắp đặt',
+                        MenuTitle: 'Bảng kê chi tiết dịch vụ lắp đặt',
                         LinkTo: '/MonthlySaleOrder',
                         MenuIcon: '',
                         SubMenu: []
@@ -1332,9 +1332,45 @@ const AppMenu = [
             {
                 MenuName: 'QualityReport',
                 MenuTitle: 'Báo cáo chất lượng',
-                LinkTo: '/QualityReport',
+                LinkTo: '/',
                 MenuIcon: '',
-                SubMenu: []
+                SubMenu: [
+                    {
+                        MenuName: 'QuanlityReportAll',
+                        MenuTitle: 'Báo cáo toàn quốc',
+                        LinkTo: '/QuanlityReportAll',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'QualityReportBranch',
+                        MenuTitle: 'Báo cáo theo chi nhanh',
+                        LinkTo: '/QualityReportBranch',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'QualityReportBranchGeneral',
+                        MenuTitle: 'Báo cáo tổng hợp theo chi nhanh',
+                        LinkTo: '/QualityReportBranchGeneral',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'QualityReportMainGroup',
+                        MenuTitle: 'Báo cáo ngành hàng và nhóm hàng',
+                        LinkTo: '/QualityReportMainGroup',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'QualityReportByUser',
+                        MenuTitle: 'Báo cáo theo nhân viên',
+                        LinkTo: '/QualityReportByUser',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                ]
             },
             {
                 MenuName: 'DebtByUser',

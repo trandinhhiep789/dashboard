@@ -3,26 +3,26 @@ import { connect } from 'react-redux';
 import ReactNotification from "react-notifications-component";
 import { ModalManager } from 'react-dynamic-modal';
 
-import { updatePagePath } from "../../../../../actions/pageAction";
+import { updatePagePath } from "../../../../../../actions/pageAction";
 import {
     APIHostName, PagePath, SearchElementList,
     SearchMLObjectDefinition, SearchAPIPath,
     PageMainGroupPath, PageBranchPath, PageBranchGeneralPath, PageUserPath,
     SearchByUserElementList, SearchByUserMLObjectDefinition
 } from '../constants';
-import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
-import DataGrid from "../../../../../common/components/DataGrid";
-import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
-import { MessageModal } from "../../../../../common/components/Modal";
-import { MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from '../../../../../constants/actionTypes';
-import { showModal, hideModal } from '../../../../../actions/modal';
-import QuanlityReportAll from '../components/QuanlityReportAll';
-import QualityReportMainGroup from '../components/QualityReportMainGroup';
-import QualityReportBranch from '../components/QualityReportBranch'
-import QualityReportBranchGeneral from '../components/QualityReportBranchGeneral '
-import QualityReportByUser from '../components/QualityReportByUser'
+import SearchForm from "../../../../../../common/components/FormContainer/SearchForm";
+import DataGrid from "../../../../../../common/components/DataGrid";
+import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
+import { MessageModal } from "../../../../../../common/components/Modal";
+import { MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from '../../../../../../constants/actionTypes';
+import { showModal, hideModal } from '../../../../../../actions/modal';
+import QuanlityReportAll from '../../components/QuanlityReportAll';
+import QualityReportMainGroup from '../../components/QualityReportMainGroup';
+import QualityReportBranch from '../../components/QualityReportBranch'
+import QualityReportBranchGeneral from '../../components/QualityReportBranchGeneral'
+import QualityReportByUser from '../../components/QualityReportByUser'
 
-import { toIsoStringCus, toIsoStringCusNew, formatNumber, formatNumberNew, toIsoStringNew } from '../../../../../utils/function'
+import { toIsoStringCus, toIsoStringCusNew, formatNumber, formatNumberNew, toIsoStringNew } from '../../../../../../utils/function'
 export class Search extends Component {
     constructor(props) {
         super(props);
@@ -31,7 +31,7 @@ export class Search extends Component {
             cssNotification: "",
             iconNotification: "",
             dataSource: [],
-            ReportQualityTypeID: 5,
+            ReportQualityTypeID: 1,
             SearchElementList: SearchElementList,
             SearchByUserElementList: SearchByUserElementList,
             IsLoadDataComplete: false,
