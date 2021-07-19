@@ -33,7 +33,7 @@ export class Search extends Component {
             toDate: "",
             AreaIDList: "",
             pageNumber: 1,
-            pageSize: 3,
+            pageSize: 31,
             FromDate: "",
             ToDate: "",
             AreaID: "",
@@ -132,7 +132,7 @@ export class Search extends Component {
             },
             {
                 SearchKey: "@PAGESIZE",
-                SearchValue: 3
+                SearchValue: this.state.pageSize
             },
             {
                 SearchKey: "@PAGEINDEX",
@@ -147,51 +147,53 @@ export class Search extends Component {
     };
 
     handleHistorySearch() {
-        this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
-            title: "Tải file",
-            maxWidth: '1200px',
-            ParamRequest: { DataExportTemplateID: 3 }
-        });
+        // this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
+        //     title: "Tải file",
+        //     maxWidth: '1200px',
+        //     ParamRequest: { DataExportTemplateID: 3 }
+        // });
+        this.showMessage("Tính năng đang phát triển.")
     }
 
     handleExportSubmit(formData, MLObject) {
-        console.log("export", MLObject)
-        const postDataNew = [
-            {
-                SearchKey: "@FROMDATE",
-                SearchValue: MLObject.FromDate
-            },
-            {
-                SearchKey: "@TODATE",
-                SearchValue: MLObject.ToDate
-            },
+        this.showMessage("Tính năng đang phát triển.")
+        // console.log("export", MLObject)
+        // const postDataNew = [
+        //     {
+        //         SearchKey: "@FROMDATE",
+        //         SearchValue: MLObject.FromDate
+        //     },
+        //     {
+        //         SearchKey: "@TODATE",
+        //         SearchValue: MLObject.ToDate
+        //     },
 
 
-        ];
+        // ];
 
-        const postData = {
-            DataExportTemplateID: 3,
-            LoadDataStoreName: 'TMS.TMS_SHIPMENT_ITEM_REPORT',
-            KeyCached: "SHIPMENTORDER_REPORT_EXPORT",
-            SearchParamList: postDataNew,
-            ExportDataParamsDescription: "FROMDATE: " + formatDate(MLObject.FromDate) + " - TODATE: " + formatDate(MLObject.ToDate)
-        }
-        this.props.callFetchAPI(APIHostName, "api/DataExportQueue/AddQueueExport", postData).then(apiResult => {
-            if (!apiResult.IsError) {
-                this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
-                    title: "Tải file",
-                    maxWidth: '1200px',
-                    ParamRequest: { DataExportTemplateID: 3 }
-                });
-            }
-            else {
-                this.showMessage(apiResult.Message)
-            }
-        });
+        // const postData = {
+        //     DataExportTemplateID: 3,
+        //     LoadDataStoreName: 'TMS.TMS_SHIPMENT_ITEM_REPORT',
+        //     KeyCached: "SHIPMENTORDER_REPORT_EXPORT",
+        //     SearchParamList: postDataNew,
+        //     ExportDataParamsDescription: "FROMDATE: " + formatDate(MLObject.FromDate) + " - TODATE: " + formatDate(MLObject.ToDate)
+        // }
+        // this.props.callFetchAPI(APIHostName, "api/DataExportQueue/AddQueueExport", postData).then(apiResult => {
+        //     if (!apiResult.IsError) {
+        //         this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
+        //             title: "Tải file",
+        //             maxWidth: '1200px',
+        //             ParamRequest: { DataExportTemplateID: 3 }
+        //         });
+        //     }
+        //     else {
+        //         this.showMessage(apiResult.Message)
+        //     }
+        // });
     }
 
     handleChangeSearch(FormData, MLObject) {
-        console.log("change", FormData, MLObject)
+
 
     }
 
