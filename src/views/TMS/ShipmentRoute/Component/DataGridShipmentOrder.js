@@ -517,7 +517,7 @@ class DataGridShipmentOderCom extends Component {
                                 onChangeValue={this.handleShipmentOrder.bind(this)}
                             />
                         },
-                        maxWidth: widthPercent + 'px'
+                        maxWidth: 850 + 'px'
                     });
                 }
                 else {
