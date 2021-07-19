@@ -1187,7 +1187,7 @@ const AppMenu = [
                 ]
             },
             {
-                MenuName: 'GroupReward',
+                MenuName: 'TMSFS',
                 MenuTitle: 'Phụ cấp xăng',
                 LinkTo: '',
                 MenuIcon: '',
