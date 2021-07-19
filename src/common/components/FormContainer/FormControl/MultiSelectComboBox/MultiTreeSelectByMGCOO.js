@@ -71,7 +71,7 @@ class MultiTreeSelectCom extends React.Component {
             this.setState({ SelectedOption: aa });
         }
 
-        if (JSON.stringify(this.props.listoption) !== JSON.stringify(nextProps.listoption)) // Check if it's a new user, you can also use some unique property, like the ID
+        if (JSON.stringify(this.props.listoption) !== JSON.stringify(nextProps.listoption)) 
         {
             this.setState({ ListOption: nextProps.listoption });
         }
