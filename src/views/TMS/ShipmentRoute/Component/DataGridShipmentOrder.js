@@ -13,7 +13,7 @@ import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../constants/functionList
 import { formatDate, formatMonthDate } from "../../../../common/library/CommonLib.js";
 import { formatMoney, formatNumber } from '../../../../utils/function';
 import { showModal, hideModal } from '../../../../actions/modal';
-import { MODAL_TYPE_COMMONTMODALS,MODAL_TYPE_VIEW} from '../../../../constants/actionTypes';
+import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_VIEW } from '../../../../constants/actionTypes';
 import ListShipCoordinator from '../Component/ListShipCoordinator.js';
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
@@ -114,7 +114,7 @@ class DataGridShipmentOderCom extends Component {
 
     }
 
-   
+
 
     handleCloseMessage() {
 
@@ -504,7 +504,6 @@ class DataGridShipmentOderCom extends Component {
     }
     handleUserCoordinator() {
         const { widthPercent } = this.state;
-        console.log("widthPercent",widthPercent)
         if (this.state.GridDataShip.length > 0) {
             this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderLst", this.state.GridDataShip).then(apiResult => {
                 if (!apiResult.IsError) {
@@ -832,6 +831,9 @@ class DataGridShipmentOderCom extends Component {
                                                         <span className={rowItem.PhoneCount > 1 ? "phone  phonered" : "phone"}>({rowItem.ReceiverPhoneNumber})</span>
                                                         <span className="line">-</span>
                                                         <span className="partner-sale-Order">{rowItem.PartnerSaleOrderID}</span>
+                                                        <button className="btn-copy-clipboard" data-id={rowItem.PartnerSaleOrderID} onClick={this.copyToClipboard.bind(this)}>
+                                                        <i className="fa fa-copy" data-id={rowItem.PartnerSaleOrderID}></i>
+                                                    </button>
                                                     </div>
                                                 </li>
                                                 <li className="item address-customer">
@@ -868,6 +870,9 @@ class DataGridShipmentOderCom extends Component {
                                                         target="_blank"
                                                         to={{ pathname: "/ShipmentOrder/Detail/" + rowItem.ShipmentOrderID }}>
                                                         {rowItem.ShipmentOrderID}</Link>
+                                                    <button className="btn-copy-clipboard" data-id={rowItem.ShipmentOrderID} onClick={this.copyToClipboardShipmentOrder.bind(this)}>
+                                                        <i className="fa fa-copy" data-id={rowItem.ShipmentOrderID}></i>
+                                                    </button>
                                                 </li>
                                                 <li className="item">
                                                     <span>{rowItem.ShipmentOrderTypeName}</span>
@@ -904,7 +909,7 @@ class DataGridShipmentOderCom extends Component {
                                                 </li>
                                             </ul>
                                         </td>
-                                        <td className="jsgrid-cell group-price" style={{ width: '8%' }}>
+                                        <td className="jsgrid-cell group-price ssss" style={{ width: '8%' }}>
                                             <ul>
                                                 <li className="item">
                                                     {rowItem.IsCancelDelivery == true ? <span className="badge badge-danger">Đã hủy</span> : ""}
@@ -918,7 +923,7 @@ class DataGridShipmentOderCom extends Component {
                                                     rowItem.CollectedTotalMoney == rowItem.TotalPaidInMoney ?
                                                         (
                                                             <li className="item">
-                                                                <span className="total">
+                                                                <span className="total price-success">
                                                                     <span className="price-title ">Nợ: </span>
                                                                     <span className="price-debt">0đ</span>
                                                                 </span>
@@ -1160,7 +1165,7 @@ class DataGridShipmentOderCom extends Component {
                     {
                         matches => (
                             <React.Fragment>
-                                {matches.small && this.renderDataGridSmallSize()} 
+                                {matches.small && this.renderDataGridSmallSize()}
                                 {matches.large && <div className={classCustom}>
                                     <div className="cardShipmentOrder-page">
                                         <ReactNotification ref={this.notificationDOMRef} />
