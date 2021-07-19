@@ -13,7 +13,7 @@ import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../constants/functionList
 import { formatDate, formatMonthDate } from "../../../../common/library/CommonLib.js";
 import { formatMoney, formatNumber } from '../../../../utils/function';
 import { showModal, hideModal } from '../../../../actions/modal';
-import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
+import { MODAL_TYPE_COMMONTMODALS,MODAL_TYPE_VIEW} from '../../../../constants/actionTypes';
 import ListShipCoordinator from '../Component/ListShipCoordinator.js';
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
@@ -52,7 +52,8 @@ class DataGridShipmentOderCom extends Component {
             IsCheckAll: false, PageNumber: this.props.PageNumber, ListPKColumnName: listPKColumnName,
             GridDataShip: [],
             KeywordId: '',
-            printDataID: ''
+            printDataID: '',
+            widthPercent: "",
 
         };
         this.notificationDOMRef = React.createRef();
@@ -74,6 +75,8 @@ class DataGridShipmentOderCom extends Component {
             this.setState({ IsPermision: result });
         })
 
+        this.updateWindowDimensions();
+        window.addEventListener("resize", this.updateWindowDimensions);
 
     }
 
@@ -97,6 +100,17 @@ class DataGridShipmentOderCom extends Component {
         }
 
     }
+
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.updateWindowDimensions);
+    }
+
+    updateWindowDimensions = () => {
+        this.setState({
+            widthPercent: (window.innerWidth * 60) / 100
+        })
+    };
+
 
     handleCloseMessage() {
 
@@ -485,11 +499,12 @@ class DataGridShipmentOderCom extends Component {
         this.props.onSubmitItem(listMLObject);
     }
     handleUserCoordinator() {
+        const { widthPercent } = this.state;
         if (this.state.GridDataShip.length > 0) {
             this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderLst", this.state.GridDataShip).then(apiResult => {
                 if (!apiResult.IsError) {
                     this.setState({ GridDataShip: apiResult.ResultObject });
-                    this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+                    this.props.showModal(MODAL_TYPE_VIEW, {
                         title: 'Điều phối nhân viên ',
                         content: {
                             text: <ListShipCoordinator
@@ -501,7 +516,7 @@ class DataGridShipmentOderCom extends Component {
                                 onChangeValue={this.handleShipmentOrder.bind(this)}
                             />
                         },
-                        maxWidth: '1300px'
+                        maxWidth: widthPercent + 'px'
                     });
                 }
                 else {
@@ -1139,7 +1154,7 @@ class DataGridShipmentOderCom extends Component {
                     {
                         matches => (
                             <React.Fragment>
-                                {/* {matches.small && this.renderDataGridSmallSize()} */}
+                                {matches.small && this.renderDataGridSmallSize()} 
                                 {matches.large && <div className={classCustom}>
                                     <div className="cardShipmentOrder-page">
                                         <ReactNotification ref={this.notificationDOMRef} />

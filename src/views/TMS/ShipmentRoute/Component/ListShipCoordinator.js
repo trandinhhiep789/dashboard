@@ -10,6 +10,8 @@ import InputGridChageControl from "../../../../common/components/FormContainer/F
 import { showModal, hideModal } from '../../../../actions/modal';
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
+import { Link } from "react-router-dom";
+import ReactTooltip from 'react-tooltip';
 import {
     APIHostName
 } from "../constants";
@@ -331,193 +333,107 @@ class ListShipCoordinatorCom extends Component {
             dismissable: { click: true }
         });
     }
+    handleClose() {
+        this.props.hideModal();
+    }
 
+    handleConfirm() {
+        console.log("submit")
+    }
 
     render() {
-        const DataGridColumnItemList = [
-            {
-                name: "ShipmentOrderID",
-                type: "text",
-                caption: "Mã vận đơn",
-                dataSourcemember: "ShipmentOrderID",
-                width: 50
-            },
-            {
-                name: "CarrierPartnerID",
-                type: "ComboBox",
-                caption: "Đối tác",
-                dataSourcemember: "CarrierPartnerID",
-                width: 250,
-                isautoloaditemfromcache: true,
-                loaditemcachekeyid: "ERPCOMMONCACHE.PARTNER",
-                valuemember: "PartnerID",
-                nameMember: "PartnerName",
-                value: -1,
-                listoption: null,
-                filterValue: "2",
-                filterobj: "PartnerTypeID",
-                placeholder: "---Vui lòng chọn---",
-                isMultiSelect: false,
-                disabled: false
-            },
-            {
-                name: "ShipmentOrder_DeliverUserList",
-                type: "ComboUserBox",
-                caption: "Nhân viên giao nhận",
-                dataSourcemember: "ShipmentOrder_DeliverUserList",
-                width: 250,
-                isautoloaditemfromcache: true,
-                loaditemcachekeyid: "ERPCOMMONCACHE.PARTNERUSER",
-                valuemember: "UserName",
-                nameMember: "FullName",
-                value: -1,
-                listoption: null,
-                placeholder: "---Nhân viên giao nhận---",
-                isMultiSelect: true,
-                disabled: false,
-                isPartner: true,
-                filterValue: "-1",
-                filterobj: "PartnerID",
-                filterrest: "CarrierPartnerID"
-            },
-            {
-                name: "CarrierTypeID",
-                type: "ComboBox",
-                caption: "Phương tiện",
-                dataSourcemember: "CarrierTypeID",
-                width: 150,
-                isautoloaditemfromcache: true,
-                loaditemcachekeyid: "ERPCOMMONCACHE.CARRIERTYPE",
-                valuemember: "CarrierTypeID",
-                nameMember: "CarrierTypeName",
-                value: -1,
-                listoption: null,
-                placeholder: "---Phương tiện---",
-                isMultiSelect: false,
-                disabled: false
-            },
-            {
-                name: "VehicleID",
-                type: "ComboBox",
-                caption: "Xe tải",
-                dataSourcemember: "VehicleID",
-                width: 150,
-                isautoloaditemfromcache: true,
-                loaditemcachekeyid: "ERPCOMMONCACHE.VEHICLE",
-                valuemember: "VehicleID",
-                nameMember: "LicensePlateNumber",
-                value: -1,
-                listoption: null,
-                filterValue: "4121",
-                filterobj: "MaincoordinAtorStoreID",
-                placeholder: "---Chọn---",
-                isMultiSelect: false,
-                disabled: false
-            },
-            {
-                name: "DriverUser",
-                type: "ComboUserDriverUserBox",
-                caption: "Tài xế",
-                dataSourcemember: "DriverUser",
-                width: 150,
-                isautoloaditemfromcache: false,
-                value: -1,
-                listoption: null,
-                placeholder: "---Nhân viên tài xế---",
-                isMultiSelect: false,
-                disabled: false,
-            },
-            {
-                name: "ShipmentOrderID",
-                type: "edit",
-                caption: "Tác vụ",
-                dataSourcemember: "ShipmentOrderID",
-                width: 50
 
-            },
-            {
-                name: "IsPermission",
-                type: "text",
-                caption: "Mã vận đơn",
-                dataSourcemember: "IsPermission",
-                width: 50,
-                hideInput: false
-            }
-            // },
-            // {
-            //     Name: "Action",
-            //     Type: "editnew",
-            //     Caption: "Tác vụ",
-            //     label:"Mã vận đơn",
-            //     DataSourceMember: "CarrierPartnerID",
-            //     Width: 70,
-            //     iputpop: false
-            // }
-        ];
         return (
-            <div className="card modalForm">
-                <ReactNotification ref={this.notificationDOMRef} />
-                <div className="card-body" style={{ minHeight: 430 }}>
-                    <div className="form-row">
-                        <div className="col-md-6">
-                            <FormControl.ComboBoxPartner
-                                name="CarrierPartnerID"
-                                colspan="8"
-                                labelcolspan="4"
-                                label="Đối tác vận chuyển:"
-                                isautoloaditemfromcache={true}
-                                loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
-                                valuemember="PartnerID"
-                                nameMember="PartnerName"
-                                controltype="InputControl"
-                                onChange={this.handleOnValueChange}
-                                value={this.state.objCoordinator.CarrierPartnerID}
-                                listoption={null}
-                                datasourcemember="CarrierPartnerID"
-                                placeholder="---Vui lòng chọn---"
-                                isMultiSelect={false}
-                                disabled={!this.props.IsCoordinator}
-                            />
+            <React.Fragment>
+                <div className="card">
+                    <div className="card-body">
+                        {/* <div className="stepper mb-10">
+                            <div className="stepper-item step-completed">
+                                <span className="stepLabel">
+                                    <span className="step-icon">
+                                        <div className="icon">
+                                            <i className="ti-check" aria-hidden='true'></i>
+                                        </div>
+                                    </span>
+                                </span>
+                            </div>
+
+                            <div className="stepper-item">
+                                <div className="step-line">
+                                    <span className="stepConnector-line"></span>
+                                </div>
+                                <span className="stepLabel">
+                                    <span className="step-icon">
+                                        <div className="icon">
+                                            <i className="" aria-hidden='true'></i>
+                                        </div>
+                                    </span>
+                                </span>
+                            </div>
+                            <div className="stepper-item">
+                                <div className="step-line">
+                                    <span className="stepConnector-line"></span>
+                                </div>
+                                <span className="stepLabel">
+                                    <span className="step-icon">
+                                        <div className="icon">
+                                            <i className="" aria-hidden='true'></i>
+                                        </div>
+                                    </span>
+                                </span>
+                            </div>
+                            <div className="stepper-item">
+                                <div className="step-line">
+                                    <span className="stepConnector-line"></span>
+                                </div>
+                                <span className="stepLabel">
+                                    <span className="step-icon">
+                                        <div className="icon">
+                                            <i className="" aria-hidden='true'></i>
+                                        </div>
+                                    </span>
+                                </span>
+                            </div>
+                        </div> */}
+
+                        <div className="form-row">
+                            <div className="col-md-6">
+                                <FormControl.ComboBoxPartner
+                                    name="CarrierPartnerID"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    label="Đối tác:"
+                                    isautoloaditemfromcache={true}
+                                    loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
+                                    valuemember="PartnerID"
+                                    nameMember="PartnerName"
+                                    controltype="InputControl"
+                                    value="-1"
+                                    listoption={null}
+                                    datasourcemember="CarrierPartnerID"
+                                    placeholder="---Vui lòng chọn---"
+                                    isMultiSelect={false}
+                                />
+                            </div>
+                            <div className="col-md-6">
+                                <FormControl.CheckBox
+                                    name="CarrierTypeID"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    label="Cùng tuyến"
+                                    isautoloaditemfromcache={true}
+                                    loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                    valuemember="CarrierTypeID"
+                                    nameMember="CarrierTypeName"
+                                    controltype="InputControl"
+                                    value="-1"
+                                    listoption={null}
+                                    datasourcemember="CarrierTypeID"
+                                    placeholder="---Vui lòng chọn---"
+                                    isMultiSelect={false}
+                                />
+                            </div>
                         </div>
-                        <div className="col-md-6">
-                            <FormControl.FormControlComboBox
-                                name="CarrierTypeID"
-                                colspan="8"
-                                labelcolspan="4"
-                                label="phương tiện"
-                                isautoloaditemfromcache={true}
-                                loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
-                                valuemember="CarrierTypeID"
-                                nameMember="CarrierTypeName"
-                                controltype="InputControl"
-                                onValueChange={this.handleOnValueChange}
-                                value={this.state.objCoordinator.CarrierTypeID}
-                                listoption={null}
-                                datasourcemember="CarrierTypeID"
-                                placeholder="---Vui lòng chọn---"
-                                isMultiSelect={false}
-                                disabled={!this.props.IsCoordinator}
-                            />
-                        </div>
-                    </div>
-                    {(this.state.objCoordinator.CarrierPartnerID == -1 || this.state.objCoordinator.CarrierPartnerID == 0) ?
-                        <MultiSelectComboBox
-                            name="ShipmentOrder_DeliverUserList"
-                            colspan="10"
-                            labelcolspan="2"
-                            label="Nhân viên giao"
-                            disabled={!this.props.IsUserCoordinator}
-                            IsLabelDiv={true}
-                            isSelectedOption={true}
-                            isautoloaditemfromcache={false}
-                            controltype="InputControl"
-                            onChange={this.handleValueChange1}
-                            value={this.state.selectedOption}
-                            listoption={this.state.selectedOption}
-                            isMultiSelect={true}
-                            isPartner={true}
-                            datasourcemember="ShipmentOrder_DeliverUserList"
-                        /> :
                         <FormControl.FormControlComboBoxUser
                             name="ShipmentOrder_DeliverUserList"
                             colspan="10"
@@ -529,35 +445,511 @@ class ListShipCoordinatorCom extends Component {
                             valuemember="UserName"
                             nameMember="FullName"
                             controltype="InputControl"
-                            value={this.state.objDeliverUser}
-                            onValueChange={this.handleOnValueChangeDeliverUser}
+                            value="-1"
                             listoption={null}
                             datasourcemember="PartnerID"
                             placeholder="---Vui lòng chọn---"
                             isMultiSelect={true}
-                            filterValue={this.state.objCoordinator.CarrierPartnerID}
-                            filterobj="PartnerID"
-                            disabled={!this.props.IsCoordinator}
                         />
-                    }
-                    <InputGridChageControl
-                        name="ShipmentOrder_ItemList"
-                        controltype="InputGridControl"
-                        title="Danh sách vận đơn"
-                        listColumn={DataGridColumnItemList}
-                        dataSource={this.state.ShipmentOrder}
-                        FormValidation={this.state.FormValidation}
-                        onDeleteClick={this.handleDeleteID.bind(this)}
-                        onValueChange={this.handleonValueChange.bind(this)}
-                    />
+
+                        <div className="row  mt-20">
+                            <div className="col-12 group-shipingorder">
+
+                                <div className="jsgrid">
+                                    <div className="jsgrid-grid-body">
+                                        <table className="jsgrid-table">
+                                            <tbody>
+                                                <tr className="jsgrid-row">
+                                                    <td className="jsgrid-cell high-priority" style={{ width: '1%' }}>
+                                                    </td>
+
+                                                    <td className="jsgrid-cell group-products" style={{ width: '50%' }}>
+                                                        <ul>
+                                                            <li className="item infoOder">
+                                                                <span className="nameOrder">
+                                                                    <Link
+                                                                        className="linktext blank"
+                                                                        target="_blank"
+                                                                        to={{ pathname: "/ShipmentOrder/Detail/" + 210714000000199 }}>
+                                                                        210714000000199 </Link>
+                                                                </span>
+                                                                <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
+                                                            </li>
+                                                            <li className="item infoProduict">
+                                                                <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
+                                                                <ReactTooltip id="producname1" type='warning'>
+                                                                    <span>Tivi LED Sony KD-49X8000H</span>
+                                                                </ReactTooltip>
+                                                                <span data-tip data-for="producname2" data-id="producname2">Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                                <ReactTooltip id="producname2" type='warning'>
+                                                                    <span>Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                                </ReactTooltip>
+                                                            </li>
+                                                            <li className="item delivery-status">
+
+                                                                <span class="badge badge-secondary badge-active mr-10"><i className="fa fa-motorcycle"></i> Xe máy</span>
+                                                                <span class="badge badge-secondary"><i className="fa fa-truck"></i> Xe tải</span>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '44%' }}>
+
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="2"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '5%' }}>
+                                                        <div className="group-action">
+                                                            <a class="table-action hover-danger item-action">
+                                                                <i class="ti-trash"></i>
+                                                            </a>
+                                                            <a class="table-action hover-danger item-action">
+                                                                <i class="ti-trash"></i>
+                                                            </a>
+                                                        </div>
+
+                                                    </td>
+                                                </tr>
+                                                <tr className="jsgrid-row">
+                                                    <td className="jsgrid-cell high-priority" style={{ width: '1%' }}>
+                                                    </td>
+
+                                                    <td className="jsgrid-cell group-products" style={{ width: '50%' }}>
+                                                        <ul>
+                                                            <li className="item infoOder">
+                                                                <span className="nameOrder">
+                                                                    <Link
+                                                                        className="linktext blank"
+                                                                        target="_blank"
+                                                                        to={{ pathname: "/ShipmentOrder/Detail/" + 210714000000199 }}>
+                                                                        210714000000199 </Link>
+                                                                </span>
+                                                                <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
+                                                            </li>
+                                                            <li className="item infoProduict">
+                                                                <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
+                                                                <ReactTooltip id="producname1" type='warning'>
+                                                                    <span>Tivi LED Sony KD-49X8000H</span>
+                                                                </ReactTooltip>
+                                                                <span data-tip data-for="producname2" data-id="producname2">Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                                <ReactTooltip id="producname2" type='warning'>
+                                                                    <span>Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                                </ReactTooltip>
+                                                            </li>
+                                                            <li className="item delivery-status">
+
+                                                                <span class="badge badge-secondary badge-active mr-10"><i className="fa fa-motorcycle"></i> Xe máy</span>
+                                                                <span class="badge badge-secondary"><i className="fa fa-truck"></i> Xe tải</span>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '44%' }}>
+
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="2"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '5%' }}>
+                                                        <div className="group-action">
+                                                            <a class="table-action hover-danger item-action">
+                                                                <i class="ti-trash"></i>
+                                                            </a>
+                                                            <a class="table-action hover-danger item-action">
+                                                                <i class="ti-trash"></i>
+                                                            </a>
+                                                        </div>
+
+                                                    </td>
+                                                </tr>
+                                                <tr className="jsgrid-row">
+                                                    <td className="jsgrid-cell high-priority" style={{ width: '1%' }}>
+                                                    </td>
+
+                                                    <td className="jsgrid-cell group-products" style={{ width: '50%' }}>
+                                                        <ul>
+                                                            <li className="item infoOder">
+                                                                <span className="nameOrder">
+                                                                    <Link
+                                                                        className="linktext blank"
+                                                                        target="_blank"
+                                                                        to={{ pathname: "/ShipmentOrder/Detail/" + 210714000000199 }}>
+                                                                        210714000000199 </Link>
+                                                                </span>
+                                                                <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
+                                                            </li>
+                                                            <li className="item infoProduict">
+                                                                <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
+                                                                <ReactTooltip id="producname1" type='warning'>
+                                                                    <span>Tivi LED Sony KD-49X8000H</span>
+                                                                </ReactTooltip>
+                                                                <span data-tip data-for="producname2" data-id="producname2">Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                                <ReactTooltip id="producname2" type='warning'>
+                                                                    <span>Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                                </ReactTooltip>
+                                                            </li>
+                                                            <li className="item delivery-status">
+
+                                                                <span class="badge badge-secondary badge-active mr-10"><i className="fa fa-motorcycle"></i> Xe máy</span>
+                                                                <span class="badge badge-secondary"><i className="fa fa-truck"></i> Xe tải</span>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '44%' }}>
+
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="2"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '5%' }}>
+                                                        <div className="group-action">
+                                                            <a class="table-action hover-danger item-action">
+                                                                <i class="ti-trash"></i>
+                                                            </a>
+                                                            <a class="table-action hover-danger item-action">
+                                                                <i class="ti-trash"></i>
+                                                            </a>
+                                                        </div>
+
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
                 </div>
-                <div className="modal-footer">
-                    <button className="btn btnEditCard" onClick={this.handleShipWorkFlowInsert.bind(this)} type="submit" > Cập nhật</button>
-                    <button type="button" className="btn btn-export ml-10" title="" onClick={this.handleCloseModal.bind(this)}>Đóng</button>
+                <div className="modal-footer modal-footer-center">
+                    <button className="btn btn-w-md btn-round btn-secondary" type="button" onClick={this.handleClose.bind(this)}>Bỏ qua</button>
+                    <button className="btn btn-w-md btn-round btn-info ml-50" type="button" onClick={this.handleConfirm.bind(this)}>Cập nhật</button>
                 </div>
-            </div>
+
+            </React.Fragment>
+
         );
     }
+
+    // render() {
+    //     const DataGridColumnItemList = [
+    //         {
+    //             name: "ShipmentOrderID",
+    //             type: "text",
+    //             caption: "Mã vận đơn",
+    //             dataSourcemember: "ShipmentOrderID",
+    //             width: 50
+    //         },
+    //         {
+    //             name: "CarrierPartnerID",
+    //             type: "ComboBox",
+    //             caption: "Đối tác",
+    //             dataSourcemember: "CarrierPartnerID",
+    //             width: 250,
+    //             isautoloaditemfromcache: true,
+    //             loaditemcachekeyid: "ERPCOMMONCACHE.PARTNER",
+    //             valuemember: "PartnerID",
+    //             nameMember: "PartnerName",
+    //             value: -1,
+    //             listoption: null,
+    //             filterValue: "2",
+    //             filterobj: "PartnerTypeID",
+    //             placeholder: "---Vui lòng chọn---",
+    //             isMultiSelect: false,
+    //             disabled: false
+    //         },
+    //         {
+    //             name: "ShipmentOrder_DeliverUserList",
+    //             type: "ComboUserBox",
+    //             caption: "Nhân viên giao nhận",
+    //             dataSourcemember: "ShipmentOrder_DeliverUserList",
+    //             width: 250,
+    //             isautoloaditemfromcache: true,
+    //             loaditemcachekeyid: "ERPCOMMONCACHE.PARTNERUSER",
+    //             valuemember: "UserName",
+    //             nameMember: "FullName",
+    //             value: -1,
+    //             listoption: null,
+    //             placeholder: "---Nhân viên giao nhận---",
+    //             isMultiSelect: true,
+    //             disabled: false,
+    //             isPartner: true,
+    //             filterValue: "-1",
+    //             filterobj: "PartnerID",
+    //             filterrest: "CarrierPartnerID"
+    //         },
+    //         {
+    //             name: "CarrierTypeID",
+    //             type: "ComboBox",
+    //             caption: "Phương tiện",
+    //             dataSourcemember: "CarrierTypeID",
+    //             width: 150,
+    //             isautoloaditemfromcache: true,
+    //             loaditemcachekeyid: "ERPCOMMONCACHE.CARRIERTYPE",
+    //             valuemember: "CarrierTypeID",
+    //             nameMember: "CarrierTypeName",
+    //             value: -1,
+    //             listoption: null,
+    //             placeholder: "---Phương tiện---",
+    //             isMultiSelect: false,
+    //             disabled: false
+    //         },
+    //         {
+    //             name: "VehicleID",
+    //             type: "ComboBox",
+    //             caption: "Xe tải",
+    //             dataSourcemember: "VehicleID",
+    //             width: 150,
+    //             isautoloaditemfromcache: true,
+    //             loaditemcachekeyid: "ERPCOMMONCACHE.VEHICLE",
+    //             valuemember: "VehicleID",
+    //             nameMember: "LicensePlateNumber",
+    //             value: -1,
+    //             listoption: null,
+    //             filterValue: "4121",
+    //             filterobj: "MaincoordinAtorStoreID",
+    //             placeholder: "---Chọn---",
+    //             isMultiSelect: false,
+    //             disabled: false
+    //         },
+    //         {
+    //             name: "DriverUser",
+    //             type: "ComboUserDriverUserBox",
+    //             caption: "Tài xế",
+    //             dataSourcemember: "DriverUser",
+    //             width: 150,
+    //             isautoloaditemfromcache: false,
+    //             value: -1,
+    //             listoption: null,
+    //             placeholder: "---Nhân viên tài xế---",
+    //             isMultiSelect: false,
+    //             disabled: false,
+    //         },
+    //         {
+    //             name: "ShipmentOrderID",
+    //             type: "edit",
+    //             caption: "Tác vụ",
+    //             dataSourcemember: "ShipmentOrderID",
+    //             width: 50
+
+    //         },
+    //         {
+    //             name: "IsPermission",
+    //             type: "text",
+    //             caption: "Mã vận đơn",
+    //             dataSourcemember: "IsPermission",
+    //             width: 50,
+    //             hideInput: false
+    //         }
+    //         // },
+    //         // {
+    //         //     Name: "Action",
+    //         //     Type: "editnew",
+    //         //     Caption: "Tác vụ",
+    //         //     label:"Mã vận đơn",
+    //         //     DataSourceMember: "CarrierPartnerID",
+    //         //     Width: 70,
+    //         //     iputpop: false
+    //         // }
+    //     ];
+    //     return (
+    //         <div className="card modalForm">
+    //             <ReactNotification ref={this.notificationDOMRef} />
+    //             <div className="card-body" style={{ minHeight: 430 }}>
+    //                 <div className="form-row">
+    //                     <div className="col-md-6">
+    //                         <FormControl.ComboBoxPartner
+    //                             name="CarrierPartnerID"
+    //                             colspan="8"
+    //                             labelcolspan="4"
+    //                             label="Đối tác vận chuyển:"
+    //                             isautoloaditemfromcache={true}
+    //                             loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
+    //                             valuemember="PartnerID"
+    //                             nameMember="PartnerName"
+    //                             controltype="InputControl"
+    //                             onChange={this.handleOnValueChange}
+    //                             value={this.state.objCoordinator.CarrierPartnerID}
+    //                             listoption={null}
+    //                             datasourcemember="CarrierPartnerID"
+    //                             placeholder="---Vui lòng chọn---"
+    //                             isMultiSelect={false}
+    //                             disabled={!this.props.IsCoordinator}
+    //                         />
+    //                     </div>
+    //                     <div className="col-md-6">
+    //                         <FormControl.FormControlComboBox
+    //                             name="CarrierTypeID"
+    //                             colspan="8"
+    //                             labelcolspan="4"
+    //                             label="phương tiện"
+    //                             isautoloaditemfromcache={true}
+    //                             loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+    //                             valuemember="CarrierTypeID"
+    //                             nameMember="CarrierTypeName"
+    //                             controltype="InputControl"
+    //                             onValueChange={this.handleOnValueChange}
+    //                             value={this.state.objCoordinator.CarrierTypeID}
+    //                             listoption={null}
+    //                             datasourcemember="CarrierTypeID"
+    //                             placeholder="---Vui lòng chọn---"
+    //                             isMultiSelect={false}
+    //                             disabled={!this.props.IsCoordinator}
+    //                         />
+    //                     </div>
+    //                 </div>
+    //                 {(this.state.objCoordinator.CarrierPartnerID == -1 || this.state.objCoordinator.CarrierPartnerID == 0) ?
+    //                     <MultiSelectComboBox
+    //                         name="ShipmentOrder_DeliverUserList"
+    //                         colspan="10"
+    //                         labelcolspan="2"
+    //                         label="Nhân viên giao"
+    //                         disabled={!this.props.IsUserCoordinator}
+    //                         IsLabelDiv={true}
+    //                         isSelectedOption={true}
+    //                         isautoloaditemfromcache={false}
+    //                         controltype="InputControl"
+    //                         onChange={this.handleValueChange1}
+    //                         value={this.state.selectedOption}
+    //                         listoption={this.state.selectedOption}
+    //                         isMultiSelect={true}
+    //                         isPartner={true}
+    //                         datasourcemember="ShipmentOrder_DeliverUserList"
+    //                     /> :
+    //                     <FormControl.FormControlComboBoxUser
+    //                         name="ShipmentOrder_DeliverUserList"
+    //                         colspan="10"
+    //                         labelcolspan="2"
+    //                         label="Nhân viên giao"
+    //                         validatonList={["Comborequired"]}
+    //                         isautoloaditemfromcache={true}
+    //                         loaditemcachekeyid="ERPCOMMONCACHE.PARTNERUSER"
+    //                         valuemember="UserName"
+    //                         nameMember="FullName"
+    //                         controltype="InputControl"
+    //                         value={this.state.objDeliverUser}
+    //                         onValueChange={this.handleOnValueChangeDeliverUser}
+    //                         listoption={null}
+    //                         datasourcemember="PartnerID"
+    //                         placeholder="---Vui lòng chọn---"
+    //                         isMultiSelect={true}
+    //                         filterValue={this.state.objCoordinator.CarrierPartnerID}
+    //                         filterobj="PartnerID"
+    //                         disabled={!this.props.IsCoordinator}
+    //                     />
+    //                 }
+    //                 <InputGridChageControl
+    //                     name="ShipmentOrder_ItemList"
+    //                     controltype="InputGridControl"
+    //                     title="Danh sách vận đơn"
+    //                     listColumn={DataGridColumnItemList}
+    //                     dataSource={this.state.ShipmentOrder}
+    //                     FormValidation={this.state.FormValidation}
+    //                     onDeleteClick={this.handleDeleteID.bind(this)}
+    //                     onValueChange={this.handleonValueChange.bind(this)}
+    //                 />
+    //             </div>
+    //             <div className="modal-footer">
+    //                 <button className="btn btnEditCard" onClick={this.handleShipWorkFlowInsert.bind(this)} type="submit" > Cập nhật</button>
+    //                 <button type="button" className="btn btn-export ml-10" title="" onClick={this.handleCloseModal.bind(this)}>Đóng</button>
+    //             </div>
+    //         </div>
+    //     );
+    // }
 }
 
 const mapStateToProps = state => {
