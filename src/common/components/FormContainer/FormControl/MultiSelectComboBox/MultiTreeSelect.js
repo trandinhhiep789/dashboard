@@ -166,7 +166,7 @@ class MultiTreeSelectCom extends React.Component {
 }
 
 MultiTreeSelectCom.defaultProps = {
-    divClassNameLabel: 'form-group form-group-input-select-label'
+    divClassNameLabel: 'form-group-input-select-label'
 };
 
 const mapStateToProps = state => {

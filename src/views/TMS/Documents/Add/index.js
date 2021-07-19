@@ -89,6 +89,17 @@ class AddCom extends React.Component {
 
         console.log("MLObject", AttachmentList, MLObject, fileSize);
 
+        const strDecs =  MLObject.FileContent1;
+
+        if (MLObject.FileContent1.length > 2900) {
+            MLObject.FileContent1 = strDecs.substr(0, 2900);
+            MLObject.FileContent2 = strDecs.substr(2900, 2900)
+        }
+        else{
+            MLObject.FileContent1 = MLObject.FileContent1;
+            MLObject.FileContent2 = ""
+        }
+
         let data = new FormData();
         data.append("DocumentFileURL", AttachmentList.DocumentFileURL);
         data.append("DocumentImageURL", Files.DocumentImageURL);
@@ -336,8 +347,8 @@ class AddCom extends React.Component {
                             controltype="InputControl"
                             value=""
                             datasourcemember="FileURL"
-                            readOnly={(DocumentTypeID == parseInt(keyUploadVideo)  || DocumentTypeID == parseInt(keyUploadLink) ) ? false : true}
-                            disabled={(DocumentTypeID == parseInt(keyUploadVideo)  || DocumentTypeID == parseInt(keyUploadLink) ) ? false : true}
+                            readOnly={(DocumentTypeID == parseInt(keyUploadVideo) || DocumentTypeID == parseInt(keyUploadLink)) ? false : true}
+                            disabled={(DocumentTypeID == parseInt(keyUploadVideo) || DocumentTypeID == parseInt(keyUploadLink)) ? false : true}
                         />
                     </div>
 
@@ -365,11 +376,11 @@ class AddCom extends React.Component {
                             colspan={10}
                             name="txtEditorFileContent1"
                             label="Nội dung"
-                            placeholder="Nội dung chỉ giới hạn 3900 ký tự"
+                            placeholder="Nội dung chỉ giới hạn 5500 ký tự"
                             datasourcemember="FileContent1"
                             controltype="InputControl"
                             rows={8}
-                            maxSize={3900}
+                            maxSize={5800}
                             // readOnly={(DocumentTypeID == parseInt(keyUploadVideo)  || DocumentTypeID == parseInt(keyUploadLink) ) ? false : true}
                             // disabled={(DocumentTypeID == parseInt(keyUploadVideo)  || DocumentTypeID == parseInt(keyUploadLink) ) ? false : true}
                             classNameCustom="customcontrol"
@@ -377,7 +388,7 @@ class AddCom extends React.Component {
                     </div>
 
 
-                    <div className="col-md-12">
+                    {/* <div className="col-md-12">
                         <FormControl.TextArea
                             labelcolspan={2}
                             colspan={10}
@@ -392,7 +403,7 @@ class AddCom extends React.Component {
                             // disabled={(DocumentTypeID == parseInt(keyUploadVideo)  || DocumentTypeID == parseInt(keyUploadLink) ) ? false : true}
                             classNameCustom="customcontrol"
                         />
-                    </div>
+                    </div> */}
 
 
                     {/* <div className="col-md-12">

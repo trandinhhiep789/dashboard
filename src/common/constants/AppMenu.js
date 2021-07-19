@@ -1073,6 +1073,13 @@ const AppMenu = [
         SubMenu: []
     },
     {
+        MenuName: 'ShipmentRoute',
+        MenuTitle: 'Phân tuyến giao hàng',
+        LinkTo: '/ShipmentRoute',
+        MenuIcon: '',
+        SubMenu: []
+    },
+    {
         MenuName: 'Price',
         MenuTitle: 'Giá',
         LinkTo: '',
@@ -1082,6 +1089,13 @@ const AppMenu = [
                 MenuName: 'ServicePriceTable',
                 MenuTitle: 'Giá dịch vụ của Tận Tâm',
                 LinkTo: '/ServicePriceTable',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
+                MenuName: 'FuelSubsIDizePeriod',
+                MenuTitle: 'Danh sách khoảng thời gian nhân viên được phụ cấp xăng',
+                LinkTo: '/FuelSubsIDizePeriod',
                 MenuIcon: '',
                 SubMenu: []
             },
@@ -1154,13 +1168,6 @@ const AppMenu = [
                 MenuName: 'RewardComputeList',
                 MenuTitle: 'Danh sách tính thưởng',
                 LinkTo: '/RewardComputeList',
-                MenuIcon: '',
-                SubMenu: []
-            },
-            {
-                MenuName: 'FuelSubsIDizePeriod',
-                MenuTitle: 'Danh sách khoảng thời gian nhân viên được phụ cấp xăng',
-                LinkTo: '/FuelSubsIDizePeriod',
                 MenuIcon: '',
                 SubMenu: []
             },
@@ -1376,7 +1383,7 @@ const AppMenu = [
                 SubMenu: []
             },
 
-            
+
 
 
 

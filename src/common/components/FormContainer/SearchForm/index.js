@@ -218,6 +218,21 @@ export default class SearchForm extends Component {
                                         key={index}
                                     />
                                 );
+                            case "ComboTreeSelect":
+                                if (typeof elementItem.filterName != "undefined") {
+                                    elementItem.filterValue = this.state.FormData[elementItem.filterName].value;
+                                }
+
+                                return (
+                                    <ElementSearch.ElementTreeSelect
+                                        onValueChange={this.onValueChange}
+                                        ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                        inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
+                                        {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
+                                        key={index}
+                                    />
+                                );
 
                             case "ComboBoxNewChange":
                                 if (typeof elementItem.filterName != "undefined") {

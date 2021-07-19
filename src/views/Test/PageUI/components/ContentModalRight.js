@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import FormControl from "../../../../common/components/FormContainer/FormControl";
-
+import { showModal, hideModal } from '../../../../actions/modal';
+import { Link } from "react-router-dom";
+import ReactTooltip from 'react-tooltip';
 class ContentModalRightCom extends Component {
     constructor(props) {
         super(props);
@@ -15,22 +17,28 @@ class ContentModalRightCom extends Component {
 
 
     }
+    handleClose() {
+        this.props.hideModal();
+    }
+
+    handleConfirm() {
+        console.log("submit")
+    }
+
     render() {
 
         return (
             <React.Fragment>
                 <div className="card">
                     <div className="card-body">
-                        <div className="stepper">
+                        {/* <div className="stepper mb-10">
                             <div className="stepper-item step-completed">
                                 <span className="stepLabel">
                                     <span className="step-icon">
                                         <div className="icon">
-                                            <i className="fa fa-gift" aria-hidden='true'></i>
+                                            <i className="ti-check" aria-hidden='true'></i>
                                         </div>
                                     </span>
-                                    <span className="step-label">Khởi tạo</span>
-                                    <span className="step-time">14/07/2021 12:10</span>
                                 </span>
                             </div>
 
@@ -41,10 +49,9 @@ class ContentModalRightCom extends Component {
                                 <span className="stepLabel">
                                     <span className="step-icon">
                                         <div className="icon">
-                                            <i className="fa fa-gift" aria-hidden='true'></i>
+                                            <i className="" aria-hidden='true'></i>
                                         </div>
                                     </span>
-                                    <span className="step-label">Tiếp nhận vận đơn</span>
                                 </span>
                             </div>
                             <div className="stepper-item">
@@ -54,10 +61,9 @@ class ContentModalRightCom extends Component {
                                 <span className="stepLabel">
                                     <span className="step-icon">
                                         <div className="icon">
-                                            <i className="fa fa-gift" aria-hidden='true'></i>
+                                            <i className="" aria-hidden='true'></i>
                                         </div>
                                     </span>
-                                    <span className="step-label">Khởi tạo</span>
                                 </span>
                             </div>
                             <div className="stepper-item">
@@ -67,25 +73,20 @@ class ContentModalRightCom extends Component {
                                 <span className="stepLabel">
                                     <span className="step-icon">
                                         <div className="icon">
-                                            <i className="fa fa-gift" aria-hidden='true'></i>
+                                            <i className="" aria-hidden='true'></i>
                                         </div>
                                     </span>
-                                    <span className="step-label">Khởi tạo</span>
                                 </span>
                             </div>
-                        </div>
-                    </div>
-                </div>
+                        </div> */}
 
-                <div className="card modalForm">
-                    <div className="card-body">
                         <div className="form-row">
                             <div className="col-md-6">
                                 <FormControl.ComboBoxPartner
                                     name="CarrierPartnerID"
                                     colspan="8"
                                     labelcolspan="4"
-                                    label="Đối tác vận chuyển:"
+                                    label="Đối tác:"
                                     isautoloaditemfromcache={true}
                                     loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
                                     valuemember="PartnerID"
@@ -99,11 +100,11 @@ class ContentModalRightCom extends Component {
                                 />
                             </div>
                             <div className="col-md-6">
-                                <FormControl.FormControlComboBox
+                                <FormControl.CheckBox
                                     name="CarrierTypeID"
                                     colspan="8"
                                     labelcolspan="4"
-                                    label="phương tiện"
+                                    label="Cùng tuyến"
                                     isautoloaditemfromcache={true}
                                     loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
                                     valuemember="CarrierTypeID"
@@ -134,24 +135,275 @@ class ContentModalRightCom extends Component {
                             placeholder="---Vui lòng chọn---"
                             isMultiSelect={true}
                         />
-                        {/* <InputGridChageControl
-                            name="ShipmentOrder_ItemList"
-                            controltype="InputGridControl"
-                            title="Danh sách vận đơn"
-                            listColumn={DataGridColumnItemList}
-                            dataSource={this.state.ShipmentOrder}
-                            FormValidation={this.state.FormValidation}
-                            onDeleteClick={this.handleDeleteID.bind(this)}
-                            onValueChange={this.handleonValueChange.bind(this)}
-                        /> */}
-                        <div className="card">
-                            <div className="card-body">
-                                tesdt
+
+                        <div className="row  mt-20">
+                            <div className="col-12 group-shipingorder">
+
+                                <div className="jsgrid">
+                                    <div className="jsgrid-grid-body">
+                                        <table className="jsgrid-table">
+                                            <tbody>
+                                                <tr className="jsgrid-row">
+                                                    <td className="jsgrid-cell high-priority" style={{ width: '1%' }}>
+                                                    </td>
+
+                                                    <td className="jsgrid-cell group-products" style={{ width: '50%' }}>
+                                                        <ul>
+                                                            <li className="item infoOder">
+                                                                <span className="nameOrder">
+                                                                    <Link
+                                                                        className="linktext blank"
+                                                                        target="_blank"
+                                                                        to={{ pathname: "/ShipmentOrder/Detail/" + 210714000000199 }}>
+                                                                        210714000000199 </Link>
+                                                                </span>
+                                                                <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
+                                                            </li>
+                                                            <li className="item infoProduict">
+                                                                <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
+                                                                <ReactTooltip id="producname1" type='warning'>
+                                                                    <span>Tivi LED Sony KD-49X8000H</span>
+                                                                </ReactTooltip>
+                                                                <span data-tip data-for="producname2" data-id="producname2">Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                                <ReactTooltip id="producname2" type='warning'>
+                                                                    <span>Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                                </ReactTooltip>
+                                                            </li>
+                                                            <li className="item delivery-status">
+
+                                                                <span class="badge badge-secondary badge-active mr-10"><i className="fa fa-motorcycle"></i> Xe máy</span>
+                                                                <span class="badge badge-secondary"><i className="fa fa-truck"></i> Xe tải</span>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '44%' }}>
+
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="2"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '5%' }}>
+                                                        <div className="group-action">
+                                                            <a class="table-action hover-danger item-action">
+                                                                <i class="ti-trash"></i>
+                                                            </a>
+                                                            <a class="table-action hover-danger item-action">
+                                                                <i class="ti-trash"></i>
+                                                            </a>
+                                                        </div>
+
+                                                    </td>
+                                                </tr>
+                                                <tr className="jsgrid-row">
+                                                    <td className="jsgrid-cell high-priority" style={{ width: '1%' }}>
+                                                    </td>
+
+                                                    <td className="jsgrid-cell group-products" style={{ width: '50%' }}>
+                                                        <ul>
+                                                            <li className="item infoOder">
+                                                                <span className="nameOrder">
+                                                                    <Link
+                                                                        className="linktext blank"
+                                                                        target="_blank"
+                                                                        to={{ pathname: "/ShipmentOrder/Detail/" + 210714000000199 }}>
+                                                                        210714000000199 </Link>
+                                                                </span>
+                                                                <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
+                                                            </li>
+                                                            <li className="item infoProduict">
+                                                                <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
+                                                                <ReactTooltip id="producname1" type='warning'>
+                                                                    <span>Tivi LED Sony KD-49X8000H</span>
+                                                                </ReactTooltip>
+                                                                <span data-tip data-for="producname2" data-id="producname2">Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                                <ReactTooltip id="producname2" type='warning'>
+                                                                    <span>Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                                </ReactTooltip>
+                                                            </li>
+                                                            <li className="item delivery-status">
+
+                                                                <span class="badge badge-secondary badge-active mr-10"><i className="fa fa-motorcycle"></i> Xe máy</span>
+                                                                <span class="badge badge-secondary"><i className="fa fa-truck"></i> Xe tải</span>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '44%' }}>
+
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="2"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '5%' }}>
+                                                        <div className="group-action">
+                                                            <a class="table-action hover-danger item-action">
+                                                                <i class="ti-trash"></i>
+                                                            </a>
+                                                            <a class="table-action hover-danger item-action">
+                                                                <i class="ti-trash"></i>
+                                                            </a>
+                                                        </div>
+
+                                                    </td>
+                                                </tr>
+                                                <tr className="jsgrid-row">
+                                                    <td className="jsgrid-cell high-priority" style={{ width: '1%' }}>
+                                                    </td>
+
+                                                    <td className="jsgrid-cell group-products" style={{ width: '50%' }}>
+                                                        <ul>
+                                                            <li className="item infoOder">
+                                                                <span className="nameOrder">
+                                                                    <Link
+                                                                        className="linktext blank"
+                                                                        target="_blank"
+                                                                        to={{ pathname: "/ShipmentOrder/Detail/" + 210714000000199 }}>
+                                                                        210714000000199 </Link>
+                                                                </span>
+                                                                <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
+                                                            </li>
+                                                            <li className="item infoProduict">
+                                                                <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
+                                                                <ReactTooltip id="producname1" type='warning'>
+                                                                    <span>Tivi LED Sony KD-49X8000H</span>
+                                                                </ReactTooltip>
+                                                                <span data-tip data-for="producname2" data-id="producname2">Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                                <ReactTooltip id="producname2" type='warning'>
+                                                                    <span>Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                                </ReactTooltip>
+                                                            </li>
+                                                            <li className="item delivery-status">
+
+                                                                <span class="badge badge-secondary badge-active mr-10"><i className="fa fa-motorcycle"></i> Xe máy</span>
+                                                                <span class="badge badge-secondary"><i className="fa fa-truck"></i> Xe tải</span>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '44%' }}>
+
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="2"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                        <FormControl.FormControlComboBox
+                                                            name="CarrierTypeID"
+                                                            colspan="12"
+                                                            labelcolspan="4"
+                                                            label=""
+                                                            isautoloaditemfromcache={true}
+                                                            loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
+                                                            valuemember="CarrierTypeID"
+                                                            nameMember="CarrierTypeName"
+                                                            controltype="InputControl"
+                                                            value="-1"
+                                                            listoption={null}
+                                                            datasourcemember="CarrierTypeID"
+                                                            placeholder="---Vui lòng chọn---"
+                                                            isMultiSelect={false}
+                                                            isShowLable={true}
+                                                        />
+                                                    </td>
+                                                    <td className="jsgrid-cell " style={{ width: '5%' }}>
+                                                        <div className="group-action">
+                                                            <a class="table-action hover-danger item-action">
+                                                                <i class="ti-trash"></i>
+                                                            </a>
+                                                            <a class="table-action hover-danger item-action">
+                                                                <i class="ti-trash"></i>
+                                                            </a>
+                                                        </div>
+
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
+
+                    </div>
                 </div>
+                <div className="modal-footer modal-footer-center">
+                    <button className="btn btn-w-md btn-round btn-secondary" type="button" onClick={this.handleClose.bind(this)}>Bỏ qua</button>
+                    <button className="btn btn-w-md btn-round btn-info ml-50" type="button" onClick={this.handleConfirm.bind(this)}>Cập nhật</button>
+                </div>
+
             </React.Fragment>
 
         );
@@ -169,7 +421,11 @@ const mapDispatchToProps = dispatch => {
     return {
         showModal: (type, props) => {
             dispatch(showModal(type, props));
-        }
+        },
+        hideModal: (type, props) => {
+            dispatch(hideModal(type, props));
+        },
+
     }
 }
 

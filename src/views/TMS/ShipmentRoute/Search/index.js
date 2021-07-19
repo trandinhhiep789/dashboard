@@ -1,122 +1,358 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { connect } from 'react-redux';
-import { callFetchAPI } from "../../../actions/fetchAPIAction";
-import { updatePagePath } from "../../../actions/pageAction";
-import SearchForm from "../../../common/components/FormContainer/SearchForm";
-import Select from 'react-select';
-import Datetime from 'react-datetime';
+import { connect } from "react-redux";
+import { Modal, ModalManager, Effect } from "react-dynamic-modal";
+import SearchForm from "../../../../common/components/FormContainer/SearchForm";
+import DataGridShipmentOder from "../Component/DataGridShipmentOrder";
+
 import {
     SearchElementList,
     SearchMLObjectDefinition,
-} from "./constants";
-import { MODAL_TYPE_VIEW } from "../../../constants/actionTypes";
-import { showModal, hideModal } from '../../../actions/modal';
-import { TreeSelect, DatePicker } from 'antd';
-import SOPrintTemplate from "../../../common/components/PrintTemplate/SOPrintTemplate";
-import ContentModalRight from "./components/ContentModalRight";
-const { SHOW_PARENT } = TreeSelect;
+    DataGridColumnList,
+    AddLink,
+    APIHostName,
+    SearchAPIPath,
+    DeleteAPIPath,
+    IDSelectColumnName,
+    PKColumnName,
+    InitSearchParams,
+    PagePath,
+} from "../constants";
+import { callFetchAPI } from "../../../../actions/fetchAPIAction";
+import { updatePagePath } from "../../../../actions/pageAction";
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
+import SOPrintTemplate from "../../../../common/components/PrintTemplate/SOPrintTemplate";
+import { callGetCache } from "../../../../actions/cacheAction";
 
-const treeData = [
-    {
-        title: 'Node1',
-        value: '0-0',
-        key: '0-0',
-        children: [
-            {
-                title: 'Child Node1',
-                value: '0-0-0',
-                key: '0-0-0',
-            },
-        ],
-    },
-    {
-        title: 'Node2',
-        value: '0-1',
-        key: '0-1',
-        children: [
-            {
-                title: 'Child Node3',
-                value: '0-1-0',
-                key: '0-1-0',
-            },
-            {
-                title: 'Child Node4',
-                value: '0-1-1',
-                key: '0-1-1',
-            },
-            {
-                title: 'Child Node5',
-                value: '0-1-2',
-                key: '0-1-2',
-            },
-        ],
-    },
-];
-
-const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' }
-]
-class PageUICom extends React.Component {
+class SearchCom extends React.Component {
     constructor(props) {
         super(props);
-        this.handleShowModal = this.handleShowModal.bind(this);
-        this.handlePrintClick = this.handlePrintClick.bind(this);
+        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+        this.handleCloseMessage = this.handleCloseMessage.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
+        this.handleonChangePage = this.handleonChangePage.bind(this);
         this.state = {
-            widthPercent: "",
+            CallAPIMessage: "",
+            gridDataSource: [],
+            IsCallAPIError: false,
+            SearchData: InitSearchParams,
+            SearchElementList: SearchElementList,
+            cssNotification: "",
+            iconNotification: "",
+            PageNumber: 1,
+            IsLoadDataComplete: false,
+            IsLoadData: false,
+            PrintID: '',
+            dataPrint: {}
         };
         this.searchref = React.createRef();
+        this.notificationDOMRef = React.createRef();
     }
 
     componentDidMount() {
-        this.updateWindowDimensions();
-        window.addEventListener("resize", this.updateWindowDimensions);
-    }
+        const ShipOrdStatusGroupID = { SearchKey: "@SHIPMENTORDERSTATUSGROUPID", SearchValue: this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : "1,2,3" };
+        let listSearchDataObject = Object.assign([], this.state.SearchData, { [9]: ShipOrdStatusGroupID });
+        this.callSearchData(listSearchDataObject);
+        this.props.updatePagePath(PagePath);
 
-    componentWillUnmount() {
-        window.removeEventListener("resize", this.updateWindowDimensions);
-    }
 
-    updateWindowDimensions = () => {
-        this.setState({
-            widthPercent: (window.innerWidth * 60) / 100
-        })
-    };
-
-    handleSearchSubmit() {
-
-    }
-
-    handleUserCoordinator() {
-        this.handleShowModal()
-    }
-
-    handleShowModal() {
-        const { widthPercent } = this.state;
-        console.log("widthPercent", widthPercent)
-        this.props.showModal(MODAL_TYPE_VIEW, {
-            title: "Phân tuyến điều phối vận đơn",
-            isShowOverlay: false,
-            content: {
-                text: <ContentModalRight />
-
-            },
-            maxWidth: widthPercent + 'px'
+        jQuery(window).scroll(function () {
+            if (jQuery(this).scrollTop() > 300) {
+                $("#btnUserCoordinator").addClass("tofixedButton")
+                $("#fixtable").addClass("tofixtable")
+            } else {
+                $("#btnUserCoordinator").removeClass("tofixedButton")
+                $("#fixtable").removeClass("tofixtable")
+            }
         });
+
+    }
+
+    handleDelete(id) {
+        const ShipmentOrder = { ShipmentOrderID: id, DeletedUser: this.props.AppInfo.LoginInfo.Username };
+        this.props.callFetchAPI(APIHostName, DeleteAPIPath, ShipmentOrder).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            if (!apiResult.IsError) {
+                this.callSearchData(this.state.SearchData);
+            }
+        });
+    }
+    handleonChangeView() {
+        this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchSelected", []).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.setState({
+                    gridDataSource: apiResult.ResultObject
+                });
+            }
+        });
+    }
+
+    handleonSearchEvent(Keywordid) {
+        if (Keywordid != "") {
+            if (Keywordid.trim().length==15) {
+                this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByKeyword", String(Keywordid).trim()).then(apiResult => {
+                    if (!apiResult.IsError) {
+                        this.setState({
+                            gridDataSource: apiResult.ResultObject
+                        });
+                    }
+                });
+            }
+             else if(Keywordid.trim().length==10) {
+                this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByPhoneNember", String(Keywordid).trim()).then(apiResult => {
+                    if (!apiResult.IsError) {
+                        this.setState({
+                            gridDataSource: apiResult.ResultObject
+                        });
+                    }
+                });
+            }
+            else {
+                this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByPartnerSaleOrderID", String(Keywordid).trim()).then(apiResult => {
+                    if (!apiResult.IsError) {
+                        this.setState({
+                            gridDataSource: apiResult.ResultObject
+                        });
+                    }
+                });
+            }
+        }
+    }
+
+    onChangePageLoad() {
+        this.callSearchData(this.state.SearchData);
+    }
+    handleonChangePage(pageNum) {
+        let listMLObject = [];
+        const aa = { SearchKey: "@PAGEINDEX", SearchValue: pageNum - 1 };
+        listMLObject = Object.assign([], this.state.SearchData, { [14]: aa });
+        // console.log(this.state.SearchData,listMLObject)
+        this.callSearchData(listMLObject)
+        this.setState({
+            PageNumber: pageNum
+        });
+    }
+
+    handleSearchSubmit(formData, MLObject) {
+        // let result="";
+        // if ( MLObject.ShipmentOrderTypeID != -1 &&  MLObject.ShipmentOrderTypeID != null &&  MLObject.ShipmentOrderTypeID != "") {
+        //     result =  MLObject.ShipmentOrderTypeID.reduce((data, item, index) => {
+        //         const comma = data.length ? "," : "";
+        //         return data + comma + item;
+        //     }, '');
+        // }
+
+
+        const postData = [
+            {
+                SearchKey: "@Keyword",
+                SearchValue: MLObject.Keyword
+            },
+            {
+                SearchKey: "@RECEIVERPHONENUMBER",
+                SearchValue: ''
+            },
+            {
+                SearchKey: "@SHIPMENTORDERTYPEID",
+                SearchValue: MLObject.ShipmentOrderTypeID
+            },
+            {
+                SearchKey: "@FromDate",
+                SearchValue: MLObject.CreatedOrderTimeFo
+            },
+            {
+                SearchKey: "@ToDate",
+                SearchValue: MLObject.CreatedOrderTimeTo
+            },
+            {
+                SearchKey: "@RECEIVERPROVINCEID",
+                SearchValue: MLObject.ReceiverProvinceID
+            },
+            {
+                SearchKey: "@RECEIVERDISTRICTID",
+                SearchValue: MLObject.ReceiverDistrictID
+            },
+            {
+                SearchKey: "@SENDERSTOREID",
+                SearchValue: MLObject.SenderStoreID
+            },
+            {
+                SearchKey: "@COORDINATORSTOREID",
+                SearchValue: MLObject.CoordinatorStoreID
+            },
+            {
+                SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
+                SearchValue: MLObject.ShipmentOrderStatusGroupID
+            },
+            {
+                SearchKey: "@IsCoordinator",
+                SearchValue: MLObject.IsCoordinator
+            },
+            {
+                SearchKey: "@Typename",
+                SearchValue: MLObject.Typename
+            },
+            {
+                SearchKey: "@RequestStoreID",
+                SearchValue: MLObject.RequestStoreID
+            },
+            {
+                SearchKey: "@PAGESIZE",
+                SearchValue: 100
+            },
+            {
+                SearchKey: "@PAGEINDEX",
+                SearchValue: 0
+            }
+        ];
+        this.setState({ SearchData: postData });
+         this.callSearchData(postData);
+    }
+
+    callSearchData(searchData) {
+        this.setState({
+            IsLoadData: false
+        });
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.setState({
+                    gridDataSource: apiResult.ResultObject,
+                    IsCallAPIError: apiResult.IsError,
+                    IsLoadDataComplete: true,
+                    IsLoadData: true
+                });
+            }
+            else {
+                this.addNotification(apiResult.Message, apiResult.IsError);
+            }
+        });
+    }
+
+    handleCloseMessage() {
+        // if (!this.state.IsCallAPIError) {
+        //     this.callSearchData(this.state.SearchData);
+        // }
+    }
+
+    showMessage(message) {
+        ModalManager.open(
+            <MessageModal
+                title="Thông báo"
+                message={message}
+                onRequestClose={() => true}
+                onCloseModal={this.handleCloseMessage}
+            />
+        );
+    }
+
+    addNotification(message1, IsError) {
+        if (!IsError) {
+            this.setState({
+                cssNotification: "notification-custom-success",
+                iconNotification: "fa fa-check"
+            });
+        } else {
+            this.setState({
+                cssNotification: "notification-danger",
+                iconNotification: "fa fa-exclamation"
+            });
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={this.state.cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={this.state.iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 3000 },
+            dismissable: { click: true }
+        });
+    }
+
+
+    handlePrint(id) {
+        this.setState({
+            PrintID: id
+        })
+
+        this.props.callFetchAPI("TMSAPI", "api/ShipmentOrder/LoadPrintData", id).then(apiResult => {
+            //this.setState({ IsCallAPIError: apiResult.IsError });
+            if (!apiResult.IsError) {
+                // debugger;
+                // console.log("apiResult.ResultObject", apiResult.ResultObject);
+                let itemList = apiResult.ResultObject.ShipmentOrder_ItemList;
+                let itemListOutside = [];
+                let itemListResult = [];
+                if (itemList) {
+                    let tempItemList = itemList.filter((item) => {
+                        if (!item.ProductSerial) {
+                            let temp = itemList.filter(item2 => {
+                                return item2.ProductID == item.ProductID;
+                            });
+                            let existItemListOutside = itemListOutside.filter(existItem => { return existItem.ProductID == item.ProductID });
+                            if (temp.length > 1 && existItemListOutside.length == 0) {
+                                item.Quantity = temp.length;
+                                itemListOutside.push(temp[0]);
+                                return false;
+                            } else if (temp.length > 1 && existItemListOutside.length > 0) {
+                                return false;
+                            }
+                            else {
+                                return true;
+                            }
+
+                        } else {
+                            return true;
+                        }
+
+
+                    });
+                    itemListResult = tempItemList.concat(itemListOutside);
+                    //itemListResult = tempItemList;
+                }
+
+                // console.log("itemListOutside", itemListOutside);
+                // console.log("itemListResult", itemListResult);
+
+
+                if (itemListOutside.length > 0) {
+                    apiResult.ResultObject.ShipmentOrder_ItemList = itemListResult;
+                }
+
+
+                this.setState({ dataPrint: apiResult.ResultObject });
+                setTimeout(() => {
+                    this.handlePrintClick()
+                }, 300);
+
+            }
+
+        });
+
+
     }
 
     handlePrintClick() {
 
         // window.print();
         // return;
+
         var mywindow = window.open('', '', 'right=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0');
         mywindow.document.write('<html><head>');
         mywindow.document.write('<title>Đơn vận chuyển</title>');
         mywindow.document.write('<link rel="stylesheet" href="main.css" type="text/css" />');
         mywindow.document.write('</head><body >');
-        mywindow.document.write(document.getElementById('print').innerHTML);
+        mywindow.document.write(document.getElementById('printSO').innerHTML);
         mywindow.document.write('</body></html>');
         // mywindow.document.getElementsByName('body').css( "-webkit-print-color-adjust", "exact !important");
         mywindow.print();
@@ -128,184 +364,22 @@ class PageUICom extends React.Component {
 
 
     render() {
-        const tProps = {
-            treeData,
-            value: this.state.value,
-            onChange: this.onChange,
-            treeCheckable: true,
-            showCheckedStrategy: SHOW_PARENT,
-            placeholder: '--Vui lòng chọn--',
-            style: {
-                width: '100%',
-            },
-        };
-        return (
-            <React.Fragment>
-                <div className="col-lg-12 SearchFormCustom">
-                    <form className="frm" action="">
-                        <div className="lstFormControl">
-                            <div className="item group-form-control">
-                                <div className="group-text-select">
-                                    <input type="text"
-                                        className="form-control form-control-sm txtKeyword"
-                                        name="txtKeyword"
-                                        placeholder="Từ khóa" />
-                                    <div className="input-group-append">
-                                        <button className="btn dropdown-toggle" type="button" data-toggle="dropdown">--Vui lòng chọn--</button>
-                                        <div className="dropdown dropdown-menu dropdown-menu-right">
-                                            <a className="dropdown-item active" data-option="-1">--Vui lòng chọn--</a>
-                                            <a className="dropdown-item" data-option="1">SĐT khách hàng</a>
-                                            <a className="dropdown-item" data-option="2">Mã NV giao hàng</a>
-                                            <a className="dropdown-item" data-option="3">Mã đơn hàng </a>
-                                            <a className="dropdown-item" data-option="4">Mã NV điều phối</a></div>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div className="item">
-                                {/* <div className="form-group-input-select">
-                                    <Select
-                                        value=""
-                                        name=""
-                                        options={options}
-                                        isMulti=""
-                                        placeholder="--Loại yêu cầu vận chuyển--"
-                                        className="select"
-                                    />
-                                </div> */}
-                                <div className="form-group-input-treeSelect">
-                                    <TreeSelect {...tProps} />
-                                </div>
-                            </div>
-
-                            <div className="item datepicker">
-                                <div className="form-group-input-date">
-                                    <Datetime
-                                        className="picker"
-                                        name=""
-                                        value=""
-                                        defaultValue="05/12/2020">
-                                    </Datetime>
-                                </div>
-                            </div>
-
-                            <div className="item datepicker">
-                                <div className="form-group-input-date">
-                                    <Datetime
-                                        className="picker"
-                                        name=""
-                                        value=""
-                                        defaultValue="05/12/2020">
-                                    </Datetime>
-                                </div>
-                            </div>
-
-                            <div className="item">
-                                <div className="form-group-input-select">
-                                    <Select
-                                        value=""
-                                        name=""
-                                        options={options}
-                                        isMulti=""
-                                        placeholder="--Tỉnh /thành phố--"
-                                        className="select"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="item">
-                                <div className="form-group-input-select">
-                                    <Select
-                                        value=""
-                                        name=""
-                                        options={options}
-                                        isMulti=""
-                                        placeholder="--Quận/huyện--"
-                                        className="select"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="item group-controll-select">
-                                <div className="form-group-input-select">
-                                    <Select
-                                        value=""
-                                        name=""
-                                        options={options}
-                                        isMulti=""
-                                        placeholder="--Kho gửi--"
-                                        className="select"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="item group-controll-select">
-                                <div className="form-group-input-select">
-                                    <Select
-                                        value=""
-                                        name=""
-                                        options={options}
-                                        isMulti=""
-                                        placeholder="--Kho điều phối--"
-                                        className="select"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="item  group-controll-select">
-                                <div className="form-group-input-select">
-                                    <Select
-                                        value=""
-                                        name=""
-                                        options={options}
-                                        isMulti=""
-                                        placeholder="--Trạng thái--"
-                                        className="select"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="item group-controll-select">
-                                <div className="form-group-input-select">
-                                    <Select
-                                        value=""
-                                        name=""
-                                        options={options}
-                                        isMulti=""
-                                        placeholder="--Trạng thái điều phối--"
-                                        className="select"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="item group-controll-select">
-                                <div className="form-group-input-select">
-                                    <Select
-                                        value=""
-                                        name=""
-                                        options={options}
-                                        isMulti=""
-                                        placeholder="--Sắp xếp--"
-                                        className="select"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="item group-action">
-                                <div className="group-custom-search btnSearch">
-                                    <div className="btn-history">
-                                        <i className="ti-settings"></i>
-                                    </div>
-                                    <button className="btn" type="submit"><span className="fa fa-search"></span>Tìm Kiếm</button>
-                                </div>
-                            </div>
-
-                        </div>
-                    </form>
-                </div>
-
-                <div className="col-lg-12">
+        this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderStatusGroupID').value = this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : "1,2,3"
+        if (this.state.IsLoadDataComplete) {
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
+                    <div className="col-lg-12 SearchFormCustom">
+                    <SearchForm
+                        FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
+                        MLObjectDefinition={SearchMLObjectDefinition}
+                        listelement={this.state.SearchElementList}
+                        onSubmit={this.handleSearchSubmit}
+                        ref={this.searchref}
+                        className="multiple multiple-custom multiple-custom-display"
+                    />
+                      </div>
+                      <div className="col-lg-12">
                     <div className="cardShipmentOrder-page">
                         <div className="card-title">
                             <div className="flexbox">
@@ -313,7 +387,7 @@ class PageUICom extends React.Component {
                                     <div className="btn-group btn-group-sm">
                                         <div className="group-left">
                                             <div className="input-group">
-                                                <button id="btnUserCoordinator" type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info mr-10" title="" data-provide="tooltip" data-original-title="Thêm">
+                                                <button id="btnUserCoordinator" type="button"  className="btn btn-info mr-10" title="" data-provide="tooltip" data-original-title="Thêm">
                                                     <i className="fa fa-plus"></i> Gán NV giao hàng
                                                 </button>
                                                 <div className="groupActionRemember mr-10">
@@ -401,13 +475,13 @@ class PageUICom extends React.Component {
                                                                 <i className="ti ti-timer"></i>
                                                                 {/* <span>8/12/2020 08:00</span>
                                                                  */}
-                                                                <DatePicker
+                                                                {/* <DatePicker
                                                                     showTime={{ format: 'HH:mm' }}
                                                                     format="YYYY-MM-DD HH:mm"
                                                                     className="frmDateTime"
                                                                     dropdownClassName="tree-select-custom"
                                                                     placeholder="Thời gian giao dự kiến"
-                                                                />
+                                                                /> */}
                                                             </li>
                                                             <li className="item status">
                                                                 <i className="fa fa-location-arrow"></i>
@@ -1686,20 +1760,39 @@ class PageUICom extends React.Component {
                     </div>
                 </div>
 
-                <div style={{ display: 'none' }}>
-                    <SOPrintTemplate ref={el => (this.componentRef = el)} data={this.state.printData} />
-                </div>
-            </React.Fragment>
-        );
-    }
+                    <div style={{ display: 'none' }}>
+                        <SOPrintTemplate ref={el => (this.componentRef = el)} data={this.state.dataPrint} DataID={this.state.PrintID} />
+                    </div>
 
+                </React.Fragment>
+            );
+        }
+        else {
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
+                    <SearchForm
+                        FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
+                        MLObjectDefinition={SearchMLObjectDefinition}
+                        listelement={SearchElementList}
+                        onSubmit={this.handleSearchSubmit}
+                        ref={this.searchref}
+                        className="multiple multiple-custom multiple-custom-display"
+                        classNamebtnSearch="btn-custom-right"
+                    />
+                    <label>Đang nạp dữ liệu...</label>
+                </React.Fragment>
+            );
+        }
+    }
 }
 
 const mapStateToProps = state => {
     return {
-        AppInfo: state
-    }
-}
+        AppInfo: state,
+        FetchAPIInfo: state.FetchAPIInfo
+    };
+};
 
 const mapDispatchToProps = dispatch => {
     return {
@@ -1709,18 +1802,11 @@ const mapDispatchToProps = dispatch => {
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
         },
-        callClearLocalCache: (cacheKeyID) => {
-            return dispatch(callClearLocalCache(cacheKeyID))
-        },
-        showModal: (type, props) => {
-            dispatch(showModal(type, props));
-        },
-        hideModal: (type, props) => {
-            dispatch(hideModal(type, props));
+        callGetCache: (cacheKeyID) => {
+            return dispatch(callGetCache(cacheKeyID));
         }
+    };
+};
 
-    }
-}
-
-const PageUI = connect(mapStateToProps, mapDispatchToProps)(PageUICom);
-export default PageUI;
+const Search = connect(mapStateToProps, mapDispatchToProps)(SearchCom);
+export default Search;
