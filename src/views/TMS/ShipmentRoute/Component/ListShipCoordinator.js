@@ -28,14 +28,15 @@ class ListShipCoordinatorCom extends Component {
 
         this.state = {
             ShipmentOrder: this.props.InfoCoordinator,
-            objCoordinator: { CarrierPartnerID: -1, CarrierTypeID: 1 },
+            objCoordinator: { CarrierPartnerID: -1, CarrierTypeID: 1 ,IsRoute:true},
             selectedOption: [],
             objDeliverUser: [],
             DeliverUserList: {},
             DeliverUserServerList: [],
             FormValidation: {},
             CallAPIMessage: "",
-            IsCallAPIError: false
+            IsCallAPIError: false,
+            
         }
         this.notificationDOMRef = React.createRef();
     }
@@ -49,7 +50,7 @@ class ListShipCoordinatorCom extends Component {
     }
 
     handleOnValueChange(name, value) {
-        let { objCoordinator, objDeliverUser } = this.state;
+        let { objCoordinator, objDeliverUser} = this.state;
         objCoordinator[name] = value;
         if (name == "CarrierPartnerID") {
             objDeliverUser = [];
@@ -70,6 +71,7 @@ class ListShipCoordinatorCom extends Component {
 
 
         this.setState({
+         
             objCoordinator: objCoordinator,
             objDeliverUser: objDeliverUser,
             ShipmentOrder: this.state.ShipmentOrder
@@ -394,20 +396,12 @@ class ListShipCoordinatorCom extends Component {
                             </div>
                             <div className="col-md-6">
                                 <FormControl.CheckBox
-                                    name="CarrierTypeID"
+                                    name="IsRoute"
                                     colspan="8"
                                     labelcolspan="4"
                                     label="Cùng tuyến"
-                                    isautoloaditemfromcache={true}
-                                    loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
-                                    valuemember="CarrierTypeID"
-                                    nameMember="CarrierTypeName"
-                                    controltype="InputControl"
-                                    value="-1"
-                                    listoption={null}
-                                    datasourcemember="CarrierTypeID"
-                                    placeholder="---Vui lòng chọn---"
-                                    isMultiSelect={false}
+                                    value={this.state.objCoordinator.IsRoute}
+                                    onValueChange={this.handleOnValueChange}
                                 />
                             </div>
                         </div>
@@ -461,6 +455,14 @@ class ListShipCoordinatorCom extends Component {
                                             <tbody>
                                                 {
                                                     ShipmentOrder && ShipmentOrder.map((item, index) => {
+                                                        let isPermission = false;
+                                                        if (this.state.objCoordinator.IsRoute == true) {
+                                                            isPermission = true
+                                                        }
+
+                                                        if (item.IsPermission == false) {
+                                                            isPermission = true
+                                                        }
 
                                                         let listOption = [];
                                                         let objDeliverUser = [];
@@ -534,7 +536,7 @@ class ListShipCoordinatorCom extends Component {
                                                                         filterobj="PartnerTypeID"
                                                                         placeholder="---Chọn đối tác---"
                                                                         isMultiSelect={false}
-                                                                        disabled={false}
+                                                                        disabled={isPermission}
                                                                     />
                                                                     {item.CarrierPartnerID > 0 ?
                                                                         (
@@ -554,7 +556,7 @@ class ListShipCoordinatorCom extends Component {
                                                                                 onValueChange={this.handleonValueChange.bind(this)}
                                                                                 placeholder="---Nhân viên giao nhận---"
                                                                                 isMultiSelect={true}
-                                                                                disabled={false}
+                                                                                disabled={isPermission}
                                                                                 isPartner={true}
                                                                                 filterValue={item.CarrierPartnerID}
                                                                                 filterobj="PartnerID"
@@ -577,7 +579,7 @@ class ListShipCoordinatorCom extends Component {
                                                                                 onValueChange={this.handleonValueChange.bind(this)}
                                                                                 placeholder="---Nhân viên giao nhận---"
                                                                                 isMultiSelect={true}
-                                                                                disabled={false}
+                                                                                disabled={isPermission}
                                                                                 isPartner={true}
                                                                                 filterValue="-1"
                                                                                 filterobj="PartnerID"
