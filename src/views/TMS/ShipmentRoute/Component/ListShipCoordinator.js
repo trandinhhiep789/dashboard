@@ -12,6 +12,7 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { Link } from "react-router-dom";
 import ReactTooltip from 'react-tooltip';
+import ElementInputModal from '../../../../common/components/FormContainer/FormElement/ElementInputModal';
 import {
     APIHostName
 } from "../constants";
@@ -27,14 +28,15 @@ class ListShipCoordinatorCom extends Component {
 
         this.state = {
             ShipmentOrder: this.props.InfoCoordinator,
-            objCoordinator: { CarrierPartnerID: -1, CarrierTypeID: 1 },
+            objCoordinator: { CarrierPartnerID: -1, CarrierTypeID: 1 ,IsRoute:true},
             selectedOption: [],
             objDeliverUser: [],
             DeliverUserList: {},
             DeliverUserServerList: [],
             FormValidation: {},
             CallAPIMessage: "",
-            IsCallAPIError: false
+            IsCallAPIError: false,
+            
         }
         this.notificationDOMRef = React.createRef();
     }
@@ -48,7 +50,7 @@ class ListShipCoordinatorCom extends Component {
     }
 
     handleOnValueChange(name, value) {
-        let { objCoordinator, objDeliverUser } = this.state;
+        let { objCoordinator, objDeliverUser} = this.state;
         objCoordinator[name] = value;
         if (name == "CarrierPartnerID") {
             objDeliverUser = [];
@@ -69,6 +71,7 @@ class ListShipCoordinatorCom extends Component {
 
 
         this.setState({
+         
             objCoordinator: objCoordinator,
             objDeliverUser: objDeliverUser,
             ShipmentOrder: this.state.ShipmentOrder
@@ -234,11 +237,9 @@ class ListShipCoordinatorCom extends Component {
         this.state.ShipmentOrder.splice(this.state.ShipmentOrder.findIndex(n => n.ShipmentOrderID == value), 1);
         this.setState({ ShipmentOrder: this.state.ShipmentOrder });
     }
-    handleDeleteID(e, id) {
-        this.state.ShipmentOrder.splice(this.state.ShipmentOrder.findIndex(n => n.ShipmentOrderID == id), 1);
-        this.setState({ ShipmentOrder: this.state.ShipmentOrder });
-    }
+
     handleonValueChange(rowname, rowvalue, rowIndex) {
+        debugger;
         let objDeliverUser = [];
         let { ShipmentOrder } = this.state;
         if (rowname == "ShipmentOrder_DeliverUserList") {
@@ -295,6 +296,11 @@ class ListShipCoordinatorCom extends Component {
             this.setState({ ShipmentOrder: ShipmentOrder });
         }
     }
+
+    onValueChangeComboUser(rowname, rowvalue, rowIndex) {
+        console.log("onValueChangeComboUser", rowname, rowvalue, rowIndex)
+    }
+    //
 
     _genCommentTime(dates) {
         const date = new Date(Date.parse(dates));
@@ -355,9 +361,14 @@ class ListShipCoordinatorCom extends Component {
         ShipmentOrder[rowIndex]['CarrierTypeID'] = CarrierTypeID;
         this.setState({ ShipmentOrder: ShipmentOrder });
     };
+
+    handleDeleteID = (id) => e => {
+        this.state.ShipmentOrder.splice(this.state.ShipmentOrder.findIndex(n => n.ShipmentOrderID == id), 1);
+        this.setState({ ShipmentOrder: this.state.ShipmentOrder });
+    };
     render() {
         let { ShipmentOrder } = this.state;
-        console.log("ShipmentOrder", ShipmentOrder)
+        //console.log("ShipmentOrder", ShipmentOrder)
         return (
             <React.Fragment>
                 <div className="card">
@@ -368,7 +379,7 @@ class ListShipCoordinatorCom extends Component {
                                     name="CarrierPartnerID"
                                     colspan="8"
                                     labelcolspan="4"
-                                    label="Đối tác vận chuyển:"
+                                    label="Đối tác:"
                                     isautoloaditemfromcache={true}
                                     loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
                                     valuemember="PartnerID"
@@ -385,20 +396,12 @@ class ListShipCoordinatorCom extends Component {
                             </div>
                             <div className="col-md-6">
                                 <FormControl.CheckBox
-                                    name="CarrierTypeID"
+                                    name="IsRoute"
                                     colspan="8"
                                     labelcolspan="4"
                                     label="Cùng tuyến"
-                                    isautoloaditemfromcache={true}
-                                    loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
-                                    valuemember="CarrierTypeID"
-                                    nameMember="CarrierTypeName"
-                                    controltype="InputControl"
-                                    value="-1"
-                                    listoption={null}
-                                    datasourcemember="CarrierTypeID"
-                                    placeholder="---Vui lòng chọn---"
-                                    isMultiSelect={false}
+                                    value={this.state.objCoordinator.IsRoute}
+                                    onValueChange={this.handleOnValueChange}
                                 />
                             </div>
                         </div>
@@ -411,6 +414,7 @@ class ListShipCoordinatorCom extends Component {
                                 disabled={!this.props.IsUserCoordinator}
                                 IsLabelDiv={true}
                                 isSelectedOption={true}
+
                                 isautoloaditemfromcache={false}
                                 controltype="InputControl"
                                 onChange={this.handleValueChange1}
@@ -451,6 +455,28 @@ class ListShipCoordinatorCom extends Component {
                                             <tbody>
                                                 {
                                                     ShipmentOrder && ShipmentOrder.map((item, index) => {
+                                                        let isPermission = false;
+                                                        if (this.state.objCoordinator.IsRoute == true) {
+                                                            isPermission = true
+                                                        }
+
+                                                        if (item.IsPermission == false) {
+                                                            isPermission = true
+                                                        }
+
+                                                        let listOption = [];
+                                                        let objDeliverUser = [];
+                                                        if (item.CarrierPartnerID > 0) {
+                                                            item.ShipmentOrder_DeliverUserList && item.ShipmentOrder_DeliverUserList.map((item1, index) => {
+                                                                objDeliverUser.push(item1.UserName)
+                                                            })
+                                                        }
+                                                        else {
+                                                            item.ShipmentOrder_DeliverUserList && item.ShipmentOrder_DeliverUserList.map((item2, index) => {
+                                                                listOption.push({ value: item2.UserName, label: item2.UserName + "-" + item2.FullName, FullName: item2.FullName });
+                                                            })
+                                                        }
+
                                                         return (
                                                             <tr key={index} className="jsgrid-row">
                                                                 <td className="jsgrid-cell high-priority" style={{ width: '1%' }}>
@@ -493,48 +519,81 @@ class ListShipCoordinatorCom extends Component {
                                                                     </ul>
                                                                 </td>
                                                                 <td className="jsgrid-cell " style={{ width: '44%' }}>
-
-                                                                    <FormControl.FormControlComboBox
-                                                                        name="CarrierTypeID"
-                                                                        colspan="12"
-                                                                        labelcolspan="2"
-                                                                        label=""
+                                                                    <ElementInputModal.ElementModalComboBox
+                                                                        name="CarrierPartnerID"
+                                                                        type="ComboBox"
+                                                                        caption="Đối tác"
+                                                                        onValueChange={this.handleonValueChange.bind(this)}
+                                                                        dataSourcemember="CarrierPartnerID"
                                                                         isautoloaditemfromcache={true}
-                                                                        loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
-                                                                        valuemember="CarrierTypeID"
-                                                                        nameMember="CarrierTypeName"
-                                                                        controltype="InputControl"
-                                                                        value="-1"
+                                                                        loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
+                                                                        valuemember="PartnerID"
+                                                                        nameMember="PartnerName"
+                                                                        rowIndex={index}
+                                                                        value={item.CarrierPartnerID}
                                                                         listoption={null}
-                                                                        datasourcemember="CarrierTypeID"
-                                                                        placeholder="---Vui lòng chọn---"
+                                                                        filterValue="2"
+                                                                        filterobj="PartnerTypeID"
+                                                                        placeholder="---Chọn đối tác---"
                                                                         isMultiSelect={false}
-                                                                        isShowLable={true}
+                                                                        disabled={isPermission}
                                                                     />
-                                                                    <FormControl.FormControlComboBox
-                                                                        name="CarrierTypeID"
-                                                                        colspan="12"
-                                                                        labelcolspan="4"
-                                                                        label=""
-                                                                        isautoloaditemfromcache={true}
-                                                                        loaditemcachekeyid="ERPCOMMONCACHE.CARRIERTYPE"
-                                                                        valuemember="CarrierTypeID"
-                                                                        nameMember="CarrierTypeName"
-                                                                        controltype="InputControl"
-                                                                        value="-1"
-                                                                        listoption={null}
-                                                                        datasourcemember="CarrierTypeID"
-                                                                        placeholder="---Vui lòng chọn---"
-                                                                        isMultiSelect={false}
-                                                                        isShowLable={true}
-                                                                    />
+                                                                    {item.CarrierPartnerID > 0 ?
+                                                                        (
+                                                                            <ElementInputModal.ElementModalComboBox
+                                                                                name="ShipmentOrder_DeliverUserList"
+                                                                                type="ComboUserBox"
+                                                                                caption="Nhân viên giao nhận"
+                                                                                dataSourcemember="ShipmentOrder_DeliverUserList"
+                                                                                isautoloaditemfromcache={true}
+                                                                                loaditemcachekeyid="ERPCOMMONCACHE.PARTNERUSER"
+                                                                                valuemember="UserName"
+                                                                                nameMember="FullName"
+                                                                                isselectedOp={true}
+                                                                                value={objDeliverUser}
+                                                                                rowIndex={index}
+                                                                                listoption={null}
+                                                                                onValueChange={this.handleonValueChange.bind(this)}
+                                                                                placeholder="---Nhân viên giao nhận---"
+                                                                                isMultiSelect={true}
+                                                                                disabled={isPermission}
+                                                                                isPartner={true}
+                                                                                filterValue={item.CarrierPartnerID}
+                                                                                filterobj="PartnerID"
+                                                                                filterrest="CarrierPartnerID"
+                                                                            />
+                                                                        ) :
+                                                                        (
+                                                                            <ElementInputModal.MultiUserComboBox
+                                                                                name="ShipmentOrder_DeliverUserList"
+                                                                                type="ComboUserBox"
+                                                                                caption="Nhân viên giao nhận"
+                                                                                dataSourcemember="ShipmentOrder_DeliverUserList"
+                                                                                isautoloaditemfromcache={false}
+                                                                                loaditemcachekeyid="ERPCOMMONCACHE.PARTNERUSER"
+                                                                                valuemember="UserName"
+                                                                                nameMember="FullName"
+                                                                                value="-1"
+                                                                                rowIndex={index}
+                                                                                listoption={listOption}
+                                                                                onValueChange={this.handleonValueChange.bind(this)}
+                                                                                placeholder="---Nhân viên giao nhận---"
+                                                                                isMultiSelect={true}
+                                                                                disabled={isPermission}
+                                                                                isPartner={true}
+                                                                                filterValue="-1"
+                                                                                filterobj="PartnerID"
+                                                                                filterrest="CarrierPartnerID"
+                                                                            />
+                                                                        )
+                                                                    }
                                                                 </td>
                                                                 <td className="jsgrid-cell " style={{ width: '5%' }}>
                                                                     <div className="group-action">
                                                                         <a className="table-action hover-danger item-action">
                                                                             <i className="ti-trash"></i>
                                                                         </a>
-                                                                        <a className="table-action hover-danger item-action">
+                                                                        <a onClick={this.handleDeleteID(item.ShipmentOrderID)} className="table-action hover-danger item-action">
                                                                             <i className="ti-trash"></i>
                                                                         </a>
                                                                     </div>
