@@ -6,17 +6,19 @@ import { ModalManager } from 'react-dynamic-modal';
 import { updatePagePath } from "../../../../../../actions/pageAction";
 import {
     APIHostName, PagePath, SearchElementList,
-    SearchMLObjectDefinition, SearchAPIPath,InitSearchParams
+    SearchMLObjectDefinition, SearchAPIPath, InitSearchParams
 } from '../constants';
 import SearchForm from "../../../../../../common/components/FormContainer/SearchForm";
 import DataGrid from "../../../../../../common/components/DataGrid";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
+import { callGetCache } from "../../../../../../actions/cacheAction";
 import { MessageModal } from "../../../../../../common/components/Modal";
 import { MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from '../../../../../../constants/actionTypes';
 import { showModal, hideModal } from '../../../../../../actions/modal';
 import GridPage from "../../../../../../common/components/DataGrid/GridPage";
 import { DEFAULT_ROW_PER_PAGE } from "../../../../../../constants/systemVars.js";
 import { toIsoStringCus, toIsoStringCusNew, formatNumber, formatNumberNew, toIsoStringNew } from '../../../../../../utils/function';
+import { ERPCOMMONCACHE_TMSCONFIG } from '../../../../../../constants/keyCache';
 
 export class Search extends Component {
     constructor(props) {
@@ -37,7 +39,8 @@ export class Search extends Component {
             FromDate: "",
             ToDate: "",
             AreaID: "",
-            CoordinatorGroupID: ""
+            CoordinatorGroupID: "",
+            exportTemplateID: ""
         }
 
         this.searchref = React.createRef();
@@ -45,16 +48,32 @@ export class Search extends Component {
         this.showMessage = this.showMessage.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
         this.onChangePageToServerHandle = this.onChangePageToServerHandle.bind(this)
+        this.getCacheMTG = this.getCacheMTG.bind(this);
     };
 
-    componentWillReceiveProps(nextProps) {
-
-    }
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
+        this.getCacheMTG();
     }
 
+
+    getCacheMTG() {
+        this.props.callGetCache(ERPCOMMONCACHE_TMSCONFIG).then((result) => {
+            if (result && !result.IsError && result.ResultObject) {
+                let _configValue = result.ResultObject.CacheData.filter(x => x.TMSConfigID == "TEMPLATE_EXPORT_QUALITYASSESS");
+                if (_configValue) {
+                    this.setState({
+                        exportTemplateID: _configValue[0].TMSConfigValue
+                    })
+                }
+
+
+            }
+
+
+        });
+    }
 
     showMessage(message) {
         ModalManager.open(<MessageModal title="Thông báo"
@@ -80,7 +99,6 @@ export class Search extends Component {
     };
 
     handleSearchSubmit(formData, MLObject) {
-        console.log("submit", MLObject)
 
         let result, result2;
 
@@ -147,65 +165,44 @@ export class Search extends Component {
     };
 
     handleHistorySearch() {
-        // this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
-        //     title: "Tải file",
-        //     maxWidth: '1200px',
-        //     ParamRequest: { DataExportTemplateID: 3 }
-        // });
-        this.showMessage("Tính năng đang phát triển.")
+        const { exportTemplateID } = this.state;
+        this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
+            title: "Lịch sử tải file",
+            maxWidth: '1200px',
+            ParamRequest: { DataExportTemplateID: exportTemplateID }
+        });
     }
 
     handleExportSubmit(formData, MLObject) {
-        this.showMessage("Tính năng đang phát triển.")
-        // console.log("export", MLObject)
-        // const postDataNew = [
-        //     {
-        //         SearchKey: "@FROMDATE",
-        //         SearchValue: MLObject.FromDate
-        //     },
-        //     {
-        //         SearchKey: "@TODATE",
-        //         SearchValue: MLObject.ToDate
-        //     },
+        const { exportTemplateID } = this.state
 
 
-        // ];
+        let result, result2;
 
-        // const postData = {
-        //     DataExportTemplateID: 3,
-        //     LoadDataStoreName: 'TMS.TMS_SHIPMENT_ITEM_REPORT',
-        //     KeyCached: "SHIPMENTORDER_REPORT_EXPORT",
-        //     SearchParamList: postDataNew,
-        //     ExportDataParamsDescription: "FROMDATE: " + formatDate(MLObject.FromDate) + " - TODATE: " + formatDate(MLObject.ToDate)
-        // }
-        // this.props.callFetchAPI(APIHostName, "api/DataExportQueue/AddQueueExport", postData).then(apiResult => {
-        //     if (!apiResult.IsError) {
-        //         this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
-        //             title: "Tải file",
-        //             maxWidth: '1200px',
-        //             ParamRequest: { DataExportTemplateID: 3 }
-        //         });
-        //     }
-        //     else {
-        //         this.showMessage(apiResult.Message)
-        //     }
-        // });
-    }
+        if (MLObject.SubGroupID != -1 && MLObject.SubGroupID != null && MLObject.SubGroupID != "") {
+            result = MLObject.SubGroupID.reduce((data, item, index) => {
+                const comma = data.length ? "," : "";
+                return data + comma + item;
+            }, '');
+        }
+        else {
+            result = ""
+        }
 
-    handleChangeSearch(FormData, MLObject) {
+        if (MLObject.CoordinatorGroupID != -1 && MLObject.CoordinatorGroupID != null && MLObject.CoordinatorGroupID != "") {
+            result2 = MLObject.CoordinatorGroupID.reduce((data, item, index) => {
+                const comma = data.length ? "," : "";
+                return data + comma + item;
+            }, '');
+        }
+        else {
+            result2 = ""
+        }
 
+        const areaID = MLObject.AreaID > 0 ? MLObject.AreaID : "";
+        const mainGroupID = MLObject.MainGroupID > 0 ? MLObject.MainGroupID : "";
 
-    }
-
-    handleChangePage(numPage) {
-        console.log("handleChangePage", numPage)
-
-
-        this.setState({
-            pageNumber: numPage
-        });
-
-        const postData = [
+        const postDataNew = [
             {
                 SearchKey: "@FROMDATE",
                 SearchValue: MLObject.FromDate
@@ -216,34 +213,60 @@ export class Search extends Component {
             },
             {
                 SearchKey: "@AREAIDLIST",
-                SearchValue: MLObject.AreaID
+                SearchValue: areaID
             },
             {
                 SearchKey: "@COORDINATORGROUPIDLIST",
-                SearchValue: MLObject.CoordinatorGroupID
+                SearchValue: result2
             },
 
             {
                 SearchKey: "@MAINGROUPIDLIST",
-                SearchValue: MLObject.MainGroupID
+                SearchValue: mainGroupID
             },
             {
                 SearchKey: "@SUBGROUPIDLIST",
-                SearchValue: MLObject.SubGroupID
+                SearchValue: result
+            },
+            {
+                SearchKey: "@ISDETAIL",
+                SearchValue: 1
+            },
+             
+            {
+                SearchKey: "@PAGESIZE",
+                SearchValue: -1
             },
             {
                 SearchKey: "@PAGEINDEX",
-                SearchValue: numPage
+                SearchValue: -1
             },
-            {
-                SearchKey: "@PAGESIZE",
-                SearchValue: this.state.pageSize
-            },
+        ];
 
-        ];;
+        console.log("export", MLObject, postDataNew)
 
-        this.callSearchData(postData);
+        const postData = {
+            DataExportTemplateID: 3,
+            LoadDataStoreName: 'TMS.RPT_SHIPQUALITYASSESS',
+            KeyCached: "SHIPMENTORDER_REPORT_EXPORT",
+            SearchParamList: postDataNew,
+            ExportDataParamsDescription: "FROMDATE: " + MLObject.FromDate + " - TODATE: " + MLObject.ToDate + " - AREAIDLIST: " + areaID + " - COORDINATORGROUPIDLIST: " + result2 + " - MAINGROUPIDLIST: " + mainGroupID + " - SUBGROUPIDLIST: " + result + " - PAGESIZE: " + "-1" + " - PAGEINDEX: " + "-1"
+        }
+        this.props.callFetchAPI(APIHostName, "api/DataExportQueue/AddQueueExport", postData).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
+                    title: "Tải file",
+                    maxWidth: '1200px',
+                    ParamRequest: { DataExportTemplateID: exportTemplateID }
+                });
+            }
+            else {
+                this.showMessage(apiResult.Message)
+            }
+        });
+    }
 
+    handleChangeSearch(FormData, MLObject) {
 
 
     }
@@ -255,9 +278,9 @@ export class Search extends Component {
         listMLObject = Object.assign([], this.state.SearchData, { [7]: aa });
         // console.log(this.state.SearchData,listMLObject)
         this.callSearchData(listMLObject)
-      
+
     }
-      
+
     getPageCountToServer(dataRows) {
         if (dataRows == null || dataRows.length == 0)
             return 1;
@@ -458,7 +481,10 @@ const mapDispatchToProps = dispatch => {
         },
         hideModal: (type, props) => {
             dispatch(hideModal(type, props));
-        }
+        },
+        callGetCache: (cacheKeyID) => {
+            return dispatch(callGetCache(cacheKeyID));
+        },
     };
 };
 

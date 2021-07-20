@@ -58,6 +58,10 @@ export const InitSearchParams = [
         SearchValue: ""
     },
     {
+        SearchKey: "@ISDETAIL",
+        SearchValue: 1
+    },
+    {
         SearchKey: "@PAGEINDEX",
         SearchValue: 1
     },
