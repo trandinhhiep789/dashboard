@@ -34,12 +34,12 @@ export const InitSearchParams = [
         SearchValue: ""
     },
     {
-        SearchKey: "@PAGEINDEX",
-        SearchValue: 1
-    },
-    {
         SearchKey: "@PAGESIZE",
         SearchValue: 3
+    },
+    {
+        SearchKey: "@PAGEINDEX",
+        SearchValue: 1
     },
 ];
 

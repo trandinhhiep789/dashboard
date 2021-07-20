@@ -34,8 +34,8 @@ export class Search extends Component {
             fromDate: "",
             toDate: "",
             AreaIDList: "",
-            pageNumber: -1,
-            pageSize: -1,
+            pageNumber: 1,
+            pageSize: 50,
             FromDate: "",
             ToDate: "",
             AreaID: "",
@@ -84,7 +84,7 @@ export class Search extends Component {
 
     callSearchData(searchData) {
 
-        this.props.callFetchAPI(APIHostName, "api/QualityAssessmentReport/QuanlityReportAll", searchData).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, "api/QualityAssessmentReport/QualityReportByUser", searchData).then(apiResult => {
             console.log("searh", searchData, apiResult)
             if (!apiResult.IsError) {
                 this.setState({
@@ -203,7 +203,7 @@ export class Search extends Component {
 
         const postData = {
             DataExportTemplateID: 3,
-            LoadDataStoreName: 'TMS.RPT_SHIPQUALITYASSESS',
+            LoadDataStoreName: 'TMS.RPT_SHIPQUALITYASSESS_BYUSER',
             KeyCached: "SHIPMENTORDER_REPORT_EXPORT",
             SearchParamList: postDataNew,
             ExportDataParamsDescription: "FROMDATE: " + MLObject.FromDate + " - TODATE: " + MLObject.ToDate + " - AREAIDLIST: " + areaID + " - COORDINATORGROUPIDLIST: " + result2 + " - PAGESIZE: " + "-1" + " - PAGEINDEX: " + "-1"
@@ -231,7 +231,7 @@ export class Search extends Component {
         this.setState({ pageNumber: pageNum });
         let listMLObject = [];
         const aa = { SearchKey: "@PAGEINDEX", SearchValue: pageNum };
-        listMLObject = Object.assign([], this.state.SearchData, { [7]: aa });
+        listMLObject = Object.assign([], this.state.SearchData, { [5]: aa });
         // console.log(this.state.SearchData,listMLObject)
         this.callSearchData(listMLObject)
 
