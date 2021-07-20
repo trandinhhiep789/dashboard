@@ -35,7 +35,7 @@ export class Search extends Component {
             toDate: "",
             AreaIDList: "",
             pageNumber: 1,
-            pageSize: 31,
+            pageSize: 50,
             FromDate: "",
             ToDate: "",
             AreaID: "",
