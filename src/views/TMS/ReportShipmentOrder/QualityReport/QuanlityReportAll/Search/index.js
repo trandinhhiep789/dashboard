@@ -28,6 +28,7 @@ export class Search extends Component {
             cssNotification: "",
             iconNotification: "",
             dataSource: [],
+            dataTotalSource: {},
             SearchElementList: SearchElementList,
             IsLoadDataComplete: false,
             SearchData: InitSearchParams,
@@ -50,7 +51,7 @@ export class Search extends Component {
         this.callSearchData = this.callSearchData.bind(this);
         this.onChangePageToServerHandle = this.onChangePageToServerHandle.bind(this)
         this.getCacheMTG = this.getCacheMTG.bind(this);
-        this.callSearchTotalData =  this.callSearchTotalData.bind(this)
+        this.callSearchTotalData = this.callSearchTotalData.bind(this)
     };
 
 
@@ -80,20 +81,24 @@ export class Search extends Component {
     showMessage(message) {
         ModalManager.open(<MessageModal title="Thông báo"
             message={message} onRequestClose={() => true}
-            onCloseModal={this.handleCloseMessage}
         />);
     };
 
-    
+
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, "api/QualityAssessmentReport/QuanlityReportAll", searchData).then(apiResult => {
             console.log("searh", searchData, apiResult)
             if (!apiResult.IsError) {
-                this.setState({
-                    dataSource: apiResult.ResultObject
-                });
-              // this.callSearchTotalData(this.state.SearchTotalData)
+                if (apiResult.ResultObject.length > 0) {
+                    this.setState({
+                        dataSource: apiResult.ResultObject
+                    });
+                    this.callSearchTotalData()
+                }
+                else {
+                    this.showMessage("Dữ liệu cần không tồn tại. Vui lòng chọn lại.");
+                }
             }
             else {
                 this.showMessage(apiResult.Message, apiResult.IsError);
@@ -102,14 +107,15 @@ export class Search extends Component {
 
     };
 
-    callSearchTotalData(searchData) {
-        this.props.callFetchAPI(APIHostName, "api/QualityAssessmentReport/QuanlityReportAll", searchData).then(apiResult => {
-            console.log("searh total", searchData, apiResult)
+    callSearchTotalData() {
+        const { SearchTotalData } = this.state
+        this.props.callFetchAPI(APIHostName, "api/QualityAssessmentReport/TotalQuanlityReportAll", SearchTotalData).then(apiResult => {
+            console.log("searh total", SearchTotalData, apiResult)
             if (!apiResult.IsError) {
                 this.setState({
-                    dataSource: apiResult.ResultObject
+                    dataTotalSource: apiResult.ResultObject[0]
                 });
-               
+
             }
             else {
                 this.showMessage(apiResult.Message, apiResult.IsError);
@@ -299,7 +305,7 @@ export class Search extends Component {
                 SearchKey: "@ISDETAIL",
                 SearchValue: 1
             },
-             
+
             {
                 SearchKey: "@PAGESIZE",
                 SearchValue: -1
@@ -361,7 +367,7 @@ export class Search extends Component {
     }
 
     render() {
-        const { dataSource, pageNumber } = this.state;
+        const { dataSource, pageNumber, dataTotalSource } = this.state;
         const pageCount = this.getPageCountToServer(dataSource);
         return (
             <React.Fragment>
@@ -389,12 +395,12 @@ export class Search extends Component {
                                     <thead className="thead-light">
                                         <tr>
                                             <th className="jsgrid-header-cell text-center" style={{ width: "22%" }} colSpan={4}>Tổng đơn hàng</th>
-                                            <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Tổng lỗi</th>
-                                            <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Thời gian</th>
-                                            <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Thái độ</th>
-                                            <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Thẩm mỹ</th>
-                                            <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Tay nghề</th>
-                                            <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Quy trình</th>
+                                            <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Tổng lỗi {dataTotalSource.PercentageQuantityLike != undefined ? dataTotalSource.PercentageQuantityLike : 0} %</th>
+                                            <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Thời gian {dataTotalSource.PercentageTimeLike != undefined ? dataTotalSource.PercentageTimeLike : 0} %</th>
+                                            <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Thái độ {dataTotalSource.PercentageAttitudeLike != undefined ? dataTotalSource.PercentageAttitudeLike : 0} %</th>
+                                            <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Thẩm mỹ {dataTotalSource.PercentageBeautyLike != undefined ? dataTotalSource.PercentageBeautyLike : 0} %</th>
+                                            <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Tay nghề {dataTotalSource.PercentageTechLike != undefined ? dataTotalSource.PercentageTechLike : 0} %</th>
+                                            <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Quy trình {dataTotalSource.PercentageFlowLike != undefined ? dataTotalSource.PercentageFlowLike : 0} %</th>
                                         </tr>
                                         <tr>
                                             <th className="jsgrid-header-cell text-center" style={{ width: 200 }}>Miền</th>
@@ -435,43 +441,46 @@ export class Search extends Component {
                                     </thead>
 
                                     <tbody>
-                                        {/* <tr className="sum-total">
-                                            <td style={{ width: 200 }}>Tổng cộng</td>
-                                            <td style={{ width: 200 }}></td>
-                                            <td style={{ width: 200 }}></td>
-                                            <td style={{ width: 150 }}>1</td>
+                                        {
+                                            !!Object.keys(dataTotalSource).length > 0 && <tr className="sum-total">
+                                                <td style={{ width: 200 }}>Tổng cộng</td>
+                                                <td style={{ width: 200 }}></td>
+                                                <td style={{ width: 200 }}></td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantity}</td>
 
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityUnlike}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityLike}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityValue}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.PercentageQuantityLike + "%"}</td>
 
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityTimeUnlike}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityTimeLike}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityTimeValue}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.PercentageTimeLike + "%"}</td>
 
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityAttitudeUnlike}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityAttitudeLike}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityAttitudeValue}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.PercentageAttitudeLike + "%"}</td>
 
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityBeautyUnlike}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityBeautyLike}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityBeautyValue}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.PercentageBeautyLike + "%"}</td>
 
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityTechUnlike}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityTechLike}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityTechValue}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.PercentageTechLike + "%"}</td>
 
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityFlowUnlike}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityFlowLike}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityFlowValue}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.PercentageFlowLike + "%"}</td>
 
-                                        </tr> */}
+                                            </tr>
+                                        }
+
 
                                         {
                                             dataSource.map((item, index) => {
