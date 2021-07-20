@@ -31,6 +31,7 @@ export class Search extends Component {
             SearchElementList: SearchElementList,
             IsLoadDataComplete: false,
             SearchData: InitSearchParams,
+            SearchTotalData: InitSearchParams,
             fromDate: "",
             toDate: "",
             AreaIDList: "",
@@ -49,6 +50,7 @@ export class Search extends Component {
         this.callSearchData = this.callSearchData.bind(this);
         this.onChangePageToServerHandle = this.onChangePageToServerHandle.bind(this)
         this.getCacheMTG = this.getCacheMTG.bind(this);
+        this.callSearchTotalData =  this.callSearchTotalData.bind(this)
     };
 
 
@@ -82,6 +84,7 @@ export class Search extends Component {
         />);
     };
 
+    
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, "api/QualityAssessmentReport/QuanlityReportAll", searchData).then(apiResult => {
@@ -90,6 +93,7 @@ export class Search extends Component {
                 this.setState({
                     dataSource: apiResult.ResultObject
                 });
+              // this.callSearchTotalData(this.state.SearchTotalData)
             }
             else {
                 this.showMessage(apiResult.Message, apiResult.IsError);
@@ -97,6 +101,21 @@ export class Search extends Component {
         });
 
     };
+
+    callSearchTotalData(searchData) {
+        this.props.callFetchAPI(APIHostName, "api/QualityAssessmentReport/QuanlityReportAll", searchData).then(apiResult => {
+            console.log("searh total", searchData, apiResult)
+            if (!apiResult.IsError) {
+                this.setState({
+                    dataSource: apiResult.ResultObject
+                });
+               
+            }
+            else {
+                this.showMessage(apiResult.Message, apiResult.IsError);
+            }
+        });
+    }
 
     handleSearchSubmit(formData, MLObject) {
 
@@ -149,6 +168,10 @@ export class Search extends Component {
                 SearchValue: result
             },
             {
+                SearchKey: "@ISDETAIL",
+                SearchValue: 1
+            },
+            {
                 SearchKey: "@PAGESIZE",
                 SearchValue: this.state.pageSize
             },
@@ -157,10 +180,54 @@ export class Search extends Component {
                 SearchValue: this.state.pageNumber
             },
         ];
+
+        const postTolalData = [
+            {
+                SearchKey: "@FROMDATE",
+                SearchValue: MLObject.FromDate
+            },
+            {
+                SearchKey: "@TODATE",
+                SearchValue: MLObject.ToDate
+            },
+            {
+                SearchKey: "@AREAIDLIST",
+                SearchValue: MLObject.AreaID > 0 ? MLObject.AreaID : ""
+            },
+            {
+                SearchKey: "@COORDINATORGROUPIDLIST",
+                SearchValue: result2
+            },
+
+            {
+                SearchKey: "@MAINGROUPIDLIST",
+                SearchValue: MLObject.MainGroupID > 0 ? MLObject.MainGroupID : ""
+            },
+            {
+                SearchKey: "@SUBGROUPIDLIST",
+                SearchValue: result
+            },
+            {
+                SearchKey: "@ISDETAIL",
+                SearchValue: 0
+            },
+            {
+                SearchKey: "@PAGESIZE",
+                SearchValue: -1
+            },
+            {
+                SearchKey: "@PAGEINDEX",
+                SearchValue: -1
+            },
+        ];
+
+
         console.log("submit", MLObject, postData)
         this.setState({
-            SearchData: postData
+            SearchData: postData,
+            SearchTotalData: postTolalData
         })
+
         this.callSearchData(postData);
     };
 
@@ -275,7 +342,7 @@ export class Search extends Component {
         this.setState({ pageNumber: pageNum });
         let listMLObject = [];
         const aa = { SearchKey: "@PAGEINDEX", SearchValue: pageNum };
-        listMLObject = Object.assign([], this.state.SearchData, { [7]: aa });
+        listMLObject = Object.assign([], this.state.SearchData, { [8]: aa });
         // console.log(this.state.SearchData,listMLObject)
         this.callSearchData(listMLObject)
 
