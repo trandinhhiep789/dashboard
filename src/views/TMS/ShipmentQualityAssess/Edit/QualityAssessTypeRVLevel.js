@@ -179,6 +179,7 @@ class QualityAssessTypeRVLevelCom extends React.Component {
                                                                 onChange={this.handleChange}
                                                                 placeholder="Mã nhân viên"
                                                                 defaultValue={this.handleSetDefaultValue(item)}
+                                                                isDisabled={item.IsReViewed}
                                                             />
                                                         </td>
                                                     </tr>

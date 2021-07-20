@@ -1,11 +1,11 @@
 export const APIHostName = "TMSAPI";
 export const APILoad = "api/ShipmentQualityAssess/Load";
-export const APIUpdate = "api/ShipmentQualityAssess/Update";
+export const APIUpdateReview = "api/ShipmentQualityAssess/UpdateReview";
 
 export const PagePathEdit = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/ShipmentQualityAssess", Title: "Đánh giá chất lượng giao hàng" },
-    { Link: "", Title: "Chỉnh sửa" }
+    { Link: "", Title: "Chi tiết" }
 ];
 
 export const MLObjectDefinition = [
@@ -34,4 +34,9 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "txtQualityAssessNote"
     },
+];
+
+export const optionsReviewSelect = [
+    { value: 1, label: "Đồng ý" },
+    { value: 2, label: "Từ chối" }
 ]
