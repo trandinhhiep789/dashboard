@@ -34,6 +34,10 @@ export const InitSearchParams = [
         SearchValue: ""
     },
     {
+        SearchKey: "@ISDETAIL",
+        SearchValue: 1
+    },
+    {
         SearchKey: "@PAGESIZE",
         SearchValue: 50
     },
