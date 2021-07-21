@@ -1216,6 +1216,13 @@ const AppMenu = [
         
                 ]
             },
+            {
+                MenuName: 'OTTimeKeeping',
+                MenuTitle: 'Nhân viên vượt giờ công trong tháng',
+                LinkTo: '/OTTimeKeeping',
+                MenuIcon: '',
+                SubMenu: []
+            },
 
 
             
