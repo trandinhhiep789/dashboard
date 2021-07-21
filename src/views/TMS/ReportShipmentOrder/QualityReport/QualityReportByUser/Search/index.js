@@ -93,9 +93,11 @@ export class Search extends Component {
                     this.setState({
                         dataSource: apiResult.ResultObject
                     });
-                    
                 }
                 else {
+                    this.setState({
+                        dataSource: apiResult.ResultObject,
+                    });
                     this.showMessage("Dữ liệu cần không tồn tại. Vui lòng chọn lại.");
                 }
                 this.callSearchTotalData();
@@ -103,6 +105,7 @@ export class Search extends Component {
             else {
                 this.showMessage(apiResult.Message, apiResult.IsError);
             }
+       
         });
 
     };
