@@ -98,7 +98,7 @@ class ListShipCoordinatorCom extends Component {
             this.props.callFetchAPI(APIHostName, 'api/StaffDebt/UserIsLockDelivery', listStaffDebtObject).then((apiResult) => {
                 if (!apiResult.IsError) {
                     this.state.ShipmentOrder.map((row, indexRow) => {
-                        if (!row.IsCoordinator && row.IsPermission == true && row.CarrierPartnerID <= 0)
+                        if ((this.state.objCoordinator.IsRoute ==true ||!row.IsCoordinator) && row.IsPermission == true && row.CarrierPartnerID <= 0)
                             row["ShipmentOrder_DeliverUserList"] = objDeliverUser;
                     });
                     this.setState({ selectedOption: selectedOption1, ShipmentOrder: this.state.ShipmentOrder });
@@ -134,7 +134,7 @@ class ListShipCoordinatorCom extends Component {
             this.props.callFetchAPI(APIHostName, 'api/StaffDebt/UserIsLockDelivery', listStaffDebtObject).then((apiResult) => {
                 if (!apiResult.IsError) {
                     this.state.ShipmentOrder.map((row, indexRow) => {
-                        if (!row.IsCoordinator && row.IsPermission == true && row.CarrierPartnerID > 0)
+                        if (row.IsPermission == true && row.CarrierPartnerID > 0)
                             row["ShipmentOrder_DeliverUserList"] = objMultiDeliverUser;
                     });
                     this.setState({ objDeliverUser: value, ShipmentOrder: this.state.ShipmentOrder });
@@ -349,8 +349,44 @@ class ListShipCoordinatorCom extends Component {
         this.props.hideModal();
     }
 
+  
+
     handleConfirm() {
-        console.log("submit")
+        let elementobject = {};
+        let element = [];
+        this.state.ShipmentOrder.map((row, indexRow) => {
+            if (row["CarrierTypeID"] == -1 || row["CarrierTypeID"] == "-1") {
+                const validationObject = { IsValidatonError: true, ValidationErrorMessage: "Vui lòng chọn phương tiện" };
+                elementobject = Object.assign({}, elementobject, { ["CarrierTypeID-" + indexRow]: validationObject });
+            }
+            else {
+                const validationObject = { IsValidatonError: false, ValidationErrorMessage: "" };
+                elementobject = Object.assign({}, elementobject, { ["CarrierTypeID-" + indexRow]: validationObject });
+            }
+            if (row["TotalCOD"] > 0) {
+                row["ShipmentOrder_DeliverUserList"].map((item, indexRow) => {
+                    let objMultDeliverUser = { UserName: item.UserName,CarrierTypeID:row["CarrierTypeID"], TotalCOD: row["TotalCOD"] / row["ShipmentOrder_DeliverUserList"].length }
+                    element.push(objMultDeliverUser)
+                    console.log("UserName", row["ShipmentOrderID"], item.UserName, row["TotalCOD"] / row["ShipmentOrder_DeliverUserList"].length)
+                });
+            }
+            this.state.ShipmentOrder[indexRow].IsRoute=this.state.objCoordinator.IsRoute;
+            this.state.ShipmentOrder[indexRow].OrderIndex=indexRow;
+            //   row["COD"] = row["TotalCOD"] / row["ShipmentOrder_DeliverUserList"].length;
+        });
+
+        this.state.ShipmentOrder[0].DeliverUserTotalCODList=this.groupByNew(element,['UserName','CarrierTypeID']);
+        this.setState({ FormValidation: elementobject });
+
+        if (this.checkInputName(elementobject) != "")
+            return;
+       
+            console.log("ShipmentOrdernew",this.state.ShipmentOrder)
+        this.props.callFetchAPI(APIHostName, 'api/ShipmentRoute/AddInfoCoordinatorLst', this.state.ShipmentOrder).then((apiResult) => {
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            if (this.props.onChangeValue != null)
+                this.props.onChangeValue(apiResult);
+        });
     }
 
     handleChangeCourse = (CarrierTypeID, rowIndex) => e => {
@@ -368,10 +404,11 @@ class ListShipCoordinatorCom extends Component {
     };
     render() {
         let { ShipmentOrder } = this.state;
-        //console.log("ShipmentOrder", ShipmentOrder)
+        console.log("ShipmentOrder", ShipmentOrder)
         return (
             <React.Fragment>
                 <div className="card">
+                <ReactNotification ref={this.notificationDOMRef} />
                     <div className="card-body">
                         <div className="form-row">
                             <div className="col-md-6">
@@ -476,7 +513,6 @@ class ListShipCoordinatorCom extends Component {
                                                                 listOption.push({ value: item2.UserName, label: item2.UserName + "-" + item2.FullName, FullName: item2.FullName });
                                                             })
                                                         }
-
                                                         return (
                                                             <tr key={index} className="jsgrid-row">
                                                                 <td className="jsgrid-cell high-priority" style={{ width: '1%' }}>
@@ -573,9 +609,9 @@ class ListShipCoordinatorCom extends Component {
                                                                                 loaditemcachekeyid="ERPCOMMONCACHE.PARTNERUSER"
                                                                                 valuemember="UserName"
                                                                                 nameMember="FullName"
-                                                                                value="-1"
                                                                                 rowIndex={index}
                                                                                 listoption={listOption}
+                                                                                value={listOption}
                                                                                 onValueChange={this.handleonValueChange.bind(this)}
                                                                                 placeholder="---Nhân viên giao nhận---"
                                                                                 isMultiSelect={true}
