@@ -249,6 +249,7 @@
                                                     display: flex;
                                                     justify-content: flex-start;
                                                     span{
+                                                        cursor: pointer;
                                                         &.badge-active {
                                                             background: #15c377;
                                                             color: #fff;

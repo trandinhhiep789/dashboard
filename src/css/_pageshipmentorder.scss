@@ -140,6 +140,19 @@ $font-weight-600: 600;
                 .jsgrid-cell {
                     padding: .2rem .4rem;
                     border: 1px solid #f3f3f3;
+                    &.group-products{
+                        ul{
+                            li{
+                                &.lstProducts {
+                                    &.lblReturns {
+                                        color: #d07300;
+                                    }
+                                }
+                                
+                                
+                            }
+                        }
+                    }
                     ul{
                         padding-left: 0;
                         margin-bottom: 0;
@@ -223,6 +236,12 @@ $font-weight-600: 600;
                                         font-weight: 600;
                                         line-height: initial;
                                         font-size: 11px;
+                                        .btn-copy-clipboard {
+                                            border: none;
+                                            background: transparent;
+                                            font-size: 13px;
+                                            cursor: pointer;
+                                        }
                                         .phone{
                                             color: #2b8eea;
                                         }
@@ -284,6 +303,12 @@ $font-weight-600: 600;
                         }
                     }
                     &.group-infoShipmentOrder{
+                        .btn-copy-clipboard {
+                            border: none;
+                            background: transparent;
+                            font-size: 13px;
+                            cursor: pointer;
+                        }
                         ul{
                             li{
                                 &.item{
@@ -327,6 +352,9 @@ $font-weight-600: 600;
                                         font-size: 12px;
                                     .total{
                                         color: #f96868;
+                                        &.price-success{
+                                            color:  #03c36f;
+                                        }
                                     }
                                     .price-supplies{
                                         color: #f7c110;
@@ -552,6 +580,12 @@ $font-weight-600: 600;
                             margin-right: 0.5rem;
                         }
                         .person-info {
+                            .btn-copy-clipboard {
+                                border: none;
+                                background: transparent;
+                                font-size: 13px;
+                                cursor: pointer;
+                            }
                             .name {
                                 font-weight: $font-weight-600;
                                 color: #615d5d;

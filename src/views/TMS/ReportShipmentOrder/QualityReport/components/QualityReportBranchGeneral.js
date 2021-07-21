@@ -7,7 +7,7 @@ import {
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 
-class QualityReportMainGroupCom extends React.Component {
+class QualityReportBranchGeneralCom extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -161,5 +161,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const QualityReportMainGroup = connect(mapStateToProps, mapDispatchToProps)(QualityReportMainGroupCom);
-export default QualityReportMainGroup;
+const QualityReportBranchGeneral = connect(mapStateToProps, mapDispatchToProps)(QualityReportBranchGeneralCom);
+export default QualityReportBranchGeneral;

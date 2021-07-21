@@ -6,17 +6,21 @@ import {
 } from "react-router-dom";
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
+import Search from "./Search";
 
-class QualityReportAllCom extends React.Component {
+import NotFound from '../../../../NotFound';
+
+class QualityReportBranchCom extends React.Component {
     constructor(props) {
         super(props);
     }
 
     render() {
         return (
-            <React.Fragment>
-                
-            </React.Fragment>
+            <Switch>
+                <Route exact path="/QualityReportBranch" component={Search} />
+                <Route path="*" component={NotFound} />
+            </Switch>
         );
     }
 }
@@ -36,5 +40,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const QualityReportAll = connect(mapStateToProps, mapDispatchToProps)(QualityReportAllCom);
-export default QualityReportAll;
+const QualityReportBranch = connect(mapStateToProps,mapDispatchToProps)(QualityReportBranchCom);
+export default QualityReportBranch;

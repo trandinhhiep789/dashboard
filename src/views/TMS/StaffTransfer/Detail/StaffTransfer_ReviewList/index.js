@@ -95,7 +95,7 @@ class StaffTransfer_ReviewList extends React.Component {
             ReviewedNote: stateReviewedNote
         });
 
-        ModalManager.close;
+        ModalManager.close();
     }
 
     handleChangeReviewedNote(e) {
