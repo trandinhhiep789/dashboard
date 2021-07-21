@@ -101,7 +101,8 @@ class SearchCom extends React.Component {
                 const setResultObject = apiResult.ResultObject.map(item => {
                     return {
                         ...item,
-                        UserIDName: `${item.UserName} - ${item.UserFullName}`
+                        UserIDName: `${item.UserName} - ${item.UserFullName}`,
+                        CreateUserIDName: `${item.CreatedUser} - ${item.CreatedUserFullName}`
                     }
                 })
                 this.setState({
@@ -146,6 +147,14 @@ class SearchCom extends React.Component {
                 SearchValue: 50
             }
         ]
+
+        if ((MLObject.FromDate != "" && MLObject.ToDate == "")) {
+            this.showMessage("Vui lòng nhập đến ngày");
+            return;
+        } else if ((MLObject.FromDate == "" && MLObject.ToDate != "")) {
+            this.showMessage("Vui lòng nhập từ ngày");
+            return;
+        }
 
         this.setState({
             stateInitSearchArgument: postData

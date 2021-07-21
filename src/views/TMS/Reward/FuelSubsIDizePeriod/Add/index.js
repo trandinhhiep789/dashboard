@@ -5,7 +5,7 @@ import { DatePicker } from 'antd';
 import moment from 'moment';
 
 import { MessageModal } from "../../../../../common/components/Modal";
-import { PagePath, APIHostName, APIAdd, dtFromDate } from "./constants";
+import { PagePath, APIHostName, APIAdd } from "./constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
@@ -22,7 +22,10 @@ class AddCom extends React.Component {
         this.state = {
             stateIsError: false,
             stateSelectedUser: null,
-            stateDates: [moment(dtFromDate, 'DD/MM/YYYY'), moment(new Date(), 'DD/MM/YYYY')],
+            stateDate: {
+                FromDate: null,
+                ToDate: null
+            },
             stateNote: ""
         };
 
@@ -30,8 +33,11 @@ class AddCom extends React.Component {
         this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
         this.handleUserSelect = this.handleUserSelect.bind(this);
-        this.handleChangeRangePicker = this.handleChangeRangePicker.bind(this);
         this.handleChangeNote = this.handleChangeNote.bind(this);
+        this.handleChangeFromDate = this.handleChangeFromDate.bind(this);
+        this.disableFromDate = this.disableFromDate.bind(this);
+        this.handleChangeToDate = this.handleChangeToDate.bind(this);
+        this.disableToDate = this.disableToDate.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -85,20 +91,48 @@ class AddCom extends React.Component {
         })
     }
 
-    handleChangeRangePicker(dates, dateStrings) {
-        this.setState({
-            stateDates: dates
-        })
-    }
-
     handleChangeNote(event) {
         this.setState({ stateNote: event.target.value });
     }
 
+    handleChangeFromDate(dateMoment, dateString) {
+        this.setState({
+            stateDate: {
+                ...this.state.stateDate,
+                FromDate: dateMoment,
+            }
+        })
+    }
+
+    handleChangeToDate(dateMoment, dateString) {
+        this.setState({
+            stateDate: {
+                ...this.state.stateDate,
+                ToDate: dateMoment
+            }
+        })
+    }
+
+    disableFromDate(current) {
+        return current < moment().add(-1, 'd');
+    }
+
+    disableToDate(current) {
+        return current > moment().add(1, 'y') || current < moment().add(-1, 'd');
+    }
+
     handleSubmit() {
-        const { stateSelectedUser, stateDates, stateNote } = this.state;
+        const { stateSelectedUser, stateDate, stateNote } = this.state;
         if (!stateSelectedUser) {
             this.showMessage("Vui lòng chọn mã nhân viên");
+            return;
+        }
+        if (stateDate.FromDate == null || stateDate.ToDate == null) {
+            this.showMessage("Vui lòng chọn khoảng thời gian nhân viên được phụ cấp xăng");
+            return;
+        }
+        if (stateDate.ToDate < stateDate.FromDate) {
+            this.showMessage("Nhập sai khoảng thời gian");
             return;
         }
         if (stateNote == "") {
@@ -108,8 +142,8 @@ class AddCom extends React.Component {
 
         const postData = {
             ...stateSelectedUser,
-            FromDate: stateDates[0],
-            ToDate: stateDates[1],
+            FromDate: stateDate.FromDate,
+            ToDate: stateDate.ToDate,
             Note: stateNote
         };
 
@@ -147,16 +181,11 @@ class AddCom extends React.Component {
                                 <div className="col-md-3 d-flex align-items-center">
                                     <span>Khoảng thời gian nhân viên được phụ cấp xăng</span>
                                 </div>
-                                <div className="col-md-9 d-flex align-items-center">
-                                    <DatePicker.RangePicker
-                                        // defaultValue={[moment(dtFromDate, 'DD/MM/YYYY'), moment(new Date(), 'DD/MM/YYYY')]}
-                                        value={this.state.stateDates}
-                                        format={'DD/MM/YYYY'}
-                                        size="large"
-                                        style={{ width: "100%" }}
-                                        placeholder={["Ngày bắt đầu", "Ngày kết thúc"]}
-                                        onChange={this.handleChangeRangePicker}
-                                    />
+                                <div className="col-md-9 d-flex justify-content-between align-items-center">
+                                    <span>Từ</span>
+                                    <DatePicker onChange={this.handleChangeFromDate} size="large" disabledDate={this.disableFromDate} format={'DD/MM/YYYY'} placeholder="Từ ngày" />
+                                    <span>đến</span>
+                                    <DatePicker onChange={this.handleChangeToDate} size="large" disabledDate={this.disableToDate} format={'DD/MM/YYYY'} placeholder="Đến ngày" />
                                 </div>
                             </div>
                         </div>

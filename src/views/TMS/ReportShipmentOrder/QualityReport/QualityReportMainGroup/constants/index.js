@@ -94,7 +94,7 @@ export const SearchElementList = [
         placeholder: "---Vui lòng chọn---",
         readonly: false,
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.AREA",
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.AREATT",
         ValueMember: "AreaID",
         NameMember: "AreaName",
         filterrest: "cbCoordinatorGroup",
