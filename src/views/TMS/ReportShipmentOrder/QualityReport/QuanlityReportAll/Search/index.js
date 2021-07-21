@@ -94,11 +94,15 @@ export class Search extends Component {
                     this.setState({
                         dataSource: apiResult.ResultObject
                     });
-                    this.callSearchTotalData()
+                  
                 }
                 else {
                     this.showMessage("Dữ liệu cần không tồn tại. Vui lòng chọn lại.");
+                    this.setState({
+                        dataSource: apiResult.ResultObject
+                    });
                 }
+                this.callSearchTotalData()
             }
             else {
                 this.showMessage(apiResult.Message, apiResult.IsError);
