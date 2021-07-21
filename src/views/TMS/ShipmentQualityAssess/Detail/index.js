@@ -11,31 +11,32 @@ import { showModal, hideModal } from '../../../../actions/modal';
 import FormControl from "../../../../common/components/FormContainer/FormControl";
 import { ERPCOMMONCACHE_QUALITYASSESSTYPE } from '../../../../constants/keyCache';
 import FormContainer from "../../../../common/components/FormContainer";
-import { APIHostName, APILoad, PagePathEdit, MLObjectDefinition, APIUpdate } from './constants';
+import { APIHostName, APILoad, PagePathEdit, MLObjectDefinition } from './constants';
 import QualityAssessTypeRVLevelCom from './QualityAssessTypeRVLevel';
 import MyContext from './Context';
+import Comment from "../../../../common/components/Comment";
 
-class EditCom extends React.Component {
+class DetailCom extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
             stateIsError: false,
             stateShipmentQualityAssess: null,
-            stateObjShipmentQualityAssess_rvk: {},
-            stateLstShipmentQualityAssess_rvk: []
+            stateCommentData: null
         };
 
         this.showMessage = this.showMessage.bind(this);
         this.addNotification = this.addNotification.bind(this);
-        this.fetchShipmentQualityAssessInfo = this.fetchShipmentQualityAssessInfo.bind(this);
-        this.handleSelectUser = this.handleSelectUser.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.fetchShipmentQualityAssess = this.fetchShipmentQualityAssess.bind(this);
+        this.fetchCommentData = this.fetchCommentData.bind(this);
+        this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
     }
 
     componentDidMount() {
         this.props.updatePagePath(PagePathEdit);
-        this.fetchShipmentQualityAssessInfo();
+        this.fetchShipmentQualityAssess();
+        this.fetchCommentData();
     }
 
     showMessage(message) {
@@ -78,24 +79,11 @@ class EditCom extends React.Component {
         });
     }
 
-    fetchShipmentQualityAssessInfo() {
+    fetchShipmentQualityAssess() {
         this.props.callFetchAPI(APIHostName, APILoad, this.props.match.params.id).then(apiResult => {
             if (!apiResult.IsError) {
-                if (apiResult.ResultObject.lstShipmentQualityAssess_rvk) {
-                    const objDefaultSelect = apiResult.ResultObject.lstShipmentQualityAssess_rvk.reduce((acc, val) => {
-                        return {
-                            ...acc,
-                            [val.ReviewLevelID]: val.UserName
-                        }
-                    }, {});
-                    this.setState({
-                        stateObjShipmentQualityAssess_rvk: objDefaultSelect
-                    })
-                }
-
                 this.setState({
-                    stateShipmentQualityAssess: apiResult.ResultObject,
-                    stateLstShipmentQualityAssess_rvk: apiResult.ResultObject.lstShipmentQualityAssess_rvk
+                    stateShipmentQualityAssess: apiResult.ResultObject
                 })
             } else {
                 this.showMessage(apiResult.Message);
@@ -103,47 +91,62 @@ class EditCom extends React.Component {
         });
     }
 
-    handleSelectUser(arrSelectedUser, tempObjSelectedUsers) {
-        this.setState({
-            stateLstShipmentQualityAssess_rvk: arrSelectedUser,
-            stateObjShipmentQualityAssess_rvk: tempObjSelectedUsers
+    fetchCommentData() {
+        const { id } = this.props.match.params;
+
+        this.props.callFetchAPI(APIHostName, "api/ShipmentQualityAssess_cmt/Load", id).then((apiResult) => {
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.Message);
+            }
+            else {
+                this.setState({
+                    stateCommentData: apiResult.ResultObject
+                })
+            }
         })
     }
 
-    handleSubmit(FormData, MLObject) {
-        const { stateLstShipmentQualityAssess_rvk } = this.state;
+    handleCommentSubmit(valueCommentContent) {
+        const { stateShipmentQualityAssess } = this.state;
 
-        if (parseInt(MLObject.QualityAssessValue) < 4 || parseInt(MLObject.QualityAssessValue) > 10) {
-            this.showMessage("Giá trị đánh giá nằm trong khoảng từ 4 đến 10");
-            return;
-        }
-
-        MLObject.ShipmentQualityAssessID = this.props.match.params.id;
-        MLObject.lstShipmentQualityAssess_rvk = stateLstShipmentQualityAssess_rvk;
-
-        this.props.callFetchAPI(APIHostName, APIUpdate, MLObject).then(apiResult => {
-            this.showMessage(apiResult.Message);
-            if (!apiResult.IsError) {
-                this.props.history.push("/ShipmentQualityAssess");
+        if (valueCommentContent.trim().length > 0) {
+            const MLObject = {
+                ShipmentQualityAssessID: stateShipmentQualityAssess.ShipmentQualityAssessID,
+                ShipmentOrderID: stateShipmentQualityAssess.ShipmentOrderID,
+                CommentContent: valueCommentContent
             }
-        });
+
+            console.log(MLObject)
+
+            this.props.callFetchAPI(APIHostName, "api/ShipmentQualityAssess_cmt/Add", MLObject).then((apiResult) => {
+                if (apiResult.IsError) {
+                    this.showMessage(apiResult.Message);
+                }
+                else {
+                    this.fetchCommentData();
+                }
+            })
+        }
+        else {
+            this.showMessage('Vui lòng nhập nội dụng bình luận')
+        }
     }
 
     render() {
-        const { stateShipmentQualityAssess, stateObjShipmentQualityAssess_rvk } = this.state;
+        const { stateShipmentQualityAssess, stateCommentData } = this.state;
 
-        if (stateShipmentQualityAssess == null) {
+        if (stateShipmentQualityAssess == null || stateCommentData == null) {
             return (
                 <React.Fragment>...</React.Fragment>
             )
         } else {
             return <React.Fragment>
                 <FormContainer
-                    FormName="Thêm tiêu chí đánh giá chất lượng"
+                    FormName="Chi tiết tiêu chí đánh giá chất lượng"
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={[]}
                     BackLink={"/ShipmentQualityAssess"}
-                    onSubmit={this.handleSubmit}
+                    isSubmitForm={false}
                 >
                     <div className="row mb-4">
                         <div className="col-md-6 mb-2">
@@ -188,7 +191,7 @@ class EditCom extends React.Component {
                                 name="txtQualityAssessValue"
                                 labelcolspan="4"
                                 colspan="8"
-                                readOnly={false}
+                                readOnly={true}
                                 label="giá trị đánh giá"
                                 placeholder="Nằm trong khoảng từ 4 đến 10"
                                 controltype="InputControl"
@@ -212,16 +215,23 @@ class EditCom extends React.Component {
                                 maxSize={500}
                                 classNameCustom="customcontrol"
                                 value={stateShipmentQualityAssess.QualityAssessNote}
+                                disabled={true}
                             />
                         </div>
                     </div>
 
+
+                    <Comment
+                        DataComments={stateCommentData}
+                        IsComment={true}
+                        // onChangeValue={this.handleCommentChange}
+                        onKeyPressSumit={this.handleCommentSubmit}
+                    />
+
                     {
                         stateShipmentQualityAssess.lstShipmentQualityAssess_rvk.length != 0
                             ? <MyContext.Provider value={{
-                                contextShipmentQualityAssess: stateShipmentQualityAssess,
-                                contextObjShipmentQualityAssess_rvk: stateObjShipmentQualityAssess_rvk,
-                                contextHandleSelectUser: this.handleSelectUser
+                                contextShipmentQualityAssess: stateShipmentQualityAssess
                             }}>
                                 <QualityAssessTypeRVLevelCom />
                             </MyContext.Provider>
@@ -261,4 +271,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditCom);
+export default connect(mapStateToProps, mapDispatchToProps)(DetailCom);

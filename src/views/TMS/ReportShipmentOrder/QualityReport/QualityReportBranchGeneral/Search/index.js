@@ -239,7 +239,7 @@ export class Search extends Component {
         console.log("export", MLObject, postDataNew)
 
         const postData = {
-            DataExportTemplateID: 3,
+            DataExportTemplateID: exportTemplateID,
             LoadDataStoreName: 'TMS.RPT_SHIPQUALITYASSESS',
             KeyCached: "SHIPMENTORDER_REPORT_EXPORT",
             SearchParamList: postDataNew,
