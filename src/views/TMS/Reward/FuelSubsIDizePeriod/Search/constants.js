@@ -152,10 +152,10 @@ export const listColumn = [
         // Width: 200
     },
     {
-        Name: "UserIDName",
+        Name: "CreateUserIDName",
         Type: "text",
         Caption: "Người tạo",
-        DataSourceMember: "UserIDName",
+        DataSourceMember: "CreateUserIDName",
         // Width: 200
     },
     {
