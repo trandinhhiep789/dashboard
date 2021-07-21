@@ -1,7 +1,3 @@
-const dtFromDate = new Date()
-dtFromDate.setDate(new Date().getDate() - 30);
-export { dtFromDate };
-
 export const APIHostName = "TMSAPI";
 export const APIAdd = "api/FuelSubsIDizePeriod/Add";
 
