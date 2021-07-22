@@ -327,7 +327,7 @@ export class Search extends Component {
             LoadDataStoreName: 'TMS.RPT_SHIPQUALITYASSESS',
             KeyCached: "SHIPMENTORDER_REPORT_EXPORT",
             SearchParamList: postDataNew,
-            ExportDataParamsDescription: "FROMDATE: " + MLObject.FromDate + " - TODATE: " + MLObject.ToDate + " - AREAIDLIST: " + areaID + " - COORDINATORGROUPIDLIST: " + result2 + " - MAINGROUPIDLIST: " + mainGroupID + " - SUBGROUPIDLIST: " + result + " - PAGESIZE: " + "-1" + " - PAGEINDEX: " + "-1"
+            ExportDataParamsDescription: "FROMDATE: " + MLObject.FromDate + " - TODATE: " + MLObject.ToDate + " - AREAIDLIST: " + areaID + " - COORDINATORGROUPIDLIST: " + result2 + " - MAINGROUPIDLIST: " + mainGroupID + " - SUBGROUPIDLIST: " + result+ " - ISDETAIL: " + 1 + " - PAGESIZE: " + "-1" + " - PAGEINDEX: " + "-1"
         }
         this.props.callFetchAPI(APIHostName, "api/DataExportQueue/AddQueueExport", postData).then(apiResult => {
             if (!apiResult.IsError) {
