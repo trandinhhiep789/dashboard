@@ -31,6 +31,7 @@ class SearchCom extends React.Component {
         this.state = {
             IsCallAPIError: false,
             gridDataSource: [],
+            totalAmount: 0,
             IsLoadDataComplete: false,
         };
         this.gridref = React.createRef();
@@ -42,7 +43,7 @@ class SearchCom extends React.Component {
         this.props.updatePagePath(PagePath);
     }
 
-   
+
 
     handleCallData() {
         const { SearchData } = this.state;
@@ -50,10 +51,10 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        if(MLObject.ShipmentOderId == "" && MLObject.ProductID == "" ){
+        if (MLObject.ShipmentOderId == "" && MLObject.ProductID == "") {
             this.showMessage("Vui lòng nhập mã sản phẩm hoặc mã đơn hàng để tìm kiếm.")
         }
-        else{
+        else {
             const postData = [
                 {
                     SearchKey: "@FROMDATE",
@@ -64,6 +65,10 @@ class SearchCom extends React.Component {
                     SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString()) //MLObject.ToDate
                 },
                 {
+                    SearchKey: "@REWARDTYPEID",
+                    SearchValue: MLObject.RewardTypeID
+                },
+                {
                     SearchKey: "@PRODUCTID",
                     SearchValue: MLObject.ProductID != "" ? MLObject.ProductID[0].ProductID : MLObject.ProductID
                 },
@@ -71,31 +76,38 @@ class SearchCom extends React.Component {
                     SearchKey: "@SHIPMENTORDERID",
                     SearchValue: MLObject.ShipmentOderId
                 },
-    
+
             ];
             this.callSearchData(postData);
         }
 
-       
+
     }
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            //console.log("searchData", searchData, apiResult)
-            let totalAmount =[]
+            console.log("searchData", searchData, apiResult)
             if (!apiResult.IsError) {
-                if(apiResult.ResultObject.length > 0){
+                if (apiResult.ResultObject.length > 0) {
+
+                    const totalAmount = apiResult.ResultObject.reduce((sum, curValue, curIndex, []) => {
+                        sum += curValue.TotalReward
+                        return sum
+                    }, 0);
+
                     this.setState({
                         gridDataSource: apiResult.ResultObject,
                         IsCallAPIError: apiResult.IsError,
                         IsLoadDataComplete: true,
+                        totalAmount: totalAmount,
                     });
                 }
-                else{
+                else {
                     this.setState({
                         gridDataSource: apiResult.ResultObject,
                         IsCallAPIError: apiResult.IsError,
                         IsLoadDataComplete: true,
+                        totalAmount: 0,
                     });
                     this.showMessage("Dữ liệu cần tìm kiếm không tồn tại. Vui lòng nhập lại dữ liệu cần tìm.")
                 }
@@ -160,7 +172,7 @@ class SearchCom extends React.Component {
                     listelement={SearchElementList}
                     onSubmit={this.handleSearchSubmit}
                     ref={this.searchref}
-                    className="multiple"
+                    className="multiple multiple-custom"
                 />
 
                 <DataGrid
@@ -175,9 +187,13 @@ class SearchCom extends React.Component {
                     IsPrint={false}
                     IsExportFile={false}
                     IsAutoPaging={true}
-                    RowsPerPage={10}
+                    RowsPerPage={50}
                     RequirePermission={TMS_TMSREWARD_REVIEW}
                     IsExportFile={false}
+                    totalCurrency={true}
+                    totalCurrencyColSpan={8}
+                    totalCurrencyNumber={this.state.totalAmount}
+
                     ref={this.gridref}
                 />
             </React.Fragment>
