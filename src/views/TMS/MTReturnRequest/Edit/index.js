@@ -310,7 +310,7 @@ class EditCom extends React.Component {
     callLoadData(id) {
         // console.log('callLoadData', id)
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            // console.log("222", apiResult);
+             console.log("222", apiResult);
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
