@@ -101,7 +101,27 @@ export const ModalColumnList_Insert = [
         LoadItemCacheKeyID: "ERPRELATECACHE.INVENTORYSTATUS",
         ValueMember: "InventoryStatusID",
         NameMember: "InventoryStatusName"
-    }
+    },
+    {
+        Name: "InstockProductID",
+        type: "productbox",
+        label: "sản phẩm tồn kho",
+        colspan: 12,
+        isMulti: false,
+        DataSourceMember: "InstockProductID",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        Name: "InstockConvertRatio",
+        type: "text",
+        label: "Tỷ lệ quy đổi",
+        maxSize: "10",
+        value: "",
+        DataSourceMember: "InstockConvertRatio",
+        readonly: false,
+        validatonList: ["digit"]
+    },
 
 ];
 
@@ -188,7 +208,27 @@ export const ModalColumnList_Edit = [
         LoadItemCacheKeyID: "ERPRELATECACHE.INVENTORYSTATUS",
         ValueMember: "InventoryStatusID",
         NameMember: "InventoryStatusName"
-    }
+    },
+    {
+        Name: "InstockProductID",
+        type: "productbox",
+        label: "sản phẩm tồn kho",
+        colspan: 12,
+        isMulti: false,
+        DataSourceMember: "InstockProductID",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        Name: "InstockConvertRatio",
+        type: "text",
+        label: "Tỷ lệ quy đổi(từ SP nhập trả đến SP tồn kho)",
+        maxSize: "10",
+        value: "",
+        DataSourceMember: "InstockConvertRatio",
+        readonly: false,
+        validatonList: ["digit"]
+    },
 ];
 
 export const DataGridColumnList = [
@@ -204,7 +244,7 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Nhóm vật tư",
         DataSourceMember: "MaterialGroupName",
-        Width: 160
+        Width: 120
     },
     // {
     //     Name: "ProductID",
@@ -218,14 +258,14 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Vật tư",
         DataSourceMember: "ProductName",
-        Width: 230
+        Width: 150
     },
     {
         Name: "IsCheckMinMaxQuality",
         Type: "checkicon",
         Caption: "Kiểm tra SL lớn nhất, nhỏ nhất",
         DataSourceMember: "IsCheckMinMaxQuality",
-        Width: 160
+        Width: 150
     },
     {
         Name: "MinQuality",
@@ -241,7 +281,6 @@ export const DataGridColumnList = [
         DataSourceMember: "MaxQuality",
         Width: 100
     },
-
     {
         Name: "InventoryStatusName",
         Type: "text",
@@ -249,13 +288,26 @@ export const DataGridColumnList = [
         DataSourceMember: "InventoryStatusName",
         Width: 100
     },
-
+    {
+        Name: "InstockProductID",
+        Type: "text",
+        Caption: "Sản phẩm tồn kho",
+        DataSourceMember: "InstockProductID",
+        Width: 100
+    },
+    {
+        Name: "InstockConvertRatio",
+        Type: "text",
+        Caption: "Tỷ lệ quy đổi",
+        DataSourceMember: "InstockConvertRatio",
+        Width: 80
+    },
     {
         Name: "EditProductIDMaterialGroupID",
         Type: "edit",
         Caption: "Sửa",
         DataSourceMember: "ProductID,MaterialGroupID",
-        Width: 80
+        Width: 60
     }
 
 ];
@@ -326,5 +378,17 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "InventoryStatusName",
         DataSourceMember: "InventoryStatusName"
+    },
+    {
+        Name: "InstockProductID",
+        DefaultValue: "",
+        BindControlName: "InstockProductID",
+        DataSourceMember: "InstockProductID"
+    },
+    {
+        Name: "InstockConvertRatio",
+        DefaultValue: "",
+        BindControlName: "InstockConvertRatio",
+        DataSourceMember: "InstockConvertRatio"
     },
 ];

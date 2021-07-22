@@ -42,7 +42,7 @@ export const InitSearchParams = [
     },
     {
         SearchKey: "@RPTTYPE",
-        SearchValue: 0
+        SearchValue: 2
     },
     {
         SearchKey: "@AREAIDLIST",
@@ -62,12 +62,16 @@ export const InitSearchParams = [
         SearchValue: ""
     },
     {
+        SearchKey: "@ISDETAIL",
+        SearchValue: 1
+    },
+    {
         SearchKey: "@PAGEINDEX",
         SearchValue: 1
     },
     {
         SearchKey: "@PAGESIZE",
-        SearchValue: 3
+        SearchValue: 50
     },
 ];
 

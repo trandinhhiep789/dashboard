@@ -31,11 +31,13 @@ export class Search extends Component {
             SearchElementList: SearchElementList,
             IsLoadDataComplete: false,
             SearchData: InitSearchParams,
+            dataTotalSource: {},
+            SearchTotalData: InitSearchParams,
             fromDate: "",
             toDate: "",
             AreaIDList: "",
             pageNumber: 1,
-            pageSize: 31,
+            pageSize: 50,
             FromDate: "",
             ToDate: "",
             AreaID: "",
@@ -87,9 +89,19 @@ export class Search extends Component {
         this.props.callFetchAPI(APIHostName, "api/QualityAssessmentReport/QualityReportBranch", searchData).then(apiResult => {
             console.log("searh", searchData, apiResult)
             if (!apiResult.IsError) {
-                this.setState({
-                    dataSource: apiResult.ResultObject
-                });
+                if (apiResult.ResultObject.length > 0) {
+                    this.setState({
+                        dataSource: apiResult.ResultObject
+                    });
+
+                }
+                else {
+                    this.showMessage("Dữ liệu cần không tồn tại. Vui lòng chọn lại.");
+                    this.setState({
+                        dataSource: apiResult.ResultObject
+                    });
+                }
+                this.callSearchTotalData()
             }
             else {
                 this.showMessage(apiResult.Message, apiResult.IsError);
@@ -97,6 +109,22 @@ export class Search extends Component {
         });
 
     };
+
+    callSearchTotalData() {
+        const { SearchTotalData } = this.state
+        this.props.callFetchAPI(APIHostName, "api/QualityAssessmentReport/TotalQualityReportBranchGeneral", SearchTotalData).then(apiResult => {
+            console.log("searh total", SearchTotalData, apiResult)
+            if (!apiResult.IsError) {
+                this.setState({
+                    dataTotalSource: apiResult.ResultObject[0]
+                });
+
+            }
+            else {
+                this.showMessage(apiResult.Message, apiResult.IsError);
+            }
+        });
+    }
 
     handleSearchSubmit(formData, MLObject) {
 
@@ -133,7 +161,7 @@ export class Search extends Component {
             },
             {
                 SearchKey: "@RPTTYPE",
-                SearchValue: 0
+                SearchValue: 2
             },
             {
                 SearchKey: "@AREAIDLIST",
@@ -146,11 +174,58 @@ export class Search extends Component {
 
             {
                 SearchKey: "@MAINGROUPIDLIST",
-                SearchValue: MLObject.MainGroupID > 0 ? MLObject.MainGroupID : ""
+                SearchValue: ""
             },
             {
                 SearchKey: "@SUBGROUPIDLIST",
-                SearchValue: result
+                SearchValue: ""
+            },
+            {
+                SearchKey: "@ISDETAIL",
+                SearchValue: 1
+            },
+            {
+                SearchKey: "@PAGESIZE",
+                SearchValue: this.state.pageSize
+            },
+            {
+                SearchKey: "@PAGEINDEX",
+                SearchValue: this.state.pageNumber
+            },
+        ];
+
+        const postTolalData = [
+            {
+                SearchKey: "@FROMDATE",
+                SearchValue: MLObject.FromDate
+            },
+            {
+                SearchKey: "@TODATE",
+                SearchValue: MLObject.ToDate
+            },
+            {
+                SearchKey: "@RPTTYPE",
+                SearchValue: 2
+            },
+            {
+                SearchKey: "@AREAIDLIST",
+                SearchValue: MLObject.AreaID > 0 ? MLObject.AreaID : ""
+            },
+            {
+                SearchKey: "@COORDINATORGROUPIDLIST",
+                SearchValue: result2
+            },
+            {
+                SearchKey: "@MAINGROUPIDLIST",
+                SearchValue: ""
+            },
+            {
+                SearchKey: "@SUBGROUPIDLIST",
+                SearchValue: ""
+            },
+            {
+                SearchKey: "@ISDETAIL",
+                SearchValue: 0
             },
             {
                 SearchKey: "@PAGESIZE",
@@ -163,7 +238,8 @@ export class Search extends Component {
         ];
         console.log("submit", MLObject, postData)
         this.setState({
-            SearchData: postData
+            SearchData: postData,
+            SearchTotalData: postTolalData
         })
         this.callSearchData(postData);
     };
@@ -207,7 +283,7 @@ export class Search extends Component {
             },
             {
                 SearchKey: "@RPTTYPE",
-                SearchValue: 0
+                SearchValue: 2
             },
             {
                 SearchKey: "@AREAIDLIST",
@@ -227,6 +303,10 @@ export class Search extends Component {
                 SearchValue: ""
             },
             {
+                SearchKey: "@ISDETAIL",
+                SearchValue: 1
+            },
+            {
                 SearchKey: "@PAGESIZE",
                 SearchValue: -1
             },
@@ -243,7 +323,7 @@ export class Search extends Component {
             LoadDataStoreName: 'TMS.RPT_SHIPQUALITYASSESS',
             KeyCached: "SHIPMENTORDER_REPORT_EXPORT",
             SearchParamList: postDataNew,
-            ExportDataParamsDescription: "FROMDATE: " + MLObject.FromDate + " - TODATE: " + MLObject.ToDate + " - RPTTYPE: " + 0 + " - AREAIDLIST: " + areaID + " - COORDINATORGROUPIDLIST: " + result2 + " - MAINGROUPIDLIST: " + "" + " - SUBGROUPIDLIST: " + "" + " - PAGESIZE: " + "-1" + " - PAGEINDEX: " + "-1"
+            ExportDataParamsDescription: "FROMDATE: " + MLObject.FromDate + " - TODATE: " + MLObject.ToDate + " - RPTTYPE: " + 0 + " - AREAIDLIST: " + areaID + " - COORDINATORGROUPIDLIST: " + result2 + " - MAINGROUPIDLIST: " + "" + " - SUBGROUPIDLIST: " + "" + " - ISDETAIL: " + 1 + " - PAGESIZE: " + "-1" + " - PAGEINDEX: " + "-1"
         }
         this.props.callFetchAPI(APIHostName, "api/DataExportQueue/AddQueueExport", postData).then(apiResult => {
             if (!apiResult.IsError) {
@@ -268,7 +348,7 @@ export class Search extends Component {
         this.setState({ pageNumber: pageNum });
         let listMLObject = [];
         const aa = { SearchKey: "@PAGEINDEX", SearchValue: pageNum };
-        listMLObject = Object.assign([], this.state.SearchData, { [8]: aa });
+        listMLObject = Object.assign([], this.state.SearchData, { [9]: aa });
         // console.log(this.state.SearchData,listMLObject)
         this.callSearchData(listMLObject)
 
@@ -287,7 +367,7 @@ export class Search extends Component {
     }
 
     render() {
-        const { dataSource, pageNumber } = this.state;
+        const { dataSource, pageNumber, dataTotalSource } = this.state;
         const pageCount = this.getPageCountToServer(dataSource);
         return (
             <React.Fragment>
@@ -315,12 +395,12 @@ export class Search extends Component {
                                     <thead className="thead-light">
                                         <tr>
                                             <th className="jsgrid-header-cell text-center" style={{ width: "22%" }} colSpan={4}>Khách hàng</th>
-                                            <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Tổng lỗi</th>
-                                            <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Thời gian</th>
-                                            <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Thái độ</th>
-                                            <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Thẩm mỹ</th>
-                                            <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Tay nghề</th>
-                                            <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Quy trình</th>
+                                            <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Tổng lỗi {dataTotalSource.PercentageQuantityLike != undefined ? dataTotalSource.PercentageQuantityLike : 0} %</th>
+                                            <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Thời gian {dataTotalSource.PercentageTimeLike != undefined ? dataTotalSource.PercentageTimeLike : 0} %</th>
+                                            <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Thái độ {dataTotalSource.PercentageAttitudeLike != undefined ? dataTotalSource.PercentageAttitudeLike : 0} %</th>
+                                            <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Thẩm mỹ {dataTotalSource.PercentageBeautyLike != undefined ? dataTotalSource.PercentageBeautyLike : 0} %</th>
+                                            <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Tay nghề {dataTotalSource.PercentageTechLike != undefined ? dataTotalSource.PercentageTechLike : 0} %</th>
+                                            <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Quy trình {dataTotalSource.PercentageFlowLike != undefined ? dataTotalSource.PercentageFlowLike : 0} %</th>
                                         </tr>
                                         <tr>
                                             <th className="jsgrid-header-cell text-center" style={{ width: 200 }}>Chi nhánh</th>
@@ -361,43 +441,45 @@ export class Search extends Component {
                                     </thead>
 
                                     <tbody>
-                                        {/* <tr className="sum-total">
-                                            <td style={{ width: 200 }}>Tổng cộng</td>
-                                            <td style={{ width: 200 }}></td>
-                                            <td style={{ width: 200 }}></td>
-                                            <td style={{ width: 150 }}>1</td>
+                                        {
+                                            !!Object.keys(dataTotalSource).length > 0 && <tr className="sum-total">
+                                                <td style={{ width: 200 }}>Tổng cộng</td>
+                                                <td style={{ width: 200 }}></td>
+                                                <td style={{ width: 200 }}></td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantity}</td>
 
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityUnlike}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityLike}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityValue}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.PercentageQuantityLike + "%"}</td>
 
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityTimeUnlike}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityTimeLike}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityTimeValue}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.PercentageTimeLike + "%"}</td>
 
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityAttitudeUnlike}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityAttitudeLike}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityAttitudeValue}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.PercentageAttitudeLike + "%"}</td>
 
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityBeautyUnlike}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityBeautyLike}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityBeautyValue}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.PercentageBeautyLike + "%"}</td>
 
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityTechUnlike}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityTechLike}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityTechValue}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.PercentageTechLike + "%"}</td>
 
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
-                                            <td style={{ width: 150 }}>1</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityFlowUnlike}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityFlowLike}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.TotalQuantityFlowValue}</td>
+                                                <td style={{ width: 150 }}>{dataTotalSource.PercentageFlowLike + "%"}</td>
 
-                                        </tr> */}
+                                            </tr>
+                                        }
 
                                         {
                                             dataSource.map((item, index) => {

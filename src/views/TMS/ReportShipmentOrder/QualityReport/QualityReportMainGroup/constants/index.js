@@ -35,20 +35,17 @@ export const InitSearchParams = [
     },
 
     {
-        SearchKey: "@MAINGROUPIDLIST",
-        SearchValue: ""
+        SearchKey: "@ISDETAIL",
+        SearchValue: 1
     },
-    {
-        SearchKey: "@SUBGROUPIDLIST",
-        SearchValue: ""
-    },
+  
     {
         SearchKey: "@PAGEINDEX",
         SearchValue: 1
     },
     {
         SearchKey: "@PAGESIZE",
-        SearchValue: 3
+        SearchValue: 50
     },
 ];
 
@@ -123,48 +120,6 @@ export const SearchElementList = [
         filterrest: "",
         OrderIndex: 6
     },
-    {
-        type: "ComboBoxNewChange",
-        name: "cbMainGroup",
-        label: "Ngành hàng",
-        value: -1,
-        colspan: 3,
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        datasourcemember: "MainGroupID",
-        placeholder: "---Vui lòng chọn---",
-        readonly: false,
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.MAINGROUP",
-        ValueMember: "MainGroupID",
-        NameMember: "MainGroupName",
-        filterrest: "cbSubGroup",
-        OrderIndex: 5
-    },
-    {
-        type: "ComboBoxNewChange",
-        name: "cbSubGroup",
-        label: "Nhóm hàng",
-        value: -1,
-        colspan: 3,
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        datasourcemember: "SubGroupID",
-        readonly: false,
-        isMultiSelect: true,
-        placeholder: "---Vui lòng chọn---",
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.SUBGROUP",
-        ValueMember: "SubGroupID",
-        NameMember: "SubGroupName",
-        filterName: "cbMainGroup",
-        filterValue: "",
-        filterobj: "MainGroupID",
-        filterrest: "",
-        OrderIndex: 6
-    },
 
 
 ];
@@ -185,16 +140,7 @@ export const SearchMLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "cbArea"
     },
-    {
-        Name: "MainGroupID",
-        DefaultValue: "",
-        BindControlName: "cbMainGroup"
-    },
-    {
-        Name: "SubGroupID",
-        DefaultValue: "",
-        BindControlName: "cbSubGroup"
-    },
+  
     {
         Name: "CoordinatorGroupID",
         DefaultValue: "",
