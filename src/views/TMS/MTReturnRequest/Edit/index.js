@@ -236,6 +236,12 @@ class EditCom extends React.Component {
                 return;
             }
 
+            const updateMTReturnRequestDetailNew = MTReturnRequestDetailNew.map(item => {
+                return {
+                    ...item,
+                    ConvertQuantity: val.InStockProductID != "" ? item.Quantity * item.InStockConvertRatio : 0
+                }
+            })
 
             let itemCheck = []
             if (!!arrProductDetai) {
@@ -254,7 +260,8 @@ class EditCom extends React.Component {
                 return;
             }
 
-            MLObject.lstMTReturnRequestDetail = MTReturnRequestDetailNew;
+            // MLObject.lstMTReturnRequestDetail = MTReturnRequestDetailNew;
+            MLObject.lstMTReturnRequestDetail = updateMTReturnRequestDetailNew;
             MLObject.RequestUser = RequestUser;
 
             this.handleSubmit(MLObject)
@@ -266,6 +273,8 @@ class EditCom extends React.Component {
     }
 
     handleSubmit(MLObject) {
+        console.log(MLObject)
+        return
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.MessageDetail);
@@ -310,7 +319,7 @@ class EditCom extends React.Component {
     callLoadData(id) {
         // console.log('callLoadData', id)
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-             console.log("222", apiResult);
+            console.log("222", apiResult);
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
