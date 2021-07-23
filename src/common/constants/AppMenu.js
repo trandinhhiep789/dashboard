@@ -193,67 +193,86 @@ const AppMenu = [
                 ]
             },
             {
-                MenuName: 'AppFeedBack',
-                MenuTitle: 'Phản hồi ứng dụng',
+                MenuName: 'App',
+                MenuTitle: 'Ứng dụng',
                 LinkTo: '',
                 MenuIcon: '',
                 SubMenu: [
                     {
-                        MenuName: 'AppFeedBackType',
-                        MenuTitle: 'Loại phản hồi ứng dụng',
-                        LinkTo: '/AppFeedBackType',
+                        MenuName: 'AppDataSyncType',
+                        MenuTitle: 'Loại đồng bộ dữ liệu giữa các ứng dụng',
+                        LinkTo: '/AppDataSyncType',
                         MenuIcon: '',
                         SubMenu: []
                     },
                     {
-                        MenuName: 'AppFeedBackPriority',
-                        MenuTitle: 'Độ ưu tiên phản hồi',
-                        LinkTo: '/AppFeedBackPriority',
+                        MenuName: 'AppFeedBack',
+                        MenuTitle: 'Phản hồi ứng dụng',
+                        LinkTo: '',
                         MenuIcon: '',
-                        SubMenu: []
+                        SubMenu: [
+                            {
+                                MenuName: 'AppFeedBackType',
+                                MenuTitle: 'Loại phản hồi ứng dụng',
+                                LinkTo: '/AppFeedBackType',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+                            {
+                                MenuName: 'AppFeedBackPriority',
+                                MenuTitle: 'Độ ưu tiên phản hồi',
+                                LinkTo: '/AppFeedBackPriority',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+                            {
+                                MenuName: 'AppFeedBackStatus',
+                                MenuTitle: 'Trạng thái phản hồi',
+                                LinkTo: '/AppFeedBackStatus',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+                            {
+                                MenuName: 'AppFeedBackQuality',
+                                MenuTitle: 'Chất lượng xử lý phản hồi',
+                                LinkTo: '/AppFeedBackQuality',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+                            {
+                                MenuName: 'AppFeedBackPermission',
+                                MenuTitle: 'Quyền trên phản hồi',
+                                LinkTo: '/AppFeedBackPermission',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+                            {
+                                MenuName: 'AppFeedBackStep',
+                                MenuTitle: 'Bước xử lý phản hồi',
+                                LinkTo: '/AppFeedBackStep',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+                            {
+                                MenuName: 'AppFeedBackGroup',
+                                MenuTitle: 'Phân loại phản hồi',
+                                LinkTo: '/AppFeedBackGroup',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+                            {
+                                MenuName: 'AppFeedBackCategory',
+                                MenuTitle: 'Danh mục phản hồi',
+                                LinkTo: '/AppFeedBackCategory',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+                        ]
                     },
-                    {
-                        MenuName: 'AppFeedBackStatus',
-                        MenuTitle: 'Trạng thái phản hồi',
-                        LinkTo: '/AppFeedBackStatus',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    {
-                        MenuName: 'AppFeedBackQuality',
-                        MenuTitle: 'Chất lượng xử lý phản hồi',
-                        LinkTo: '/AppFeedBackQuality',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    {
-                        MenuName: 'AppFeedBackPermission',
-                        MenuTitle: 'Quyền trên phản hồi',
-                        LinkTo: '/AppFeedBackPermission',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    {
-                        MenuName: 'AppFeedBackStep',
-                        MenuTitle: 'Bước xử lý phản hồi',
-                        LinkTo: '/AppFeedBackStep',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    {
-                        MenuName: 'AppFeedBackGroup',
-                        MenuTitle: 'Phân loại phản hồi',
-                        LinkTo: '/AppFeedBackGroup',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    {
-                        MenuName: 'AppFeedBackCategory',
-                        MenuTitle: 'Danh mục phản hồi',
-                        LinkTo: '/AppFeedBackCategory',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
+                    
+
+
+                    
                 ]
             },
             {
@@ -430,13 +449,7 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
-                    {
-                        MenuName: 'RewardPosImportSchedule',
-                        MenuTitle: 'Lịch đồng bộ chức vụ',
-                        LinkTo: '/RewardPosImportSchedule',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
+                 
                     // {
                     //     MenuName: 'PNServicePriceTable',
                     //     MenuTitle: 'Bảng giá dịch vụ của đối tác',
@@ -1012,20 +1025,36 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-            {
-                MenuName: 'SoAssessSynSchedule',
-                MenuTitle: 'Đồng bộ dữ liệu đánh giá vận đơn',
-                LinkTo: '/SoAssessSynSchedule',
-                MenuIcon: '',
-                SubMenu: []
-            },
+           
             {
                 MenuName: 'DeliveryAbility',
                 MenuTitle: 'Khai báo tổng tải',
                 LinkTo: '/DeliveryAbility',
                 MenuIcon: '',
                 SubMenu: []
-            }
+            },
+            {
+                MenuName: 'SynData',
+                MenuTitle: 'Đồng bộ dữ liệu',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'SoAssessSynSchedule',
+                        MenuTitle: 'Đồng bộ dữ liệu đánh giá vận đơn',
+                        LinkTo: '/SoAssessSynSchedule',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'RewardPosImportSchedule',
+                        MenuTitle: 'Lịch đồng bộ chức vụ',
+                        LinkTo: '/RewardPosImportSchedule',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                ]
+            },
         ]
     },
     {

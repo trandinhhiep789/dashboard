@@ -186,6 +186,7 @@ import TMSFuelSubsidizeCompute from "../TMS/MD/TMSFuelSubsidize/Compute";
 import TMSGroupReward from "../TMS/MD/TMSGroupReward";
 import TMSGroupRewardCompute from "../TMS/MD/TMSGroupReward/Compute";
 import OTTimeKeeping from "../TMS/MD/OTTimeKeeping";
+import AppDataSyncType from "../TMS/MD/AppDataSyncType";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -452,6 +453,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/TMSGroupReward" component={TMSGroupReward} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/TMSGroupRewardCompute" component={TMSGroupRewardCompute} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/OTTimeKeeping" component={OTTimeKeeping} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/AppDataSyncType" component={AppDataSyncType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
