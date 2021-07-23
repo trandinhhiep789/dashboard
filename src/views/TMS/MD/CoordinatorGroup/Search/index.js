@@ -33,6 +33,7 @@ import { SHIPMENTFEETYPE_VIEW, SHIPMENTFEETYPE_DELETE, DESTROYREQUESTTYPE_VIEW, 
 import { showModal } from '../../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../../constants/actionTypes';
 import ImportExcelModalCom from './ImportExcelModal';
+import moment from "moment";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -43,6 +44,8 @@ class SearchCom extends React.Component {
         this.handleExportFileTemplate = this.handleExportFileTemplate.bind(this);
         this.handleImportFile = this.handleImportFile.bind(this);
         this.handleSetImportData = this.handleSetImportData.bind(this);
+        this.handleExportFile = this.handleExportFile.bind(this);
+        this.handleSetDataExport = this.handleSetDataExport.bind(this);
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
@@ -171,7 +174,8 @@ class SearchCom extends React.Component {
             if (!apiResult.IsError) {
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
-                    IsShowForm: true
+                    IsShowForm: true,
+                    DataExport: this.handleSetDataExport(apiResult.ResultObject)
                 });
             } else {
                 this.showMessage(apiResult.Message);
@@ -230,6 +234,25 @@ class SearchCom extends React.Component {
         });
     }
 
+    handleExportFile(result) {
+        this.addNotification(result.Message, result.IsError);
+    }
+
+    handleSetDataExport(ResultObject) {
+        const dataExport = ResultObject.map(item => {
+            return {
+                "Mã nhóm chi nhánh quản lý": item.CoordinatorGroupID,
+                "Tên nhóm chi nhánh quản lý": item.CoordinatorGroupName,
+                "Khu vực": item.AreaName,
+                "Kích hoạt": item.IsActived ? "Đã kích hoạt" : "Chưa kích hoạt",
+                "Ngày cập nhật": moment(item.UpdatedDate).format("DD/MM/YYYY"),
+                "Người cập nhật": `${item.UpdatedUser} - ${item.UpdatedUserFullName}`
+            }
+        });
+
+        return dataExport;
+    }
+
     render() {
         if (this.state.IsShowForm) {
             return (
@@ -258,6 +281,10 @@ class SearchCom extends React.Component {
                         DeletePermission={COORDINATORGROUP_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={20}
+                        IsExportFile={true}
+                        onExportFile={this.handleExportFile}
+                        DataExport={this.state.DataExport}
+                        fileName="Nhóm chi nhánh quản lý"
 
                         propsIsCustomXLSX={true}
                         IsImportFile={true}
