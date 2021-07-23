@@ -17,7 +17,7 @@ import "react-notifications-component/dist/theme.css";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache, callGetUserCache } from "../../../../actions/cacheAction";
-import { GET_CACHE_USER_FUNCTION_LIST, DESTROYREQUESTTYPE_ADD, DESTROYREQUESTTYPE_DELETE, DESTROYREQUESTTYPE_UPDATE, COORDINATORGROUP_ADD, COORDINATORGROUP_UPDATE, COORDINATORGROUP_DELETE } from "../../../../constants/functionLists";
+import { GET_CACHE_USER_FUNCTION_LIST, DESTROYREQUESTTYPE_ADD, DESTROYREQUESTTYPE_DELETE, DESTROYREQUESTTYPE_UPDATE, COORDINATORGROUP_ADD, COORDINATORGROUP_UPDATE, COORDINATORGROUP_DELETE, MDM_COORDINATORGROUP_EXPORT } from "../../../../constants/functionLists";
 import CoordinatorUser from "./Components/CoordinatorUser";
 import moment from "moment";
 
@@ -426,6 +426,7 @@ class CoordinatorGroup_MemberCom extends React.Component {
                     onExportFile={this.handleExportFile}
                     DataExport={this.setDataExport()}
                     fileName="Trưởng nhóm thuộc nhóm chi nhánh quản lý"
+                    ExportPermission={MDM_COORDINATORGROUP_EXPORT}
 
                     IsImportFile={true}
                     SchemaData={schema}

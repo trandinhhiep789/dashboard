@@ -29,7 +29,7 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_SHIPMENTFEETYPE } from "../../../../../constants/keyCache";
-import { SHIPMENTFEETYPE_VIEW, SHIPMENTFEETYPE_DELETE, DESTROYREQUESTTYPE_VIEW, DESTROYREQUESTTYPE_DELETE, COORDINATORGROUP_VIEW, COORDINATORGROUP_DELETE } from "../../../../../constants/functionLists";
+import { SHIPMENTFEETYPE_VIEW, SHIPMENTFEETYPE_DELETE, DESTROYREQUESTTYPE_VIEW, DESTROYREQUESTTYPE_DELETE, COORDINATORGROUP_VIEW, COORDINATORGROUP_DELETE, MDM_COORDINATORGROUP_EXPORT } from "../../../../../constants/functionLists";
 import { showModal } from '../../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../../constants/actionTypes';
 import ImportExcelModalCom from './ImportExcelModal';
@@ -285,6 +285,7 @@ class SearchCom extends React.Component {
                         onExportFile={this.handleExportFile}
                         DataExport={this.state.DataExport}
                         fileName="Nhóm chi nhánh quản lý"
+                        ExportPermission={MDM_COORDINATORGROUP_EXPORT}
 
                         propsIsCustomXLSX={true}
                         IsImportFile={true}
