@@ -466,9 +466,7 @@ class InfoProductCom extends Component {
                             </div>
                             <div className="form-group col-md-4">
                                 <label className="col-form-label">
-
                                     <span className="badge badge-success">{formatMoney(this.state.ShipmentOrder.TotalPaidInMoney, 0)}đ</span>
-
                                 </label>
                             </div>
                             <div className="form-group col-md-2">
@@ -484,10 +482,7 @@ class InfoProductCom extends Component {
                                 <label className="col-form-label bold">Số tiền chưa nộp:</label>
                             </div>
                             <div className="form-group col-md-4">
-                                {this.state.ShipmentOrder.IsPaidIn == true ?
-                                    <span className="badge badge-danger">{formatMoney(this.state.ShipmentOrder.TotalUnPaidInMoney, 0)}đ</span> : <span className="badge badge-danger">{formatMoney(this.state.ShipmentOrder.CollectedTotalMoney, 0)}đ</span>
-                                }
-
+                                    <span className="badge badge-danger">{formatMoney(this.state.ShipmentOrder.TotalUnPaidInMoney, 0)}đ</span> 
                             </div>
                         </div>
                         <div className="form-row">

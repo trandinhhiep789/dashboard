@@ -449,13 +449,7 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
-                    {
-                        MenuName: 'RewardPosImportSchedule',
-                        MenuTitle: 'Lịch đồng bộ chức vụ',
-                        LinkTo: '/RewardPosImportSchedule',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
+                 
                     // {
                     //     MenuName: 'PNServicePriceTable',
                     //     MenuTitle: 'Bảng giá dịch vụ của đối tác',
@@ -1031,20 +1025,36 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-            {
-                MenuName: 'SoAssessSynSchedule',
-                MenuTitle: 'Đồng bộ dữ liệu đánh giá vận đơn',
-                LinkTo: '/SoAssessSynSchedule',
-                MenuIcon: '',
-                SubMenu: []
-            },
+           
             {
                 MenuName: 'DeliveryAbility',
                 MenuTitle: 'Khai báo tổng tải',
                 LinkTo: '/DeliveryAbility',
                 MenuIcon: '',
                 SubMenu: []
-            }
+            },
+            {
+                MenuName: 'SynData',
+                MenuTitle: 'Đồng bộ dữ liệu',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'SoAssessSynSchedule',
+                        MenuTitle: 'Đồng bộ dữ liệu đánh giá vận đơn',
+                        LinkTo: '/SoAssessSynSchedule',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'RewardPosImportSchedule',
+                        MenuTitle: 'Lịch đồng bộ chức vụ',
+                        LinkTo: '/RewardPosImportSchedule',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                ]
+            },
         ]
     },
     {

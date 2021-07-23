@@ -284,11 +284,20 @@ class AddCom extends React.Component {
                 return cur.UserName;
             }, 0);
 
-            const MTReturnRequestDetail = MTReturnRequestDetailNew.filter((item, index) => {
-                if (item.Quantity != undefined && item.Quantity > 0) {
-                    return item;
+            // const MTReturnRequestDetail = MTReturnRequestDetailNew.filter((item, index) => {
+            //     if (item.Quantity != undefined && item.Quantity > 0) {
+            //         return item;
+            //     }
+            // });
+
+            const MTReturnRequestDetail = MTReturnRequestDetailNew.reduce((acc, val) => {
+                if (val.Quantity != undefined && val.Quantity > 0) {
+                    const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : 0 }
+                    return [...acc, updateVal];
+                } else {
+                    return acc;
                 }
-            });
+            }, []);
 
             if (isAutoReview) {
                 MLObject.IsreViewed = isAutoReview;
@@ -359,7 +368,6 @@ class AddCom extends React.Component {
 
     handleSubmit(MLObject) {
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
-            console.log("â", MLObject, apiResult)
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.MessageDetail);
         });

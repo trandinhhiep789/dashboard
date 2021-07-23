@@ -922,7 +922,7 @@ class DataGridShipmentOderCom extends Component {
                                                     (
                                                         <div className="item price3">
                                                             <span className="price-title">Nợ: </span>
-                                                            <span className="price-debt">-{(rowItem.TotalCOD - rowItem.TotalReturnPrice) <= 0 ? formatMoney(rowItem.TotalSaleMaterialMoney) : formatMoney(rowItem.TotalSaleMaterialMoney + rowItem.TotalCOD - rowItem.TotalReturnPrice, 0)}</span>
+                                                            <span className="price-debt">-{(rowItem.TotalCOD - rowItem.TotalReturnPrice) <= 0 ? formatMoney(rowItem.TotalSaleMaterialMoney) : formatMoney(rowItem.TotalUnPaidInMoney, 0)}</span>
                                                         </div>
                                                     )
                                                 }
@@ -1070,7 +1070,7 @@ class DataGridShipmentOderCom extends Component {
                                                     (
                                                         <div className="price-error">
                                                             <span className="price-title">Nợ: </span>
-                                                            <span className="price-debt">-{(TotalCOD - TotalReturnPrice) <= 0 ? formatMoney(TotalSaleMaterialMoney) : formatMoney(TotalSaleMaterialMoney + TotalCOD - TotalReturnPrice, 0)}</span>
+                                                            <span className="price-debt">-{(TotalCOD - TotalReturnPrice) <= 0 ? formatMoney(TotalSaleMaterialMoney) : formatMoney(TotalUnPaidInMoney, 0)}</span>
                                                         </div>
                                                     )
                                                 }

@@ -32,6 +32,22 @@ export const SearchElementList = [
         colspan: 2,
     },
     {
+        type: "ComboBoxNewChange",
+        name: "cbRewardTypeID",
+        DataSourceMember: "RewardTypeID",
+        label: "Loại thưởng",
+        colspan: 2,
+        value: "",
+        isMultiSelect: false,
+        placeholder: "---Loại thưởng---",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.TMSREWARDTYPE",
+        ValueMember: "RewardTypeID",
+        NameMember: "RewardTypeName",
+        classNameCol: "col-custom"
+    },
+    {
         type: "ProductComboBoxCustom",
         name: "cbProductID",
         DataSourceMember: "ProductID",
@@ -71,6 +87,11 @@ export const SearchMLObjectDefinition = [
         Name: "ToDate",
         DefaultValue: "",
         BindControlName: "dtToDate"
+    },
+    {
+        Name: "RewardTypeID",
+        DefaultValue: "",
+        BindControlName: "cbRewardTypeID"
     },
     {
         Name: "ProductID",
