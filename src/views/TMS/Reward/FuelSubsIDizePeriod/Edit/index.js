@@ -21,7 +21,10 @@ class EditCom extends React.Component {
         this.state = {
             stateIsError: false,
             stateDataSource: null,
-            stateDates: [],
+            stateDates: {
+                FromDate: null,
+                ToDate: null
+            },
             stateNote: ""
         };
 
@@ -29,8 +32,10 @@ class EditCom extends React.Component {
         this.notificationDOMRef = React.createRef();
         this.fetchLoadInfo = this.fetchLoadInfo.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleChangeRangePicker = this.handleChangeRangePicker.bind(this);
         this.handleChangeNote = this.handleChangeNote.bind(this);
+        this.disableDate = this.disableDate.bind(this);
+        this.handleChangeFromDate = this.handleChangeFromDate.bind(this);
+        this.handleChangeToDate = this.handleChangeToDate.bind(this);
     }
 
     componentDidMount() {
@@ -86,21 +91,40 @@ class EditCom extends React.Component {
                     UserIDName: `${apiResult.ResultObject.UserName} - ${apiResult.ResultObject.UserFullName}`,
                     CreatedUserIDName: `${apiResult.ResultObject.CreatedUser} - ${apiResult.ResultObject.CreatedUserFullName}`
                 },
-                stateDates: [moment(new Date(apiResult.ResultObject.FromDate), 'DD/MM/YYYY'), moment(new Date(apiResult.ResultObject.ToDate), 'DD/MM/YYYY')],
+                stateDates: {
+                    FromDate: moment(new Date(apiResult.ResultObject.FromDate), 'DD/MM/YYYY'),
+                    ToDate: moment(new Date(apiResult.ResultObject.ToDate), 'DD/MM/YYYY')
+                },
                 stateNote: apiResult.ResultObject.Note
             })
         });
     }
 
-    handleChangeRangePicker(dates, dateStrings) {
-        this.setState({
-            stateDates: dates
-        })
-    }
-
     handleChangeNote(event) {
         this.textareaNoteRef.current.style.borderColor = "";
         this.setState({ stateNote: event.target.value });
+    }
+
+    disableDate(current) {
+        return current > moment().startOf('year').add(2, 'y') || current < moment().startOf('year');
+    }
+
+    handleChangeFromDate(dateMoment, dateString) {
+        this.setState({
+            stateDates: {
+                ...this.state.stateDates,
+                FromDate: dateMoment,
+            }
+        })
+    }
+
+    handleChangeToDate(dateMoment, dateString) {
+        this.setState({
+            stateDates: {
+                ...this.state.stateDates,
+                ToDate: dateMoment
+            }
+        })
     }
 
     handleSubmit() {
@@ -115,8 +139,8 @@ class EditCom extends React.Component {
         const postData = {
             FuelSubsidizePeriodID: stateDataSource.FuelSubsidizePeriodID,
             UserName: stateDataSource.UserName,
-            FromDate: stateDates[0],
-            ToDate: stateDates[1],
+            FromDate: stateDates.FromDate,
+            ToDate: stateDates.ToDate,
             Note: stateNote
         };
 
@@ -187,15 +211,11 @@ class EditCom extends React.Component {
                                     <div className="col-md-4 d-flex align-items-center">
                                         <span>Khoảng thời gian nhân viên được phụ cấp xăng</span>
                                     </div>
-                                    <div className="col-md-8 d-flex align-items-center">
-                                        <DatePicker.RangePicker
-                                            value={stateDates}
-                                            format={'DD/MM/YYYY'}
-                                            size="large"
-                                            style={{ width: "100%" }}
-                                            placeholder={["Ngày bắt đầu", "Ngày kết thúc"]}
-                                            onChange={this.handleChangeRangePicker}
-                                        />
+                                    <div className="col-md-8 d-flex justify-content-between align-items-center">
+                                        <span>Từ</span>
+                                        <DatePicker onChange={this.handleChangeFromDate} size="large" disabledDate={this.disableDate} format={'DD/MM/YYYY'} placeholder="Từ ngày" value={stateDates.FromDate} />
+                                        <span>đến</span>
+                                        <DatePicker onChange={this.handleChangeToDate} size="large" disabledDate={this.disableDate} format={'DD/MM/YYYY'} placeholder="Đến ngày" value={stateDates.ToDate} />
                                     </div>
                                 </div>
                             </div>
