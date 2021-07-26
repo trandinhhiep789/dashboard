@@ -727,6 +727,11 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                         swaplabelModal={true}
                                     />
 
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước kiểm tra tọa độ nhận hàng" name="IsCheckReceiverGeoLocationStep"
+                                        controltype="InputControl" datasourcemember="IsCheckReceiverGeoLocationStep"
+                                        swaplabelModal={true}
+                                    />
+
                                 </div>
                             </div>
                         </TabPage>

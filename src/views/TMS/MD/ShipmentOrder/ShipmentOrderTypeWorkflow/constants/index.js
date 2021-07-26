@@ -324,6 +324,12 @@ export const MLObjectDefinition = [
         DataSourceMember: "IsCanUpdateCompleteDoService"
     },
     {
+        Name: "IsCheckReceiverGeoLocationStep",
+        DefaultValue: "",
+        BindControlName: "IsCheckReceiverGeoLocationStep",
+        DataSourceMember: "IsCheckReceiverGeoLocationStep"
+    },
+    {
         Name: "OrderIndex",
         DefaultValue: "",
         BindControlName: "OrderIndex",
