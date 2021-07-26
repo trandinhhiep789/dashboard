@@ -482,7 +482,20 @@ class InfoProductCom extends Component {
                                 <label className="col-form-label bold">Số tiền chưa nộp:</label>
                             </div>
                             <div className="form-group col-md-4">
-                                    <span className="badge badge-danger">{formatMoney(this.state.ShipmentOrder.TotalUnPaidInMoney, 0)}đ</span> 
+                                {(this.state.ShipmentOrder.TotalPaidInMoney + this.state.ShipmentOrder.TotalUnPaidInMoney) > 0 ?
+                                    (this.state.ShipmentOrder.TotalUnPaidInMoney > 0 ?
+                                        (
+                                            <span className="badge badge-danger">{formatMoney(this.state.ShipmentOrder.TotalUnPaidInMoney, 0)}đ</span>
+                                        ) :
+                                        (
+                                            <span className="badge badge-success">{formatMoney(this.state.ShipmentOrder.TotalUnPaidInMoney, 0)}đ</span>
+                                        )
+                                    ) :
+                                    (
+                                        <span className="badge badge-danger" >{(this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD - this.state.ShipmentOrder.TotalReturnPrice) > 0 ? formatMoney((this.state.ShipmentOrder.TotalSaleMaterialMoney + this.state.ShipmentOrder.TotalCOD) - this.state.ShipmentOrder.TotalReturnPrice, 0) : formatMoney(this.state.ShipmentOrder.TotalSaleMaterialMoney)}đ</span>
+                                    )
+                                }
+
                             </div>
                         </div>
                         <div className="form-row">
