@@ -3,13 +3,14 @@ import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 import { MessageModal } from "../../../../common/components/Modal";
+import moment from 'moment';
 import DataGrid from "../../../../common/components/DataGrid";
 import { MODAL_TYPE_CONFIRMATION, MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import { showModal, hideModal } from '../../../../actions/modal';
 import { GetMLObjectData } from "../../../../common/library/form/FormLib";
 import Collapsible from 'react-collapsible';
 import {
-    AddAPIPath, UpdateAPIPath, DeleteAPIPath, APIHostName, AddByFileAPIPath, 
+    AddAPIPath, UpdateAPIPath, DeleteAPIPath, APIHostName, AddByFileAPIPath,
     ModalColumnList_Insert, ModalColumnList_Edit, DataGridColumnList, MLObjectDefinition, schema, DataTemplateExport
 } from "./constants";
 import ReactNotification from "react-notifications-component";
@@ -17,7 +18,7 @@ import "react-notifications-component/dist/theme.css";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache, callGetUserCache } from "../../../../actions/cacheAction";
-import { GET_CACHE_USER_FUNCTION_LIST, DESTROYREQUESTTYPE_ADD, DESTROYREQUESTTYPE_DELETE, DESTROYREQUESTTYPE_UPDATE, COORDINATORGROUP_ADD, COORDINATORGROUP_UPDATE, COORDINATORGROUP_DELETE } from "../../../../constants/functionLists";
+import { GET_CACHE_USER_FUNCTION_LIST, DESTROYREQUESTTYPE_ADD, DESTROYREQUESTTYPE_DELETE, DESTROYREQUESTTYPE_UPDATE, COORDINATORGROUP_ADD, COORDINATORGROUP_UPDATE, COORDINATORGROUP_DELETE, COORDINATORGROUP_VIEW } from "../../../../constants/functionLists";
 import CoordinatorUser from "./Components/CoordinatorUser";
 
 class CoordinatorGroup_MemberCom extends React.Component {
@@ -43,6 +44,8 @@ class CoordinatorGroup_MemberCom extends React.Component {
             DataTemplateExport
         };
         this.notificationDOMRef = React.createRef();
+        this.handleExportFile = this.handleExportFile.bind(this);
+        this.setDataExport = this.setDataExport.bind(this);
     }
 
 
@@ -381,6 +384,24 @@ class CoordinatorGroup_MemberCom extends React.Component {
 
     }
 
+    handleExportFile(result) {
+        this.addNotification(result.Message, result.IsError);
+    }
+
+    setDataExport() {
+        const { DataSource } = this.state;
+
+        const dataExport = DataSource.map(item => {
+            return {
+                "Mã trưởng nhóm": item.UserName,
+                "Tên trưởng nhóm": item.FullName,
+                "Ngày cập nhật": moment(item.UpdatedDate).format("DD/MM/YYYY"),
+                "Người cập nhật": item.UpdatedUserFullName
+            }
+        })
+
+        return dataExport;
+    }
 
     render() {
         if (this.state.IsCloseForm) {
@@ -403,6 +424,12 @@ class CoordinatorGroup_MemberCom extends React.Component {
                     //RowsPerPage={10}
                     IsCustomAddLink={true}
                     headingTitle={"Trưởng nhóm thuộc nhóm chi nhánh quản lý theo tháng"}
+
+                    IsExportFile={true}
+                    onExportFile={this.handleExportFile}
+                    DataExport={this.setDataExport()}
+                    fileName="Trưởng nhóm thuộc nhóm chi nhánh quản lý theo tháng"
+                    ExportPermission={COORDINATORGROUP_VIEW}
 
                     IsImportFile={true}
                     SchemaData={schema}
