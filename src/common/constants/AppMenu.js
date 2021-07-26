@@ -199,12 +199,34 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: [
                     {
-                        MenuName: 'AppDataSyncType',
-                        MenuTitle: 'Loại đồng bộ dữ liệu giữa các ứng dụng',
-                        LinkTo: '/AppDataSyncType',
+                        MenuName: 'AppDataSync',
+                        MenuTitle: 'Đồng bộ dữ liệu giữa các ứng dụng',
+                        LinkTo: '',
                         MenuIcon: '',
-                        SubMenu: []
-                    },
+                        SubMenu: [
+                            {
+                                MenuName: 'AppDataSyncType',
+                                MenuTitle: 'Loại đồng bộ',
+                                LinkTo: '/AppDataSyncType',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+                            {
+                                MenuName: 'AppDataSyncList',
+                                MenuTitle: 'Danh sách đồng bộ',
+                                LinkTo: '/AppDataSyncList',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+                            {
+                                MenuName: 'AppDataSyncLog',
+                                MenuTitle: 'Nhật ký đồng bộ dữ liệu từ BCNB',
+                                LinkTo: '/AppDataSyncLog',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+                        ]
+                    },             
                     {
                         MenuName: 'AppFeedBack',
                         MenuTitle: 'Phản hồi ứng dụng',
