@@ -114,11 +114,11 @@ class AddCom extends React.Component {
     }
 
     disableFromDate(current) {
-        return current < moment().add(-1, 'd');
+        return current > moment().startOf('year').add(2, 'y') || current < moment().startOf('year');
     }
 
     disableToDate(current) {
-        return current > moment().add(1, 'y') || current < moment().add(-1, 'd');
+        return current > moment().startOf('year').add(2, 'y') || current < moment().startOf('year');
     }
 
     handleSubmit() {

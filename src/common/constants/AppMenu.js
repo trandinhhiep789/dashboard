@@ -1402,14 +1402,14 @@ const AppMenu = [
                     },
                     {
                         MenuName: 'QualityReportBranch',
-                        MenuTitle: 'Báo cáo theo chi nhanh',
+                        MenuTitle: 'Báo cáo theo chi nhánh',
                         LinkTo: '/QualityReportBranch',
                         MenuIcon: '',
                         SubMenu: []
                     },
                     {
                         MenuName: 'QualityReportBranchGeneral',
-                        MenuTitle: 'Báo cáo tổng hợp theo chi nhanh',
+                        MenuTitle: 'Báo cáo tổng hợp theo chi nhánh',
                         LinkTo: '/QualityReportBranchGeneral',
                         MenuIcon: '',
                         SubMenu: []

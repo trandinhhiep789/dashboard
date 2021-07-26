@@ -129,10 +129,20 @@ class SearchCom extends Component {
                         SearchKey: element.SearchKey,
                         SearchValue: MLObject.Typename
                     }
-                case "@CREATEDUSER":
+                case "@FROMDATE":
                     return {
                         SearchKey: element.SearchKey,
-                        SearchValue: MLObject.CreatedUser == -1 || MLObject.CreatedUser === null ? "" : MLObject.CreatedUser.value
+                        SearchValue: MLObject.CreatedOrderTimeFo
+                    }
+                case "@TODATE":
+                    return {
+                        SearchKey: element.SearchKey,
+                        SearchValue: MLObject.CreatedOrderTimeTo
+                    }
+                case "@COORDINATORSTOREID":
+                    return {
+                        SearchKey: element.SearchKey,
+                        SearchValue: MLObject.CoordinatorStoreID
                     }
                 default:
                     return element;
@@ -318,14 +328,10 @@ class SearchCom extends Component {
                                     <div className="btn-toolbar">
                                         <div className="btn-group btn-group-sm">
                                             {/* <Link to={"/ShipmentQualityAssess/Add"}> */}
-                                            <button className="btn btn-info" onClick={this.handleAdd}>
-                                                <span className="fa fa-plus ff"> Thêm </span>
-                                            </button>
+                                            {/* <button className="btn btn-info" onClick={this.handleAdd}><span className="fa fa-plus ff"> Thêm </span></button> */}
                                             {/* </Link> */}
 
-                                            <button className="btn btn-danger btn-delete ml-10" onClick={this.handleDelete}>
-                                                <span className="fa fa-remove"> Xóa </span>
-                                            </button>
+                                            {/* <button className="btn btn-danger btn-delete ml-10" onClick={this.handleDelete}><span className="fa fa-remove"> Xóa </span></button> */}
 
                                             <button className="btn btn-export ml-10" onClick={this.handleExportFile}>
                                                 <span className="fa fa-file-excel-o"> Xuất file excel </span>
@@ -338,15 +344,15 @@ class SearchCom extends Component {
                                     <table className="table table-sm table-striped table-bordered table-hover table-condensed" cellSpacing="0">
                                         <thead className="thead-light">
                                             <tr>
-                                                <th className="jsgrid-header-cell">
+                                                {/* <th className="jsgrid-header-cell">
                                                     <div className="checkbox">
                                                         <label>
                                                             <input name="checkAll" type="checkbox" onChange={this.handleCheckbox} className="form-control form-control-sm" />
                                                             <span className="cr"><i className="cr-icon fa fa-check"></i></span>
                                                         </label>
                                                     </div>
-                                                </th>
-                                                <th className="jsgrid-header-cell">Chi tiết</th>
+                                                </th> */}
+                                                {/* <th className="jsgrid-header-cell">Chi tiết</th> */}
                                                 <th className="jsgrid-header-cell">Mã vận đơn</th>
                                                 <th className="jsgrid-header-cell">Mã đơn hàng đối tác</th>
                                                 <th className="jsgrid-header-cell">Ngày tạo</th>
@@ -361,26 +367,22 @@ class SearchCom extends Component {
                                             {
                                                 dataGrid.map(item => {
                                                     return <tr key={item.ShipmentQualityAssessID}>
-                                                        <td>
+                                                        {/* <td>
                                                             <div className="checkbox">
                                                                 <label>
                                                                     <input name={item.ShipmentQualityAssessID} type="checkbox" checked={stateObjCheckboxs[item.ShipmentQualityAssessID] || false} onChange={this.handleCheckbox} className="form-control form-control-sm" />
                                                                     <span className="cr"><i className="cr-icon fa fa-check"></i></span>
                                                                 </label>
                                                             </div>
-                                                        </td>
-                                                        <td>
-                                                            <Link to={`/ShipmentQualityAssess/Detail/${item.ShipmentQualityAssessID}`}>Chi tiết</Link>
-                                                        </td>
-                                                        <td>
-                                                            <Link to={`/ShipmentOrder/Detail/${item.ShipmentOrderID}`} target='_blank'>{item.ShipmentOrderID}</Link>
-                                                        </td>
+                                                        </td> */}
+                                                        <td><Link to={`/ShipmentOrder/Detail/${item.ShipmentOrderID}`} target='_blank'>{item.ShipmentOrderID}</Link></td>
                                                         <td>{item.PartnerSaleOrderID}</td>
                                                         <td>{moment(item.CreatedDate).format("DD/MM/YYYY")}</td>
                                                         <td>{item.CreatedUserFullName}</td>
                                                         <td>{item.QualityAssessNote}</td>
                                                         <td>{item.IsRevokeAssessReview == 0 ? <span className='lblstatus text-warning'>Chưa duyệt</span> : (<span className='lblstatus text-success'>Đã duyệt</span>)}</td>
-                                                        <td><Link to={`/ShipmentQualityAssess/Edit/${item.ShipmentQualityAssessID}`}>Chỉnh sửa</Link></td>
+                                                        {/* <td><Link to={`/ShipmentQualityAssess/Edit/${item.ShipmentQualityAssessID}`}>Chỉnh sửa</Link></td> */}
+                                                        <td><Link to={`/ShipmentQualityAssess/Detail/${item.ShipmentQualityAssessID}`}>Chi tiết</Link></td>
                                                     </tr>
                                                 })
                                             }

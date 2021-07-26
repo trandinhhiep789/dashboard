@@ -17,8 +17,9 @@ import "react-notifications-component/dist/theme.css";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache, callGetUserCache } from "../../../../actions/cacheAction";
-import { GET_CACHE_USER_FUNCTION_LIST, DESTROYREQUESTTYPE_ADD, DESTROYREQUESTTYPE_DELETE, DESTROYREQUESTTYPE_UPDATE, COORDINATORGROUP_ADD, COORDINATORGROUP_UPDATE, COORDINATORGROUP_DELETE } from "../../../../constants/functionLists";
+import { GET_CACHE_USER_FUNCTION_LIST, DESTROYREQUESTTYPE_ADD, DESTROYREQUESTTYPE_DELETE, DESTROYREQUESTTYPE_UPDATE, COORDINATORGROUP_ADD, COORDINATORGROUP_UPDATE, COORDINATORGROUP_DELETE, MDM_COORDINATORGROUP_EXPORT } from "../../../../constants/functionLists";
 import CoordinatorUser from "./Components/CoordinatorUser";
+import moment from "moment";
 
 class CoordinatorGroup_MemberCom extends React.Component {
     constructor(props) {
@@ -28,6 +29,8 @@ class CoordinatorGroup_MemberCom extends React.Component {
         this.handleEdit = this.handleEdit.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.onClose = this.onClose.bind(this);
+        this.setDataExport = this.setDataExport.bind(this);
+        this.handleExportFile = this.handleExportFile.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -376,6 +379,27 @@ class CoordinatorGroup_MemberCom extends React.Component {
 
     }
 
+    setDataExport() {
+        const { DataSource } = this.state;
+        try {
+            const excelData = DataSource.map(item => {
+                return {
+                    "Trưởng nhóm": item.UserName,
+                    "Tên trưởng nhóm": item.FullName,
+                    "Ngày cập nhật": moment(item.UpdatedDate).format("DD/MM/YYYY"),
+                    "Người cập nhật": item.UpdatedUserFullName
+                }
+            });
+
+            return excelData;
+        } catch (error) {
+            return [];
+        }
+    }
+
+    handleExportFile(result) {
+        this.addNotification(result.Message, result.IsError);
+    }
 
     render() {
         if (this.state.IsCloseForm) {
@@ -398,6 +422,11 @@ class CoordinatorGroup_MemberCom extends React.Component {
                     //RowsPerPage={10}
                     IsCustomAddLink={true}
                     headingTitle={"Trưởng nhóm thuộc nhóm chi nhánh quản lý"}
+                    IsExportFile={true}
+                    onExportFile={this.handleExportFile}
+                    DataExport={this.setDataExport()}
+                    fileName="Trưởng nhóm thuộc nhóm chi nhánh quản lý"
+                    ExportPermission={MDM_COORDINATORGROUP_EXPORT}
 
                     IsImportFile={true}
                     SchemaData={schema}

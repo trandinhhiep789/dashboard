@@ -2,7 +2,7 @@ export const APIHostName = "TMSAPI";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Báo cáo chất lượng toàn quốc" }
+    { Link: "", Title: "Báo cáo tổng hợp theo chi nhánh" }
 ];
 export const PageMainGroupPath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },

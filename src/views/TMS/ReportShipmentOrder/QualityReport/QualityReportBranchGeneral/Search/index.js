@@ -86,7 +86,7 @@ export class Search extends Component {
 
     callSearchData(searchData) {
 
-        this.props.callFetchAPI(APIHostName, "api/QualityAssessmentReport/QualityReportBranch", searchData).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, "api/QualityAssessmentReport/QualityReportBranchGeneral", searchData).then(apiResult => {
             console.log("searh", searchData, apiResult)
             if (!apiResult.IsError) {
                 if (apiResult.ResultObject.length > 0) {
