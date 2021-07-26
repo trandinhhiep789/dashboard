@@ -12,8 +12,8 @@ export const API_HOST_LIST = {
     },
     TMSAPI: {
         HostName: "TMSAPI",
-        //HostBaseURL: 'https://tmsapi.dichvutantam.vn/'
-        HostBaseURL: 'http://devtmsapi.tterpbeta.vn/'
+        HostBaseURL: 'https://tmsapi.dichvutantam.vn/'
+        //HostBaseURL: 'http://devtmsapi.tterpbeta.vn/'
     },
     CacheAPI: {
         HostName: "CacheAPI",
