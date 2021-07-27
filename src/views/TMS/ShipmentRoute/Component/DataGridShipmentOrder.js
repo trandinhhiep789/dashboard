@@ -519,6 +519,7 @@ class DataGridShipmentOderCom extends Component {
                                 IsCoordinator={true}
                                 IsCancelDelivery={true}
                                 onChangeValue={this.handleShipmentOrder.bind(this)}
+
                             />
                         },
                         maxWidth: 850 + 'px'
@@ -737,8 +738,8 @@ class DataGridShipmentOderCom extends Component {
                             <tr>
                                 <th className="jsgrid-header-cell" style={{ width: '2%' }}></th>
                                 <th className="jsgrid-header-cell" style={{ width: '15%' }}>Thời gian giao</th>
-                                <th className="jsgrid-header-cell" style={{ width: '25%' }}>Địa chỉ</th>
-                                <th className="jsgrid-header-cell" style={{ width: '25%' }}>Mã/Loại yêu cầu vận chuyển</th>
+                                <th className="jsgrid-header-cell" style={{ width: '28%' }}>Địa chỉ</th>
+                                <th className="jsgrid-header-cell" style={{ width: '20%' }}>Mã/Loại yêu cầu vận chuyển</th>
                                 <th className="jsgrid-header-cell" style={{ width: '25%' }}>Tên sản phẩm/Ghi chú</th>
                                 <th className="jsgrid-header-cell" style={{ width: '8%' }}>Thanh toán</th>
                             </tr>
@@ -776,27 +777,33 @@ class DataGridShipmentOderCom extends Component {
                                         <td className={rowUndelivery} style={{ width: '2%' }}>
                                             <ul>
                                                 {rowItem.ShipmentRouteID == "" ?
-                                                    (<li className="item ">
-                                                        <div className="group-action">
-                                                            <div className="checkbox item-action">
-                                                                <label>
-                                                                    <input type="checkbox" readOnly className="form-control form-control-sm" name={"ShipmentOrderID"} onChange={this.handleCheckShip.bind(this)} value={rowItem.ShipmentOrderID} checked={this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID)} />
-                                                                    <span className="cr">
-                                                                        <i className="cr-icon fa fa-check"></i>
-                                                                    </span>
-                                                                </label>
+                                                    (<React.Fragment>
+                                                        <li className="item ">
+                                                            <div className="group-action">
+                                                                <div className="checkbox item-action">
+                                                                    <label>
+                                                                        <input type="checkbox" readOnly className="form-control form-control-sm" name={"ShipmentOrderID"} onChange={this.handleCheckShip.bind(this)} value={rowItem.ShipmentOrderID} checked={this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID)} />
+                                                                        <span className="cr">
+                                                                            <i className="cr-icon fa fa-check"></i>
+                                                                        </span>
+                                                                    </label>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </li>
+                                                        </li>
+                                                        <li className="item ">
+                                                            <button className="btn">
+                                                                <i className="fa fa-user-plus"></i>
+                                                            </button>
+                                                        </li>
+                                                    </React.Fragment>
 
-                                                    ) : ""
+                                                    ) :
+                                                    (<li className="item ">
+                                                        <button className="btn btn-user-plus">
+                                                            <i className="fa fa-user-plus"></i>
+                                                        </button>
+                                                    </li>)
                                                 }
-
-                                                <li className="item ">
-                                                    <button className="btn">
-                                                        <i className="fa fa-user-plus"></i>
-                                                    </button>
-                                                </li>
                                                 <li className="item printing">
                                                     <button className="btn" onClick={this.handlePrintClickNew.bind(this)}>
                                                         <i className="ti ti-printer" data-id={rowItem.ShipmentOrderID}></i>
@@ -826,7 +833,7 @@ class DataGridShipmentOderCom extends Component {
                                                 </ul>
                                             </div>
                                         </td>
-                                        <td className="jsgrid-cell group-address" style={{ width: '25%' }}>
+                                        <td className="jsgrid-cell group-address" style={{ width: '28%' }}>
                                             <ul>
                                                 <li className="item info-customer">
                                                     <i className="fa fa-user"></i>
@@ -867,7 +874,7 @@ class DataGridShipmentOderCom extends Component {
                                                 </li>
                                             </ul>
                                         </td>
-                                        <td className="jsgrid-cell group-infoShipmentOrder" style={{ width: '25%' }}>
+                                        <td className="jsgrid-cell group-infoShipmentOrder" style={{ width: '20%' }}>
                                             <ul>
                                                 <li className="item">
                                                     <Link
