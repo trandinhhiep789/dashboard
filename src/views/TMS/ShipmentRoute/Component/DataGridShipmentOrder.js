@@ -775,18 +775,23 @@ class DataGridShipmentOderCom extends Component {
                                     return (<tr key={rowIndex} className={rowtrClass}>
                                         <td className={rowUndelivery} style={{ width: '2%' }}>
                                             <ul>
-                                                <li className="item ">
-                                                    <div className="group-action">
-                                                        <div className="checkbox item-action">
-                                                            <label>
-                                                                <input type="checkbox" readOnly className="form-control form-control-sm" name={"ShipmentOrderID"} onChange={this.handleCheckShip.bind(this)} value={rowItem.ShipmentOrderID} checked={this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID)} />
-                                                                <span className="cr">
-                                                                    <i className="cr-icon fa fa-check"></i>
-                                                                </span>
-                                                            </label>
+                                                {rowItem.ShipmentRouteID == "" ?
+                                                    (<li className="item ">
+                                                        <div className="group-action">
+                                                            <div className="checkbox item-action">
+                                                                <label>
+                                                                    <input type="checkbox" readOnly className="form-control form-control-sm" name={"ShipmentOrderID"} onChange={this.handleCheckShip.bind(this)} value={rowItem.ShipmentOrderID} checked={this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID)} />
+                                                                    <span className="cr">
+                                                                        <i className="cr-icon fa fa-check"></i>
+                                                                    </span>
+                                                                </label>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </li>
+                                                    </li>
+
+                                                    ) : ""
+                                                }
+
                                                 <li className="item ">
                                                     <button className="btn">
                                                         <i className="fa fa-user-plus"></i>
@@ -832,8 +837,8 @@ class DataGridShipmentOderCom extends Component {
                                                         <span className="line">-</span>
                                                         <span className="partner-sale-Order">{rowItem.PartnerSaleOrderID}</span>
                                                         <button className="btn-copy-clipboard" data-id={rowItem.PartnerSaleOrderID} onClick={this.copyToClipboard.bind(this)}>
-                                                        <i className="fa fa-copy" data-id={rowItem.PartnerSaleOrderID}></i>
-                                                    </button>
+                                                            <i className="fa fa-copy" data-id={rowItem.PartnerSaleOrderID}></i>
+                                                        </button>
                                                     </div>
                                                 </li>
                                                 <li className="item address-customer">
