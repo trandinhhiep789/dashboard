@@ -17,7 +17,9 @@ import {
     APIHostName,
     BackLink,
     UpdateCoordinatorStoreEdit,
-    MLObjectUpdateCoordinatorStore
+    MLObjectUpdateCoordinatorStore,
+    IgnoreCheckRCGeolocationADD,
+    MLObjectIgnoreCheckRCGeolocation
 } from "../constants";
 class InfoCoordinatorCom extends Component {
     constructor(props) {
@@ -309,7 +311,7 @@ class InfoCoordinatorCom extends Component {
     }
 
     handleOnValueChangeDeliverUser(name, selectedOption) {
-       
+
         let listMLObject = [];
         let listStaffDebtObject = [];
         if (selectedOption) {
@@ -549,6 +551,38 @@ class InfoCoordinatorCom extends Component {
             },
             modalElementList: UpdateCoordinatorStoreEdit,
             modalElementOl: MLObjectUpdateCoordinatorStore,
+            dataSource: { CoordinatorStoreID: this.state.ShipmentOrder.CoordinatorStoreID, CoordinatorNote: this.state.ShipmentOrder.CoordinatorNote },
+            isaddComboBox: true
+
+        });
+
+    }
+
+    handleIgnoreCheckRCGeolocation()
+    {
+        this.props.showModal(MODAL_TYPE_CONFIRMATIONNEW, {
+            title: 'Cập nhật bỏ qua kiểm tra tọa độ nhận hàng',
+            onConfirmNew: (isConfirmed, formData) => {
+                let ShipmentOrderCoord =
+                {
+                    ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID,
+                    IgnoreCheckRCGeolocReasonNote: formData.IgnoreCheckRCGeolocReasonNote,
+                    IgnoreCheckRCGeolocReasonID: formData.IgnoreCheckRCGeolocReasonID
+                }
+
+
+                this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateIgnoreCheckRCGeolocation', ShipmentOrderCoord).then((apiResult) => {
+                    this.addNotification(apiResult.Message, apiResult.IsError);
+                    if (!apiResult.IsError) {
+                        this.props.hideModal();
+                        setTimeout(() => { this.setState({ IsCloseForm: true }) }, 2000);
+
+                    }
+                });
+
+            },
+            modalElementList: IgnoreCheckRCGeolocationADD,
+            modalElementOl: MLObjectIgnoreCheckRCGeolocation,
             dataSource: { CoordinatorStoreID: this.state.ShipmentOrder.CoordinatorStoreID, CoordinatorNote: this.state.ShipmentOrder.CoordinatorNote },
             isaddComboBox: true
 
@@ -869,6 +903,10 @@ class InfoCoordinatorCom extends Component {
                     <div className="form-row">
 
                         <div className="form-group col-md-12 form-group-btncustom">
+                            {
+                                this.state.ShipmentOrder.IsIGnoreCheckRCGeolocation ==false?<button className="btn btnDelivery mr-10" type="submit" onClick={this.handleIgnoreCheckRCGeolocation.bind(this)}><span className="fa fa-remove">Bỏ qua kiểm tra tạo độ</span></button>:""
+                            }
+                            
                             {
                                 this.props.IsCancelDelivery == true ? <button className="btn btnDelivery mr-10" type="submit" onClick={this.handleCancelDelivery}><span className="fa fa-remove"> Hủy giao hàng</span></button> : <button className="btn btnDelivery mr-10" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-remove"> Hủy giao hàng</span></button>
                             }
