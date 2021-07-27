@@ -49,6 +49,9 @@ export const InitSearchParams = [
     },
 ];
 
+const dtFromdate = new Date();
+dtFromdate.setDate(new Date().getDate() - 1);
+
 export const SearchElementList = [
     {
         type: "Datetime",
@@ -70,7 +73,7 @@ export const SearchElementList = [
         name: "cbToDate",
         DataSourceMember: "ToDate",
         placeholder: "Đến ngày",
-        value: new Date(),
+        value: dtFromdate,
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
