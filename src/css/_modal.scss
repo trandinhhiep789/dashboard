@@ -326,7 +326,7 @@
                                                 -webkit-box-orient: vertical;
                                                 text-align: left;
                                                 display: block;
-                                                height: 25px;
+                                                height: 20px;
                                             }
                                         }
                                         &.delivery-status{
@@ -354,6 +354,9 @@
                                             justify-content: flex-start;
                                             span{
                                                 text-align: left;
+                                                line-height: 17px;
+                                                font-size: 12px;
+                                                font-weight: 600;
                                             }
                                         }
                                     }
