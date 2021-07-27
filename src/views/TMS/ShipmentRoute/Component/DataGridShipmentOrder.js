@@ -799,8 +799,8 @@ class DataGridShipmentOderCom extends Component {
 
                                                     ) :
                                                     (<li className="item ">
-                                                        <button className="btn btn-user-plus">
-                                                            <i className="fa fa-user-plus"></i>
+                                                        <button className="btn btn-user-plus" title ="Đã được phân tuyến">
+                                                            <i className="fa fa-user-plus" ></i>
                                                         </button>
                                                     </li>)
                                                 }
