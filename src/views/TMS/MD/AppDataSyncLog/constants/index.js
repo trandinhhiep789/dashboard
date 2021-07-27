@@ -38,6 +38,10 @@ export const InitSearchParams = [
         SearchValue: ""
     },
     {
+        SearchKey: "@AppDataSyncTypeID",
+        SearchValue: -1
+    },
+    {
         SearchKey: "@SyncFrequencyType",
         SearchValue: -1
     },
@@ -60,6 +64,22 @@ export const SearchElementList = [
         placeholder: "",
         icon: "",
         listoption: {}
+    },
+    {
+        type: "select",
+        name: "slAppDataSyncTypeID",
+        label: "Loại đồng bộ",
+        value: -1,
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "AppDataSyncTypeID",
+        readonly: false,
+        validatonList: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.APPDATASYNCTYPE",
+        ValueMember: "AppDataSyncTypeID",
+        NameMember: "AppDataSyncTypeName"
     },
     {
         type: "select",
@@ -161,6 +181,11 @@ export const SearchMLObjectDefinition = [
     //     DefaultValue: -1,
     //     BindControlName: "slAppDataSyncLogTypeID"
     // },
+    {
+        Name: "AppDataSyncTypeID",
+        DefaultValue: -1,
+        BindControlName: "slAppDataSyncTypeID"
+    },
     {
         Name: "SyncFrequencyType",
         DefaultValue: -1,

@@ -86,6 +86,10 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.Keyword
             },
             {
+                SearchKey: "@AppDataSyncTypeID",
+                SearchValue: MLObject.AppDataSyncTypeID
+            },
+            {
                 SearchKey: "@SyncFrequencyType",
                 SearchValue: MLObject.SyncFrequencyType
             },
