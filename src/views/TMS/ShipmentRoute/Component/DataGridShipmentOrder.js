@@ -863,7 +863,7 @@ class DataGridShipmentOderCom extends Component {
                                                         <span className="time-item">
                                                             <span className="intervale">
                                                                 <i className="fa fa-paper-plane-o"></i>
-                                                                <span className="txtintervale">{rowItem.EstimateDeliveryDistance + "Km/" + rowItem.ActualDeliveryDistance.toFixed(2) + "Km"}</span>
+                                                                <span className="txtintervale">{(rowItem.EstimateDeliveryDistance>=0?rowItem.EstimateDeliveryDistance:0) + "Km/" + rowItem.ActualDeliveryDistance.toFixed(2) + "Km"}</span>
                                                             </span>
                                                             <span className="intervale">
                                                                 <i className="ti ti-timer"></i>
