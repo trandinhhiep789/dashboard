@@ -1167,7 +1167,7 @@ class DataGridShipmentOderCom extends Component {
                             <React.Fragment>
                                 {matches.small && this.renderDataGridSmallSize()}
                                 {matches.large && <div className={classCustom}>
-                                    <div className="cardShipmentOrder-page">
+                                    <div className="cardShipmentOrder-page shipment-route">
                                         <ReactNotification ref={this.notificationDOMRef} />
                                         <div className="card-title">
 
@@ -1188,7 +1188,7 @@ class DataGridShipmentOderCom extends Component {
                                                                         <i className="fa fa-history"></i>
                                                                     </button>
                                                                 </div>
-                                                                <div className="input-group input-group-select">
+                                                                <div className="input-group input-group-select ml-10">
                                                                     <input type="text" onChange={this.handleonChange.bind(this)} onKeyPress={this.handleKeyPress} className="form-control" aria-label="Text input with dropdown button" placeholder="Từ khóa" />
                                                                     <div className="input-group-append" onClick={this.handleSearchShip.bind(this)}>
                                                                         <span className="input-group-text"><i className="ti-search"></i></span>

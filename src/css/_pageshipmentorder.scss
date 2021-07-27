@@ -495,6 +495,26 @@ $font-weight-600: 600;
             }
         }
     }
+    &.shipment-route{
+        .card-title {
+            .flexbox {
+                .btn-toolbar {
+                    .btn-group {
+                        .group-left {
+                            .input-group{
+                                &.input-group-select{
+                                    input{
+                                        padding-left: 5px;
+                                    }
+                                    
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 %btn-clip-board {
