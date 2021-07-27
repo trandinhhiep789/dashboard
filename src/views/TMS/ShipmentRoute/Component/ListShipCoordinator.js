@@ -55,12 +55,23 @@ class ListShipCoordinatorCom extends Component {
         if (name == "CarrierPartnerID") {
             objDeliverUser = [];
             this.state.ShipmentOrder.map((row, indexRow) => {
-                if (!row.IsCoordinator && row.IsPermission == true) {
+                if ((this.state.objCoordinator.IsRoute == true || !row.IsCoordinator) && row.IsPermission == true) {
                     row[name] = value;
                     row["ShipmentOrder_DeliverUserList"] = [];
                 }
             });
         }
+        // else if(name="IsRoute")
+        // {
+        //     objDeliverUser = [];
+        //     this.state.ShipmentOrder.map((row, indexRow) => {
+        //         if ((this.state.objCoordinator.IsRoute == true || !row.IsCoordinator) && row.IsPermission == true) {
+        //           row["CarrierPartnerID"] = -1;
+        //                row["ShipmentOrder_DeliverUserList"] = [];
+        //         }
+        //     });
+           
+        // }
         else {
             this.state.ShipmentOrder.map((row, indexRow) => {
                 if (!row.IsCoordinator && row.IsPermission == true) {
@@ -79,6 +90,7 @@ class ListShipCoordinatorCom extends Component {
     }
 
     handleValueChange1(e, selectedOption1) {
+     
         let objDeliverUser = [];
         let listStaffDebtObject = [];
         selectedOption1 && selectedOption1.map((item, index) => {
@@ -91,15 +103,16 @@ class ListShipCoordinatorCom extends Component {
         })
 
         const result = this.state.ShipmentOrder.find(({ TotalCOD }) => TotalCOD > 0);
-        console.log("this.state.ShipmentOrder", this.state.ShipmentOrder, result);
-        console.log("UserIsLockDelivery", listStaffDebtObject);
+  
 
         if (selectedOption1) {
             this.props.callFetchAPI(APIHostName, 'api/StaffDebt/UserIsLockDelivery', listStaffDebtObject).then((apiResult) => {
                 if (!apiResult.IsError) {
                     this.state.ShipmentOrder.map((row, indexRow) => {
                         if ((this.state.objCoordinator.IsRoute == true || !row.IsCoordinator) && row.IsPermission == true && row.CarrierPartnerID <= 0)
-                            row["ShipmentOrder_DeliverUserList"] = objDeliverUser;
+                            {
+                                row["ShipmentOrder_DeliverUserList"] = objDeliverUser;
+                            }
                     });
                     this.setState({ selectedOption: selectedOption1, ShipmentOrder: this.state.ShipmentOrder });
                 }
@@ -115,6 +128,7 @@ class ListShipCoordinatorCom extends Component {
 
 
     handleOnValueChangeDeliverUser(name, value, selectedOption) {
+   
         let objMultiDeliverUser = [];
         let listStaffDebtObject = [];
         selectedOption && selectedOption.map((item, index) => {
@@ -126,16 +140,16 @@ class ListShipCoordinatorCom extends Component {
             });
         })
         const result = this.state.ShipmentOrder.find(({ TotalCOD }) => TotalCOD > 0);
-        console.log("this.state.ShipmentOrder", this.state.ShipmentOrder, result);
-        console.log("UserIsLockDelivery", listStaffDebtObject);
-
-
         if (selectedOption) {
             this.props.callFetchAPI(APIHostName, 'api/StaffDebt/UserIsLockDelivery', listStaffDebtObject).then((apiResult) => {
                 if (!apiResult.IsError) {
                     this.state.ShipmentOrder.map((row, indexRow) => {
                         if (row.IsPermission == true && row.CarrierPartnerID > 0)
+                        {
                             row["ShipmentOrder_DeliverUserList"] = objMultiDeliverUser;
+                          
+                        }
+                            
                     });
                     this.setState({ objDeliverUser: value, ShipmentOrder: this.state.ShipmentOrder });
                 }
@@ -145,6 +159,12 @@ class ListShipCoordinatorCom extends Component {
             });
         }
         else {
+            this.state.ShipmentOrder.map((row, indexRow) => {
+                if (row.IsPermission == true && row.CarrierPartnerID > 0)
+                {
+                    row["ShipmentOrder_DeliverUserList"] = objMultiDeliverUser;
+                }
+            });
             this.setState({ objDeliverUser: value });
         }
     }
@@ -239,7 +259,7 @@ class ListShipCoordinatorCom extends Component {
     }
 
     handleonValueChange(rowname, rowvalue, rowIndex) {
-        debugger;
+  
         let objDeliverUser = [];
         let { ShipmentOrder } = this.state;
         if (rowname == "ShipmentOrder_DeliverUserList") {
@@ -355,6 +375,21 @@ class ListShipCoordinatorCom extends Component {
         let elementobject = {};
         let element = [];
         this.state.ShipmentOrder.map((row, indexRow) => {
+            if(this.state.objCoordinator.IsRoute==true && row.CarrierTypeID!= this.state.ShipmentOrder[0].CarrierTypeID)
+            {
+                this.addNotification( "không cùng phương tiện giao hàng",true);
+                const validationObject = { IsValidatonError: true, ValidationErrorMessage: "Vui lòng chọn phương tiện" };
+                elementobject = Object.assign({}, elementobject, { ["CarrierTypeID-" + indexRow]: validationObject });
+                return;
+            }
+            if(this.state.objCoordinator.IsRoute==true && row.ShipmentOrder_DeliverUserList!= this.state.ShipmentOrder[0].ShipmentOrder_DeliverUserList)
+            {
+                this.addNotification( "không cùng nhân viên giao hàng",true);
+                const validationObject = { IsValidatonError: true, ValidationErrorMessage: "không cùng nhân viên giao hàng" };
+                elementobject = Object.assign({}, elementobject, { ["ShipmentOrder_DeliverUserList-" + indexRow]: validationObject });
+                return;
+            }
+
             if (row["CarrierTypeID"] == -1 || row["CarrierTypeID"] == "-1") {
                 const validationObject = { IsValidatonError: true, ValidationErrorMessage: "Vui lòng chọn phương tiện" };
                 elementobject = Object.assign({}, elementobject, { ["CarrierTypeID-" + indexRow]: validationObject });
@@ -381,7 +416,6 @@ class ListShipCoordinatorCom extends Component {
         if (this.checkInputName(elementobject) != "")
             return;
 
-        console.log("ShipmentOrdernew", this.state.ShipmentOrder)
         this.props.callFetchAPI(APIHostName, 'api/ShipmentRoute/AddInfoCoordinatorLst', this.state.ShipmentOrder).then((apiResult) => {
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (this.props.onChangeValue != null)
