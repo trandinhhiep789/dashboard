@@ -357,7 +357,7 @@ export class Search extends Component {
                                         <tr>
                                             <th className="jsgrid-header-cell text-center" style={{ width: 200 }}>Nhân viên</th>
                                             <th className="jsgrid-header-cell text-center" style={{ width: 200 }}>vị trí</th>
-                                            <th className="jsgrid-header-cell text-center" style={{ width: 200 }}>nhóm hàng</th>
+                                            <th className="jsgrid-header-cell text-center" style={{ width: 200 }}>Tổng hợp</th>
                                             <th className="jsgrid-header-cell text-center" style={{ width: 150 }}>SL giao lắp</th>
 
                                             <th className="jsgrid-header-cell text-center" style={{ width: 150 }}>Không hài lòng</th>

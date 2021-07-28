@@ -1,31 +1,31 @@
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "api/ServiceGroup/Search";
-export const LoadAPIPath = "api/ServiceGroup/Load";
-export const AddAPIPath = "api/ServiceGroup/Add";
-export const UpdateAPIPath = "api/ServiceGroup/Update";
-export const DeleteAPIPath = "api/ServiceGroup/Delete";
-export const UpdateOrderAPIPath = "api/ServiceGroup/UpdateOrder";
-export const BackLink = "/ServiceGroup";
-export const AddLink = "/ServiceGroup/Add";
+export const SearchAPIPath = "api/IgnoreCheckRcGeoLocReason/Search";
+export const LoadAPIPath = "api/IgnoreCheckRcGeoLocReason/Load";
+export const AddAPIPath = "api/IgnoreCheckRcGeoLocReason/Add";
+export const UpdateAPIPath = "api/IgnoreCheckRcGeoLocReason/Update";
+export const DeleteAPIPath = "api/IgnoreCheckRcGeoLocReason/Delete";
+export const UpdateOrderAPIPath = "api/IgnoreCheckRcGeoLocReason/UpdateOrder";
+export const BackLink = "/IgnoreCheckRcGeoLocReason";
+export const AddLink = "/IgnoreCheckRcGeoLocReason/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";
 export const IDSelectColumnName = "chkSelect";
-export const PKColumnName = "ServiceGroupID";
+export const PKColumnName = "IgnoreCheckRcGeoLocReasonID";
 export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách nhóm dịch vụ" }
+    { Link: "", Title: "Danh sách lý do bỏ qua kiểm tra tọa độ nhận hàng" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/ServiceGroup", Title: "Danh sách nhóm dịch vụ" },
+    { Link: "/IgnoreCheckRcGeoLocReason", Title: "Danh sách lý do bỏ qua kiểm tra tọa độ nhận hàng" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/ServiceGroup", Title: "Danh sách nhóm dịch vụ" },
+    { Link: "/IgnoreCheckRcGeoLocReason", Title: "Danh sách lý do bỏ qua kiểm tra tọa độ nhận hàng" },
     { Link: "", Title: "Thêm" }
 ];
 
@@ -42,32 +42,46 @@ export const SearchElementList = [
 ];
 
 export const AddElementList = [
+    // {
+    //     type: "text",
+    //     name: "txtIgnoreCheckRcGeoLocReasonID",
+    //     label: "mã nhóm",
+    //     value: "",
+    //     maxSize: "5",
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: {},
+    //     DataSourceMember: "IgnoreCheckRcGeoLocReasonID",
+    //     readonly: false,
+    //     validatonList: ["required", "number"]
+    // },
     {
         type: "text",
-        name: "txtServiceGroupID",
-        label: "mã nhóm dịch vụ",
-        value: "",
-        maxSize: "5",
-        placeholder: "",
-        icon: "",
-        listoption: {},
-        DataSourceMember: "ServiceGroupID",
-        readonly: false,
-        validatonList: ["required", "number"]
-    },
-    {
-        type: "text",
-        name: "txtServiceGroupName",
-        label: "tên nhóm dịch vụ",
+        name: "txtIgnoreCheckRcGeoLocReasonName",
+        label: "tên Lý do bỏ qua kiểm tra tọa độ nhận hàng",
         value: "",
         maxSize: "200",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "ServiceGroupName",
+        DataSourceMember: "IgnoreCheckRcGeoLocReasonName",
         readonly: false,
         validatonList: ["required"],
     },
+    // {
+    //     type: "select",
+    //     name: "GetFeeType",
+    //     label: "Kiểu lấy chi phí",
+    //     value: 1,
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: [{ value: 1, label: "Lấy giá trị cố định" }, { value: 2, label: "Lấy từ bảng làm giá" }],
+    //     DataSourceMember: "GetFeeType",
+    //     readonly: false,
+    //     disabled: false,
+    //     validatonList: [],
+    //     IsAutoLoadItemFromCache: false
+    // },
     {
         type: "textarea",
         name: "txtDescription",
@@ -122,30 +136,44 @@ export const AddElementList = [
 export const EditElementList = [
     {
         type: "text",
-        name: "txtServiceGroupID",
-        label: "mã nhóm dịch vụ",
+        name: "txtIgnoreCheckRcGeoLocReasonID",
+        label: "Mã lý do bỏ qua kiểm tra tọa độ nhận hàng",
         value: "",
-        maxSize: "10",
+        //maxSize: "10",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "ServiceGroupID",
+        DataSourceMember: "IgnoreCheckRcGeoLocReasonID",
         readonly: true,
-        validatonList: ["required", "number"]
+        validatonList: []
     },
     {
         type: "text",
-        name: "txtServiceGroupName",
-        label: "tên nhóm dịch vụ",
+        name: "txtIgnoreCheckRcGeoLocReasonName",
+        label: "tên Lý do bỏ qua kiểm tra tọa độ nhận hàng",
         value: "",
         maxSize: "200",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "ServiceGroupName",
+        DataSourceMember: "IgnoreCheckRcGeoLocReasonName",
         readonly: false,
         validatonList: ["required"],
     },
+    // {
+    //     type: "select",
+    //     name: "GetFeeType",
+    //     label: "Kiểu lấy chi phí",
+    //     value: "",
+    //     placeholder: "",
+    //     icon: "",
+    //     listoption: [{ value: 1, label: "Lấy giá trị cố định" }, { value: 2, label: "Lấy từ bảng làm giá" }],
+    //     DataSourceMember: "GetFeeType",
+    //     readonly: false,
+    //     disabled: false,
+    //     validatonList: [],
+    //     IsAutoLoadItemFromCache: false
+    // },
     {
         type: "textarea",
         name: "txtDescription",
@@ -209,16 +237,16 @@ export const SearchMLObjectDefinition = [
 
 export const MLObjectDefinition = [
     {
-        Name: "ServiceGroupID",
+        Name: "IgnoreCheckRcGeoLocReasonID",
         DefaultValue: "",
-        BindControlName: "txtServiceGroupID",
-        DataSourceMember: "ServiceGroupID"
+        BindControlName: "txtIgnoreCheckRcGeoLocReasonID",
+        DataSourceMember: "IgnoreCheckRcGeoLocReasonID"
     },
     {
-        Name: "ServiceGroupName",
+        Name: "IgnoreCheckRcGeoLocReasonName",
         DefaultValue: "",
-        BindControlName: "txtServiceGroupName",
-        DataSourceMember: "ServiceGroupName"
+        BindControlName: "txtIgnoreCheckRcGeoLocReasonName",
+        DataSourceMember: "IgnoreCheckRcGeoLocReasonName"
     },
     {
         Name: "Description",
@@ -226,6 +254,12 @@ export const MLObjectDefinition = [
         BindControlName: "txtDescription",
         DataSourceMember: "Description"
     },
+    // {
+    //     Name: "GetFeeType",
+    //     DefaultValue: "",
+    //     BindControlName: "GetFeeType",
+    //     DataSourceMember: "GetFeeType"
+    // },
     {
         Name: "OrderIndex",
         DefaultValue: "",
@@ -269,30 +303,30 @@ export const DataGridColumnList = [
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "ServiceGroupID",
+        DataSourceMember: "IgnoreCheckRcGeoLocReasonID",
         Width: 60
     },
     {
-        Name: "ServiceGroupID",
+        Name: "IgnoreCheckRcGeoLocReasonID",
         Type: "text",
-        Caption: "Mã nhóm dịch vụ",
-        DataSourceMember: "ServiceGroupID",
-        Width: 150
+        Caption: "Mã lý do bỏ qua kiểm tra tọa độ nhận hàng",
+        DataSourceMember: "IgnoreCheckRcGeoLocReasonID",
+        Width: 250
     },
     {
-        Name: "ServiceGroupName",
+        Name: "IgnoreCheckRcGeoLocReasonName",
         Type: "text",
-        Caption: "Tên nhóm dịch vụ",
-        DataSourceMember: "ServiceGroupName",
-        Width: 200
+        Caption: "Tên lý do bỏ qua kiểm tra tọa độ nhận hàng",
+        DataSourceMember: "IgnoreCheckRcGeoLocReasonName",
+        Width: 250
     },
-    {
-        Name: "Description",
-        Type: "text",
-        Caption: "Mô tả",
-        DataSourceMember: "Description",
-        //Width: 200
-    },
+    // {
+    //     Name: "Description",
+    //     Type: "text",
+    //     Caption: "Mô tả",
+    //     DataSourceMember: "Description",
+    //     //Width: 200
+    // },
     {
         Name: "IsActived",
         Type: "checkicon",
@@ -318,9 +352,9 @@ export const DataGridColumnList = [
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
-        DataSourceMember: "ServiceGroupID",
+        DataSourceMember: "IgnoreCheckRcGeoLocReasonID",
         Width: 100,
-        Link: "/ServiceGroup/Edit/",
+        Link: "/IgnoreCheckRcGeoLocReason/Edit/",
         LinkText: "Chỉnh sửa"
     }
 ];

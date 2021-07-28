@@ -394,7 +394,7 @@ export class Search extends Component {
                                 <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                     <thead className="thead-light">
                                         <tr>
-                                            <th className="jsgrid-header-cell text-center" style={{ width: "22%" }} colSpan={4}>Khách hàng</th>
+                                            <th className="jsgrid-header-cell text-center" style={{ width: "22%" }} colSpan={3}>Khách hàng</th>
                                             <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Tổng lỗi {dataTotalSource.PercentageQuantityLike != undefined ? dataTotalSource.PercentageQuantityLike : 0} %</th>
                                             <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Thời gian {dataTotalSource.PercentageTimeLike != undefined ? dataTotalSource.PercentageTimeLike : 0} %</th>
                                             <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Thái độ {dataTotalSource.PercentageAttitudeLike != undefined ? dataTotalSource.PercentageAttitudeLike : 0} %</th>
@@ -404,8 +404,7 @@ export class Search extends Component {
                                         </tr>
                                         <tr>
                                             <th className="jsgrid-header-cell text-center" style={{ width: 200 }}>Chi nhánh</th>
-                                            <th className="jsgrid-header-cell text-center" style={{ width: 200 }}>Ngành hàng</th>
-                                            <th className="jsgrid-header-cell text-center" style={{ width: 200 }}>nhóm hàng</th>
+                                            <th className="jsgrid-header-cell text-center" style={{ width: 200 }}>Tổng hợp</th>
                                             <th className="jsgrid-header-cell text-center" style={{ width: 150 }}>SL giao lắp</th>
 
                                             <th className="jsgrid-header-cell text-center" style={{ width: 150 }}>Không hài lòng</th>
@@ -444,7 +443,6 @@ export class Search extends Component {
                                         {
                                             !!Object.keys(dataTotalSource).length > 0 && <tr className="sum-total">
                                                 <td style={{ width: 200 }}>Tổng cộng</td>
-                                                <td style={{ width: 200 }}></td>
                                                 <td style={{ width: 200 }}></td>
                                                 <td style={{ width: 150 }}>{dataTotalSource.TotalQuantity}</td>
 
@@ -486,7 +484,6 @@ export class Search extends Component {
                                                 return <tr key={index}>
                                                     <td style={{ width: 200 }}>{item.CoordinatorGroupName}</td>
                                                     <td style={{ width: 200 }}>{item.MainGroupName}</td>
-                                                    <td style={{ width: 200 }}>{item.SubGroupName}</td>
                                                     <td style={{ width: 150 }}>{item.TotalQuantity}</td>
 
                                                     <td style={{ width: 150 }}>{item.TotalQuantityUnlike}</td>
