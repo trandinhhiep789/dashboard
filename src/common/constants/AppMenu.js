@@ -187,6 +187,13 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    {
+                        MenuName: 'IgnoreCheckRcGeoLocReason',
+                        MenuTitle: 'Lý do bỏ qua kiểm tra tọa độ nhận hàng',
+                        LinkTo: '/IgnoreCheckRcGeoLocReason',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
 
 
 
