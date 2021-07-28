@@ -2585,8 +2585,6 @@ class UploadAvatar extends React.Component {
 
     handleSelectedFile(event) {
         let isValidAcceptedFile = this.checkIsValidAcceptedFile(event.target.files[0].name);
-        console.log("change", isValidAcceptedFile)
-       
         if (this.props.isReturnInline) {
             if (this.props.onHandleSelectedFile != null && isValidAcceptedFile) {
                 this.setState({
@@ -2625,7 +2623,7 @@ class UploadAvatar extends React.Component {
             value: "",
         });
         if (this.props.isReturnInline) {
-            if (this.props.onHandleSelectedFile != null && isValidAcceptedFile) {
+            if (this.props.onHandleSelectedFile != null) {
                 this.props.onHandleSelectedFile("", this.props.nameMember, false);
             }
         }
