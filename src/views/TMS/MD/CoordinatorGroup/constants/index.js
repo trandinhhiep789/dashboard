@@ -113,6 +113,22 @@ export const AddElementList = [
         NameMember: "AreaName"
     },
     {
+        type: "select",
+        name: "txtDeliveryAbilityStoreID",
+        label: "kho lấy tải",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "DeliveryAbilityStoreID",
+        readonly: false,
+        validatonList: ["Comborequired"],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.DELIVERYABILITYSTORE",
+        ValueMember: "DeliveryAbilityStoreID",
+        NameMember: "DeliveryAbilityStoreIDName"
+    },
+    {
         type: "textarea",
         name: "txtDescription",
         label: "Mô tả",
@@ -207,6 +223,22 @@ export const EditElementList = [
         NameMember: "AreaName"
     },
     {
+        type: "select",
+        name: "txtDeliveryAbilityStoreID",
+        label: "kho lấy tải",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "DeliveryAbilityStoreID",
+        readonly: false,
+        validatonList: ["Comborequired"],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.DELIVERYABILITYSTORE",
+        ValueMember: "DeliveryAbilityStoreID",
+        NameMember: "DeliveryAbilityStoreIDName"
+    },
+    {
         type: "textarea",
         name: "txtDescription",
         label: "Mô tả:",
@@ -291,6 +323,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "txtAreaID",
         DataSourceMember: "AreaID"
+    },
+    {
+        Name: "DeliveryAbilityStoreID",
+        DefaultValue: "",
+        BindControlName: "txtDeliveryAbilityStoreID",
+        DataSourceMember: "DeliveryAbilityStoreID"
     },
     {
         Name: "AreaName",
