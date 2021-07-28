@@ -183,6 +183,10 @@ $font-weight-600: 600;
                                     width: 15px;
                                     color: #fff;
                                     height: 25px;
+                                    &.btn-user-plus{
+                                        clear: both;
+                                        color: #178ee0;
+                                    }
                                 }
                                 &.printing{
                                     button{
@@ -488,6 +492,26 @@ $font-weight-600: 600;
                             &.page-link{
                                 min-width: 25px;
                                 line-height: 25px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    &.shipment-route{
+        .card-title {
+            .flexbox {
+                .btn-toolbar {
+                    .btn-group {
+                        .group-left {
+                            .input-group{
+                                &.input-group-select{
+                                    input{
+                                        padding-left: 5px;
+                                    }
+                                    
+                                }
                             }
                         }
                     }

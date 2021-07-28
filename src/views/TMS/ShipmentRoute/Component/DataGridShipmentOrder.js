@@ -519,6 +519,7 @@ class DataGridShipmentOderCom extends Component {
                                 IsCoordinator={true}
                                 IsCancelDelivery={true}
                                 onChangeValue={this.handleShipmentOrder.bind(this)}
+
                             />
                         },
                         maxWidth: 850 + 'px'
@@ -737,8 +738,8 @@ class DataGridShipmentOderCom extends Component {
                             <tr>
                                 <th className="jsgrid-header-cell" style={{ width: '2%' }}></th>
                                 <th className="jsgrid-header-cell" style={{ width: '15%' }}>Thời gian giao</th>
-                                <th className="jsgrid-header-cell" style={{ width: '25%' }}>Địa chỉ</th>
-                                <th className="jsgrid-header-cell" style={{ width: '25%' }}>Mã/Loại yêu cầu vận chuyển</th>
+                                <th className="jsgrid-header-cell" style={{ width: '28%' }}>Địa chỉ</th>
+                                <th className="jsgrid-header-cell" style={{ width: '20%' }}>Mã/Loại yêu cầu vận chuyển</th>
                                 <th className="jsgrid-header-cell" style={{ width: '25%' }}>Tên sản phẩm/Ghi chú</th>
                                 <th className="jsgrid-header-cell" style={{ width: '8%' }}>Thanh toán</th>
                             </tr>
@@ -775,23 +776,34 @@ class DataGridShipmentOderCom extends Component {
                                     return (<tr key={rowIndex} className={rowtrClass}>
                                         <td className={rowUndelivery} style={{ width: '2%' }}>
                                             <ul>
-                                                <li className="item ">
-                                                    <div className="group-action">
-                                                        <div className="checkbox item-action">
-                                                            <label>
-                                                                <input type="checkbox" readOnly className="form-control form-control-sm" name={"ShipmentOrderID"} onChange={this.handleCheckShip.bind(this)} value={rowItem.ShipmentOrderID} checked={this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID)} />
-                                                                <span className="cr">
-                                                                    <i className="cr-icon fa fa-check"></i>
-                                                                </span>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li className="item ">
-                                                    <button className="btn">
-                                                        <i className="fa fa-user-plus"></i>
-                                                    </button>
-                                                </li>
+                                                {rowItem.ShipmentRouteID == "" ?
+                                                    (<React.Fragment>
+                                                        <li className="item ">
+                                                            <div className="group-action">
+                                                                <div className="checkbox item-action">
+                                                                    <label>
+                                                                        <input type="checkbox" readOnly className="form-control form-control-sm" name={"ShipmentOrderID"} onChange={this.handleCheckShip.bind(this)} value={rowItem.ShipmentOrderID} checked={this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID)} />
+                                                                        <span className="cr">
+                                                                            <i className="cr-icon fa fa-check"></i>
+                                                                        </span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li className="item ">
+                                                            <button className="btn">
+                                                                <i className="fa fa-user-plus"></i>
+                                                            </button>
+                                                        </li>
+                                                    </React.Fragment>
+
+                                                    ) :
+                                                    (<li className="item ">
+                                                        <button className="btn btn-user-plus" title ="Đã được phân tuyến">
+                                                            <i className="fa fa-user-plus" ></i>
+                                                        </button>
+                                                    </li>)
+                                                }
                                                 <li className="item printing">
                                                     <button className="btn" onClick={this.handlePrintClickNew.bind(this)}>
                                                         <i className="ti ti-printer" data-id={rowItem.ShipmentOrderID}></i>
@@ -821,7 +833,7 @@ class DataGridShipmentOderCom extends Component {
                                                 </ul>
                                             </div>
                                         </td>
-                                        <td className="jsgrid-cell group-address" style={{ width: '25%' }}>
+                                        <td className="jsgrid-cell group-address" style={{ width: '28%' }}>
                                             <ul>
                                                 <li className="item info-customer">
                                                     <i className="fa fa-user"></i>
@@ -832,8 +844,8 @@ class DataGridShipmentOderCom extends Component {
                                                         <span className="line">-</span>
                                                         <span className="partner-sale-Order">{rowItem.PartnerSaleOrderID}</span>
                                                         <button className="btn-copy-clipboard" data-id={rowItem.PartnerSaleOrderID} onClick={this.copyToClipboard.bind(this)}>
-                                                        <i className="fa fa-copy" data-id={rowItem.PartnerSaleOrderID}></i>
-                                                    </button>
+                                                            <i className="fa fa-copy" data-id={rowItem.PartnerSaleOrderID}></i>
+                                                        </button>
                                                     </div>
                                                 </li>
                                                 <li className="item address-customer">
@@ -851,7 +863,7 @@ class DataGridShipmentOderCom extends Component {
                                                         <span className="time-item">
                                                             <span className="intervale">
                                                                 <i className="fa fa-paper-plane-o"></i>
-                                                                <span className="txtintervale">{rowItem.EstimateDeliveryDistance + "Km/" + rowItem.ActualDeliveryDistance.toFixed(2) + "Km"}</span>
+                                                                <span className="txtintervale">{(rowItem.EstimateDeliveryDistance>=0?rowItem.EstimateDeliveryDistance:0) + "Km/" + rowItem.ActualDeliveryDistance.toFixed(2) + "Km"}</span>
                                                             </span>
                                                             <span className="intervale">
                                                                 <i className="ti ti-timer"></i>
@@ -862,7 +874,7 @@ class DataGridShipmentOderCom extends Component {
                                                 </li>
                                             </ul>
                                         </td>
-                                        <td className="jsgrid-cell group-infoShipmentOrder" style={{ width: '25%' }}>
+                                        <td className="jsgrid-cell group-infoShipmentOrder" style={{ width: '20%' }}>
                                             <ul>
                                                 <li className="item">
                                                     <Link
@@ -1167,7 +1179,7 @@ class DataGridShipmentOderCom extends Component {
                             <React.Fragment>
                                 {matches.small && this.renderDataGridSmallSize()}
                                 {matches.large && <div className={classCustom}>
-                                    <div className="cardShipmentOrder-page">
+                                    <div className="cardShipmentOrder-page shipment-route">
                                         <ReactNotification ref={this.notificationDOMRef} />
                                         <div className="card-title">
 
@@ -1188,7 +1200,7 @@ class DataGridShipmentOderCom extends Component {
                                                                         <i className="fa fa-history"></i>
                                                                     </button>
                                                                 </div>
-                                                                <div className="input-group input-group-select">
+                                                                <div className="input-group input-group-select ml-10">
                                                                     <input type="text" onChange={this.handleonChange.bind(this)} onKeyPress={this.handleKeyPress} className="form-control" aria-label="Text input with dropdown button" placeholder="Từ khóa" />
                                                                     <div className="input-group-append" onClick={this.handleSearchShip.bind(this)}>
                                                                         <span className="input-group-text"><i className="ti-search"></i></span>

@@ -381,8 +381,8 @@ class PageUICom extends React.Component {
                                                                 </div>
                                                             </div>
                                                         </li>
-                                                        <li className="item ">
-                                                            <button className="btn">
+                                                        <li className="item">
+                                                            <button className="btn btn-user-plus">
                                                                 <i className="fa fa-user-plus"></i>
                                                             </button>
                                                         </li>

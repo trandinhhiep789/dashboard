@@ -53,7 +53,7 @@ export const SearchElementList = [
         DataSourceMember: "ProductID",
         label: "Sản phẩm",
         colspan: 12,
-        rowspan: 3,
+        rowspan: 2,
         labelcolspan: 12,
         IsLabelDiv: true,
         value: "",

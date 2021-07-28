@@ -46,6 +46,11 @@
     
     &.modalRight{
         clear: both;
+        .modal-header{
+            border-bottom-color: #c0c0c0b0;
+            padding: .5rem 1rem;
+            background-color: #c0c0c0b0;
+        }
         .modal-footer{
             position: absolute;
             top: auto;
@@ -55,6 +60,7 @@
             border-color: #aaa2a2;
             display: inline-flex;
             justify-content: center;
+            padding: .5rem 1rem;
         }
 
         .stepper {
@@ -135,136 +141,222 @@
         }
         .card{
             .card-body {
-                .group-shipingorder{
-                    max-height: 300px;
-                    height: 300px;
-                    .modal-footer{
-                        clear: both;
-                        &.modal-footer-center{
+                .lstProductSelect{
+                    display: inline-block;
+                    .group-shipingorder{
+                        max-height: 300px;
+                        height: 300px;
+                        .modal-footer{
                             clear: both;
+                            &.modal-footer-center{
+                                clear: both;
+                            }
                         }
-                    }
-                    .jsgrid {
-                        position: relative;
-                        width: 100%;
-                        font-size: 1em;
-                        .jsgrid-grid-header {
-                            border: 1px solid #e9e9e9;
-                            border-color: #f1f2f3;
-                            overflow-x: hidden;
-                            overflow-y: scroll;
-                            -webkit-user-select: none;
-                            -khtml-user-select: none;
-                            -moz-user-select: none;
-                            -ms-user-select: none;
-                            -o-user-select: none;
-                            user-select: none;
-                        }
-                        .jsgrid-table {
+                        .jsgrid {
+                            position: relative;
                             width: 100%;
-                            table-layout: fixed;
-                            border-collapse: collapse;
-                            border-spacing: 0;
-                            .jsgrid-header-row{
-                                .jsgrid-header-cell {
-                                    background: #d9d9d9;
-                                    font-weight: 400;
-                                    padding: .3rem .5rem;
-                                    border: 1px solid #e8e4e4;
-                                   &:first-child{
-                                       border-left: none;
-                                   }
+                            font-size: 1em;
+                            .jsgrid-grid-header {
+                                border: 1px solid #e9e9e9;
+                                border-color: #f1f2f3;
+                                overflow-x: hidden;
+                                overflow-y: scroll;
+                                -webkit-user-select: none;
+                                -khtml-user-select: none;
+                                -moz-user-select: none;
+                                -ms-user-select: none;
+                                -o-user-select: none;
+                                user-select: none;
+                            }
+                            .jsgrid-table {
+                                width: 100%;
+                                table-layout: fixed;
+                                border-collapse: collapse;
+                                border-spacing: 0;
+                                .jsgrid-header-row{
+                                    .jsgrid-header-cell {
+                                        background: #d9d9d9;
+                                        font-weight: 400;
+                                        padding: .3rem .5rem;
+                                        border: 1px solid #e8e4e4;
+                                    &:first-child{
+                                        border-left: none;
+                                    }
+                                    }
+                                }
+                            }
+                        }
+                        .jsgrid-grid-body{
+                            background: #fff;
+                            border: 1px solid #f1f2f3;
+                            height: 410px;
+                            max-height: 350px;
+                            overflow-x: auto;
+                            overflow-y: scroll;
+                            -webkit-overflow-scrolling: touch;
+                            .jsgrid-row{
+                                .jsgrid-cell {
+                                    padding: .2rem .4rem;
+                                    border: 1px solid #f3f3f3;
+                                    .group-action{
+                                        display: flex;
+                                        justify-content: space-between;
+                                        width: 100%;
+                                        align-items: center;
+                                        flex-direction: column;
+                                        flex-wrap: nowrap;
+                                    }
+                                    &.high-priority{
+                                        background-color: #f3a420;
+                                    }
+                                    &.medium-priority{
+                                        background-color: #f7b547;
+                                    }
+                                    &.low-priority{
+                                        background-color: #f3bd63db;
+                                    }
+                                
+                                    &.group-products{
+                                        ul{
+                                            padding-left: 0;
+                                            margin-bottom: 0;
+                                            li{
+                                                list-style: none;
+                                                &.item{
+                                                    &.infoOder{
+                                                        display: flex;
+                                                        justify-content: space-between;
+                                                        span{
+                                                            clear: both;
+                                                            &.nameOrder{
+                                                                color: #2b8eea;
+                                                                font-size: 13px;
+                                                            }
+                                                            &.time{
+                                                                font-size: 12px;
+                                                                height: 20px;
+                                                                font-weight: 700;
+                                                            }
+                                                        }
+                                                    }
+                                                    &.infoProduict{
+                                                        clear: both;
+                                                        span{
+                                                            width: 100%;
+                                                            text-overflow: ellipsis;
+                                                            overflow: hidden;
+                                                            white-space: nowrap;
+                                                            -webkit-line-clamp: 1;
+                                                            -webkit-box-orient: vertical;
+                                                            text-align: left;
+                                                            display: block;
+                                                            height: 25px;
+                                                        }
+                                                    }
+                                                    &.delivery-status{
+                                                        display: flex;
+                                                        justify-content: flex-start;
+                                                        span{
+                                                            cursor: pointer;
+                                                            &.badge-active {
+                                                                background: #15c377;
+                                                                color: #fff;
+                                                            }
+                                                            i{
+                                                                &.fa-truck{
+                                                                    -webkit-transform: rotateY(180deg);
+                                                                    -moz-transform: rotateY(180deg);
+                                                                    -o-transform: rotateY(180deg);
+                                                                    -ms-transform: rotateY(180deg);
+                                                                    transform: rotateY(180deg);
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    &.address-customer{
+                                                        display: flex;
+                                                        justify-content: flex-start;
+                                                        span{
+                                                            text-align: left;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
-                    .jsgrid-grid-body{
-                        background: #fff;
-                        border: 1px solid #f1f2f3;
-                        height: 410px;
-                        max-height: 350px;
-                        overflow-x: auto;
-                        overflow-y: scroll;
-                        -webkit-overflow-scrolling: touch;
-                        .jsgrid-row{
-                            .jsgrid-cell {
-                                padding: .2rem .4rem;
-                                border: 1px solid #f3f3f3;
-                                .group-action{
-                                    display: flex;
-                                    justify-content: space-between;
-                                    width: 100%;
-                                    align-items: center;
-                                    flex-direction: column;
-                                    flex-wrap: nowrap;
-                                }
-                                &.high-priority{
-                                    background-color: #f3a420;
-                                }
-                                &.medium-priority{
-                                    background-color: #f7b547;
-                                }
-                                &.low-priority{
-                                    background-color: #f3bd63db;
-                                }
-                               
-                                &.group-products{
-                                    ul{
-                                        padding-left: 0;
-                                        margin-bottom: 0;
-                                        li{
-                                            list-style: none;
-                                            &.item{
-                                                &.infoOder{
-                                                    display: flex;
-                                                    justify-content: space-between;
-                                                    span{
-                                                        clear: both;
-                                                        &.nameOrder{
-                                                            color: #2b8eea;
-                                                            font-size: 13px;
-                                                        }
-                                                        &.time{
-                                                            font-size: 12px;
-                                                            height: 20px;
-                                                            font-weight: 700;
-                                                        }
+                }
+                .lstProduct{
+                    clear: both;
+                    .card{
+                        border-radius: 7px;
+                        .card-body{
+                            padding: 0.5rem;
+                            ul{
+                                padding-left: 0;
+                                margin-bottom: 0;
+                                li{
+                                    list-style: none;
+                                    &.item{
+                                        &.infoOder{
+                                            display: flex;
+                                            justify-content: space-between;
+                                            span{
+                                                &.nameOrder{
+                                                    color: #2b8eea;
+                                                    font-size: 13px;
+                                                }
+                                                &.time{
+                                                    font-size: 12px;
+                                                    height: 20px;
+                                                    font-weight: 700;
+                                                }
+                                            }
+                                        }
+                                        &.infoProduict{
+                                            span{
+                                                width: 100%;
+                                                text-overflow: ellipsis;
+                                                overflow: hidden;
+                                                white-space: nowrap;
+                                                -webkit-line-clamp: 1;
+                                                -webkit-box-orient: vertical;
+                                                text-align: left;
+                                                display: block;
+                                                height: 20px;
+                                            }
+                                        }
+                                        &.delivery-status{
+                                            display: flex;
+                                            justify-content: flex-start;
+                                            span{
+                                                cursor: pointer;
+                                                &.badge-active {
+                                                    background: #15c377;
+                                                    color: #fff;
+                                                }
+                                                i{
+                                                    &.fa-truck{
+                                                        -webkit-transform: rotateY(180deg);
+                                                        -moz-transform: rotateY(180deg);
+                                                        -o-transform: rotateY(180deg);
+                                                        -ms-transform: rotateY(180deg);
+                                                        transform: rotateY(180deg);
                                                     }
                                                 }
-                                                &.infoProduict{
-                                                    clear: both;
-                                                    span{
-                                                        width: 100%;
-                                                        text-overflow: ellipsis;
-                                                        overflow: hidden;
-                                                        white-space: nowrap;
-                                                        -webkit-line-clamp: 1;
-                                                        -webkit-box-orient: vertical;
-                                                        text-align: left;
-                                                        display: block;
-                                                        height: 25px;
-                                                    }
-                                                }
-                                                &.delivery-status{
-                                                    display: flex;
-                                                    justify-content: flex-start;
-                                                    span{
-                                                        cursor: pointer;
-                                                        &.badge-active {
-                                                            background: #15c377;
-                                                            color: #fff;
-                                                        }
-                                                        i{
-                                                            &.fa-truck{
-                                                                -webkit-transform: rotateY(180deg);
-                                                                -moz-transform: rotateY(180deg);
-                                                                -o-transform: rotateY(180deg);
-                                                                -ms-transform: rotateY(180deg);
-                                                                transform: rotateY(180deg);
-                                                            }
-                                                        }
-                                                    }
-                                                }
+                                            }
+                                        }
+                                        &.address-customer{
+                                            display: flex;
+                                            justify-content: flex-start;
+                                            span{
+                                                text-align: left;
+                                                line-height: 17px;
+                                                font-size: 12px;
+                                                font-weight: 600;
                                             }
                                         }
                                     }
