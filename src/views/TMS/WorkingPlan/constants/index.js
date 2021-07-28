@@ -42,7 +42,7 @@ export const SearchElementList = [
         type: "Datetime",
         name: "dtWorkingDate",
         DataSourceMember: "WorkingDate",
-        label: "ngày làm việc",
+        label: "Ngày làm việc",
         value: new Date(),
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
@@ -65,6 +65,22 @@ export const SearchElementList = [
         NameMember: "StoreName",
         // filterValue:10,
         // filterobj:"CompanyID",
+
+    },
+    {
+        type: "MultiSelectUser",
+        name: "cbUserName",
+        DataSourceMember: "UserName",
+        label: "Nhân viên",
+        colspan: 12,
+        rowspan: 3,
+        labelcolspan: 12,
+        IsLabelDiv: true,
+        value: -1,
+        placeholder: "---Vui lòng chọn---",
+        listoption: [],
+        IsAutoLoadItemFromCache: false,
+        isMultiSelect: true
 
     },
 
@@ -110,6 +126,11 @@ export const SearchMLObjectDefinition = [
         Name: "StoreID",
         DefaultValue: "",
         BindControlName: "cbStoreID"
+    },
+    {
+        Name: "UserName",
+        DefaultValue: "",
+        BindControlName: "cbUserName"
     },
 ]
 
