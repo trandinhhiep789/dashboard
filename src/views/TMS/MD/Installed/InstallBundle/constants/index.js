@@ -575,6 +575,30 @@ export const GridInstallBundle_Materia = [
         DataSourceMember: "AdvanceShowOrderindex"
     },
     {
+        Name: "IsCheckMinUsage",
+        DefaultValue: false,
+        BindControlName: "IsCheckMinUsage",
+        DataSourceMember: "IsCheckMinUsage"
+    },
+    {
+        Name: "IsCheckMinInStock",
+        DefaultValue: false,
+        BindControlName: "IsCheckMinInStock",
+        DataSourceMember: "IsCheckMinInStock"
+    },
+    {
+        Name: "MinInStockQuantity",
+        DefaultValue: 0,
+        BindControlName: "MinInStockQuantity",
+        DataSourceMember: "MinInStockQuantity"
+    },
+    {
+        Name: "MinUsageQuantity",
+        DefaultValue: 0,
+        BindControlName: "MinUsageQuantity",
+        DataSourceMember: "MinUsageQuantity"
+    },
+    {
         Name: "CreatedUser",
         DefaultValue: "",
         BindControlName: "",
@@ -937,12 +961,56 @@ export const InstallBundle_MateriaColumnList = [
         max: 9999
     },
     {
+        name: "IsCheckMinInStock",
+        Type: "checkbox",
+        label: "Có kiểm tra số lượng tồn tối thiểu",
+        Caption: "Có kiểm tra số lượng tồn tối thiểu",
+        datasourcemember: "IsCheckMinInStock",
+        hideInput: false,
+        Width: 70,
+        OrderIndex: 29
+    },
+    {
+        name: "MinInStockQuantity",
+        Type: "TextNumber",
+        label: "Số lượng tồn tối thiểu cần kiểm tra",
+        Caption: "Số lượng tồn tối thiểu cần kiểm tra",
+        datasourcemember: "MinInStockQuantity",
+        Width: 100,
+        OrderIndex: 30,
+        hideInput: false,
+        min: 0,
+        max: 9999
+    },
+    {
+        name: "IsCheckMinUsage",
+        Type: "checkbox",
+        label: "Có kiểm tra số lượng sử dụng tối thiểu",
+        Caption: "Có kiểm tra số lượng sử dụng tối thiểu",
+        datasourcemember: "IsCheckMinUsage",
+        hideInput: false,
+        Width: 70,
+        OrderIndex: 31
+    },
+    {
+        name: "MinUsageQuantity",
+        Type: "TextNumber",
+        label: "Số lượng sử dụng tối thiểu cần kiểm tra",
+        Caption: "Số lượng sử dụng tối thiểu cần kiểm tra",
+        datasourcemember: "MinUsageQuantity",
+        Width: 100,
+        OrderIndex: 32,
+        hideInput: false,
+        min: 0,
+        max: 9999
+    },
+    {
         name: "Note",
         Type: "TextArea",
         label: "Ghi chú",
         Caption: "Ghi chú",
         datasourcemember: "Note",
-        OrderIndex: 29,
+        OrderIndex: 33,
         Colmd: 12,
         hideInput: false,
         labelcolspan: 2,
@@ -1303,12 +1371,56 @@ export const InstallBundle_MateriaColumnListEdit = [
         max: 9999
     },
     {
+        name: "IsCheckMinInStock",
+        Type: "checkbox",
+        label: "Có kiểm tra số lượng tồn tối thiểu",
+        Caption: "Có kiểm tra số lượng tồn tối thiểu",
+        datasourcemember: "IsCheckMinInStock",
+        hideInput: false,
+        Width: 70,
+        OrderIndex: 29
+    },
+    {
+        name: "MinInStockQuantity",
+        Type: "TextNumber",
+        label: "Số lượng tồn tối thiểu cần kiểm tra",
+        Caption: "Số lượng tồn tối thiểu cần kiểm tra",
+        datasourcemember: "MinInStockQuantity",
+        Width: 100,
+        OrderIndex: 30,
+        hideInput: false,
+        min: 0,
+        max: 9999
+    },
+    {
+        name: "IsCheckMinUsage",
+        Type: "checkbox",
+        label: "Có kiểm tra số lượng sử dụng tối thiểu",
+        Caption: "Có kiểm tra số lượng sử dụng tối thiểu",
+        datasourcemember: "IsCheckMinUsage",
+        hideInput: false,
+        Width: 70,
+        OrderIndex: 31
+    },
+    {
+        name: "MinUsageQuantity",
+        Type: "TextNumber",
+        label: "Số lượng sử dụng tối thiểu cần kiểm tra",
+        Caption: "Số lượng sử dụng tối thiểu cần kiểm tra",
+        datasourcemember: "MinUsageQuantity",
+        Width: 100,
+        OrderIndex: 32,
+        hideInput: false,
+        min: 0,
+        max: 9999
+    },
+    {
         name: "Note",
         Type: "TextArea",
         label: "Ghi chú",
         Caption: "Ghi chú",
         datasourcemember: "Note",
-        OrderIndex: 29,
+        OrderIndex: 33,
         Colmd: 12,
         hideInput: false,
         labelcolspan: 2,
