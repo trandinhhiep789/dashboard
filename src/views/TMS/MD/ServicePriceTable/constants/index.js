@@ -21,7 +21,7 @@ export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "ServicePriceTableID";
 
 export const TitleFromSPTDetail = "Danh sách chi tiết bảng giá dịch vụ";
-export const TitleFromSPTArea = "Danh sách khu vụ áp dụng bảng giá dịch vụ";
+export const TitleFromSPTArea = "Danh sách khu vực áp dụng bảng giá dịch vụ";
 
 export const InitSearchParams = [
     {
