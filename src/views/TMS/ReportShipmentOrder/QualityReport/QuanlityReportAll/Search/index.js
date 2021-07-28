@@ -154,11 +154,11 @@ export class Search extends Component {
         const postData = [
             {
                 SearchKey: "@FROMDATE",
-                SearchValue: MLObject.FromDate
+                SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString()) //MLObject.FromDate 
             },
             {
                 SearchKey: "@TODATE",
-                SearchValue: MLObject.ToDate
+                SearchValue:  toIsoStringCus(new Date(MLObject.ToDate).toISOString()) //MLObject.ToDate
             },
             {
                 SearchKey: "@AREAIDLIST",
@@ -194,11 +194,11 @@ export class Search extends Component {
         const postTolalData = [
             {
                 SearchKey: "@FROMDATE",
-                SearchValue: MLObject.FromDate
+                SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString()) //MLObject.FromDate 
             },
             {
                 SearchKey: "@TODATE",
-                SearchValue: MLObject.ToDate
+                SearchValue:  toIsoStringCus(new Date(MLObject.ToDate).toISOString()) //MLObject.ToDate
             },
             {
                 SearchKey: "@AREAIDLIST",
@@ -282,11 +282,11 @@ export class Search extends Component {
         const postDataNew = [
             {
                 SearchKey: "@FROMDATE",
-                SearchValue: MLObject.FromDate
+                SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString()) //MLObject.FromDate 
             },
             {
                 SearchKey: "@TODATE",
-                SearchValue: MLObject.ToDate
+                SearchValue:  toIsoStringCus(new Date(MLObject.ToDate).toISOString()) //MLObject.ToDate
             },
             {
                 SearchKey: "@AREAIDLIST",
