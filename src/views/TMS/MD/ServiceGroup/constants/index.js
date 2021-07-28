@@ -14,18 +14,18 @@ export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách nhóm tiêu chí đánh giá chất lượng" }
+    { Link: "", Title: "Danh sách nhóm dịch vụ" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/ServiceGroup", Title: "Danh sách nhóm tiêu chí đánh giá chất lượng" },
+    { Link: "/ServiceGroup", Title: "Danh sách nhóm dịch vụ" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/ServiceGroup", Title: "Danh sách nhóm tiêu chí đánh giá chất lượng" },
+    { Link: "/ServiceGroup", Title: "Danh sách nhóm dịch vụ" },
     { Link: "", Title: "Thêm" }
 ];
 

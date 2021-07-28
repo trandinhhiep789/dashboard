@@ -14,18 +14,18 @@ export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách nhóm tiêu chí đánh giá chất lượng" }
+    { Link: "", Title: "Danh sách lý do bỏ qua kiểm tra tọa độ nhận hàng" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/IgnoreCheckRcGeoLocReason", Title: "Danh sách nhóm tiêu chí đánh giá chất lượng" },
+    { Link: "/IgnoreCheckRcGeoLocReason", Title: "Danh sách lý do bỏ qua kiểm tra tọa độ nhận hàng" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/IgnoreCheckRcGeoLocReason", Title: "Danh sách nhóm tiêu chí đánh giá chất lượng" },
+    { Link: "/IgnoreCheckRcGeoLocReason", Title: "Danh sách lý do bỏ qua kiểm tra tọa độ nhận hàng" },
     { Link: "", Title: "Thêm" }
 ];
 
