@@ -431,6 +431,38 @@ class ListShipCoordinatorCom extends Component {
         this.state.ShipmentOrder.splice(this.state.ShipmentOrder.findIndex(n => n.ShipmentOrderID == id), 1);
         this.setState({ ShipmentOrder: this.state.ShipmentOrder });
     };
+    handleChangeOder = (rowIndex, OrderID) => e => {
+        let { ShipmentOrder } = this.state;
+        let totalcout = ShipmentOrder.length - 1;
+        let OrderIDOlw = 0;
+        let OrderIDNew = 0;
+        let OrderIndexOlw = 0;
+        let OrderIndexNew = 0;
+    
+        if (rowIndex == 0 && OrderID == -1) {
+            OrderIDOlw = rowIndex;
+            OrderIndexOlw = totalcout;
+            OrderIDNew = totalcout;
+            OrderIndexNew = 0
+        }
+        else if (rowIndex == totalcout && OrderID == 1) {
+            OrderIDOlw = rowIndex;
+            OrderIndexOlw = 0;
+            OrderIDNew = 0;
+            OrderIndexNew = totalcout
+        }
+        else {
+            OrderIDOlw = rowIndex;
+            OrderIndexOlw = rowIndex + OrderID;
+            OrderIDNew = rowIndex + OrderID;
+            OrderIndexNew = rowIndex - OrderID;
+        }
+        ShipmentOrder[OrderIDOlw]["OrderIndex"] = OrderIndexOlw;
+        ShipmentOrder[OrderIDNew]["OrderIndex"] = OrderIndexNew;
+        ShipmentOrder.sort((a, b) => a.OrderIndex - b.OrderIndex);
+        this.setState({ ShipmentOrder: this.state.ShipmentOrder });
+    };
+
     render() {
         let { ShipmentOrder } = this.state;
         console.log("ShipmentOrder", ShipmentOrder)
@@ -669,8 +701,8 @@ class ListShipCoordinatorCom extends Component {
                                                                     <div className="group-action">
                                                                         {ShipmentOrder.length > 1 ?
                                                                             (
-                                                                                <a class="table-action hover-danger item-action">
-                                                                                    <i class="ti-angle-up"></i>
+                                                                                <a onClick={this.handleChangeOder(index, -1)} className="table-action hover-danger item-action">
+                                                                                    <i className="ti-angle-up"></i>
                                                                                 </a>
                                                                             ) :
                                                                             ""
@@ -682,8 +714,8 @@ class ListShipCoordinatorCom extends Component {
 
                                                                         {ShipmentOrder.length > 1 ?
                                                                             (
-                                                                                <a class="table-action hover-danger item-action">
-                                                                                    <i class="ti-angle-down"></i>
+                                                                                <a onClick={this.handleChangeOder(index, 1)} className="table-action hover-danger item-action">
+                                                                                    <i className="ti-angle-down"></i>
                                                                                 </a>
                                                                             ) :
                                                                             ""
