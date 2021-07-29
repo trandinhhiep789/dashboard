@@ -284,6 +284,18 @@
                                             }
                                         }
                                     }
+                                    &.group-controll{
+                                        clear: both;
+                                        .form-row{
+                                            &:last-child{
+                                                
+                                                .form-group{
+                                                    margin-bottom: 0 !important;
+                                                }
+                                            }
+                                            
+                                        }
+                                    }
                                 }
                             }
                         }

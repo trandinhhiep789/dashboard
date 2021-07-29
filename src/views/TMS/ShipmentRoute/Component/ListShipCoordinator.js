@@ -583,7 +583,7 @@ class ListShipCoordinatorCom extends Component {
                                                                         </li>
                                                                     </ul>
                                                                 </td>
-                                                                <td className="jsgrid-cell " style={{ width: '44%' }}>
+                                                                <td className="jsgrid-cell group-controll" style={{ width: '44%' }}>
                                                                     <div className="form-row">
                                                                         <div className="form-group col-md-12">
                                                                             <ElementInputModal.ElementModalComboBox
