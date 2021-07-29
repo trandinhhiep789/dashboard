@@ -503,6 +503,7 @@ class DataGridShipmentOderCom extends Component {
         this.props.onSubmitItem(listMLObject);
     }
     handleUserCoordinator() {
+        this.props.hideModal();
         const { widthPercent } = this.state;
         if (this.state.GridDataShip.length > 0) {
             this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderLst", this.state.GridDataShip).then(apiResult => {
@@ -585,6 +586,56 @@ class DataGridShipmentOderCom extends Component {
             this.state.GridDataShip.splice(this.state.GridDataShip.findIndex(n => n[name] == strShipmentOrdervalue), 1);
         }
         this.setState({ GridDataShip: this.state.GridDataShip });
+
+    }
+
+    handleClickShip = (ShipmentOrderID) => e => {
+        let { ShipmentOrder } = this.state;
+        const objShipmentOrder = this.state.DataSource.find(n => n["ShipmentOrderID"] == ShipmentOrderID)
+        let objShip = {
+            ShipmentOrderID: objShipmentOrder.ShipmentOrderID,
+            ShipmentOrderTypeID: objShipmentOrder.ShipmentOrderTypeID,
+            CarrierPartnerID: objShipmentOrder.CarrierPartnerID,
+            CarrierTypeID: objShipmentOrder.CarrierTypeID,
+            DeliverUserList: [],
+            CurrentShipmentOrderStepID: objShipmentOrder.CurrentShipmentOrderStepID
+        };
+        this.state.GridDataShip.push(objShip);
+
+        this.props.hideModal();
+        const { widthPercent } = this.state;
+        if (this.state.GridDataShip.length > 0) {
+            this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderLst", this.state.GridDataShip).then(apiResult => {
+                if (!apiResult.IsError) {
+                    this.setState({ GridDataShip: apiResult.ResultObject });
+                    this.props.showModal(MODAL_TYPE_VIEW, {
+                        title: 'Điều phối nhân viên ',
+                        isShowOverlay: false,
+                        content: {
+                            text: <ListShipCoordinator
+                                ShipmentOrderID={0}
+                                InfoCoordinator={this.state.GridDataShip}
+                                IsUserCoordinator={true}
+                                IsCoordinator={true}
+                                IsCancelDelivery={true}
+                                onChangeValue={this.handleShipmentOrder.bind(this)}
+
+                            />
+                        },
+                        maxWidth: 850 + 'px'
+                    });
+                }
+                else {
+                    this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!")
+                }
+            });
+        }
+        else {
+            this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!")
+        }
+    };
+    handleClickShip(e)
+    {
 
     }
     _genCommentTime(dates) {
@@ -791,7 +842,7 @@ class DataGridShipmentOderCom extends Component {
                                                             </div>
                                                         </li>
                                                         <li className="item ">
-                                                            <button className="btn">
+                                                            <button className="btn" onClick={this.handleClickShip(rowItem.ShipmentOrderID)}  >
                                                                 <i className="fa fa-user-plus"></i>
                                                             </button>
                                                         </li>
