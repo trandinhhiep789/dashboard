@@ -63,7 +63,7 @@ export class Search extends Component {
     getCacheMTG() {
         this.props.callGetCache(ERPCOMMONCACHE_TMSCONFIG).then((result) => {
             if (result && !result.IsError && result.ResultObject) {
-                let _configValue = result.ResultObject.CacheData.filter(x => x.TMSConfigID == "TEMPLATE_EXPORT_QUALITYASSESS_BYCOO");
+                let _configValue = result.ResultObject.CacheData.filter(x => x.TMSConfigID == "TEMPLATE_EXPORT_QUALITYASSESS_TOTALBRANCHGENERAL");
                 if (_configValue) {
                     this.setState({
                         exportTemplateID: _configValue[0].TMSConfigValue
@@ -320,7 +320,7 @@ export class Search extends Component {
 
         const postData = {
             DataExportTemplateID: exportTemplateID,
-            LoadDataStoreName: 'TMS.RPT_SHIPQUALITYASSESS',
+            LoadDataStoreName: 'TMS.RPT_SHIPQUALITYASSESS_BYCOOR',
             KeyCached: "SHIPMENTORDER_REPORT_EXPORT",
             SearchParamList: postDataNew,
             ExportDataParamsDescription: "FROMDATE: " + MLObject.FromDate + " - TODATE: " + MLObject.ToDate + " - RPTTYPE: " + 0 + " - AREAIDLIST: " + areaID + " - COORDINATORGROUPIDLIST: " + result2 + " - MAINGROUPIDLIST: " + "" + " - SUBGROUPIDLIST: " + "" + " - ISDETAIL: " + 1 + " - PAGESIZE: " + "-1" + " - PAGEINDEX: " + "-1"
