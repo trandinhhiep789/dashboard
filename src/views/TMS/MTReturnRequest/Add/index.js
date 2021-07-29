@@ -44,7 +44,6 @@ class AddCom extends React.Component {
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.onChangeDataMTRRequestDetail = this.onChangeDataMTRRequestDetail.bind(this);
         this.combineSameMaterial = this.combineSameMaterial.bind(this);
-        this.checkValidateArrCombineSameMaterial = this.checkValidateArrCombineSameMaterial.bind(this);
         this.handleCallGetCache = this.handleCallGetCache.bind(this);
         this.addKeyInventoryStatusName = this.addKeyInventoryStatusName.bind(this);
 
@@ -218,18 +217,6 @@ class AddCom extends React.Component {
         });
     }
 
-    checkValidateArrCombineSameMaterial(arrUniqueMaterial) {
-        const { isError, MTReturnRequestDetail } = this.state;
-        debugger
-        arrUniqueMaterial.forEach(item => {
-            if (item.Quantity > item.TotalQuantity) {
-                console.log(`Lỗi vật tư ${item.MaterialGroupID}-${item.ProductName} quá số lượng tạm ứng`)
-                return;
-            }
-        })
-
-    }
-
     combineSameMaterial() {
         const { MTReturnRequestDetailNew } = this.state;
         let arrUniqueMaterial = [];
@@ -240,7 +227,18 @@ class AddCom extends React.Component {
                 ...MTReturnRequestDetailNew[0], Quantity: parseInt(MTReturnRequestDetailNew[0].Quantity)
             });
 
-            if (MTReturnRequestDetailNew.length == 1) return MTReturnRequestDetailNew;
+            if (MTReturnRequestDetailNew.length == 1) {
+                const updateMTReturnRequestDetailNew = MTReturnRequestDetailNew.reduce((acc, val) => {
+                    if (val.Quantity != undefined && val.Quantity > 0) {
+                        const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : 0 }
+                        return [...acc, updateVal];
+                    } else {
+                        return acc;
+                    }
+                }, []);
+
+                return updateMTReturnRequestDetailNew;
+            }
 
             for (let index = 1; index < MTReturnRequestDetailNew.length; index++) {
                 const material = MTReturnRequestDetailNew[index];
@@ -259,8 +257,17 @@ class AddCom extends React.Component {
                     : arrUniqueMaterial.push({ ...material, Quantity: parseInt(material.Quantity) });
             }
         }
+
+        arrUniqueMaterial = arrUniqueMaterial.reduce((acc, val) => {
+            if (val.Quantity != undefined && val.Quantity > 0) {
+                const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : 0 }
+                return [...acc, updateVal];
+            } else {
+                return acc;
+            }
+        }, []);
+
         return arrUniqueMaterial
-        //this.checkValidateArrCombineSameMaterial(arrUniqueMaterial);
     }
 
     prevDataSubmit(formData, MLObject) {
@@ -338,9 +345,8 @@ class AddCom extends React.Component {
             let itemCheck = []
             if (!!arrProductDetai) {
                 itemCheck = arrProductDetai.filter((item, index) => {
-                    if (item.Quantity > item.TotalQuantity) {
-                        return item;
-                    }
+                    if (item.InStockProductID != "") return item.ConvertQuantity > item.TotalQuantity;
+                    if (item.Quantity > item.TotalQuantity) return item;
                 })
             }
 
@@ -508,17 +514,6 @@ class AddCom extends React.Component {
             },
             maxWidth: addImportMaterialModalWidth
         });
-    }
-
-    handleItemEdit(index) {
-        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: 'Cập nhật chi tiết nhập trả vật tư',
-            content: {
-                text: <div>chỉnh sửa</div>
-            },
-            maxWidth: '1000px'
-        });
-
     }
 
     render() {
