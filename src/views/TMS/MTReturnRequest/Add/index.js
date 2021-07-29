@@ -230,7 +230,7 @@ class AddCom extends React.Component {
             if (MTReturnRequestDetailNew.length == 1) {
                 const updateMTReturnRequestDetailNew = MTReturnRequestDetailNew.reduce((acc, val) => {
                     if (val.Quantity != undefined && val.Quantity > 0) {
-                        const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : 0 }
+                        const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : null }
                         return [...acc, updateVal];
                     } else {
                         return acc;
@@ -260,7 +260,7 @@ class AddCom extends React.Component {
 
         arrUniqueMaterial = arrUniqueMaterial.reduce((acc, val) => {
             if (val.Quantity != undefined && val.Quantity > 0) {
-                const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : 0 }
+                const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : null }
                 return [...acc, updateVal];
             } else {
                 return acc;
@@ -299,7 +299,7 @@ class AddCom extends React.Component {
 
             const MTReturnRequestDetail = MTReturnRequestDetailNew.reduce((acc, val) => {
                 if (val.Quantity != undefined && val.Quantity > 0) {
-                    const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : 0 }
+                    const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : null }
                     return [...acc, updateVal];
                 } else {
                     return acc;
@@ -411,14 +411,32 @@ class AddCom extends React.Component {
     }
 
     handleinsertItemNew(data) {
+        const updateData = data.reduce((acc, val) => {
+            if (val.Quantity != undefined && val.Quantity > 0) {
+                const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : null }
+                return [...acc, updateVal];
+            } else {
+                return acc;
+            }
+        }, []);
+
         this.setState({
-            MTReturnRequestDetailNew: [...this.state.MTReturnRequestDetailNew, ...data]
+            MTReturnRequestDetailNew: [...this.state.MTReturnRequestDetailNew, ...updateData]
         })
     }
 
     onChangeDataMTRRequestDetail(data) {
+        const updateData = data.reduce((acc, val) => {
+            if (val.Quantity != undefined && val.Quantity > 0) {
+                const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : null }
+                return [...acc, updateVal];
+            } else {
+                return acc;
+            }
+        }, []);
+
         this.setState({
-            MTReturnRequestDetailNew: data
+            MTReturnRequestDetailNew: updateData
         })
     }
 
@@ -453,8 +471,18 @@ class AddCom extends React.Component {
         delete data[0].key
         const cloneData = [...MTReturnRequestDetailNew]
         cloneData[key] = data[0]
+
+        const updateData = cloneData.reduce((acc, val) => {
+            if (val.Quantity != undefined && val.Quantity > 0) {
+                const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : null }
+                return [...acc, updateVal];
+            } else {
+                return acc;
+            }
+        }, []);
+
         this.setState({
-            MTReturnRequestDetailNew: cloneData
+            MTReturnRequestDetailNew: updateData
         })
     }
 

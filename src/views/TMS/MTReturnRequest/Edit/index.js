@@ -174,7 +174,7 @@ class EditCom extends React.Component {
             if (MTReturnRequestDetailNew.length == 1) {
                 const updateMTReturnRequestDetailNew = MTReturnRequestDetailNew.reduce((acc, val) => {
                     if (val.Quantity != undefined && val.Quantity > 0) {
-                        const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : 0 }
+                        const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : null }
                         return [...acc, updateVal];
                     } else {
                         return acc;
@@ -204,7 +204,7 @@ class EditCom extends React.Component {
 
         arrUniqueMaterial = arrUniqueMaterial.reduce((acc, val) => {
             if (val.Quantity != undefined && val.Quantity > 0) {
-                const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : 0 }
+                const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : null }
                 return [...acc, updateVal];
             } else {
                 return acc;
@@ -260,7 +260,7 @@ class EditCom extends React.Component {
             const updateMTReturnRequestDetailNew = MTReturnRequestDetailNew.map(item => {
                 return {
                     ...item,
-                    ConvertQuantity: val.InStockProductID != "" ? item.Quantity * item.InStockConvertRatio : 0
+                    ConvertQuantity: val.InStockProductID != "" ? item.Quantity * item.InStockConvertRatio : null
                 }
             })
 
@@ -651,8 +651,17 @@ class EditCom extends React.Component {
     }
 
     handleinsertItemNew(data) {
+        const updateData = data.reduce((acc, val) => {
+            if (val.Quantity != undefined && val.Quantity > 0) {
+                const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : null }
+                return [...acc, updateVal];
+            } else {
+                return acc;
+            }
+        }, []);
+
         this.setState({
-            MTReturnRequestDetailNew: [...this.state.MTReturnRequestDetailNew, ...data]
+            MTReturnRequestDetailNew: [...this.state.MTReturnRequestDetailNew, ...updateData]
         })
     }
 
