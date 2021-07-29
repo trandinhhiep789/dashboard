@@ -17,6 +17,8 @@ import StaffTransferDetailCom from './StaffTransferDetail';
 import StaffTransfer_ReviewListCom from './StaffTransfer_ReviewList';
 import Attachment from "../../../../common/components/Attachment";
 import Comment from "../../../../common/components/Comment";
+import { checkFileExtension } from '../../../../common/library/CommonLib';
+
 
 class DetailCom extends React.Component {
     constructor(props) {
@@ -183,27 +185,34 @@ class DetailCom extends React.Component {
     }
 
     handleSelectFile(e) {
-        // const { stateDataSource } = this.state;
-
-        // let data = new FormData();
-        // const MLObject = {
-        //     StaffTransferID: stateDataSource.StaffTransferID,
-        //     RequestDate: stateDataSource.RequestDate,
-        //     CreatedUser: this.props.AppInfo.LoginInfo.Username
-        // };
-
-        // data.append('file', e.target.files[0])
-        // data.append("ObjStaffTransfer_Attachment", JSON.stringify(MLObject));
-
-        // this.props.callFetchAPI(APIHostName, AddAPIAttachment, data).then((apiResult) => {
-        //     if (apiResult.IsError) {
-        //         this.showMessage(apiResult.Message);
-        //     }
-        //     else {
-        //         this.showMessage("ok")
-        //     }
-        // })
         this.showMessage("Tính năng đang phát triển")
+        return
+        const { stateDataSource } = this.state;
+
+        let data = new FormData();
+        const MLObject = {
+            StaffTransferID: stateDataSource.StaffTransferID,
+            RequestDate: stateDataSource.RequestDate,
+            CreatedUser: this.props.AppInfo.LoginInfo.Username
+        };
+
+        data.append('file', e.target.files[0])
+        data.append("ObjStaffTransfer_Attachment", JSON.stringify(MLObject));
+
+        // check định dạng file
+        const fileName = e.target.files[0].name;
+        if (checkFileExtension(fileName).IsError) {
+            this.showMessage(checkFileExtension(fileName).Message);
+        } else {
+            this.props.callFetchAPI(APIHostName, AddAPIAttachment, data).then((apiResult) => {
+                if (apiResult.IsError) {
+                    this.showMessage(apiResult.Message);
+                }
+                else {
+                    this.showMessage("ok")
+                }
+            })
+        }
     }
 
     handleDeleteFile() {

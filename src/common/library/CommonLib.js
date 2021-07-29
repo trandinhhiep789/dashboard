@@ -161,3 +161,28 @@ export function deleteCookie(name) {
 export function clearAllLocalCacheData() {
     window.indexedDB.deleteDatabase(CACHE_OBJECT_STORENAME);
 };
+
+export function checkFileExtension(fileName) {
+    try {
+        const arrFileType = ["docx", "doc", "xlsx", "pdf", "png", "jpg"];
+        const fileExtension = fileName.split('.').pop();
+        const found = arrFileType.find(element => element == fileExtension);
+
+        if (found == undefined) {
+            return {
+                IsError: true,
+                Message: `Vui lòng chọn đúng định dạng file: ${arrFileType.join(", ")}`
+            };
+        } else {
+            return {
+                IsError: false,
+                Message: ""
+            };
+        }
+    } catch (error) {
+        return {
+            IsError: true,
+            Message: "Lỗi xử lý file"
+        };
+    }
+}
