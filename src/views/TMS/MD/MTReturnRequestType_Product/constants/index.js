@@ -104,14 +104,31 @@ export const ModalColumnList_Insert = [
     },
     {
         Name: "InstockProductID",
-        type: "productbox",
+        type: "multiselect",
         label: "sản phẩm tồn kho",
-        colspan: 12,
-        isMulti: false,
         DataSourceMember: "InstockProductID",
         readonly: false,
-        validatonList: []
+        value: -1,
+        listoption: [],
+        validatonList: [],
+        isMulti: false,
+        IsAutoLoadItemFromCache: false,
+        // LoadItemCacheKeyID: "ERPCOMMONCACHE.MATERIALGROUP",
+        // ValueMember: "MaterialGroupID",
+        // NameMember: "MaterialGroupName",
+        // KeyFilter: "FunctionCategoryID",
+        // ValueFilter: "1,2"
     },
+    // {
+    //     Name: "InstockProductID",
+    //     type: "productbox",
+    //     label: "sản phẩm tồn kho",
+    //     colspan: 12,
+    //     isMulti: false,
+    //     DataSourceMember: "InstockProductID",
+    //     readonly: false,
+    //     validatonList: []
+    // },
     {
         Name: "InstockConvertRatio",
         type: "text",
@@ -211,14 +228,31 @@ export const ModalColumnList_Edit = [
     },
     {
         Name: "InstockProductID",
-        type: "productbox",
+        type: "multiselect",
         label: "sản phẩm tồn kho",
-        colspan: 12,
-        isMulti: false,
         DataSourceMember: "InstockProductID",
         readonly: false,
-        validatonList: []
+        value: -1,
+        listoption: [],
+        validatonList: [],
+        isMulti: false,
+        IsAutoLoadItemFromCache: false,
+        // LoadItemCacheKeyID: "ERPCOMMONCACHE.MATERIALGROUP",
+        // ValueMember: "MaterialGroupID",
+        // NameMember: "MaterialGroupName",
+        // KeyFilter: "FunctionCategoryID",
+        // ValueFilter: "1,2"
     },
+    // {
+    //     Name: "InstockProductID",
+    //     type: "productbox",
+    //     label: "sản phẩm tồn kho",
+    //     colspan: 12,
+    //     isMulti: false,
+    //     DataSourceMember: "InstockProductID",
+    //     readonly: false,
+    //     validatonList: []
+    // },
     {
         Name: "InstockConvertRatio",
         type: "text",

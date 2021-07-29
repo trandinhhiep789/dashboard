@@ -141,6 +141,14 @@ const AppMenu = [
                                 MenuIcon: '',
                                 SubMenu: []
                             },
+                            {
+                                MenuName: 'DeliveryAbilityStore',
+                                MenuTitle: 'Kho lấy tải',
+                                LinkTo: '/DeliveryAbilityStore',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+
                         ]
                     },
 
