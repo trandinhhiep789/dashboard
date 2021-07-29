@@ -7,13 +7,13 @@ export const DeleteAPIPath = "api/ServicePriceTable/Delete";
 export const BackLink = "/ServicePriceTable";
 export const AddLink = "/ServicePriceTable/Add";
 
-export const AddAPISPTDetailPath = "/api/ServicePriceTableDetail/Add"; 
-export const EditAPISPTDetailPath = "/api/ServicePriceTableDetail/Update";
-export const DeleteAPISPTDetailPath = "/api/ServicePriceTableDetail/Delete";
+export const AddAPISPTDetailPath = "api/ServicePriceTableDetail/Add"; 
+export const EditAPISPTDetailPath = "api/ServicePriceTableDetail/Update";
+export const DeleteAPISPTDetailPath = "api/ServicePriceTableDetail/Delete";
 
-export const AddAPISPTAreaPath = "/api/ServicePriceTable_Area/Add";
-export const EditAPISPTAreaPath = "/api/ServicePriceTable_Area/Update";
-export const DeleteAPISPTAreaPath = "/api/ServicePriceTable_Area/Delete";
+export const AddAPISPTAreaPath = "api/ServicePriceTable_Area/Add";
+export const EditAPISPTAreaPath = "api/ServicePriceTable_Area/Update";
+export const DeleteAPISPTAreaPath = "api/ServicePriceTable_Area/Delete";
 
 
 
@@ -21,7 +21,7 @@ export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "ServicePriceTableID";
 
 export const TitleFromSPTDetail = "Danh sách chi tiết bảng giá dịch vụ";
-export const TitleFromSPTArea = "Danh sách khu vụ áp dụng bảng giá dịch vụ";
+export const TitleFromSPTArea = "Danh sách khu vực áp dụng bảng giá dịch vụ";
 
 export const InitSearchParams = [
     {

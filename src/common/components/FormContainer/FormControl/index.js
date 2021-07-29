@@ -23,6 +23,8 @@ import { el } from 'date-fns/locale';
 import draftToHtml from 'draftjs-to-html';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import { ModalManager } from "react-dynamic-modal";
+import { MessageModal } from "../../../../common/components/Modal";
 
 //#region connect
 const mapStateToProps = state => {
@@ -2569,22 +2571,38 @@ class UploadAvatar extends React.Component {
         }
     }
 
+    showMessage(message) {
+        ModalManager.open(
+            <MessageModal
+                title="Thông báo"
+                message={message}
+                onRequestClose={() => true}
+            />
+        );
+    }
+
 
 
     handleSelectedFile(event) {
         let isValidAcceptedFile = this.checkIsValidAcceptedFile(event.target.files[0].name);
-        // console.log("change", isValidAcceptedFile, event.target.files[0].name)
-        this.setState({
-            value: event.target.files[0].name,
-            src: URL.createObjectURL(event.target.files[0])
-        });
         if (this.props.isReturnInline) {
             if (this.props.onHandleSelectedFile != null && isValidAcceptedFile) {
+                this.setState({
+                    value: event.target.files[0].name,
+                    src: URL.createObjectURL(event.target.files[0])
+                });
                 this.props.onHandleSelectedFile(event.target.files[0], this.props.nameMember, false);
+            }
+            else{
+                this.showMessage("File không đúng định dạng.")
             }
         }
         else {
             if (this.props.onValueChange != null && isValidAcceptedFile) {
+                this.setState({
+                    value: event.target.files[0].name,
+                    src: URL.createObjectURL(event.target.files[0])
+                });
                 this.props.onValueChange(this.props.name, event.target.files[0].name, this.props.nameMember, "", undefined);
 
                 //console.log("selipfile", event.target.files[0]);
@@ -2605,7 +2623,7 @@ class UploadAvatar extends React.Component {
             value: "",
         });
         if (this.props.isReturnInline) {
-            if (this.props.onHandleSelectedFile != null && isValidAcceptedFile) {
+            if (this.props.onHandleSelectedFile != null) {
                 this.props.onHandleSelectedFile("", this.props.nameMember, false);
             }
         }
