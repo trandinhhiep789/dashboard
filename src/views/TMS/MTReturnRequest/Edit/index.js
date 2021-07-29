@@ -170,7 +170,19 @@ class EditCom extends React.Component {
                 ...MTReturnRequestDetailNew[0], Quantity: parseInt(MTReturnRequestDetailNew[0].Quantity)
             });
 
-            if (MTReturnRequestDetailNew.length == 1) return MTReturnRequestDetailNew;
+            // if (MTReturnRequestDetailNew.length == 1) return MTReturnRequestDetailNew;
+            if (MTReturnRequestDetailNew.length == 1) {
+                const updateMTReturnRequestDetailNew = MTReturnRequestDetailNew.reduce((acc, val) => {
+                    if (val.Quantity != undefined && val.Quantity > 0) {
+                        const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : 0 }
+                        return [...acc, updateVal];
+                    } else {
+                        return acc;
+                    }
+                }, []);
+
+                return updateMTReturnRequestDetailNew;
+            }
 
             for (let index = 1; index < MTReturnRequestDetailNew.length; index++) {
                 const material = MTReturnRequestDetailNew[index];
@@ -189,8 +201,17 @@ class EditCom extends React.Component {
                     : arrUniqueMaterial.push({ ...material, Quantity: parseInt(material.Quantity) });
             }
         }
+
+        arrUniqueMaterial = arrUniqueMaterial.reduce((acc, val) => {
+            if (val.Quantity != undefined && val.Quantity > 0) {
+                const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : 0 }
+                return [...acc, updateVal];
+            } else {
+                return acc;
+            }
+        }, []);
+
         return arrUniqueMaterial
-        //this.checkValidateArrCombineSameMaterial(arrUniqueMaterial);
     }
 
     prevDataSubmit(formData, MLObject) {
@@ -246,9 +267,8 @@ class EditCom extends React.Component {
             let itemCheck = []
             if (!!arrProductDetai) {
                 itemCheck = arrProductDetai.filter((item, index) => {
-                    if (item.Quantity > item.TotalQuantity) {
-                        return item;
-                    }
+                    if (item.InStockProductID != "") return item.ConvertQuantity > item.TotalQuantity;
+                    if (item.Quantity > item.TotalQuantity) return item;
                 })
             }
 

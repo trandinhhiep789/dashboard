@@ -86,9 +86,8 @@ class SearchCom extends React.Component {
     }
 
     callDataTestWeb(searchData) {
-        // console.log('searchData', searchData)
         this.props.callFetchAPI(APIHostName, 'api/WorkingPlan/SearchWeb', searchData).then(apiResult => {
-            console.log("searchData apiResult", apiResult)
+            console.log("searchData apiResult", searchData, apiResult)
             if (!apiResult.IsError) {
                 const date = new Date();
                 const dataResult = apiResult.ResultObject.map((item, index) => {
@@ -177,7 +176,7 @@ class SearchCom extends React.Component {
 
         // UpdateWorkingPlanWebAPIPath
         this.props.callFetchAPI(APIHostName, 'api/WorkingPlan/UpdateWorkingPlanWebNew', lstWorkingPlan).then(apiResult => {
-            // console.log("111", apiResult)
+            console.log("UpdateWorkingPlanWebNew", apiResult)
             if (apiResult.IsError) {
                 this.showMessage(apiResult.Message)
             }
@@ -222,6 +221,16 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
+        let result;
+        if (MLObject.UserName != -1 && MLObject.UserName != null && MLObject.UserName != "") {
+            result = MLObject.UserName.reduce((data, item, index) => {
+                const comma = data.length ? "," : "";
+                return data + comma + item.value;
+            }, '');
+        }
+        else {
+            result = ""
+        }
         const postData = [
             {
                 SearchKey: "@WORKINGDATE",
@@ -233,10 +242,12 @@ class SearchCom extends React.Component {
             },
             {
                 SearchKey: "@USERNAME",
-                SearchValue: ""
+                SearchValue: result
             },
 
         ];
+        console.log("search", MLObject, postData)
+
         this.setState({ SearchData: postData, SearchDataWeb: postData });
         this.callDataTestWeb(postData);
     }
