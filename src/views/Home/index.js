@@ -190,6 +190,7 @@ import AppDataSyncType from "../TMS/MD/AppDataSyncType";
 import AppDataSyncList from "../TMS/MD/AppDataSyncList";
 import AppDataSyncLog from "../TMS/MD/AppDataSyncLog";
 import IgnoreCheckRcGeoLocReason from "../TMS/MD/IgnoreCheckRcGeoLocReason";
+import DeliveryAbilityStore from "../TMS/MD/DeliveryAbilityStore";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -460,6 +461,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/AppDataSyncList" component={AppDataSyncList} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/AppDataSyncLog" component={AppDataSyncLog} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/IgnoreCheckRcGeoLocReason" component={IgnoreCheckRcGeoLocReason} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/DeliveryAbilityStore" component={DeliveryAbilityStore} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
