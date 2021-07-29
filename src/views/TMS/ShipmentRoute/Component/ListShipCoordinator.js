@@ -716,7 +716,7 @@ class ListShipCoordinatorCom extends Component {
                                                         to={{ pathname: "/ShipmentOrder/Detail/" + 210714000000199 }}>
                                                         210714000000199 </Link>
                                                 </span>
-                                                <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
+                                                <span className="badge badge-warning time"><i className="ti ti-timer"></i> 08:00</span>
                                             </li>
                                             <li className="item infoProduict">
                                                 <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
@@ -749,7 +749,7 @@ class ListShipCoordinatorCom extends Component {
                                                         to={{ pathname: "/ShipmentOrder/Detail/" + 210714000000199 }}>
                                                         210714000000199 </Link>
                                                 </span>
-                                                <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
+                                                <span className="badge badge-warning time"><i className="ti ti-timer"></i> 08:00</span>
                                             </li>
                                             <li className="item infoProduict">
                                                 <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
@@ -782,7 +782,7 @@ class ListShipCoordinatorCom extends Component {
                                                         to={{ pathname: "/ShipmentOrder/Detail/" + 210714000000199 }}>
                                                         210714000000199 </Link>
                                                 </span>
-                                                <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
+                                                <span className="badge badge-warning time"><i className="ti ti-timer"></i> 08:00</span>
                                             </li>
                                             <li className="item infoProduict">
                                                 <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
