@@ -404,7 +404,7 @@ class ElementModalComboBoxCom extends Component {
         const selectedOption = this.state.SelectedOption;
         const listOption = this.state.Listoption;
         return (
-            <div >
+            <React.Fragment>
                 <Select
                     value={selectedOption}
                     name={name}
@@ -418,7 +418,8 @@ class ElementModalComboBoxCom extends Component {
                     className={className}
                 />
                 <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
-            </div>
+            </React.Fragment>
+
         );
     }
 }
