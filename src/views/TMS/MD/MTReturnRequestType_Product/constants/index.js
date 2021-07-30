@@ -292,7 +292,7 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Vật tư",
         DataSourceMember: "ProductName",
-        Width: 150
+        Width: 160
     },
     {
         Name: "IsCheckMinMaxQuality",
@@ -323,11 +323,11 @@ export const DataGridColumnList = [
         Width: 100
     },
     {
-        Name: "InstockProductID",
+        Name: "InstockProductName",
         Type: "text",
         Caption: "Sản phẩm tồn kho",
-        DataSourceMember: "InstockProductID",
-        Width: 100
+        DataSourceMember: "InstockProductName",
+        Width: 160
     },
     {
         Name: "InstockConvertRatio",
@@ -418,6 +418,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "InstockProductID",
         DataSourceMember: "InstockProductID"
+    },
+    {
+        Name: "InstockProductName",
+        DefaultValue: "",
+        BindControlName: "InstockProductName",
+        DataSourceMember: "InstockProductName"
     },
     {
         Name: "InstockConvertRatio",
