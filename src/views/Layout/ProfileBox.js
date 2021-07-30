@@ -46,6 +46,9 @@ class ProfileBoxCom extends React.Component {
             <Menu.Item key="PageUI">
                 <Link to="/PageUI"><i className="ti-lock"></i>{"  "}Page UI</Link>
             </Menu.Item>
+            <Menu.Item key="PartnerUI">
+                <Link to="/PartnerUI"><i className="ti-lock"></i>{"  "}PartnerUI</Link>
+            </Menu.Item>
             <Menu.Divider />
             <Menu.Item key="logout">
                 <Link to="/logout"><i className="ti-power-off"></i>{"  "}Đăng xuất</Link>

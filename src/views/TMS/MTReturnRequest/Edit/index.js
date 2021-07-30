@@ -651,8 +651,17 @@ class EditCom extends React.Component {
     }
 
     handleinsertItemNew(data) {
+        const updateData = data.reduce((acc, val) => {
+            if (val.Quantity != undefined && val.Quantity > 0) {
+                const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : 0 }
+                return [...acc, updateVal];
+            } else {
+                return acc;
+            }
+        }, []);
+
         this.setState({
-            MTReturnRequestDetailNew: [...this.state.MTReturnRequestDetailNew, ...data]
+            MTReturnRequestDetailNew: [...this.state.MTReturnRequestDetailNew, ...updateData]
         })
     }
 
