@@ -18,6 +18,7 @@ import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { format } from "date-fns";
 import { formatDate } from "../../../../../common/library/CommonLib";
+import DeliveryAbilityStore_Store from "../../DeliveryAbilityStore_Store";
 
 
 
@@ -103,7 +104,7 @@ class DetailCom extends React.Component {
                     <div className="col-md-12 col-sm-12 col-xs-12">
                         <div className="x_panel">
                             <div className="x_title">
-                                <h2>Thông tin loại tiêu chí đánh giá chất lượng</h2>
+                                <h2>Thông tin kho lấy tải</h2>
                                 <div className="clearfix"></div>
                             </div>
 
@@ -111,14 +112,14 @@ class DetailCom extends React.Component {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Mã loại tiêu chí đánh giá chất lượng: </span>
-                                            <span className="xcode">{this.state.DataSource.QualityAssessTypeID}</span>
+                                            <span>Mã kho lấy tải: </span>
+                                            <span className="xcode">{this.state.DataSource.DeliveryAbilityStoreID}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Tên loại tiêu chí đánh giá chất lượng: </span>
-                                            <span>{this.state.DataSource.QualityAssessTypeName}</span>
+                                            <span>Tên kho lấy tải: </span>
+                                            <span>{this.state.DataSource.DeliveryAbilityStoreName}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -126,8 +127,8 @@ class DetailCom extends React.Component {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Nhóm tiêu chí đánh giá chất lượng: </span>
-                                            <span>{this.state.DataSource.QualityAssessGroupID}-{this.state.DataSource.QualityAssessGroupName}</span>
+                                            <span>Kho Tận Tâm: </span>
+                                            <span>{this.state.DataSource.StoreName}</span>
                                         </div>
                                     </div>
 
@@ -164,9 +165,9 @@ class DetailCom extends React.Component {
                                     </div>
                                 </div>
 
-                                
 
-                                <div className="row">
+
+                                {/* <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <span> Kiểu lấy chi phí: </span>
@@ -179,7 +180,7 @@ class DetailCom extends React.Component {
                                             <span>{this.state.DataSource.Description}</span>
                                         </div>
                                     </div>
-                                    {/* <div className="col-md-6">
+                                    <div className="col-md-6">
                                         <div className="form-group checkbox customCheckbox">
                                             <span>Có tự động duyệt: </span>
                                             <label>
@@ -187,23 +188,22 @@ class DetailCom extends React.Component {
                                                 <span className="cr"><i className="cr-icon fa fa-check"></i></span>
                                             </label>
                                         </div>
-                                    </div> */}
-                                </div>
+                                    </div>
+                                </div> */}
 
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Người tạo: </span>
-                                            <span>{this.state.DataSource.CreatedUserFullName}</span>
+                                            <span>Người cập nhật: </span>
+                                            <span>{this.state.DataSource.UpdatedUserFullName}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Ngày tạo: </span>
-                                            <span>{formatDate(this.state.DataSource.CreatedDate)}</span>
+                                            <span>Ngày cập nhật: </span>
+                                            <span>{formatDate(this.state.DataSource.UpdatedDate)}</span>
                                         </div>
                                     </div>
-
                                 </div>
 
                                 {/* <div className="row">
@@ -224,12 +224,12 @@ class DetailCom extends React.Component {
                         </div>
                     </div>
 
-                    {/* <QualityAssessType_ReviewLevel
-                        QualityAssessTypeID={this.props.match.params.id}
-                        DataSource={this.state.DataSource.ListQualityAssessType_ReviewLevel ? this.state.DataSource.ListQualityAssessType_ReviewLevel : []}
+                    <DeliveryAbilityStore_Store
+                        DeliveryAbilityStoreID={this.props.match.params.id}
+                        DataSource={this.state.DataSource.ListDeliveryAbilityStore_Store ? this.state.DataSource.ListDeliveryAbilityStore_Store : []}
                         //MTReturnRequestType_ReviewLevel_User_DataSource={this.state.DataSource.ListMTReturnRequestType_ReviewLevel_User ? this.state.DataSource.ListMTReturnRequestType_ReviewLevel_User : []}
                         onComponentChange={this.onComponentChange}
-                    /> */}
+                    />
 
                     {/* <br />
                     <MTReturnRequestType_Product
