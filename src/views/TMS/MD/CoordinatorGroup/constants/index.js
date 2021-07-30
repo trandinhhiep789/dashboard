@@ -126,7 +126,7 @@ export const AddElementList = [
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.DELIVERYABILITYSTORE",
         ValueMember: "DeliveryAbilityStoreID",
-        NameMember: "DeliveryAbilityStoreIDName"
+        NameMember: "DeliveryAbilityStoreName"
     },
     {
         type: "textarea",
@@ -236,7 +236,7 @@ export const EditElementList = [
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.DELIVERYABILITYSTORE",
         ValueMember: "DeliveryAbilityStoreID",
-        NameMember: "DeliveryAbilityStoreIDName"
+        NameMember: "DeliveryAbilityStoreName"
     },
     {
         type: "textarea",
