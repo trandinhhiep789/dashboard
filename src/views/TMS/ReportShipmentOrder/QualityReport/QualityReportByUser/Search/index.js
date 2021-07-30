@@ -347,7 +347,7 @@ export class Search extends Component {
                                     <thead className="thead-light">
                                         <tr>
                                             <th className="jsgrid-header-cell text-center" style={{ width: "22%" }} colSpan={4}>Khách hàng</th>
-                                            <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Tổng lỗi {dataTotalSource.PercentageQuantityLike != undefined ? dataTotalSource.PercentageQuantityLike : 0} %</th>
+                                            <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Tổng cộng {dataTotalSource.PercentageQuantityLike != undefined ? dataTotalSource.PercentageQuantityLike : 0} %</th>
                                             <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Thời gian {dataTotalSource.PercentageTimeLike != undefined ? dataTotalSource.PercentageTimeLike : 0} %</th>
                                             <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Thái độ {dataTotalSource.PercentageAttitudeLike != undefined ? dataTotalSource.PercentageAttitudeLike : 0} %</th>
                                             <th className="jsgrid-header-cell text-center" style={{ width: "13%" }} colSpan={4}>Thẩm mỹ {dataTotalSource.PercentageBeautyLike != undefined ? dataTotalSource.PercentageBeautyLike : 0} %</th>
