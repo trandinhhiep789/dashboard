@@ -603,6 +603,7 @@ export const InputMTReturnRequestDetailColumnListNew = [
         Type: "inputNumber",
         Caption: "SL nhập trả",
         DataSourceMember: "Quantity",
+        maxLengthInputNumber: 7,
         Width: 100
     }
 ];

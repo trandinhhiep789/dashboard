@@ -255,7 +255,7 @@ class InputGridCom extends Component {
 
     onChangeInputNumber(e, rowsItem, rowsIndex) {
         if (this.props.onChangeInputNumber)
-            this.props.onChangeInputNumber( e, rowsItem, rowsIndex)
+            this.props.onChangeInputNumber(e, rowsItem, rowsIndex)
     }
 
     onValueChange(elementdata, index, isVavalidationError, validationErrorMessage) {
@@ -909,6 +909,7 @@ class InputGridCom extends Component {
                                             stepDecimalInputNumber={rowItem.stepDecimalInputNumber}
                                             minInputNumber={rowItem.minInputNumber}
                                             maxInputNumber={rowItem.maxInputNumber}
+                                            maxLengthInputNumber={columnItem.maxLengthInputNumber}
                                             errorInputNumber={rowItem.errorInputNumber}
                                             errMsgInputNumber={rowItem.errMsgInputNumber}
                                             disabled={rowItem.disabled}
@@ -1018,8 +1019,8 @@ class InputGridCom extends Component {
                                                 </button>
                                             )
                                         }
-									&nbsp;
-									<button type="button" className="btn btn-w-md btn-outline btn-info" onClick={this.handleCancel.bind(this)}>
+                                        &nbsp;
+                                        <button type="button" className="btn btn-w-md btn-outline btn-info" onClick={this.handleCancel.bind(this)}>
                                             Quay lại
                                         </button>
                                     </div>
