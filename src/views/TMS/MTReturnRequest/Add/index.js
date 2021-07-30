@@ -128,7 +128,7 @@ class AddCom extends React.Component {
 
     testGetMTReturnRequestMobile(param) {
         this.props.callFetchAPI(APIHostName, "api/MTReturnRequest/GetMTReturnRequestMobile", param).then(apiResult => {
-            console.log("GetMTReturnRequestMobile", param, apiResult)
+            console.log("GetMTReturnRequestMobile", "api/MTReturnRequest/GetMTReturnRequestMobile", param, apiResult)
         })
     }
 

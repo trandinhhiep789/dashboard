@@ -1,4 +1,34 @@
 
+
+export const BackLink = "/PartnerUI";
+export const AddLink = "/PartnerUI/Add";
+export const IDSelectColumnName = "chkSelect";
+export const PKColumnName = "";
+
+
+export const PagePath = [
+    { Link: "/", Title: "Trang chủ",  icon: "fa fa-home"  },
+    { Link: "", Title: "Danh sách vận đơn" }
+];
+
+export const EditPagePath = [
+    { Link: "/", Title: "Trang chủ",  icon: "fa fa-home"  },
+    { Link: "/PartnerUI", Title: "Danh sách vận đơn" },
+    { Link: "", Title: "Cập nhật" }
+];
+
+export const AddPagePath = [
+    { Link: "/", Title: "Trang chủ",  icon: "fa fa-home"  },
+    { Link: "/PartnerUI", Title: "Danh sách vận đơn" },
+    { Link: "", Title: "Thêm" }
+];
+
+export const DetailAPIPath = [
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
+    { Link: "/PartnerUI", Title: "Danh sách vận đơn" },
+    { Link: "", Title: "Chi tiết" }
+];
+
 export const SearchElementList = [
     {
         type: "text",
@@ -26,79 +56,51 @@ export const DataGridColumnList = [
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "ServiceAgreementID",
+        DataSourceMember: "ID",
         Width: 60
     },
     {
-        Name: "ServiceAgreementID",
+        Name: "ID",
         Type: "texttolink",
-        Caption: "Mã HĐ",
+        Caption: "Mã vận đơn",
         DataSourceMember: "ServiceAgreementID",
-        Link: "/ServiceAgreement/Detail/",
+        Link: "/PartnerUI/Detail/",
         Width: 70
     },
     {
-        Name: "ServiceAgreementNumber",
-        Type: "text",
-        Caption: "Số HĐ",
-        DataSourceMember: "ServiceAgreementNumber",
+        Name: "1",
+        Type: "date",
+        Caption: "Ngày hẹn giao",
+        DataSourceMember: "1",
         Width: 200
     },
     {
-        Name: "PartnerName",
+        Name: "2",
         Type: "text",
-        Caption: "Đối tác",
-        DataSourceMember: "PartnerName",
+        Caption: "Địa chỉ",
+        DataSourceMember: "2",
         Width: 340
     },
     {
-        Name: "ServiceTypeName",
+        Name: "3",
         Type: "text",
         Caption: "Loại dịch vụ",
-        DataSourceMember: "ServiceTypeName",
+        DataSourceMember: "3",
         Width:  200
     },
     {
-        Name: "AreaName",
+        Name: "4",
         Type: "text",
-        Caption: "Khu vực",
-        DataSourceMember: "AreaName",
+        Caption: "Sản phẩm",
+        DataSourceMember: "4",
         Width: 100
     },
     {
-        Name: "SignedDate",
+        Name: "5",
         Type: "date",
-        Caption: "Ngày ký HĐ",
-        DataSourceMember: "SignedDate",
-        Width: 130
-    },
-    {
-        Name: "ExpiredDate",
-        Type: "date",
-        Caption: "Ngày hết hạn HĐ",
-        DataSourceMember: "ExpiredDate",
-        Width: 130
-    },
-    {
-        Name: "ExtendLable",
-        Type: "text",
-        Caption: "Gia hạn đến",
-        DataSourceMember: "ExtendLable",
-        Width: 150
-    },
-    {
-        Name: "DepositedLable",
-        Type: "text",
-        Caption: "Đã ký quỹ",
-        DataSourceMember: "DepositedLable",
-        Width: 100
-    },
-    {
-        Name: "StatusLable",
-        Type: "text",
         Caption: "Trạng thái",
-        DataSourceMember: "StatusLable",
-        Width: 100
+        DataSourceMember: "5",
+        Width: 130
     },
 
 ];
