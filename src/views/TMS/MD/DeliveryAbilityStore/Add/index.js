@@ -16,7 +16,7 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_MTRETURNREQUESTTYPE, ERPCOMMONCACHE_SHIPMENTFEETYPE } from "../../../../../constants/keyCache";
-import { SHIPMENTFEETYPE_ADD, MTRETURNREQUESTTYPE_ADD, QUALITYASSESSTYPE_ADD } from "../../../../../constants/functionLists";
+import { SHIPMENTFEETYPE_ADD, MTRETURNREQUESTTYPE_ADD, QUALITYASSESSTYPE_ADD, DELIVERYABILITY_ADD } from "../../../../../constants/functionLists";
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
@@ -106,7 +106,7 @@ class AddCom extends React.Component {
                 IsErrorMessage={this.state.IsCallAPIError}
                 dataSource={dataSource}
                 BackLink={BackLink}
-                RequirePermission={QUALITYASSESSTYPE_ADD}
+                RequirePermission={DELIVERYABILITY_ADD}
                 ref={this.searchref}
             />
         );
