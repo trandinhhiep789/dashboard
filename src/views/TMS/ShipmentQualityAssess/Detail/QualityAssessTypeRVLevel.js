@@ -16,7 +16,7 @@ class QualityAssessTypeRVLevelCom extends React.Component {
         super(props);
 
         this.state = {
-            stateQualityAssessTypeReviewLevel: null,
+            stateListQualityAssessType_ReviewLevel: [],
             stateTableData: [],
             stateReviewedNote: ""
         };
@@ -24,16 +24,15 @@ class QualityAssessTypeRVLevelCom extends React.Component {
         this.notificationDOMRef = React.createRef();
         this.showMessage = this.showMessage.bind(this);
         this.addNotification = this.addNotification.bind(this);
-        this.fetchMDQualityAssessTypeRLUser = this.fetchMDQualityAssessTypeRLUser.bind(this);
         this.handleSetTableData = this.handleSetTableData.bind(this);
-        this.handleIsDisableSelect = this.handleIsDisableSelect.bind(this);
+        // this.handleIsDisableSelect = this.handleIsDisableSelect.bind(this);
         this.handleChangeSelect = this.handleChangeSelect.bind(this);
         this.handleChangeReviewedNote = this.handleChangeReviewedNote.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
-        this.fetchMDQualityAssessTypeRLUser();
+        this.handleSetTableData();
     }
 
     showMessage(message) {
@@ -76,56 +75,57 @@ class QualityAssessTypeRVLevelCom extends React.Component {
         });
     }
 
-    fetchMDQualityAssessTypeRLUser() {
-        const { contextShipmentQualityAssess } = this.context;
+    handleSetTableData() {
+        try {
+            const { contextShipmentQualityAssess } = this.context;
 
-        const arrReviewLevelId = contextShipmentQualityAssess.lstShipmentQualityAssess_rvk.map(item => item.ReviewLevelID);
-        const strReviewLevelIds = arrReviewLevelId.join();
+            const { ListQualityAssessType_ReviewLevel } = contextShipmentQualityAssess.objQualityAssessType;
 
-        this.props.callFetchAPI(APIHostName, "api/QualityAssessType_ReviewLevel/LoadList", strReviewLevelIds).then(apiResult => {
-            if (!apiResult.IsError) {
-                const arrQualityAssessTypeReviewLevel = [...apiResult.ResultObject];
-                arrQualityAssessTypeReviewLevel.sort((a, b) => a.ReviewLevelID - b.ReviewLevelID);
-                this.setState({
-                    stateQualityAssessTypeReviewLevel: arrQualityAssessTypeReviewLevel,
-                    stateTableData: this.handleSetTableData(arrQualityAssessTypeReviewLevel)
-                });
-            } else {
-                this.showMessage(apiResult.Message);
-            }
-        });
+            const tableData = ListQualityAssessType_ReviewLevel.map(item => {
+                const ListQualityAssessType_ReviewLevel_UserID = item.ListQualityAssessType_ReviewLevel_User.map(item1 => item1.UserName);
+
+                const foundShipmentQualityAssess_rvk = contextShipmentQualityAssess.lstShipmentQualityAssess_rvk.find(item2 => item2.ReviewLevelID == item.ReviewLevelID);
+
+                return {
+                    ReviewLevelID: item.ReviewLevelID,
+                    ReviewLevelName: item.ReviewLevelName,
+                    ReviewOrderIndex: item.ReviewOrderIndex,
+                    ListQualityAssessType_ReviewLevel_User: ListQualityAssessType_ReviewLevel_UserID,
+                    ReviewStatus: foundShipmentQualityAssess_rvk == undefined ? 0 : foundShipmentQualityAssess_rvk.ReviewStatus,
+                    IsReViewed: foundShipmentQualityAssess_rvk == undefined ? false : foundShipmentQualityAssess_rvk.IsReViewed
+                }
+            })
+
+            this.setState({
+                stateListQualityAssessType_ReviewLevel: ListQualityAssessType_ReviewLevel,
+                stateTableData: tableData
+            })
+
+        } catch (error) {
+            this.setState({
+                stateListQualityAssessType_ReviewLevel: [],
+                stateTableData: []
+            })
+        }
     }
 
-    handleSetTableData(arrQualityAssessTypeReviewLevel) {
-        const { contextShipmentQualityAssess } = this.context;
-
-        const arrTableData = contextShipmentQualityAssess.lstShipmentQualityAssess_rvk.map(item => {
-            const found = arrQualityAssessTypeReviewLevel.find(item1 => item1.ReviewLevelID == item.ReviewLevelID && item1.UserName == item.UserName);
-            return {
-                ...item,
-                ReviewLevelName: found.ReviewLevelName,
-                FullName: found.FullName
-            }
-        })
-
-        return arrTableData;
-    }
-
-    handleIsDisableSelect(item) {
+    handleIsDisableSelect(index) {
         const { stateTableData } = this.state;
         let boolFlag = false;
 
-        if (item.UserName != this.props.AppInfo.LoginInfo.Username || item.IsReViewed) {
+        const foundUsername = stateTableData[index].ListQualityAssessType_ReviewLevel_User.find(item => item == this.props.AppInfo.LoginInfo.Username)
+
+        if (!foundUsername || stateTableData[index].IsReViewed) {
             boolFlag = true;
             return boolFlag;
         }
 
-        for (let index = 0; index < stateTableData.length; index++) {
-            const element = stateTableData[index];
-            if (!element.IsReViewed && element.RevokeAssessReviewID != item.RevokeAssessReviewID) {
+        for (let i = 0; i < stateTableData.length; i++) {
+            const element = stateTableData[i];
+            if (!element.IsReViewed && element.ReviewLevelID != stateTableData[index].ReviewLevelID) {
                 boolFlag = true;
                 break;
-            } else if (element.RevokeAssessReviewID == item.RevokeAssessReviewID) {
+            } else if (element.ReviewLevelID == stateTableData[index].ReviewLevelID) {
                 break;
             }
         }
@@ -168,7 +168,7 @@ class QualityAssessTypeRVLevelCom extends React.Component {
         const { stateReviewedNote, stateTableData } = this.state;
         const { contextShipmentQualityAssess } = this.context;
 
-        const findReviewUser = stateTableData.findIndex(item => item.RevokeAssessReviewID == name.name);
+        const findReviewUser = stateTableData.findIndex(item => item.ReviewLevelID == name.name);
 
         let postData = {};
         if (findReviewUser == stateTableData.length - 1) {
@@ -198,68 +198,61 @@ class QualityAssessTypeRVLevelCom extends React.Component {
             }
         }
 
-        console.log(postData)
-
         this.props.callFetchAPI(APIHostName, APIUpdateReview, postData).then(apiResult => {
             this.showMessage(apiResult.Message);
             if (!apiResult.IsError) {
-                this.props.history.push("/ShipmentQualityAssess");
+                this.context.conextPushHistory()
             }
         });
         ModalManager.close();
     }
 
     render() {
-        const { stateQualityAssessTypeReviewLevel, stateTableData } = this.state;
+        const { stateTableData } = this.state;
 
-        if (stateQualityAssessTypeReviewLevel == null) {
-            return <React.Fragment></React.Fragment>
-        } else {
-            return (
-                <React.Fragment>
-                    <div className="col-lg-12 SearchForm">
-                        <div className="card">
-                            <div className="card-title group-card-title">
-                                <h4 className="title">Danh sách mức duyệt</h4>
-                            </div>
-                            <div className="card-body">
-                                <table className="table table-sm table-striped table-bordered table-hover table-condensed">
-                                    <thead className="thead-light">
-                                        <tr>
-                                            <th className="jsgrid-header-cell">Mức duyệt</th>
-                                            <th className="jsgrid-header-cell">Người duyệt</th>
-                                            <th className="jsgrid-header-cell">Duyệt</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            stateTableData.map(item => {
-                                                return (
-                                                    <tr key={item.RevokeAssessReviewID}>
-                                                        <td>{item.ReviewLevelName}</td>
-                                                        <td>{item.FullName}</td>
-                                                        <td>
-                                                            <Select
-                                                                name={item.RevokeAssessReviewID}
-                                                                options={optionsReviewSelect}
-                                                                placeholder="Duyệt"
-                                                                defaultValue={optionsReviewSelect[item.ReviewStatus - 1]}
-                                                                isDisabled={this.handleIsDisableSelect(item)}
-                                                                onChange={(value, name) => this.handleChangeSelect(value, name, item.ReviewLevelName)}
-                                                            />
-                                                        </td>
-                                                    </tr>
-                                                )
-                                            })
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
+        return (
+            <React.Fragment>
+                <div className="col-lg-12 SearchForm">
+                    <div className="card">
+                        <div className="card-title group-card-title">
+                            <h4 className="title">Danh sách mức duyệt</h4>
+                        </div>
+                        <div className="card-body">
+                            <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                <thead className="thead-light">
+                                    <tr>
+                                        <th className="jsgrid-header-cell">Mức duyệt</th>
+                                        <th className="jsgrid-header-cell">Duyệt</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        stateTableData.map((item, index) => {
+                                            return (
+                                                <tr key={item.ReviewLevelID}>
+                                                    <td>{item.ReviewLevelName}</td>
+                                                    <td>
+                                                        <Select
+                                                            name={item.ReviewLevelID}
+                                                            options={optionsReviewSelect}
+                                                            placeholder="Duyệt"
+                                                            defaultValue={optionsReviewSelect[item.ReviewStatus - 1]}
+                                                            isDisabled={this.handleIsDisableSelect(index)}
+                                                            onChange={(value, name) => this.handleChangeSelect(value, name, item.ReviewLevelName)}
+                                                        />
+                                                    </td>
+                                                </tr>
+                                            )
+                                        })
+                                    }
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                </React.Fragment>
-            );
-        }
+                </div>
+            </React.Fragment>
+        );
+
     }
 }
 

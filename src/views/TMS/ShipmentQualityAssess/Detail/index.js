@@ -228,15 +228,12 @@ class DetailCom extends React.Component {
                         onKeyPressSumit={this.handleCommentSubmit}
                     />
 
-                    {
-                        stateShipmentQualityAssess.lstShipmentQualityAssess_rvk.length != 0
-                            ? <MyContext.Provider value={{
-                                contextShipmentQualityAssess: stateShipmentQualityAssess
-                            }}>
-                                <QualityAssessTypeRVLevelCom />
-                            </MyContext.Provider>
-                            : <React.Fragment></React.Fragment>
-                    }
+                    <MyContext.Provider value={{
+                        contextShipmentQualityAssess: stateShipmentQualityAssess,
+                        conextPushHistory: () => this.props.history.push("/ShipmentQualityAssess")
+                    }}>
+                        <QualityAssessTypeRVLevelCom />
+                    </MyContext.Provider>
 
                 </FormContainer>
             </React.Fragment>

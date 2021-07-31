@@ -1,3 +1,6 @@
+let fromDate = new Date();
+fromDate.setHours(0, 0, 0, 0);
+
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "", Title: "Đánh giá chất lượng giao hàng" }
@@ -5,7 +8,6 @@ export const PagePath = [
 
 export const APIHostName = "TMSAPI";
 export const APISearch = "api/ShipmentQualityAssess/Search";
-export const APIDeleteList = "api/ShipmentQualityAssess/DeleteList";
 export const APIExportExcel = "api/ShipmentQualityAssess/ExportExcel";
 
 export const dataSearch = [
@@ -14,16 +16,12 @@ export const dataSearch = [
         SearchValue: ""
     },
     {
-        SearchKey: "@TYPENAME",
-        SearchValue: ""
-    },
-    {
         SearchKey: "@FROMDATE",
-        SearchValue: new Date()
+        SearchValue: fromDate
     },
     {
         SearchKey: "@TODATE",
-        SearchValue: new Date()
+        SearchValue: fromDate
     },
     {
         SearchKey: "@COORDINATORSTOREID",
@@ -41,24 +39,13 @@ export const dataSearch = [
 
 export const listElement = [
     {
-        type: "textdropdownNew",
-        label: "Đơn hàng/ Vận đơn",
-        dropdownName: "txtTypename",
+        type: "text",
         name: "txtKeyword",
-        colspan: 4,
+        label: "Mã đơn hàng/ Vận đơn",
         value: "",
-        placeholder: "Từ khóa",
+        placeholder: "",
         icon: "",
-        nameOption: "txtTypename",
-        labelOption: "--Vui lòng chọn--",
-        valueOption: -1,
-        classNameCol: "col-custom",
-        classNameDropdown: "dropdown-custom",
-        listoption: [
-            { value: -1, label: "--Vui lòng chọn--" },
-            { value: 1, label: "Mã vận đơn" },
-            { value: 2, label: "Mã đơn hàng" }
-        ]
+        listoption: {}
     },
     {
         type: "Datetime",
@@ -105,11 +92,6 @@ export const listElement = [
 ]
 
 export const MLObjectDefinition = [
-    {
-        Name: "Typename",
-        DefaultValue: "",
-        BindControlName: "txtTypename"
-    },
     {
         Name: "Keyword",
         DefaultValue: "",

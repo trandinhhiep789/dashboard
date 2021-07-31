@@ -10,14 +10,12 @@ import * as XLSX from 'xlsx';
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import {
-    PagePath, APISearch, APIHostName, MLObjectDefinition, APIDeleteList, listElement, dataSearch, APIExportExcel
+    PagePath, APISearch, APIHostName, MLObjectDefinition, listElement, dataSearch, APIExportExcel
 } from "./constants";
 import { MessageModal } from "../../../../common/components/Modal";
 import { showModal } from '../../../../actions/modal';
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 import GridPage from "../../../../common/components/DataGrid/GridPage";
-import { MODAL_TYPE_COMMONTMODALS } from "../../../../constants/actionTypes";
-import AddModalCom from './AddModal';
 
 class SearchCom extends Component {
     constructor(props) {
@@ -33,14 +31,11 @@ class SearchCom extends Component {
         this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
 
-        this.callSearchData = this.callSearchData.bind(this);
         this.showMessage = this.showMessage.bind(this);
         this.addNotification = this.addNotification.bind(this);
+        this.callSearchData = this.callSearchData.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.handleChangePage = this.handleChangePage.bind(this);
-        this.handleCheckbox = this.handleCheckbox.bind(this);
-        this.handleAdd = this.handleAdd.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
         this.handleExportFile = this.handleExportFile.bind(this);
         this.handleSetExcelData = this.handleSetExcelData.bind(this);
     }
@@ -124,20 +119,15 @@ class SearchCom extends Component {
                         SearchKey: element.SearchKey,
                         SearchValue: MLObject.Keyword
                     }
-                case "@TYPENAME":
-                    return {
-                        SearchKey: element.SearchKey,
-                        SearchValue: MLObject.Typename
-                    }
                 case "@FROMDATE":
                     return {
                         SearchKey: element.SearchKey,
-                        SearchValue: MLObject.CreatedOrderTimeFo
+                        SearchValue: moment(MLObject.CreatedOrderTimeFo).startOf('day').toDate()
                     }
                 case "@TODATE":
                     return {
                         SearchKey: element.SearchKey,
-                        SearchValue: MLObject.CreatedOrderTimeTo
+                        SearchValue: moment(MLObject.CreatedOrderTimeTo).startOf('day').toDate()
                     }
                 case "@COORDINATORSTOREID":
                     return {
@@ -178,68 +168,6 @@ class SearchCom extends Component {
         });
 
         this.callSearchData(searchData);
-    }
-
-    handleCheckbox(event) {
-        const target = event.target;
-        const value = target.checked;
-        const name = target.name;
-
-        if (name == "checkAll") {
-            const objCheckAll = this.state.dataGrid.reduce((acc, val) => {
-                return {
-                    ...acc,
-                    [val.ShipmentQualityAssessID]: value
-                }
-            }, []);
-            this.setState({
-                stateObjCheckboxs: {
-                    ...this.state.stateObjCheckboxs,
-                    ...objCheckAll
-                }
-            })
-        } else {
-            this.setState({
-                stateObjCheckboxs: {
-                    ...this.state.stateObjCheckboxs,
-                    [name]: value
-                }
-            })
-        }
-
-
-    }
-
-    handleAdd() {
-        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: 'Thêm đánh giá chất lượng giao hàng',
-            content: {
-                text: <AddModalCom />
-            },
-            maxWidth: '800px'
-        });
-    }
-
-    handleDelete() {
-        const { stateObjCheckboxs } = this.state;
-        let strDelete = "";
-        for (const key in stateObjCheckboxs) {
-            if (Object.hasOwnProperty.call(stateObjCheckboxs, key)) {
-                if (stateObjCheckboxs[key]) {
-                    strDelete += `,${key}`;
-                }
-            }
-        }
-        if (strDelete == "") {
-            alert("Chọn ít nhất một dòng để xóa");
-        } else {
-            this.props.callFetchAPI(APIHostName, APIDeleteList, strDelete).then(apiResult => {
-                if (!apiResult.IsError) {
-                    this.callSearchData(this.state.dataSearch);
-                }
-                this.showMessage(apiResult.Message);
-            });
-        }
     }
 
     handleSetExcelData(argumentData) {
@@ -327,12 +255,6 @@ class SearchCom extends Component {
                                 <div className="d-flex justify-content-end mb-10 ">
                                     <div className="btn-toolbar">
                                         <div className="btn-group btn-group-sm">
-                                            {/* <Link to={"/ShipmentQualityAssess/Add"}> */}
-                                            {/* <button className="btn btn-info" onClick={this.handleAdd}><span className="fa fa-plus ff"> Thêm </span></button> */}
-                                            {/* </Link> */}
-
-                                            {/* <button className="btn btn-danger btn-delete ml-10" onClick={this.handleDelete}><span className="fa fa-remove"> Xóa </span></button> */}
-
                                             <button className="btn btn-export ml-10" onClick={this.handleExportFile}>
                                                 <span className="fa fa-file-excel-o"> Xuất file excel </span>
                                             </button>
@@ -344,15 +266,6 @@ class SearchCom extends Component {
                                     <table className="table table-sm table-striped table-bordered table-hover table-condensed" cellSpacing="0">
                                         <thead className="thead-light">
                                             <tr>
-                                                {/* <th className="jsgrid-header-cell">
-                                                    <div className="checkbox">
-                                                        <label>
-                                                            <input name="checkAll" type="checkbox" onChange={this.handleCheckbox} className="form-control form-control-sm" />
-                                                            <span className="cr"><i className="cr-icon fa fa-check"></i></span>
-                                                        </label>
-                                                    </div>
-                                                </th> */}
-                                                {/* <th className="jsgrid-header-cell">Chi tiết</th> */}
                                                 <th className="jsgrid-header-cell">Mã vận đơn</th>
                                                 <th className="jsgrid-header-cell">Mã đơn hàng đối tác</th>
                                                 <th className="jsgrid-header-cell">Ngày tạo</th>
@@ -367,22 +280,13 @@ class SearchCom extends Component {
                                             {
                                                 dataGrid.map(item => {
                                                     return <tr key={item.ShipmentQualityAssessID}>
-                                                        {/* <td>
-                                                            <div className="checkbox">
-                                                                <label>
-                                                                    <input name={item.ShipmentQualityAssessID} type="checkbox" checked={stateObjCheckboxs[item.ShipmentQualityAssessID] || false} onChange={this.handleCheckbox} className="form-control form-control-sm" />
-                                                                    <span className="cr"><i className="cr-icon fa fa-check"></i></span>
-                                                                </label>
-                                                            </div>
-                                                        </td> */}
                                                         <td><Link to={`/ShipmentOrder/Detail/${item.ShipmentOrderID}`} target='_blank'>{item.ShipmentOrderID}</Link></td>
                                                         <td>{item.PartnerSaleOrderID}</td>
                                                         <td>{moment(item.CreatedDate).format("DD/MM/YYYY")}</td>
                                                         <td>{item.CreatedUserFullName}</td>
                                                         <td>{item.QualityAssessNote}</td>
                                                         <td>{item.IsRevokeAssessReview == 0 ? <span className='lblstatus text-warning'>Chưa duyệt</span> : (<span className='lblstatus text-success'>Đã duyệt</span>)}</td>
-                                                        {/* <td><Link to={`/ShipmentQualityAssess/Edit/${item.ShipmentQualityAssessID}`}>Chỉnh sửa</Link></td> */}
-                                                        <td><Link to={`/ShipmentQualityAssess/Detail/${item.ShipmentQualityAssessID}`}>Chi tiết</Link></td>
+                                                        <td><Link to={`/ShipmentQualityAssess/Detail/${item.ShipmentQualityAssessID}`} target='_blank'>Chi tiết</Link></td>
                                                     </tr>
                                                 })
                                             }
