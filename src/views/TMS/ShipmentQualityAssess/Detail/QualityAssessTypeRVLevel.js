@@ -25,7 +25,7 @@ class QualityAssessTypeRVLevelCom extends React.Component {
         this.showMessage = this.showMessage.bind(this);
         this.addNotification = this.addNotification.bind(this);
         this.handleSetTableData = this.handleSetTableData.bind(this);
-        // this.handleIsDisableSelect = this.handleIsDisableSelect.bind(this);
+        this.handleIsDisableSelect = this.handleIsDisableSelect.bind(this);
         this.handleChangeSelect = this.handleChangeSelect.bind(this);
         this.handleChangeReviewedNote = this.handleChangeReviewedNote.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -82,7 +82,7 @@ class QualityAssessTypeRVLevelCom extends React.Component {
             const { ListQualityAssessType_ReviewLevel } = contextShipmentQualityAssess.objQualityAssessType;
 
             const tableData = ListQualityAssessType_ReviewLevel.map(item => {
-                const ListQualityAssessType_ReviewLevel_UserID = item.ListQualityAssessType_ReviewLevel_User.map(item1 => item1.UserName);
+                const ListQualityAssessType_ReviewLevel_UserID = item.ListQualityAssessType_ReviewLevel_User ? item.ListQualityAssessType_ReviewLevel_User.map(item1 => item1.UserName) : [];
 
                 const foundShipmentQualityAssess_rvk = contextShipmentQualityAssess.lstShipmentQualityAssess_rvk.find(item2 => item2.ReviewLevelID == item.ReviewLevelID);
 
@@ -90,7 +90,7 @@ class QualityAssessTypeRVLevelCom extends React.Component {
                     ReviewLevelID: item.ReviewLevelID,
                     ReviewLevelName: item.ReviewLevelName,
                     ReviewOrderIndex: item.ReviewOrderIndex,
-                    ListQualityAssessType_ReviewLevel_User: ListQualityAssessType_ReviewLevel_UserID,
+                    ListQualityAssessType_ReviewLevel_UserID,
                     ReviewStatus: foundShipmentQualityAssess_rvk == undefined ? 0 : foundShipmentQualityAssess_rvk.ReviewStatus,
                     IsReViewed: foundShipmentQualityAssess_rvk == undefined ? false : foundShipmentQualityAssess_rvk.IsReViewed
                 }
@@ -113,7 +113,7 @@ class QualityAssessTypeRVLevelCom extends React.Component {
         const { stateTableData } = this.state;
         let boolFlag = false;
 
-        const foundUsername = stateTableData[index].ListQualityAssessType_ReviewLevel_User.find(item => item == this.props.AppInfo.LoginInfo.Username)
+        const foundUsername = stateTableData[index].ListQualityAssessType_ReviewLevel_UserID.find(item => item == this.props.AppInfo.LoginInfo.Username)
 
         if (!foundUsername || stateTableData[index].IsReViewed) {
             boolFlag = true;
