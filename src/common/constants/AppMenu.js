@@ -472,13 +472,7 @@ const AppMenu = [
                         SubMenu: []
                     },
 
-                    {
-                        MenuName: 'ServicePriceApply',
-                        MenuTitle: 'Bảng giá dịch vụ áp dụng',
-                        LinkTo: '/ServicePriceApply',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
+                  
                     {
                         MenuName: 'PosToRWPosTable',
                         MenuTitle: 'Bảng chuyển đổi chức vụ',
@@ -1157,7 +1151,14 @@ const AppMenu = [
                 LinkTo: '/ServicePriceTable',
                 MenuIcon: '',
                 SubMenu: []
-            }
+            },
+            {
+                MenuName: 'ServicePriceApply',
+                MenuTitle: 'Bảng giá dịch vụ áp dụng',
+                LinkTo: '/ServicePriceApply',
+                MenuIcon: '',
+                SubMenu: []
+            },
         ]
     },
     {
