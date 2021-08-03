@@ -11,7 +11,7 @@ export const AddLogAPIPath = "api/UserActivity/Add";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "PartnerID";
 export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
-import {CDN_LOGO_IMAGE} from '../../../../../constants/systemVars';
+import { CDN_LOGO_IMAGE } from '../../../../../constants/systemVars';
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
@@ -902,7 +902,7 @@ export const MLObjectDefinition = [
         BindControlName: "txtDescription",
         DataSourceMember: "Description"
     },
-    
+
     {
         Name: "IsActived",
         DefaultValue: true,
@@ -1001,4 +1001,60 @@ export const DataGridColumnList = [
         Link: "/Partner/Edit/",
         LinkText: "Chỉnh sửa"
     }
+];
+
+
+export const listColumnPartnerCustomerAdd = [
+    {
+        Name: "chkSelect",
+        Type: "checkbox",
+        Caption: "Chọn",
+        DataSourceMember: "MTReturnRequestID",
+        Width: 60
+    },
+    {
+        Name: "CustomerID",
+        Type: "text",
+        Caption: "Mã khách hàng",
+        DataSourceMember: "CustomerID"
+    },
+    {
+        Name: "IsActived",
+        Type: "checkicon",
+        Caption: "Kích hoạt",
+        DataSourceMember: "IsActived"
+    },
+    {
+        Name: "IsSystem",
+        Type: "checkicon",
+        Caption: "Hệ thống",
+        DataSourceMember: "IsSystem"
+    },
+    {
+        Name: "CustomerID",
+        Type: "edit",
+        Caption: "Chỉnh sửa",
+        DataSourceMember: "CustomerID"
+    }
+]
+
+export const MLObjectDefinitionPartnerCustomeAddModal = [
+    {
+        Name: "CustomerID",
+        DefaultValue: "",
+        BindControlName: "txtCustomerID",
+        DataSourceMember: "CustomerID"
+    },
+    {
+        Name: "IsActived",
+        DefaultValue: "",
+        BindControlName: "chkIsActived",
+        DataSourceMember: "IsActived"
+    },
+    {
+        Name: "IsSystem",
+        DefaultValue: "",
+        BindControlName: "chkIsSystem",
+        DataSourceMember: "IsSystem"
+    },
 ];
