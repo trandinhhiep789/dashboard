@@ -22,6 +22,7 @@ import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheA
 import { ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_COUNTRY, ERPCOMMONCACHE_PROVINCE, ERPCOMMONCACHE_DISTRICT, ERPCOMMONCACHE_WARD } from "../../../../../constants/keyCache";
 import PartnerCoordinatorStore from "../../PartnerCoordinatorStore";
 import PartnerCustomerCom from './PartnerCustomer';
+import PartnerServiceRequestTypeCom from './PartnerServiceRequestType';
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -377,8 +378,10 @@ class AddCom extends React.Component {
                 /> */}
 
                 <PartnerCustomerCom
-                    propsPartnerCustomer={this.state.PartnerCustomerCom}
                     propsHandlePartnerCustomer={this.handlePartnerCustomer}
+                />
+
+                <PartnerServiceRequestTypeCom
                 />
             </SimpleForm>
 

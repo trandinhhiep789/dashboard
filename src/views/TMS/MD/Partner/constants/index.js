@@ -1009,7 +1009,7 @@ export const listColumnPartnerCustomerAdd = [
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "MTReturnRequestID",
+        DataSourceMember: "",
         Width: 60
     },
     {
@@ -1031,10 +1031,11 @@ export const listColumnPartnerCustomerAdd = [
         DataSourceMember: "IsSystem"
     },
     {
-        Name: "CustomerID",
+        Name: "",
         Type: "edit",
         Caption: "Chỉnh sửa",
-        DataSourceMember: "CustomerID"
+        DataSourceMember: "",
+        Width: 90
     }
 ]
 
@@ -1058,3 +1059,38 @@ export const MLObjectDefinitionPartnerCustomeAddModal = [
         DataSourceMember: "IsSystem"
     },
 ];
+
+export const listColumnPartnerServiceRequestTypeAdd = [
+    {
+        Name: "chkSelect",
+        Type: "checkbox",
+        Caption: "Chọn",
+        DataSourceMember: "",
+        Width: 60
+    },
+    {
+        Name: "CustomerID",
+        Type: "text",
+        Caption: "Mã khách hàng",
+        DataSourceMember: "CustomerID"
+    },
+    {
+        Name: "IsActived",
+        Type: "checkicon",
+        Caption: "Kích hoạt",
+        DataSourceMember: "IsActived"
+    },
+    {
+        Name: "IsSystem",
+        Type: "checkicon",
+        Caption: "Hệ thống",
+        DataSourceMember: "IsSystem"
+    },
+    {
+        Name: "",
+        Type: "edit",
+        Caption: "Chỉnh sửa",
+        DataSourceMember: "",
+        Width: 90
+    }
+]
