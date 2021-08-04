@@ -9,8 +9,8 @@ import { listColumnPartnerCustomerAdd } from "../constants";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../../constants/actionTypes';
-import PartnerCustomerAddModalCom from './PartnerCustomerAddModal';
-import PartnerCustomerEditModalCom from './PartnerCustomerEditModal';
+import PartnerCustomerAddModalCom from '../Add/PartnerCustomerAddModal';
+import PartnerCustomerEditModalCom from '../Add/PartnerCustomerEditModal';
 
 class PartnerCustomerCom extends React.Component {
     constructor(props) {
@@ -18,9 +18,10 @@ class PartnerCustomerCom extends React.Component {
 
         this.state = {
             stateIsError: false,
-            stateDataGrid: []
+            stateDataGrid: this.props.propsPartnerCustomer,
         };
 
+        this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
         this.handleInsertClick = this.handleInsertClick.bind(this);
         this.handlePartnerCustomer = this.handlePartnerCustomer.bind(this);
@@ -95,12 +96,12 @@ class PartnerCustomerCom extends React.Component {
         try {
             const { stateDataGrid } = this.state;
 
-            const arrSelectRow = listDeleteID.map(item => {
-                return item.pkColumnName[0].value;
-            })
+            const arrDeletedPartnerCustomer = listDeleteID.map(item => {
+                return { CustomerID: item.pkColumnName[0].value, IsDeleted: true };
+            });
 
             const updateStateDataGrid = stateDataGrid.reduce((acc, val) => {
-                if (arrSelectRow.find(item => item == val.CustomerID)) {
+                if (arrDeletedPartnerCustomer.find(item => item.CustomerID == val.CustomerID)) {
                     return acc;
                 } else {
                     return [...acc, val];
@@ -111,7 +112,9 @@ class PartnerCustomerCom extends React.Component {
                 stateDataGrid: updateStateDataGrid
             })
             this.props.propsHandlePartnerCustomer(updateStateDataGrid);
+            this.props.propsHandleDeletedPartnerCustomer(arrDeletedPartnerCustomer);
         } catch (error) {
+            console.log(error)
             this.showMessage("Lỗi xóa");
         }
     }
