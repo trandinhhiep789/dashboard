@@ -21,6 +21,8 @@ import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_COUNTRY, ERPCOMMONCACHE_PROVINCE, ERPCOMMONCACHE_DISTRICT, ERPCOMMONCACHE_WARD } from "../../../../../constants/keyCache";
 import PartnerCoordinatorStore from "../../PartnerCoordinatorStore";
+import PartnerCustomerCom from './PartnerCustomer';
+import PartnerServiceRequestTypeCom from './PartnerServiceRequestType';
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -35,6 +37,7 @@ class AddCom extends React.Component {
         this.getFullAddress = this.getFullAddress.bind(this);
         // this.handleGetCache = this.handleGetCache.bind(this);
         // this.handleClearLocalCache = this.handleClearLocalCache.bind(this);
+        this.handlePartnerCustomer = this.handlePartnerCustomer.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -47,7 +50,8 @@ class AddCom extends React.Component {
             AddElementList: AddElementList,
             PartnerID: "",
             PartnerCoordinatorStore: [],
-            FullAddress: ""
+            FullAddress: "",
+            statePartnerCustomer: []
         };
     }
 
@@ -310,6 +314,7 @@ class AddCom extends React.Component {
 
         MLObject.FullAddress = this.state.FullAddress;
         MLObject.PartnerCoordinatorStore = this.state.PartnerCoordinatorStore;
+        MLObject.lstPartner_Customer = this.state.statePartnerCustomer;
 
         var data = new FormData();
         data.append("LogoImageURL", this.state.Files.PictureURL);
@@ -340,6 +345,10 @@ class AddCom extends React.Component {
         );
     }
 
+    handlePartnerCustomer(data) {
+        this.setState({ statePartnerCustomer: data });
+    }
+
     render() {
         const dataSource = {
             IsActived: true
@@ -362,11 +371,18 @@ class AddCom extends React.Component {
                 RequirePermission={PARTNER_ADD}
                 ref={this.searchref}>
 
-                
+
                 {/* <PartnerCoordinatorStore
                     PartnerID={this.state.PartnerID}
                     onPartnerCoordinatorStoreChange={this.onPartnerCoordinatorStoreChange}
                 /> */}
+
+                <PartnerCustomerCom
+                    propsHandlePartnerCustomer={this.handlePartnerCustomer}
+                />
+
+                <PartnerServiceRequestTypeCom
+                />
             </SimpleForm>
 
         );

@@ -23,6 +23,8 @@ import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_COUNTRY, ERPCOMMONCACHE_PROVINCE, ERPCOMMONCACHE_DISTRICT, ERPCOMMONCACHE_WARD, ERPCOMMONCACHE_STORE } from "../../../../../constants/keyCache";
 import PartnerCoordinatorStore from "../../PartnerCoordinatorStore";
+import PartnerCustomerCom from './PartnerCustomer';
+
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
@@ -35,6 +37,8 @@ class EditCom extends React.Component {
         this.getFullAddress = this.getFullAddress.bind(this);
         this.onPartnerCoordinatorStoreChange = this.onPartnerCoordinatorStoreChange.bind(this);
         //this.getDataCombobox = this.getDataCombobox.bind(this);
+        this.handlePartnerCustomer = this.handlePartnerCustomer.bind(this);
+        this.handleDeletedPartnerCustomer = this.handleDeletedPartnerCustomer.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -50,8 +54,9 @@ class EditCom extends React.Component {
             EditElementList: EditElementList,
             PartnerCoordinatorStore: [],
             Store: [],
-            FullAddress: ""
-
+            FullAddress: "",
+            statePartnerCustomer: [],
+            stateDeletedPartnerCustomer: []
         };
     }
 
@@ -67,7 +72,11 @@ class EditCom extends React.Component {
                 this.showMessage(apiResult.Message);
             } else {
                 apiResult.ResultObject.IncorporationDate = apiResult.ResultObject.IncorporationDateString;
-                this.setState({ DataSource: apiResult.ResultObject, PartnerCoordinatorStore: apiResult.ResultObject.PartnerCoordinatorStore ? apiResult.ResultObject.PartnerCoordinatorStore : [] });
+                this.setState({
+                    DataSource: apiResult.ResultObject,
+                    PartnerCoordinatorStore: apiResult.ResultObject.PartnerCoordinatorStore ? apiResult.ResultObject.PartnerCoordinatorStore : [],
+                    statePartnerCustomer: apiResult.ResultObject.lstPartner_Customer
+                });
                 this.setValueCombobox(apiResult.ResultObject.CountryID, apiResult.ResultObject.ProvinceID, apiResult.ResultObject.DistrictID, apiResult.ResultObject.WardID);
             }
             this.setState({
@@ -142,7 +151,7 @@ class EditCom extends React.Component {
             if (!result.IsError && result.ResultObject.CacheData != null) {
                 this.setState({
                     Store: result.ResultObject.CacheData
-                });   
+                });
             }
         });
     }
@@ -287,7 +296,17 @@ class EditCom extends React.Component {
         //console.log("onPartnerCoordinatorStoreChange", list);
     }
 
+    handlePartnerCustomer(updateStateDataGrid) {
+        this.setState({
+            statePartnerCustomer: updateStateDataGrid
+        });
+    }
 
+    handleDeletedPartnerCustomer(arrDeletedPartnerCustomer) {
+        this.setState({
+            stateDeletedPartnerCustomer: arrDeletedPartnerCustomer
+        })
+    }
 
     handleSubmit(formData, MLObject) {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
@@ -314,9 +333,18 @@ class EditCom extends React.Component {
             MLObject.WardID = -1;
         }
 
+        const lstPartner_Customer = this.state.stateDeletedPartnerCustomer.reduce((acc, val) => {
+            if (acc.find(item => item.CustomerID == val.CustomerID)) {
+                return acc;
+            } else {
+                return [...acc, val]
+            }
+        }, [...this.state.statePartnerCustomer]);
+
         MLObject.FullAddress = this.state.FullAddress;
         MLObject.PartnerCoordinatorStore = this.state.PartnerCoordinatorStore;
         MLObject.PartnerCoordinatorStore_DeleteList = this.state.PartnerCoordinatorStore_DeleteList;
+        MLObject.lstPartner_Customer = lstPartner_Customer;
 
         var data = new FormData();
         data.append("LogoImageURL", this.state.Files.PictureURL);
@@ -328,7 +356,6 @@ class EditCom extends React.Component {
                 this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNER);
             }
         });
-        //console.log("MLObject",MLObject);
     }
 
     handleCloseMessage() {
@@ -374,10 +401,13 @@ class EditCom extends React.Component {
                             Store={this.state.Store}
                             onPartnerCoordinatorStoreChange={this.onPartnerCoordinatorStoreChange}
                         /> */}
+
+                        <PartnerCustomerCom
+                            propsPartnerCustomer={this.state.statePartnerCustomer}
+                            propsHandlePartnerCustomer={this.handlePartnerCustomer}
+                            propsHandleDeletedPartnerCustomer={this.handleDeletedPartnerCustomer}
+                        />
                     </SimpleForm>
-
-
-
                 </React.Fragment>
             );
         }
