@@ -330,6 +330,18 @@ export const MLObjectDefinition = [
         DataSourceMember: "IsCheckReceiverGeoLocationStep"
     },
     {
+        Name: "IsShowToPartner",
+        DefaultValue: "",
+        BindControlName: "IsShowToPartner",
+        DataSourceMember: "IsShowToPartner"
+    },
+    {
+        Name: "IsShowToCustomer",
+        DefaultValue: "",
+        BindControlName: "IsShowToCustomer",
+        DataSourceMember: "IsShowToCustomer"
+    },
+    {
         Name: "OrderIndex",
         DefaultValue: "",
         BindControlName: "OrderIndex",
