@@ -270,6 +270,7 @@ class SearchCom extends Component {
                                                 <th className="jsgrid-header-cell">Mã đơn hàng đối tác</th>
                                                 <th className="jsgrid-header-cell">Ngày tạo</th>
                                                 <th className="jsgrid-header-cell">Người tạo</th>
+                                                <th className="jsgrid-header-cell">Loại tiêu chí đánh giá</th>
                                                 <th className="jsgrid-header-cell">Ghi chú đánh giá</th>
                                                 <th className="jsgrid-header-cell">Đã duyệt gỡ đánh giá</th>
                                                 <th className="jsgrid-header-cell">Tác vụ</th>
@@ -284,6 +285,7 @@ class SearchCom extends Component {
                                                         <td>{item.PartnerSaleOrderID}</td>
                                                         <td>{moment(item.CreatedDate).format("DD/MM/YYYY")}</td>
                                                         <td>{item.CreatedUserFullName}</td>
+                                                        <td>{item.QualityAssessTypeIDName}</td>
                                                         <td>{item.QualityAssessNote}</td>
                                                         <td>{item.IsRevokeAssessReview == 0 ? <span className='lblstatus text-warning'>Chưa duyệt</span> : (<span className='lblstatus text-success'>Đã duyệt</span>)}</td>
                                                         <td><Link to={`/ShipmentQualityAssess/Detail/${item.ShipmentQualityAssessID}`} target='_blank'>Chi tiết</Link></td>
