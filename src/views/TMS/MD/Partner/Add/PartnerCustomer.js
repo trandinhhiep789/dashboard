@@ -9,8 +9,8 @@ import { listColumnPartnerCustomerAdd } from "../constants";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../../constants/actionTypes';
-import PartnerCustomerAddModalCom from './PartnerCustomerAddModal';
-import PartnerCustomerEditModalCom from './PartnerCustomerEditModal';
+import PartnerCustomerAddModalCom from '../PartnerCustomerModal/Add';
+import PartnerCustomerEditModalCom from '../PartnerCustomerModal/Edit';
 
 class PartnerCustomerCom extends React.Component {
     constructor(props) {

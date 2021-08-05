@@ -38,6 +38,7 @@ class AddCom extends React.Component {
         // this.handleGetCache = this.handleGetCache.bind(this);
         // this.handleClearLocalCache = this.handleClearLocalCache.bind(this);
         this.handlePartnerCustomer = this.handlePartnerCustomer.bind(this);
+        this.handlePartnerServiceRequestType = this.handlePartnerServiceRequestType.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -51,7 +52,8 @@ class AddCom extends React.Component {
             PartnerID: "",
             PartnerCoordinatorStore: [],
             FullAddress: "",
-            statePartnerCustomer: []
+            statePartnerCustomer: [],
+            statePartnerServiceRequestType: []
         };
     }
 
@@ -73,9 +75,7 @@ class AddCom extends React.Component {
     // getCacheDataCombobox(cacheKeyID) {
     //     let listOption = [];
     //     this.props.callGetCache(cacheKeyID).then((result) => {
-    //         //console.log("FormElement callGetCache: ", result)     
     //         if (!result.IsError && result.ResultObject.CacheData != null) {
-    //             //console.log("FormElement listOption: ", listOption)
     //             listOption = result.ResultObject.CacheData;
     //         }
     //         else {
@@ -106,7 +106,6 @@ class AddCom extends React.Component {
         // quốc gia
         this.props.callGetCache(ERPCOMMONCACHE_COUNTRY).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
-                //console.log("FormElement listOption: ", listOption)
                 this.setState({
                     Country: result.ResultObject.CacheData
                 });
@@ -116,7 +115,6 @@ class AddCom extends React.Component {
         // tỉnh thành phố
         this.props.callGetCache(ERPCOMMONCACHE_PROVINCE).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
-                //console.log("FormElement listOption: ", listOption)
                 this.setState({
                     Province: result.ResultObject.CacheData
                 });
@@ -126,7 +124,6 @@ class AddCom extends React.Component {
         // quận huyện
         this.props.callGetCache(ERPCOMMONCACHE_DISTRICT).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
-                //console.log("FormElement listOption: ", listOption)
                 this.setState({
                     District: result.ResultObject.CacheData
                 });
@@ -137,7 +134,6 @@ class AddCom extends React.Component {
         // phường xã
         this.props.callGetCache(ERPCOMMONCACHE_WARD).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
-                //console.log("FormElement listOption: ", listOption)
                 this.setState({
                     Ward: result.ResultObject.CacheData
                 });
@@ -203,7 +199,6 @@ class AddCom extends React.Component {
             }
         }
 
-        //console.log("full address", fullAddress);
         return fullAddress;
 
     }
@@ -233,7 +228,6 @@ class AddCom extends React.Component {
             fullAddress = this.getFullAddress(formData);
         }
 
-        //console.log("this.state.Province", this.state.Province);
         let country = [{ value: -1, label: "--Vui lòng chọn--" }];
         let province = [{ value: -1, label: "--Vui lòng chọn--" }];
         let district = [{ value: -1, label: "--Vui lòng chọn--" }];
@@ -315,6 +309,7 @@ class AddCom extends React.Component {
         MLObject.FullAddress = this.state.FullAddress;
         MLObject.PartnerCoordinatorStore = this.state.PartnerCoordinatorStore;
         MLObject.lstPartner_Customer = this.state.statePartnerCustomer;
+        MLObject.lstPartner_ServiceRequestType = this.state.statePartnerServiceRequestType;
 
         var data = new FormData();
         data.append("LogoImageURL", this.state.Files.PictureURL);
@@ -347,6 +342,10 @@ class AddCom extends React.Component {
 
     handlePartnerCustomer(data) {
         this.setState({ statePartnerCustomer: data });
+    }
+
+    handlePartnerServiceRequestType(data) {
+        this.setState({ statePartnerServiceRequestType: data });
     }
 
     render() {
@@ -382,6 +381,7 @@ class AddCom extends React.Component {
                 />
 
                 <PartnerServiceRequestTypeCom
+                    propsHandlePartnerServiceRequestType={this.handlePartnerServiceRequestType}
                 />
             </SimpleForm>
 
