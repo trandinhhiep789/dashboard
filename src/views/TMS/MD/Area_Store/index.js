@@ -10,7 +10,7 @@ import { GetMLObjectData } from "../../../../common/library/form/FormLib";
 import Collapsible from 'react-collapsible';
 import {
     ModalColumnList_Insert, ModalColumnList_Edit, DataGridColumnList, MLObjectDefinition,
-    AddAPIPath, UpdateAPIPath, DeleteAPIPath, APIHostName
+    AddAPIPath, UpdateAPIPath, DeleteAPIPath, APIHostName,schema, DataTemplateExport, AddByFileAPIPath
 } from "./constants";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
@@ -44,7 +44,8 @@ class Area_StoreCom extends React.Component {
             AreaTypeID: this.props.AreaTypeID,
             IsInsert: true,
             ModalColumnList_Insert: ModalColumnList_Insert,
-            ModalColumnList_Edit: ModalColumnList_Edit
+            ModalColumnList_Edit: ModalColumnList_Edit,
+            DataTemplateExport
         };
         this.notificationDOMRef = React.createRef();
     }
@@ -257,6 +258,63 @@ class Area_StoreCom extends React.Component {
     onClose() {
         this.resetCombobox();
     }
+
+
+    handleExportFileTemplate(result) {
+        this.addNotification(result.Message, result.IsError);
+    }
+
+    handleImportFile(resultRows, errors) {
+
+        const CreatedUser = this.props.AppInfo.LoginInfo.Username;
+        const LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        const AreaID = this.state.AreaID;
+        const AreaTypeID = this.state.AreaTypeID;
+        const importData = resultRows.map(item => {
+            //const { UserName, IsSystem } = item
+            return {
+                ...item,
+                AreaID,
+                AreaTypeID,
+                CreatedUser,
+                LoginLogID
+                //ProvinceFullName: `${ProvinceID} - ${ProvinceName}`,
+                //WardFullName: `${WardID} - ${WardName}`
+            }
+        })
+
+        // let data = [];
+        // let _isError = false;
+        // importData.map((itemObject, index) => {
+        //     if (!itemObject.UserName && _isError == false) {
+        //         this.addNotification("Vui lòng chọn người dùng.", true);
+        //         _isError = true;
+        //     } else {
+        //         data.push(itemObject);
+        //     }
+        // });
+
+
+        // if (_isError) {
+        //     return;
+        // }
+
+
+        this.props.callFetchAPI(APIHostName, AddByFileAPIPath, importData).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            if (!apiResult.IsError) {
+                //this.props.callClearLocalCache(ERPCOMMONCACHE_MATERIALGROUP);
+                if (this.props.onAreaStoreChange) {
+                    this.props.onAreaStoreChange();
+                }
+            }
+
+            this.addNotification(apiResult.Message, apiResult.IsError);
+
+        });
+
+    }
+
 
     handleInsert(MLObjectDefinition, modalElementList, dataSource) {
         if (!this.state.IsAllowedAdd) {
@@ -531,6 +589,14 @@ class Area_StoreCom extends React.Component {
                     RowsPerPage={10}
                     IsCustomAddLink={true}
                     headingTitle={"Danh sách kho điều phối của khu vực"}
+
+                    IsImportFile={true}
+                    SchemaData={schema}
+                    onImportFile={this.handleImportFile.bind(this)}
+                    isExportFileTemplate={true}
+                    DataTemplateExport={this.state.DataTemplateExport}
+                    fileNameTemplate={"Danh sách kho điều phối của khu vực"}
+                    onExportFileTemplate={this.handleExportFileTemplate.bind(this)}
                 />
             </div>
         );

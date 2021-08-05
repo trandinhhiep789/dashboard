@@ -2,6 +2,7 @@ export const APIHostName = "TMSAPI";
 export const AddAPIPath = "api/Area_Province/Add";
 export const UpdateAPIPath = "api/Area_Province/Update";
 export const DeleteAPIPath = "api/Area_Province/Delete";
+export const AddByFileAPIPath ="api/Area_Province/AddByFile";
 
 export const ModalColumnList_Insert = [
     {
@@ -150,5 +151,20 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "CreatedUser",
         DataSourceMember: "CreatedUser"
+    }
+];
+
+
+export const schema = {
+    'Mã tỉnh thành': {
+        prop: 'ProvinceID',
+        type: String,
+        required: true
+    }
+}
+
+export const DataTemplateExport = [
+    {
+        "Mã tỉnh thành": '6373'
     }
 ];

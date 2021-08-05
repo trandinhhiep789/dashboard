@@ -2,6 +2,7 @@ export const APIHostName = "TMSAPI";
 export const AddAPIPath = "api/Store_Area/Add";
 export const UpdateAPIPath = "api/Store_Area/Update";
 export const DeleteAPIPath = "api/Store_Area/Delete";
+export const AddByFileAPIPath ="api/Store_Area/AddByFile";
 
 export const ModalColumnList_Insert = [
     // {
@@ -175,5 +176,19 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "CreatedUser",
         DataSourceMember: "CreatedUser"
+    }
+];
+
+export const schema = {
+    'Mã kho điều phối': {
+        prop: 'StoreID',
+        type: String,
+        required: true
+    }
+}
+
+export const DataTemplateExport = [
+    {
+        "Mã kho điều phối": '6373'
     }
 ];
