@@ -904,7 +904,7 @@ class InfoCoordinatorCom extends Component {
 
                         <div className="form-group col-md-12 form-group-btncustom">
                             {
-                                this.state.ShipmentOrder.IsIGnoreCheckRCGeolocation ==false?<button className="btn btnDelivery mr-10" type="submit" onClick={this.handleIgnoreCheckRCGeolocation.bind(this)}><span className="fa fa-remove">Bỏ qua kiểm tra t0ạ độ</span></button>:""
+                                this.state.ShipmentOrder.IsIGnoreCheckRCGeolocation ==false?<button className="btn btnDelivery mr-10" type="submit" onClick={this.handleIgnoreCheckRCGeolocation.bind(this)}><span className="fa fa-remove">Bỏ qua kiểm tra toạ độ</span></button>:""
                             }
                             
                             {

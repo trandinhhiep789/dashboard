@@ -60,13 +60,14 @@ class SearchCom extends React.Component {
             MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
             listMLObject.push(MLObject);
         });
+        console.log("listMLObject", listMLObject)
         this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
                 this.props.callClearLocalCache(ERPCOMMONCACHE_SERVICEAGREEMENTTYPE);
-                this.props.callClearLocalCache(ERPCOMMONCACHE_SERVICEPRICETABLE);    
+                this.props.callClearLocalCache(ERPCOMMONCACHE_SERVICEPRICETABLE);
                 // this.handleSubmitInsertLog();
             }
         });
@@ -157,7 +158,7 @@ class SearchCom extends React.Component {
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
-                        FormName="Tìm kiếm danh sách loại hợp đồng dịch vụ"
+                        FormName="Tìm kiếm danh sách bảng giá dịch vụ"
                         MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
@@ -171,8 +172,8 @@ class SearchCom extends React.Component {
                         PKColumnName={PKColumnName}
                         onDeleteClick={this.handleDelete}
                         ref={this.gridref}
-                        // RequirePermission={SERVICEPRICETABLE_VIEW}
-                        // DeletePermission={SERVICEPRICETABLE_DELETE}
+                        RequirePermission={SERVICEPRICETABLE_VIEW}
+                        DeletePermission={SERVICEPRICETABLE_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                     />
