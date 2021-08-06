@@ -884,6 +884,13 @@ const AppMenu = [
                         LinkTo: '/ServiceAgreementType',
                         MenuIcon: '',
                         SubMenu: []
+                    },
+                    {
+                        MenuName: 'ServiceRequestType',
+                        MenuTitle: 'Loại loại yêu cầu dịch vụ',
+                        LinkTo: '/ServiceRequestType',
+                        MenuIcon: '',
+                        SubMenu: []
                     }
 
                 ]

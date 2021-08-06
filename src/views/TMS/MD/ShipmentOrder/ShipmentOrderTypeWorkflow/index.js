@@ -731,6 +731,14 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                         controltype="InputControl" datasourcemember="IsCheckReceiverGeoLocationStep"
                                         swaplabelModal={true}
                                     />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Có hiển thị bước này cho đối tác không" name="IsShowToPartner"
+                                        controltype="InputControl" datasourcemember="IsShowToPartner"
+                                        swaplabelModal={true}
+                                    />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Có hiển thị bước này cho khách hàng không" name="IsShowToCustomer"
+                                        controltype="InputControl" datasourcemember="IsShowToCustomer"
+                                        swaplabelModal={true}
+                                    />
 
                                 </div>
                             </div>

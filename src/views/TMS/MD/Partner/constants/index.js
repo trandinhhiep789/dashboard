@@ -1039,7 +1039,7 @@ export const listColumnPartnerCustomerAdd = [
     }
 ]
 
-export const MLObjectDefinitionPartnerCustomeAddModal = [
+export const MLObjectDefinitionPartnerCustomeModal = [
     {
         Name: "CustomerID",
         DefaultValue: "",
@@ -1069,10 +1069,10 @@ export const listColumnPartnerServiceRequestTypeAdd = [
         Width: 60
     },
     {
-        Name: "CustomerID",
+        Name: "ServiceRequestTypeID",
         Type: "text",
-        Caption: "Mã khách hàng",
-        DataSourceMember: "CustomerID"
+        Caption: "Mã loại dịch vụ ",
+        DataSourceMember: "ServiceRequestTypeID"
     },
     {
         Name: "IsActived",
@@ -1093,4 +1093,25 @@ export const listColumnPartnerServiceRequestTypeAdd = [
         DataSourceMember: "",
         Width: 90
     }
-]
+];
+
+export const MLObjectDefinitionPartnerServiceRequestTypeModal = [
+    {
+        Name: "ServiceRequestTypeID",
+        DefaultValue: "",
+        BindControlName: "cbServiceRequestTypeID",
+        DataSourceMember: "ServiceRequestTypeID"
+    },
+    {
+        Name: "IsActived",
+        DefaultValue: "",
+        BindControlName: "chkIsActived",
+        DataSourceMember: "IsActived"
+    },
+    {
+        Name: "IsSystem",
+        DefaultValue: "",
+        BindControlName: "chkIsSystem",
+        DataSourceMember: "IsSystem"
+    },
+];

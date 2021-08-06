@@ -5,26 +5,30 @@ import { ModalManager } from 'react-dynamic-modal';
 
 import { MessageModal } from "../../../../../common/components/Modal";
 import { showModal, hideModal } from '../../../../../actions/modal';
-import { MLObjectDefinitionPartnerCustomeAddModal } from '../constants';
+import { MLObjectDefinitionPartnerServiceRequestTypeModal } from '../constants';
 import FormContainer from "../../../../../common/components/FormContainer";
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
+import { callGetCache } from "../../../../../actions/cacheAction";
 
-class PartnerCustomerAddModalCom extends React.Component {
+class AddCom extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-
+            statePartnerServiceRequestType: this.props.propsPartnerServiceRequestType,
+            statePartnerServiceRequestTypeCache: [],
+            stateOptionServiceRequestType: []
         };
 
         this.gridref = React.createRef();
         this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
-
+        this.handleOptionServiceRequestType = this.handleOptionServiceRequestType.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
+        this.handleOptionServiceRequestType();
     }
 
     showMessage(message) {
@@ -67,22 +71,40 @@ class PartnerCustomerAddModalCom extends React.Component {
         });
     }
 
+    handleOptionServiceRequestType() {
+        const { statePartnerServiceRequestType } = this.state;
+
+        this.props.callGetCache("ERPCOMMONCACHE.SERVICEREQUESTTYPE").then(result => {
+            const optionServiceRequestType = result.ResultObject.CacheData.reduce((acc, val) => {
+                if (statePartnerServiceRequestType.find(item => item.ServiceRequestTypeID == val.ServiceRequestTypeID)) {
+                    return acc;
+                } else {
+                    return [...acc, {
+                        label: `${val.ServiceRequestTypeID} - ${val.ServiceRequestTypeName}`,
+                        value: val.ServiceRequestTypeID
+                    }]
+                }
+            }, []);
+
+            this.setState({
+                stateOptionServiceRequestType: optionServiceRequestType,
+                statePartnerServiceRequestTypeCache: result.ResultObject.CacheData
+            })
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
+
     handleSubmit(FormData, MLObject) {
         try {
-            const { propsPartnerCustomer, propsHandlePartnerCustomer } = this.props;
-            if (propsPartnerCustomer.length == 0) {
-                propsHandlePartnerCustomer([MLObject]);
-                this.props.hideModal();
-            } else {
-                const found = propsPartnerCustomer.find(item => item.CustomerID == MLObject.CustomerID);
+            const PartnerServiceRequestType = this.state.statePartnerServiceRequestTypeCache.find(item => item.ServiceRequestTypeID == MLObject.ServiceRequestTypeID);
 
-                if (found == undefined) {
-                    propsHandlePartnerCustomer([...propsPartnerCustomer, MLObject]);
-                    this.props.hideModal();
-                } else {
-                    this.showMessage("Mã khách hàng đã tồn tại");
-                }
-            }
+            this.setState({
+                statePartnerServiceRequestType: [...this.state.statePartnerServiceRequestType, { ...PartnerServiceRequestType, ...MLObject }]
+            })
+
+            this.props.propsHandleDataGrid([...this.state.statePartnerServiceRequestType, { ...PartnerServiceRequestType, ...MLObject }]);
+            this.props.hideModal();
         } catch (error) {
             this.showMessage("Lỗi thêm");
         }
@@ -94,25 +116,30 @@ class PartnerCustomerAddModalCom extends React.Component {
                 <ReactNotification ref={this.notificationDOMRef} />
 
                 <FormContainer
-                    MLObjectDefinition={MLObjectDefinitionPartnerCustomeAddModal}
+                    MLObjectDefinition={MLObjectDefinitionPartnerServiceRequestTypeModal}
                     listelement={[]}
                     onSubmit={this.handleSubmit}
                     IsCloseModal={true}
                 >
                     <div className="row">
                         <div className="col-12 mb-2">
-                            <FormControl.TextBox
-                                name="txtCustomerID"
+                            <FormControl.FormControlComboBox
+                                name="cbServiceRequestTypeID"
                                 colspan="8"
                                 labelcolspan="4"
-                                readOnly={false}
-                                label="mã khách hàng"
-                                placeholder="Mã khách hàng"
+                                label="Loại dịch vụ đối tác được yêu cầu"
+                                isautoloaditemfromcache={false}
+                                loaditemcachekeyid="ERPCOMMONCACHE.SERVICEREQUESTTYPE"
+                                valuemember="ServiceRequestTypeID"
+                                nameMember="ServiceRequestTypeName"
                                 controltype="InputControl"
-                                value=""
-                                datasourcemember="CustomerID"
-                                validatonList={['required', 'number']}
-                                maxSize={10}
+                                value="-1"
+                                listoption={this.state.stateOptionServiceRequestType}
+                                datasourcemember="ServiceRequestTypeID"
+                                placeholder="---Vui lòng chọn---"
+                                isMultiSelect={false}
+                                isShowLable={false}
+                                validatonList={["Comborequired"]}
                             />
                         </div>
 
@@ -158,6 +185,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        callGetCache: (cacheKeyID) => {
+            return dispatch(callGetCache(cacheKeyID));
+        },
         showModal: (type, props) => {
             dispatch(showModal(type, props));
         },
@@ -167,4 +197,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PartnerCustomerAddModalCom);
+export default connect(mapStateToProps, mapDispatchToProps)(AddCom);

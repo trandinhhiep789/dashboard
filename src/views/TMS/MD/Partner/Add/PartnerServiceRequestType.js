@@ -5,28 +5,27 @@ import { ModalManager } from 'react-dynamic-modal';
 
 import { MessageModal } from "../../../../../common/components/Modal";
 import DataGrid from "../../../../../common/components/DataGrid";
-import { listColumnPartnerCustomerAdd } from "../constants";
+import { listColumnPartnerServiceRequestTypeAdd } from "../constants";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../../constants/actionTypes';
-import PartnerCustomerAddModalCom from '../PartnerCustomerModal/Add';
-import PartnerCustomerEditModalCom from '../PartnerCustomerModal/Edit';
+import PartnerServiceRequestTypeModalAddCom from '../PartnerServiceRequestTypeModal/Add';
+import PartnerServiceRequestTypeModalEditCom from '../PartnerServiceRequestTypeModal/Edit';
 
-class PartnerCustomerCom extends React.Component {
+class PartnerServiceRequestTypeCom extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            stateIsError: false,
-            stateDataGrid: this.props.propsPartnerCustomer,
+            stateDataGrid: []
         };
 
-        this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
+        this.showMessage = this.showMessage.bind(this);
         this.handleInsertClick = this.handleInsertClick.bind(this);
-        this.handlePartnerCustomer = this.handlePartnerCustomer.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
+        this.handleDeleteClick = this.handleDeleteClick.bind(this);
         this.handleInsertClickEdit = this.handleInsertClickEdit.bind(this);
+        this.handleStateDataGrid = this.handleStateDataGrid.bind(this);
     }
 
     componentDidMount() {
@@ -72,36 +71,36 @@ class PartnerCustomerCom extends React.Component {
         });
     }
 
-    handlePartnerCustomer(data) {
+    handleStateDataGrid(data) {
         this.setState({
             stateDataGrid: data
         })
-        this.props.propsHandlePartnerCustomer(data);
+        this.props.propsHandlePartnerServiceRequestType(data);
     }
 
     handleInsertClick() {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: 'Thêm khách hàng thuộc đối tác',
+            title: 'Thêm loại dịch vụ đối tác được yêu cầu',
             content: {
-                text: <PartnerCustomerAddModalCom
-                    propsPartnerCustomer={this.state.stateDataGrid}
-                    propsHandlePartnerCustomer={this.handlePartnerCustomer}
+                text: <PartnerServiceRequestTypeModalAddCom
+                    propsPartnerServiceRequestType={this.state.stateDataGrid}
+                    propsHandleDataGrid={this.handleStateDataGrid}
                 />
             },
             maxWidth: '800px'
         });
     }
 
-    handleDelete(listDeleteID, ListPKColumnName) {
+    handleDeleteClick(listDeleteID, ListPKColumnName) {
         try {
             const { stateDataGrid } = this.state;
 
-            const arrDeletedPartnerCustomer = listDeleteID.map(item => {
-                return { CustomerID: item.pkColumnName[0].value, IsDeleted: true };
-            });
+            const arrSelectRow = listDeleteID.map(item => {
+                return item.pkColumnName[0].value;
+            })
 
             const updateStateDataGrid = stateDataGrid.reduce((acc, val) => {
-                if (arrDeletedPartnerCustomer.find(item => item.CustomerID == val.CustomerID)) {
+                if (arrSelectRow.find(item => item == val.ServiceRequestTypeID)) {
                     return acc;
                 } else {
                     return [...acc, val];
@@ -111,8 +110,7 @@ class PartnerCustomerCom extends React.Component {
             this.setState({
                 stateDataGrid: updateStateDataGrid
             })
-            this.props.propsHandlePartnerCustomer(updateStateDataGrid);
-            this.props.propsHandleDeletedPartnerCustomer(arrDeletedPartnerCustomer);
+            this.props.propsHandlePartnerServiceRequestType(updateStateDataGrid);
         } catch (error) {
             this.showMessage("Lỗi xóa");
         }
@@ -121,17 +119,16 @@ class PartnerCustomerCom extends React.Component {
     handleInsertClickEdit(id, pkColumnName) {
         try {
             const { stateDataGrid } = this.state;
-            const { value } = id.pkColumnName[0];
 
-            const indexFound = stateDataGrid.findIndex(item => item.CustomerID == value);
+            const indexFound = stateDataGrid.findIndex(item => item.ServiceRequestTypeID == id.pkColumnName[0].value);
 
             this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-                title: 'Chỉnh sửa khách hàng thuộc đối tác',
+                title: 'Chỉnh sửa loại dịch vụ đối tác được yêu cầu',
                 content: {
-                    text: <PartnerCustomerEditModalCom
-                        propsIndexPartnerCustomer={indexFound}
-                        propsArrPartnerCustomer={this.state.stateDataGrid}
-                        propsHandlePartnerCustomer={this.handlePartnerCustomer}
+                    text: <PartnerServiceRequestTypeModalEditCom
+                        propsIndexFound={indexFound}
+                        propsDataGrid={stateDataGrid}
+                        propsHandleDataGrid={this.handleStateDataGrid}
                     />
                 },
                 maxWidth: '800px'
@@ -149,10 +146,10 @@ class PartnerCustomerCom extends React.Component {
                 <ReactNotification ref={this.notificationDOMRef} />
 
                 <DataGrid
-                    headingTitle="Danh sách khách hàng thuộc đối tác"
-                    listColumn={listColumnPartnerCustomerAdd}
+                    headingTitle="Danh sách loại dịch vụ đối tác được yêu cầu"
+                    listColumn={listColumnPartnerServiceRequestTypeAdd}
                     dataSource={stateDataGrid}
-                    PKColumnName={"CustomerID"}
+                    PKColumnName={"ServiceRequestTypeID"}
 
                     isHideHeaderToolbar={false}
                     IsShowButtonAdd={true}
@@ -163,7 +160,7 @@ class PartnerCustomerCom extends React.Component {
                     IsShowButtonDelete={true}
                     IsDelete={true}
                     IDSelectColumnName={"chkSelect"}
-                    onDeleteClick={this.handleDelete}
+                    onDeleteClick={this.handleDeleteClick}
 
                     onInsertClickEdit={this.handleInsertClickEdit}
 
@@ -198,4 +195,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PartnerCustomerCom);
+export default connect(mapStateToProps, mapDispatchToProps)(PartnerServiceRequestTypeCom);

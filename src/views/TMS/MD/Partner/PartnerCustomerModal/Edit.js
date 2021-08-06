@@ -5,7 +5,7 @@ import { ModalManager } from 'react-dynamic-modal';
 
 import { MessageModal } from "../../../../../common/components/Modal";
 import { showModal, hideModal } from '../../../../../actions/modal';
-import { MLObjectDefinitionPartnerCustomeAddModal } from '../constants';
+import { MLObjectDefinitionPartnerCustomeModal } from '../constants';
 import FormContainer from "../../../../../common/components/FormContainer";
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
 
@@ -93,7 +93,7 @@ class PartnerCustomerAddModalCom extends React.Component {
                 <ReactNotification ref={this.notificationDOMRef} />
 
                 <FormContainer
-                    MLObjectDefinition={MLObjectDefinitionPartnerCustomeAddModal}
+                    MLObjectDefinition={MLObjectDefinitionPartnerCustomeModal}
                     listelement={[]}
                     onSubmit={this.handleSubmit}
                     IsCloseModal={true}
