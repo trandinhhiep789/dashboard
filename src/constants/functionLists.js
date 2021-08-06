@@ -516,6 +516,9 @@ export const TMS_TMSREWARD_SO_TYPE_VIEW = 'TMS_TMSREWARD_SO_TYPE_VIEW';
 export const TMS_TMSREWARD_REVIEW = 'TMS_TMSREWARD_REVIEW';
 //Tính chi phí thưởng theo ngày
 export const TMS_TMSREWARD_COMPUTE = 'TMS_TMSREWARD_COMPUTE';
+//Kiểm tra điểm thưởng theo nhân viên
+export const TMS_TMSREWARD_BYUSERNAME = 'TMS_TMSREWARD_BYUSERNAME';
+
 
 //Xem danh sách báo cao công nợ
 export const TMS_BEGINTERMADVANCEDEBT_VIEW = 'TMS_BEGINTERMADVANCEDEBT_VIEW';
