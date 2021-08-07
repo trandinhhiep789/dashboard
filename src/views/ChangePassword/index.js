@@ -72,18 +72,14 @@ class ChangePasswordCom extends React.Component {
             this.showMessage("Xác nhận mật khẩu chưa đúng.");
             return false;
         }
-
-
-
-
         const hostname = "TMSAPI";
         //const apiPath = "api/PartnerUser/UpdatePassWordUserPartner";
         const apiPath = "api/PartnerUser/UpdatePassWordUserPartnerMobile";
         let userLogin = this.props.AppInfo.LoginInfo.Username;
         const postData = {
             Username: userLogin,
-            Password: MD5Digest(MLObject.PassWord),
-            PasswordOld: MD5Digest(MLObject.OldPassWord),
+            Password: MLObject.PassWord,
+            PasswordOld: MLObject.OldPassWord,
             UpdatedUser: ""
         }
 
