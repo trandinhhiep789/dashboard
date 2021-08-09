@@ -35,6 +35,7 @@ class ListShipCoordinatorCom extends Component {
             FormValidation: {},
             CallAPIMessage: "",
             IsCallAPIError: false,
+            ShipmentRouteID :this.props.ShipmentRouteID
 
         }
         this.notificationDOMRef = React.createRef();
@@ -276,27 +277,24 @@ class ListShipCoordinatorCom extends Component {
         console.log("onValueChangeComboUser", rowname, rowvalue, rowIndex)
     }
     // check trùng nhân viên giao hàng
-    checkDeliverUser(DeliverUserLst,RowDeliverUserLst) {
+    checkDeliverUser(DeliverUserLst, RowDeliverUserLst) {
         let element = [];
         let Rowelement = [];
-        if(DeliverUserLst)
-        {
+        if (DeliverUserLst) {
             DeliverUserLst.map((item, indexRow) => {
                 element.push(item.UserName)
             });
         }
 
-        if(RowDeliverUserLst)
-        {
+        if (RowDeliverUserLst) {
             RowDeliverUserLst.map((item, indexRow) => {
                 Rowelement.push(item.UserName)
             });
         }
-        if(JSON.stringify(element) != JSON.stringify(Rowelement))
-        {
+        if (JSON.stringify(element) != JSON.stringify(Rowelement)) {
             return false;
         }
-      return true;
+        return true;
     }
 
     _genCommentTime(dates) {
@@ -354,15 +352,14 @@ class ListShipCoordinatorCom extends Component {
         let elementDeliverUserList = [];
         this.state.ShipmentOrder.map((row, indexRow) => {
             if (this.state.objCoordinator.IsRoute == true && row.CarrierTypeID != this.state.ShipmentOrder[0].CarrierTypeID) {
-              //  this.addNotification("không cùng phương tiện giao hàng", true);
+                //  this.addNotification("không cùng phương tiện giao hàng", true);
                 const validationObject = { IsValidatonError: true, ValidationErrorMessage: "Vui lòng chọn phương tiện" };
                 elementobject = Object.assign({}, elementobject, { ["CarrierTypeID-" + indexRow]: validationObject });
                 return;
             }
             if (this.state.objCoordinator.IsRoute == true) {
-                if(this.checkDeliverUser(row.ShipmentOrder_DeliverUserList,this.state.ShipmentOrder[0].ShipmentOrder_DeliverUserList)==false)  
-                {
-                 //   this.addNotification("không cùng nhân viên giao hàng", true);
+                if (this.checkDeliverUser(row.ShipmentOrder_DeliverUserList, this.state.ShipmentOrder[0].ShipmentOrder_DeliverUserList) == false) {
+                    //   this.addNotification("không cùng nhân viên giao hàng", true);
                     const validationObject = { IsValidatonError: true, ValidationErrorMessage: "không cùng nhân viên giao hàng" };
                     elementobject = Object.assign({}, elementobject, { ["ShipmentOrder_DeliverUserList-" + indexRow]: validationObject });
                     return;
@@ -381,7 +378,7 @@ class ListShipCoordinatorCom extends Component {
                 row["ShipmentOrder_DeliverUserList"].map((item, indexRow) => {
                     let objMultDeliverUser = { UserName: item.UserName, CarrierTypeID: row["CarrierTypeID"], TotalCOD: row["TotalCOD"] / row["ShipmentOrder_DeliverUserList"].length }
                     element.push(objMultDeliverUser)
-                   // console.log("UserName", row["ShipmentOrderID"], item.UserName, row["TotalCOD"] / row["ShipmentOrder_DeliverUserList"].length)
+                    // console.log("UserName", row["ShipmentOrderID"], item.UserName, row["TotalCOD"] / row["ShipmentOrder_DeliverUserList"].length)
                 });
             }
 
@@ -395,31 +392,27 @@ class ListShipCoordinatorCom extends Component {
         });
 
         this.state.ShipmentOrder[0].DeliverUserTotalCODList = this.groupByNew(element, ['UserName', 'CarrierTypeID']);
-        this.state.ShipmentOrder[0].ShipmentRouteID = this.props.ShipmentRouteID;
+        this.state.ShipmentOrder[0].ShipmentRouteID = this.state.ShipmentRouteID;
         this.setState({ FormValidation: elementobject });
         console.log(this.state.ShipmentOrder);
-        if (this.checkInputName(elementobject) != "")
-        {
-            this.addNotification(this.checkInputName(elementobject) , true);
+        if (this.checkInputName(elementobject) != "") {
+            this.addNotification(this.checkInputName(elementobject), true);
             return;
         }
-        if(this.props.ShipmentRouteID!="")
-        {
+        if (this.state.ShipmentRouteID != "") {
             this.props.callFetchAPI(APIHostName, 'api/ShipmentRoute/AddShipmentRouteLst', this.state.ShipmentOrder).then((apiResult) => {
                 this.addNotification(apiResult.Message, apiResult.IsError);
                 if (this.props.onChangeValue != null)
                     this.props.onChangeValue(apiResult);
             });
         }
-        else
-        {
+        else {
             this.props.callFetchAPI(APIHostName, 'api/ShipmentRoute/AddInfoCoordinatorLst', this.state.ShipmentOrder).then((apiResult) => {
                 this.addNotification(apiResult.Message, apiResult.IsError);
                 if (this.props.onChangeValue != null)
                     this.props.onChangeValue(apiResult);
             });
         }
-        
     }
 
     handleChangeCourse = (CarrierTypeID, rowIndex) => e => {
@@ -442,7 +435,7 @@ class ListShipCoordinatorCom extends Component {
         let OrderIDNew = 0;
         let OrderIndexOlw = 0;
         let OrderIndexNew = 0;
-    
+
         if (rowIndex == 0 && OrderID == -1) {
             OrderIDOlw = rowIndex;
             OrderIndexOlw = totalcout;
@@ -467,9 +460,25 @@ class ListShipCoordinatorCom extends Component {
         this.setState({ ShipmentOrder: this.state.ShipmentOrder });
     };
 
+    handleClickRoute = (RouteID) => e => {
+
+        this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetShipmentOrderRouteLst", RouteID).then(apiResult => {
+            if (!apiResult.IsError) {
+                let { ShipmentOrder } = this.state;
+                apiResult.ResultObject.map((item) => {
+                    ShipmentOrder.push(item);
+                });
+                this.setState({ ShipmentRouteID:RouteID,ShipmentOrder: ShipmentOrder });
+            }
+            else {
+                this.addNotification(apiResult.Message, apiResult.IsError);
+            }
+        });
+    };
+
     render() {
         let { ShipmentOrder } = this.state;
-        console.log("ShipmentOrder", ShipmentOrder)
+      
         return (
             <React.Fragment>
                 <div className="card">
@@ -502,7 +511,7 @@ class ListShipCoordinatorCom extends Component {
                                     colspan="8"
                                     labelcolspan="4"
                                     label="Cùng tuyến"
-                                    disabled={this.props.ShipmentRouteID!=""?true:false}
+                                    disabled={this.state.ShipmentRouteID != "" ? true : false}
                                     value={this.state.objCoordinator.IsRoute}
                                     onValueChange={this.handleOnValueChange}
                                 />
@@ -739,14 +748,14 @@ class ListShipCoordinatorCom extends Component {
                             <div className="col-md-6 col-lg-4">
                                 <div className="card card-secondary">
                                     <div className="card-body">
-                                        <ul>
+                                        <ul onClick={this.handleClickRoute('210808000000020')} >
                                             <li className="item infoOder">
                                                 <span className="nameOrder">
                                                     <Link
                                                         className="linktext blank"
                                                         target="_blank"
                                                         to={{ pathname: "/ShipmentOrder/Detail/" + 210714000000199 }}>
-                                                        210714000000199 </Link>
+                                                        210808000000020 </Link>
                                                 </span>
                                                 <span className="badge badge-warning time"><i className="ti ti-timer"></i> 08:00</span>
                                             </li>

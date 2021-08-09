@@ -615,7 +615,6 @@ class DataGridShipmentOderCom extends Component {
             this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderDeliver", ShipmentOrderID).then(apiResult => {
                 if (!apiResult.IsError) {
                     this.state.GridDataShip.push(apiResult.ResultObject);
-                    debugger;
                     // this.setState({ GridDataShip: apiResult.ResultObject });
                     this.props.showModal(MODAL_TYPE_VIEW, {
                         title: 'Điều phối nhân viên ',
@@ -696,7 +695,7 @@ class DataGridShipmentOderCom extends Component {
         const { widthPercent } = this.state;
             this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetShipmentOrderRouteLst", ShipmentRouteID).then(apiResult => {
                 if (!apiResult.IsError) {
-                    this.setState({ShipmentRouteID,ShipmentRouteID, GridDataShip: apiResult.ResultObject });
+                    this.setState({ShipmentRouteID:ShipmentRouteID, GridDataShip: apiResult.ResultObject });
                     this.props.showModal(MODAL_TYPE_VIEW, {
                         title: 'Phân tuyến điều phối vận đơn ',
                         isShowOverlay: false,
@@ -721,10 +720,7 @@ class DataGridShipmentOderCom extends Component {
      
     };
 
-    handleClickShip(e)
-    {
-
-    }
+  
     _genCommentTime(dates) {
         const date = new Date(Date.parse(dates));
         //let currentDate = new Date();
