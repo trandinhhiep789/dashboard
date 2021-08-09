@@ -19,10 +19,11 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
-
+import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { PARTNERPRIVILEDGE_VIEW, PARTNERPRIVILEDGE_DELETE } from "../../../../../../constants/functionLists";
+import { ERPUSERCACHE_PARTNERPRIVILEDGE } from "../../../../../../constants/keyCache";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -62,7 +63,9 @@ class SearchCom extends React.Component {
         });
         this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
-            //this.handleClearLocalCache(apiResult.Message, apiResult.IsError);
+            if(!apiResult.IsError){
+                this.props.callClearLocalCache(ERPUSERCACHE_PARTNERPRIVILEDGE);
+            }     
             this.addNotification(apiResult.Message, apiResult.IsError);
             this.callSearchData(this.state.SearchData);
         });
@@ -201,6 +204,12 @@ const mapDispatchToProps = dispatch => {
         },
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
+        },
+        callGetCache: (cacheKeyID) => {
+            return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID));
         }
     };
 };

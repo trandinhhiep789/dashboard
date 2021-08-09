@@ -15,6 +15,8 @@ import {
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
 import { PARTNERPRIVILEDGE_ADD } from "../../../../../../constants/functionLists";
+import { ERPUSERCACHE_PARTNERPRIVILEDGE } from "../../../../../../constants/keyCache";
+import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -43,6 +45,9 @@ class AddCom extends React.Component {
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
+            if(!apiResult.IsError){
+                this.props.callClearLocalCache(ERPUSERCACHE_PARTNERPRIVILEDGE);
+            }     
             this.showMessage(apiResult.Message);
         });
     }
@@ -100,6 +105,12 @@ const mapDispatchToProps = dispatch => {
         },
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
+        },
+        callGetCache: (cacheKeyID) => {
+            return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID));
         }
     };
 };
