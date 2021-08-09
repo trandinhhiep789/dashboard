@@ -15,8 +15,9 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
-
+import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 import { PARTNERPRIVILEDGE_UPDATE } from "../../../../../../constants/functionLists";
+import { ERPUSERCACHE_PARTNERPRIVILEDGE } from "../../../../../../constants/keyCache";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -56,7 +57,9 @@ class EditCom extends React.Component {
         //MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
-            //this.handleClearLocalCache(apiResult.Message);
+            if(!apiResult.IsError){
+                this.props.callClearLocalCache(ERPUSERCACHE_PARTNERPRIVILEDGE);
+            }     
             this.showMessage(apiResult.Message);
         });
     }
@@ -117,6 +120,12 @@ const mapDispatchToProps = dispatch => {
         },
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
+        },
+        callGetCache: (cacheKeyID) => {
+            return dispatch(callGetCache(cacheKeyID));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID));
         }
     };
 };
