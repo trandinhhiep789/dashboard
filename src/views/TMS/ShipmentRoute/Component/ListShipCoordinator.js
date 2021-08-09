@@ -573,9 +573,9 @@ class ListShipCoordinatorCom extends Component {
                                                 {
                                                     ShipmentOrder && ShipmentOrder.map((item, index) => {
                                                         let isPermission = false;
-                                                        if (this.state.objCoordinator.IsRoute == true) {
-                                                            isPermission = true
-                                                        }
+                                                        // if (this.state.objCoordinator.IsRoute == true) {
+                                                        //     isPermission = true
+                                                        // }
 
                                                         if (item.IsPermission == false) {
                                                             isPermission = true
