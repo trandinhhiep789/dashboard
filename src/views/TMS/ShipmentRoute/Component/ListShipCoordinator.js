@@ -35,7 +35,8 @@ class ListShipCoordinatorCom extends Component {
             FormValidation: {},
             CallAPIMessage: "",
             IsCallAPIError: false,
-            ShipmentRouteID :this.props.ShipmentRouteID
+            ShipmentRouteID: this.props.ShipmentRouteID,
+            ShipmentRouteLst: []
 
         }
         this.notificationDOMRef = React.createRef();
@@ -98,7 +99,7 @@ class ListShipCoordinatorCom extends Component {
             objDeliverUser.push(objShip_DeliverUser)
             listStaffDebtObject.push({
                 UserName: item.value,
-                StoreID: this.state.ShipmentOrder[0].CoordinatorStoreID
+                StoreID: this.state.ShipmentOrder.length > 0 ? this.state.ShipmentOrder[0].CoordinatorStoreID : 0
             });
         })
 
@@ -106,14 +107,14 @@ class ListShipCoordinatorCom extends Component {
 
 
         if (selectedOption1) {
-            this.props.callFetchAPI(APIHostName, 'api/StaffDebt/UserIsLockDelivery', listStaffDebtObject).then((apiResult) => {
+            this.props.callFetchAPI(APIHostName, 'api/ShipmentRoute/UserIsLockDelivery', listStaffDebtObject).then((apiResult) => {
                 if (!apiResult.IsError) {
                     this.state.ShipmentOrder.map((row, indexRow) => {
                         if ((this.state.objCoordinator.IsRoute == true || !row.IsCoordinator) && row.IsPermission == true && row.CarrierPartnerID <= 0) {
                             row["ShipmentOrder_DeliverUserList"] = objDeliverUser;
                         }
                     });
-                    this.setState({ selectedOption: selectedOption1, ShipmentOrder: this.state.ShipmentOrder });
+                    this.setState({ selectedOption: selectedOption1, ShipmentOrder: this.state.ShipmentOrder, ShipmentRouteLst: apiResult.ResultObject });
                 }
                 else {
                     this.addNotification(apiResult.Message, apiResult.IsError);
@@ -140,7 +141,7 @@ class ListShipCoordinatorCom extends Component {
         })
         const result = this.state.ShipmentOrder.find(({ TotalCOD }) => TotalCOD > 0);
         if (selectedOption) {
-            this.props.callFetchAPI(APIHostName, 'api/StaffDebt/UserIsLockDelivery', listStaffDebtObject).then((apiResult) => {
+            this.props.callFetchAPI(APIHostName, 'api/ShipmentRoute/UserIsLockDelivery', listStaffDebtObject).then((apiResult) => {
                 if (!apiResult.IsError) {
                     this.state.ShipmentOrder.map((row, indexRow) => {
                         if (row.IsPermission == true && row.CarrierPartnerID > 0) {
@@ -149,7 +150,7 @@ class ListShipCoordinatorCom extends Component {
                         }
 
                     });
-                    this.setState({ objDeliverUser: value, ShipmentOrder: this.state.ShipmentOrder });
+                    this.setState({ objDeliverUser: value, ShipmentOrder: this.state.ShipmentOrder, ShipmentRouteLst: apiResult.ResultObject });
                 }
                 else {
                     this.addNotification(apiResult.Message, apiResult.IsError);
@@ -461,14 +462,18 @@ class ListShipCoordinatorCom extends Component {
     };
 
     handleClickRoute = (RouteID) => e => {
-
+        let { ShipmentOrder } = this.state;
+        ShipmentOrder = ShipmentOrder.filter(n => n.ShipmentRouteID == "");
         this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetShipmentOrderRouteLst", RouteID).then(apiResult => {
             if (!apiResult.IsError) {
-                let { ShipmentOrder } = this.state;
+             
                 apiResult.ResultObject.map((item) => {
-                    ShipmentOrder.push(item);
+                    let resultdd = ShipmentOrder.find(n => n.ShipmentOrderID ==item.ShipmentOrderID)
+                   // console.log("resultdd",resultdd)
+                    if(resultdd==undefined)
+                      ShipmentOrder.push(item);
                 });
-                this.setState({ ShipmentRouteID:RouteID,ShipmentOrder: ShipmentOrder });
+                this.setState({ ShipmentRouteID: RouteID, ShipmentOrder: ShipmentOrder });
             }
             else {
                 this.addNotification(apiResult.Message, apiResult.IsError);
@@ -477,8 +482,8 @@ class ListShipCoordinatorCom extends Component {
     };
 
     render() {
-        let { ShipmentOrder } = this.state;
-      
+        let { ShipmentOrder, ShipmentRouteLst } = this.state;
+        console.log("ShipmentRouteLst",ShipmentOrder, ShipmentRouteLst)
         return (
             <React.Fragment>
                 <div className="card">
@@ -745,107 +750,37 @@ class ListShipCoordinatorCom extends Component {
                             </div>
                         </div>
                         <div className="row  mt-10 lstProduct">
-                            <div className="col-md-6 col-lg-4">
-                                <div className="card card-secondary">
-                                    <div className="card-body">
-                                        <ul onClick={this.handleClickRoute('210808000000020')} >
-                                            <li className="item infoOder">
-                                                <span className="nameOrder">
-                                                    <Link
-                                                        className="linktext blank"
-                                                        target="_blank"
-                                                        to={{ pathname: "/ShipmentOrder/Detail/" + 210714000000199 }}>
-                                                        210808000000020 </Link>
-                                                </span>
-                                                <span className="badge badge-warning time"><i className="ti ti-timer"></i> 08:00</span>
-                                            </li>
-                                            <li className="item infoProduict">
-                                                <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
-                                                <ReactTooltip id="producname1" type='warning'>
-                                                    <span>Tivi LED Sony KD-49X8000H</span>
-                                                </ReactTooltip>
+                            {ShipmentRouteLst && ShipmentRouteLst.map((item, index) => {
+                                return (
+                                    <div className="col-md-6 col-lg-4">
+                                        <div className="card card-secondary">
+                                            <div className="card-body">
+                                                <ul onClick={this.handleClickRoute(item.ShipmentRouteID)} >
+                                                    <li className="item infoOder">
+                                                        <span className="nameOrder">
+                                                            <a>{item.ShipmentRouteID}</a>
+                                                        </span>
+                                                        <span className="badge badge-warning time"><i className="ti ti-timer"></i> 08:00</span>
+                                                    </li>
+                                                    <li className="item infoProduict">
+                                                        <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
+                                                        <ReactTooltip id="producname1" type='warning'>
+                                                            <span>Tivi LED Sony KD-49X8000H</span>
+                                                        </ReactTooltip>
 
-                                            </li>
-                                            <li className="item address-customer">
-                                                <span>Cc himlam Phú An,, Phường Phước Long A, Quận 9, Hồ Chí Minh</span>
-                                            </li>
-                                            {/* <li className="item delivery-status">
+                                                    </li>
+                                                    <li className="item address-customer">
+                                                        <span>Cc himlam Phú An,, Phường Phước Long A, Quận 9, Hồ Chí Minh</span>
+                                                    </li>
 
-                                                <span class="badge badge-secondary badge-active mr-10"><i className="fa fa-motorcycle"></i> Xe máy</span>
-                                                <span class="badge badge-secondary"><i className="fa fa-truck"></i> Xe tải</span>
-                                            </li> */}
-                                        </ul>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div className="col-md-6 col-lg-4">
-                                <div className="card card-secondary">
-                                    <div className="card-body">
-                                        <ul>
-                                            <li className="item infoOder">
-                                                <span className="nameOrder">
-                                                    <Link
-                                                        className="linktext blank"
-                                                        target="_blank"
-                                                        to={{ pathname: "/ShipmentOrder/Detail/" + 210714000000199 }}>
-                                                        210714000000199 </Link>
-                                                </span>
-                                                <span className="badge badge-warning time"><i className="ti ti-timer"></i> 08:00</span>
-                                            </li>
-                                            <li className="item infoProduict">
-                                                <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
-                                                <ReactTooltip id="producname1" type='warning'>
-                                                    <span>Tivi LED Sony KD-49X8000H</span>
-                                                </ReactTooltip>
-
-                                            </li>
-                                            <li className="item address-customer">
-                                                <span>Cc himlam Phú An,, Phường Phước Long A, Quận 9, Hồ Chí Minh</span>
-                                            </li>
-                                            {/* <li className="item delivery-status">
-
-                                                <span class="badge badge-secondary badge-active mr-10"><i className="fa fa-motorcycle"></i> Xe máy</span>
-                                                <span class="badge badge-secondary"><i className="fa fa-truck"></i> Xe tải</span>
-                                            </li> */}
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-6 col-lg-4">
-                                <div className="card card-secondary">
-                                    <div className="card-body">
-                                        <ul>
-                                            <li className="item infoOder">
-                                                <span className="nameOrder">
-                                                    <Link
-                                                        className="linktext blank"
-                                                        target="_blank"
-                                                        to={{ pathname: "/ShipmentOrder/Detail/" + 210714000000199 }}>
-                                                        210714000000199 </Link>
-                                                </span>
-                                                <span className="badge badge-warning time"><i className="ti ti-timer"></i> 08:00</span>
-                                            </li>
-                                            <li className="item infoProduict">
-                                                <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
-                                                <ReactTooltip id="producname1" type='warning'>
-                                                    <span>Tivi LED Sony KD-49X8000H</span>
-                                                </ReactTooltip>
-
-                                            </li>
-                                            <li className="item address-customer">
-                                                <span>Cc himlam Phú An,, Phường Phước Long A, Quận 9, Hồ Chí Minh</span>
-                                            </li>
-                                            {/* <li className="item delivery-status">
-
-                                                <span class="badge badge-secondary badge-active mr-10"><i className="fa fa-motorcycle"></i> Xe máy</span>
-                                                <span class="badge badge-secondary"><i className="fa fa-truck"></i> Xe tải</span>
-                                            </li> */}
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+                                )
+                            })
+                            }
                         </div>
-
                     </div>
                 </div>
                 <div className="modal-footer modal-footer-center">

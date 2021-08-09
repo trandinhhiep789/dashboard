@@ -55,7 +55,7 @@ class DataGridShipmentOderCom extends Component {
             KeywordId: '',
             printDataID: '',
             widthPercent: "",
-            ShipmentRouteID:""
+            ShipmentRouteID: ""
 
         };
         this.notificationDOMRef = React.createRef();
@@ -100,7 +100,7 @@ class DataGridShipmentOderCom extends Component {
                 GridDataShip: [],
                 DataSource: nextProps.dataSource,
                 PageNumber: nextProps.PageNumber,
-                ShipmentRouteID:""
+                ShipmentRouteID: ""
             });
         }
 
@@ -108,7 +108,7 @@ class DataGridShipmentOderCom extends Component {
         {
             this.setState({
                 GridDataShip: [],
-                ShipmentRouteID:""
+                ShipmentRouteID: ""
             });
         }
 
@@ -510,7 +510,7 @@ class DataGridShipmentOderCom extends Component {
                 if (!apiResult.IsError) {
                     this.setState({ GridDataShip: apiResult.ResultObject });
                     this.props.showModal(MODAL_TYPE_VIEW, {
-                        title: 'Điều phối nhân viên ',
+                        title: 'Phân tuyến điều phối vận đơn',
                         isShowOverlay: false,
                         content: {
                             text: <ListShipCoordinator
@@ -563,7 +563,7 @@ class DataGridShipmentOderCom extends Component {
         this.addNotification(apiResult.Message, apiResult.IsError);
         if (!apiResult.IsError) {
             this.props.hideModal();
-            this.setState({ ShipmentRouteID:"",GridDataShip: [] });
+            this.setState({ ShipmentRouteID: "", GridDataShip: [] });
             if (this.props.onChangePageLoad != null)
                 this.props.onChangePageLoad();
         }
@@ -588,36 +588,20 @@ class DataGridShipmentOderCom extends Component {
             this.state.GridDataShip.splice(this.state.GridDataShip.findIndex(n => n[name] == strShipmentOrdervalue), 1);
         }
         this.setState({ GridDataShip: this.state.GridDataShip });
-
     }
 
-
-    
-
     handleClickShip = (ShipmentOrderID) => e => {
-        // let { ShipmentOrder } = this.state;
-        // const objShipmentOrder = this.state.DataSource.find(n => n["ShipmentOrderID"] == ShipmentOrderID)
-        // let objShip = {
-        //     ShipmentOrderID: objShipmentOrder.ShipmentOrderID,
-        //     ShipmentOrderTypeID: objShipmentOrder.ShipmentOrderTypeID,
-        //     CarrierPartnerID: objShipmentOrder.CarrierPartnerID,
-        //     CarrierTypeID: objShipmentOrder.CarrierTypeID,
-        //     DeliverUserList: [],
-        //     CurrentShipmentOrderStepID: objShipmentOrder.CurrentShipmentOrderStepID
-        // };
-        //  this.state.GridDataShip.push(objShip);
-        
-        this.props.hideModal();
         const { widthPercent } = this.state;
-
-        //console.log("this.state.GridDataShip", this.state.GridDataShip);
-
+        let resultdd = this.state.GridDataShip.find(n => n.ShipmentOrderID == ShipmentOrderID)
+        if (resultdd == undefined) {
+            this.props.hideModal();
             this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderDeliver", ShipmentOrderID).then(apiResult => {
                 if (!apiResult.IsError) {
+
                     this.state.GridDataShip.push(apiResult.ResultObject);
                     // this.setState({ GridDataShip: apiResult.ResultObject });
                     this.props.showModal(MODAL_TYPE_VIEW, {
-                        title: 'Điều phối nhân viên ',
+                        title: 'Phân tuyến điều phối vận đơn ',
                         isShowOverlay: false,
                         content: {
                             text: <ListShipCoordinator
@@ -638,71 +622,24 @@ class DataGridShipmentOderCom extends Component {
                     this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!")
                 }
             });
-      
+        }
     };
 
-    // handleClickShip = (ShipmentOrderID) => e => {
-    //     let { ShipmentOrder } = this.state;
-    //     const objShipmentOrder = this.state.DataSource.find(n => n["ShipmentOrderID"] == ShipmentOrderID)
-    //     let objShip = {
-    //         ShipmentOrderID: objShipmentOrder.ShipmentOrderID,
-    //         ShipmentOrderTypeID: objShipmentOrder.ShipmentOrderTypeID,
-    //         CarrierPartnerID: objShipmentOrder.CarrierPartnerID,
-    //         CarrierTypeID: objShipmentOrder.CarrierTypeID,
-    //         DeliverUserList: [],
-    //         CurrentShipmentOrderStepID: objShipmentOrder.CurrentShipmentOrderStepID
-    //     };
-    //      this.state.GridDataShip.push(objShip);
-        
-    //     this.props.hideModal();
-    //     const { widthPercent } = this.state;
+    handleClickShipmentRoute = (RouteID) => e => {
+        const { widthPercent, ShipmentRouteID } = this.state;
+        if (ShipmentRouteID != RouteID) {
+            this.props.hideModal();
 
-    //     //console.log("this.state.GridDataShip", this.state.GridDataShip);
-    //     if (this.state.GridDataShip.length > 0) {
-    //         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderLst", this.state.GridDataShip).then(apiResult => {
-    //             if (!apiResult.IsError) {
-    //                 this.setState({ GridDataShip: apiResult.ResultObject });
-    //                 this.props.showModal(MODAL_TYPE_VIEW, {
-    //                     title: 'Điều phối nhân viên ',
-    //                     isShowOverlay: false,
-    //                     content: {
-    //                         text: <ListShipCoordinator
-    //                             ShipmentOrderID={0}
-    //                             InfoCoordinator={this.state.GridDataShip}
-    //                             IsUserCoordinator={true}
-    //                             IsCoordinator={true}
-    //                             IsCancelDelivery={true}
-    //                             onChangeValue={this.handleShipmentOrder.bind(this)}
-
-    //                         />
-    //                     },
-    //                     maxWidth: 850 + 'px'
-    //                 });
-    //             }
-    //             else {
-    //                 this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!")
-    //             }
-    //         });
-    //     }
-    //     else {
-    //         this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!")
-    //     }
-    // };
-
-
-    handleClickShipmentRoute = (ShipmentRouteID) => e => {
-        this.props.hideModal();
-        const { widthPercent } = this.state;
-            this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetShipmentOrderRouteLst", ShipmentRouteID).then(apiResult => {
+            this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetShipmentOrderRouteLst", RouteID).then(apiResult => {
                 if (!apiResult.IsError) {
-                    this.setState({ShipmentRouteID:ShipmentRouteID, GridDataShip: apiResult.ResultObject });
+                    this.setState({ ShipmentRouteID: RouteID, GridDataShip: apiResult.ResultObject });
                     this.props.showModal(MODAL_TYPE_VIEW, {
                         title: 'Phân tuyến điều phối vận đơn ',
                         isShowOverlay: false,
                         content: {
                             text: <ListShipCoordinator
                                 ShipmentOrderID={0}
-                                ShipmentRouteID={ShipmentRouteID}
+                                ShipmentRouteID={RouteID}
                                 InfoCoordinator={this.state.GridDataShip}
                                 IsUserCoordinator={true}
                                 IsCoordinator={true}
@@ -717,10 +654,9 @@ class DataGridShipmentOderCom extends Component {
                     this.showMessage(apiResult.message)
                 }
             });
-     
+        }
     };
-
-  
+    
     _genCommentTime(dates) {
         const date = new Date(Date.parse(dates));
         //let currentDate = new Date();
@@ -933,7 +869,7 @@ class DataGridShipmentOderCom extends Component {
 
                                                     ) :
                                                     (<li className="item ">
-                                                        <button onClick={this.handleClickShipmentRoute(rowItem.ShipmentRouteID)} className="btn btn-user-plus" title ="Đã được phân tuyến">
+                                                        <button onClick={this.handleClickShipmentRoute(rowItem.ShipmentRouteID)} className="btn btn-user-plus" title="Đã được phân tuyến">
                                                             <i className="fa fa-user-plus" ></i>
                                                         </button>
                                                     </li>)
@@ -997,7 +933,7 @@ class DataGridShipmentOderCom extends Component {
                                                         <span className="time-item">
                                                             <span className="intervale">
                                                                 <i className="fa fa-paper-plane-o"></i>
-                                                                <span className="txtintervale">{(rowItem.EstimateDeliveryDistance>=0?rowItem.EstimateDeliveryDistance:0) + "Km/" + rowItem.ActualDeliveryDistance.toFixed(2) + "Km"}</span>
+                                                                <span className="txtintervale">{(rowItem.EstimateDeliveryDistance >= 0 ? rowItem.EstimateDeliveryDistance : 0) + "Km/" + rowItem.ActualDeliveryDistance.toFixed(2) + "Km"}</span>
                                                             </span>
                                                             <span className="intervale">
                                                                 <i className="ti ti-timer"></i>
