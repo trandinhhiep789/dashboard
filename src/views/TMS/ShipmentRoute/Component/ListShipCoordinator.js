@@ -6,13 +6,13 @@ import { callGetCache } from "../../../../actions/cacheAction";
 import MultiSelectComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
 import FormControl from "../../../../common/components/FormContainer/FormControl";
 import { MessageModal } from "../../../../common/components/Modal";
-import InputGridChageControl from "../../../../common/components/FormContainer/FormControl/InputGrid/InputGridChageControl";
 import { showModal, hideModal } from '../../../../actions/modal';
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { Link } from "react-router-dom";
 import ReactTooltip from 'react-tooltip';
 import ElementInputModal from '../../../../common/components/FormContainer/FormElement/ElementInputModal';
+import { formatMoney, formatNumber } from '../../../../utils/function';
 import {
     APIHostName
 } from "../constants";
@@ -544,7 +544,7 @@ class ListShipCoordinatorCom extends Component {
                                 controltype="InputControl"
                                 onChange={this.handleValueChange1}
                                 value={this.state.selectedOption}
-                                listoption={this.state.selectedOption}
+                                listoption={[]}
                                 isMultiSelect={true}
                                 isPartner={true}
                                 datasourcemember="ShipmentOrder_DeliverUserList"
@@ -622,6 +622,7 @@ class ListShipCoordinatorCom extends Component {
                                                                             <ReactTooltip id={item.ShipmentOrderID} type='warning'>
                                                                                 <span>{item.ShipItemNameList}</span>
                                                                             </ReactTooltip>
+                                                                            
                                                                         </li>
                                                                         <li className="item delivery-status">
                                                                             {item.CarrierTypeID == 1 ? (
@@ -638,6 +639,7 @@ class ListShipCoordinatorCom extends Component {
                                                                                     <span className="badge badge-secondary badge-active" onClick={this.handleChangeCourse(2, index)}><i className="fa fa-truck"></i> Xe tải</span>
                                                                                 )
                                                                             }
+                                                                             <span className="badge badge-secondary badge-active"><i className="fa fa-dollar"></i> {formatMoney(item.TotalCOD,0)}đ</span>
 
                                                                         </li>
                                                                     </ul>
