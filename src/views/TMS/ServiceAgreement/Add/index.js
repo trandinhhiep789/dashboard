@@ -416,7 +416,7 @@ class AddCom extends React.Component {
                             name="ShipmentOrder_DeliverUserList"
                             colspan="8"
                             labelcolspan="4"
-                            label="Nhân viên  giao"
+                            label="Nhân viên đại diện"
                             IsLabelDiv={true}
                             validatonList={["Comborequired"]}
                             controltype="InputMultiControl"
@@ -516,7 +516,7 @@ class AddCom extends React.Component {
                             showTime={false}
                             timeFormat={false}
                             dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
-                            label="gia hạn đến ngày"
+                            label="Gia hạn đến ngày"
                             placeholder={formatDate(currentDate, true)}
                             controltype="InputControl"
                             value=""
@@ -526,7 +526,7 @@ class AddCom extends React.Component {
 
                     <div className="col-md-6">
                         <FormControl.CheckBox
-                            label="đã thanh lý hợp đồng"
+                            label="Đã thanh lý hợp đồng"
                             name="chkIsLiquidated"
                             datasourcemember="IsLiquidated"
                             controltype="InputControl"
@@ -560,7 +560,7 @@ class AddCom extends React.Component {
                             showTime={false}
                             timeFormat={false}
                             dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
-                            label="ngày thanh lý hợp đồng"
+                            label="Ngày thanh lý hợp đồng"
                             placeholder={formatDate(currentDate, true)}
                             controltype="InputControl"
                             value=""
@@ -570,7 +570,7 @@ class AddCom extends React.Component {
 
                     <div className="col-md-6">
                         <FormControl.CheckBox
-                            label="đã ký quỹ"
+                            label="Đã ký quỹ"
                             name="chkIsDeposited"
                             datasourcemember="IsDeposited"
                             controltype="InputControl"
@@ -586,7 +586,7 @@ class AddCom extends React.Component {
                             colspan="8"
                             labelcolspan="4"
                             readOnly={isDisableDeposited}
-                            label="số tiền ký quỹ"
+                            label="Số tiền ký quỹ"
                             placeholder="Số tiền ký quỹ"
                             controltype="InputControl"
                             value=""
@@ -617,7 +617,7 @@ class AddCom extends React.Component {
                             showTime={false}
                             timeFormat={false}
                             dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
-                            label="ngày ký quỹ"
+                            label="Ngày ký quỹ"
                             placeholder={formatDate(currentDate, true)}
                             disabled={isDisableDeposited}
                             controltype="InputControl"
@@ -632,7 +632,7 @@ class AddCom extends React.Component {
                             colspan="8"
                             labelcolspan="4"
                             readOnly={isDisableDeposited}
-                            label="ghi chú ký quỹ"
+                            label="Ghi chú ký quỹ"
                             placeholder="Ghi chú ký quỹ"
                             controltype="InputControl"
                             value=""

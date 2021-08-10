@@ -30,7 +30,8 @@ import {
     AddLogAPIPath,
     TitleFormSearch,
     schema,
-    AddAutoAPIPath
+    AddAutoAPIPath,
+    DataMasterTemplateExport
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
@@ -54,7 +55,8 @@ class SearchCom extends React.Component {
             iconNotification: "",
             PageNumber: 1,
             IsLoadDataComplete: false,
-            dataExport: []
+            dataExport: [],
+            DataMasterTemplateExport
 
         };
         this.gridref = React.createRef();
@@ -298,8 +300,31 @@ class SearchCom extends React.Component {
     }
 
     handleImportFile(resultRows, errors) {
-        // this.props.callFetchAPI(APIHostName, AddAutoAPIPath, resultRows).then(apiResult => {
-        // });
+        console.log("resultRows", resultRows, errors);
+
+        if (errors.length > 0) {
+            this.showMessage("Dữ liệu thêm vào không đúng. Vui lòng kiểm tra lại file.")
+        }
+        else {
+            let MLObject = {};
+            MLObject.ServiceAgreementList = resultRows;
+            this.props.callFetchAPI(APIHostName, "api/ServiceAgreement/AddImport", MLObject).then(apiResult => {
+                console.log("object", MLObject, apiResult)
+                // this.setState({ IsCallAPIError: apiResult.IsError });
+                // this.showMessage(apiResult.Message);
+                if(apiResult.IsError){
+                    this.showMessage(apiResult.Message);
+                }
+                else{
+                    this.addNotification(apiResult.Message, apiResult.IsError);
+                    this.callSearchData(this.state.SearchData);
+                }
+            });
+        }
+
+    }
+    handleExportFileTemplate() {
+
     }
 
     render() {
@@ -335,7 +360,10 @@ class SearchCom extends React.Component {
                     IsImportFile={true}
                     SchemaData={schema}
                     onImportFile={this.handleImportFile.bind(this)}
-
+                    isExportFileTemplate={true}
+                    fileNameTemplate={"Template import hợp đồng"}
+                    onExportFileTemplate={this.handleExportFileTemplate.bind(this)}
+                    DataTemplateExport={this.state.DataMasterTemplateExport}
                 />
             </React.Fragment>
         );

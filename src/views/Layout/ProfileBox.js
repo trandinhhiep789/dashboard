@@ -39,6 +39,9 @@ class ProfileBoxCom extends React.Component {
             <Menu.Item key="changepassword">
                 <Link to="/changepassword"><i className="ti-lock"></i>{"  "}Đổi mật khẩu</Link>
             </Menu.Item>
+            <Menu.Item key="Forms">
+                <Link to="/Forms"><i className="ti-lock"></i>{"  "}Forms UI</Link>
+            </Menu.Item>
             <Menu.Item key="UseGuide">
                 <Link to="/UseGuide"><i className="ti-lock"></i>{"  "}Hướng dẫn sử dụng</Link>
             </Menu.Item>

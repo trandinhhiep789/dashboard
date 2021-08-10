@@ -640,90 +640,116 @@ export const MLObjectDefinition = [
 ];
 
 export const schema = {
-    'ServiceAgreementNumber': {
+    'Số hợp đồng': {
         prop: 'ServiceAgreementNumber',
         type: String
     },
-    'ServiceAgreementTypeID': {
+    'Loại hợp đồng': {
         prop: 'ServiceAgreementTypeID',
         type: String
         //type: Number,
         //required: true
     },
-    'ServiceAreaID': {
-        prop: 'ServiceAreaID',
-        type: String
-        // type: Number,
-        // required: true
-    },
+    
 
-    'ServiceTypeID': {
+    'Loại dịch vụ': {
         prop: 'ServiceTypeID',
         type: String,
         // type: Number,
         // required: true
     },
-    'PartnerID': {
+    'khu vực': {
+        prop: 'ServiceAreaID',
+        type: String
+        // type: Number,
+        // required: true
+    },
+    'Đơn vị vận chuyển': {
         prop: 'PartnerID',
         type: String,
         // type: Number,
         // required: true
     },
-    'DeputyUserName': {
+    'Người đại diện': {
         prop: 'DeputyUserName',
         type: String
     },
-    'SignedDate': {
+    'Ngày ký hợp đồng': {
         prop: 'SignedDate',
         type: Date
     },
-    'ExpiredDate': {
+    'Ngày hết hạn hợp đồng': {
         prop: 'ExpiredDate',
         type: Date
     },
-    'IsExtended': {
+    'Đã gia hạn hợp đồng': {
         prop: 'IsExtended',
         type: Number
     },
-    'ExtendedDate': {
+    'Gia hạn đến ngày': {
         prop: 'ExtendedDate',
         type: Date
     },
 
-    'IsLiquidated': {
+    'Đã thanh lý hợp đồng': {
         prop: 'IsLiquidated',
         type: Number
     },
-    'Liquidateddate': {
+    'Ngày thanh lý hợp đồng': {
         prop: 'Liquidateddate',
         type: Date
     },
-    'IsDeposited': {
+    'Đã ký quỹ': {
         prop: 'IsDeposited',
         type: Number
     },
-    'DepositMoney': {
+    'Số tiền ký quỹ': {
         prop: 'DepositMoney',
         type: Number
     },
-    'DepositedDate': {
+    'Ngày ký quỹ': {
         prop: 'DepositedDate',
         type: Date
     },
-    'DepositNote': {
+    'Ghi chú ký quỹ': {
         prop: 'DepositNote',
         type: String
     },
-    'Description': {
+    'Mô tả': {
         prop: 'Description',
         type: String
     },
-    'IsActived': {
+    'Kích hoạt': {
         prop: 'IsActived',
-        type: Number
+        type: Number,
+        value: 1
     },
-    'IsSystem': {
+    'Hệ thống': {
         prop: 'IsSystem',
-        type: Number
+        type: Number,
+        value: 0
     },
 }
+
+export const DataMasterTemplateExport = [
+    {
+        "Số hợp đồng": "0201/2020/HĐĐL/TT-DS",
+        "Loại hợp đồng": "1",
+        "Loại dịch vụ": "1",
+        "khu vực": "5",
+        "Đơn vị vận chuyển": "101",
+        "Người đại diện": "0041014",
+        "Ngày ký hợp đồng": "8/10/2021",
+        "Ngày hết hạn hợp đồng": "8/31/2021",
+        "Đã gia hạn hợp đồng": "0",
+        "Gia hạn đến ngày": "",
+        "Đã thanh lý hợp đồng": "0",
+        "Ngày thanh lý hợp đồng": "",
+        "Đã ký quỹ": "0",
+        "Số tiền ký quỹ": "",
+        "Ngày ký quỹ": "",
+        "Ghi chú ký quỹ": "",
+        "Mô tả": "test",
+    },
+  
+];
