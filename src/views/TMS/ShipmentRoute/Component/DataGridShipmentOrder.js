@@ -518,6 +518,7 @@ class DataGridShipmentOderCom extends Component {
                                 ShipmentRouteID
                                 ShipmentRouteID={this.state.ShipmentRouteID}
                                 InfoCoordinator={this.state.GridDataShip}
+                                ShipmentOrderSame={[]}
                                 IsUserCoordinator={true}
                                 IsCoordinator={true}
                                 IsCancelDelivery={true}
@@ -598,8 +599,7 @@ class DataGridShipmentOderCom extends Component {
             this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderDeliver", ShipmentOrderID).then(apiResult => {
                 if (!apiResult.IsError) {
 
-                    this.state.GridDataShip.push(apiResult.ResultObject);
-                    // this.setState({ GridDataShip: apiResult.ResultObject });
+                    this.state.GridDataShip.push(apiResult.ResultObject.ShipmentOrderDeliver);
                     this.props.showModal(MODAL_TYPE_VIEW, {
                         title: 'Phân tuyến điều phối vận đơn ',
                         isShowOverlay: false,
@@ -608,6 +608,7 @@ class DataGridShipmentOderCom extends Component {
                                 ShipmentOrderID={0}
                                 ShipmentRouteID={this.state.ShipmentRouteID}
                                 InfoCoordinator={this.state.GridDataShip}
+                                ShipmentOrderSame={apiResult.ResultObject.ShipmentOrderDeliverList}
                                 IsUserCoordinator={true}
                                 IsCoordinator={true}
                                 IsCancelDelivery={true}
@@ -642,6 +643,7 @@ class DataGridShipmentOderCom extends Component {
                                 ShipmentRouteID={RouteID}
                                 InfoCoordinator={this.state.GridDataShip}
                                 IsUserCoordinator={true}
+                                ShipmentOrderSame={[]}
                                 IsCoordinator={true}
                                 IsCancelDelivery={true}
                                 onChangeValue={this.handleShipmentOrder.bind(this)}
@@ -656,7 +658,7 @@ class DataGridShipmentOderCom extends Component {
             });
         }
     };
-    
+
     _genCommentTime(dates) {
         const date = new Date(Date.parse(dates));
         //let currentDate = new Date();
@@ -848,7 +850,7 @@ class DataGridShipmentOderCom extends Component {
                                             <ul>
                                                 {rowItem.ShipmentRouteID == "" ?
                                                     (<React.Fragment>
-                                                        <li className="item ">
+                                                        {/* <li className="item ">
                                                             <div className="group-action">
                                                                 <div className="checkbox item-action">
                                                                     <label>
@@ -859,7 +861,7 @@ class DataGridShipmentOderCom extends Component {
                                                                     </label>
                                                                 </div>
                                                             </div>
-                                                        </li>
+                                                        </li> */}
                                                         <li className="item ">
                                                             <button className="btn" onClick={this.handleClickShip(rowItem.ShipmentOrderID)}>
                                                                 <i className="fa fa-user-plus"></i>
