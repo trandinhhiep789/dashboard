@@ -255,7 +255,11 @@
                                                     }
                                                     &.delivery-status{
                                                         display: flex;
-                                                        justify-content: flex-start;
+                                                        justify-content: space-between;
+                                                        flex-direction: row;
+                                                        flex-wrap: nowrap;
+                                                        align-content: center;
+                                                        align-items: stretch;
                                                         span{
                                                             cursor: pointer;
                                                             &.badge-active {

@@ -120,7 +120,7 @@ class ListShipCoordinatorCom extends Component {
             });
         }
         else {
-            this.setState({ selectedOption: selectedOption1,ShipmentRouteLst: []});
+            this.setState({ selectedOption: selectedOption1, ShipmentRouteLst: [] });
         }
     }
 
@@ -161,7 +161,7 @@ class ListShipCoordinatorCom extends Component {
                     row["ShipmentOrder_DeliverUserList"] = objMultiDeliverUser;
                 }
             });
-            this.setState({ objDeliverUser: value ,ShipmentRouteLst: []});
+            this.setState({ objDeliverUser: value, ShipmentRouteLst: [] });
         }
     }
 
@@ -491,7 +491,7 @@ class ListShipCoordinatorCom extends Component {
     render() {
         let { ShipmentOrder, ShipmentRouteID, ShipmentRouteLst, ShipmentOrderSameLst } = this.state;
         let resultShipmentRoute = ShipmentRouteLst.filter(n => n.ShipmentRouteID != ShipmentRouteID);
-        console.log("resultShipmentRoute",resultShipmentRoute)
+        console.log("resultShipmentRoute", resultShipmentRoute)
         return (
             <React.Fragment>
                 <div className="card">
@@ -622,24 +622,28 @@ class ListShipCoordinatorCom extends Component {
                                                                             <ReactTooltip id={item.ShipmentOrderID} type='warning'>
                                                                                 <span>{item.ShipItemNameList}</span>
                                                                             </ReactTooltip>
-                                                                            
+
                                                                         </li>
                                                                         <li className="item delivery-status">
-                                                                            {item.CarrierTypeID == 1 ? (
-                                                                                <span className="badge badge-secondary  mr-10 badge-active" onClick={this.handleChangeCourse(1, index)}><i className="fa fa-motorcycle"></i> Xe máy</span>
-                                                                            ) :
-                                                                                (
-                                                                                    <span className="badge badge-secondary mr-10" onClick={this.handleChangeCourse(1, index)}><i className="fa fa-motorcycle"></i> Xe máy</span>
-                                                                                )
-                                                                            }
-                                                                            {item.CarrierTypeID == 1 ? (
-                                                                                <span className="badge badge-secondary " onClick={this.handleChangeCourse(2, index)}><i className="fa fa-truck"></i> Xe tải</span>
-                                                                            ) :
-                                                                                (
-                                                                                    <span className="badge badge-secondary badge-active" onClick={this.handleChangeCourse(2, index)}><i className="fa fa-truck"></i> Xe tải</span>
-                                                                                )
-                                                                            }
-                                                                             <span className="badge badge-secondary badge-active"><i className="fa fa-dollar"></i> {formatMoney(item.TotalCOD,0)}đ</span>
+                                                                            <div className="item group-status">
+                                                                                {item.CarrierTypeID == 1 ? (
+                                                                                    <span className="badge badge-secondary  mr-10 badge-active" onClick={this.handleChangeCourse(1, index)}><i className="fa fa-motorcycle"></i> Xe máy</span>
+                                                                                ) :
+                                                                                    (
+                                                                                        <span className="badge badge-secondary mr-10" onClick={this.handleChangeCourse(1, index)}><i className="fa fa-motorcycle"></i> Xe máy</span>
+                                                                                    )
+                                                                                }
+                                                                                {item.CarrierTypeID == 1 ? (
+                                                                                    <span className="badge badge-secondary " onClick={this.handleChangeCourse(2, index)}><i className="fa fa-truck"></i> Xe tải</span>
+                                                                                ) :
+                                                                                    (
+                                                                                        <span className="badge badge-secondary badge-active" onClick={this.handleChangeCourse(2, index)}><i className="fa fa-truck"></i> Xe tải</span>
+                                                                                    )
+                                                                                }
+                                                                            </div>
+                                                                            <div className="item group-cod">
+                                                                                <span className="badge badge-secondary badge-active"><i className="fa fa-dollar"></i> {formatMoney(item.TotalCOD, 0)}đ</span>
+                                                                            </div>
 
                                                                         </li>
                                                                     </ul>
@@ -760,7 +764,7 @@ class ListShipCoordinatorCom extends Component {
                             </div>
                         </div>
                         <div className="row  mt-10 lstProduct">
-                            {resultShipmentRoute.length >0 ?
+                            {resultShipmentRoute.length > 0 ?
                                 (
                                     resultShipmentRoute.map((item, index) => {
 
@@ -834,7 +838,7 @@ class ListShipCoordinatorCom extends Component {
                 </div>
                 <div className="modal-footer modal-footer-center">
                     <button className="btn btn-w-md btn-round btn-secondary" type="button" onClick={this.handleClose.bind(this)}>Bỏ qua</button>
-                    <button className="btn btn-w-md btn-round btn-info ml-50" type="button" onClick={this.handleConfirm.bind(this)}>Cập nhật</button>
+                    <button className="btn btn-w-md btn-round btn-info ml-10" type="button" onClick={this.handleConfirm.bind(this)}>Cập nhật</button>
                 </div>
             </React.Fragment>
         );
