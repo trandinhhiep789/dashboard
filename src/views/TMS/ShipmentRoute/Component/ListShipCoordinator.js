@@ -124,7 +124,6 @@ class ListShipCoordinatorCom extends Component {
         }
     }
 
-
     handleOnValueChangeDeliverUser(name, value, selectedOption) {
 
         let objMultiDeliverUser = [];
@@ -423,8 +422,16 @@ class ListShipCoordinatorCom extends Component {
     };
 
     handleDeleteID = (id) => e => {
+        let resultRouteID = this.state.ShipmentOrder.find(n => n.ShipmentOrderID == id).ShipmentRouteID;
         this.state.ShipmentOrder.splice(this.state.ShipmentOrder.findIndex(n => n.ShipmentOrderID == id), 1);
-        this.setState({ ShipmentOrder: this.state.ShipmentOrder });
+        if(resultRouteID=="")
+        {
+            this.setState({ ShipmentOrder: this.state.ShipmentOrder });
+        }
+        else
+        {
+            this.setState({ ShipmentOrder: this.state.ShipmentOrder,ShipmentRouteID:"" });
+        }
     };
     handleChangeOder = (rowIndex, OrderID) => e => {
         let { ShipmentOrder } = this.state;
