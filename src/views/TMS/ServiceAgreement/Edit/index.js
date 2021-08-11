@@ -504,7 +504,7 @@ class EditCom extends React.Component {
                                 name="ShipmentOrder_DeliverUserList"
                                 colspan="8"
                                 labelcolspan="4"
-                                label="Nhân viên  giao"
+                                label="Nhân viên đại diện"
                                 disabled={this.state.IsSystem}
                                 readOnly={this.state.IsSystem}
                                 IsLabelDiv={true}
