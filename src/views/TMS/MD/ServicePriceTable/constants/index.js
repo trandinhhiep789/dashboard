@@ -131,9 +131,10 @@ export const DataGridColumnList = [
     },
     {
         Name: "ServicePriceTableName",
-        Type: "text",
+        Type: "texttolink",
         Caption: "Tên bảng giá dịch vụ",
         DataSourceMember: "ServicePriceTableName",
+        Link: "/ServicePriceTable/Detail/",
         Width: 300
     },
     {

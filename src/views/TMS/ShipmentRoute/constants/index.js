@@ -1,5 +1,5 @@
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "api/ShipmentOrder/Search";
+export const SearchAPIPath = "api/ShipmentOrder/SearchShipmentOrder";
 export const LoadAPIPath = "api/ShipmentOrder/LoadInfoNew";
 export const AddAPIPath = "api/ShipmentOrder/Add";
 export const UpdateAPIPath = "api/ShipmentOrder/UpdateWeb";
@@ -237,7 +237,7 @@ export const SearchElementList = [
         name: "cbIsCoordinator",
         DataSourceMember: "IsCoordinator",
         colspan: 2,
-        value: -1,
+        value: 2,
         isMultiSelect: false,
         placeholder: "--Trạng thái điều phối--",
         listoption: [{ value: -1, label: "--Điều phối--" }, { value: 1, label: "Đã điều phối" }, { value: 2, label: "Chưa điều phối" }],
@@ -290,7 +290,7 @@ export const InitSearchParams = [
     },
     {
         SearchKey: "@IsCoordinator",
-        SearchValue: -1
+        SearchValue: 2
     },
     {
         SearchKey: "@Typename",

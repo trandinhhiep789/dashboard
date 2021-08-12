@@ -37,7 +37,9 @@ class ListShipCoordinatorCom extends Component {
             IsCallAPIError: false,
             ShipmentRouteID: this.props.ShipmentRouteID,
             ShipmentRouteLst: [],
-            ShipmentOrderSameLst: this.props.ShipmentOrderSame
+            ShipmentOrderSameLst: this.props.ShipmentOrderSame,
+            Via_Durations: 0,
+            Via_Distances: ""
 
         }
         this.notificationDOMRef = React.createRef();
@@ -47,7 +49,9 @@ class ListShipCoordinatorCom extends Component {
         if (JSON.stringify(this.props.InfoCoordinator) !== JSON.stringify(nextProps.InfoCoordinator)) {
             this.setState({
                 ShipmentOrder: nextProps.InfoCoordinator,
-                ShipmentOrderSameLst: nextProps.ShipmentOrderSame
+                ShipmentOrderSameLst: nextProps.ShipmentOrderSame,
+                Via_Durations: 0,
+                Via_Distances: ""
             })
         }
     }
@@ -124,7 +128,6 @@ class ListShipCoordinatorCom extends Component {
         }
     }
 
-
     handleOnValueChangeDeliverUser(name, value, selectedOption) {
 
         let objMultiDeliverUser = [];
@@ -137,7 +140,6 @@ class ListShipCoordinatorCom extends Component {
                 StoreID: this.state.ShipmentOrder[0].CoordinatorStoreID
             });
         })
-        const result = this.state.ShipmentOrder.find(({ TotalCOD }) => TotalCOD > 0);
         if (selectedOption) {
             this.props.callFetchAPI(APIHostName, 'api/ShipmentRoute/UserIsLockDelivery', listStaffDebtObject).then((apiResult) => {
                 if (!apiResult.IsError) {
@@ -308,23 +310,20 @@ class ListShipCoordinatorCom extends Component {
         this.props.hideModal();
     }
     addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
         if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
         } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={this.state.cssNotification}>
+                <div className={cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
+                        <i className={iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -424,8 +423,22 @@ class ListShipCoordinatorCom extends Component {
     };
 
     handleDeleteID = (id) => e => {
+        let resultRouteID = this.state.ShipmentOrder.find(n => n.ShipmentOrderID == id).ShipmentRouteID;
         this.state.ShipmentOrder.splice(this.state.ShipmentOrder.findIndex(n => n.ShipmentOrderID == id), 1);
-        this.setState({ ShipmentOrder: this.state.ShipmentOrder });
+        if (resultRouteID == "") {
+            this.setState({
+                ShipmentOrder: this.state.ShipmentOrder,
+                Via_Durations: 0,
+                Via_Distances: ""
+            });
+        }
+        else {
+            this.setState({
+                ShipmentOrder: this.state.ShipmentOrder, ShipmentRouteID: "",
+                Via_Durations: 0,
+                Via_Distances: ""
+            });
+        }
     };
     handleChangeOder = (rowIndex, OrderID) => e => {
         let { ShipmentOrder } = this.state;
@@ -471,7 +484,11 @@ class ListShipCoordinatorCom extends Component {
                     if (resultdd == undefined)
                         ShipmentOrder.push(item);
                 });
-                this.setState({ ShipmentRouteID: RouteID, ShipmentOrder: ShipmentOrder });
+                this.setState({
+                    ShipmentRouteID: RouteID, ShipmentOrder: ShipmentOrder,
+                    Via_Durations: 0,
+                    Via_Distances: ""
+                });
             }
             else {
                 this.addNotification(apiResult.Message, apiResult.IsError);
@@ -487,11 +504,70 @@ class ListShipCoordinatorCom extends Component {
             ShipmentOrder.push(resultShipmentOrderSame);
         this.setState({ ShipmentOrder: ShipmentOrder });
     };
+    handleDistances = () => {
+        let { ShipmentOrder, ShipmentOrderSameLst } = this.state;
+        let Points = [];
+        ShipmentOrder.map((item, index) => {
+            const Receivervalues = item.ReceiverGeoLocation.split(",");
+            if (Receivervalues == "") {
+                this.addNotification("Không xác định được tạo độ nhà vận đơn " + item.ShipmentOrderID, true);
+            }
 
+            let objReceiverPoints = {
+                "Latitude": Receivervalues[0],
+                "Longitude": Receivervalues[1]
+            };
+            if (index == 0) {
+                const values = ShipmentOrder[0].SenderGeoLocation.split(",");
+                let objPoints = {
+                    "Latitude": values[0],
+                    "Longitude": values[1]
+                };
+                Points.push(objPoints);
+            }
+            Points.push(objReceiverPoints);
+            if (ShipmentOrder.length - 1 == index) {
+                const values = ShipmentOrder[0].SenderGeoLocation.split(",");
+                let objPoints = {
+                    "Latitude": values[0],
+                    "Longitude": values[1]
+                };
+                Points.push(objPoints);
+            }
+        });
+
+        let paramsRequest = {
+            "Alternative": 2147483647,
+            "Distance": true,
+            "Duration": true,
+            "Geometry": true,
+            "Instructions": true,
+            "Points": Points,
+            "RouteCriteria": 0,
+            "Uturn": true,
+            "VehicleType": 2
+        };
+        let resultPoints = Points.find(n => n.Latitude == "");
+        if (resultPoints == undefined) {
+            this.props.callFetchAPI(APIHostName, 'api/Maps/FindPathViaRoute', paramsRequest).then((apiResult) => {
+                if (!apiResult.IsError) {
+                    let Durationslst = JSON.parse(apiResult.ResultObject).Value.Routes[0].Via_Durations;
+                    let Distanceslst = JSON.parse(apiResult.ResultObject).Value.Routes[0].Via_Distances;
+                    // console.log("Durationslst", Math.floor(Durationslst[Durationslst.length-1]/60))
+                    // console.log("Durationslst", Distanceslst[Distanceslst.length-1]/1000)
+                    this.setState({
+                        Via_Durations: Math.floor(Durationslst[Durationslst.length - 1] / 60),
+                        Via_Distances: Distanceslst[Distanceslst.length - 1] >= 1000 ? Distanceslst[Distanceslst.length - 1] / 1000 + "km" : Distanceslst[Distanceslst.length - 1] + "m"
+                    });
+                }
+            });
+
+        }
+    };
     render() {
-        let { ShipmentOrder, ShipmentRouteID, ShipmentRouteLst, ShipmentOrderSameLst } = this.state;
+        let { ShipmentOrder, ShipmentRouteID, ShipmentRouteLst, ShipmentOrderSameLst, Via_Distances, Via_Durations } = this.state;
         let resultShipmentRoute = ShipmentRouteLst.filter(n => n.ShipmentRouteID != ShipmentRouteID);
-        console.log("resultShipmentRoute", resultShipmentRoute)
+        // console.log("resultShipmentRoute", resultShipmentRoute)
         return (
             <React.Fragment>
                 <div className="card">
@@ -767,19 +843,18 @@ class ListShipCoordinatorCom extends Component {
                             {resultShipmentRoute.length > 0 ?
                                 (
                                     resultShipmentRoute.map((item, index) => {
-
                                         return (
                                             <div className="col-md-6 col-lg-4">
-                                                <div className="card card-secondary">
+                                                <div key={"Route" + index} className="card card-secondary">
                                                     <div className="card-body">
                                                         <ul onClick={this.handleClickRoute(item.ShipmentRouteID)} >
                                                             <li className="item infoOder">
                                                                 <span className="nameOrder">
                                                                     <a>{item.ShipmentRouteID}</a>
                                                                 </span>
-                                                                <span className="badge badge-warning time"><i className="ti ti-timer"></i> 08:00</span>
+                                                                <span className="badge badge-warning time"><i className="ti ti-timer"></i> {item.ExpectedBeginDeliveryDate != null ? this._genCommentTime(item.ExpectedBeginDeliveryDate) : ""}</span>
                                                             </li>
-                                                            <li className="item infoProduict">
+                                                            {/* <li className="item infoProduict">
                                                                 <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
                                                                 <ReactTooltip id="producname1" type='warning'>
                                                                     <span>Tivi LED Sony KD-49X8000H</span>
@@ -788,8 +863,7 @@ class ListShipCoordinatorCom extends Component {
                                                             </li>
                                                             <li className="item address-customer">
                                                                 <span>Cc himlam Phú An,, Phường Phước Long A, Quận 9, Hồ Chí Minh</span>
-                                                            </li>
-
+                                                            </li> */}
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -799,37 +873,41 @@ class ListShipCoordinatorCom extends Component {
                                 ) :
                                 (
                                     ShipmentOrderSameLst.map((item, index) => {
-                                        return (
-                                            <div className="col-md-6 col-lg-4">
-                                                <div className="card card-secondary">
-                                                    <div className="card-body">
-                                                        <ul onClick={this.handleClickShipmentOrderSame(item.ShipmentOrderID)} >
-                                                            <li className="item infoOder">
-                                                                <span className="nameOrder">
-                                                                    <Link
-                                                                        className="linktext blank"
-                                                                        target="_blank"
-                                                                        to={{ pathname: "/ShipmentOrder/Detail/" + item.ShipmentOrderID }}>
-                                                                        {item.ShipmentOrderID} </Link>
-                                                                </span>
-                                                                <span className="badge badge-warning time"><i className="ti ti-timer"></i> 08:00</span>
-                                                            </li>
-                                                            <li className="item infoProduict">
-                                                                <span data-tip data-for={item.ShipmentOrderID} data-id={item.ShipmentOrderID}>{item.PrimaryShipItemName}</span>
-                                                                <ReactTooltip id={item.ShipmentOrderID} type='warning'>
-                                                                    <span>{item.ShipItemNameList}</span>
-                                                                </ReactTooltip>
+                                        let resultdd = ShipmentOrder.find(n => n.ShipmentOrderID == item.ShipmentOrderID)
+                                        // console.log("resultdd",resultdd)
+                                        if (resultdd == undefined) {
+                                            return (
+                                                <div key={"Same" + index} className="col-md-6 col-lg-4">
+                                                    <div className="card card-secondary">
+                                                        <div className="card-body">
+                                                            <ul onClick={this.handleClickShipmentOrderSame(item.ShipmentOrderID)} >
+                                                                <li className="item infoOder">
+                                                                    <span className="nameOrder">
+                                                                        <Link
+                                                                            className="linktext blank"
+                                                                            target="_blank"
+                                                                            to={{ pathname: "/ShipmentOrder/Detail/" + item.ShipmentOrderID }}>
+                                                                            {item.ShipmentOrderID} </Link>
+                                                                    </span>
+                                                                    <span className="badge badge-warning time"><i className="ti ti-timer"></i> 08:00</span>
+                                                                </li>
+                                                                <li className="item infoProduict">
+                                                                    <span data-tip data-for={item.ShipmentOrderID} data-id={item.ShipmentOrderID}>{item.PrimaryShipItemName}</span>
+                                                                    <ReactTooltip id={item.ShipmentOrderID} type='warning'>
+                                                                        <span>{item.ShipItemNameList}</span>
+                                                                    </ReactTooltip>
 
-                                                            </li>
-                                                            <li className="item address-customer">
-                                                                <span>{item.ReceiverFullAddress}</span>
-                                                            </li>
+                                                                </li>
+                                                                <li className="item address-customer">
+                                                                    <span>{item.ReceiverFullAddress}</span>
+                                                                </li>
 
-                                                        </ul>
+                                                            </ul>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        )
+                                            )
+                                        }
                                     })
                                 )
                             }
@@ -837,7 +915,26 @@ class ListShipCoordinatorCom extends Component {
                     </div>
                 </div>
                 <div className="modal-footer modal-footer-center">
-                    <button className="btn btn-w-md btn-round btn-secondary" type="button" onClick={this.handleClose.bind(this)}>Bỏ qua</button>
+                    {Via_Distances != "" ? (
+
+                        <div className="group-info-estimates">
+                            <ul>
+                                <li>
+                                    <span>Km ước lượng: <span>{Via_Distances}</span></span>
+                                </li>
+                                <li>
+                                    <span>di chuyển: <span>{Via_Durations}'</span></span>
+                                </li>
+                            </ul>
+                        </div>
+                    ) : ""}
+
+                    {ShipmentOrder.length > 1 ?
+                        (
+                            <button className="btn btn-w-md btn-round btn-info ml-10" type="button" onClick={this.handleDistances.bind(this)}>Tính khoản cách</button>
+                        ) : ""
+                    }
+                    <button className="btn btn-w-md btn-round btn-secondary" type="button" onClick={this.handleClose.bind(this)}>Làm mới</button>
                     <button className="btn btn-w-md btn-round btn-info ml-10" type="button" onClick={this.handleConfirm.bind(this)}>Cập nhật</button>
                 </div>
             </React.Fragment>

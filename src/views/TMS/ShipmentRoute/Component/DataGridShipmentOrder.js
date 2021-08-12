@@ -41,7 +41,8 @@ class DataGridShipmentOderCom extends Component {
         this.handleMultipleInsertClick = this.handleMultipleInsertClick.bind(this);
         this.handleOneInsertClick = this.handleOneInsertClick.bind(this);
         this.handleonClickDelete = this.handleonClickDelete.bind(this);
-
+        this.handleonSearchEvent = this.handleonSearchEvent.bind(this);
+        
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
         this.checkAll = this.checkAll.bind(this);
         this.getCheckList = this.getCheckList.bind(this);
@@ -274,9 +275,10 @@ class DataGridShipmentOderCom extends Component {
         this.setState({ KeywordId: e.target.value });
         if (e.key == "Enter") {
             const searchText = e.target.value;
-            if (this.props.onSearchEvent != null) {
-                this.props.onSearchEvent(searchText)
-            }
+            // if (this.props.onSearchEvent != null) {
+            //     this.props.onSearchEvent(searchText)
+            // }
+            this.handleonSearchEvent(searchText);
         }
     }
 
@@ -284,8 +286,41 @@ class DataGridShipmentOderCom extends Component {
         this.setState({ KeywordId: e.target.value });
     }
     handleSearchShip() {
-        if (this.props.onSearchEvent != null) {
-            this.props.onSearchEvent(this.state.KeywordId)
+        this.handleonSearchEvent(this.state.KeywordId);
+        // if (this.props.onSearchEvent != null) {
+        //     this.props.onSearchEvent(this.state.KeywordId)
+        // }
+    }
+
+    handleonSearchEvent(Keywordid) {
+        if (Keywordid != "") {
+            if (Keywordid.trim().length == 15) {
+                this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByKeyword", String(Keywordid).trim()).then(apiResult => {
+                    if (!apiResult.IsError) {
+                        this.setState({
+                            DataSource: apiResult.ResultObject
+                        });
+                    }
+                });
+            }
+            else if (Keywordid.trim().length == 10) {
+                this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByPhoneNember", String(Keywordid).trim()).then(apiResult => {
+                    if (!apiResult.IsError) {
+                        this.setState({
+                            DataSource: apiResult.ResultObject
+                        });
+                    }
+                });
+            }
+            else {
+                this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByPartnerSaleOrderID", String(Keywordid).trim()).then(apiResult => {
+                    if (!apiResult.IsError) {
+                        this.setState({
+                            DataSource: apiResult.ResultObject
+                        });
+                    }
+                });
+            }
         }
     }
 
@@ -593,13 +628,13 @@ class DataGridShipmentOderCom extends Component {
 
     handleClickShip = (ShipmentOrderID) => e => {
         const { widthPercent } = this.state;
-        let resultdd = this.state.GridDataShip.find(n => n.ShipmentOrderID == ShipmentOrderID)
-        if (resultdd == undefined) {
+       
             this.props.hideModal();
             this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderDeliver", ShipmentOrderID).then(apiResult => {
                 if (!apiResult.IsError) {
-
-                    this.state.GridDataShip.push(apiResult.ResultObject.ShipmentOrderDeliver);
+                    let resultdd = this.state.GridDataShip.find(n => n.ShipmentOrderID == ShipmentOrderID)
+                    if (resultdd == undefined) 
+                         this.state.GridDataShip.push(apiResult.ResultObject.ShipmentOrderDeliver);
                     this.props.showModal(MODAL_TYPE_VIEW, {
                         title: 'Phân tuyến điều phối vận đơn ',
                         isShowOverlay: false,
@@ -623,14 +658,11 @@ class DataGridShipmentOderCom extends Component {
                     this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!")
                 }
             });
-        }
     };
 
     handleClickShipmentRoute = (RouteID) => e => {
         const { widthPercent, ShipmentRouteID } = this.state;
-        if (ShipmentRouteID != RouteID) {
             this.props.hideModal();
-
             this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetShipmentOrderRouteLst", RouteID).then(apiResult => {
                 if (!apiResult.IsError) {
                     this.setState({ ShipmentRouteID: RouteID, GridDataShip: apiResult.ResultObject });
@@ -656,7 +688,6 @@ class DataGridShipmentOderCom extends Component {
                     this.showMessage(apiResult.message)
                 }
             });
-        }
     };
 
     _genCommentTime(dates) {
