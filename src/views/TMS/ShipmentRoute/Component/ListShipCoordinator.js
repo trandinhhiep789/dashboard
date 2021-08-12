@@ -570,7 +570,7 @@ class ListShipCoordinatorCom extends Component {
     render() {
         let { ShipmentOrder, ShipmentRouteID, ShipmentRouteLst, ShipmentOrderSameLst, Via_Distances, Via_Durations } = this.state;
         let resultShipmentRoute = ShipmentRouteLst.filter(n => n.ShipmentRouteID != ShipmentRouteID);
-       // console.log("resultShipmentRoute", resultShipmentRoute)
+        // console.log("resultShipmentRoute", resultShipmentRoute)
         return (
             <React.Fragment>
                 <div className="card">
@@ -919,12 +919,24 @@ class ListShipCoordinatorCom extends Component {
                 </div>
                 <div className="modal-footer modal-footer-center">
                     {Via_Distances != "" ? (
-                        <React.Fragment>
-                            <span>Km ước lượng:{Via_Distances}</span>
-                            <span>di chuyển {Via_Durations}'</span>
-                        </React.Fragment>
 
+                        <div className="group-info-estimates">
+                            <ul>
+                                <li>
+                                    <span>Km ước lượng: <span>{Via_Distances}</span></span>
+                                </li>
+                                <li>
+                                    <span>di chuyển: <span>{Via_Durations}'</span></span>
+                                </li>
+                            </ul>
+                        </div>
                     ) : ""}
+
+
+
+
+
+
                     {ShipmentOrder.length > 1 ?
                         (
                             <button className="btn btn-w-md btn-round btn-info ml-10" type="button" onClick={this.handleDistances.bind(this)}>Tính khoản cách</button>
