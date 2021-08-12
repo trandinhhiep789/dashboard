@@ -932,11 +932,6 @@ class ListShipCoordinatorCom extends Component {
                         </div>
                     ) : ""}
 
-
-
-
-
-
                     {ShipmentOrder.length > 1 ?
                         (
                             <button className="btn btn-w-md btn-round btn-info ml-10" type="button" onClick={this.handleDistances.bind(this)}>Tính khoản cách</button>
