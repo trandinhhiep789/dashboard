@@ -25,8 +25,15 @@ class AddCom extends React.Component {
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
-            IsCloseForm: false
+            IsCloseForm: false,
+            Files: {},
         };
+    }
+
+    //file upload
+    handleSelectedFile(file, nameValue, isDeletetedFile) {
+        const filelist = { [nameValue]: file };
+        this.setState({ Files: filelist });
     }
 
     componentDidMount() {
@@ -36,11 +43,21 @@ class AddCom extends React.Component {
     handleSubmit(formData, MLObject) {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        MLObject.SaleOrderTypeID = MLObject.SaleOrderTypeID == "" ? -1 : MLObject.SaleOrderTypeID;
+        MLObject.OutputTypeID = MLObject.OutputTypeID == "" ? -1 : MLObject.OutputTypeID;
+        MLObject.PayableTypeID = MLObject.PayableTypeID == "" ? -1 : MLObject.PayableTypeID;
+        MLObject.DeliveryTypeID = MLObject.DeliveryTypeID == "" ? -1 : MLObject.DeliveryTypeID;
+        MLObject.VoucherTypeID = MLObject.VoucherTypeID == "" ? -1 : MLObject.VoucherTypeID;
+        MLObject.ShipmentOrderTypeID = MLObject.ShipmentOrderTypeID == "" ? -1 : MLObject.ShipmentOrderTypeID;
         // MLObject.AddFunctionID = MLObject.AddFunctionID && Array.isArray(MLObject.AddFunctionID) ? MLObject.AddFunctionID[0] : MLObject.AddFunctionID;
         // MLObject.InputTypeID = MLObject.InputTypeID && Array.isArray(MLObject.InputTypeID) ? MLObject.InputTypeID[0] : MLObject.InputTypeID;
         // MLObject.InventoryStatusID = MLObject.InventoryStatusID && Array.isArray(MLObject.InventoryStatusID) ? MLObject.InventoryStatusID[0] : MLObject.InventoryStatusID;
-        
-        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+
+        var data = new FormData();
+        data.append("LogoImageURL", this.state.Files.ImageUrl);
+        data.append("ServiceRequestTypeObj", JSON.stringify(MLObject));
+
+        this.props.callFetchAPI(APIHostName, AddAPIPath, data).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if(!apiResult.IsError){
                 this.props.callClearLocalCache(ERPCOMMONCACHE_SERVICEREQUESTTYPE);
@@ -48,8 +65,9 @@ class AddCom extends React.Component {
             }            
             this.showMessage(apiResult.Message);
         });
+
         
-        
+
     }
 
     handleCloseMessage() {
@@ -77,9 +95,10 @@ class AddCom extends React.Component {
         return (
             <SimpleForm
                 FormName="Thêm loại yêu cầu dịch vụ"
-                MLObjectDefinition={MLObjectDefinition} 
+                MLObjectDefinition={MLObjectDefinition}
                 listelement={AddElementList}
                 onSubmit={this.handleSubmit}
+                onHandleSelectedFile={this.handleSelectedFile.bind(this)}
                 FormMessage={this.state.CallAPIMessage}
                 IsErrorMessage={this.state.IsCallAPIError}
                 dataSource={dataSource}
