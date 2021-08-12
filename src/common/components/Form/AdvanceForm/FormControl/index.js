@@ -1047,6 +1047,24 @@ class SearchBoxPopupCom extends React.Component {
         this.handleSearch = this.handleSearch.bind(this);
         this.handleSelectedData = this.handleSelectedData.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleDefaultValue = this.handleDefaultValue.bind(this);
+    }
+
+    componentDidMount() {
+        this.handleDefaultValue();
+    }
+
+    handleDefaultValue() {
+        const selectValue = this.props.fetchData.map(item => {
+            return {
+                value: item[this.props.valueMember],
+                label: `${item[this.props.valueMember]} - ${item[this.props.nameMember]}`
+            }
+        });
+
+        this.setState({
+            value: selectValue
+        })
     }
 
     handleSearch() {
@@ -1166,6 +1184,7 @@ SearchBoxPopupCom.defaultProps = {
     components: { DropdownIndicator: () => null, IndicatorSeparator: () => null },
     valueMember: "",
     nameMember: "",
+    fetchData: [],
 
     titleModal: "",
     isMulti: true,
