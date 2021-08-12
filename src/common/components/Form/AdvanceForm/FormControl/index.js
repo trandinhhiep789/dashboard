@@ -1,12 +1,16 @@
 
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { Button } from 'antd';
+import Select from 'react-select';
+
 import MultiSelectComboBox from "./MultiSelectComboBox";
 import DropdownButton from "./DropdownButton";
 import { callGetCache } from "../../../../../actions/cacheAction";
-import { connect } from 'react-redux';
 import { showModal, hideModal } from '../../../../../actions/modal';
-import { MODAL_TYPE_SEARCH } from '../../../../../constants/actionTypes';
-import SearchModal from "../FormControl/FormSearchModal"
+import { MODAL_TYPE_SEARCH, MODAL_TYPE_COMMONTMODALS } from '../../../../../constants/actionTypes';
+import SearchModal from "../FormControl/FormSearchModal";
+import SearchDataGridModalCom from '../FormControl/FormSearchModal/SearchDataGridModal';
 
 class TextBox extends React.Component {
     constructor(props) {
@@ -1031,5 +1035,146 @@ const mapStateToProps = state => {
 
 //End hoc.lenho test
 
-export default { TextBox, Number, TextArea, CheckBox, ComboBox, MultiSelectComboBox, DropdownButton, FileUpload, modal, GroupTextBox, Numeric, SingleFileUpload };
+class SearchBoxPopupCom extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            selectedData: [],
+            value: []
+        }
+
+        this.handleSearch = this.handleSearch.bind(this);
+        this.handleSelectedData = this.handleSelectedData.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleSearch() {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: this.props.titleModal,
+            content: {
+                text: <SearchDataGridModalCom
+                    {...this.props}
+                    selectedData={this.handleSelectedData}
+                />
+            },
+            afterClose: () => { },
+            maxWidth: this.props.maxWidth
+        });
+    }
+
+    handleSelectedData(selectedData) {
+        const valueSelect = selectedData.map(item => {
+            return {
+                value: item[this.props.valueMember],
+                label: `${item[this.props.valueMember]} - ${item[this.props.nameMember]}`
+            }
+        })
+
+        this.setState({
+            selectedData,
+            value: valueSelect
+        })
+
+        this.props.onSelectedData(selectedData);
+    }
+
+    handleChange(value) {
+        const cloneValue = value == null ? [] : value;
+
+        const updateSelectedData = cloneValue.map(item => {
+            const found = this.state.selectedData.find(item1 => item1[this.props.valueMember] == item.value);
+
+            return found;
+        })
+
+        this.setState({
+            selectedData: updateSelectedData,
+            value: cloneValue
+        })
+
+        this.props.onSelectedData(updateSelectedData);
+    }
+
+    render() {
+        let formRowClassName = "form-row";
+        if (this.props.rowspan != null) {
+            formRowClassName = "form-row col-md-" + this.props.rowspan;
+        }
+
+        let className = "form-control form-control-sm";
+        if (this.props.CSSClassName != null) {
+            className = this.props.CSSClassName;
+        }
+
+        let formGroupClassName = "col-md-4";
+        if (this.props.colspan != null) {
+            formGroupClassName = "col-md-" + this.props.colspan;
+        }
+        if (this.props.validationErrorMessage != null && this.props.validationErrorMessage.length > 0) {
+            formGroupClassName += " has-error has-danger";
+            className += " is-invalid";
+        }
+
+        let labelDivClassName = "form-group col-md-2";
+        if (this.props.labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
+        }
+
+        let star = "";
+        if (this.props.required) {
+            star = " *";
+        }
+
+        return <React.Fragment>
+            <div className={formRowClassName} >
+                <div className={labelDivClassName}>
+                    <label className="col-form-label">{this.props.label}<span className="text-danger">{star}</span></label>
+                </div>
+                <div className={formGroupClassName}>
+                    <div className="d-flex align-items-center">
+                        <Select
+                            name={this.props.name}
+                            className={this.props.className}
+                            isMulti={this.props.isMulti}
+                            value={this.state.value}
+                            placeholder={this.props.placeholder}
+                            disabled={this.props.disabled}
+                            menuIsOpen={this.props.menuIsOpen}
+                            components={this.props.components}
+                            onChange={this.handleChange}
+                        />
+                        <Button type="primary" onClick={this.handleSearch}>Tìm kiếm</Button>
+                    </div>
+
+                    <div className="invalid-feedback">
+                        <ul className="list-unstyled">
+                            <li>{this.props.validationErrorMessage}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </React.Fragment>
+    }
+}
+
+SearchBoxPopupCom.defaultProps = {
+    name: "",
+    className: "flex-grow-1 mr-1",
+    disabled: false,
+    menuIsOpen: false,
+    components: { DropdownIndicator: () => null, IndicatorSeparator: () => null },
+    valueMember: "",
+    nameMember: "",
+
+    titleModal: "",
+    isMulti: true,
+    placeholder: "Vui lòng chọn...",
+    maxTagCount: "responsive",
+    maxWidth: "90%"
+};
+
+const SearchBoxPopup = connect(null, mapDispatchToProps)(SearchBoxPopupCom);
+
+export default { TextBox, Number, TextArea, CheckBox, ComboBox, MultiSelectComboBox, DropdownButton, FileUpload, modal, GroupTextBox, Numeric, SingleFileUpload, SearchBoxPopup };
 

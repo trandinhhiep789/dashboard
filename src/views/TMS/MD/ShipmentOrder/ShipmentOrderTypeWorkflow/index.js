@@ -7,8 +7,7 @@ import FormContainer from '../../../../../common/components/Form/AdvanceForm/For
 import FormControl from '../../../../../common/components/Form/AdvanceForm/FormControl';
 import InputGrid from '../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid';
 import {
-    MLObjectDefinition, GridMLObjectModelPermission, GridMLObjectModelNext
-    , MTabList, MLShipmentOrderType_WF_Permis, InputNextColumnList
+    MLObjectDefinition, GridMLObjectModelPermission, GridMLObjectModelNext, MTabList, MLShipmentOrderType_WF_Permis, InputNextColumnList, SearchDocMLObjectDefinition, SearchDocElementList, InitSearchDocParams, listColumnDoc
 } from "./constants"
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { APIHostName, AddAPIPath, UpdateAPIPath } from './constants';
@@ -33,6 +32,8 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
         this.createInputPermissColumnList = this.createInputPermissColumnList.bind(this);
         this.getFunctionCache = this.getFunctionCache.bind(this);
         this.handleClosePopup = this.handleClosePopup.bind(this);
+        this.handleSelectedDocuments = this.handleSelectedDocuments.bind(this);
+
         this.state = {
             FormData: {
                 ShipmentOrderTypeWorkflow: [],
@@ -472,6 +473,11 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
     handleClosePopup() {
         this.props.hideModal();
     }
+
+    handleSelectedDocuments(data) {
+        console.log(data);
+    }
+
     render() {
         return (
             <div className="row" style={{ textAlign: 'left' }}>
@@ -598,6 +604,26 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
 
                                     <FormControl.Numeric labelcolspan={4} colspan={8} name="SendToCustomerSMSTemplateID" label="Mã template SMS gửi đến khách hàng"
                                         datasourcemember="SendToCustomerSMSTemplateID" controltype="InputControl" maxValue={999999999}
+                                    />
+
+                                    <FormControl.SearchBoxPopup
+                                        colspan={8}
+                                        classNameSearchForm={"multiple"}
+                                        name="DocumentID"
+                                        label={"Tài liệu hướng dẫn"}
+                                        labelcolspan={4}
+                                        listColumn={listColumnDoc}
+                                        listelement={SearchDocElementList}
+                                        placeholder={"Tài liệu hướng dẫn"}
+                                        titleModal="Tìm kiếm tài liệu hướng dẫn"
+                                        MLObjectDefinition={SearchDocMLObjectDefinition}
+                                        InitSearchParams={InitSearchDocParams}
+                                        IDSelectColumnName={"chkSelect"}
+                                        SearchAPIPath="api/Document/Search"
+                                        PKColumnName={"DocumentID"}
+                                        valueMember="DocumentID"
+                                        nameMember="DocumentName"
+                                        onSelectedData={this.handleSelectedDocuments}
                                     />
                                 </div>
                                 <div className="col-sm-1"></div>
