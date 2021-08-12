@@ -19,7 +19,7 @@ import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache, callGetUserCache } from "../../../../actions/cacheAction";
 import { GET_CACHE_USER_FUNCTION_LIST, DELIVERYABILITY_ADD, DELIVERYABILITY_UPDATE, DELIVERYABILITY_DELETE, SERVICETYPE_ADD, SERVICETYPE_UPDATE, SERVICETYPE_DELETE } from "../../../../constants/functionLists";
 import CoordinatorUser from "./Components/CoordinatorUser";
-import { ERPCOMMONCACHE_STORE } from "../../../../constants/keyCache";
+import { ERPCOMMONCACHE_STORE, ERPCOMMONCACHE_SVREQUESTTYPE_PRODUCT } from "../../../../constants/keyCache";
 
 class ServiceRequestType_ProductCom extends React.Component {
     constructor(props) {
@@ -227,6 +227,7 @@ class ServiceRequestType_ProductCom extends React.Component {
 
                         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
                             if (!apiResult.IsError) {
+                                this.props.callClearLocalCache(ERPCOMMONCACHE_SVREQUESTTYPE_PRODUCT);
                                 if (this.props.onComponentChange) {
                                     this.props.onComponentChange();
                                 }
@@ -301,6 +302,7 @@ class ServiceRequestType_ProductCom extends React.Component {
                         MLObject.ServiceRequestTypeID = this.props.ServiceRequestTypeID;
                         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
                             if (!apiResult.IsError) {
+                                this.props.callClearLocalCache(ERPCOMMONCACHE_SVREQUESTTYPE_PRODUCT);
                                 if (this.props.onComponentChange) {
                                     this.props.onComponentChange();
                                 }
@@ -342,6 +344,7 @@ class ServiceRequestType_ProductCom extends React.Component {
 
         this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
             if (!apiResult.IsError) {
+                this.props.callClearLocalCache(ERPCOMMONCACHE_SVREQUESTTYPE_PRODUCT);
                 if (this.props.onComponentChange) {
                     this.props.onComponentChange();
                 }
@@ -395,7 +398,7 @@ class ServiceRequestType_ProductCom extends React.Component {
         this.props.callFetchAPI(APIHostName, AddByFileAPIPath, data).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
-                //this.props.callClearLocalCache(ERPCOMMONCACHE_MATERIALGROUP);
+                //this.props.callClearLocalCache(ERPCOMMONCACHE_SVREQUESTTYPE_PRODUCT);
                 if (this.props.onComponentChange) {
                     this.props.onComponentChange();
                 }

@@ -346,6 +346,30 @@ export const MLObjectDefinition = [
         DataSourceMember: "IsShowToCustomer"
     },
     {
+        Name: "WebAppHelpDocumentID",
+        DefaultValue: "",
+        BindControlName: "WebAppHelpDocumentID",
+        DataSourceMember: "WebAppHelpDocumentID"
+    },
+    {
+        Name: "MobiAppHelpDocumentID",
+        DefaultValue: "",
+        BindControlName: "MobiAppHelpDocumentID",
+        DataSourceMember: "MobiAppHelpDocumentID"
+    },
+    {
+        Name: "WebAppHelpDocumentName",
+        DefaultValue: "",
+        BindControlName: "WebAppHelpDocumentName",
+        DataSourceMember: "WebAppHelpDocumentName"
+    },
+    {
+        Name: "MobiAppHelpDocumentName",
+        DefaultValue: "",
+        BindControlName: "MobiAppHelpDocumentName",
+        DataSourceMember: "MobiAppHelpDocumentName"
+    },
+    {
         Name: "OrderIndex",
         DefaultValue: "",
         BindControlName: "OrderIndex",
@@ -623,7 +647,7 @@ export const listColumnDoc = [
         Caption: "Tên tài liệu",
         DataSourceMember: "DocumentName",
         Link: "/Documents/Detail/",
-        Width: 70
+        Width: 150
     },
     {
         Name: "DocumentFolderName",
@@ -637,7 +661,7 @@ export const listColumnDoc = [
         Type: "checkicon",
         Caption: "Công bố",
         DataSourceMember: "IsPublished",
-        Width: 100
+        Width: 80
     },
     {
         Name: "PublishedDate",
@@ -665,7 +689,7 @@ export const listColumnDoc = [
         Type: "text",
         Caption: "Thông tin tài liệu",
         DataSourceMember: "ExtendLable",
-        Width: 150
+        Width: 120
     },
     {
         Name: "ModifyDate",
