@@ -4,7 +4,7 @@ import { ValidationField } from "../../../library/validation.js";
 import FormElement from '../FormElement';
 
 import { connect } from 'react-redux';
-import { callGetCache,callGetUserCache } from "../../../../actions/cacheAction";
+import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
 import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../constants/functionLists";
 
 function isEmpty(obj) {
@@ -305,6 +305,7 @@ class SimpleFormCom extends Component {
                                     listoption={elementItem.listoption}
                                     key={elementItem.name}
                                     readonly={elementItem.readonly}
+                                    disabled={elementItem.disabled}
                                     validatonList={elementItem.validatonList}
                                     validationErrorMessage={validationErrorMessage}
                                     IsAutoLoadItemFromCache={elementItem.IsAutoLoadItemFromCache}
