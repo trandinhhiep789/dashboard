@@ -279,6 +279,8 @@ class DataGridCom extends Component {
             // console.log("checkList", gridData);
             this.setState({ GridData: gridData });
         }
+
+        this.props.checkedData(gridData);
     }
 
     handleKeyPress(e) {

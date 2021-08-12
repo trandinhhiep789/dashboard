@@ -173,6 +173,20 @@ export const AddElementList = [
         NameMember: "ShipmentOrderTypeName"
     },
     {
+        type: "singleFileUpload",
+        name: "txtImageUrl",
+        NameMember: "ImageUrl",
+        label: "đường dẫn hình đại diện",
+        value: "",
+        placeholder: "",
+        icon: "",
+        cdn: "",
+        listoption: {},
+        DataSourceMember: "ImageUrl",
+        readonly: false,
+        validatonList: []
+    },
+    {
         type: "textarea",
         name: "txtDescription",
         label: "Mô tả:",
@@ -347,6 +361,20 @@ export const EditElementList = [
         NameMember: "ShipmentOrderTypeName"
     },
     {
+        type: "singleFileUpload",
+        name: "txtImageUrl",
+        NameMember: "ImageUrl",
+        label: "đường dẫn hình đại diện",
+        value: "",
+        placeholder: "",
+        icon: "",
+        cdn: "",
+        listoption: {},
+        DataSourceMember: "ImageUrl",
+        readonly: false,
+        validatonList: []
+    },
+    {
         type: "textarea",
         name: "txtDescription",
         label: "Mô tả:",
@@ -422,7 +450,7 @@ export const MLObjectDefinition = [
     },
     {
         Name: "SaleOrderTypeID",
-        DefaultValue: "",
+        DefaultValue: "-1",
         BindControlName: "txtSaleOrderTypeID",
         DataSourceMember: "SaleOrderTypeID"
     },
@@ -455,6 +483,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "txtShipmentOrderTypeID",
         DataSourceMember: "ShipmentOrderTypeID"
+    },
+    {
+        Name: "ImageUrl",
+        DefaultValue: "",
+        BindControlName: "txtImageUrl",
+        DataSourceMember: "ImageUrl"
     },
     {
         Name: "Description",

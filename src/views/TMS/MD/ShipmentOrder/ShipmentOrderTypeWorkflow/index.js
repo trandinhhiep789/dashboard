@@ -7,8 +7,7 @@ import FormContainer from '../../../../../common/components/Form/AdvanceForm/For
 import FormControl from '../../../../../common/components/Form/AdvanceForm/FormControl';
 import InputGrid from '../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid';
 import {
-    MLObjectDefinition, GridMLObjectModelPermission, GridMLObjectModelNext
-    , MTabList, MLShipmentOrderType_WF_Permis, InputNextColumnList
+    MLObjectDefinition, GridMLObjectModelPermission, GridMLObjectModelNext, MTabList, MLShipmentOrderType_WF_Permis, InputNextColumnList, SearchDocMLObjectDefinition, SearchDocElementList, InitSearchDocParams, listColumnDoc
 } from "./constants"
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { APIHostName, AddAPIPath, UpdateAPIPath } from './constants';
@@ -33,6 +32,8 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
         this.createInputPermissColumnList = this.createInputPermissColumnList.bind(this);
         this.getFunctionCache = this.getFunctionCache.bind(this);
         this.handleClosePopup = this.handleClosePopup.bind(this);
+
+
         this.state = {
             FormData: {
                 ShipmentOrderTypeWorkflow: [],
@@ -96,7 +97,11 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                 ShipmentOrderType_WF_NextData: dataSource.ShipmentOrderType_WF_Next ? dataSource.ShipmentOrderType_WF_Next : [],
                 InputPermissColumnList: [],
                 SelectedOption: SelectedOption,
-                NextShipmentOrderStepListOption: NextShipmentOrderStepListOption
+                NextShipmentOrderStepListOption: NextShipmentOrderStepListOption,
+                WebAppHelpDocumentID: dataSource.WebAppHelpDocumentID,
+                WebAppHelpDocumentName: dataSource.WebAppHelpDocumentName,
+                MobiAppHelpDocumentID: dataSource.MobiAppHelpDocumentID,
+                MobiAppHelpDocumentName: dataSource.MobiAppHelpDocumentName
             }
         }
     }
@@ -340,6 +345,8 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
             return;
         }
 
+
+
         let newShipmentOrderType_WF_PermisData = this.state.ShipmentOrderType_WF_PermisData;
         let newShipmentOrderType_WF_NextData = this.state.FormData.ShipmentOrderType_WF_Next;
         const newFormData = Object.assign({}, this.state.FormData.ShipmentOrderTypeWorkflow, {
@@ -349,6 +356,12 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
         newFormData.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID
         newFormData.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         newFormData.CreatedUser = this.props.AppInfo.LoginInfo.Username;
+
+        //set tài liệu cho bước
+        newFormData.WebAppHelpDocumentID = this.state.WebAppHelpDocumentID;
+        newFormData.MobiAppHelpDocumentID = this.state.MobiAppHelpDocumentID;
+
+
         //Tính tổng số phút
         newFormData.MaxProcessTime = 0;
         newFormData.DisplayProcessTime = '';
@@ -472,6 +485,21 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
     handleClosePopup() {
         this.props.hideModal();
     }
+
+    handleSelectedDocumentWebApp(data) {
+        this.setState({
+            WebAppHelpDocumentID: data && data.length > 0 ? data[0].DocumentID : null
+        })
+        console.log(data);
+    }
+
+    handleSelectedDocumentMobiApp(data) {
+        this.setState({
+            MobiAppHelpDocumentID: data && data.length > 0 ? data[0].DocumentID : null
+        })
+        console.log(data);
+    }
+
     render() {
         return (
             <div className="row" style={{ textAlign: 'left' }}>
@@ -598,6 +626,50 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
 
                                     <FormControl.Numeric labelcolspan={4} colspan={8} name="SendToCustomerSMSTemplateID" label="Mã template SMS gửi đến khách hàng"
                                         datasourcemember="SendToCustomerSMSTemplateID" controltype="InputControl" maxValue={999999999}
+                                    />
+
+                                    <FormControl.SearchBoxPopup
+                                        colspan={8}
+                                        classNameSearchForm={"multiple"}
+                                        name="WebAppHelpDoccumentID"
+                                        label={"Tài liệu hướng dẫn trên Web App"}
+                                        labelcolspan={4}
+                                        listColumn={listColumnDoc}
+                                        listelement={SearchDocElementList}
+                                        placeholder={"Tài liệu hướng dẫn"}
+                                        titleModal="Tìm kiếm tài liệu hướng dẫn"
+                                        MLObjectDefinition={SearchDocMLObjectDefinition}
+                                        InitSearchParams={InitSearchDocParams}
+                                        IDSelectColumnName={"chkSelect"}
+                                        SearchAPIPath="api/Document/Search"
+                                        PKColumnName={"DocumentID"}
+                                        valueMember="DocumentID"
+                                        nameMember="DocumentName"
+                                        onSelectedData={this.handleSelectedDocumentWebApp.bind(this)}
+                                        isMulti={false}
+                                        fetchData={this.state.WebAppHelpDocumentID ? [{ "DocumentID": this.state.WebAppHelpDocumentID, "DocumentName": this.state.WebAppHelpDocumentName }] : []}
+                                    />
+
+                                    <FormControl.SearchBoxPopup
+                                        colspan={8}
+                                        classNameSearchForm={"multiple"}
+                                        name="MobiAppHelpDoccumentID"
+                                        label={"Tài liệu hướng dẫn trên Mobi App"}
+                                        labelcolspan={4}
+                                        listColumn={listColumnDoc}
+                                        listelement={SearchDocElementList}
+                                        placeholder={"Tài liệu hướng dẫn"}
+                                        titleModal="Tìm kiếm tài liệu hướng dẫn"
+                                        MLObjectDefinition={SearchDocMLObjectDefinition}
+                                        InitSearchParams={InitSearchDocParams}
+                                        IDSelectColumnName={"chkSelect"}
+                                        SearchAPIPath="api/Document/Search"
+                                        PKColumnName={"DocumentID"}
+                                        valueMember="DocumentID"
+                                        nameMember="DocumentName"
+                                        onSelectedData={this.handleSelectedDocumentMobiApp.bind(this)}
+                                        isMulti={false}
+                                        fetchData={this.state.MobiAppHelpDocumentID ? [{ "DocumentID": this.state.MobiAppHelpDocumentID, "DocumentName": this.state.MobiAppHelpDocumentName }] : []}
                                     />
                                 </div>
                                 <div className="col-sm-1"></div>

@@ -32,6 +32,7 @@ class SearchCom extends React.Component {
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
         this.handleCallData = this.handleCallData.bind(this);
+        this.handleHistorySearch = this.handleHistorySearch.bind(this);
         this.getCacheKeyConfig = this.getCacheKeyConfig.bind(this)
 
         this.state = {
@@ -47,7 +48,7 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
-         this.getCacheKeyConfig();
+        this.getCacheKeyConfig();
     }
 
 
@@ -217,6 +218,14 @@ class SearchCom extends React.Component {
         this.showMessage(result.Message)
     }
 
+    handleHistorySearch() {
+        this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
+            title: "Tải file",
+            maxWidth: '1200px',
+            ParamRequest: { RequestUser: 98138, DataExportTemplateID: 7 }
+        });
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -228,6 +237,8 @@ class SearchCom extends React.Component {
                     ref={this.searchref}
                     className="multiple"
                     TitleButton="Xuất Dữ liệu"
+                    IsButtonhistory={true}
+                    onHistorySubmit={this.handleHistorySearch}
                 />
 
             </React.Fragment>
