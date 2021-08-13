@@ -30,8 +30,16 @@ class EditCom extends React.Component {
             IsCallAPIError: false,
             FormContent: "",
             IsLoadDataComplete: false,
-            IsCloseForm: false
+            IsCloseForm: false,
+            Files: {},
+            IsDeletedFile: false,
         };
+    }
+
+    //file upload
+    handleSelectedFile(file, nameValue, isDeletetedFile) {
+        const filelist = { [nameValue]: file };
+        this.setState({ Files: filelist, IsDeletedFile: isDeletetedFile });
     }
 
     componentDidMount() {
@@ -59,7 +67,15 @@ class EditCom extends React.Component {
         // MLObject.InputTypeID = MLObject.InputTypeID && Array.isArray(MLObject.InputTypeID) ? MLObject.InputTypeID[0] : MLObject.InputTypeID;
         // MLObject.InventoryStatusID = MLObject.InventoryStatusID && Array.isArray(MLObject.InventoryStatusID) ? MLObject.InventoryStatusID[0] : MLObject.InventoryStatusID;
 
-        this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
+        if (this.state.IsDeletedFile) {
+            MLObject.ImageUrl = "";
+        }
+        
+        var data = new FormData();
+        data.append("LogoImageURL", this.state.Files.FolderImageURL);
+        data.append("ServiceRequestTypeObj", JSON.stringify(MLObject));
+
+        this.props.callFetchAPI(APIHostName, UpdateAPIPath, data).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
                 this.props.callClearLocalCache(ERPCOMMONCACHE_SERVICEREQUESTTYPE);
@@ -95,6 +111,7 @@ class EditCom extends React.Component {
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={EditElementList}
                     onSubmit={this.handleSubmit}
+                    onHandleSelectedFile={this.handleSelectedFile.bind(this)}
                     FormMessage={this.state.CallAPIMessage}
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={this.state.DataSource}
