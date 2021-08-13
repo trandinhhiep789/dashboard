@@ -881,7 +881,7 @@ class DataGridShipmentOderCom extends Component {
                                             <ul>
                                                 {rowItem.ShipmentRouteID == "" ?
                                                     (<React.Fragment>
-                                                        {/* <li className="item ">
+                                                        <li className="item ">
                                                             <div className="group-action">
                                                                 <div className="checkbox item-action">
                                                                     <label>
@@ -892,7 +892,7 @@ class DataGridShipmentOderCom extends Component {
                                                                     </label>
                                                                 </div>
                                                             </div>
-                                                        </li> */}
+                                                        </li>
                                                         <li className="item ">
                                                             <button className="btn" onClick={this.handleClickShip(rowItem.ShipmentOrderID)}>
                                                                 <i className="fa fa-user-plus"></i>
@@ -1292,7 +1292,7 @@ class DataGridShipmentOderCom extends Component {
                                                         <div className="btn-group btn-group-sm">
                                                             <div className="group-left">
                                                                 <button id="btnUserCoordinator" type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
-                                                                    <i className="fa fa-plus"> Gán nhân viên giao hàng</i>
+                                                                    <i className="fa fa-plus">Phân tuyến giao hàng</i>
                                                                 </button>
                                                                 <div className="groupActionRemember ml-10">
                                                                     <button type="button" onClick={this.handleSelected.bind(this)} className="btn " title="" data-provide="tooltip" data-original-title="Ghi nhớ">
