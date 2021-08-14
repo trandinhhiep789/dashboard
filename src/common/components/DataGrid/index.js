@@ -280,7 +280,9 @@ class DataGridCom extends Component {
             this.setState({ GridData: gridData });
         }
 
-        this.props.checkedData(gridData);
+        if (this.props.checkedData) {
+            this.props.checkedData(gridData);
+        }
     }
 
     handleKeyPress(e) {

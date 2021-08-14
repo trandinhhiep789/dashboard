@@ -21,10 +21,10 @@ class AddCom extends React.Component {
         };
 
         this.gridref = React.createRef();
-        this.searchref = React.createRef();
-        this.notificationDOMRef = React.createRef();
         this.handleOptionServiceRequestType = this.handleOptionServiceRequestType.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.notificationDOMRef = React.createRef();
+        this.searchref = React.createRef();
     }
 
     componentDidMount() {
@@ -124,22 +124,22 @@ class AddCom extends React.Component {
                     <div className="row">
                         <div className="col-12 mb-2">
                             <FormControl.FormControlComboBox
-                                name="cbServiceRequestTypeID"
                                 colspan="8"
-                                labelcolspan="4"
-                                label="Loại dịch vụ đối tác được yêu cầu"
-                                isautoloaditemfromcache={false}
-                                loaditemcachekeyid="ERPCOMMONCACHE.SERVICEREQUESTTYPE"
-                                valuemember="ServiceRequestTypeID"
-                                nameMember="ServiceRequestTypeName"
                                 controltype="InputControl"
-                                value="-1"
-                                listoption={this.state.stateOptionServiceRequestType}
                                 datasourcemember="ServiceRequestTypeID"
-                                placeholder="---Vui lòng chọn---"
                                 isMultiSelect={false}
                                 isShowLable={false}
+                                isautoloaditemfromcache={false}
+                                label="Loại dịch vụ đối tác được yêu cầu"
+                                labelcolspan="4"
+                                listoption={this.state.stateOptionServiceRequestType}
+                                loaditemcachekeyid="ERPCOMMONCACHE.SERVICEREQUESTTYPE"
+                                name="cbServiceRequestTypeID"
+                                nameMember="ServiceRequestTypeName"
+                                placeholder="---Vui lòng chọn---"
                                 validatonList={["Comborequired"]}
+                                value="-1"
+                                valuemember="ServiceRequestTypeID"
                             />
                         </div>
 
