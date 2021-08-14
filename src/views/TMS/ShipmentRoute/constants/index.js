@@ -373,6 +373,62 @@ export const SearchMLObjectDefinition = [
     }
 ];
 
+// phân tuyến
+export const SearchElementRouteList = [
+    {
+        type: "text",
+        name: "txtKeyword",
+        colspan: 2,
+        label: "",
+        value: "",
+        colspan: 4,
+        placeholder: "Từ khóa",
+        icon: "",
+        listoption: {}
+    },
+    {
+        type: "Datetime",
+        name: "dtCreatedOrderTimeFo",
+        DataSourceMember: "CreatedOrderTimeFo",
+        placeholder: "Từ ngày",
+        value: new Date(),
+        timeFormat: false,
+        dateFormat: "DD/MM/YYYY",
+        colspan: 1,
+        classNameCol: "col-custom"
+    },
+    {
+        type: "Datetime",
+        name: "dtCreatedOrderTimeTo",
+        DataSourceMember: "CreatedOrderTimeTo",
+        placeholder: "Đến ngày",
+        value: new Date(),
+        timeFormat: false,
+        dateFormat: "DD/MM/YYYY",
+        colspan: 1,
+        classNameCol: "col-custom"
+    }
+];
+export const SearchMLObjectRouteDefinition = [
+    {
+        Name: "Keyword",
+        DefaultValue: "",
+        BindControlName: "txtKeyword"
+    },
+    {
+        Name: "CreatedOrderTimeFo",
+        DefaultValue: "",
+        BindControlName: "dtCreatedOrderTimeFo"
+    },
+    {
+        Name: "CreatedOrderTimeTo",
+        DefaultValue: "",
+        BindControlName: "dtCreatedOrderTimeTo"
+    }
+    
+];
+// end phân tuyến
+
 export const AddElementList = [
     {
         type: "numeric",
