@@ -10,7 +10,7 @@ import {
     AddAPIRPTDetailPath,
     MLObjectRPTDetailItem
 } from "../PNServicePriceTable/constants";
-import {  ERPCOMMONCACHE_SUBGROUP, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE, ERPCOMMONCACHE_MAINGROUP } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_SUBGROUP, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE, ERPCOMMONCACHE_MAINGROUP } from "../../../../../constants/keyCache";
 import ProductComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/ProductComboBox.js";
 import { ModalManager } from "react-dynamic-modal";
 import { showModal, hideModal } from '../../../../../actions/modal';
@@ -53,13 +53,15 @@ class PNServicePriceTableDetailCom extends Component {
         console.log("MLObject", MLObject)
         MLObject.pnServicePriceTableID = this.props.dataSource.pnServicePriceTableID;
         MLObject.ProductID = MLObject.ProductID && Array.isArray(MLObject.ProductID) ? MLObject.ProductID[0].ProductID : MLObject.ProductID;
-
-        if (MLObject.IsPriceByTechspecsValueRange || MLObject.IsPriceByTechspecsValueRange != "" || MLObject.IsPriceByTechspecsValueRange == 0) {
+        
+        if (MLObject.IsPriceByTechspecsValueRange || MLObject.IsPriceByTechspecsValueRange != "") {
             MLObject.TechSpecsValueID = -1;
         }
         else {
             MLObject.TechSpecsValueID = MLObject.TechSpecsValueID;
         }
+
+
 
 
         if (MLObject.ProductID != undefined) {
@@ -80,7 +82,7 @@ class PNServicePriceTableDetailCom extends Component {
             }
         }
 
-        if(parseFloat(MLObject.ServicePrice) < 0 ){
+        if (parseFloat(MLObject.ServicePrice) < 0) {
             this.showMessage("Dữ liệu bạn nhập vào không đúng. Vui lòng nhập lại!")
             return;
         }
@@ -90,15 +92,16 @@ class PNServicePriceTableDetailCom extends Component {
             return
         }
         else {
-            
+
             if (this.props.index != undefined) {
                 this.props.callFetchAPI(APIHostName, EditAPIRPTDetailPath, MLObject).then(apiResult => {
+                    console.log("update", MLObject, apiResult)
                     this.props.onInputChangeObj(this.props.dataSource.pnServicePriceTableID, apiResult);
                 });
             }
             else {
                 this.props.callFetchAPI(APIHostName, AddAPIRPTDetailPath, MLObject).then(apiResult => {
-                    //console.log("adđ", MLObject, apiResult)
+                    console.log("adđ", MLObject, apiResult)
                     this.props.onInputChangeObj(this.props.dataSource.pnServicePriceTableID, apiResult);
                 });
             }
@@ -407,7 +410,7 @@ class PNServicePriceTableDetailCom extends Component {
 
                     </div>
 
-                    
+
 
                     <div className="col-md-6">
                         <ProductComboBox
@@ -425,7 +428,7 @@ class PNServicePriceTableDetailCom extends Component {
                         />
                     </div>
 
-                    
+
 
                     <div className="col-md-6">
 
