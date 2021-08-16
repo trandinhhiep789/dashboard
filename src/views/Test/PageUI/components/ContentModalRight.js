@@ -4,11 +4,14 @@ import FormControl from "../../../../common/components/FormContainer/FormControl
 import { showModal, hideModal } from '../../../../actions/modal';
 import { Link } from "react-router-dom";
 import ReactTooltip from 'react-tooltip';
+import { Slide } from 'react-slideshow-image';
+import 'react-slideshow-image/dist/styles.css'
 class ContentModalRightCom extends Component {
     constructor(props) {
         super(props);
+        this.HandleChangeGird = this.HandleChangeGird.bind(this)
         this.state = {
-
+            girdSlide: false
         }
     }
 
@@ -23,6 +26,20 @@ class ContentModalRightCom extends Component {
 
     handleConfirm() {
         console.log("submit")
+    }
+
+    HandleChangeGird(id) {
+        console.log("id", id)
+        if (id == 1) {
+            this.setState({
+                girdSlide: true
+            })
+        }
+        else {
+            this.setState({
+                girdSlide: false
+            })
+        }
     }
 
     render() {
@@ -400,114 +417,190 @@ class ContentModalRightCom extends Component {
                         </div>
 
                         <div className="row  mt-10 lstProduct">
-                            <div className="col-md-6 col-lg-4">
-                                <div className="card card-secondary">
-                                    <div className="card-body">
-                                        <ul>
-                                            <li className="item infoOder">
-                                                <span className="nameOrder">
-                                                    <Link
-                                                        className="linktext blank"
-                                                        target="_blank"
-                                                        to={{ pathname: "/ShipmentOrder/Detail/" + 210714000000199 }}>
-                                                        210714000000199 </Link>
-                                                </span>
-                                                <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
-                                            </li>
-                                            <li className="item infoProduict">
-                                                <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
-                                                <ReactTooltip id="producname1" type='warning'>
-                                                    <span>Tivi LED Sony KD-49X8000H</span>
-                                                </ReactTooltip>
-                                                <span data-tip data-for="producname2" data-id="producname2">Tủ lạnh Samsung RT20HAR8DBU/SV</span>
-                                                <ReactTooltip id="producname2" type='warning'>
-                                                    <span>Tủ lạnh Samsung RT20HAR8DBU/SV</span>
-                                                </ReactTooltip>
-                                            </li>
-                                            <li className="item address-customer">
-                                                <span>Cc himlam Phú An,, Phường Phước Long A, Quận 9, Hồ Chí Minh</span>
-                                            </li>
-                                            {/* <li className="item delivery-status">
-
-                                                <span class="badge badge-secondary badge-active mr-10"><i className="fa fa-motorcycle"></i> Xe máy</span>
-                                                <span class="badge badge-secondary"><i className="fa fa-truck"></i> Xe tải</span>
-                                            </li> */}
-                                        </ul>
-                                    </div>
+                            <div className="col-12 ">
+                                <div className="nav-group-action">
+                                    <button type="button" onClick={() => this.HandleChangeGird(1)}><i className="ti-menu-alt"></i></button>
+                                    <button type="button" onClick={() => this.HandleChangeGird(2)}><i className="ti-menu"></i></button>
                                 </div>
-                            </div>
-                            <div className="col-md-6 col-lg-4">
-                                <div className="card card-secondary">
-                                    <div className="card-body">
-                                        <ul>
-                                            <li className="item infoOder">
-                                                <span className="nameOrder">
-                                                    <Link
-                                                        className="linktext blank"
-                                                        target="_blank"
-                                                        to={{ pathname: "/ShipmentOrder/Detail/" + 210714000000199 }}>
-                                                        210714000000199 </Link>
-                                                </span>
-                                                <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
-                                            </li>
-                                            <li className="item infoProduict">
-                                                <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
-                                                <ReactTooltip id="producname1" type='warning'>
-                                                    <span>Tivi LED Sony KD-49X8000H</span>
-                                                </ReactTooltip>
-                                                <span data-tip data-for="producname2" data-id="producname2">Tủ lạnh Samsung RT20HAR8DBU/SV</span>
-                                                <ReactTooltip id="producname2" type='warning'>
-                                                    <span>Tủ lạnh Samsung RT20HAR8DBU/SV</span>
-                                                </ReactTooltip>
-                                            </li>
-                                            <li className="item address-customer">
-                                                <span>Cc himlam Phú An,, Phường Phước Long A, Quận 9, Hồ Chí Minh</span>
-                                            </li>
-                                            {/* <li className="item delivery-status">
 
-                                                <span class="badge badge-secondary badge-active mr-10"><i className="fa fa-motorcycle"></i> Xe máy</span>
-                                                <span class="badge badge-secondary"><i className="fa fa-truck"></i> Xe tải</span>
-                                            </li> */}
-                                        </ul>
-                                    </div>
-                                </div>
                             </div>
-                            <div className="col-md-6 col-lg-4">
-                                <div className="card card-secondary">
-                                    <div className="card-body">
-                                        <ul>
-                                            <li className="item infoOder">
-                                                <span className="nameOrder">
-                                                    <Link
-                                                        className="linktext blank"
-                                                        target="_blank"
-                                                        to={{ pathname: "/ShipmentOrder/Detail/" + 210714000000199 }}>
-                                                        210714000000199 </Link>
-                                                </span>
-                                                <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
-                                            </li>
-                                            <li className="item infoProduict">
-                                                <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
-                                                <ReactTooltip id="producname1" type='warning'>
-                                                    <span>Tivi LED Sony KD-49X8000H</span>
-                                                </ReactTooltip>
-                                                <span data-tip data-for="producname2" data-id="producname2">Tủ lạnh Samsung RT20HAR8DBU/SV</span>
-                                                <ReactTooltip id="producname2" type='warning'>
-                                                    <span>Tủ lạnh Samsung RT20HAR8DBU/SV</span>
-                                                </ReactTooltip>
-                                            </li>
-                                            <li className="item address-customer">
-                                                <span>Cc himlam Phú An,, Phường Phước Long A, Quận 9, Hồ Chí Minh</span>
-                                            </li>
-                                            {/* <li className="item delivery-status">
+                            {
+                                this.state.girdSlide == false ? <div className="col-12 ">
+                                    <Slide easing="ease" slidesToShow={3} slidesToScroll={1} autoplay={false} slidesToShow={3} cssClass="slide-product">
 
-                                                <span class="badge badge-secondary badge-active mr-10"><i className="fa fa-motorcycle"></i> Xe máy</span>
-                                                <span class="badge badge-secondary"><i className="fa fa-truck"></i> Xe tải</span>
-                                            </li> */}
-                                        </ul>
-                                    </div>
+                                        <div className="col-md-6 col-lg-4 each-slide">
+                                            <div className="card card-secondary">
+                                                <div className="card-body">
+                                                    <ul>
+                                                        <li className="item infoOder">
+                                                            <span className="nameOrder">
+                                                                <Link
+                                                                    className="linktext blank"
+                                                                    target="_blank"
+                                                                    to={{ pathname: "/ShipmentOrder/Detail/" + 210714000000199 }}>
+                                                                    210714000000199 </Link>
+                                                            </span>
+                                                            <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
+                                                        </li>
+                                                        <li className="item infoProduict">
+                                                            <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
+                                                            <ReactTooltip id="producname1" type='warning'>
+                                                                <span>Tivi LED Sony KD-49X8000H</span>
+                                                            </ReactTooltip>
+                                                            <span data-tip data-for="producname2" data-id="producname2">Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                            <ReactTooltip id="producname2" type='warning'>
+                                                                <span>Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                            </ReactTooltip>
+                                                        </li>
+                                                        <li className="item address-customer">
+                                                            <span>Cc himlam Phú An,, Phường Phước Long A, Quận 9, Hồ Chí Minh</span>
+                                                        </li>
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="col-md-6 col-lg-4 each-slide">
+                                            <div className="card card-secondary">
+                                                <div className="card-body">
+                                                    <ul>
+                                                        <li className="item infoOder">
+                                                            <span className="nameOrder">
+                                                                <Link
+                                                                    className="linktext blank"
+                                                                    target="_blank"
+                                                                    to={{ pathname: "/ShipmentOrder/Detail/" + 210714000000199 }}>
+                                                                    210714000000199 </Link>
+                                                            </span>
+                                                            <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
+                                                        </li>
+                                                        <li className="item infoProduict">
+                                                            <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
+                                                            <ReactTooltip id="producname1" type='warning'>
+                                                                <span>Tivi LED Sony KD-49X8000H</span>
+                                                            </ReactTooltip>
+                                                            <span data-tip data-for="producname2" data-id="producname2">Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                            <ReactTooltip id="producname2" type='warning'>
+                                                                <span>Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                            </ReactTooltip>
+                                                        </li>
+                                                        <li className="item address-customer">
+                                                            <span>Cc himlam Phú An,, Phường Phước Long A, Quận 9, Hồ Chí Minh</span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="col-md-6 col-lg-4 each-slide">
+                                            <div className="card card-secondary">
+                                                <div className="card-body">
+                                                    <ul>
+                                                        <li className="item infoOder">
+                                                            <span className="nameOrder">
+                                                                <Link
+                                                                    className="linktext blank"
+                                                                    target="_blank"
+                                                                    to={{ pathname: "/ShipmentOrder/Detail/" + 210714000000199 }}>
+                                                                    210714000000199 </Link>
+                                                            </span>
+                                                            <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
+                                                        </li>
+                                                        <li className="item infoProduict">
+                                                            <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
+                                                            <ReactTooltip id="producname1" type='warning'>
+                                                                <span>Tivi LED Sony KD-49X8000H</span>
+                                                            </ReactTooltip>
+                                                            <span data-tip data-for="producname2" data-id="producname2">Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                            <ReactTooltip id="producname2" type='warning'>
+                                                                <span>Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                            </ReactTooltip>
+                                                        </li>
+                                                        <li className="item address-customer">
+                                                            <span>Cc himlam Phú An,, Phường Phước Long A, Quận 9, Hồ Chí Minh</span>
+                                                        </li>
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </Slide>
                                 </div>
-                            </div>
+                                    :
+                                    <div className="col-12 ">
+                                        <Slide easing="ease" slidesToShow={3} slidesToScroll={1} autoplay={false} slidesToShow={3} cssClass="slide-product">
+
+                                            <div className="col-md-6 col-lg-4 each-slide">
+                                                <div className="card card-secondary">
+                                                    <div className="card-body">
+                                                        <ul>
+                                                            <li className="item infoOder">
+                                                                <span className="nameOrder">
+                                                                    <Link
+                                                                        className="linktext blank"
+                                                                        target="_blank"
+                                                                        to={{ pathname: "/ShipmentOrder/Detail/" + 210714000000199 }}>
+                                                                        210714000000199 </Link>
+                                                                </span>
+                                                                <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
+                                                            </li>
+                                                            
+
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="col-md-6 col-lg-4 each-slide">
+                                                <div className="card card-secondary">
+                                                    <div className="card-body">
+                                                        <ul>
+                                                            <li className="item infoOder">
+                                                                <span className="nameOrder">
+                                                                    <Link
+                                                                        className="linktext blank"
+                                                                        target="_blank"
+                                                                        to={{ pathname: "/ShipmentOrder/Detail/" + 210714000000199 }}>
+                                                                        210714000000199 </Link>
+                                                                </span>
+                                                                <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
+                                                            </li>
+                                                           
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="col-md-6 col-lg-4 each-slide">
+                                                <div className="card card-secondary">
+                                                    <div className="card-body">
+                                                        <ul>
+                                                            <li className="item infoOder">
+                                                                <span className="nameOrder">
+                                                                    <Link
+                                                                        className="linktext blank"
+                                                                        target="_blank"
+                                                                        to={{ pathname: "/ShipmentOrder/Detail/" + 210714000000199 }}>
+                                                                        210714000000199 </Link>
+                                                                </span>
+                                                                <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
+                                                            </li>
+
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </Slide>
+                                    </div>
+                            }
+
+
+
+
+
                         </div>
 
                     </div>
