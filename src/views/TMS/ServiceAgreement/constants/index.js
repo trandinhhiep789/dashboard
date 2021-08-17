@@ -367,7 +367,7 @@ export const SearchElementList = [
         placeholder: "---Vui lòng chọn---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.SERVICETYPE",
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.TMS_SERVICETYPE",
         ValueMember: "ServiceTypeID",
         NameMember: "ServiceTypeName",
 

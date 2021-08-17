@@ -46,6 +46,29 @@
     
     &.modalRight{
         clear: both;
+
+        .nav-group-action{
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: flex-end;
+            button {
+                margin-right: 5px;
+                border-color: transparent;
+                border-radius: 4px;
+                font-size: 14px;
+                cursor: pointer;
+                border: none;
+                &:active, &:focus{
+                    outline: none;
+                    border: none;
+                    box-shadow: none;
+                }
+                &:hover{
+                    background: #48b0f7;
+                    color: #fff;
+                }
+            }
+        }
         .modal-header{
             border-bottom-color: #c0c0c0b0;
             padding: .5rem 1rem;
@@ -478,6 +501,8 @@
             }
         
         }
+
+        
     }
 }
 
