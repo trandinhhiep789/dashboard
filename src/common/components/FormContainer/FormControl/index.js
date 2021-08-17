@@ -1,30 +1,27 @@
 
 import React, { Component, PropTypes } from 'react';
-import MultiSelectComboBox from "./MultiSelectComboBox";
-import MultiUserComboBox from "./MultiSelectComboBox/MultiUserComboBox";
+import Datetime from 'react-datetime';
+import Select, { components } from 'react-select';
+import draftToHtml from 'draftjs-to-html';
+import moment from 'moment';
+import { Base64 } from 'js-base64';
+import { Editor } from 'react-draft-wysiwyg';
+import { ModalManager } from "react-dynamic-modal";
+import { TreeSelect, DatePicker, TimePicker } from "antd";
+import { connect } from 'react-redux';
+
+import "antd/dist/antd.css";
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 import ComboboxQTQHPX from "./CommonControl/ComboboxQTQHPX.js";
-import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
-import { connect } from 'react-redux';
-import { showModal, hideModal } from '../../../../actions/modal';
-import { MODAL_TYPE_SEARCH } from '../../../../constants/actionTypes';
-import SearchModal from "../../Form/AdvanceForm/FormControl/FormSearchModal"
-import { createListTree } from "../../../library/ultils";
-import { TreeSelect, DatePicker, TimePicker } from "antd";
-import moment from 'moment';
-import Datetime from 'react-datetime';
-import "antd/dist/antd.css";
-import Select, { components } from 'react-select';
-import { formatMoney } from '../../../../utils/function';
-import { formatDateNew } from '../../../../common/library/CommonLib.js';
+import MultiSelectComboBox from "./MultiSelectComboBox";
+import MultiUserComboBox from "./MultiSelectComboBox/MultiUserComboBox";
 import { ExportStringToDate, ExportStringDate } from "../../../../common/library/ultils";
-import { Base64 } from 'js-base64';
-import { el } from 'date-fns/locale';
-import draftToHtml from 'draftjs-to-html';
-import { Editor } from 'react-draft-wysiwyg';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import { ModalManager } from "react-dynamic-modal";
 import { MessageModal } from "../../../../common/components/Modal";
+import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
+import { createListTree } from "../../../library/ultils";
+import { formatMoney } from '../../../../utils/function';
+import { showModal, hideModal } from '../../../../actions/modal';
 
 //#region connect
 const mapStateToProps = state => {
@@ -2592,8 +2589,7 @@ class UploadAvatar extends React.Component {
                     src: URL.createObjectURL(event.target.files[0])
                 });
                 this.props.onHandleSelectedFile(event.target.files[0], this.props.nameMember, false);
-            }
-            else{
+            } else {
                 this.showMessage("File không đúng định dạng.")
             }
         }
@@ -2793,26 +2789,275 @@ class TextEditor extends React.Component {
     }
 }
 
+//#region load big data from cache (TheCo)
+class PartialSelectCom extends React.Component {
+    constructor(props) {
+        super(props);
 
+        this.state = {
+            dataOptions: [],
+            filteredIndex: 0,
+            inputValue: "",
+            mounted: true,
+            quantityDownloadOnce: 20
+        };
 
+        this.handleChange = this.handleChange.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleMenuClose = this.handleMenuClose.bind(this);
+        this.handleMenuOpen = this.handleMenuOpen.bind(this);
+        this.handleMenuScrollToBottom = this.handleMenuScrollToBottom.bind(this);
+        this.handleMenuScrollToTop = this.handleMenuScrollToTop.bind(this);
+        this.initDataOptions = this.initDataOptions.bind(this);
+    }
 
+    componentDidMount() {
+    }
+
+    componentWillUnmount() {
+        this.setState = () => false
+    }
+
+    handleChange(value) {
+        this.props.onChange(value);
+    }
+
+    handleInputChange(value) {
+        if (value == "") {
+            this.setState({
+                inputValue: "",
+                filteredIndex: 0,
+                dataOptions: []
+            })
+            return;
+        }
+
+        this.props.callGetCache(this.props.loaditemcachekeyid).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+
+                let filteredIndex = this.state.filteredIndex;
+                const filteredData = result.ResultObject.CacheData.reduce((acc, val, index) => {
+
+                    if ((val[this.props.valuemember].toString().includes(value)
+                        || val[this.props.nameMember].toString().toLowerCase().includes(value.toLowerCase()))
+                        && acc.length <= this.state.quantityDownloadOnce) {
+
+                        filteredIndex = index;
+                        return [...acc, val];
+                    } else {
+                        return acc;
+                    }
+                }, []);
+
+                const dataOptions = filteredData.map(item => {
+                    return {
+                        ...item,
+                        value: item[this.props.valuemember],
+                        label: `${item[this.props.valuemember]} - ${item[this.props.nameMember]}`
+                    }
+                })
+
+                this.setState({
+                    dataOptions,
+                    filteredIndex,
+                    inputValue: value,
+                })
+            }
+        })
+    }
+
+    handleMenuClose() {
+        this.setState({
+            dataOptions: [],
+            filteredIndex: 0,
+            inputValue: ""
+        })
+    }
+
+    handleMenuOpen() {
+        this.initDataOptions();
+    }
+
+    handleMenuScrollToBottom() {
+        if (this.state.inputValue == "") {
+            this.props.callGetCache(this.props.loaditemcachekeyid).then((result) => {
+                if (!result.IsError && result.ResultObject.CacheData != null) {
+                    let dataOptions = [], i = 0;
+
+                    while (i < this.state.quantityDownloadOnce) {
+                        const item = result.ResultObject.CacheData[i + this.state.dataOptions.length];
+
+                        dataOptions.push({
+                            ...item,
+                            value: item[this.props.valuemember],
+                            label: `${item[this.props.valuemember]} - ${item[this.props.nameMember]}`
+                        });
+                        i++;
+                    }
+
+                    this.setState({
+                        dataOptions: [...this.state.dataOptions, ...dataOptions],
+                    })
+                }
+            })
+        } else {
+            this.props.callGetCache(this.props.loaditemcachekeyid).then((result) => {
+                if (!result.IsError && result.ResultObject.CacheData != null) {
+                    let filteredIndex = this.state.filteredIndex;
+
+                    const filteredData = result.ResultObject.CacheData.reduce((acc, val, index) => {
+                        if ((val[this.props.valuemember].toString().includes(this.state.inputValue)
+                            || val[this.props.nameMember].toString().toLowerCase().includes(this.state.inputValue.toLowerCase()))
+                            && acc.length <= this.state.quantityDownloadOnce
+                            && index > this.state.filteredIndex) {
+
+                            filteredIndex = index;
+                            return [...acc, val];
+                        } else {
+                            return acc;
+                        }
+                    }, []);
+
+                    const dataOptions = filteredData.map(item => {
+                        return {
+                            ...item,
+                            value: item[this.props.valuemember],
+                            label: `${item[this.props.valuemember]} - ${item[this.props.nameMember]}`
+                        }
+                    })
+
+                    this.setState({
+                        dataOptions: [...this.state.dataOptions, ...dataOptions],
+                        filteredIndex
+                    })
+                }
+            })
+        }
+    }
+
+    handleMenuScrollToTop() {
+    }
+
+    initDataOptions() {
+        this.props.callGetCache(this.props.loaditemcachekeyid).then((result) => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                let dataOptions = [], i = 0;
+
+                while (i < this.state.quantityDownloadOnce) {
+                    const item = result.ResultObject.CacheData[i];
+
+                    dataOptions.push({
+                        ...item,
+                        value: item[this.props.valuemember],
+                        label: `${item[this.props.valuemember]} - ${item[this.props.nameMember]}`
+                    })
+                    i++;
+                }
+
+                this.setState({
+                    dataOptions,
+                })
+            }
+        })
+    }
+
+    render() {
+        let formRowClassName = "form-row";
+        if (this.props.rowspan != null) {
+            formRowClassName = "form-row col-md-" + this.props.rowspan;
+        }
+
+        let formGroupClassName = "form-group col-md-4";
+        if (this.props.colspan != null) {
+            formGroupClassName = "form-group col-md-" + this.props.colspan;
+        }
+
+        let labelDivClassName = "form-group col-md-2";
+        if (this.props.labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + this.props.labelcolspan;
+        }
+
+        let star;
+        if (this.props.validatonList.includes("Comborequired") == true) {
+            star = '*';
+        }
+
+        let classNameSelect = "react-select";
+        if (this.props.validationErrorMessage != "") {
+            classNameSelect += " is-invalid";
+        }
+
+        return (
+            <div className={formRowClassName} >
+                {
+                    this.props.isShowLable == false && <div className={labelDivClassName}>
+                        <label className="col-form-label 6">
+                            {this.props.label}<span className="text-danger"> {star}</span>
+                        </label>
+                    </div>
+                }
+
+                <div className={formGroupClassName}>
+                    <Select
+                        className={classNameSelect}
+                        defaultValue={this.props.defaultValue}
+                        name={this.props.name}
+                        onChange={this.handleChange}
+                        onInputChange={this.handleInputChange}
+                        onMenuClose={this.handleMenuClose}
+                        onMenuOpen={this.handleMenuOpen}
+                        onMenuScrollToBottom={this.handleMenuScrollToBottom}
+                        onMenuScrollToTop={this.handleMenuScrollToTop}
+                        options={this.state.dataOptions}
+                        placeholder={this.props.placeholder}
+                    />
+
+                    <p className="text-danger mb-0">
+                        {this.props.validationErrorMessage}
+                    </p>
+                </div>
+            </div>
+        );
+    }
+}
+
+PartialSelectCom.defaultProps = {
+    isShowLable: false,
+    name: "",
+    placeholder: "---Vui lòng chọn---",
+    validationErrorMessage: "",
+    validatonList: [],
+};
+
+const PartialSelect = connect(mapStateToProps, mapDispatchToProps)(PartialSelectCom);
+
+//#endregion load big data from cache
 
 export default {
-    FormControlTextBox, TextBox, TextArea, CheckBox, modal, TextBoxCurrency, TextBoxNew, UploadAvatar, TextEditor,
+    CheckBox,
+    ComboBox,
+    ComboBoxNew,
+    ComboBoxPartner,
+    ComboBoxSelect,
+    ComboBoxTreeSelect,
+    ComboboxQTQHPX,
+    ElementDatetime,
     FormControlComboBox,
     FormControlComboBoxNew,
     FormControlComboBoxUser,
     FormControlDatetime,
     FormControlDatetimeNew,
-    ComboBox,
-    ComboBoxNew,
+    FormControlHour,
+    FormControlTextBox,
     MultiSelectComboBox,
-    ElementDatetime,
-    ComboBoxPartner,
-    ComboboxQTQHPX,
-    ComboBoxSelect,
-    ComboBoxTreeSelect,
     MultiUserComboBox,
-    FormControlHour
+    PartialSelect,
+    TextArea,
+    TextBox,
+    TextBoxCurrency,
+    TextBoxNew,
+    TextEditor,
+    UploadAvatar,
+    modal
 };
 

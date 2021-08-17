@@ -932,9 +932,9 @@ const AppMenu = [
                         SubMenu: []
                     },
                     {
-                        MenuName: 'ManagerShipmentOrder',
-                        MenuTitle: 'Quản lý vận đơn',
-                        LinkTo: '/ManagerShipmentOrder',
+                        MenuName: 'ManagerShipmentRoute',
+                        MenuTitle: 'Quản lý Phân tuyến',
+                        LinkTo: '/ShipmentRoute/Manager',
                         MenuIcon: '',
                         SubMenu: []
                     },

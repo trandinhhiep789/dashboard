@@ -88,7 +88,7 @@ class AddCom extends React.Component {
             MtreturnRequestTypeID: this.props.location.state.MtreturnRequestTypeID,
             RequestStoreID: this.props.location.state.RequestStoreID
         }
-        this.testGetMTReturnRequestMobile(param1)
+        //this.testGetMTReturnRequestMobile(param1)
 
         this.handleCallGetCache();
     }
@@ -133,6 +133,7 @@ class AddCom extends React.Component {
     }
 
     getDataMTReturnRequestRLByMTReturnRequestType(param) {
+        console.log("param", param)
         this.props.callFetchAPI(APIHostName, LoadAPIByMtreturnRequestTypeIDPath, param).then(apiResult => {
             if (apiResult.IsError) {
                 this.setState({

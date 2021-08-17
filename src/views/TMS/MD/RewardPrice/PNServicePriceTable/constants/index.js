@@ -267,10 +267,10 @@ export const MLObjectRPTDetailItem= [
         DataSourceMember: "TechspecsID"
     },
     {
-        Name: "TechSpecsValueID",
+        Name: "TechspecsValueID",
         DefaultValue: {},
         BindControlName: "cbTechSpecsValue",
-        DataSourceMember: "TechSpecsValueID"
+        DataSourceMember: "TechspecsValueID"
     },
 
     {

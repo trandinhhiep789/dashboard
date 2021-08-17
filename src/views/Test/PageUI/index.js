@@ -15,6 +15,9 @@ import { showModal, hideModal } from '../../../actions/modal';
 import { TreeSelect, DatePicker } from 'antd';
 import SOPrintTemplate from "../../../common/components/PrintTemplate/SOPrintTemplate";
 import ContentModalRight from "./components/ContentModalRight";
+import { Slide } from 'react-slideshow-image';
+import 'react-slideshow-image/dist/styles.css'
+import ReactTooltip from 'react-tooltip';
 const { SHOW_PARENT } = TreeSelect;
 
 const treeData = [

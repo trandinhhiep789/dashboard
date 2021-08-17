@@ -80,7 +80,7 @@ class EditCom extends React.Component {
     callLoadData(id) {
         const { SenderStoreSelect, StoreSelect } = this.state;
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
-           
+
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -150,7 +150,6 @@ class EditCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
-        // console.log("222", MLObject);
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.CoordinatorStoreID = this.props.match.params.id.trim();
@@ -195,8 +194,21 @@ class EditCom extends React.Component {
     }
 
     handleInputChangeObjItem(ObjItem, result) {
-        const formData = Object.assign({}, this.state.DataSource, { ["CoordinatorStoreWard_ItemList"]: ObjItem });
-        this.setState({ DataSource: formData });
+        console.log(ObjItem, result)
+        const tempData = ObjItem.map((item, index) => {
+            return {
+                ...item,
+                DistrictFullName: `${item.DistrictID} - ${item.DistrictName}`,
+                ProvinceFullName: `${item.ProvinceID} - ${item.ProvinceName}`,
+                WardFullName: `${item.WardID} - ${item.WardName}`
+            }
+        });
+        const formData = Object.assign({}, this.state.DataSource, { ["CoordinatorStoreWard_ItemList"]: tempData });
+        // const formData = Object.assign({}, this.state.DataSource, { ["CoordinatorStoreWard_ItemList"]: ObjItem });
+        this.setState({
+            DataSource: formData,
+            DbCoordinatorStoreWard: tempData
+        });
         this.props.hideModal()
     }
 
@@ -468,25 +480,26 @@ class EditCom extends React.Component {
                     </div>
 
                     <InputGridControl
-                        name="CoordinatorStoreWard_ItemList"
-                        controltype="InputGridControl"
-                        title="Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối"
-                        IDSelectColumnName={"WardID"}
-                        listColumn={DataGridColumnList}
-                        PKColumnName={"WardID"}
-                        dataSource={this.state.DbCoordinatorStoreWard}
                         // value={null}
-                        onInsertClick={this.handleInsertNew}
-                        onEditClick={this.handleEdit}
-                        onDeleteClick={this.handleDelete}
-                        isHiddenButtonAdd={IsShowCustomerAddress}
-                        isImportFile={true}
-                        schemaData={schema}
-                        onImportFile={this.handleImportFile.bind(this)}
-                        isExportFileTemplate={true}
+                        controltype="InputGridControl"
+                        dataSource={this.state.DbCoordinatorStoreWard}
                         DataTemplateExport={this.state.DataTemplateExport}
                         fileNameTemplate={"Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối"}
+                        IDSelectColumnName={"WardID"}
+                        isExportFileTemplate={true}
+                        isHiddenButtonAdd={IsShowCustomerAddress}
+                        isImportFile={true}
+                        IsPermisionDelete={false}
+                        listColumn={DataGridColumnList}
+                        name="CoordinatorStoreWard_ItemList"
+                        onDeleteClick={this.handleDelete}
+                        onEditClick={this.handleEdit}
                         onExportFileTemplate={this.handleExportFileTemplate.bind(this)}
+                        onImportFile={this.handleImportFile.bind(this)}
+                        onInsertClick={this.handleInsertNew}
+                        PKColumnName={"WardID"}
+                        schemaData={schema}
+                        title="Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối"
                     />
 
 
