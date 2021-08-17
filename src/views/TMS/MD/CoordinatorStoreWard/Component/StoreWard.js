@@ -19,7 +19,7 @@ class StoreWardCom extends Component {
             IsSystem: false,
             DataWard: [],
             DataDistrict: [],
-            DataProvince: [],
+            // DataProvince: [],
         }
     }
 
@@ -47,14 +47,14 @@ class StoreWardCom extends Component {
     }
 
     componentDidMount() {
-        console.log("StoreWardCom", this.props)
+        // console.log("StoreWardCom", this.props)
         this.handleGetCacheDistrict()
 
     }
 
     handleSubmit(formData, MLObject) {
         let CoordinatorStoreWard_ItemList = this.props.DataSource;
-        console.log("handleSubmit", formData, MLObject, CoordinatorStoreWard_ItemList);
+        console.log(formData, MLObject, this.props.dataSource);
         let formDatanew = [];
 
         let dataDistrictItem = this.state.DataDistrict.filter((item, index) => {
@@ -79,9 +79,9 @@ class StoreWardCom extends Component {
 
             if (isExitItem == 0) {
                 formDatanew = Object.assign([], CoordinatorStoreWard_ItemList, { [this.props.index]: MLObject });
-                
+
             }
-            else{
+            else {
                 formData.cbWardID.ErrorLst.IsValidatonError = true;
                 formData.cbWardID.ErrorLst.ValidatonErrorMessage = "Vui lòng chọn phường/xã khác.";
                 return
@@ -102,7 +102,8 @@ class StoreWardCom extends Component {
             if (MLObject.WardID.length > 0) {
 
                 MLObject.WardID.map((item, index) => {
-                    let objItem = {};
+                    // let objItem = {};
+                    let objItem = { ...MLObject };
                     let dataWardItem = this.state.DataWard.filter((item1, index1) => {
                         return item1.WardID == item
                     })
