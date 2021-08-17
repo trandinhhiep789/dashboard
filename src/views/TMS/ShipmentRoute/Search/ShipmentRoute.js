@@ -49,6 +49,8 @@ class ShipmentRouteCom extends React.Component {
     }
 
     componentDidMount() {
+        const LoginInfo = localStorage.getItem('LoginInfo');
+        console.log("LoginInfo",LoginInfo);
         const ShipOrdStatusGroupID = { SearchKey: "@SHIPMENTORDERSTATUSGROUPID", SearchValue: -1 };
         let listSearchDataObject = Object.assign([], this.state.SearchData, { [9]: ShipOrdStatusGroupID });
         this.callSearchData(listSearchDataObject);
