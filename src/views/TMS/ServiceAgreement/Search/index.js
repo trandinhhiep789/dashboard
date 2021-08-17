@@ -1,67 +1,73 @@
 import React from "react";
+import "react-notifications-component/dist/theme.css";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
-import SearchForm from "../../../../common/components/FormContainer/SearchForm";
-//import DataGrid from "../../../../common/components/DataGrid/getdataserver.js";
-import DataGrid from "../../../../common/components/DataGrid";
-import InputGridNew from "../../../../common/components/FormContainer/FormControl/InputGridNew";
-import { MessageModal } from "../../../../common/components/Modal";
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
+import ReactNotification from "react-notifications-component";
+import readXlsxFile from 'read-excel-file';
+
+import { callFetchAPI } from "../../../../actions/fetchAPIAction";
+import { callGetCache } from "../../../../actions/cacheAction";
 import { formatDate } from "../../../../common/library/CommonLib.js";
-import isBefore from 'date-fns/isBefore';
-import formatDistance from 'date-fns/formatDistance';
-import viLocale from "date-fns/locale/vi";
-import { compareAsc, format, add } from 'date-fns';
-
-import { SERVICEAGREEMENT_VIEW, SERVICEAGREEMENT_DELETE, SERVICEAGREEMENT_EXPORT } from "../../../../constants/functionLists";
-
-
+import { MessageModal } from "../../../../common/components/Modal";
+import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
+import { updatePagePath } from "../../../../actions/pageAction";
+import DataGrid from "../../../../common/components/DataGrid";
+import ImportExcelModalCom from '../ImportExcelModal';
+import SearchForm from "../../../../common/components/FormContainer/SearchForm";
+import { showModal } from '../../../../actions/modal';
 import {
-    SearchElementList,
-    SearchMLObjectDefinition,
-    DataGridColumnList,
+    SERVICEAGREEMENT_DELETE,
+    SERVICEAGREEMENT_EXPORT,
+    SERVICEAGREEMENT_VIEW
+} from "../../../../constants/functionLists";
+import {
+    AddAutoAPIPath,
     AddLink,
+    AddLogAPIPath,
     APIHostName,
-    SearchAPIPath,
+    DataGridColumnList,
+    DataMasterTemplateExport,
     DeleteNewAPIPath,
     IDSelectColumnName,
-    PKColumnName,
     InitSearchParams,
     PagePath,
-    AddLogAPIPath,
-    TitleFormSearch,
+    PKColumnName,
     schema,
-    AddAutoAPIPath,
-    DataMasterTemplateExport
+    SearchAPIPath,
+    SearchElementList,
+    SearchMLObjectDefinition,
+    TitleFormSearch,
 } from "../constants";
-import { callFetchAPI } from "../../../../actions/fetchAPIAction";
-import { updatePagePath } from "../../../../actions/pageAction";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
-import { Base64 } from 'js-base64';
-import { callGetCache } from "../../../../actions/cacheAction";
 
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
-        this.handleDelete = this.handleDelete.bind(this);
-        this.callSearchData = this.callSearchData.bind(this);
-        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+
         this.state = {
             CallAPIMessage: "",
-            gridDataSource: [],
-            IsCallAPIError: false,
-            SearchData: InitSearchParams,
             cssNotification: "",
-            iconNotification: "",
-            PageNumber: 1,
-            IsLoadDataComplete: false,
             dataExport: [],
-            DataMasterTemplateExport
+            DataMasterTemplateExport,
+            gridDataSource: [],
+            iconNotification: "",
+            IsCallAPIError: false,
+            IsLoadDataComplete: false,
+            PageNumber: 1,
+            SearchData: InitSearchParams,
 
         };
+
         this.gridref = React.createRef();
-        this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
+        this.searchref = React.createRef();
+
+        this.callSearchData = this.callSearchData.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
+        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+        this.handleSetImportData = this.handleSetImportData.bind(this);
+        this.handleSubmitImportFile = this.handleSubmitImportFile.bind(this);
     }
 
     componentDidMount() {
@@ -226,7 +232,6 @@ class SearchCom extends React.Component {
         });
     }
 
-
     addNotification(message1, IsError) {
         let cssNotification, iconNotification;
         if (!IsError) {
@@ -256,8 +261,6 @@ class SearchCom extends React.Component {
             dismissable: { click: true }
         });
     }
-
-
 
     handleSearchSubmit(formData, MLObject) {
         const DataSearch = [
@@ -299,32 +302,104 @@ class SearchCom extends React.Component {
         this.addNotification(result.Message, result.IsError);
     }
 
-    handleImportFile(resultRows, errors) {
-        console.log("resultRows", resultRows, errors);
+    handleImportFile() {
+        const input = document.getElementById("inputImportFile");
+        input.click();
 
-        if (errors.length > 0) {
-            this.showMessage("Dữ liệu thêm vào không đúng. Vui lòng kiểm tra lại file.")
-        }
-        else {
-            let MLObject = {};
-            MLObject.ServiceAgreementList = resultRows;
-            this.props.callFetchAPI(APIHostName, "api/ServiceAgreement/AddImport", MLObject).then(apiResult => {
-                console.log("object", MLObject, apiResult)
-                // this.setState({ IsCallAPIError: apiResult.IsError });
-                // this.showMessage(apiResult.Message);
-                if(apiResult.IsError){
-                    this.showMessage(apiResult.Message);
-                }
-                else{
-                    this.addNotification(apiResult.Message, apiResult.IsError);
-                    this.callSearchData(this.state.SearchData);
-                }
-            });
-        }
+        input.addEventListener("change", () => {
+            readXlsxFile(input.files[0], { sheet: "Danh sách hợp đồng dịch vụ", schema }).then((data) => {
+                this.handleSetImportData(data);
+            }).catch(error => {
+                console.log("handleImportFile", error);
+                alert("File vừa chọn lỗi. Vui lòng chọn file khác")
+            }).finally(() => {
+                input.value = "";
+            })
+        }, { once: true })
 
+        //#region 
+        // if (errors.length > 0) {
+        //     this.showMessage("Dữ liệu thêm vào không đúng. Vui lòng kiểm tra lại file.");
+        // } else {
+        //     let MLObject = {};
+        //     MLObject.ServiceAgreementList = resultRows;
+        //     this.props.callFetchAPI(APIHostName, "api/ServiceAgreement/AddImport", MLObject).then(apiResult => {
+        //         if (apiResult.IsError) {
+        //             this.showMessage(apiResult.Message);
+        //         }
+        //         else {
+        //             this.addNotification(apiResult.Message, apiResult.IsError);
+        //             this.callSearchData(this.state.SearchData);
+        //         }
+        //     });
+        // }
+        //#endregion
     }
-    handleExportFileTemplate() {
 
+    handleExportFileTemplate() {
+        try {
+            const ws = XLSX.utils.json_to_sheet([{}]);
+            XLSX.utils.sheet_add_json(ws, DataMasterTemplateExport);
+
+            const wb = {
+                Sheets: { "Danh sách hợp đồng dịch vụ": ws },
+                SheetNames: ["Danh sách hợp đồng dịch vụ"]
+            };
+            const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+            const data = new Blob(
+                [excelBuffer],
+                { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' }
+            );
+            FileSaver.saveAs(data, "Danh sách hợp đồng dịch vụ.xlsx");
+
+            this.addNotification("Xuất file thành công!", false);
+        } catch (error) {
+            this.addNotification("Lỗi xuất file!", true);
+        }
+    }
+
+    handleSetImportData(values) {
+        let dataSource = values.rows.map(item => {
+            return {
+                ...item,
+                Errors: ""
+            }
+        });
+
+        if (values.errors.length != 0) {
+            for (const item of values.errors) {
+                let errorText = "";
+                if (dataSource[item.row - 1].Errors == "") {
+                    errorText = item.column;
+                } else {
+                    errorText = `${dataSource[item.row - 1].Errors}, ${item.column}`
+                }
+                dataSource[item.row - 1].Errors = errorText;
+            }
+        }
+
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Kết quả nhập từ excel',
+            content: {
+                text: <ImportExcelModalCom
+                    dataSource={dataSource}
+                    onSubmit={this.handleSubmitImportFile}
+                />
+            },
+            maxWidth: '100%'
+        })
+    }
+
+    handleSubmitImportFile(data) {
+        this.props.callFetchAPI(APIHostName, "api/ServiceAgreement/AddImport", { ServiceAgreementList: data }).then(apiResult => {
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.Message);
+            }
+            else {
+                this.addNotification(apiResult.Message, apiResult.IsError);
+                this.callSearchData(this.state.SearchData);
+            }
+        });
     }
 
     render() {
@@ -332,39 +407,42 @@ class SearchCom extends React.Component {
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
+                    className="multiple multiple-custom"
                     FormName={TitleFormSearch}
-                    MLObjectDefinition={SearchMLObjectDefinition}
                     listelement={SearchElementList}
+                    MLObjectDefinition={SearchMLObjectDefinition}
                     onSubmit={this.handleSearchSubmit}
                     ref={this.searchref}
-                    className="multiple multiple-custom"
 
                 />
                 <DataGrid
-                    listColumn={DataGridColumnList}
-                    dataSource={this.state.gridDataSource}
                     AddLink={AddLink}
-                    IDSelectColumnName={IDSelectColumnName}
-                    PKColumnName={PKColumnName}
-                    onDeleteClick={this.handleDelete}
-                    IsDelete={true}
-                    IsAutoPaging={true}
-                    RowsPerPage={10}
-                    RequirePermission={SERVICEAGREEMENT_VIEW}
+                    DataExport={this.state.dataExport}
+                    dataSource={this.state.gridDataSource}
+                    DataTemplateExport={this.state.DataMasterTemplateExport}
                     DeletePermission={SERVICEAGREEMENT_DELETE}
                     ExportPermission={SERVICEAGREEMENT_EXPORT}
-                    IsExportFile={true}
-                    DataExport={this.state.dataExport}
                     fileName="Danh sách hợp đồng"
-                    onExportFile={this.handleExportFile.bind(this)}
-                    IsImportFile={true}
-                    SchemaData={schema}
-                    onImportFile={this.handleImportFile.bind(this)}
-                    isExportFileTemplate={true}
                     fileNameTemplate={"Template import hợp đồng"}
+                    IDSelectColumnName={IDSelectColumnName}
+                    IsAutoPaging={true}
+                    IsDelete={true}
+                    IsExportFile={true}
+                    isExportFileTemplate={true}
+                    IsImportFile={true}
+                    listColumn={DataGridColumnList}
+                    onDeleteClick={this.handleDelete}
+                    onExportFile={this.handleExportFile.bind(this)}
                     onExportFileTemplate={this.handleExportFileTemplate.bind(this)}
-                    DataTemplateExport={this.state.DataMasterTemplateExport}
+                    onImportFile={this.handleImportFile.bind(this)}
+                    PKColumnName={PKColumnName}
+                    propsIsCustomXLSX={true}
+                    RequirePermission={SERVICEAGREEMENT_VIEW}
+                    RowsPerPage={10}
+                    SchemaData={schema}
                 />
+
+                <input type="file" id="inputImportFile" style={{ display: "none" }} />
             </React.Fragment>
         );
 
@@ -388,6 +466,9 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
         }
     };
 };
