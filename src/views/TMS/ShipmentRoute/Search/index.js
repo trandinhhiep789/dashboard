@@ -50,8 +50,13 @@ class SearchCom extends React.Component {
     }
 
     componentDidMount() {
+        // const LoginInfo = localStorage.getItem('LoginInfo');
+        // console.log("LoginInfo",LoginInfo);
         const ShipOrdStatusGroupID = { SearchKey: "@SHIPMENTORDERSTATUSGROUPID", SearchValue: this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : "1,2,3" };
         let listSearchDataObject = Object.assign([], this.state.SearchData, { [9]: ShipOrdStatusGroupID });
+
+        var LoginInfo = JSON.stringify(listSearchDataObject);
+        localStorage.setItem('SearchInfo', LoginInfo)
         this.callSearchData(listSearchDataObject);
         this.props.updatePagePath(PagePath);
 
@@ -203,6 +208,8 @@ class SearchCom extends React.Component {
     }
 
     callSearchData(searchData) {
+            const LoginInfo = localStorage.getItem('SearchInfo');
+            console.log("SearchInfo",LoginInfo);
         this.setState({
             IsLoadData: false
         });

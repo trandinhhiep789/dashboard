@@ -470,8 +470,8 @@ class ContentModalRightCom extends Component {
                                                                 <Link
                                                                     className="linktext blank"
                                                                     target="_blank"
-                                                                    to={{ pathname: "/ShipmentOrder/Detail/" + 210714000000199 }}>
-                                                                    210714000000199 </Link>
+                                                                    to={{ pathname: "/ShipmentOrder/Detail/" + 2107140000009 }}>
+                                                                    2107140000009 </Link>
                                                             </span>
                                                             <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
                                                         </li>
@@ -493,38 +493,7 @@ class ContentModalRightCom extends Component {
                                             </div>
                                         </div>
 
-                                        <div className="col-md-6 col-lg-4 each-slide">
-                                            <div className="card card-secondary">
-                                                <div className="card-body">
-                                                    <ul>
-                                                        <li className="item infoOder">
-                                                            <span className="nameOrder">
-                                                                <Link
-                                                                    className="linktext blank"
-                                                                    target="_blank"
-                                                                    to={{ pathname: "/ShipmentOrder/Detail/" + 210714000000199 }}>
-                                                                    210714000000199 </Link>
-                                                            </span>
-                                                            <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
-                                                        </li>
-                                                        <li className="item infoProduict">
-                                                            <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
-                                                            <ReactTooltip id="producname1" type='warning'>
-                                                                <span>Tivi LED Sony KD-49X8000H</span>
-                                                            </ReactTooltip>
-                                                            <span data-tip data-for="producname2" data-id="producname2">Tủ lạnh Samsung RT20HAR8DBU/SV</span>
-                                                            <ReactTooltip id="producname2" type='warning'>
-                                                                <span>Tủ lạnh Samsung RT20HAR8DBU/SV</span>
-                                                            </ReactTooltip>
-                                                        </li>
-                                                        <li className="item address-customer">
-                                                            <span>Cc himlam Phú An,, Phường Phước Long A, Quận 9, Hồ Chí Minh</span>
-                                                        </li>
-
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
+                                      
 
                                     </Slide>
                                 </div>

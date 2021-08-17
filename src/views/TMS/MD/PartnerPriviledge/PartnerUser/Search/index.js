@@ -39,6 +39,7 @@ import { ERPCOMMONCACHE_PARTNERUSER, ERPCOMMONCACHE_TMSCONFIG } from "../../../.
 import MD5Digest from "../../../../../../common/library/cryptography/MD5Digest";
 import { toIsoStringCus } from "../../../../../../utils/function";
 import { isStrongPassword } from "../../../../../../common/library/PasswordUtils";
+import { formatDate } from "../../../../../../common/library/CommonLib";
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
@@ -62,11 +63,17 @@ class SearchCom extends React.Component {
             SearchElementList: SearchElementList,
             Password: "",
             PasswordConfirm: "",
+            dataExport: []
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
     }
+
+    handleExportFile(result) {
+        this.addNotification(result.Message, result.IsError);
+    }
+
 
 
 
@@ -479,14 +486,34 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             if (apiResult && !apiResult.IsError) {
+                // xuất exel
+                const exelData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Tên người dùng": item.UserName,
+                        "Họ tên": item.FullName,
+                        "Tên nhà cung cấp": item.PartnerName,
+                        "Vai trò nhà cung cấp": item.PartnerRoleName,
+                        "Điện thoại": item.PhoneNumber,          
+                        "Kích hoạt": item.IsActived ? "Có" : "Không",
+                        "Ngày cập nhật": formatDate(item.UpdatedDate),
+                        "Người cập nhật": item.UpdatedUserFullName
+                    };
+                    return element;
+
+                })
+
                 this.setState({
+                    dataExport: exelData,
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
                     IsShowForm: true
                 });
             } else {
                 this.showMessage(apiResult.Message);
-                this.setState({ IsShowForm: false });
+                this.setState({
+                    dataExport: [],
+                    IsShowForm: false
+                });
             }
         });
     }
@@ -591,6 +618,12 @@ class SearchCom extends React.Component {
                         //headingTitle={"Người dùng của nhà cung cấp"}
                         RequirePermission={PARTNERUSER_VIEW}
                         DeletePermission={PARTNERUSER_DELETE}
+                        ExportPermission={PARTNERUSER_VIEW}
+
+                        IsExportFile={true}
+                        DataExport={this.state.dataExport}
+                        fileName="Danh sách người dùng của nhà cung cấp"
+                        onExportFile={this.handleExportFile.bind(this)}
                     />
                 </React.Fragment>
             );
