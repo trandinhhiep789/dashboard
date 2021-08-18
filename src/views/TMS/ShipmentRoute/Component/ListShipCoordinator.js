@@ -42,6 +42,7 @@ class ListShipCoordinatorCom extends Component {
             ShipmentOrderSameLst: this.props.ShipmentOrderSame,
             Via_Durations: 0,
             Via_Distances: "",
+            ShipmentRouteSameLst: [],
             girdSlide: false
 
         }
@@ -575,14 +576,31 @@ class ListShipCoordinatorCom extends Component {
             })
         }
         else {
-            this.setState({
-                girdSlide: false
-            })
+            let { ShipmentOrder } = this.state;
+            let RowWardIDelement = [];
+            ShipmentOrder.map((row, indexRow) => {
+                RowWardIDelement.push(row.ReceiverWardID)
+            });
+            let objRouteByWard = { CoordinatorStoreID: "73309", WardIDLst:RowWardIDelement.join() }
+            this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetShipmentRouteByWardID", objRouteByWard).then(apiResult => {
+                if (!apiResult.IsError) {
+                    this.setState({
+                        girdSlide: false,
+                        ShipmentRouteSameLst: apiResult.ResultObject
+                    })
+                }
+                else {
+                    this.addNotification(apiResult.Message, apiResult.IsError);
+                }
+            });
+
+
         }
     }
     render() {
-        let { ShipmentOrder, ShipmentRouteID, ShipmentRouteLst, ShipmentOrderSameLst, Via_Distances, Via_Durations, girdSlide } = this.state;
+        let { ShipmentOrder, ShipmentRouteID, ShipmentOrderSameLst, ShipmentRouteLst, ShipmentRouteSameLst, Via_Distances, Via_Durations, girdSlide } = this.state;
         let resultShipmentRoute = ShipmentRouteLst.filter(n => n.ShipmentRouteID != ShipmentRouteID);
+        let resultShipmentRouteSame = ShipmentRouteSameLst.filter(n => n.ShipmentRouteID != ShipmentRouteID);
         // console.log("resultShipmentRoute", resultShipmentRoute)
         return (
             <React.Fragment>
@@ -871,7 +889,7 @@ class ListShipCoordinatorCom extends Component {
                                             <Slide easing="ease" slidesToShow={resultShipmentRoute.length >= 3 ? 3 : 2} slidesToScroll={1} autoplay={false} cssClass="slide-product">
                                                 {resultShipmentRoute.map((item, index) => {
                                                     return (
-                                                        <div  key={"Route" + index} className="col-md-6 col-lg-4 each-slide">
+                                                        <div key={"Route" + index} className="col-md-6 col-lg-4 each-slide">
                                                             <div className="card card-secondary">
                                                                 <div className="card-body">
                                                                     <ul onClick={this.handleClickRoute(item.ShipmentRouteID)} >
@@ -900,7 +918,45 @@ class ListShipCoordinatorCom extends Component {
                                             </Slide>
                                         </div>
                                     )
-                                } else {
+                                } else if (resultShipmentRouteSame.length > 0 && girdSlide == false) {
+                                    return (
+                                        <div className="col-12">
+                                            <Slide easing="ease" slidesToShow={resultShipmentRouteSame.length >= 3 ? 3 : 2} slidesToScroll={1} autoplay={false} cssClass="slide-product">
+                                                {resultShipmentRouteSame.map((item, index) => {
+                                                    return (
+                                                        <div key={"Route" + index} className="col-md-6 col-lg-4 each-slide">
+                                                            <div className="card card-secondary">
+                                                                <div className="card-body">
+                                                                    <ul onClick={this.handleClickRoute(item.ShipmentRouteID)} >
+                                                                        <li className="item infoOder">
+                                                                            <span className="nameOrder">
+                                                                                <a>{item.ShipmentRouteID}</a>
+                                                                            </span>
+                                                                            <span className="badge badge-warning time"><i className="ti ti-timer"></i> {item.ExpectedBeginDeliveryDate != null ? this._genCommentTime(item.ExpectedBeginDeliveryDate) : ""}</span>
+                                                                        </li>
+                                                                        <li className="item infoProduict">
+                                                                <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
+                                                                <ReactTooltip id="producname1" type='warning'>
+                                                                    <span>Tivi LED Sony KD-49X8000H</span>
+                                                                    <span>Tivi LED Sony KD-49X8000H</span>
+                                                                    <span>Tivi LED Sony KD-49X8000H</span>
+                                                                </ReactTooltip>
+
+                                                            </li>
+                                                            <li className="item address-customer">
+                                                                <span>Cc himlam Phú An,, Phường Phước Long A, Quận 9, Hồ Chí Minh</span>
+                                                            </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                })}
+                                            </Slide>
+                                        </div>
+                                    )
+                                }
+                                else {
                                     return (
                                         <div className="col-12">
                                             <Slide easing="ease" slidesToShow={ShipmentOrderSameLst.length >= 3 ? 3 : 2} slidesToScroll={1} autoplay={false} cssClass="slide-product">
