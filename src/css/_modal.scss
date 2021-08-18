@@ -46,7 +46,19 @@
     
     &.modalRight{
         clear: both;
-
+       
+        .group-info-Route{
+            clear: both;
+            ul{
+                padding-left: 5px;
+                li{
+                    float: left;
+                    list-style: none;
+                    margin-right: 10px;
+                    
+                }
+            }
+        }
         .nav-group-action{
             margin-bottom: 10px;
             display: flex;
@@ -58,6 +70,10 @@
                 font-size: 14px;
                 cursor: pointer;
                 border: none;
+                clear: both;
+                &.btn-info{
+                    width: fit-content;
+                }
                 &:active, &:focus{
                     outline: none;
                     border: none;
@@ -67,6 +83,8 @@
                     background: #48b0f7;
                     color: #fff;
                 }
+
+               
             }
         }
         .modal-header{

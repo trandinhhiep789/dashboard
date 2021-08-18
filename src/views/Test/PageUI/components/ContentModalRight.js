@@ -418,7 +418,21 @@ class ContentModalRightCom extends Component {
 
                         <div className="row  mt-10 lstProduct">
                             <div className="col-12 ">
+                                <div className="pull-left group-info-Route">
+                                    <ul>
+                                        <li>
+                                            <span>Mã: <span className="fw-600">A123123123</span></span>
+                                        </li>
+                                        <li>
+                                            <span>Km ước lượng: <span className="fw-600">30km</span></span>
+                                        </li>
+                                        <li>
+                                            <span>di chuyển: <span className="fw-600">50'</span></span>
+                                        </li>
+                                    </ul>
+                                </div>
                                 <div className="nav-group-action">
+                                    <button className="btn btn-w-md btn-round btn-info" type="button">Tính khoảng cách</button>
                                     <button type="button" onClick={() => this.HandleChangeGird(1)}><i className="ti-menu-alt"></i></button>
                                     <button type="button" onClick={() => this.HandleChangeGird(2)}><i className="ti-menu"></i></button>
                                 </div>
@@ -493,7 +507,7 @@ class ContentModalRightCom extends Component {
                                             </div>
                                         </div>
 
-                                      
+
 
                                     </Slide>
                                 </div>
@@ -515,7 +529,7 @@ class ContentModalRightCom extends Component {
                                                                 </span>
                                                                 <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
                                                             </li>
-                                                            
+
 
                                                         </ul>
                                                     </div>
@@ -536,7 +550,7 @@ class ContentModalRightCom extends Component {
                                                                 </span>
                                                                 <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
                                                             </li>
-                                                           
+
                                                         </ul>
                                                     </div>
                                                 </div>
