@@ -581,7 +581,7 @@ class ListShipCoordinatorCom extends Component {
             ShipmentOrder.map((row, indexRow) => {
                 RowWardIDelement.push(row.ReceiverWardID)
             });
-            let objRouteByWard = { CoordinatorStoreID: "73309", WardIDLst:RowWardIDelement.join() }
+            let objRouteByWard = { CoordinatorStoreID: "73309", WardIDLst: RowWardIDelement.join() }
             this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetShipmentRouteByWardID", objRouteByWard).then(apiResult => {
                 if (!apiResult.IsError) {
                     this.setState({
@@ -905,10 +905,10 @@ class ListShipCoordinatorCom extends Component {
                                                                     <span>Tivi LED Sony KD-49X8000H</span>
                                                                 </ReactTooltip>
 
-                                                            </li>
-                                                            <li className="item address-customer">
-                                                                <span>Cc himlam Phú An,, Phường Phước Long A, Quận 9, Hồ Chí Minh</span>
-                                                            </li> */}
+                                                            </li>*/}
+                                                                        <li className="item address-customer">
+                                                                            <span>{item.RouteNote}</span>
+                                                                        </li>
                                                                     </ul>
                                                                 </div>
                                                             </div>
@@ -934,18 +934,18 @@ class ListShipCoordinatorCom extends Component {
                                                                             </span>
                                                                             <span className="badge badge-warning time"><i className="ti ti-timer"></i> {item.ExpectedBeginDeliveryDate != null ? this._genCommentTime(item.ExpectedBeginDeliveryDate) : ""}</span>
                                                                         </li>
-                                                                        <li className="item infoProduict">
-                                                                <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
-                                                                <ReactTooltip id="producname1" type='warning'>
-                                                                    <span>Tivi LED Sony KD-49X8000H</span>
-                                                                    <span>Tivi LED Sony KD-49X8000H</span>
-                                                                    <span>Tivi LED Sony KD-49X8000H</span>
-                                                                </ReactTooltip>
+                                                                        {/* <li className="item infoProduict">
+                                                                            <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
+                                                                            <ReactTooltip id="producname1" type='warning'>
+                                                                                <span>Tivi LED Sony KD-49X8000H</span>
+                                                                                <span>Tivi LED Sony KD-49X8000H</span>
+                                                                                <span>Tivi LED Sony KD-49X8000H</span>
+                                                                            </ReactTooltip>
 
-                                                            </li>
-                                                            <li className="item address-customer">
-                                                                <span>Cc himlam Phú An,, Phường Phước Long A, Quận 9, Hồ Chí Minh</span>
-                                                            </li>
+                                                                        </li> */}
+                                                                        <li className="item address-customer">
+                                                                            <span>{item.RouteNote}</span>
+                                                                        </li>
                                                                     </ul>
                                                                 </div>
                                                             </div>
