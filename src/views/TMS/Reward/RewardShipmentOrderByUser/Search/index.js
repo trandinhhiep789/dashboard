@@ -55,7 +55,7 @@ class SearchCom extends React.Component {
 
         this.props.updatePagePath(PagePath);
         this.callSearchData(this.state.SearchData)
-        this.callDataMobi();
+        //this.callDataMobi();
     }
 
     callDataMobi() {
@@ -221,7 +221,7 @@ class SearchCom extends React.Component {
                         RowsPerPage={31}
                         RequirePermission={TMS_TMSREWARD_VIEW}
                         totalCurrency={true}
-                        totalCurrencyColSpan={3}
+                        totalCurrencyColSpan={2}
                         totalCurrencyNumber={this.state.totalAmount}
                         ref={this.gridref}
                     />
