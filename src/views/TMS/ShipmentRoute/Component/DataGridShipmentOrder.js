@@ -643,7 +643,7 @@ class DataGridShipmentOderCom extends Component {
         this.props.hideModal();
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderDeliver", ShipmentOrderID).then(apiResult => {
             if (!apiResult.IsError) {
-                this.setState({changeGird: true });
+                this.setState({ changeGird: true });
                 let resultdd = this.state.GridDataShip.find(n => n.ShipmentOrderID == ShipmentOrderID)
                 if (resultdd == undefined)
                     this.state.GridDataShip.push(apiResult.ResultObject.ShipmentOrderDeliver);
@@ -937,10 +937,10 @@ class DataGridShipmentOderCom extends Component {
                                                             <span>{rowItem.ShipmentOrderStatusName}</span>
                                                         </span>
 
-                                                         <span className="item total price-success">
+                                                        <span className="item total price-success">
                                                             <span className="price-title">COD: </span>
                                                             <span className="price-debt">{formatMoney(rowItem.TotalCOD, 0)}</span>
-                                                        </span> 
+                                                        </span>
                                                     </li>
                                                     <li className="info-customer">
                                                         <div className="item">
@@ -968,7 +968,7 @@ class DataGridShipmentOderCom extends Component {
                                                             </button>
                                                         </div>
                                                     </li>
-                                                   
+
                                                     <li className="address-customer">
                                                         <span>{rowItem.ReceiverFullAddress}</span>
                                                     </li>
@@ -983,6 +983,9 @@ class DataGridShipmentOderCom extends Component {
 
                                                     <li className="times">
                                                         <span className="group-times">
+                                                        {
+                                                            this._genCommentCarrierPartner(rowItem.CarrierTypeID, rowItem.CarrierTypeName)
+                                                        }
                                                             <span className="time-item">
                                                                 <span className="txtCreatedOrderTime">Tạo: {formatMonthDate(rowItem.CreatedOrderTime)}</span>
                                                                 <span className="txtCreatedOrderTime">Xuất: {formatMonthDate(rowItem.OutputGoodsDate)}</span>
