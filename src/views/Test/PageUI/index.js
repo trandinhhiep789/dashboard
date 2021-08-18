@@ -94,7 +94,7 @@ class PageUICom extends React.Component {
         console.log("clientWidth", clientWidth, clientWidth - widthModal)
         this.setState({
             widthPercent: widthModal,
-            maxWidthGird:  clientWidth - widthModal
+            maxWidthGird: clientWidth - widthModal
         })
     };
 
@@ -375,15 +375,15 @@ class PageUICom extends React.Component {
 
                         {
                             this.state.changeGird == true ?
-                                <div className="card-body" style={{maxWidth: this.state.maxWidthGird}}>
+                                <div className="card-body" style={{ maxWidth: this.state.maxWidthGird }}>
                                     <div className="jsgrid">
                                         <div className="jsgrid-grid-header jsgrid-header-scrollbar">
                                             <table className="jsgrid-table">
                                                 <thead className="jsgrid-header-row">
                                                     <tr>
-                                                        <th className="jsgrid-header-cell" style={{ width: '10%' }}></th>
+                                                        <th className="jsgrid-header-cell" style={{ width: '5%' }}></th>
                                                         <th className="jsgrid-header-cell" style={{ width: '45%' }}>Thời gian giao</th>
-                                                        <th className="jsgrid-header-cell" style={{ width: '45%' }}>Địa chỉ</th>
+                                                        <th className="jsgrid-header-cell" style={{ width: '50%' }}>Địa chỉ</th>
                                                     </tr>
                                                 </thead>
                                             </table>
@@ -392,9 +392,106 @@ class PageUICom extends React.Component {
                                             <table className="jsgrid-table">
                                                 <tbody>
                                                     <tr className="jsgrid-row unread">
-                                                        <td className="jsgrid-cell action undelivery" style={{ width: '10%' }}>aa</td>
-                                                        <td className="jsgrid-cell groupTimeDelivery" style={{ width: '45%' }}>aa</td>
-                                                        <td className="jsgrid-cell group-address" style={{ width: '45%' }}>aa</td>
+                                                        <td className="jsgrid-cell action undelivery" style={{ width: '5%' }}>
+                                                            <ul>
+                                                                <li className="item ">
+                                                                    <div className="group-action">
+                                                                        <div className="checkbox item-action">
+                                                                            <label>
+                                                                                <input type="checkbox" readOnly className="form-control form-control-sm" value="" />
+                                                                                <span className="cr">
+                                                                                    <i className="cr-icon fa fa-check"></i>
+                                                                                </span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                                <li className="item">
+                                                                    <button className="btn btn-user-plus">
+                                                                        <i className="fa fa-user-plus"></i>
+                                                                    </button>
+                                                                </li>
+                                                                <li className="item printing">
+                                                                    <button className="btn" onClick={this.handlePrintClick}>
+                                                                        <i className="ti ti-printer"></i>
+                                                                    </button>
+                                                                </li>
+                                                            </ul>
+
+                                                        </td>
+                                                        <td className="jsgrid-cell groupTimeDelivery" style={{ width: '45%' }}>
+                                                            <div className="group-info">
+                                                                <ul>
+                                                                    <li className="item times">
+                                                                        <i className="ti ti-timer"></i>
+                                                                        {/* <span>8/12/2020 08:00</span>
+                                                                     */}
+                                                                        <DatePicker
+                                                                            showTime={{ format: 'HH:mm' }}
+                                                                            format="YYYY-MM-DD HH:mm"
+                                                                            className="frmDateTime"
+                                                                            dropdownClassName="tree-select-custom"
+                                                                            placeholder="Thời gian giao dự kiến"
+                                                                        />
+                                                                    </li>
+                                                                    <li className="item status">
+                                                                        <i className="fa fa-location-arrow"></i>
+                                                                        <span>Đã xuất kho &amp; chờ điều phối</span>
+                                                                    </li>
+                                                                    <li className="item vehicle">
+                                                                        <i className="fa fa-motorcycle"></i>
+                                                                        <span>Xe gắn máy</span>
+                                                                    </li>
+                                                                    <li className="item statusShipmentOder">
+                                                                        <span className="badge badge-danger noactive">Chưa xuất</span>
+                                                                        <span className="badge badge-info active">Đã xuất</span>
+                                                                        <span className="badge badge-success noactive">Đã nhận</span>
+                                                                    </li>
+                                                                    {/* <li className="item printing">
+                                                                    <i className="ti ti-printer"></i>
+                                                                    <span>In</span>
+                                                                </li> */}
+                                                                </ul>
+                                                            </div>
+                                                        </td>
+                                                        <td className="jsgrid-cell group-address" style={{ width: '50%' }}>
+                                                            <ul>
+                                                                <li className="item info-customer">
+                                                                    <i className="fa fa-user"></i>
+                                                                    <div className="person-info">
+                                                                        <span className="name">Ngô Thị Yến</span>
+                                                                        <span className="line">-</span>
+                                                                        <span className="phone">(0889****)</span>
+                                                                        <span className="line">-</span>
+                                                                        <span className="partner-sale-Order">00001SO2012444635</span>
+                                                                    </div>
+                                                                </li>
+                                                                <li className="item address-customer">
+                                                                    <span>Cc himlam Phú An,, Phường Phước Long A, Quận 9, Hồ Chí Minh</span>
+                                                                </li>
+                                                                <li className="item store">
+                                                                    <span>MĐ_BDU - Kho CN ĐMX Thủ Đức</span>
+                                                                </li>
+                                                                <li className="item times">
+                                                                    <span className="group-times">
+                                                                        <span className="time-item">
+                                                                            <span className="txtCreatedOrderTime">
+                                                                                <i className="ti ti-dashboard"></i> 07/12/2020 13:20</span>
+                                                                        </span>
+                                                                        <span className="time-item">
+                                                                            <span className="intervale">
+                                                                                <i className="fa fa-paper-plane-o"></i>
+                                                                                <span className="txtintervale">0Km</span>
+                                                                            </span>
+                                                                            <span className="intervale">
+                                                                                <i className="ti ti-timer"></i>
+                                                                                <span className="txtintervale">0'</span>
+                                                                            </span>
+                                                                        </span>
+                                                                    </span>
+                                                                </li>
+                                                            </ul>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
