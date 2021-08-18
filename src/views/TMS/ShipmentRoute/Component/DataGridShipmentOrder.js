@@ -837,8 +837,7 @@ class DataGridShipmentOderCom extends Component {
         const dataSource = this.state.DataSource;
         if (changeGird) {
             return (
-                <div className="card-body" style={{ maxWidth: this.state.maxWidthGird }}>
-                <div className="jsgrid">
+                <React.Fragment>
                     <div className="jsgrid-grid-header jsgrid-header-scrollbar">
                         <table id="fixtable" className="jsgrid-table"  >
                             <thead className="jsgrid-header-row" >
@@ -962,250 +961,247 @@ class DataGridShipmentOderCom extends Component {
                             </tbody>
                         </table>
                     </div>
-                    </div>
-                </div>
+                </React.Fragment>
             );
         }
         else {
             return (
-                <div className="card-body">
-                    <div className="jsgrid">
-                        <div className="jsgrid-grid-header jsgrid-header-scrollbar">
-                            <table id="fixtable" className="jsgrid-table"  >
-                                <thead className="jsgrid-header-row" >
-                                    <tr>
-                                        <th className="jsgrid-header-cell" style={{ width: '2%' }}></th>
-                                        <th className="jsgrid-header-cell" style={{ width: '15%' }}>Thời gian</th>
-                                        <th className="jsgrid-header-cell" style={{ width: '28%' }}>Địa chỉ</th>
-                                        <th className="jsgrid-header-cell" style={{ width: '20%' }}>Mã/Loại yêu cầu vận chuyển</th>
-                                        <th className="jsgrid-header-cell" style={{ width: '25%' }}>Tên sản phẩm/Ghi chú</th>
-                                        <th className="jsgrid-header-cell" style={{ width: '8%' }}>Thanh toán</th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
-                        <div className="jsgrid-grid-body">
-                            <table className="jsgrid-table">
+                <React.Fragment>
+                    <div className="jsgrid-grid-header jsgrid-header-scrollbar">
+                        <table id="fixtable" className="jsgrid-table"  >
+                            <thead className="jsgrid-header-row" >
+                                <tr>
+                                    <th className="jsgrid-header-cell" style={{ width: '2%' }}></th>
+                                    <th className="jsgrid-header-cell" style={{ width: '15%' }}>Thời gian</th>
+                                    <th className="jsgrid-header-cell" style={{ width: '28%' }}>Địa chỉ</th>
+                                    <th className="jsgrid-header-cell" style={{ width: '20%' }}>Mã/Loại yêu cầu vận chuyển</th>
+                                    <th className="jsgrid-header-cell" style={{ width: '25%' }}>Tên sản phẩm/Ghi chú</th>
+                                    <th className="jsgrid-header-cell" style={{ width: '8%' }}>Thanh toán</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div className="jsgrid-grid-body">
+                        <table className="jsgrid-table">
 
-                                <tbody>
-                                    {dataSource != null &&
-                                        dataSource.map((rowItem, rowIndex) => {
+                            <tbody>
+                                {dataSource != null &&
+                                    dataSource.map((rowItem, rowIndex) => {
 
-                                            let rowtrClass = "jsgrid-row unread";
-                                            if (rowItem.SelectedUser != "" || rowItem.IsView == true) {
-                                                rowtrClass = "jsgrid-row unread";
-                                            }
+                                        let rowtrClass = "jsgrid-row unread";
+                                        if (rowItem.SelectedUser != "" || rowItem.IsView == true) {
+                                            rowtrClass = "jsgrid-row unread";
+                                        }
 
-                                            let rowUndelivery = "jsgrid-cell";
-                                            if (this._CheckTime(rowItem.ExpectedDeliveryDate) == true && rowItem.CurrentShipmentOrderStepID < 105) {
-                                                rowUndelivery = "jsgrid-cell action undelivery";
+                                        let rowUndelivery = "jsgrid-cell";
+                                        if (this._CheckTime(rowItem.ExpectedDeliveryDate) == true && rowItem.CurrentShipmentOrderStepID < 105) {
+                                            rowUndelivery = "jsgrid-cell action undelivery";
+                                        }
+                                        else {
+                                            if (rowItem.CoordinatorUser == "") {
+                                                rowUndelivery = "jsgrid-cell action Uncoordinated";
                                             }
                                             else {
-                                                if (rowItem.CoordinatorUser == "") {
-                                                    rowUndelivery = "jsgrid-cell action Uncoordinated";
-                                                }
-                                                else {
-                                                    rowUndelivery = "jsgrid-cell action waitingDelivery";
-                                                }
+                                                rowUndelivery = "jsgrid-cell action waitingDelivery";
                                             }
-                                            // console.log("check",rowItem.ShipmentOrderID,this.state.GridDataShip,this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
-                                            return (<tr key={rowIndex} className={rowtrClass}>
-                                                <td className={rowUndelivery} style={{ width: '2%' }}>
-                                                    <ul>
-                                                        {rowItem.ShipmentRouteID == "" ?
-                                                            (<React.Fragment>
-                                                                <li className="item ">
-                                                                    <div className="group-action">
-                                                                        <div className="checkbox item-action">
-                                                                            <label>
-                                                                                <input type="checkbox" readOnly className="form-control form-control-sm" name={"ShipmentOrderID"} onChange={this.handleCheckShip.bind(this)} value={rowItem.ShipmentOrderID} checked={this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID)} />
-                                                                                <span className="cr">
-                                                                                    <i className="cr-icon fa fa-check"></i>
-                                                                                </span>
-                                                                            </label>
-                                                                        </div>
+                                        }
+                                        // console.log("check",rowItem.ShipmentOrderID,this.state.GridDataShip,this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
+                                        return (<tr key={rowIndex} className={rowtrClass}>
+                                            <td className={rowUndelivery} style={{ width: '2%' }}>
+                                                <ul>
+                                                    {rowItem.ShipmentRouteID == "" ?
+                                                        (<React.Fragment>
+                                                            <li className="item ">
+                                                                <div className="group-action">
+                                                                    <div className="checkbox item-action">
+                                                                        <label>
+                                                                            <input type="checkbox" readOnly className="form-control form-control-sm" name={"ShipmentOrderID"} onChange={this.handleCheckShip.bind(this)} value={rowItem.ShipmentOrderID} checked={this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID)} />
+                                                                            <span className="cr">
+                                                                                <i className="cr-icon fa fa-check"></i>
+                                                                            </span>
+                                                                        </label>
                                                                     </div>
-                                                                </li>
-                                                                <li className="item ">
-                                                                    <button className="btn" onClick={this.handleClickShip(rowItem.ShipmentOrderID)}>
-                                                                        <i className="fa fa-user-plus"></i>
-                                                                    </button>
-                                                                </li>
-                                                            </React.Fragment>
-
-                                                            ) :
-                                                            (<li className="item ">
-                                                                <button onClick={this.handleClickShipmentRoute(rowItem.ShipmentRouteID)} className="btn btn-user-plus" title="Đã được phân tuyến">
-                                                                    <i className="fa fa-user-plus" ></i>
+                                                                </div>
+                                                            </li>
+                                                            <li className="item ">
+                                                                <button className="btn" onClick={this.handleClickShip(rowItem.ShipmentOrderID)}>
+                                                                    <i className="fa fa-user-plus"></i>
                                                                 </button>
-                                                            </li>)
-                                                        }
-                                                        <li className="item printing">
-                                                            <button className="btn" onClick={this.handlePrintClickNew.bind(this)}>
-                                                                <i className="ti ti-printer" data-id={rowItem.ShipmentOrderID}></i>
+                                                            </li>
+                                                        </React.Fragment>
+
+                                                        ) :
+                                                        (<li className="item ">
+                                                            <button onClick={this.handleClickShipmentRoute(rowItem.ShipmentRouteID)} className="btn btn-user-plus" title="Đã được phân tuyến">
+                                                                <i className="fa fa-user-plus" ></i>
                                                             </button>
+                                                        </li>)
+                                                    }
+                                                    <li className="item printing">
+                                                        <button className="btn" onClick={this.handlePrintClickNew.bind(this)}>
+                                                            <i className="ti ti-printer" data-id={rowItem.ShipmentOrderID}></i>
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                            <td className="jsgrid-cell groupTimeDelivery" style={{ width: '15%' }}>
+                                                <div className="group-info">
+                                                    <ul>
+                                                        <li className="item times">
+                                                            <i className="ti ti-timer"></i>
+                                                            <span className="fw-600">{rowItem.ExpectedDeliveryDate != null ? this._genCommentTime(rowItem.ExpectedDeliveryDate) : ""}</span>
+                                                        </li>
+                                                        <li className="item status">
+                                                            <i className="fa fa-location-arrow"></i>
+                                                            <span>{rowItem.ShipmentOrderStatusName}</span>
+                                                        </li>
+                                                        {
+                                                            this._genCommentCarrierPartner(rowItem.CarrierTypeID, rowItem.CarrierTypeName)
+                                                        }
+                                                        <li className="item statusShipmentOder">
+                                                            {(rowItem.IsOutputGoods == false && rowItem.IsHandoverGoods == false) ? <span className="badge badge-danger active">Chưa xuất </span> : <span className="badge badge-danger noactive">Chưa xuất </span>}
+                                                            {(rowItem.IsOutputGoods == true && rowItem.IsHandoverGoods == false) ? <span className="badge badge-info active">Đã xuất </span> : <span className="badge badge-info noactive">Đã xuất </span>}
+                                                            {rowItem.IsHandoverGoods == true ? <span className="badge badge-success active">NV đã nhận </span> : <span className="badge badge-success noactive">Đã nhận </span>}
                                                         </li>
                                                     </ul>
-                                                </td>
-                                                <td className="jsgrid-cell groupTimeDelivery" style={{ width: '15%' }}>
-                                                    <div className="group-info">
-                                                        <ul>
-                                                            <li className="item times">
-                                                                <i className="ti ti-timer"></i>
-                                                                <span className="fw-600">{rowItem.ExpectedDeliveryDate != null ? this._genCommentTime(rowItem.ExpectedDeliveryDate) : ""}</span>
-                                                            </li>
-                                                            <li className="item status">
-                                                                <i className="fa fa-location-arrow"></i>
-                                                                <span>{rowItem.ShipmentOrderStatusName}</span>
-                                                            </li>
-                                                            {
-                                                                this._genCommentCarrierPartner(rowItem.CarrierTypeID, rowItem.CarrierTypeName)
-                                                            }
-                                                            <li className="item statusShipmentOder">
-                                                                {(rowItem.IsOutputGoods == false && rowItem.IsHandoverGoods == false) ? <span className="badge badge-danger active">Chưa xuất </span> : <span className="badge badge-danger noactive">Chưa xuất </span>}
-                                                                {(rowItem.IsOutputGoods == true && rowItem.IsHandoverGoods == false) ? <span className="badge badge-info active">Đã xuất </span> : <span className="badge badge-info noactive">Đã xuất </span>}
-                                                                {rowItem.IsHandoverGoods == true ? <span className="badge badge-success active">NV đã nhận </span> : <span className="badge badge-success noactive">Đã nhận </span>}
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
-                                                <td className="jsgrid-cell group-address" style={{ width: '28%' }}>
-                                                    <ul>
-                                                        <li className="item info-customer">
-                                                            <i className="fa fa-user"></i>
-                                                            <div className="person-info">
-                                                                <span className="name">{rowItem.ReceiverFullName}</span>
-                                                                <span className="line">-</span>
-                                                                <span className={rowItem.PhoneCount > 1 ? "phone  phonered" : "phone"}>({rowItem.ReceiverPhoneNumber})</span>
-                                                                <span className="line">-</span>
-                                                                <span className="partner-sale-Order">{rowItem.PartnerSaleOrderID}</span>
-                                                                <button className="btn-copy-clipboard" data-id={rowItem.PartnerSaleOrderID} onClick={this.copyToClipboard.bind(this)}>
-                                                                    <i className="fa fa-copy" data-id={rowItem.PartnerSaleOrderID}></i>
-                                                                </button>
-                                                            </div>
-                                                        </li>
-                                                        <li className="item address-customer">
-                                                            <span>{rowItem.ReceiverFullAddress}</span>
-                                                        </li>
-                                                        <li className="item store">
-                                                            <span>  {rowItem.SenderFullName}</span>
-                                                        </li>
-                                                        <li className="item times">
-                                                            <span className="group-times">
-                                                                <span className="time-item">
-                                                                    <span className="txtCreatedOrderTime">Tạo: {formatMonthDate(rowItem.CreatedOrderTime)}</span>
-                                                                    <span className="txtCreatedOrderTime">Xuất: {formatMonthDate(rowItem.OutputGoodsDate)}</span>
+                                                </div>
+                                            </td>
+                                            <td className="jsgrid-cell group-address" style={{ width: '28%' }}>
+                                                <ul>
+                                                    <li className="item info-customer">
+                                                        <i className="fa fa-user"></i>
+                                                        <div className="person-info">
+                                                            <span className="name">{rowItem.ReceiverFullName}</span>
+                                                            <span className="line">-</span>
+                                                            <span className={rowItem.PhoneCount > 1 ? "phone  phonered" : "phone"}>({rowItem.ReceiverPhoneNumber})</span>
+                                                            <span className="line">-</span>
+                                                            <span className="partner-sale-Order">{rowItem.PartnerSaleOrderID}</span>
+                                                            <button className="btn-copy-clipboard" data-id={rowItem.PartnerSaleOrderID} onClick={this.copyToClipboard.bind(this)}>
+                                                                <i className="fa fa-copy" data-id={rowItem.PartnerSaleOrderID}></i>
+                                                            </button>
+                                                        </div>
+                                                    </li>
+                                                    <li className="item address-customer">
+                                                        <span>{rowItem.ReceiverFullAddress}</span>
+                                                    </li>
+                                                    <li className="item store">
+                                                        <span>  {rowItem.SenderFullName}</span>
+                                                    </li>
+                                                    <li className="item times">
+                                                        <span className="group-times">
+                                                            <span className="time-item">
+                                                                <span className="txtCreatedOrderTime">Tạo: {formatMonthDate(rowItem.CreatedOrderTime)}</span>
+                                                                <span className="txtCreatedOrderTime">Xuất: {formatMonthDate(rowItem.OutputGoodsDate)}</span>
+                                                            </span>
+                                                            <span className="time-item">
+                                                                <span className="intervale">
+                                                                    <i className="fa fa-paper-plane-o"></i>
+                                                                    <span className="txtintervale">{(rowItem.EstimateDeliveryDistance >= 0 ? rowItem.EstimateDeliveryDistance : 0) + "Km/" + rowItem.ActualDeliveryDistance.toFixed(2) + "Km"}</span>
                                                                 </span>
-                                                                <span className="time-item">
-                                                                    <span className="intervale">
-                                                                        <i className="fa fa-paper-plane-o"></i>
-                                                                        <span className="txtintervale">{(rowItem.EstimateDeliveryDistance >= 0 ? rowItem.EstimateDeliveryDistance : 0) + "Km/" + rowItem.ActualDeliveryDistance.toFixed(2) + "Km"}</span>
-                                                                    </span>
-                                                                    <span className="intervale">
-                                                                        <i className="ti ti-timer"></i>
-                                                                        <span className="txtintervale">{rowItem.EstimateDeliveryLong + "'"}</span>
-                                                                    </span>
+                                                                <span className="intervale">
+                                                                    <i className="ti ti-timer"></i>
+                                                                    <span className="txtintervale">{rowItem.EstimateDeliveryLong + "'"}</span>
                                                                 </span>
                                                             </span>
-                                                        </li>
-                                                    </ul>
-                                                </td>
-                                                <td className="jsgrid-cell group-infoShipmentOrder" style={{ width: '20%' }}>
-                                                    <ul>
-                                                        <li className="item">
-                                                            <Link
-                                                                className="linktext blank"
-                                                                target="_blank"
-                                                                to={{ pathname: "/ShipmentOrder/Detail/" + rowItem.ShipmentOrderID }}>
-                                                                {rowItem.ShipmentOrderID}</Link>
-                                                            <button className="btn-copy-clipboard" data-id={rowItem.ShipmentOrderID} onClick={this.copyToClipboardShipmentOrder.bind(this)}>
-                                                                <i className="fa fa-copy" data-id={rowItem.ShipmentOrderID}></i>
-                                                            </button>
-                                                        </li>
-                                                        <li className="item">
-                                                            <span>{rowItem.ShipmentOrderTypeName}</span>
-                                                        </li>
-                                                        {rowItem.CoordinatorUser != "" ?
-                                                            (
-                                                                <React.Fragment>
-                                                                    <li className="item user-coordinator">
-                                                                        <span className="coordinatorUser">ĐP: {rowItem.CoordinatorUser + "-" + rowItem.CoordinatorUserName}</span>
-                                                                    </li>
-                                                                    {rowItem.DeliverUserFullNameList != "" ?
-                                                                        (<li className="item user-delivery">
-                                                                            <span>NV: {ReactHtmlParser(rowItem.DeliverUserFullNameList)}</span>
-                                                                        </li>) : ""
-                                                                    }
+                                                        </span>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                            <td className="jsgrid-cell group-infoShipmentOrder" style={{ width: '20%' }}>
+                                                <ul>
+                                                    <li className="item">
+                                                        <Link
+                                                            className="linktext blank"
+                                                            target="_blank"
+                                                            to={{ pathname: "/ShipmentOrder/Detail/" + rowItem.ShipmentOrderID }}>
+                                                            {rowItem.ShipmentOrderID}</Link>
+                                                        <button className="btn-copy-clipboard" data-id={rowItem.ShipmentOrderID} onClick={this.copyToClipboardShipmentOrder.bind(this)}>
+                                                            <i className="fa fa-copy" data-id={rowItem.ShipmentOrderID}></i>
+                                                        </button>
+                                                    </li>
+                                                    <li className="item">
+                                                        <span>{rowItem.ShipmentOrderTypeName}</span>
+                                                    </li>
+                                                    {rowItem.CoordinatorUser != "" ?
+                                                        (
+                                                            <React.Fragment>
+                                                                <li className="item user-coordinator">
+                                                                    <span className="coordinatorUser">ĐP: {rowItem.CoordinatorUser + "-" + rowItem.CoordinatorUserName}</span>
+                                                                </li>
+                                                                {rowItem.DeliverUserFullNameList != "" ?
+                                                                    (<li className="item user-delivery">
+                                                                        <span>NV: {ReactHtmlParser(rowItem.DeliverUserFullNameList)}</span>
+                                                                    </li>) : ""
+                                                                }
 
-                                                                    <li className="item address-receiver">
-                                                                        <span className="receiverred">{rowItem.CoordinatorNote != "" ? "Ghi chú: " + rowItem.CoordinatorNote : ""}</span>
-                                                                    </li>
-                                                                </React.Fragment>
-                                                            ) : (<li className="item note">
-                                                                <span >{rowItem.CoordinatorNote != "" ? "Ghi chú: " + rowItem.CoordinatorNote : ""}</span>
-                                                            </li>)
-                                                        }
-                                                    </ul>
-                                                </td>
-                                                <td className="jsgrid-cell group-products" style={{ width: '25%' }}>
-                                                    <ul>
-                                                        <li className={rowItem.IsInputReturn == true ? "item lstProducts lblReturns" : "item lstProducts"}>
-                                                            <span >{rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(/;/g, '<br/>'))}</span>
-                                                        </li>
-                                                        <li className="item note">
-                                                            <span>{rowItem.OrderNote != "" ? "Ghi chú: " + rowItem.OrderNote : ""}</span>
-                                                        </li>
-                                                    </ul>
-                                                </td>
-                                                <td className="jsgrid-cell group-price ssss" style={{ width: '8%' }}>
-                                                    <ul>
-                                                        <li className="item">
-                                                            {rowItem.IsCancelDelivery == true ? <span className="badge badge-danger">Đã hủy</span> : ""}
-                                                        </li>
-                                                        <li className="item">
-                                                            {rowItem.TotalCOD > 0 ? <span className="item pricecod">COD:{formatMoney(rowItem.TotalCOD, 0)}</span> : ""}
-                                                        </li>
-                                                        {rowItem.TotalSaleMaterialMoney > 0 ? <li className="item"> <span className="price-supplies">Vật tư:{formatMoney(rowItem.TotalSaleMaterialMoney, 0)}</span> </li> : ""}
-                                                        {rowItem.IsInputReturn == true ? <li className="item"> <span className="price-supplies">Nhập trả:{formatMoney(rowItem.TotalReturnPrice, 0)}</span> </li> : ""}
-                                                        {(rowItem.IsPaidIn == true || (rowItem.TotalSaleMaterialMoney + rowItem.TotalCOD - rowItem.TotalReturnPrice) == 0) ?
-                                                            rowItem.CollectedTotalMoney == rowItem.TotalPaidInMoney ?
-                                                                (
-                                                                    <li className="item">
-                                                                        <span className="total price-success">
-                                                                            <span className="price-title ">Nợ: </span>
-                                                                            <span className="price-debt">0đ</span>
-                                                                        </span>
-                                                                    </li>
-                                                                ) :
-                                                                (
-                                                                    <li className="item">
-                                                                        <span className="total">
-                                                                            <span className="price-title">Nợ: </span>
-                                                                            <span className="price-debt">-{rowItem.TotalUnPaidInMoney >= 0 ? formatMoney(rowItem.TotalUnPaidInMoney, 0) : 0}đ</span>
-                                                                        </span>
-                                                                    </li>
-                                                                )
-                                                            :
+                                                                <li className="item address-receiver">
+                                                                    <span className="receiverred">{rowItem.CoordinatorNote != "" ? "Ghi chú: " + rowItem.CoordinatorNote : ""}</span>
+                                                                </li>
+                                                            </React.Fragment>
+                                                        ) : (<li className="item note">
+                                                            <span >{rowItem.CoordinatorNote != "" ? "Ghi chú: " + rowItem.CoordinatorNote : ""}</span>
+                                                        </li>)
+                                                    }
+                                                </ul>
+                                            </td>
+                                            <td className="jsgrid-cell group-products" style={{ width: '25%' }}>
+                                                <ul>
+                                                    <li className={rowItem.IsInputReturn == true ? "item lstProducts lblReturns" : "item lstProducts"}>
+                                                        <span >{rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(/;/g, '<br/>'))}</span>
+                                                    </li>
+                                                    <li className="item note">
+                                                        <span>{rowItem.OrderNote != "" ? "Ghi chú: " + rowItem.OrderNote : ""}</span>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                            <td className="jsgrid-cell group-price ssss" style={{ width: '8%' }}>
+                                                <ul>
+                                                    <li className="item">
+                                                        {rowItem.IsCancelDelivery == true ? <span className="badge badge-danger">Đã hủy</span> : ""}
+                                                    </li>
+                                                    <li className="item">
+                                                        {rowItem.TotalCOD > 0 ? <span className="item pricecod">COD:{formatMoney(rowItem.TotalCOD, 0)}</span> : ""}
+                                                    </li>
+                                                    {rowItem.TotalSaleMaterialMoney > 0 ? <li className="item"> <span className="price-supplies">Vật tư:{formatMoney(rowItem.TotalSaleMaterialMoney, 0)}</span> </li> : ""}
+                                                    {rowItem.IsInputReturn == true ? <li className="item"> <span className="price-supplies">Nhập trả:{formatMoney(rowItem.TotalReturnPrice, 0)}</span> </li> : ""}
+                                                    {(rowItem.IsPaidIn == true || (rowItem.TotalSaleMaterialMoney + rowItem.TotalCOD - rowItem.TotalReturnPrice) == 0) ?
+                                                        rowItem.CollectedTotalMoney == rowItem.TotalPaidInMoney ?
+                                                            (
+                                                                <li className="item">
+                                                                    <span className="total price-success">
+                                                                        <span className="price-title ">Nợ: </span>
+                                                                        <span className="price-debt">0đ</span>
+                                                                    </span>
+                                                                </li>
+                                                            ) :
                                                             (
                                                                 <li className="item">
                                                                     <span className="total">
                                                                         <span className="price-title">Nợ: </span>
-                                                                        <span className="price-debt">-{(rowItem.TotalCOD - rowItem.TotalReturnPrice) <= 0 ? formatMoney(rowItem.TotalSaleMaterialMoney) : formatMoney(rowItem.TotalSaleMaterialMoney + rowItem.TotalCOD - rowItem.TotalReturnPrice, 0)}</span>
+                                                                        <span className="price-debt">-{rowItem.TotalUnPaidInMoney >= 0 ? formatMoney(rowItem.TotalUnPaidInMoney, 0) : 0}đ</span>
                                                                     </span>
                                                                 </li>
                                                             )
-                                                        }
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                            );
-                                        })
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
+                                                        :
+                                                        (
+                                                            <li className="item">
+                                                                <span className="total">
+                                                                    <span className="price-title">Nợ: </span>
+                                                                    <span className="price-debt">-{(rowItem.TotalCOD - rowItem.TotalReturnPrice) <= 0 ? formatMoney(rowItem.TotalSaleMaterialMoney) : formatMoney(rowItem.TotalSaleMaterialMoney + rowItem.TotalCOD - rowItem.TotalReturnPrice, 0)}</span>
+                                                                </span>
+                                                            </li>
+                                                        )
+                                                    }
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        );
+                                    })
+                                }
+                            </tbody>
+                        </table>
                     </div>
-                </div>
+                </React.Fragment>
             );
         }
 
@@ -1418,7 +1414,7 @@ class DataGridShipmentOderCom extends Component {
                             <React.Fragment>
                                 {matches.small && this.renderDataGridSmallSize()}
                                 {matches.large && <div className={classCustom}>
-                                    <div className="cardShipmentOrder-page shipment-route">
+                                    <div id="changeMaxWidth" className="cardShipmentOrder-page">
                                         <ReactNotification ref={this.notificationDOMRef} />
                                         <div className="card-title">
                                             {hasHeaderToolbar &&
@@ -1460,7 +1456,7 @@ class DataGridShipmentOderCom extends Component {
                                                 </div>
                                             }
                                         </div>
-                                        <div className="card-body">
+                                        <div className="card-body" style={{ maxWidth: this.state.maxWidthGird }}>
                                             <div className="jsgrid">
                                                 {datagrid}
 
