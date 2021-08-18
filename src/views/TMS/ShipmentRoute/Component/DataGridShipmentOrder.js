@@ -69,6 +69,7 @@ class DataGridShipmentOderCom extends Component {
     componentDidMount() {
         this.updateWindowDimensions();
         window.addEventListener("resize", this.updateWindowDimensions);
+        const clientWidth = document.getElementById('changeMaxWidth').clientWidth;
         if (this.props.dataSource) {
             const gridData = this.getCheckList(this.props.dataSource);
             this.setState({ GridData: gridData });
@@ -82,13 +83,17 @@ class DataGridShipmentOderCom extends Component {
         })
     }
 
+
     componentWillUnmount() {
         window.removeEventListener("resize", this.updateWindowDimensions);
     }
-
+   
     updateWindowDimensions = () => {
+        const widthModal = (window.innerWidth * 60) / 100;
+        const clientWidth = document.getElementById('changeMaxWidth').clientWidth;
         this.setState({
-            widthPercent: (window.innerWidth * 60) / 100
+            widthPercent: widthModal,
+            maxWidthGird: clientWidth - widthModal
         })
     };
 
@@ -1398,80 +1403,63 @@ class DataGridShipmentOderCom extends Component {
             classCustom = ""
         }
 
-        let IsCompleteDeliverIed = []
-        if (this.props.dataSource) {
-            IsCompleteDeliverIed = this.props.dataSource.filter(n => n.IsCompleteDeliverIed == true);
-        }
-
         return (
             <React.Fragment>
-                <Media queries={{
-                    small: "(max-width: 576px)",
-                    large: "(min-width: 577px)"
-                }}>
-                    {
-                        matches => (
-                            <React.Fragment>
-                                {matches.small && this.renderDataGridSmallSize()}
-                                {matches.large && <div className={classCustom}>
-                                    <div id="changeMaxWidth" className="cardShipmentOrder-page">
-                                        <ReactNotification ref={this.notificationDOMRef} />
-                                        <div className="card-title">
-                                            {hasHeaderToolbar &&
-                                                <div className="flexbox">
-                                                    <div className="btn-toolbar">
-                                                        <div className="btn-group btn-group-sm">
-                                                            <div className="group-left">
-                                                                <button id="btnUserCoordinator" type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
-                                                                    <i className="fa fa-plus">Phân tuyến giao hàng</i>
-                                                                </button>
-                                                                <div className="groupActionRemember ml-10">
-                                                                    <button type="button" onClick={this.handleSelected.bind(this)} className="btn " title="" data-provide="tooltip" data-original-title="Ghi nhớ">
-                                                                        <i className="fa fa-save"></i>
-                                                                    </button>
+            <div className={classCustom}>
+                <div id="changeMaxWidth" className="cardShipmentOrder-page">
+                    <ReactNotification ref={this.notificationDOMRef} />
+                    <div className="card-title">
+                        {hasHeaderToolbar &&
+                            <div className="flexbox">
+                                <div className="btn-toolbar">
+                                    <div className="btn-group btn-group-sm">
+                                        <div className="group-left">
+                                            <button id="btnUserCoordinator" type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
+                                                <i className="fa fa-plus">Phân tuyến giao hàng</i>
+                                            </button>
+                                            <div className="groupActionRemember ml-10">
+                                                <button type="button" onClick={this.handleSelected.bind(this)} className="btn " title="" data-provide="tooltip" data-original-title="Ghi nhớ">
+                                                    <i className="fa fa-save"></i>
+                                                </button>
 
-                                                                    <button type="button" onClick={this.handleSelectedView.bind(this)} className="btn " title="" data-provide="tooltip" data-original-title="Thêm">
-                                                                        <i className="fa fa-history"></i>
-                                                                    </button>
-                                                                </div>
-                                                                <div className="input-group input-group-select ml-10">
-                                                                    <input type="text" onChange={this.handleonChange.bind(this)} onKeyPress={this.handleKeyPress} className="form-control" aria-label="Text input with dropdown button" placeholder="Từ khóa" />
-                                                                    <div className="input-group-append" onClick={this.handleSearchShip.bind(this)}>
-                                                                        <span className="input-group-text"><i className="ti-search"></i></span>
-                                                                    </div>
-                                                                </div>
-
-                                                            </div>
-
-                                                            <div className="group-count">
-                                                                <ul>
-                                                                    <li>
-                                                                        <span className="count-name">Tổng đơn:</span>
-                                                                        <span className="count-number">{this.state.DataSource.length > 0 ? formatNumber(this.state.DataSource[0].TotaLRows) : ''}</span>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            }
-                                        </div>
-                                        <div className="card-body" style={{ maxWidth: this.state.maxWidthGird }}>
-                                            <div className="jsgrid">
-                                                {datagrid}
-
-                                                {this.props.IsAutoPaging &&
-                                                    <GridPage numPage={pageCount} currentPage={this.state.PageNumber} onChangePage={this.onChangePageHandle} />
-                                                }
+                                                <button type="button" onClick={this.handleSelectedView.bind(this)} className="btn " title="" data-provide="tooltip" data-original-title="Thêm">
+                                                    <i className="fa fa-history"></i>
+                                                </button>
                                             </div>
+                                            <div className="input-group input-group-select ml-10">
+                                                <input type="text" onChange={this.handleonChange.bind(this)} onKeyPress={this.handleKeyPress} className="form-control" aria-label="Text input with dropdown button" placeholder="Từ khóa" />
+                                                <div className="input-group-append" onClick={this.handleSearchShip.bind(this)}>
+                                                    <span className="input-group-text"><i className="ti-search"></i></span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div className="group-count">
+                                            <ul>
+                                                <li>
+                                                    <span className="count-name">Tổng đơn:</span>
+                                                    <span className="count-number">{this.state.DataSource.length > 0 ? formatNumber(this.state.DataSource[0].TotaLRows) : ''}</span>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
-                                </div>}
-                            </React.Fragment>
-                        )
-                    }
-                </Media>
-            </React.Fragment>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div className="card-body" style={{ maxWidth: this.state.maxWidthGird }}>
+                        <div className="jsgrid">
+                            {datagrid}
+
+                            {this.props.IsAutoPaging &&
+                                <GridPage numPage={pageCount} currentPage={this.state.PageNumber} onChangePage={this.onChangePageHandle} />
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </React.Fragment>
         );
     }
 }
