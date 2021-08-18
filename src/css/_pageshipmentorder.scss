@@ -311,6 +311,17 @@ $font-weight-600: 600;
                                         float: right;
                                     }
                                 }
+                                ul{
+                                    padding-left: 0;
+                                    margin-right: 5px;
+                                    li{
+                                        background: #c3be15;
+                                        padding: 2px 3px;
+                                        color: #fff;
+                                        font-size: 11px;
+                                        border-radius: 4px;
+                                    }
+                                }
                             }
                         }
                        .address-customer {
