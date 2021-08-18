@@ -80,13 +80,13 @@ class DataGridShipmentOderCom extends Component {
     componentWillUnmount() {
         window.removeEventListener("resize", this.updateWindowDimensions);
     }
-   
+
     updateWindowDimensions = () => {
         const widthModal = (window.innerWidth * 55) / 100;
         const clientWidth = document.getElementById('changeMaxWidth').clientWidth;
         this.setState({
             widthPercent: widthModal,
-            maxWidthGird: clientWidth 
+            maxWidthGird: clientWidth
         })
     };
 
@@ -912,6 +912,20 @@ class DataGridShipmentOderCom extends Component {
 
                                             <td className="jsgrid-cell group-address" style={{ width: '95%' }}>
                                                 <ul>
+                                                    <li className="item times">
+                                                        <i className="ti ti-timer"></i>
+                                                        <span className="fw-600">{rowItem.ExpectedDeliveryDate != null ? this._genCommentTime(rowItem.ExpectedDeliveryDate) : ""}</span>
+                                                    </li>
+                                                    <li className="item status">
+                                                        <i className="fa fa-location-arrow"></i>
+                                                        <span>{rowItem.ShipmentOrderStatusName}</span>
+                                                    </li>
+                                                    <li className="item">
+                                                        <span className="total">
+                                                            <span className="price-title">COD: </span>
+                                                            <span className="price-debt">-{rowItem.TotalCOD}</span>
+                                                        </span>
+                                                    </li>
                                                     <li className="item info-customer">
                                                         <i className="fa fa-user"></i>
                                                         <div className="person-info">
@@ -925,12 +939,27 @@ class DataGridShipmentOderCom extends Component {
                                                             </button>
                                                         </div>
                                                     </li>
+                                                    <li className="item">
+                                                        <Link
+                                                            className="linktext blank"
+                                                            target="_blank"
+                                                            to={{ pathname: "/ShipmentOrder/Detail/" + rowItem.ShipmentOrderID }}>
+                                                            {rowItem.ShipmentOrderID}</Link>
+                                                        <button className="btn-copy-clipboard" data-id={rowItem.ShipmentOrderID} onClick={this.copyToClipboardShipmentOrder.bind(this)}>
+                                                            <i className="fa fa-copy" data-id={rowItem.ShipmentOrderID}></i>
+                                                        </button>
+                                                    </li>
                                                     <li className="item address-customer">
                                                         <span>{rowItem.ReceiverFullAddress}</span>
                                                     </li>
-                                                    <li className="item store">
-                                                        <span>  {rowItem.SenderFullName}</span>
+
+                                                    <li className={rowItem.IsInputReturn == true ? "item lstProducts lblReturns" : "item lstProducts"}>
+                                                        <span >{rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(/;/g, '<br/>'))}</span>
                                                     </li>
+                                                    <li className="item note">
+                                                        <span>{rowItem.OrderNote != "" ? "Ghi chú: " + rowItem.OrderNote : ""}</span>
+                                                    </li>
+                                                 
                                                     <li className="item times">
                                                         <span className="group-times">
                                                             <span className="time-item">
@@ -1389,60 +1418,60 @@ class DataGridShipmentOderCom extends Component {
 
         return (
             <React.Fragment>
-            <div className={classCustom}>
-                <div id="changeMaxWidth" className="cardShipmentOrder-page">
-                    <ReactNotification ref={this.notificationDOMRef} />
-                    <div className="card-title">
-                        {hasHeaderToolbar &&
-                            <div className="flexbox">
-                                <div className="btn-toolbar">
-                                    <div className="btn-group btn-group-sm">
-                                        <div className="group-left">
-                                            <button id="btnUserCoordinator" type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
-                                                <i className="fa fa-plus">Phân tuyến giao hàng</i>
-                                            </button>
-                                            <div className="groupActionRemember ml-10">
-                                                <button type="button" onClick={this.handleSelected.bind(this)} className="btn " title="" data-provide="tooltip" data-original-title="Ghi nhớ">
-                                                    <i className="fa fa-save"></i>
+                <div className={classCustom}>
+                    <div id="changeMaxWidth" className="cardShipmentOrder-page">
+                        <ReactNotification ref={this.notificationDOMRef} />
+                        <div className="card-title">
+                            {hasHeaderToolbar &&
+                                <div className="flexbox">
+                                    <div className="btn-toolbar">
+                                        <div className="btn-group btn-group-sm">
+                                            <div className="group-left">
+                                                <button id="btnUserCoordinator" type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
+                                                    <i className="fa fa-plus">Phân tuyến giao hàng</i>
                                                 </button>
+                                                <div className="groupActionRemember ml-10">
+                                                    <button type="button" onClick={this.handleSelected.bind(this)} className="btn " title="" data-provide="tooltip" data-original-title="Ghi nhớ">
+                                                        <i className="fa fa-save"></i>
+                                                    </button>
 
-                                                <button type="button" onClick={this.handleSelectedView.bind(this)} className="btn " title="" data-provide="tooltip" data-original-title="Thêm">
-                                                    <i className="fa fa-history"></i>
-                                                </button>
-                                            </div>
-                                            <div className="input-group input-group-select ml-10">
-                                                <input type="text" onChange={this.handleonChange.bind(this)} onKeyPress={this.handleKeyPress} className="form-control" aria-label="Text input with dropdown button" placeholder="Từ khóa" />
-                                                <div className="input-group-append" onClick={this.handleSearchShip.bind(this)}>
-                                                    <span className="input-group-text"><i className="ti-search"></i></span>
+                                                    <button type="button" onClick={this.handleSelectedView.bind(this)} className="btn " title="" data-provide="tooltip" data-original-title="Thêm">
+                                                        <i className="fa fa-history"></i>
+                                                    </button>
                                                 </div>
+                                                <div className="input-group input-group-select ml-10">
+                                                    <input type="text" onChange={this.handleonChange.bind(this)} onKeyPress={this.handleKeyPress} className="form-control" aria-label="Text input with dropdown button" placeholder="Từ khóa" />
+                                                    <div className="input-group-append" onClick={this.handleSearchShip.bind(this)}>
+                                                        <span className="input-group-text"><i className="ti-search"></i></span>
+                                                    </div>
+                                                </div>
+
                                             </div>
 
-                                        </div>
-
-                                        <div className="group-count">
-                                            <ul>
-                                                <li>
-                                                    <span className="count-name">Tổng đơn:</span>
-                                                    <span className="count-number">{this.state.DataSource.length > 0 ? formatNumber(this.state.DataSource[0].TotaLRows) : ''}</span>
-                                                </li>
-                                            </ul>
+                                            <div className="group-count">
+                                                <ul>
+                                                    <li>
+                                                        <span className="count-name">Tổng đơn:</span>
+                                                        <span className="count-number">{this.state.DataSource.length > 0 ? formatNumber(this.state.DataSource[0].TotaLRows) : ''}</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        }
-                    </div>
-                       <div className="card-body" style={{ maxWidth: this.state.changeGird==false?this.state.maxWidthGird:this.state.maxWidthGird-this.state.widthPercent }}> 
-                        <div className="jsgrid">
-                            {datagrid}
-                            {this.props.IsAutoPaging &&
-                                <GridPage numPage={pageCount} currentPage={this.state.PageNumber} onChangePage={this.onChangePageHandle} />
                             }
+                        </div>
+                        <div className="card-body" style={{ maxWidth: this.state.changeGird == false ? this.state.maxWidthGird : this.state.maxWidthGird - this.state.widthPercent }}>
+                            <div className="jsgrid">
+                                {datagrid}
+                                {this.props.IsAutoPaging &&
+                                    <GridPage numPage={pageCount} currentPage={this.state.PageNumber} onChangePage={this.onChangePageHandle} />
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </React.Fragment>
+            </React.Fragment>
         );
     }
 }
