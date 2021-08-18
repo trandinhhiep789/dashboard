@@ -109,6 +109,7 @@ class DataGridShipmentOderCom extends Component {
         {
             this.setState({
                 GridDataShip: [],
+                DataSource: nextProps.dataSource,
                 ShipmentRouteID: ""
             });
         }
@@ -642,12 +643,14 @@ class DataGridShipmentOderCom extends Component {
         this.props.hideModal();
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderDeliver", ShipmentOrderID).then(apiResult => {
             if (!apiResult.IsError) {
+                this.setState({changeGird: true });
                 let resultdd = this.state.GridDataShip.find(n => n.ShipmentOrderID == ShipmentOrderID)
                 if (resultdd == undefined)
                     this.state.GridDataShip.push(apiResult.ResultObject.ShipmentOrderDeliver);
                 this.props.showModal(MODAL_TYPE_VIEW, {
                     title: 'Phân tuyến điều phối vận đơn ',
                     isShowOverlay: false,
+                    onhideModal: this.handleClose,
                     content: {
                         text: <ListShipCoordinator
                             ShipmentOrderID={0}
@@ -679,6 +682,7 @@ class DataGridShipmentOderCom extends Component {
                 this.props.showModal(MODAL_TYPE_VIEW, {
                     title: 'Phân tuyến điều phối vận đơn ',
                     isShowOverlay: false,
+                    onhideModal: this.handleClose,
                     content: {
                         text: <ListShipCoordinator
                             ShipmentOrderID={0}
