@@ -43,6 +43,7 @@ class ListShipCoordinatorCom extends Component {
             Via_Durations: 0,
             Via_Distances: "",
             ShipmentRouteSameLst: [],
+            Distances_RouteLst: [],
             girdSlide: false
 
         }
@@ -511,7 +512,10 @@ class ListShipCoordinatorCom extends Component {
     handleDistances = () => {
         let { ShipmentOrder, ShipmentOrderSameLst } = this.state;
         let Points = [];
+        let DistancesRouteLst = [];
+
         ShipmentOrder.map((item, index) => {
+            let strDistances = "";
             const Receivervalues = item.ReceiverGeoLocation.split(",");
             if (Receivervalues == "") {
                 this.addNotification("Không xác định được tạo độ nhà vận đơn " + item.ShipmentOrderID, true);
@@ -522,16 +526,28 @@ class ListShipCoordinatorCom extends Component {
                 "Longitude": Receivervalues[1]
             };
             if (index == 0) {
+                strDistances = "Kho -> " + ShipmentOrder[0].ShipmentOrderID
                 const values = ShipmentOrder[0].SenderGeoLocation.split(",");
                 let objPoints = {
                     "Latitude": values[0],
                     "Longitude": values[1]
                 };
                 Points.push(objPoints);
+                DistancesRouteLst.push(strDistances);
             }
+
             Points.push(objReceiverPoints);
+            if (index > 0 && ShipmentOrder.length - 1 > index) {
+                strDistances = ShipmentOrder[index - 1].ShipmentOrderID + "-> " + item.ShipmentOrderID;
+                DistancesRouteLst.push(strDistances);
+            }
+
             if (ShipmentOrder.length - 1 == index) {
                 const values = ShipmentOrder[0].SenderGeoLocation.split(",");
+                strDistances = ShipmentOrder[index - 1].ShipmentOrderID + "-> " + item.ShipmentOrderID;
+                DistancesRouteLst.push(strDistances);
+                strDistances = item.ShipmentOrderID + "-> Kho";
+                DistancesRouteLst.push(strDistances);
                 let objPoints = {
                     "Latitude": values[0],
                     "Longitude": values[1]
@@ -551,15 +567,23 @@ class ListShipCoordinatorCom extends Component {
             "Uturn": true,
             "VehicleType": 2
         };
+
+
         let resultPoints = Points.find(n => n.Latitude == "");
+        let Distances_RouteLst = [];
         if (resultPoints == undefined) {
             this.props.callFetchAPI(APIHostName, 'api/Maps/FindPathViaRoute', paramsRequest).then((apiResult) => {
                 if (!apiResult.IsError) {
                     let Durationslst = JSON.parse(apiResult.ResultObject).Value.Routes[0].Via_Durations;
                     let Distanceslst = JSON.parse(apiResult.ResultObject).Value.Routes[0].Via_Distances;
-                    // console.log("Durationslst", Math.floor(Durationslst[Durationslst.length-1]/60))
-                    // console.log("Durationslst", Distanceslst[Distanceslst.length-1]/1000)
+
+                    DistancesRouteLst.map((item, index) => {
+                        let ViaDistances = Distanceslst[index + 1] - Distanceslst[index];
+                        let objRouteitem = { Routeitem: item, Distances: ViaDistances > 1000 ? ViaDistances / 1000 + "km" : ViaDistances + "m" }
+                        Distances_RouteLst.push(objRouteitem);
+                    });
                     this.setState({
+                        Distances_RouteLst: Distances_RouteLst,
                         Via_Durations: Math.floor(Durationslst[Durationslst.length - 1] / 60),
                         Via_Distances: Distanceslst[Distanceslst.length - 1] >= 1000 ? Distanceslst[Distanceslst.length - 1] / 1000 + "km" : Distanceslst[Distanceslst.length - 1] + "m"
                     });
@@ -598,10 +622,10 @@ class ListShipCoordinatorCom extends Component {
         }
     }
     render() {
-        let { ShipmentOrder, ShipmentRouteID, ShipmentOrderSameLst, ShipmentRouteLst, ShipmentRouteSameLst, Via_Distances, Via_Durations, girdSlide } = this.state;
+        let { ShipmentOrder, ShipmentRouteID, ShipmentOrderSameLst, ShipmentRouteLst, ShipmentRouteSameLst, Distances_RouteLst, Via_Distances, Via_Durations, girdSlide } = this.state;
         let resultShipmentRoute = ShipmentRouteLst.filter(n => n.ShipmentRouteID != ShipmentRouteID);
         let resultShipmentRouteSame = ShipmentRouteSameLst.filter(n => n.ShipmentRouteID != ShipmentRouteID);
-        // console.log("resultShipmentRoute", resultShipmentRoute)
+        console.log("Distances_RouteLst", Distances_RouteLst)
         return (
             <React.Fragment>
                 <div className="card">
@@ -887,7 +911,17 @@ class ListShipCoordinatorCom extends Component {
                                         {Via_Distances != "" ? (
                                             <React.Fragment>
                                                 <li>
-                                                    <span>Km ước lượng: <span className="fw-600">{Via_Distances}</span></span>
+                                                    <span>Km ước lượng:
+                                                        <span data-tip data-for="Distances" data-id="Distances" className="fw-600">{Via_Distances}</span>
+                                                        <ReactTooltip id="Distances" type='warning'>
+                                                            {Distances_RouteLst && Distances_RouteLst.map((item, index) => {
+                                                                return (
+                                                                    <span>{item.Routeitem} : {item.Distances}</span>
+                                                                )
+                                                            })
+                                                            }
+                                                        </ReactTooltip>
+                                                    </span>
                                                 </li>
                                                 <li>
                                                     <span>di chuyển: <span className="fw-600">{Via_Durations}'</span></span>
