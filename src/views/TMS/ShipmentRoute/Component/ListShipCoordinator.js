@@ -344,7 +344,9 @@ class ListShipCoordinatorCom extends Component {
         });
     }
     handleClose() {
-        this.props.hideModal();
+        if (this.props.onChangeClose != null) {
+            this.props.onChangeClose();
+        }
     }
 
 
@@ -526,7 +528,7 @@ class ListShipCoordinatorCom extends Component {
                 "Longitude": Receivervalues[1]
             };
             if (index == 0) {
-                strDistances = "Kho -> " + ShipmentOrder[0].ShipmentOrderID
+                strDistances = "Kho => " + ShipmentOrder[0].ShipmentOrderID
                 const values = ShipmentOrder[0].SenderGeoLocation.split(",");
                 let objPoints = {
                     "Latitude": values[0],
@@ -538,15 +540,15 @@ class ListShipCoordinatorCom extends Component {
 
             Points.push(objReceiverPoints);
             if (index > 0 && ShipmentOrder.length - 1 > index) {
-                strDistances = ShipmentOrder[index - 1].ShipmentOrderID + "-> " + item.ShipmentOrderID;
+                strDistances = ShipmentOrder[index - 1].ShipmentOrderID + "=> " + item.ShipmentOrderID;
                 DistancesRouteLst.push(strDistances);
             }
 
             if (ShipmentOrder.length - 1 == index) {
                 const values = ShipmentOrder[0].SenderGeoLocation.split(",");
-                strDistances = ShipmentOrder[index - 1].ShipmentOrderID + "-> " + item.ShipmentOrderID;
+                strDistances = ShipmentOrder[index - 1].ShipmentOrderID + " => " + item.ShipmentOrderID;
                 DistancesRouteLst.push(strDistances);
-                strDistances = item.ShipmentOrderID + "-> Kho";
+                strDistances = item.ShipmentOrderID + " => Kho";
                 DistancesRouteLst.push(strDistances);
                 let objPoints = {
                     "Latitude": values[0],
@@ -1064,9 +1066,6 @@ class ListShipCoordinatorCom extends Component {
                     </div>
                 </div>
                 <div className="modal-footer modal-footer-center">
-
-
-
                     <button className="btn btn-w-md btn-round btn-secondary" type="button" onClick={this.handleClose.bind(this)}>Làm mới</button>
                     <button className="btn btn-w-md btn-round btn-info ml-10" type="button" onClick={this.handleConfirm.bind(this)}>Cập nhật</button>
                 </div>
