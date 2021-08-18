@@ -937,10 +937,10 @@ class DataGridShipmentOderCom extends Component {
                                                             <span>{rowItem.ShipmentOrderStatusName}</span>
                                                         </span>
 
-                                                        <span className="item  total">
+                                                         <span className="item total price-success">
                                                             <span className="price-title">COD: </span>
-                                                            <span className="price-debt">-{rowItem.TotalCOD}</span>
-                                                        </span>
+                                                            <span className="price-debt">{formatMoney(rowItem.TotalCOD, 0)}</span>
+                                                        </span> 
                                                     </li>
                                                     <li className="info-customer">
                                                         <div className="item">
