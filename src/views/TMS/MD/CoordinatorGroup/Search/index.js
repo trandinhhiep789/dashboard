@@ -270,28 +270,28 @@ class SearchCom extends React.Component {
                     />
 
                     <DataGrid
-                        listColumn={DataGridColumnList}
-                        dataSource={this.state.gridDataSource}
                         AddLink={AddLink}
+                        DataExport={this.state.DataExport}
+                        dataSource={this.state.gridDataSource}
+                        DeletePermission={COORDINATORGROUP_DELETE}
+                        ExportPermission={MDM_COORDINATORGROUP_EXPORT}
+                        fileName="Nhóm chi nhánh quản lý"
                         IDSelectColumnName={IDSelectColumnName}
-                        PKColumnName={PKColumnName}
+                        IsAutoPaging={true}
+                        IsExportFile={true}
+                        listColumn={DataGridColumnList}
                         onDeleteClick={this.handleDelete}
+                        onExportFile={this.handleExportFile}
+                        PKColumnName={PKColumnName}
                         ref={this.gridref}
                         RequirePermission={COORDINATORGROUP_VIEW}
-                        DeletePermission={COORDINATORGROUP_DELETE}
-                        IsAutoPaging={true}
                         RowsPerPage={20}
-                        IsExportFile={true}
-                        onExportFile={this.handleExportFile}
-                        DataExport={this.state.DataExport}
-                        fileName="Nhóm chi nhánh quản lý"
-                        ExportPermission={MDM_COORDINATORGROUP_EXPORT}
 
-                        propsIsCustomXLSX={true}
-                        IsImportFile={true}
-                        onImportFile={this.handleImportFile}
                         isExportFileTemplate={true}
+                        IsImportFile={true}
                         onExportFileTemplate={this.handleExportFileTemplate}
+                        onImportFile={this.handleImportFile}
+                        propsIsCustomXLSX={true}
                     />
 
                     <input type="file" id="inputImportFile" style={{ display: "none" }} />

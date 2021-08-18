@@ -47,9 +47,7 @@ class StoreWardCom extends Component {
     }
 
     componentDidMount() {
-        // console.log("StoreWardCom", this.props)
         this.handleGetCacheDistrict()
-
     }
 
     handleSubmit(formData, MLObject) {
@@ -77,11 +75,10 @@ class StoreWardCom extends Component {
 
             const isExitItem = CoordinatorStoreWard_ItemList.filter(x => x.WardID === MLObject.WardID).length;
 
-            if (isExitItem == 0) {
+            if (isExitItem == 0 || this.props.PageInfo == "Edit") {
                 formDatanew = Object.assign([], CoordinatorStoreWard_ItemList, { [this.props.index]: MLObject });
 
-            }
-            else {
+            } else {
                 formData.cbWardID.ErrorLst.IsValidatonError = true;
                 formData.cbWardID.ErrorLst.ValidatonErrorMessage = "Vui lòng chọn phường/xã khác.";
                 return
@@ -163,66 +160,66 @@ class StoreWardCom extends Component {
                 <div className="row">
                     <div className="col-md-12">
                         <FormControl.FormControlComboBox
-                            name="cbProvinceID"
                             colspan="9"
-                            labelcolspan="3"
-                            disabled={IsSystem}
-                            label="Tỉnh/thành phố"
-                            validatonList={["Comborequired"]}
-                            isautoloaditemfromcache={true}
-                            loaditemcachekeyid="ERPCOMMONCACHE.PROVINCE"
-                            valuemember="ProvinceID"
-                            nameMember="ProvinceName"
                             controltype="InputControl"
-                            value={-1}
-                            listoption={[]}
                             datasourcemember="ProvinceID"
-                            filterValue={2}
+                            disabled={IsSystem}
                             filterobj="CountryID"
                             filterrest="cbDistrictID,cbWardID"
+                            filterValue={2}
+                            isautoloaditemfromcache={true}
+                            label="Tỉnh/thành phố"
+                            labelcolspan="3"
+                            listoption={[]}
+                            loaditemcachekeyid="ERPCOMMONCACHE.PROVINCE"
+                            name="cbProvinceID"
+                            nameMember="ProvinceName"
+                            validatonList={["Comborequired"]}
+                            value={-1}
+                            valuemember="ProvinceID"
                         />
                     </div>
                     <div className="col-md-12">
                         <FormControl.FormControlComboBox
-                            name="cbDistrictID"
                             colspan="9"
-                            labelcolspan="3"
-                            disabled={IsSystem}
-                            label="Quận/huyện"
-                            validatonList={["Comborequired"]}
-                            isautoloaditemfromcache={true}
-                            loaditemcachekeyid="ERPCOMMONCACHE.DISTRICT"
-                            valuemember="DistrictID"
-                            nameMember="DistrictName"
                             controltype="InputControl"
-                            value={-1}
-                            listoption={[]}
                             datasourcemember="DistrictID"
+                            disabled={IsSystem}
                             filterName="cbProvinceID"
                             filterobj="ProvinceID"
                             filterrest="cbWardID"
+                            isautoloaditemfromcache={true}
+                            label="Quận/huyện"
+                            labelcolspan="3"
+                            listoption={[]}
+                            loaditemcachekeyid="ERPCOMMONCACHE.DISTRICT"
+                            name="cbDistrictID"
+                            nameMember="DistrictName"
+                            validatonList={["Comborequired"]}
+                            value={-1}
+                            valuemember="DistrictID"
                         />
                     </div>
                     <div className="col-md-12">
                         <FormControl.FormControlComboBox
-                            name="cbWardID"
                             colspan="9"
-                            labelcolspan="3"
-                            disabled={IsSystem}
-                            label="Phường/Xã"
-                            validatonList={["Comborequired"]}
-                            isautoloaditemfromcache={true}
-                            loaditemcachekeyid="ERPCOMMONCACHE.WARD"
-                            valuemember="WardID"
-                            nameMember="WardName"
                             controltype="InputControl"
-                            value={-1}
-                            isMultiSelect={this.props.isMultiSelectWard}
-                            listoption={[]}
                             datasourcemember="WardID"
+                            disabled={IsSystem}
                             filterName="cbDistrictID"
-                            filterValue=""
                             filterobj="DistrictID"
+                            filterValue=""
+                            isautoloaditemfromcache={true}
+                            isMultiSelect={this.props.isMultiSelectWard}
+                            label="Phường/Xã"
+                            labelcolspan="3"
+                            listoption={[]}
+                            loaditemcachekeyid="ERPCOMMONCACHE.WARD"
+                            name="cbWardID"
+                            nameMember="WardName"
+                            validatonList={["Comborequired"]}
+                            value={-1}
+                            valuemember="WardID"
                         />
                     </div>
 
@@ -265,6 +262,9 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
+StoreWardCom.defaultProps = {
+    PageInfo: ""
+};
 
 const StoreWard = connect(mapStateToProps, mapDispatchToProps)(StoreWardCom);
 export default StoreWard;
