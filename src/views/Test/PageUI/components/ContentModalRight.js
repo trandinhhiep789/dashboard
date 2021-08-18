@@ -21,7 +21,7 @@ class ContentModalRightCom extends Component {
 
     }
     handleClose() {
-        this.props.hideModal();
+        this.props.onHideModa()
     }
 
     handleConfirm() {
