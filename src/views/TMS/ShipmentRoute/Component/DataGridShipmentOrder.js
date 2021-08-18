@@ -55,9 +55,10 @@ class DataGridShipmentOderCom extends Component {
             GridDataShip: [],
             KeywordId: '',
             printDataID: '',
-            widthPercent: "",
             ShipmentRouteID: "",
+            widthPercent: 0,
             changeGird: false,
+            maxWidthGird: 0
 
         };
         this.notificationDOMRef = React.createRef();
@@ -69,18 +70,10 @@ class DataGridShipmentOderCom extends Component {
     componentDidMount() {
         this.updateWindowDimensions();
         window.addEventListener("resize", this.updateWindowDimensions);
-        const clientWidth = document.getElementById('changeMaxWidth').clientWidth;
         if (this.props.dataSource) {
             const gridData = this.getCheckList(this.props.dataSource);
             this.setState({ GridData: gridData });
         }
-        let permissionKey = this.props.RequirePermission;
-        if (!permissionKey) {
-            this.setState({ IsPermision: true }); return;
-        }
-        this.checkPermission(permissionKey).then((result) => {
-            this.setState({ IsPermision: result });
-        })
     }
 
 
@@ -89,11 +82,11 @@ class DataGridShipmentOderCom extends Component {
     }
    
     updateWindowDimensions = () => {
-        const widthModal = (window.innerWidth * 60) / 100;
+        const widthModal = (window.innerWidth * 55) / 100;
         const clientWidth = document.getElementById('changeMaxWidth').clientWidth;
         this.setState({
             widthPercent: widthModal,
-            maxWidthGird: clientWidth - widthModal
+            maxWidthGird: clientWidth 
         })
     };
 
@@ -567,7 +560,7 @@ class DataGridShipmentOderCom extends Component {
 
                             />
                         },
-                        maxWidth: 850 + 'px'
+                        maxWidth: widthPercent + 'px'
                     });
                 }
                 else {
@@ -657,7 +650,7 @@ class DataGridShipmentOderCom extends Component {
 
                         />
                     },
-                    maxWidth: 850 + 'px'
+                    maxWidth: widthPercent + 'px'
                 });
             }
             else {
@@ -687,7 +680,7 @@ class DataGridShipmentOderCom extends Component {
                             onChangeValue={this.handleShipmentOrder.bind(this)}
                         />
                     },
-                    maxWidth: 850 + 'px'
+                    maxWidth: widthPercent + 'px'
                 });
             }
             else {
@@ -847,7 +840,7 @@ class DataGridShipmentOderCom extends Component {
                         <table id="fixtable" className="jsgrid-table"  >
                             <thead className="jsgrid-header-row" >
                                 <tr>
-                                    <th className="jsgrid-header-cell" style={{ width: '2%' }}></th>
+                                    <th className="jsgrid-header-cell" style={{ width: '5%' }}></th>
                                     <th className="jsgrid-header-cell" style={{ width: '95%' }}>Thông tin vận đơn</th>
                                 </tr>
                             </thead>
@@ -879,7 +872,7 @@ class DataGridShipmentOderCom extends Component {
                                         }
                                         // console.log("check",rowItem.ShipmentOrderID,this.state.GridDataShip,this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
                                         return (<tr key={rowIndex} className={rowtrClass}>
-                                            <td className={rowUndelivery} style={{ width: '2%' }}>
+                                            <td className={rowUndelivery} style={{ width: '5%' }}>
                                                 <ul>
                                                     {rowItem.ShipmentRouteID == "" ?
                                                         (<React.Fragment>
@@ -1386,15 +1379,6 @@ class DataGridShipmentOderCom extends Component {
         let MultipleCheck = false;
         if (this.props.isMultipleCheck)
             MultipleCheck = true;
-        if (this.state.IsPermision == undefined) {
-            return <p className="col-md-12">Đang kiểm tra quyền...</p>
-        }
-        if (this.state.IsPermision == false) {
-            return <p className="col-md-12">Bạn không có quyền!</p>
-        }
-        if (this.state.IsPermision === 'error') {
-            return <p className="col-md-12">Lỗi khi kiểm tra quyền, vui lòng thử lại</p>
-        }
         let classCustom;
         if (this.props.classCustom != "") {
             classCustom = "col-lg-12 SearchForm"
@@ -1448,10 +1432,9 @@ class DataGridShipmentOderCom extends Component {
                             </div>
                         }
                     </div>
-                    <div className="card-body" style={{ maxWidth: this.state.maxWidthGird }}>
+                       <div className="card-body" style={{ maxWidth: this.state.changeGird==false?this.state.maxWidthGird:this.state.maxWidthGird-this.state.widthPercent }}> 
                         <div className="jsgrid">
                             {datagrid}
-
                             {this.props.IsAutoPaging &&
                                 <GridPage numPage={pageCount} currentPage={this.state.PageNumber} onChangePage={this.onChangePageHandle} />
                             }
