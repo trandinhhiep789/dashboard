@@ -913,7 +913,7 @@ class ListShipCoordinatorCom extends Component {
                                                 <li>
                                                     <span>Km ước lượng:
                                                         <span data-tip data-for="Distances" data-id="Distances" className="fw-600">{Via_Distances}</span>
-                                                        <ReactTooltip id="Distances" type='warning'>
+                                                        <ReactTooltip id="Distances" type='warning' className="title-tooltip-estimates">
                                                             {Distances_RouteLst && Distances_RouteLst.map((item, index) => {
                                                                 return (
                                                                     <span>{item.Routeitem} : {item.Distances}</span>
