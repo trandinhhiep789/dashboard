@@ -545,6 +545,14 @@ class DataGridShipmentOderCom extends Component {
         })
         this.props.hideModal()
     }
+    handleCloseModal() {
+        this.props.hideModal()
+        this.setState({
+            changeGird: false,
+            GridDataShip: [],
+            ShipmentRouteID: ""
+        })
+    }
 
 
     handleUserCoordinator() {
@@ -569,6 +577,7 @@ class DataGridShipmentOderCom extends Component {
                                 IsCoordinator={true}
                                 IsCancelDelivery={true}
                                 onChangeValue={this.handleShipmentOrder.bind(this)}
+                                onChangeClose={this.handleCloseModal.bind(this)}
 
                             />
                         },
@@ -661,6 +670,7 @@ class DataGridShipmentOderCom extends Component {
                             IsCoordinator={true}
                             IsCancelDelivery={true}
                             onChangeValue={this.handleShipmentOrder.bind(this)}
+                            onChangeClose={this.handleCloseModal.bind(this)}
 
                         />
                     },
@@ -693,6 +703,7 @@ class DataGridShipmentOderCom extends Component {
                             IsCoordinator={true}
                             IsCancelDelivery={true}
                             onChangeValue={this.handleShipmentOrder.bind(this)}
+                            onChangeClose={this.handleCloseModal.bind(this)}
                         />
                     },
                     maxWidth: widthPercent + 'px'
@@ -983,10 +994,9 @@ class DataGridShipmentOderCom extends Component {
 
                                                     <li className="times">
                                                         <span className="group-times">
-                                                            <ul>
-                                                                {this._genCommentCarrierPartner(rowItem.CarrierTypeID, rowItem.CarrierTypeName)}
-                                                            </ul>
-
+                                                            {
+                                                                this._genCommentCarrierPartner(rowItem.CarrierTypeID, rowItem.CarrierTypeName)
+                                                            }
                                                             <span className="time-item">
                                                                 <span className="txtCreatedOrderTime">Tạo: {formatMonthDate(rowItem.CreatedOrderTime)}</span>
                                                                 <span className="txtCreatedOrderTime">Xuất: {formatMonthDate(rowItem.OutputGoodsDate)}</span>
