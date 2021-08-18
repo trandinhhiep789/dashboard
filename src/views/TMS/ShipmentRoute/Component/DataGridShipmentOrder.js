@@ -63,6 +63,7 @@ class DataGridShipmentOderCom extends Component {
         };
         this.notificationDOMRef = React.createRef();
         this.renderDataGridSmallSize = this.renderDataGridSmallSize.bind(this);
+        this.handleClose = this.handleClose.bind(this)
     }
 
 
@@ -536,6 +537,15 @@ class DataGridShipmentOderCom extends Component {
         });
         this.props.onSubmitItem(listMLObject);
     }
+
+    handleClose = () => {
+        this.setState({
+            changeGird: false
+        })
+        this.props.hideModal()
+    }
+
+
     handleUserCoordinator() {
         this.props.hideModal();
         const { widthPercent } = this.state;
@@ -546,6 +556,7 @@ class DataGridShipmentOderCom extends Component {
                     this.props.showModal(MODAL_TYPE_VIEW, {
                         title: 'Phân tuyến điều phối vận đơn',
                         isShowOverlay: false,
+                        onhideModal: this.handleClose,
                         content: {
                             text: <ListShipCoordinator
                                 ShipmentOrderID={0}
@@ -910,57 +921,63 @@ class DataGridShipmentOderCom extends Component {
                                                 </ul>
                                             </td>
 
-                                            <td className="jsgrid-cell group-address" style={{ width: '95%' }}>
+                                            <td className="jsgrid-cell group-info-limit" style={{ width: '95%' }}>
                                                 <ul>
-                                                    <li className="item times">
-                                                        <i className="ti ti-timer"></i>
-                                                        <span className="fw-600">{rowItem.ExpectedDeliveryDate != null ? this._genCommentTime(rowItem.ExpectedDeliveryDate) : ""}</span>
-                                                    </li>
-                                                    <li className="item status">
-                                                        <i className="fa fa-location-arrow"></i>
-                                                        <span>{rowItem.ShipmentOrderStatusName}</span>
-                                                    </li>
-                                                    <li className="item">
-                                                        <span className="total">
+                                                    <li className="info-time">
+                                                        <span className="item times">
+                                                            <i className="ti ti-timer"></i>
+                                                            <span className="fw-600">{rowItem.ExpectedDeliveryDate != null ? this._genCommentTime(rowItem.ExpectedDeliveryDate) : ""}</span>
+                                                        </span>
+                                                        <span className="item status">
+                                                            <i className="fa fa-location-arrow"></i>
+                                                            <span>{rowItem.ShipmentOrderStatusName}</span>
+                                                        </span>
+
+                                                        <span className="item  total">
                                                             <span className="price-title">COD: </span>
                                                             <span className="price-debt">-{rowItem.TotalCOD}</span>
                                                         </span>
                                                     </li>
-                                                    <li className="item info-customer">
-                                                        <i className="fa fa-user"></i>
-                                                        <div className="person-info">
-                                                            <span className="name">{rowItem.ReceiverFullName}</span>
-                                                            <span className="line">-</span>
-                                                            <span className={rowItem.PhoneCount > 1 ? "phone  phonered" : "phone"}>({rowItem.ReceiverPhoneNumber})</span>
-                                                            <span className="line">-</span>
-                                                            <span className="partner-sale-Order">{rowItem.PartnerSaleOrderID}</span>
-                                                            <button className="btn-copy-clipboard" data-id={rowItem.PartnerSaleOrderID} onClick={this.copyToClipboard.bind(this)}>
-                                                                <i className="fa fa-copy" data-id={rowItem.PartnerSaleOrderID}></i>
+                                                    <li className="info-customer">
+                                                        <div className="item">
+                                                            <i className="fa fa-user"></i>
+                                                            <div className="person-info">
+                                                                <span className="name">{rowItem.ReceiverFullName}</span>
+                                                                <span className="line">-</span>
+                                                                <span className={rowItem.PhoneCount > 1 ? "phone  phonered" : "phone"}>({rowItem.ReceiverPhoneNumber})</span>
+                                                                <span className="line">-</span>
+                                                                <span className="partner-sale-Order">{rowItem.PartnerSaleOrderID}</span>
+                                                                <button className="btn-copy-clipboard" data-id={rowItem.PartnerSaleOrderID} onClick={this.copyToClipboard.bind(this)}>
+                                                                    <i className="fa fa-copy" data-id={rowItem.PartnerSaleOrderID}></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div className="item">
+                                                            <Link
+                                                                className="linktext blank"
+                                                                target="_blank"
+                                                                to={{ pathname: "/ShipmentOrder/Detail/" + rowItem.ShipmentOrderID }}>
+                                                                {rowItem.ShipmentOrderID}
+                                                            </Link>
+                                                            <button className="btn-copy-clipboard" data-id={rowItem.ShipmentOrderID} onClick={this.copyToClipboardShipmentOrder.bind(this)}>
+                                                                <i className="fa fa-copy" data-id={rowItem.ShipmentOrderID}></i>
                                                             </button>
                                                         </div>
                                                     </li>
-                                                    <li className="item">
-                                                        <Link
-                                                            className="linktext blank"
-                                                            target="_blank"
-                                                            to={{ pathname: "/ShipmentOrder/Detail/" + rowItem.ShipmentOrderID }}>
-                                                            {rowItem.ShipmentOrderID}</Link>
-                                                        <button className="btn-copy-clipboard" data-id={rowItem.ShipmentOrderID} onClick={this.copyToClipboardShipmentOrder.bind(this)}>
-                                                            <i className="fa fa-copy" data-id={rowItem.ShipmentOrderID}></i>
-                                                        </button>
-                                                    </li>
-                                                    <li className="item address-customer">
+                                                   
+                                                    <li className="address-customer">
                                                         <span>{rowItem.ReceiverFullAddress}</span>
                                                     </li>
 
                                                     <li className={rowItem.IsInputReturn == true ? "item lstProducts lblReturns" : "item lstProducts"}>
                                                         <span >{rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(/;/g, '<br/>'))}</span>
                                                     </li>
-                                                    <li className="item note">
+
+                                                    <li className="note">
                                                         <span>{rowItem.OrderNote != "" ? "Ghi chú: " + rowItem.OrderNote : ""}</span>
                                                     </li>
-                                                 
-                                                    <li className="item times">
+
+                                                    <li className="times">
                                                         <span className="group-times">
                                                             <span className="time-item">
                                                                 <span className="txtCreatedOrderTime">Tạo: {formatMonthDate(rowItem.CreatedOrderTime)}</span>

@@ -297,7 +297,11 @@
                                                     }
                                                     &.infoProduict{
                                                         clear: both;
+                                                        .title-tooltip{
+                                                            margin-top: -10px;;
+                                                        }
                                                         span{
+                                                           &.title{
                                                             width: 100%;
                                                             text-overflow: ellipsis;
                                                             overflow: hidden;
@@ -307,7 +311,9 @@
                                                             text-align: left;
                                                             display: block;
                                                             height: 25px;
+                                                           }
                                                         }
+                                                      
                                                     }
                                                     &.delivery-status{
                                                         display: flex;
@@ -389,7 +395,12 @@
                                             }
                                         }
                                         &.infoProduict{
+                                            clear: both;
+                                            .title-tooltip{
+                                                margin-top: -10px;;
+                                            }
                                             span{
+                                                &.title{
                                                 width: 100%;
                                                 text-overflow: ellipsis;
                                                 overflow: hidden;
@@ -398,7 +409,8 @@
                                                 -webkit-box-orient: vertical;
                                                 text-align: left;
                                                 display: block;
-                                                height: 20px;
+                                                height: 25px;
+                                                }
                                             }
                                         }
                                         &.delivery-status{

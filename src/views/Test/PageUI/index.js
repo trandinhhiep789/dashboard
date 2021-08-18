@@ -67,7 +67,8 @@ class PageUICom extends React.Component {
         super(props);
         this.handleShowModal = this.handleShowModal.bind(this);
         this.handlePrintClick = this.handlePrintClick.bind(this);
-        this.handleChangeGird = this.handleChangeGird.bind(this)
+        this.handleChangeGird = this.handleChangeGird.bind(this);
+        this.handleClose = this.handleClose.bind(this)
         this.state = {
             widthPercent: "",
             changeGird: false,
@@ -109,7 +110,14 @@ class PageUICom extends React.Component {
         this.handleShowModal()
     }
 
-    handleChangeGird() {
+     handleChangeGird() {
+        this.setState({
+            changeGird: false
+        })
+        this.props.hideModal()
+    }
+
+    handleClose =()=>{
         this.setState({
             changeGird: false
         })
@@ -122,6 +130,7 @@ class PageUICom extends React.Component {
         this.props.showModal(MODAL_TYPE_VIEW, {
             title: "Phân tuyến điều phối vận đơn",
             isShowOverlay: false,
+            onhideModal: this.handleClose,
             content: {
                 text: <ContentModalRight
                     onHideModa={this.handleChangeGird}

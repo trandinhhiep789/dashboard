@@ -220,6 +220,105 @@ $font-weight-600: 600;
                             }
                         }
                     }
+                    &.group-info-limit{
+                        clear: both;
+                        .info-time{
+                            display: flex;
+                            flex-direction: row;
+                            flex-wrap: nowrap;
+                            align-content: center;
+                            justify-content: space-between;
+                            .item{
+                                clear: both;
+                                &.status {
+                                    color: #fc7425;
+                                }
+                                &.total {
+                                    background: #f24646;
+                                    color: #fff;
+                                    font-size: 12px;
+                                    line-height: 16px;
+                                    border-radius: 3px;
+                                    padding: 2px 5px;
+                                    letter-spacing: .5px;
+                                }
+                                &.times {
+                                    color: #2b8eea;
+                                    font-weight: 600;
+                                    font-size: 12px;
+                                    line-height: 16px;
+                                }
+                            }
+                        }
+                        .note{
+                            font-size: 12px;
+                            line-height: 16px;
+                            font-weight: 600;
+                            color: #a02424;
+                        }
+                        .info-customer {
+                            display: flex;
+                            flex-direction: row;
+                            flex-wrap: nowrap;
+                            align-content: center;
+                            justify-content: space-between;
+                            align-items: center;
+                            .item {
+                                display: flex;
+                                flex-direction: row;
+                                flex-wrap: nowrap;
+                                align-content: center;
+                                justify-content: flex-start;
+                                align-items: center;
+                                .phone {
+                                    color: #2b8eea;
+                                }
+                                .partner-sale-Order {
+                                    color: #2b8eea;
+                                }
+                                .btn-copy-clipboard {
+                                    border: none;
+                                    background: transparent;
+                                    font-size: 13px;
+                                    cursor: pointer;
+                                }
+                            }
+                        }
+                        .times{
+                            .group-times {
+                                width: 100%;
+                                display: inline-flex;
+                                flex: auto;
+                                flex-direction: row;
+                                align-content: center;
+                                flex-wrap: nowrap;
+                                justify-content: space-between;
+                                .time-item {
+                                    display: flex;
+                                    justify-content: center;
+                                    flex: auto;
+                                   .txtCreatedOrderTime {
+                                        font-weight: 600;
+                                        color: #615d5d;
+                                        display: flex;
+                                        justify-content: flex-start;
+                                        width: 100%;
+                                    }
+                                    .intervale {
+                                        display: inline-block;
+                                        text-align: right;
+                                        width: 100%;
+                                        float: right;
+                                    }
+                                }
+                            }
+                        }
+                       .address-customer {
+                            font-size: 12px;
+                            font-weight: 600;
+                        }
+                    }
+                    
                     &.group-address{
                         clear: both;
                         ul{

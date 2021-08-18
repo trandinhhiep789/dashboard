@@ -1040,7 +1040,7 @@ class ListShipCoordinatorCom extends Component {
                                                                             </li>
                                                                             <li className="item infoProduict">
                                                                                 <span data-tip data-for={item.ShipmentOrderID} data-id={item.ShipmentOrderID}>{item.PrimaryShipItemName}</span>
-                                                                                <ReactTooltip id={item.ShipmentOrderID} type='warning'>
+                                                                                <ReactTooltip id={item.ShipmentOrderID} type='warning'  className="title-tooltip" place="right">
                                                                                     <span>{item.ShipItemNameList}</span>
                                                                                 </ReactTooltip>
 
