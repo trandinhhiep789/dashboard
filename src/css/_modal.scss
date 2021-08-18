@@ -55,7 +55,12 @@
                     float: left;
                     list-style: none;
                     margin-right: 10px;
-                    
+                    &.kmestimates{
+                        
+                        .numkm{
+                            color: #33cabb;
+                        }
+                    }
                 }
             }
         }

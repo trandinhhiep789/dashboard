@@ -910,9 +910,9 @@ class ListShipCoordinatorCom extends Component {
 
                                         {Via_Distances != "" ? (
                                             <React.Fragment>
-                                                <li>
+                                                <li className="kmestimates">
                                                     <span>Km ước lượng:
-                                                        <span data-tip data-for="Distances" data-id="Distances" className="fw-600">{Via_Distances}</span>
+                                                        <span data-tip data-for="Distances" data-id="Distances" className="numkm fw-600">{Via_Distances}</span>
                                                         <ReactTooltip id="Distances" type='warning' className="title-tooltip-estimates">
                                                             {Distances_RouteLst && Distances_RouteLst.map((item, index) => {
                                                                 return (
