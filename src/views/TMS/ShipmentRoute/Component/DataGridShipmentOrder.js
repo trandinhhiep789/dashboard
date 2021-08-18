@@ -994,9 +994,10 @@ class DataGridShipmentOderCom extends Component {
 
                                                     <li className="times">
                                                         <span className="group-times">
-                                                            {
-                                                                this._genCommentCarrierPartner(rowItem.CarrierTypeID, rowItem.CarrierTypeName)
-                                                            }
+                                                        <ul>
+                                                                {this._genCommentCarrierPartner(rowItem.CarrierTypeID, rowItem.CarrierTypeName)}
+                                                            </ul>
+
                                                             <span className="time-item">
                                                                 <span className="txtCreatedOrderTime">Tạo: {formatMonthDate(rowItem.CreatedOrderTime)}</span>
                                                                 <span className="txtCreatedOrderTime">Xuất: {formatMonthDate(rowItem.OutputGoodsDate)}</span>
