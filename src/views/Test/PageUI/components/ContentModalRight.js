@@ -424,7 +424,13 @@ class ContentModalRightCom extends Component {
                                             <span>Mã: <span className="fw-600">A123123123</span></span>
                                         </li>
                                         <li>
-                                            <span>Km ước lượng: <span className="fw-600">30km</span></span>
+                                            <span>Km ước lượng: <span data-tip data-for="produc1" data-id="produc1" className="fw-600">30km</span>
+                                                <ReactTooltip id="produc1" type='warning'>
+                                                    <span>kho-210714000000199: 499m</span>
+                                                    <span>210714000000199-210714000000839: 4099m</span>
+                                                    <span>210714000000839-Kho: 409m</span>
+                                                </ReactTooltip>
+                                            </span>
                                         </li>
                                         <li>
                                             <span>di chuyển: <span className="fw-600">50'</span></span>

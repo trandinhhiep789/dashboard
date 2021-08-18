@@ -876,7 +876,33 @@ class ListShipCoordinatorCom extends Component {
 
                         <div className="row  mt-10 lstProduct">
                             <div className="col-12 ">
+                                <div className="pull-left group-info-Route">
+                                    <ul>
+                                        {ShipmentRouteID != "" ? (
+                                            <li>
+                                                <span>Mã tuyến: <span className="fw-600">{ShipmentRouteID}</span></span>
+                                            </li>
+                                        ) : ""}
+
+                                        {Via_Distances != "" ? (
+                                            <React.Fragment>
+                                                <li>
+                                                    <span>Km ước lượng: <span className="fw-600">{Via_Distances}</span></span>
+                                                </li>
+                                                <li>
+                                                    <span>di chuyển: <span className="fw-600">{Via_Durations}'</span></span>
+                                                </li>
+                                            </React.Fragment>
+
+                                        ) : ""}
+                                    </ul>
+                                </div>
                                 <div className="nav-group-action">
+                                    {ShipmentOrder.length > 1 ?
+                                        (
+                                            <button className="btn btn-w-md btn-round btn-info" type="button" onClick={this.handleDistances.bind(this)}>Tính khoản cách</button>
+                                        ) : ""
+                                    }
                                     <button type="button" onClick={() => this.HandleChangeGird(1)}><i className="ti-menu-alt"></i></button>
                                     <button type="button" onClick={() => this.HandleChangeGird(2)}><i className="ti-menu"></i></button>
                                 </div>
@@ -1004,25 +1030,9 @@ class ListShipCoordinatorCom extends Component {
                     </div>
                 </div>
                 <div className="modal-footer modal-footer-center">
-                    {Via_Distances != "" ? (
 
-                        <div className="group-info-estimates">
-                            <ul>
-                                <li>
-                                    <span>Km ước lượng: <span>{Via_Distances}</span></span>
-                                </li>
-                                <li>
-                                    <span>di chuyển: <span>{Via_Durations}'</span></span>
-                                </li>
-                            </ul>
-                        </div>
-                    ) : ""}
 
-                    {ShipmentOrder.length > 1 ?
-                        (
-                            <button className="btn btn-w-md btn-round btn-info ml-10" type="button" onClick={this.handleDistances.bind(this)}>Tính khoản cách</button>
-                        ) : ""
-                    }
+
                     <button className="btn btn-w-md btn-round btn-secondary" type="button" onClick={this.handleClose.bind(this)}>Làm mới</button>
                     <button className="btn btn-w-md btn-round btn-info ml-10" type="button" onClick={this.handleConfirm.bind(this)}>Cập nhật</button>
                 </div>
