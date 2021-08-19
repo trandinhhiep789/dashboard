@@ -561,7 +561,7 @@ class DataGridShipmentOderCom extends Component {
         if (this.state.GridDataShip.length > 0) {
             this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderNewLst", this.state.GridDataShip).then(apiResult => {
                 if (!apiResult.IsError) {
-                    this.setState({ GridDataShip: apiResult.ResultObject, changeGird: true });
+                    this.setState({ GridDataShip: apiResult.ResultObject.ShipmentOrderDeliverList, changeGird: true });
                     this.props.showModal(MODAL_TYPE_VIEW, {
                         title: 'Phân tuyến điều phối vận đơn',
                         isShowOverlay: false,
@@ -572,7 +572,7 @@ class DataGridShipmentOderCom extends Component {
                                 ShipmentRouteID
                                 ShipmentRouteID={this.state.ShipmentRouteID}
                                 InfoCoordinator={this.state.GridDataShip}
-                                ShipmentOrderSame={[]}
+                                ShipmentOrderSame={apiResult.ResultObject.ShipmentOrderDeliverSameList}
                                 IsUserCoordinator={true}
                                 IsCoordinator={true}
                                 IsCancelDelivery={true}
