@@ -634,7 +634,7 @@ class ListShipCoordinatorCom extends Component {
         let { ShipmentOrder, ShipmentRouteID, ShipmentOrderSameLst, ShipmentRouteLst, ShipmentRouteSameLst, Distances_RouteLst, Via_Distances, Via_Durations, girdSlide } = this.state;
         let resultShipmentRoute = ShipmentRouteLst.filter(n => n.ShipmentRouteID != ShipmentRouteID);
         let resultShipmentRouteSame = ShipmentRouteSameLst.filter(n => n.ShipmentRouteID != ShipmentRouteID);
-        console.log("Distances_RouteLst", Distances_RouteLst)
+        console.log("ShipmentOrderSameLst", ShipmentOrderSameLst)
         return (
             <React.Fragment>
                 <div className="card">
@@ -955,7 +955,7 @@ class ListShipCoordinatorCom extends Component {
                                 if (resultShipmentRoute.length > 0) {
                                     return (
                                         <div className="col-12">
-                                            <Slide easing="ease" slidesToShow={resultShipmentRoute.length >= 3 ? 3 : 2} slidesToScroll={1} autoplay={false} cssClass="slide-product">
+                                            <Slide easing="ease" slidesToShow={resultShipmentRoute.length >= 3 ? 2 : 2} slidesToScroll={1} autoplay={false} cssClass="slide-product">
                                                 {resultShipmentRoute.map((item, index) => {
                                                     return (
                                                         <div key={"Route" + index} className="col-md-6 col-lg-4 each-slide">
@@ -989,7 +989,7 @@ class ListShipCoordinatorCom extends Component {
                                 } else if (resultShipmentRouteSame.length > 0 && girdSlide == false) {
                                     return (
                                         <div className="col-12">
-                                            <Slide easing="ease" slidesToShow={resultShipmentRouteSame.length >= 3 ? 3 : 2} slidesToScroll={1} autoplay={false} cssClass="slide-product">
+                                            <Slide easing="ease" slidesToShow={resultShipmentRouteSame.length >= 3 ? 2 : 2} slidesToScroll={1} autoplay={false} cssClass="slide-product">
                                                 {resultShipmentRouteSame.map((item, index) => {
                                                     return (
                                                         <div key={"Route" + index} className="col-md-6 col-lg-4 each-slide">
@@ -1024,7 +1024,7 @@ class ListShipCoordinatorCom extends Component {
                                 else {
                                     return (
                                         <div className="col-12">
-                                            <Slide easing="ease" slidesToShow={ShipmentOrderSameLst.length >= 3 ? 3 : 2} slidesToScroll={1} autoplay={false} cssClass="slide-product">
+                                            <Slide easing="ease" slidesToShow={ShipmentOrderSameLst.length >= 3 ? 2 : 2} slidesToScroll={1} autoplay={false} cssClass="slide-product">
                                                 {ShipmentOrderSameLst.map((item, index) => {
                                                     let resultdd = ShipmentOrder.find(n => n.ShipmentOrderID == item.ShipmentOrderID)
                                                     if (resultdd == undefined) {
