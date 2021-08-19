@@ -402,6 +402,7 @@
                                         }
                                         &.infoProduict{
                                             clear: both;
+                                            text-align: left;
                                             .title-tooltip{
                                                 margin-top: -10px;;
                                             }
@@ -442,11 +443,23 @@
                                         &.address-customer{
                                             display: flex;
                                             justify-content: flex-start;
+                                            
                                             span{
                                                 text-align: left;
                                                 line-height: 17px;
                                                 font-size: 12px;
                                                 font-weight: 600;
+                                                &.title{
+                                                    white-space: break-spaces;
+                                                    text-overflow: ellipsis;
+                                                    display: block;
+                                                    -webkit-line-clamp: 2;
+                                                    -webkit-box-orient: vertical;
+                                                    overflow: hidden;
+                                                    height: 34px;
+                                                    line-height: 17px;
+                                                    max-height: 34px;
+                                                }
                                             }
                                         }
                                     }
