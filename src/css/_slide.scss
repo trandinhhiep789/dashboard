@@ -1,4 +1,7 @@
 .slide{
+    &.slide-product{
+        overflow: initial;
+    }
     .each-slide {
         width: 100%;
         display: inline-block;

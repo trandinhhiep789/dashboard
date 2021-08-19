@@ -46,7 +46,9 @@
     
     &.modalRight{
         clear: both;
-       
+       &>div{
+        overflow-x: hidden;
+       }
         .group-info-Route{
             clear: both;
             ul{

@@ -463,21 +463,24 @@ class ContentModalRightCom extends Component {
                                                             <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
                                                         </li>
                                                         <li className="item infoProduict">
-                                                            <span className="title" data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
-                                                            <ReactTooltip id="producname1" type='warning' className="title-tooltip" place="right">
-                                                                <span>Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H</span>
+                                                            <span className="title" data-tip data-for="producnamenew1" data-id="producnamenew1" >Tivi LED Sony KD-49X8000H</span>
+                                                            <ReactTooltip id="producnamenew1" type='warning' className="title-tooltip" place="right" className="title-tooltip-estimates" >
+                                                                <span>Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H </span>
                                                             </ReactTooltip>
                                                         
                                                         </li>
                                                         <li className="item infoProduict">
                                                            
-                                                            <span className="title" data-tip data-for="producname2" data-id="producname2">Tủ lạnh Samsung RT20HAR8DBU/SV</span>
-                                                            <ReactTooltip id="producname2" type='warning' className="title-tooltip" place="right">
+                                                            <span className="title" data-tip data-for="producnamenew2" data-id="producnamenew2">Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                            <ReactTooltip id="producnamenew2" type='warning' className="title-tooltip" place="right">
                                                                 <span>Tủ lạnh Samsung RT20HAR8DBU/SV</span>
                                                             </ReactTooltip>
                                                         </li>
                                                         <li className="item address-customer">
-                                                            <span>Cc himlam Phú An,, Phường Phước Long A, Quận 9, Hồ Chí Minh</span>
+                                                            <span className="title" data-tip data-for="address1" data-id="address1">Cc himlam Phú An,, Phường Phước Long A, Quận 9, Hồ Chí Minh</span>
+                                                            <ReactTooltip id="address1" type='warning' className="title-tooltip" place="right" className="title-tooltip-estimates">
+                                                                <span>Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H </span>
+                                                            </ReactTooltip>
                                                         </li>
 
                                                     </ul>
