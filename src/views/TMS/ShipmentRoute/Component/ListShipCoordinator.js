@@ -393,7 +393,7 @@ class ListShipCoordinatorCom extends Component {
 
             this.state.ShipmentOrder[indexRow].IsRoute = this.state.objCoordinator.IsRoute;
             this.state.ShipmentOrder[indexRow].OrderIndex = indexRow;
-            this.state.ShipmentOrder[indexRow].DriverUser = elementDeliverUserList.join();
+            this.state.ShipmentOrder[indexRow].DriverUser = elementDeliverUserList.join(';');
         });
 
         this.state.ShipmentOrder[0].DeliverUserTotalCODList = this.groupByNew(element, ['UserName', 'CarrierTypeID']);
