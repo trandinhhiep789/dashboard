@@ -399,7 +399,7 @@ class ListShipCoordinatorCom extends Component {
         this.state.ShipmentOrder[0].DeliverUserTotalCODList = this.groupByNew(element, ['UserName', 'CarrierTypeID']);
         this.state.ShipmentOrder[0].ShipmentRouteID = this.state.ShipmentRouteID;
         this.setState({ FormValidation: elementobject });
-        console.log(this.state.ShipmentOrder);
+      
         if (this.checkInputName(elementobject) != "") {
             this.addNotification(this.checkInputName(elementobject), true);
             return;
@@ -432,7 +432,11 @@ class ListShipCoordinatorCom extends Component {
     handleDeleteID = (id) => e => {
         let resultRouteID = this.state.ShipmentOrder.find(n => n.ShipmentOrderID == id).ShipmentRouteID;
         this.state.ShipmentOrder.splice(this.state.ShipmentOrder.findIndex(n => n.ShipmentOrderID == id), 1);
-        if (resultRouteID == "") {
+
+        let resultCheckRouteID = this.state.ShipmentOrder.find(n => n.ShipmentRouteID == resultRouteID);
+
+
+        if (resultRouteID == "" || resultCheckRouteID != null|| this.props.ShipmentRouteID != "") {
             this.setState({
                 ShipmentOrder: this.state.ShipmentOrder,
                 Via_Durations: 0,
@@ -1042,7 +1046,7 @@ class ListShipCoordinatorCom extends Component {
                                                                             </li>
                                                                             <li className="item infoProduict">
                                                                                 <span data-tip data-for={item.ShipmentOrderID} data-id={item.ShipmentOrderID}>{item.PrimaryShipItemName}</span>
-                                                                                <ReactTooltip id={item.ShipmentOrderID} type='warning'  className="title-tooltip" place="right">
+                                                                                <ReactTooltip id={item.ShipmentOrderID} type='warning' className="title-tooltip" place="right">
                                                                                     <span>{item.ShipItemNameList}</span>
                                                                                 </ReactTooltip>
 

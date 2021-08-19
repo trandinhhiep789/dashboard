@@ -619,7 +619,7 @@ class DataGridShipmentOderCom extends Component {
         this.addNotification(apiResult.Message, apiResult.IsError);
         if (!apiResult.IsError) {
             this.props.hideModal();
-            this.setState({ ShipmentRouteID: "", GridDataShip: [] });
+            this.setState({ ShipmentRouteID: "", GridDataShip: [] , changeGird: true});
             if (this.props.onChangePageLoad != null)
                 this.props.onChangePageLoad();
         }
