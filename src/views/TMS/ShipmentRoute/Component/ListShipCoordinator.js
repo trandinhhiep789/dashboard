@@ -355,6 +355,7 @@ class ListShipCoordinatorCom extends Component {
         let elementobject = {};
         let element = [];
         let elementDeliverUserList = [];
+        let elementDeliverUserFullList = [];
         this.state.ShipmentOrder.map((row, indexRow) => {
             if (this.state.objCoordinator.IsRoute == true && row.CarrierTypeID != this.state.ShipmentOrder[0].CarrierTypeID) {
                 //  this.addNotification("không cùng phương tiện giao hàng", true);
@@ -389,17 +390,19 @@ class ListShipCoordinatorCom extends Component {
 
             row["ShipmentOrder_DeliverUserList"].map((item, indexRow) => {
                 elementDeliverUserList.push(item.UserName)
+                elementDeliverUserFullList.push(item.UserName + "-" + item.FullName)
             });
 
             this.state.ShipmentOrder[indexRow].IsRoute = this.state.objCoordinator.IsRoute;
             this.state.ShipmentOrder[indexRow].OrderIndex = indexRow;
-            this.state.ShipmentOrder[indexRow].DriverUser = elementDeliverUserList.join(';');
+            this.state.ShipmentOrder[indexRow].DeliverUserLst = elementDeliverUserList.join();
+            this.state.ShipmentOrder[indexRow].DeliverUserFullNameList = elementDeliverUserFullList.join();
         });
 
         this.state.ShipmentOrder[0].DeliverUserTotalCODList = this.groupByNew(element, ['UserName', 'CarrierTypeID']);
         this.state.ShipmentOrder[0].ShipmentRouteID = this.state.ShipmentRouteID;
         this.setState({ FormValidation: elementobject });
-      
+
         if (this.checkInputName(elementobject) != "") {
             this.addNotification(this.checkInputName(elementobject), true);
             return;
@@ -436,7 +439,7 @@ class ListShipCoordinatorCom extends Component {
         let resultCheckRouteID = this.state.ShipmentOrder.find(n => n.ShipmentRouteID == resultRouteID);
 
 
-        if (resultRouteID == "" || resultCheckRouteID != null|| this.props.ShipmentRouteID != "") {
+        if (resultRouteID == "" || resultCheckRouteID != null || this.props.ShipmentRouteID != "") {
             this.setState({
                 ShipmentOrder: this.state.ShipmentOrder,
                 Via_Durations: 0,
@@ -965,15 +968,14 @@ class ListShipCoordinatorCom extends Component {
                                                                             </span>
                                                                             <span className="badge badge-warning time"><i className="ti ti-timer"></i> {item.ExpectedBeginDeliveryDate != null ? this._genCommentTime(item.ExpectedBeginDeliveryDate) : ""}</span>
                                                                         </li>
-                                                                        {/* <li className="item infoProduict">
-                                                                <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
-                                                                <ReactTooltip id="producname1" type='warning'>
-                                                                    <span>Tivi LED Sony KD-49X8000H</span>
-                                                                </ReactTooltip>
-
-                                                            </li>*/}
+                                                                        <li className="item infoProduict">
+                                                                            <span>{item.DeliverUserFullNameList}</span>
+                                                                        </li>
                                                                         <li className="item address-customer">
-                                                                            <span>{item.RouteNote}</span>
+                                                                            <span data-tip data-for={item.ShipmentRouteID} data-id={item.ShipmentRouteID} >{item.RouteNote.split(';')[0]}</span>
+                                                                            <ReactTooltip id={item.ShipmentRouteID} type='warning' className="title-tooltip-estimates">
+                                                                                <span>{item.RouteNote}</span>
+                                                                            </ReactTooltip>
                                                                         </li>
                                                                     </ul>
                                                                 </div>
@@ -1000,17 +1002,14 @@ class ListShipCoordinatorCom extends Component {
                                                                             </span>
                                                                             <span className="badge badge-warning time"><i className="ti ti-timer"></i> {item.ExpectedBeginDeliveryDate != null ? this._genCommentTime(item.ExpectedBeginDeliveryDate) : ""}</span>
                                                                         </li>
-                                                                        {/* <li className="item infoProduict">
-                                                                            <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
-                                                                            <ReactTooltip id="producname1" type='warning'>
-                                                                                <span>Tivi LED Sony KD-49X8000H</span>
-                                                                                <span>Tivi LED Sony KD-49X8000H</span>
-                                                                                <span>Tivi LED Sony KD-49X8000H</span>
-                                                                            </ReactTooltip>
-
-                                                                        </li> */}
+                                                                        <li className="item infoProduict">
+                                                                            <span >{item.DeliverUserFullNameList}</span>
+                                                                        </li>
                                                                         <li className="item address-customer">
-                                                                            <span>{item.RouteNote}</span>
+                                                                            <span data-tip data-for={item.ShipmentRouteID} data-id={item.ShipmentRouteID} >{item.RouteNote.split(';')[0]}</span>
+                                                                            <ReactTooltip id={item.ShipmentRouteID} type='warning' className="title-tooltip-estimates">
+                                                                                <span>{item.RouteNote}</span>
+                                                                            </ReactTooltip>
                                                                         </li>
                                                                     </ul>
                                                                 </div>
