@@ -146,7 +146,7 @@ export default class SearchForm extends Component {
         });
         var MLObjectInfo = JSON.stringify(MLObject);
         localStorage.setItem('SearchShipmentOrderInfo', MLObjectInfo)
-       
+
     };
 
     renderSearchForm() {
@@ -386,9 +386,12 @@ export default class SearchForm extends Component {
                 <div className={classNamebtnSearch}>
                     {/* <div className="btnSearch btncustom"> */}
                     <div className={this.props.btnGroup ? this.props.btnGroup : 'btnSearch btncustom'}>
-                        <div className="btn-settings">
-                            <i onClick={() => this.HandleSetting(this)} className="ti-settings"></i>
-                        </div>
+                        {this.props.IsSetting == true ? (
+                            <div className="btn-settings">
+                                <i onClick={() => this.HandleSetting(this)} className="ti-settings"></i>
+                            </div>
+                        ) : ""
+                        }
                         <button className={this.props.IsShowButtonSearch != undefined && this.props.IsShowButtonSearch == false ? "btnHide" : "btn btn-primary"} type="submit">
                             {
                                 !!this.props.TitleButton ? this.props.TitleButton : <span className="fa fa-search">Tìm Kiếm</span>

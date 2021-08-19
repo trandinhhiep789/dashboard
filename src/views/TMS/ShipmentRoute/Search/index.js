@@ -547,6 +547,8 @@ class SearchCom extends React.Component {
                             listelement={this.state.SearchElementList}
                             onSubmit={this.handleSearchSubmit}
                             ref={this.searchref}
+                            btnGroup= 'btnSearch btncustom btnGroup'
+                            IsSetting={true}
                             className="multiple multiple-custom multiple-custom-display"
                         />
                     </div>
