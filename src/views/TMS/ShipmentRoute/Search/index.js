@@ -57,79 +57,158 @@ class SearchCom extends React.Component {
 
         // var LoginInfo = JSON.stringify(listSearchDataObject);
         // localStorage.setItem('SearchInfo', LoginInfo)
+        const ShipmentOrderInfo = localStorage.getItem('SearchShipmentOrderInfo');
+        console.log("SearchShipmentOrderInfo", ShipmentOrderInfo);
+        let InitSearchParams = [];
+        if (ShipmentOrderInfo == null) {
+            InitSearchParams = [
+                {
+                    SearchKey: "@Keyword",
+                    SearchValue: ""
+                },
+                {
+                    SearchKey: "@RECEIVERPHONENUMBER",
+                    SearchValue: ""
+                },
+                {
+                    SearchKey: "@SHIPMENTORDERTYPEID",
+                    SearchValue: ""
+                },
+                {
+                    SearchKey: "@FromDate",
+                    SearchValue: new Date()
+                },
+                {
+                    SearchKey: "@ToDate",
+                    SearchValue: new Date()
+                }
+                ,
+                {
+                    SearchKey: "@RECEIVERPROVINCEID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@RECEIVERDISTRICTID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@RECEIVERWARDID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@SENDERSTOREID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@COORDINATORSTOREID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
+                    SearchValue: this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : "1,2,3"
+                },
+                {
+                    SearchKey: "@IsCoordinator",
+                    SearchValue: 2
+                },
+                {
+                    SearchKey: "@Typename",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@RequestStoreID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@CarrierTypeID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@PAGESIZE",
+                    SearchValue: 100
+                },
+                {
+                    SearchKey: "@PAGEINDEX",
+                    SearchValue: 0
+                }
+            ];
 
-         const InitSearchParams = [
-            {
-                SearchKey: "@Keyword",
-                SearchValue: ""
-            },
-            {
-                SearchKey: "@RECEIVERPHONENUMBER",
-                SearchValue: ""
-            },
-            {
-                SearchKey: "@SHIPMENTORDERTYPEID",
-                SearchValue: ""
-            },
-            {
-                SearchKey: "@FromDate",
-                SearchValue: new Date()
-            },
-            {
-                SearchKey: "@ToDate",
-                SearchValue: new Date()
-            }
-            ,
-            {
-                SearchKey: "@RECEIVERPROVINCEID",
-                SearchValue: -1
-            },
-            {
-                SearchKey: "@RECEIVERDISTRICTID",
-                SearchValue: -1
-            },
-            {
-                SearchKey: "@RECEIVERWARDID",
-                SearchValue: -1
-            },
-            {
-                SearchKey: "@SENDERSTOREID",
-                SearchValue: -1
-            },
-            {
-                SearchKey: "@COORDINATORSTOREID",
-                SearchValue: -1
-            },
-            {
-                SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
-                SearchValue: this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : "1,2,3" 
-            },
-            {
-                SearchKey: "@IsCoordinator",
-                SearchValue: 2
-            },
-            {
-                SearchKey: "@Typename",
-                SearchValue: -1
-            },
-            {
-                SearchKey: "@RequestStoreID",
-                SearchValue: -1
-            },
-            {
-                SearchKey: "@CarrierTypeID",
-                SearchValue: -1
-            },
-            {
-                SearchKey: "@PAGESIZE",
-                SearchValue: 100
-            },
-            {
-                SearchKey: "@PAGEINDEX",
-                SearchValue: 0
-            }
-        ];
+        }
+        else {
+            InitSearchParams = [
+                {
+                    SearchKey: "@Keyword",
+                    SearchValue: ""
+                },
+                {
+                    SearchKey: "@RECEIVERPHONENUMBER",
+                    SearchValue: ""
+                },
+                {
+                    SearchKey: "@SHIPMENTORDERTYPEID",
+                    SearchValue: ShipmentOrderInfo.ShipmentOrderTypeID
+                },
+                {
+                    SearchKey: "@FromDate",
+                    SearchValue: new Date()
+                },
+                {
+                    SearchKey: "@ToDate",
+                    SearchValue: new Date()
+                }
+                ,
+                {
+                    SearchKey: "@RECEIVERPROVINCEID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@RECEIVERDISTRICTID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@RECEIVERWARDID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@SENDERSTOREID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@COORDINATORSTOREID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
+                    SearchValue: this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : "1,2,3"
+                },
+                {
+                    SearchKey: "@IsCoordinator",
+                    SearchValue: 2
+                },
+                {
+                    SearchKey: "@Typename",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@RequestStoreID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@CarrierTypeID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@PAGESIZE",
+                    SearchValue: 100
+                },
+                {
+                    SearchKey: "@PAGEINDEX",
+                    SearchValue: 0
+                }
+            ];
+        }
 
+        this.setState({ SearchData: InitSearchParams });
         this.callSearchData(InitSearchParams);
         this.props.updatePagePath(PagePath);
 
@@ -288,9 +367,9 @@ class SearchCom extends React.Component {
         this.callSearchData(postData);
     }
 
+
     callSearchData(searchData) {
-            const LoginInfo = localStorage.getItem('SearchInfo');
-            console.log("SearchInfo",LoginInfo);
+
         this.setState({
             IsLoadData: false
         });
@@ -459,7 +538,6 @@ class SearchCom extends React.Component {
                             className="multiple multiple-custom multiple-custom-display"
                         />
                     </div>
-
                     <DataGridShipmentOder
                         listColumn={DataGridColumnList}
                         dataSource={this.state.gridDataSource}
