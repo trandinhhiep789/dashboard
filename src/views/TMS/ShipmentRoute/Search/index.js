@@ -57,10 +57,10 @@ class SearchCom extends React.Component {
 
         // var LoginInfo = JSON.stringify(listSearchDataObject);
         // localStorage.setItem('SearchInfo', LoginInfo)
-        const ShipmentOrderInfo = localStorage.getItem('SearchShipmentOrderInfo');
-        console.log("SearchShipmentOrderInfo", ShipmentOrderInfo);
+        const localShipmentOrderInfo = localStorage.getItem('SearchShipmentOrderInfo');
+       
         let InitSearchParams = [];
-        if (ShipmentOrderInfo == null) {
+        if (localShipmentOrderInfo == null) {
             InitSearchParams = [
                 {
                     SearchKey: "@Keyword",
@@ -135,6 +135,18 @@ class SearchCom extends React.Component {
 
         }
         else {
+            const ShipmentOrderInfo = JSON.parse(localShipmentOrderInfo);
+            this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderTypeID').value=ShipmentOrderInfo.ShipmentOrderTypeID;
+            // this.state.SearchElementList.find(n => n.name == 'dtCreatedOrderTimeFo').value=ShipmentOrderInfo.CreatedOrderTimeFo;
+            // this.state.SearchElementList.find(n => n.name == 'dtCreatedOrderTimeTo').value=ShipmentOrderInfo.CreatedOrderTimeTo;
+            this.state.SearchElementList.find(n => n.name == 'cbReceiverProvinceID').value=ShipmentOrderInfo.ReceiverProvinceID;
+            this.state.SearchElementList.find(n => n.name == 'cbReceiverDistrictID').value=ShipmentOrderInfo.ReceiverDistrictID;
+            this.state.SearchElementList.find(n => n.name == 'cbReceiverWardID').value=ShipmentOrderInfo.ReceiverWardID;
+            this.state.SearchElementList.find(n => n.name == 'cbSenderStoreID').value=ShipmentOrderInfo.SenderStoreID;
+            this.state.SearchElementList.find(n => n.name == 'cbCoordinatorStoreID').value=ShipmentOrderInfo.CoordinatorStoreID;
+            this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderStatusGroupID').value=ShipmentOrderInfo.ShipmentOrderStatusGroupID;
+            this.state.SearchElementList.find(n => n.name == 'cbIsCoordinator').value=ShipmentOrderInfo.IsCoordinator;
+            this.state.SearchElementList.find(n => n.name == 'cbCarrierTypeID').value=ShipmentOrderInfo.CarrierTypeID;
             InitSearchParams = [
                 {
                     SearchKey: "@Keyword",
@@ -159,31 +171,31 @@ class SearchCom extends React.Component {
                 ,
                 {
                     SearchKey: "@RECEIVERPROVINCEID",
-                    SearchValue: -1
+                    SearchValue:ShipmentOrderInfo.ReceiverProvinceID
                 },
                 {
                     SearchKey: "@RECEIVERDISTRICTID",
-                    SearchValue: -1
+                    SearchValue: ShipmentOrderInfo.ReceiverDistrictID
                 },
                 {
                     SearchKey: "@RECEIVERWARDID",
-                    SearchValue: -1
+                    SearchValue: ShipmentOrderInfo.ReceiverWardID
                 },
                 {
                     SearchKey: "@SENDERSTOREID",
-                    SearchValue: -1
+                    SearchValue: ShipmentOrderInfo.SenderStoreID
                 },
                 {
                     SearchKey: "@COORDINATORSTOREID",
-                    SearchValue: -1
+                    SearchValue: ShipmentOrderInfo.CoordinatorStoreID
                 },
                 {
                     SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
-                    SearchValue: this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : "1,2,3"
+                    SearchValue: ShipmentOrderInfo.ShipmentOrderStatusGroupID
                 },
                 {
                     SearchKey: "@IsCoordinator",
-                    SearchValue: 2
+                    SearchValue: ShipmentOrderInfo.IsCoordinator
                 },
                 {
                     SearchKey: "@Typename",
@@ -195,7 +207,7 @@ class SearchCom extends React.Component {
                 },
                 {
                     SearchKey: "@CarrierTypeID",
-                    SearchValue: -1
+                    SearchValue: ShipmentOrderInfo.CarrierTypeID
                 },
                 {
                     SearchKey: "@PAGESIZE",
@@ -523,7 +535,7 @@ class SearchCom extends React.Component {
 
 
     render() {
-        this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderStatusGroupID').value = this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : "1,2,3"
+        this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderStatusGroupID').value = this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderStatusGroupID').value
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>
