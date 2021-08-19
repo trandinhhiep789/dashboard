@@ -3,6 +3,11 @@
         width: 100%;
         display: inline-block;
         max-width: initial;
+        .card {
+            .card-body{
+                min-height: 100px;
+            }
+        }
     }
     
 }

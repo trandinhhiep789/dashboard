@@ -972,7 +972,7 @@ class ListShipCoordinatorCom extends Component {
                                                                             <span>{item.DeliverUserFullNameList}</span>
                                                                         </li>
                                                                         <li className="item address-customer">
-                                                                            <span data-tip data-for={item.ShipmentRouteID} data-id={item.ShipmentRouteID} >{item.RouteNote.split(';')[0]}</span>
+                                                                            <span className="title" data-tip data-for={item.ShipmentRouteID} data-id={item.ShipmentRouteID} >{item.RouteNote.split(';')[0]}</span>
                                                                             <ReactTooltip id={item.ShipmentRouteID} type='warning' className="title-tooltip-estimates">
                                                                                 <span>{item.RouteNote}</span>
                                                                             </ReactTooltip>
