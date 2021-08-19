@@ -52,12 +52,85 @@ class SearchCom extends React.Component {
     componentDidMount() {
         // const LoginInfo = localStorage.getItem('LoginInfo');
         // console.log("LoginInfo",LoginInfo);
-        const ShipOrdStatusGroupID = { SearchKey: "@SHIPMENTORDERSTATUSGROUPID", SearchValue: this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : "1,2,3" };
-        let listSearchDataObject = Object.assign([], this.state.SearchData, { [9]: ShipOrdStatusGroupID });
+        // const ShipOrdStatusGroupID = { SearchKey: "@SHIPMENTORDERSTATUSGROUPID", SearchValue: this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : "1,2,3" };
+        // let listSearchDataObject = Object.assign([], this.state.SearchData, { [10]: ShipOrdStatusGroupID });
 
-        var LoginInfo = JSON.stringify(listSearchDataObject);
-        localStorage.setItem('SearchInfo', LoginInfo)
-        this.callSearchData(listSearchDataObject);
+        // var LoginInfo = JSON.stringify(listSearchDataObject);
+        // localStorage.setItem('SearchInfo', LoginInfo)
+
+         const InitSearchParams = [
+            {
+                SearchKey: "@Keyword",
+                SearchValue: ""
+            },
+            {
+                SearchKey: "@RECEIVERPHONENUMBER",
+                SearchValue: ""
+            },
+            {
+                SearchKey: "@SHIPMENTORDERTYPEID",
+                SearchValue: ""
+            },
+            {
+                SearchKey: "@FromDate",
+                SearchValue: new Date()
+            },
+            {
+                SearchKey: "@ToDate",
+                SearchValue: new Date()
+            }
+            ,
+            {
+                SearchKey: "@RECEIVERPROVINCEID",
+                SearchValue: -1
+            },
+            {
+                SearchKey: "@RECEIVERDISTRICTID",
+                SearchValue: -1
+            },
+            {
+                SearchKey: "@RECEIVERWARDID",
+                SearchValue: -1
+            },
+            {
+                SearchKey: "@SENDERSTOREID",
+                SearchValue: -1
+            },
+            {
+                SearchKey: "@COORDINATORSTOREID",
+                SearchValue: -1
+            },
+            {
+                SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
+                SearchValue: this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : "1,2,3" 
+            },
+            {
+                SearchKey: "@IsCoordinator",
+                SearchValue: 2
+            },
+            {
+                SearchKey: "@Typename",
+                SearchValue: -1
+            },
+            {
+                SearchKey: "@RequestStoreID",
+                SearchValue: -1
+            },
+            {
+                SearchKey: "@CarrierTypeID",
+                SearchValue: -1
+            },
+            {
+                SearchKey: "@PAGESIZE",
+                SearchValue: 100
+            },
+            {
+                SearchKey: "@PAGEINDEX",
+                SearchValue: 0
+            }
+        ];
+
+        this.callSearchData(InitSearchParams);
         this.props.updatePagePath(PagePath);
 
 
@@ -171,6 +244,10 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.ReceiverDistrictID
             },
             {
+                SearchKey: "@RECEIVERWARDID",
+                SearchValue: MLObject.ReceiverWardID
+            },
+            {
                 SearchKey: "@SENDERSTOREID",
                 SearchValue: MLObject.SenderStoreID
             },
@@ -187,12 +264,16 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.IsCoordinator
             },
             {
+                SearchKey: "@CARRIERTYPEID",
+                SearchValue: MLObject.CarrierTypeID
+            },
+            {
                 SearchKey: "@Typename",
                 SearchValue: MLObject.Typename
             },
             {
                 SearchKey: "@RequestStoreID",
-                SearchValue: MLObject.RequestStoreID
+                SearchValue: -1
             },
             {
                 SearchKey: "@PAGESIZE",

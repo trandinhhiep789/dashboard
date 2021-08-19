@@ -63,22 +63,6 @@ export const SearchElementList = [
             { value: 6, label: 'Mã NV điều phối' }
         ]
     },
-    // {
-    //     type: "ComboBox",
-    //     name: "cbShipmentOrderTypeID",
-    //     DataSourceMember: "ShipmentOrderTypeID",
-    //     colspan: 2,
-    //     value: -1,
-    //     isMultiSelect: false,
-    //     placeholder: "---Loại yêu cầu vận chuyển---",
-    //     listoption: [],
-    //     IsAutoLoadItemFromCache: true,
-    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
-    //     ValueMember: "ShipmentOrderTypeID",
-    //     NameMember: "ShipmentOrderTypeName",
-    //     classNameCol:"col-custom"
-    // },
-
     {
         type: "MultiTreeSelect",
         name: "cbShipmentOrderTypeID",
@@ -150,19 +134,25 @@ export const SearchElementList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.DISTRICT",
         ValueMember: "DistrictID",
         NameMember: "DistrictName",
-        filterrest: "cbSenderStoreID",
+        filterrest: "cbReceiverWardID,cbSenderStoreID",
         classNameCol: "col-custom"
     },
     {
-        type: "StoreComboBox",
-        name: "cbRequestStoreID",
-        DataSourceMember: "RequestStoreID",
+        type: "ComboBox",
+        name: "cbReceiverWardID",
+        DataSourceMember: "ReceiverWardID",
         colspan: 2,
         value: -1,
-        placeholder: "--Kho tạo--",
-        listoption: [],
-        IsAutoLoadItemFromCache: false,
         isMultiSelect: false,
+        placeholder: "---Phường/Xã---",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        filterName: "cbReceiverDistrictID",
+        filterValue: "",
+        filterobj: "DistrictID",
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.WARD",
+        ValueMember: "WardID",
+        NameMember: "WardName",
         classNameCol: "col-custom"
     },
     {
@@ -200,21 +190,6 @@ export const SearchElementList = [
         filterobj: "CompanyID",
         classNameCol: "col-custom"
     },
-    // {
-    //     type: "ComboBox",
-    //     name: "cbShipmentOrderStatusGroupID",
-    //     DataSourceMember: "ShipmentOrderStatusGroupID",
-    //     colspan: 2,
-    //     value: -1,
-    //     isMultiSelect: false,
-    //     placeholder: "---Trạng thái---",
-    //     listoption: [],
-    //     IsAutoLoadItemFromCache: true,
-    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERSTATUSGR",
-    //     ValueMember: "ShipmentOrderStatusGroupID",
-    //     NameMember: "ShipmentOrderStatusGroupName",
-    //     classNameCol:"col-custom"
-    // },
     {
         type: "MultiTreeSelect",
         name: "cbShipmentOrderStatusGroupID",
@@ -236,11 +211,22 @@ export const SearchElementList = [
         type: "ComboBox",
         name: "cbIsCoordinator",
         DataSourceMember: "IsCoordinator",
-        colspan: 2,
+        colspan: 1,
         value: 2,
         isMultiSelect: false,
         placeholder: "--Trạng thái điều phối--",
         listoption: [{ value: -1, label: "--Điều phối--" }, { value: 1, label: "Đã điều phối" }, { value: 2, label: "Chưa điều phối" }],
+        classNameCol: "col-custom"
+    },
+    {
+        type: "ComboBox",
+        name: "cbCarrierTypeID",
+        DataSourceMember: "CarrierTypeID",
+        colspan: 1,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "--Phương tiện--",
+        listoption: [{ value: -1, label: "--Phương tiện--" }, { value: 1, label: "Xe máy" }, { value: 2, label: "Xe tải" }],
         classNameCol: "col-custom"
     }
 
@@ -277,6 +263,10 @@ export const InitSearchParams = [
         SearchValue: -1
     },
     {
+        SearchKey: "@RECEIVERWARDID",
+        SearchValue: -1
+    },
+    {
         SearchKey: "@SENDERSTOREID",
         SearchValue: -1
     },
@@ -298,6 +288,10 @@ export const InitSearchParams = [
     },
     {
         SearchKey: "@RequestStoreID",
+        SearchValue: -1
+    },
+    {
+        SearchKey: "@CarrierTypeID",
         SearchValue: -1
     },
     {
@@ -342,6 +336,11 @@ export const SearchMLObjectDefinition = [
         BindControlName: "cbReceiverDistrictID"
     },
     {
+        Name: "ReceiverWardID",
+        DefaultValue: "",
+        BindControlName: "cbReceiverWardID"
+    },
+    {
         Name: "SenderStoreID",
         DefaultValue: "",
         BindControlName: "cbSenderStoreID"
@@ -362,15 +361,20 @@ export const SearchMLObjectDefinition = [
         BindControlName: "cbIsCoordinator"
     },
     {
+        Name: "CarrierTypeID",
+        DefaultValue: "",
+        BindControlName: "cbCarrierTypeID"
+    },
+    {
         Name: "Typename",
         DefaultValue: "",
         BindControlName: "txtTypename"
     },
-    {
-        Name: "RequestStoreID",
-        DefaultValue: "-1",
-        BindControlName: "cbRequestStoreID"
-    }
+    // {
+    //     Name: "RequestStoreID",
+    //     DefaultValue: "-1",
+    //     BindControlName: "cbRequestStoreID"
+    // }
 ];
 
 // phân tuyến
@@ -1099,6 +1103,7 @@ export const ElementSenderQHPXList = [
         nameOption: "DistrictID",
         nameValue: -1
     },
+    
     {
         type: "text",
         name: "txtAddress",
