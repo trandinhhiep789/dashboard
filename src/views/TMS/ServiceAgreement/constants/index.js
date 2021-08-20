@@ -789,3 +789,44 @@ export const DataMasterTemplateExport = [
         "Mô tả": "test",
     }
 ];
+
+export const listColumnArea = [
+    {
+        Caption: "Chọn",
+        DataSourceMember: "",
+        Name: "chkSelect",
+        Type: "checkbox",
+        Width: 60
+    },
+    {
+        Caption: "Mã khu vực",
+        DataSourceMember: "AreaID",
+        Name: "AreaID",
+        Type: "text",
+    },
+    {
+        Caption: "Tên khu vực",
+        DataSourceMember: "AreaName",
+        Name: "AreaName",
+        Type: "text",
+    },
+    {
+        Caption: "Kích hoạt",
+        DataSourceMember: "IsActived",
+        Name: "IsActived",
+        Type: "checkicon",
+    },
+    {
+        Caption: "Hệ thống",
+        DataSourceMember: "IsSystem",
+        Name: "IsSystem",
+        Type: "checkicon",
+    },
+    {
+        Caption: "Chỉnh sửa",
+        DataSourceMember: "",
+        Name: "",
+        Type: "edit",
+        Width: 90
+    },
+]
