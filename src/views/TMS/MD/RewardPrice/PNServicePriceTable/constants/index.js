@@ -92,13 +92,13 @@ export const DataGridColumnList=[
         DataSourceMember: "FullServiceSeasonType",
         Width: 250
     },
-    {
-        Name: "FullServiceArea",
-        Type: "text",
-        Caption: "Khu vực áp dụng",
-        DataSourceMember: "FullServiceArea",
-        Width: 200
-    },
+    // {
+    //     Name: "FullServiceArea",
+    //     Type: "text",
+    //     Caption: "Khu vực áp dụng",
+    //     DataSourceMember: "FullServiceArea",
+    //     Width: 200
+    // },
    
     {
         Name: "CreateFullName",

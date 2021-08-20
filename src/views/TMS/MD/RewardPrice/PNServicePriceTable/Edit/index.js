@@ -208,7 +208,7 @@ class EditCom extends React.Component {
                                 datasourcemember="ServiceSeasonTypeID"
                             />
                         </div>
-
+{/* 
                         <div className="col-md-6">
                             <FormControl.ComboBoxSelect
                                 name="cbServiceAreaID"
@@ -225,7 +225,7 @@ class EditCom extends React.Component {
                                 value={""}
                                 listoption={null}
                                 datasourcemember="ServiceAreaID" />
-                        </div>
+                        </div> */}
 
                         <div className="col-md-12">
                             <FormControl.TextArea
