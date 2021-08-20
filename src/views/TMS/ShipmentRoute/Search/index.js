@@ -52,12 +52,176 @@ class SearchCom extends React.Component {
     componentDidMount() {
         // const LoginInfo = localStorage.getItem('LoginInfo');
         // console.log("LoginInfo",LoginInfo);
-        const ShipOrdStatusGroupID = { SearchKey: "@SHIPMENTORDERSTATUSGROUPID", SearchValue: this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : "1,2,3" };
-        let listSearchDataObject = Object.assign([], this.state.SearchData, { [9]: ShipOrdStatusGroupID });
+        // const ShipOrdStatusGroupID = { SearchKey: "@SHIPMENTORDERSTATUSGROUPID", SearchValue: this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : "1,2,3" };
+        // let listSearchDataObject = Object.assign([], this.state.SearchData, { [10]: ShipOrdStatusGroupID });
 
-        var LoginInfo = JSON.stringify(listSearchDataObject);
-        localStorage.setItem('SearchInfo', LoginInfo)
-        this.callSearchData(listSearchDataObject);
+        // var LoginInfo = JSON.stringify(listSearchDataObject);
+        // localStorage.setItem('SearchInfo', LoginInfo)
+        const localShipmentOrderInfo = localStorage.getItem('SearchShipmentOrderInfo');
+       
+        let InitSearchParams = [];
+        if (localShipmentOrderInfo == null) {
+            InitSearchParams = [
+                {
+                    SearchKey: "@Keyword",
+                    SearchValue: ""
+                },
+                {
+                    SearchKey: "@RECEIVERPHONENUMBER",
+                    SearchValue: ""
+                },
+                {
+                    SearchKey: "@SHIPMENTORDERTYPEID",
+                    SearchValue: ""
+                },
+                {
+                    SearchKey: "@FromDate",
+                    SearchValue: new Date()
+                },
+                {
+                    SearchKey: "@ToDate",
+                    SearchValue: new Date()
+                }
+                ,
+                {
+                    SearchKey: "@RECEIVERPROVINCEID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@RECEIVERDISTRICTID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@RECEIVERWARDID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@SENDERSTOREID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@COORDINATORSTOREID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
+                    SearchValue: this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : "1,2,3"
+                },
+                {
+                    SearchKey: "@IsCoordinator",
+                    SearchValue: 2
+                },
+                {
+                    SearchKey: "@Typename",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@RequestStoreID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@CarrierTypeID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@PAGESIZE",
+                    SearchValue: 100
+                },
+                {
+                    SearchKey: "@PAGEINDEX",
+                    SearchValue: 0
+                }
+            ];
+
+        }
+        else {
+            const ShipmentOrderInfo = JSON.parse(localShipmentOrderInfo);
+            this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderTypeID').value=ShipmentOrderInfo.ShipmentOrderTypeID;
+            // this.state.SearchElementList.find(n => n.name == 'dtCreatedOrderTimeFo').value=ShipmentOrderInfo.CreatedOrderTimeFo;
+            // this.state.SearchElementList.find(n => n.name == 'dtCreatedOrderTimeTo').value=ShipmentOrderInfo.CreatedOrderTimeTo;
+            this.state.SearchElementList.find(n => n.name == 'cbReceiverProvinceID').value=ShipmentOrderInfo.ReceiverProvinceID;
+            this.state.SearchElementList.find(n => n.name == 'cbReceiverDistrictID').value=ShipmentOrderInfo.ReceiverDistrictID;
+            this.state.SearchElementList.find(n => n.name == 'cbReceiverWardID').value=ShipmentOrderInfo.ReceiverWardID;
+            this.state.SearchElementList.find(n => n.name == 'cbSenderStoreID').value=ShipmentOrderInfo.SenderStoreID;
+            this.state.SearchElementList.find(n => n.name == 'cbCoordinatorStoreID').value=ShipmentOrderInfo.CoordinatorStoreID;
+            this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderStatusGroupID').value=ShipmentOrderInfo.ShipmentOrderStatusGroupID;
+            this.state.SearchElementList.find(n => n.name == 'cbIsCoordinator').value=ShipmentOrderInfo.IsCoordinator;
+            this.state.SearchElementList.find(n => n.name == 'cbCarrierTypeID').value=ShipmentOrderInfo.CarrierTypeID;
+            InitSearchParams = [
+                {
+                    SearchKey: "@Keyword",
+                    SearchValue: ""
+                },
+                {
+                    SearchKey: "@RECEIVERPHONENUMBER",
+                    SearchValue: ""
+                },
+                {
+                    SearchKey: "@SHIPMENTORDERTYPEID",
+                    SearchValue: ShipmentOrderInfo.ShipmentOrderTypeID
+                },
+                {
+                    SearchKey: "@FromDate",
+                    SearchValue: new Date()
+                },
+                {
+                    SearchKey: "@ToDate",
+                    SearchValue: new Date()
+                }
+                ,
+                {
+                    SearchKey: "@RECEIVERPROVINCEID",
+                    SearchValue:ShipmentOrderInfo.ReceiverProvinceID
+                },
+                {
+                    SearchKey: "@RECEIVERDISTRICTID",
+                    SearchValue: ShipmentOrderInfo.ReceiverDistrictID
+                },
+                {
+                    SearchKey: "@RECEIVERWARDID",
+                    SearchValue: ShipmentOrderInfo.ReceiverWardID
+                },
+                {
+                    SearchKey: "@SENDERSTOREID",
+                    SearchValue: ShipmentOrderInfo.SenderStoreID
+                },
+                {
+                    SearchKey: "@COORDINATORSTOREID",
+                    SearchValue: ShipmentOrderInfo.CoordinatorStoreID
+                },
+                {
+                    SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
+                    SearchValue: ShipmentOrderInfo.ShipmentOrderStatusGroupID
+                },
+                {
+                    SearchKey: "@IsCoordinator",
+                    SearchValue: ShipmentOrderInfo.IsCoordinator
+                },
+                {
+                    SearchKey: "@Typename",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@RequestStoreID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@CarrierTypeID",
+                    SearchValue: ShipmentOrderInfo.CarrierTypeID
+                },
+                {
+                    SearchKey: "@PAGESIZE",
+                    SearchValue: 100
+                },
+                {
+                    SearchKey: "@PAGEINDEX",
+                    SearchValue: 0
+                }
+            ];
+        }
+
+        this.setState({ SearchData: InitSearchParams });
+        this.callSearchData(InitSearchParams);
         this.props.updatePagePath(PagePath);
 
 
@@ -171,6 +335,10 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.ReceiverDistrictID
             },
             {
+                SearchKey: "@RECEIVERWARDID",
+                SearchValue: MLObject.ReceiverWardID
+            },
+            {
                 SearchKey: "@SENDERSTOREID",
                 SearchValue: MLObject.SenderStoreID
             },
@@ -187,12 +355,16 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.IsCoordinator
             },
             {
+                SearchKey: "@CARRIERTYPEID",
+                SearchValue: MLObject.CarrierTypeID
+            },
+            {
                 SearchKey: "@Typename",
                 SearchValue: MLObject.Typename
             },
             {
                 SearchKey: "@RequestStoreID",
-                SearchValue: MLObject.RequestStoreID
+                SearchValue: -1
             },
             {
                 SearchKey: "@PAGESIZE",
@@ -207,9 +379,9 @@ class SearchCom extends React.Component {
         this.callSearchData(postData);
     }
 
+
     callSearchData(searchData) {
-            const LoginInfo = localStorage.getItem('SearchInfo');
-            console.log("SearchInfo",LoginInfo);
+
         this.setState({
             IsLoadData: false
         });
@@ -363,7 +535,7 @@ class SearchCom extends React.Component {
 
 
     render() {
-        this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderStatusGroupID').value = this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : "1,2,3"
+        this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderStatusGroupID').value = this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderStatusGroupID').value
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>
@@ -375,10 +547,11 @@ class SearchCom extends React.Component {
                             listelement={this.state.SearchElementList}
                             onSubmit={this.handleSearchSubmit}
                             ref={this.searchref}
+                            btnGroup= 'btnSearch btncustom btnGroup'
+                            IsSetting={true}
                             className="multiple multiple-custom multiple-custom-display"
                         />
                     </div>
-
                     <DataGridShipmentOder
                         listColumn={DataGridColumnList}
                         dataSource={this.state.gridDataSource}

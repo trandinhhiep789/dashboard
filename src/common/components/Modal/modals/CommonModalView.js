@@ -7,7 +7,7 @@ import ModalRight from '../ModalRight';
 import Modal from '../Modal';
 
 
-const CommontModals = ({ title, afterClose, hideModal, content, id, maxWidth }) => {
+const CommontModals = ({ title, afterClose, hideModal, content, id, maxWidth, onhideModal }) => {
 
     const onClose = () => {
         hideModal(id);
@@ -15,8 +15,13 @@ const CommontModals = ({ title, afterClose, hideModal, content, id, maxWidth }) 
             afterClose();
         }
     };
+
+    const handleClose = () => {
+        onhideModal(id);
+    }
+
     return (
-        <ModalRight title={title} onClose={onClose} id={"modalid-" + id} maxWidth={maxWidth} >
+        <ModalRight title={title} onClose={handleClose} id={"modalid-" + id} maxWidth={maxWidth} >
             <div>{content.text}</div>
         </ModalRight>
     );

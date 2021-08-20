@@ -77,10 +77,10 @@ export const DataGridColumnItemListFeeAppendix = [
     // },
     {
         Name: "FeeAppendixName",
-        Type: "texttolink",
+        Type: "text",
         Caption: "Tên Phụ lục",
         DataSourceMember: "FeeAppendixName",
-        Link: "/ServiceAgreement/FeeAppendix/Detail/",
+        // Link: "/ServiceAgreement/FeeAppendix/Detail/",
         Width: 150,
     },
     {
@@ -99,14 +99,14 @@ export const DataGridColumnItemListFeeAppendix = [
     },
     {
         Name: "ApplyFromDate",
-        Type: "date",
+        Type: "dateNew",
         Caption: "Từ ngày",
         DataSourceMember: "ApplyFromDate",
         Width: 250,
     },
     {
         Name: "ApplyToDate",
-        Type: "date",
+        Type: "dateNew",
         Caption: "Đến ngày",
         DataSourceMember: "ApplyToDate",
         Width: 250,

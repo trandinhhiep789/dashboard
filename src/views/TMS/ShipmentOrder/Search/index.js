@@ -379,6 +379,7 @@ class SearchCom extends React.Component {
                         listelement={this.state.SearchElementList}
                         onSubmit={this.handleSearchSubmit}
                         ref={this.searchref}
+                        btnGroup= 'btnSearch btncustom btnGroup'
                         className="multiple multiple-custom multiple-custom-display"
                     />
                     <DataGridShipmentOder

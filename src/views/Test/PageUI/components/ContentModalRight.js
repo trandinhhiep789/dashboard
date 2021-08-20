@@ -418,7 +418,27 @@ class ContentModalRightCom extends Component {
 
                         <div className="row  mt-10 lstProduct">
                             <div className="col-12 ">
+                                <div className="pull-left group-info-Route">
+                                    <ul>
+                                        <li>
+                                            <span>Mã: <span className="fw-600">A123123123</span></span>
+                                        </li>
+                                        <li className="kmestimates">
+                                            <span>Km ước lượng: <span data-tip data-for="produc1" data-id="produc1" className="numkm fw-600 ">30km</span>
+                                                <ReactTooltip id="produc1" type='warning' className="title-tooltip-estimates">
+                                                    <span>kho-210714000000199: 499m</span>
+                                                    <span>210714000000199-210714000000839: 4099m</span>
+                                                    <span>210714000000839-Kho: 409m</span>
+                                                </ReactTooltip>
+                                            </span>
+                                        </li>
+                                        <li>
+                                            <span>di chuyển: <span className="fw-600">50'</span></span>
+                                        </li>
+                                    </ul>
+                                </div>
                                 <div className="nav-group-action">
+                                    <button className="btn btn-w-md btn-round btn-info" type="button">Tính khoảng cách</button>
                                     <button type="button" onClick={() => this.HandleChangeGird(1)}><i className="ti-menu-alt"></i></button>
                                     <button type="button" onClick={() => this.HandleChangeGird(2)}><i className="ti-menu"></i></button>
                                 </div>
@@ -443,17 +463,24 @@ class ContentModalRightCom extends Component {
                                                             <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
                                                         </li>
                                                         <li className="item infoProduict">
-                                                            <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
-                                                            <ReactTooltip id="producname1" type='warning'>
-                                                                <span>Tivi LED Sony KD-49X8000H</span>
+                                                            <span className="title" data-tip data-for="producnamenew1" data-id="producnamenew1" >Tivi LED Sony KD-49X8000H</span>
+                                                            <ReactTooltip id="producnamenew1" type='warning' className="title-tooltip" place="right" className="title-tooltip-estimates" >
+                                                                <span>Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H </span>
                                                             </ReactTooltip>
-                                                            <span data-tip data-for="producname2" data-id="producname2">Tủ lạnh Samsung RT20HAR8DBU/SV</span>
-                                                            <ReactTooltip id="producname2" type='warning'>
+                                                        
+                                                        </li>
+                                                        <li className="item infoProduict">
+                                                           
+                                                            <span className="title" data-tip data-for="producnamenew2" data-id="producnamenew2">Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                            <ReactTooltip id="producnamenew2" type='warning' className="title-tooltip" place="right">
                                                                 <span>Tủ lạnh Samsung RT20HAR8DBU/SV</span>
                                                             </ReactTooltip>
                                                         </li>
                                                         <li className="item address-customer">
-                                                            <span>Cc himlam Phú An,, Phường Phước Long A, Quận 9, Hồ Chí Minh</span>
+                                                            <span className="title" data-tip data-for="address1" data-id="address1">Cc himlam Phú An,, Phường Phước Long A, Quận 9, Hồ Chí Minh</span>
+                                                            <ReactTooltip id="address1" type='warning' className="title-tooltip" place="right" className="title-tooltip-estimates">
+                                                                <span>Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H </span>
+                                                            </ReactTooltip>
                                                         </li>
 
                                                     </ul>
@@ -471,17 +498,20 @@ class ContentModalRightCom extends Component {
                                                                     className="linktext blank"
                                                                     target="_blank"
                                                                     to={{ pathname: "/ShipmentOrder/Detail/" + 2107140000009 }}>
-                                                                    2107140000009 </Link>
+                                                                    21071400000091 </Link>
                                                             </span>
                                                             <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
                                                         </li>
                                                         <li className="item infoProduict">
-                                                            <span data-tip data-for="producname1" data-id="producname1" >Tivi LED Sony KD-49X8000H</span>
-                                                            <ReactTooltip id="producname1" type='warning'>
-                                                                <span>Tivi LED Sony KD-49X8000H</span>
+                                                            <span className="title" data-tip data-for="producname3" data-id="producname3" >Tivi LED Sony KD-49X8000H</span>
+                                                            <ReactTooltip id="producname3" type='warning' className="title-tooltip" place="right">
+                                                                <span>Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H Tivi LED Sony KD-49X8000H</span>
                                                             </ReactTooltip>
-                                                            <span data-tip data-for="producname2" data-id="producname2">Tủ lạnh Samsung RT20HAR8DBU/SV</span>
-                                                            <ReactTooltip id="producname2" type='warning'>
+                                                        
+                                                        </li>
+                                                        <li className="item infoProduict">
+                                                            <span className="title" data-tip data-for="producname4" data-id="producname4">Tủ lạnh Samsung RT20HAR8DBU/SV</span>
+                                                            <ReactTooltip id="producname4" type='warning' className="title-tooltip" place="right">
                                                                 <span>Tủ lạnh Samsung RT20HAR8DBU/SV</span>
                                                             </ReactTooltip>
                                                         </li>
@@ -493,7 +523,7 @@ class ContentModalRightCom extends Component {
                                             </div>
                                         </div>
 
-                                      
+
 
                                     </Slide>
                                 </div>
@@ -515,7 +545,7 @@ class ContentModalRightCom extends Component {
                                                                 </span>
                                                                 <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
                                                             </li>
-                                                            
+
 
                                                         </ul>
                                                     </div>
@@ -536,7 +566,7 @@ class ContentModalRightCom extends Component {
                                                                 </span>
                                                                 <span className="badge badge-warning time"><i class="ti ti-timer"></i> 08:00</span>
                                                             </li>
-                                                           
+
                                                         </ul>
                                                     </div>
                                                 </div>

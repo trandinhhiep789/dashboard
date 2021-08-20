@@ -21,7 +21,6 @@ export default class SearchForm extends Component {
     }
 
     bindDataContol() {
-
         let formData = {};
         const listElement = this.props.listelement;
         listElement.map((elementItem) => {
@@ -65,8 +64,6 @@ export default class SearchForm extends Component {
         }
 
     }
-
-
 
     validationFormNew() {
         const FormDataContolLst = this.state.FormData;
@@ -138,6 +135,19 @@ export default class SearchForm extends Component {
 
     changeLoadComplete() {
     }
+    HandleSetting = () => {
+        let MLObject = {};
+        const mLObjectDefinition = this.props.MLObjectDefinition;
+        mLObjectDefinition.map((Item) => {
+            const controlName = Item.BindControlName;
+            if (controlName.length > 0) {
+                MLObject = Object.assign({}, MLObject, { [Item.Name]: this.state.FormData[controlName].value });
+            }
+        });
+        var MLObjectInfo = JSON.stringify(MLObject);
+        localStorage.setItem('SearchShipmentOrderInfo', MLObjectInfo)
+
+    };
 
     renderSearchForm() {
         const listElement = this.props.listelement;
@@ -376,6 +386,12 @@ export default class SearchForm extends Component {
                 <div className={classNamebtnSearch}>
                     {/* <div className="btnSearch btncustom"> */}
                     <div className={this.props.btnGroup ? this.props.btnGroup : 'btnSearch btncustom'}>
+                        {this.props.IsSetting == true ? (
+                            <div className="btn-settings">
+                                <i onClick={() => this.HandleSetting(this)} className="ti-settings"></i>
+                            </div>
+                        ) : ""
+                        }
                         <button className={this.props.IsShowButtonSearch != undefined && this.props.IsShowButtonSearch == false ? "btnHide" : "btn btn-primary"} type="submit">
                             {
                                 !!this.props.TitleButton ? this.props.TitleButton : <span className="fa fa-search">Tìm Kiếm</span>

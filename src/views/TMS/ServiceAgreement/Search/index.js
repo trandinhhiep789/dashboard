@@ -178,21 +178,30 @@ class SearchCom extends React.Component {
                         }
                     }
 
+
                     let element = {
                         "Số hợp đồng": item.ServiceAgreementNumber,
-                        "Đối tác": item.PartnerName,
+                        "Loại hợp đồng": item.ServiceTypeID + "-" + item.ServiceTypeName,
                         "Loại dịch vụ": item.ServiceTypeName,
-                        "Khu vực": item.AreaName,
-                        "Ngày ký hợp đồng": item.SignedDate,
-                        "Ngày hết hạn hợp đồng": item.ExpiredDate,
-                        "Gia hạn đến": item.ExtendAgreement,
-                        "Trạng thái": item.StatusAgreement
+                        "Khu vực": item.ServiceAreaID + "-" + item.AreaName,
+                        "Đơn vị vận chuyển": item.PartnerID + "-" + item.PartnerName,
+                        "Người đại diện": item.DeputyUserName,
+                        "Ngày ký hợp đồng": formatDate(item.SignedDate, true),
+                        "Ngày hết hạn hợp đồng": formatDate(item.ExpiredDate, true),
+                        "Đã gia hạn hợp đồng": item.IsExtended == false ? 0 : 1,
+                        "Gia hạn đến ngày": formatDate(item.ExtendedDate, true),
+                        "Đã thanh lý hợp đồng": item.IsLiquidated == false ? 0 : 1,
+                        "Ngày thanh lý hợp đồng": formatDate(item.Liquidateddate, true),
+                        "Đã ký quỹ": item.IsDeposited == false ? 0 : 1,
+                        "Số tiền ký quỹ": item.DepositMoney,
+                        "Ngày ký quỹ": formatDate(item.DepositedDate, true),
+                        "Ghi chú ký quỹ": item.DepositNote,
+                        "Mô tả": item.Description,
                     };
 
                     return element;
 
                 })
-
                 this.setState({
                     gridDataSource: result,
                     dataExport: tempData,
