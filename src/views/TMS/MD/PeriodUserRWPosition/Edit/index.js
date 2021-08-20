@@ -235,6 +235,15 @@ class EditCom extends React.Component {
         // let a = this.mdyToDate(MLObject.ApplyFromDate);
         // console.log("MLObject.ApplyFromDate", a)
 
+        //kiểm tra khoản thời gian phải cùng tháng, năm
+        if (MLObject.ApplyFromDate.getFullYear() != MLObject.ApplyToDate.getFullYear()) {
+            this.addNotification("Vui lòng chọn cùng năm.", true);
+            return;
+        } else if (MLObject.ApplyFromDate.getMonth() != MLObject.ApplyToDate.getMonth()) {
+            this.addNotification("Vui lòng chọn cùng tháng.", true);
+            return;
+        }
+        
         let validDate = dates.compare(MLObject.ApplyFromDate, MLObject.ApplyToDate);
         if (validDate == 1) {
             this.addNotification("Ngày khai báo vị trí thưởng theo khoảng thời gian không hợp lệ. Vui lòng kiểm tra lại.", true);

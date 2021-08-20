@@ -97,6 +97,14 @@ export const InitSearchParams = [
         SearchKey: "@REWARDTYPEID",
         SearchValue: -1
     },
+    {
+        SearchKey: "@PAGEINDEX",
+        SearchValue: 1
+    },
+    {
+        SearchKey: "@PAGESIZE",
+        SearchValue: 31
+    },
    
 ];
 

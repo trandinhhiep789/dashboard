@@ -140,6 +140,19 @@ $font-weight-600: 600;
                 .jsgrid-cell {
                     padding: .2rem .4rem;
                     border: 1px solid #f3f3f3;
+                    &.group-products{
+                        ul{
+                            li{
+                                &.lstProducts {
+                                    &.lblReturns {
+                                        color: #d07300;
+                                    }
+                                }
+                                
+                                
+                            }
+                        }
+                    }
                     ul{
                         padding-left: 0;
                         margin-bottom: 0;
@@ -160,6 +173,7 @@ $font-weight-600: 600;
                     }
                     &.action{
                         vertical-align: middle;
+                        text-align: center;
                         ul{
                             li{
                                 clear: both;
@@ -170,6 +184,10 @@ $font-weight-600: 600;
                                     width: 15px;
                                     color: #fff;
                                     height: 25px;
+                                    &.btn-user-plus{
+                                        clear: both;
+                                        color: #178ee0;
+                                    }
                                 }
                                 &.printing{
                                     button{
@@ -203,6 +221,116 @@ $font-weight-600: 600;
                             }
                         }
                     }
+                    &.group-info-limit{
+                        clear: both;
+                        .info-time{
+                            display: flex;
+                            flex-direction: row;
+                            flex-wrap: nowrap;
+                            align-content: center;
+                            justify-content: space-between;
+                            .item{
+                                clear: both;
+                                &.status {
+                                    color: #fc7425;
+                                }
+                                &.total {
+                                    background: #15c377;
+                                    color: #fff;
+                                    font-size: 12px;
+                                    line-height: 16px;
+                                    border-radius: 3px;
+                                    padding: 2px 5px;
+                                    letter-spacing: .5px;
+                                }
+                                &.times {
+                                    color: #2b8eea;
+                                    font-weight: 600;
+                                    font-size: 12px;
+                                    line-height: 16px;
+                                }
+                            }
+                        }
+                        .note{
+                            font-size: 12px;
+                            line-height: 16px;
+                            font-weight: 600;
+                            color: #a02424;
+                        }
+                        .info-customer {
+                            display: flex;
+                            flex-direction: row;
+                            flex-wrap: nowrap;
+                            align-content: center;
+                            justify-content: space-between;
+                            align-items: center;
+                            .item {
+                                display: flex;
+                                flex-direction: row;
+                                flex-wrap: nowrap;
+                                align-content: center;
+                                justify-content: flex-start;
+                                align-items: center;
+                                .phone {
+                                    color: #2b8eea;
+                                }
+                                .partner-sale-Order {
+                                    color: #2b8eea;
+                                }
+                                .btn-copy-clipboard {
+                                    border: none;
+                                    background: transparent;
+                                    font-size: 13px;
+                                    cursor: pointer;
+                                }
+                            }
+                        }
+                        .times{
+                            .group-times {
+                                width: 100%;
+                                display: inline-flex;
+                                flex: auto;
+                                flex-direction: row;
+                                align-content: center;
+                                flex-wrap: nowrap;
+                                justify-content: space-between;
+                                .time-item {
+                                    display: flex;
+                                    justify-content: center;
+                                    flex: auto;
+                                   .txtCreatedOrderTime {
+                                        font-weight: 600;
+                                        color: #615d5d;
+                                        display: flex;
+                                        justify-content: flex-start;
+                                        width: 100%;
+                                    }
+                                    .intervale {
+                                        display: inline-block;
+                                        text-align: right;
+                                        width: 100%;
+                                        float: right;
+                                    }
+                                }
+                                ul{
+                                    padding-left: 0;
+                                    margin-right: 5px;
+                                    li{
+                                        background: #c3be15;
+                                        padding: 2px 3px;
+                                        color: #fff;
+                                        font-size: 11px;
+                                        border-radius: 4px;
+                                    }
+                                }
+                            }
+                        }
+                       .address-customer {
+                            font-size: 12px;
+                            font-weight: 600;
+                        }
+                    }
+                    
                     &.group-address{
                         clear: both;
                         ul{
@@ -223,6 +351,12 @@ $font-weight-600: 600;
                                         font-weight: 600;
                                         line-height: initial;
                                         font-size: 11px;
+                                        .btn-copy-clipboard {
+                                            border: none;
+                                            background: transparent;
+                                            font-size: 13px;
+                                            cursor: pointer;
+                                        }
                                         .phone{
                                             color: #2b8eea;
                                         }
@@ -284,6 +418,12 @@ $font-weight-600: 600;
                         }
                     }
                     &.group-infoShipmentOrder{
+                        .btn-copy-clipboard {
+                            border: none;
+                            background: transparent;
+                            font-size: 13px;
+                            cursor: pointer;
+                        }
                         ul{
                             li{
                                 &.item{
@@ -327,6 +467,9 @@ $font-weight-600: 600;
                                         font-size: 12px;
                                     .total{
                                         color: #f96868;
+                                        &.price-success{
+                                            color:  #03c36f;
+                                        }
                                     }
                                     .price-supplies{
                                         color: #f7c110;
@@ -467,6 +610,26 @@ $font-weight-600: 600;
             }
         }
     }
+    &.shipment-route{
+        .card-title {
+            .flexbox {
+                .btn-toolbar {
+                    .btn-group {
+                        .group-left {
+                            .input-group{
+                                &.input-group-select{
+                                    input{
+                                        padding-left: 5px;
+                                    }
+                                    
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 %btn-clip-board {
@@ -552,6 +715,12 @@ $font-weight-600: 600;
                             margin-right: 0.5rem;
                         }
                         .person-info {
+                            .btn-copy-clipboard {
+                                border: none;
+                                background: transparent;
+                                font-size: 13px;
+                                cursor: pointer;
+                            }
                             .name {
                                 font-weight: $font-weight-600;
                                 color: #615d5d;
@@ -641,21 +810,66 @@ $font-weight-600: 600;
     }
 }
 
-.row {
-    .page-detail {
-        .Collapsible {
+.page-detail {
+    .Collapsible {
 
-            .card-body {
-                .form-row {
-                    .table-responsive {
-                        .table {
-                            .row-main-product {
-                                background-color: #ececec;
-                            }
+        .card-body {
+            .form-row {
+                .table-responsive {
+                    .table {
+                        .row-main-product {
+                            background-color: #ececec;
                         }
                     }
                 }
             }
+        }
+
+        .groupCOD{
+            display: inline-flex;
+            justify-content: flex-start;
+            align-items: center;
+            .group-changeCOD{
+                border: 1px solid;
+                margin-left: 10px;
+                border-radius: 3px;
+                height: 20px;
+                width: 60px;
+                display: inline-flex;
+                justify-content: space-around;
+                align-items: center;
+                border-color: transparent;
+                button{
+                    height: 100%;
+                    padding: 0;
+                    border: none;
+                    width: 50%;
+                    text-align: center;
+                    display: inline-flex;
+                    justify-content: center;
+                    align-items: center;
+                    &.btn-history{
+                        background: #58575a;
+                        border-radius: 3px 0 0 3px;
+                        color: #fff;
+                        &:hover{
+                            background: #333;
+                        }
+                    }
+                    &.btn-update{
+                        background: #1c9536;
+                        color: #fff;
+                        border-radius: 0 3px 3px 0;
+                        &:hover{
+                            background: #333;
+                        }
+                    }
+                    i{
+                        font-size: 10px;
+                    }
+                }
+            }
+            
         }
     }
 }

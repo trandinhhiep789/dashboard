@@ -903,29 +903,29 @@ class DataGridShipmentOderCom extends Component {
                                             {rowItem.TotalCOD > 0 ? <span className="item pricecod">COD:{formatMoney(rowItem.TotalCOD, 0)}</span> : ""}
                                             {rowItem.TotalSaleMaterialMoney > 0 ? <span className="item price-supplies">Vật tư:{formatMoney(rowItem.TotalSaleMaterialMoney, 0)}</span> : ""}
                                             {rowItem.IsInputReturn == true ? <span className="item price-supplies">Nhập trả:{formatMoney(rowItem.TotalReturnPrice, 0)}</span> : ""}
-                                              {(rowItem.IsPaidIn == true || (rowItem.TotalSaleMaterialMoney + rowItem.TotalCOD - rowItem.TotalReturnPrice) == 0) ?
-                                                    rowItem.CollectedTotalMoney == rowItem.TotalPaidInMoney ?
-                                                        (
-                                                            <span className="item price3 price-success">
-                                                            <span className="price-title ">Nợ: </span>
-                                                            <span className="price-debt">0đ</span>
-                                                        </span>
-                                                        ) :
-                                                        (
-                                                            <div className="item price3">
-                                                                <span className="price-title">Nợ: </span>
-                                                                <span className="price-debt">-{rowItem.TotalUnPaidInMoney>=0?formatMoney(rowItem.TotalUnPaidInMoney, 0):0}đ</span>
-                                                                {/* <span className="price-debt">{formatMoney(rowItem.TotalUnPaidInMoney, 0)}đ</span> */}
-                                                            </div>
-                                                        )
-                                                    :
+                                            {(rowItem.IsPaidIn == true || (rowItem.TotalSaleMaterialMoney + rowItem.TotalCOD - rowItem.TotalReturnPrice) == 0) ?
+                                                (
+                                                    <span className="item price3 price-success">
+                                                        <span className="price-title ">Nợ: </span>
+                                                        <span className="price-debt">0đ</span>
+                                                    </span>
+                                                ) :
+                                                (
+                                                (rowItem.TotalPaidInMoney + rowItem.TotalUnPaidInMoney) > 0 ?
                                                     (
                                                         <div className="item price3">
                                                             <span className="price-title">Nợ: </span>
-                                                            <span className="price-debt">-{(rowItem.TotalCOD - rowItem.TotalReturnPrice) <= 0 ? formatMoney(rowItem.TotalSaleMaterialMoney) : formatMoney(rowItem.TotalSaleMaterialMoney + rowItem.TotalCOD - rowItem.TotalReturnPrice, 0)}</span>
+                                                            <span className="price-debt">-{rowItem.TotalUnPaidInMoney >= 0 ? formatMoney(rowItem.TotalUnPaidInMoney, 0) : 0}đ</span>
+                                                        </div>
+                                                    ) :
+                                                    (
+                                                        <div className="item price3">
+                                                            <span className="price-title">Nợ: </span>
+                                                            <span className="price-debt">-{(rowItem.TotalCOD - rowItem.TotalReturnPrice) <= 0 ? formatMoney(rowItem.TotalSaleMaterialMoney) : formatMoney(rowItem.TotalCOD+rowItem.TotalSaleMaterialMoney-rowItem.TotalReturnPrice, 0)}</span>
                                                         </div>
                                                     )
-                                                }
+                                                )
+                                            }
                                         </div>
                                     </td>
                                 </tr>
@@ -1053,26 +1053,26 @@ class DataGridShipmentOderCom extends Component {
                                                 {TotalSaleMaterialMoney > 0 && <div className="price-supplies">Vật tư:{formatMoney(TotalSaleMaterialMoney, 0)}</div>}
                                                 {IsInputReturn && <div className="price-supplies">Nhập trả:{formatMoney(TotalReturnPrice, 0)}</div>}
                                                 {(IsPaidIn == true || (TotalSaleMaterialMoney + TotalCOD - TotalReturnPrice) == 0) ?
-                                                    CollectedTotalMoney == TotalPaidInMoney ?
+                                                    (
+                                                        <div className="price-success">
+                                                            <span className="price-title ">Nợ: </span>
+                                                            <span className="price-debt">0đ</span>
+                                                        </div>
+                                                    ) :
+                                                    TotalPaidInMoney + TotalUnPaidInMoney > 0 ?
                                                         (
-                                                            <div className="price-success">
+                                                            <div className="price-error">
                                                                 <span className="price-title ">Nợ: </span>
-                                                                <span className="price-debt">0đ</span>
+                                                                <span className="price-debt">-{TotalUnPaidInMoney >= 0 ? formatMoney(TotalUnPaidInMoney, 0) : 0}đ</span>
                                                             </div>
                                                         ) :
                                                         (
                                                             <div className="price-error">
-                                                                <span className="price-title ">Nợ: </span>
-                                                                <span className="price-debt">-{TotalUnPaidInMoney>=0?formatMoney(TotalUnPaidInMoney, 0):0}đ</span>
+                                                                <span className="price-title">Nợ: </span>
+                                                                <span className="price-debt">-{(TotalCOD - TotalReturnPrice) <= 0 ? formatMoney(TotalSaleMaterialMoney) : formatMoney(TotalSaleMaterialMoney + TotalCOD - TotalReturnPrice, 0)}</span>
                                                             </div>
                                                         )
-                                                    :
-                                                    (
-                                                        <div className="price-error">
-                                                            <span className="price-title">Nợ: </span>
-                                                            <span className="price-debt">-{(TotalCOD - TotalReturnPrice) <= 0 ? formatMoney(TotalSaleMaterialMoney) : formatMoney(TotalSaleMaterialMoney + TotalCOD - TotalReturnPrice, 0)}</span>
-                                                        </div>
-                                                    )
+
                                                 }
                                             </div>
                                             <div>

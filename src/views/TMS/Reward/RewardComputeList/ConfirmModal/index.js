@@ -16,7 +16,8 @@ class ConfirmModalCom extends Component {
 
         this.state = {
             dataSource: this.props.dataSource,
-            objId: this.props.objId
+            objId: this.props.objId,
+            value: this.props.dataSource.IsConfirm == true ? 2 : 1,
         };
 
         this.showMessage = this.showMessage.bind(this);
@@ -74,11 +75,11 @@ class ConfirmModalCom extends Component {
 
 
         if (MLObject.IsConfirm == 1) {
-            objDataRequest.IsConfirm = 1
-            objDataRequest.IsUnConfirm = 0
+            objDataRequest.IsConfirm = true
+            objDataRequest.IsUnConfirm = false
         } else {
-            objDataRequest.IsConfirm = 0
-            objDataRequest.IsUnConfirm = 1
+            objDataRequest.IsConfirm = false
+            objDataRequest.IsUnConfirm = true
         }
         objDataRequest.RewardComputeListID = dataSource.RewardComputeListID;
         objDataRequest.RewardDate = dataSource.RewardDate;
@@ -97,6 +98,8 @@ class ConfirmModalCom extends Component {
     }
 
     render() {
+        // console.log("object", this.props)
+        const { value } = this.state;
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -116,12 +119,12 @@ class ConfirmModalCom extends Component {
                             datasourcemember="IsConfirm"
                             controltype="InputControl"
                             rows={6}
-                            value={1}
+                            value={value}
                             isMultiSelect={false}
                             isautoloaditemfromcache={false}
                             listoption={[
                                 { value: 1, label: "Chốt thưởng" },
-                                { value: 2, label: "Không chốt thưởng" }
+                                { value: 2, label: "Bỏ chốt thưởng" }
                             ]}
                             classNameCustom="customcontrol"
                             readOnly={this.state.IsSystem}

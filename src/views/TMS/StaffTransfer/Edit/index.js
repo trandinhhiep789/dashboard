@@ -38,6 +38,7 @@ class EditCom extends React.Component {
         this.handleAddStateStaffTransferDetail = this.handleAddStateStaffTransferDetail.bind(this);
         this.handleDelStateStaffTransferDetail = this.handleDelStateStaffTransferDetail.bind(this);
         this.handelStateStaffTransfer_ReviewList = this.handelStateStaffTransfer_ReviewList.bind(this);
+        this.handleInitStateStaffTransferDetail = this.handleInitStateStaffTransferDetail.bind(this);
         this.handleSetStaffTransferDetailSubmit = this.handleSetStaffTransferDetailSubmit.bind(this);
     }
 
@@ -96,11 +97,27 @@ class EditCom extends React.Component {
             } else {
                 this.setState({
                     dataSource: apiResult.ResultObject,
-                    stateStaffTransferDetail: apiResult.ResultObject.ListStaffTransferDetail,
+                    stateStaffTransferDetail: this.handleInitStateStaffTransferDetail(apiResult.ResultObject),
                     stateStaffTransfer_ReviewList: apiResult.ResultObject.ListStaffTransfer_ReviewList
                 })
             }
         })
+    }
+
+    handleInitStateStaffTransferDetail(ResultObject) {
+        const { ListStaffTransferDetail } = ResultObject;
+        try {
+            const arrResult = ListStaffTransferDetail.map(item => {
+                return {
+                    ...item,
+                    FromCoordinatorGroupID_Name: `${item.FromCoordinatorGroupID} - ${item.FromCoordinatorGroupName}`,
+                    ToCoordinatorGroupID_Name: `${item.ToCoordinatorGroupID} - ${item.ToCoordinatorGroupName}`
+                }
+            })
+            return arrResult;
+        } catch (error) {
+            return ListStaffTransferDetail;
+        }
     }
 
     handleAddStateStaffTransferDetail(data) {
@@ -214,7 +231,7 @@ class EditCom extends React.Component {
                         onSubmit={this.handleSubmit}
                     >
                         <div className="row mb-4">
-                            <div className="col-md-6">
+                            <div className="col-md-6 mb-2">
                                 <FormControl.TextBox
                                     name="txtStaffTransferID"
                                     colspan="8"
@@ -229,7 +246,7 @@ class EditCom extends React.Component {
                                 />
                             </div>
 
-                            <div className="col-md-6">
+                            <div className="col-md-6 mb-2">
                                 <FormControl.FormControlComboBox
                                     name="cboStaffTransferTypeID"
                                     colspan="8"
@@ -246,6 +263,28 @@ class EditCom extends React.Component {
                                     value={""}
                                     listoption={null}
                                     datasourcemember="StaffTransferTypeID"
+                                />
+                            </div>
+
+                            <div className="col-md-6">
+                                <FormControl.CheckBox
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    label="Tự động duyệt"
+                                    name="cbIsAutoReview"
+                                    value={dataSource.IsAutoReview}
+                                    disabled={true}
+                                />
+                            </div>
+
+                            <div className="col-md-6">
+                                <FormControl.CheckBox
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    label="Tự động thuyên chuyển"
+                                    name="cbIsAutoTransfer"
+                                    value={dataSource.IsAutoTransfer}
+                                    disabled={true}
                                 />
                             </div>
 

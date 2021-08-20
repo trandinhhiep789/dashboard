@@ -9,7 +9,7 @@ import { showModal, hideModal } from '../../../../actions/modal';
 import { GetMLObjectData } from "../../../../common/library/form/FormLib";
 import Collapsible from 'react-collapsible';
 import {
-    ModalColumnList_Insert, ModalColumnList_Edit, DataGridColumnList, MLObjectDefinition,
+    ModalColumnList_Insert, ModalColumnList_Edit, DataGridColumnList, MLObjectDefinition, schema, DataTemplateExport, AddByFileAPIPath,
     AddAPIPath, UpdateAPIPath, DeleteAPIPath, APIHostName
 } from "./constants";
 import ReactNotification from "react-notifications-component";
@@ -42,7 +42,8 @@ class Area_ProvinceCom extends React.Component {
             AreaID: this.props.AreaID,
             IsInsert: true,
             ModalColumnList_Insert: ModalColumnList_Insert,
-            ModalColumnList_Edit: ModalColumnList_Edit
+            ModalColumnList_Edit: ModalColumnList_Edit,
+            DataTemplateExport
         };
         this.notificationDOMRef = React.createRef();
     }
@@ -251,6 +252,60 @@ class Area_ProvinceCom extends React.Component {
         this.resetCombobox();
     }
 
+    handleExportFileTemplate(result) {
+        this.addNotification(result.Message, result.IsError);
+    }
+
+    handleImportFile(resultRows, errors) {
+
+        const CreatedUser = this.props.AppInfo.LoginInfo.Username;
+        const LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        const AreaID = this.state.AreaID;
+        //const AreaTypeID = this.state.AreaTypeID;
+        const importData = resultRows.map(item => {
+            //const { UserName, IsSystem } = item
+            return {
+                ...item,
+                AreaID,
+                CreatedUser,
+                LoginLogID
+                //ProvinceFullName: `${ProvinceID} - ${ProvinceName}`,
+                //WardFullName: `${WardID} - ${WardName}`
+            }
+        })
+
+        // let data = [];
+        // let _isError = false;
+        // importData.map((itemObject, index) => {
+        //     if (!itemObject.UserName && _isError == false) {
+        //         this.addNotification("Vui lòng chọn người dùng.", true);
+        //         _isError = true;
+        //     } else {
+        //         data.push(itemObject);
+        //     }
+        // });
+
+
+        // if (_isError) {
+        //     return;
+        // }
+
+
+        this.props.callFetchAPI(APIHostName, AddByFileAPIPath, importData).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            if (!apiResult.IsError) {
+                //this.props.callClearLocalCache(ERPCOMMONCACHE_MATERIALGROUP);
+                if (this.props.onAreaProvinceChange) {
+                    this.props.onAreaProvinceChange();
+                }
+            }
+
+            this.addNotification(apiResult.Message, apiResult.IsError);
+
+        });
+
+    }
+
     handleInsert(MLObjectDefinition, modalElementList, dataSource) {
         if (!this.state.IsAllowedAdd) {
             this.showMessage("Bạn không có quyền");
@@ -276,7 +331,7 @@ class Area_ProvinceCom extends React.Component {
             onConfirm: (isConfirmed, formData) => {
                 if (isConfirmed) {
                     let MLObject = GetMLObjectData(MLObjectDefinition, formData, dataSource);
-                    if (MLObject) {               
+                    if (MLObject) {
                         MLObject.AreaID = this.state.AreaID;
                         MLObject.ProvinceID = MLObject.ProvinceID && Array.isArray(MLObject.ProvinceID) ? MLObject.ProvinceID[0] : MLObject.ProvinceID;
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
@@ -520,6 +575,14 @@ class Area_ProvinceCom extends React.Component {
                     RowsPerPage={10}
                     IsCustomAddLink={true}
                     headingTitle={"Danh sách tỉnh thành của khu vực"}
+
+                    IsImportFile={true}
+                    SchemaData={schema}
+                    onImportFile={this.handleImportFile.bind(this)}
+                    isExportFileTemplate={true}
+                    DataTemplateExport={this.state.DataTemplateExport}
+                    fileNameTemplate={"Danh sách tỉnh thành của khu vực"}
+                    onExportFileTemplate={this.handleExportFileTemplate.bind(this)}
                 />
             </div>
         );

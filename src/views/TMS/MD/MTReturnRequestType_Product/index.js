@@ -161,13 +161,11 @@ class MTReturnRequestType_ProductCom extends React.Component {
             })
             const elementlist = ModalColumnList_Insert;
             elementlist.forEach(function (objElement) {
-                if (objElement.Name == "ProductID") {
+                if (objElement.Name == "ProductID" || objElement.Name == "InstockProductID") {
                     objElement.listoption = options;
                     objElement.value = [];
                     formData.ProductID = [];
                 }
-
-
             });
             this.setState({
                 ModalColumnList_Insert: elementlist
@@ -207,6 +205,7 @@ class MTReturnRequestType_ProductCom extends React.Component {
                         //MLObject.ProductID = MLObject.ProductID[0].ProductID;
                         MLObject.ProductID = MLObject.ProductID && Array.isArray(MLObject.ProductID) ? MLObject.ProductID[0] : -1;
                         MLObject.InventoryStatusID = MLObject.InventoryStatusID && Array.isArray(MLObject.InventoryStatusID) ? MLObject.InventoryStatusID[0] : MLObject.InventoryStatusID;
+                        MLObject.InstockProductID = MLObject.InstockProductID && Array.isArray(MLObject.InstockProductID) ? MLObject.InstockProductID[0] : null;
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
 
@@ -237,6 +236,12 @@ class MTReturnRequestType_ProductCom extends React.Component {
                             return;
                         } else if (MLObject.MaxQuality.toString().indexOf(".") != -1 && MLObject.MaxQuality.toString().split(".")[1].length > 3) {
                             this.addNotification("Số lượng lớn nhất chỉ được phép nhập 3 số thập phân", true);
+                            return;
+                        }
+
+                        //sản phẩm tồn kho phải đi chung với tỷ lệ quy đổi
+                        if (MLObject.InstockProductID && (!MLObject.InstockConvertRatio || MLObject.InstockConvertRatio <= 0)) {
+                            this.addNotification("Vui lòng nhập tỷ lệ quy đổi", true);
                             return;
                         }
 
@@ -288,6 +293,23 @@ class MTReturnRequestType_ProductCom extends React.Component {
             this.displayInputControl(_IsCheckMinMaxQuality);
         }, 100);
 
+        
+        //load combo sản phẩm tồn kho
+        let options = [];
+        this.props.MaterialProductDataSource.map((item, index) => {
+            if (item.MaterialGroupID == _DataSource.MaterialGroupID) {
+                options.push({ value: item.ProductID, name: item.ProductName })
+            }
+        })
+        const elementlist = ModalColumnList_Edit;
+        elementlist.forEach(function (objElement) {
+            if (objElement.Name == "InstockProductID") {
+                objElement.listoption = options;
+                objElement.value = _DataSource.InstockProductID;
+                //formData.ProductID = [];
+            }
+        });
+
         this.props.showModal(MODAL_TYPE_CONFIRMATION, {
             title: 'Chỉnh sửa vật tư được phép trả của một yêu cầu nhập trả vật tư',
             onValueChange: this.handleModalChange,
@@ -300,8 +322,13 @@ class MTReturnRequestType_ProductCom extends React.Component {
                         //MLObject.MaterialGroupID = MLObject.MaterialGroupID && Array.isArray(MLObject.MaterialGroupID) ? MLObject.MaterialGroupID[0] : MLObject.MaterialGroupID;
                         //MLObject.ProductID = MLObject.ProductID && Array.isArray(MLObject.ProductID) ? MLObject.ProductID[0].ProductID : MLObject.ProductID;
                         MLObject.InventoryStatusID = MLObject.InventoryStatusID && Array.isArray(MLObject.InventoryStatusID) ? MLObject.InventoryStatusID[0] : MLObject.InventoryStatusID;
+                        MLObject.InstockProductID = MLObject.InstockProductID && Array.isArray(MLObject.InstockProductID) ? MLObject.InstockProductID[0] : MLObject.InstockProductID;
                         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+
+                        if (MLObject.InstockProductID <= 0) {
+                            MLObject.InstockProductID = null;
+                        }
 
                         if (MLObject.IsCheckMinMaxQuality) {
                             if (MLObject.MinQuality === "") {
@@ -332,6 +359,12 @@ class MTReturnRequestType_ProductCom extends React.Component {
                             return;
                         }
 
+                        //sản phẩm tồn kho phải đi chung với tỷ lệ quy đổi
+                        if (MLObject.InstockProductID && (!MLObject.InstockConvertRatio || MLObject.InstockConvertRatio <= 0)) {
+                            this.addNotification("Vui lòng nhập tỷ lệ quy đổi", true);
+                            return;
+                        }
+
 
                         // //số lượng chỉ được 1 số thập phân
                         // if (MLObject.MinQuality.toString().indexOf(".") != -1 && !(/^\d+(\.\d{3})$/).test(parseFloat(MLObject.MinQuality))) {
@@ -358,7 +391,7 @@ class MTReturnRequestType_ProductCom extends React.Component {
                     }
                 }
             },
-            modalElementList: ModalColumnList_Edit,
+            modalElementList: elementlist,
             formData: _DataSource
         });
     }

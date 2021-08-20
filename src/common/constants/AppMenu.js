@@ -141,6 +141,14 @@ const AppMenu = [
                                 MenuIcon: '',
                                 SubMenu: []
                             },
+                            {
+                                MenuName: 'DeliveryAbilityStore',
+                                MenuTitle: 'Kho lấy tải',
+                                LinkTo: '/DeliveryAbilityStore',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+
                         ]
                     },
 
@@ -187,73 +195,121 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    {
+                        MenuName: 'IgnoreCheckRcGeoLocReason',
+                        MenuTitle: 'Lý do bỏ qua kiểm tra tọa độ nhận hàng',
+                        LinkTo: '/IgnoreCheckRcGeoLocReason',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
 
 
 
                 ]
             },
             {
-                MenuName: 'AppFeedBack',
-                MenuTitle: 'Phản hồi ứng dụng',
+                MenuName: 'App',
+                MenuTitle: 'Ứng dụng',
                 LinkTo: '',
                 MenuIcon: '',
                 SubMenu: [
                     {
-                        MenuName: 'AppFeedBackType',
-                        MenuTitle: 'Loại phản hồi ứng dụng',
-                        LinkTo: '/AppFeedBackType',
+                        MenuName: 'AppDataSync',
+                        MenuTitle: 'Đồng bộ dữ liệu giữa các ứng dụng',
+                        LinkTo: '',
                         MenuIcon: '',
-                        SubMenu: []
+                        SubMenu: [
+                            {
+                                MenuName: 'AppDataSyncType',
+                                MenuTitle: 'Loại đồng bộ',
+                                LinkTo: '/AppDataSyncType',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+                            {
+                                MenuName: 'AppDataSyncList',
+                                MenuTitle: 'Danh sách đồng bộ',
+                                LinkTo: '/AppDataSyncList',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+                            {
+                                MenuName: 'AppDataSyncLog',
+                                MenuTitle: 'Nhật ký đồng bộ dữ liệu từ BCNB',
+                                LinkTo: '/AppDataSyncLog',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+                        ]
                     },
                     {
-                        MenuName: 'AppFeedBackPriority',
-                        MenuTitle: 'Độ ưu tiên phản hồi',
-                        LinkTo: '/AppFeedBackPriority',
+                        MenuName: 'AppFeedBack',
+                        MenuTitle: 'Phản hồi ứng dụng',
+                        LinkTo: '',
                         MenuIcon: '',
-                        SubMenu: []
+                        SubMenu: [
+                            {
+                                MenuName: 'AppFeedBackType',
+                                MenuTitle: 'Loại phản hồi ứng dụng',
+                                LinkTo: '/AppFeedBackType',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+                            {
+                                MenuName: 'AppFeedBackPriority',
+                                MenuTitle: 'Độ ưu tiên phản hồi',
+                                LinkTo: '/AppFeedBackPriority',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+                            {
+                                MenuName: 'AppFeedBackStatus',
+                                MenuTitle: 'Trạng thái phản hồi',
+                                LinkTo: '/AppFeedBackStatus',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+                            {
+                                MenuName: 'AppFeedBackQuality',
+                                MenuTitle: 'Chất lượng xử lý phản hồi',
+                                LinkTo: '/AppFeedBackQuality',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+                            {
+                                MenuName: 'AppFeedBackPermission',
+                                MenuTitle: 'Quyền trên phản hồi',
+                                LinkTo: '/AppFeedBackPermission',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+                            {
+                                MenuName: 'AppFeedBackStep',
+                                MenuTitle: 'Bước xử lý phản hồi',
+                                LinkTo: '/AppFeedBackStep',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+                            {
+                                MenuName: 'AppFeedBackGroup',
+                                MenuTitle: 'Phân loại phản hồi',
+                                LinkTo: '/AppFeedBackGroup',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+                            {
+                                MenuName: 'AppFeedBackCategory',
+                                MenuTitle: 'Danh mục phản hồi',
+                                LinkTo: '/AppFeedBackCategory',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+                        ]
                     },
-                    {
-                        MenuName: 'AppFeedBackStatus',
-                        MenuTitle: 'Trạng thái phản hồi',
-                        LinkTo: '/AppFeedBackStatus',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    {
-                        MenuName: 'AppFeedBackQuality',
-                        MenuTitle: 'Chất lượng xử lý phản hồi',
-                        LinkTo: '/AppFeedBackQuality',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    {
-                        MenuName: 'AppFeedBackPermission',
-                        MenuTitle: 'Quyền trên phản hồi',
-                        LinkTo: '/AppFeedBackPermission',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    {
-                        MenuName: 'AppFeedBackStep',
-                        MenuTitle: 'Bước xử lý phản hồi',
-                        LinkTo: '/AppFeedBackStep',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    {
-                        MenuName: 'AppFeedBackGroup',
-                        MenuTitle: 'Phân loại phản hồi',
-                        LinkTo: '/AppFeedBackGroup',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
-                    {
-                        MenuName: 'AppFeedBackCategory',
-                        MenuTitle: 'Danh mục phản hồi',
-                        LinkTo: '/AppFeedBackCategory',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
+
+
+
+
                 ]
             },
             {
@@ -416,13 +472,7 @@ const AppMenu = [
                         SubMenu: []
                     },
 
-                    {
-                        MenuName: 'ServicePriceApply',
-                        MenuTitle: 'Bảng giá dịch vụ áp dụng',
-                        LinkTo: '/ServicePriceApply',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
+
                     {
                         MenuName: 'PosToRWPosTable',
                         MenuTitle: 'Bảng chuyển đổi chức vụ',
@@ -430,13 +480,7 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
-                    {
-                        MenuName: 'RewardPosImportSchedule',
-                        MenuTitle: 'Lịch đồng bộ chức vụ',
-                        LinkTo: '/RewardPosImportSchedule',
-                        MenuIcon: '',
-                        SubMenu: []
-                    },
+
                     // {
                     //     MenuName: 'PNServicePriceTable',
                     //     MenuTitle: 'Bảng giá dịch vụ của đối tác',
@@ -462,8 +506,15 @@ const AppMenu = [
                     },
                     {
                         MenuName: 'CoordinatorGroup',
-                        MenuTitle: 'Nhóm điều phối',
+                        MenuTitle: 'Nhóm chi nhánh quản lý',
                         LinkTo: '/CoordinatorGroup',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'MonthlyCoordGroup',
+                        MenuTitle: 'Nhóm chi nhánh quản lý theo tháng',
+                        LinkTo: '/MonthlyCoordGroup',
                         MenuIcon: '',
                         SubMenu: []
                     },
@@ -471,6 +522,13 @@ const AppMenu = [
                         MenuName: 'StaffTransferType',
                         MenuTitle: 'Loại hình thuyên chuyển nhân viên',
                         LinkTo: '/StaffTransferType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'StaffTransfer',
+                        MenuTitle: 'Danh sách thuyên chuyển nhân viên',
+                        LinkTo: '/StaffTransfer',
                         MenuIcon: '',
                         SubMenu: []
                     }
@@ -662,6 +720,13 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    {
+                        MenuName: 'ShipmentQualityAssess',
+                        MenuTitle: 'Danh sách tiêu chí đánh giá chất lượng',
+                        LinkTo: '/ShipmentQualityAssess',
+                        MenuIcon: '',
+                        SubMenu: []
+                    }
                 ]
             },
             {
@@ -715,7 +780,7 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-            
+
 
 
 
@@ -819,6 +884,13 @@ const AppMenu = [
                         LinkTo: '/ServiceAgreementType',
                         MenuIcon: '',
                         SubMenu: []
+                    },
+                    {
+                        MenuName: 'ServiceRequestType',
+                        MenuTitle: 'Loại loại yêu cầu dịch vụ',
+                        LinkTo: '/ServiceRequestType',
+                        MenuIcon: '',
+                        SubMenu: []
                     }
 
                 ]
@@ -860,9 +932,9 @@ const AppMenu = [
                         SubMenu: []
                     },
                     {
-                        MenuName: 'ManagerShipmentOrder',
-                        MenuTitle: 'Quản lý vận đơn',
-                        LinkTo: '/ManagerShipmentOrder',
+                        MenuName: 'ManagerShipmentRoute',
+                        MenuTitle: 'Quản lý Phân tuyến',
+                        LinkTo: '/ShipmentRoute/Manager',
                         MenuIcon: '',
                         SubMenu: []
                     },
@@ -991,13 +1063,7 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-            {
-                MenuName: 'SoAssessSynSchedule',
-                MenuTitle: 'Đồng bộ dữ liệu đánh giá vận đơn',
-                LinkTo: '/SoAssessSynSchedule',
-                MenuIcon: '',
-                SubMenu: []
-            },
+
             {
                 MenuName: 'DeliveryAbility',
                 MenuTitle: 'Khai báo tổng tải',
@@ -1006,19 +1072,20 @@ const AppMenu = [
                 SubMenu: []
             },
             {
-                MenuName: 'ShipmentQualityAssess',
-                MenuTitle: 'Đánh giá chất lượng giao hàng',
-                LinkTo: '/ShipmentQualityAssess',
+                MenuName: 'SynData',
+                MenuTitle: 'Đồng bộ dữ liệu',
+                LinkTo: '',
                 MenuIcon: '',
-                SubMenu: []
+                SubMenu: [
+                    {
+                        MenuName: 'RewardPosImportSchedule',
+                        MenuTitle: 'Lịch đồng bộ chức vụ',
+                        LinkTo: '/RewardPosImportSchedule',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                ]
             },
-            {
-                MenuName: 'StaffTransfer',
-                MenuTitle: 'Điều chuyển nhân sự',
-                LinkTo: '/StaffTransfer',
-                MenuIcon: '',
-                SubMenu: []
-            }
         ]
     },
     {
@@ -1048,6 +1115,13 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
+            {
+                MenuName: 'SoAssessSynSchedule',
+                MenuTitle: 'Đồng bộ dữ liệu đánh giá vận đơn',
+                LinkTo: '/SoAssessSynSchedule',
+                MenuIcon: '',
+                SubMenu: []
+            }
 
         ]
     },
@@ -1066,6 +1140,13 @@ const AppMenu = [
         SubMenu: []
     },
     {
+        MenuName: 'ShipmentRoute',
+        MenuTitle: 'Phân tuyến giao hàng',
+        LinkTo: '/ShipmentRoute',
+        MenuIcon: '',
+        SubMenu: []
+    },
+    {
         MenuName: 'Price',
         MenuTitle: 'Giá',
         LinkTo: '',
@@ -1075,6 +1156,13 @@ const AppMenu = [
                 MenuName: 'ServicePriceTable',
                 MenuTitle: 'Giá dịch vụ của Tận Tâm',
                 LinkTo: '/ServicePriceTable',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
+                MenuName: 'ServicePriceApply',
+                MenuTitle: 'Bảng giá dịch vụ áp dụng',
+                LinkTo: '/ServicePriceApply',
                 MenuIcon: '',
                 SubMenu: []
             },
@@ -1150,6 +1238,67 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
+            {
+                MenuName: 'GroupReward',
+                MenuTitle: 'Nhóm điều phối',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'TMSGroupReward',
+                        MenuTitle: 'Thưởng nhóm điều phối',
+                        LinkTo: '/TMSGroupReward',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'TMSGroupRewardCompute',
+                        MenuTitle: 'Tính thưởng nhóm điều phối',
+                        LinkTo: '/TMSGroupRewardCompute',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                ]
+            },
+            {
+                MenuName: 'TMSFS',
+                MenuTitle: 'Phụ cấp xăng',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'TMSFuelSubsidize',
+                        MenuTitle: 'Danh sách phụ cấp xăng',
+                        LinkTo: '/TMSFuelSubsidize',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'TMSFuelSubsidizeCompute',
+                        MenuTitle: 'Tính phụ cấp xăng',
+                        LinkTo: '/TMSFuelSubsidizeCompute',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'FuelSubsIDizePeriod',
+                        MenuTitle: 'Danh sách khoảng thời gian nhân viên được phụ cấp xăng',
+                        LinkTo: '/FuelSubsIDizePeriod',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+
+                ]
+            },
+            {
+                MenuName: 'OTTimeKeeping',
+                MenuTitle: 'Nhân viên vượt giờ công trong tháng',
+                LinkTo: '/OTTimeKeeping',
+                MenuIcon: '',
+                SubMenu: []
+            },
+
+
 
         ]
     },
@@ -1253,12 +1402,55 @@ const AppMenu = [
                     },
                     {
                         MenuName: 'MonthlySaleOrder',
-                        MenuTitle: ' Bảng kê chi tiết dịch vụ lắp đặt',
+                        MenuTitle: 'Bảng kê chi tiết dịch vụ lắp đặt',
                         LinkTo: '/MonthlySaleOrder',
                         MenuIcon: '',
                         SubMenu: []
                     },
 
+                ]
+            },
+            {
+                MenuName: 'QualityReport',
+                MenuTitle: 'Báo cáo chất lượng',
+                LinkTo: '/',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'QuanlityReportAll',
+                        MenuTitle: 'Báo cáo toàn quốc',
+                        LinkTo: '/QuanlityReportAll',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'QualityReportBranch',
+                        MenuTitle: 'Báo cáo theo chi nhánh',
+                        LinkTo: '/QualityReportBranch',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'QualityReportBranchGeneral',
+                        MenuTitle: 'Báo cáo tổng hợp theo chi nhánh',
+                        LinkTo: '/QualityReportBranchGeneral',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'QualityReportMainGroup',
+                        MenuTitle: 'Báo cáo ngành hàng và nhóm hàng',
+                        LinkTo: '/QualityReportMainGroup',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'QualityReportByUser',
+                        MenuTitle: 'Báo cáo theo nhân viên',
+                        LinkTo: '/QualityReportByUser',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
                 ]
             },
             {
@@ -1307,7 +1499,9 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-            
+
+
+
 
 
         ]
@@ -1325,7 +1519,7 @@ const AppMenu = [
         LinkTo: '/Documents',
         MenuIcon: '',
         SubMenu: [
-            
+
         ]
     },
 

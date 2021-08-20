@@ -19,25 +19,25 @@ export const InitSearchParams = [
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Nhóm điều phối" }
+    { Link: "", Title: "Nhóm chi nhánh quản lý" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/CoordinatorGroup", Title: "Nhóm điều phối" },
+    { Link: "/CoordinatorGroup", Title: "Nhóm chi nhánh quản lý" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/CoordinatorGroup", Title: "Nhóm điều phối" },
+    { Link: "/CoordinatorGroup", Title: "Nhóm chi nhánh quản lý" },
     { Link: "", Title: "Thêm" }
 ];
 
 export const DetailPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/CoordinatorGroup", Title: "Nhóm điều phối" },
-    { Link: "", Title: "Chi tiết nhóm điều phối" }
+    { Link: "/CoordinatorGroup", Title: "Nhóm chi nhánh quản lý" },
+    { Link: "", Title: "Chi tiết nhóm chi nhánh quản lý" }
 ];
 
 export const SearchElementList = [
@@ -73,7 +73,7 @@ export const AddElementList = [
     // {
     //     type: "text",
     //     name: "txtCoordinatorGroupID",
-    //     label: "mã nhóm điều phối",
+    //     label: "mã nhóm chi nhánh quản lý",
     //     value: "",
     //     maxSize: "9",
     //     placeholder: "",
@@ -86,7 +86,7 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtCoordinatorGroupName",
-        label: "tên nhóm điều phối",
+        label: "tên nhóm chi nhánh quản lý",
         value: "",
         maxSize: "200",
         placeholder: "",
@@ -111,6 +111,22 @@ export const AddElementList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.AREATT",
         ValueMember: "AreaID",
         NameMember: "AreaName"
+    },
+    {
+        type: "select",
+        name: "txtDeliveryAbilityStoreID",
+        label: "kho lấy tải",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "DeliveryAbilityStoreID",
+        readonly: false,
+        validatonList: ["Comborequired"],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.DELIVERYABILITYSTORE",
+        ValueMember: "DeliveryAbilityStoreID",
+        NameMember: "DeliveryAbilityStoreName"
     },
     {
         type: "textarea",
@@ -167,7 +183,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtCoordinatorGroupID",
-        label: "mã nhóm điều phối",
+        label: "mã nhóm chi nhánh quản lý",
         value: "",
         maxSize: "9",
         placeholder: "",
@@ -180,7 +196,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtCoordinatorGroupName",
-        label: "tên nhóm điều phối",
+        label: "tên nhóm chi nhánh quản lý",
         value: "",
         maxSize: "200",
         placeholder: "",
@@ -205,6 +221,22 @@ export const EditElementList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.AREATT",
         ValueMember: "AreaID",
         NameMember: "AreaName"
+    },
+    {
+        type: "select",
+        name: "txtDeliveryAbilityStoreID",
+        label: "kho lấy tải",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "DeliveryAbilityStoreID",
+        readonly: false,
+        validatonList: ["Comborequired"],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.DELIVERYABILITYSTORE",
+        ValueMember: "DeliveryAbilityStoreID",
+        NameMember: "DeliveryAbilityStoreName"
     },
     {
         type: "textarea",
@@ -293,6 +325,12 @@ export const MLObjectDefinition = [
         DataSourceMember: "AreaID"
     },
     {
+        Name: "DeliveryAbilityStoreID",
+        DefaultValue: "",
+        BindControlName: "txtDeliveryAbilityStoreID",
+        DataSourceMember: "DeliveryAbilityStoreID"
+    },
+    {
         Name: "AreaName",
         DefaultValue: "",
         BindControlName: "",
@@ -353,7 +391,7 @@ export const DataGridColumnList = [
     {
         Name: "CoordinatorGroupID",
         Type: "text",
-        Caption: "Mã Nhóm điều phối",
+        Caption: "Mã nhóm chi nhánh quản lý",
         DataSourceMember: "CoordinatorGroupID",
         Width: 200
     },
@@ -361,24 +399,24 @@ export const DataGridColumnList = [
         Name: "CoordinatorGroupName",
         Type: "texttolink",
         Link: "/CoordinatorGroup/Detail/",
-        Caption: "Tên Nhóm điều phối",
+        Caption: "Tên nhóm chi nhánh quản lý",
         DataSourceMember: "CoordinatorGroupName",
-        Width: 250
+        Width: 300
     },
     {
         Name: "AreaName",
         Type: "text",
         Caption: "Khu vực",
         DataSourceMember: "AreaName",
-        //Width: 200
+        Width: 150
     },
-    {
-        Name: "Description",
-        Type: "text",
-        Caption: "Mô tả",
-        DataSourceMember: "Description",
-        //Width: 200
-    },
+    // {
+    //     Name: "Description",
+    //     Type: "text",
+    //     Caption: "Mô tả",
+    //     DataSourceMember: "Description",
+    //     //Width: 200
+    // },
     {
         Name: "IsActived",
         Type: "checkicon",
@@ -410,3 +448,58 @@ export const DataGridColumnList = [
         LinkText: "Chỉnh sửa"
     }
 ];
+
+export const SchemaData = {
+    "Mã nhóm chi nhánh quản lý": {
+        prop: 'CoordinatorGroupID',
+        type: String,
+        required: true
+    },
+    "Mã nhân viên": {
+        prop: 'UserName',
+        type: String,
+        required: true
+    }
+}
+
+export const DataTemplateExport = [
+    {
+        "Mã nhóm chi nhánh quản lý": ""
+    },
+    {
+        "Mã nhân viên": ""
+    }
+];
+
+export const lstColImportExcelModal = [
+    {
+        Name: "CoordinatorGroupID",
+        Type: "text",
+        Caption: "Mã nhóm chi nhánh quản lý",
+        DataSourceMember: "CoordinatorGroupID"
+    },
+    {
+        Name: "CoordinatorGroupName",
+        Type: "text",
+        Caption: "Tên nhóm chi nhánh quản lý",
+        DataSourceMember: "CoordinatorGroupName"
+    },
+    {
+        Name: "UserName",
+        Type: "text",
+        Caption: "Mã nhân viên",
+        DataSourceMember: "UserName"
+    },
+    {
+        Name: "FullName",
+        Type: "text",
+        Caption: "Tên nhân viên",
+        DataSourceMember: "FullName"
+    },
+    {
+        Name: "ErrorContent",
+        Type: "text",
+        Caption: "Nội dung lỗi",
+        DataSourceMember: "ErrorContent"
+    },
+]

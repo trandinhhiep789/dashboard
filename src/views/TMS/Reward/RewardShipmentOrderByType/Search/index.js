@@ -20,7 +20,10 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { TMS_TMSREWARD_VIEW, TMS_TMSREWARD_SO_TYPE_VIEW, TMS_TMSREWARD_SO_TYPE_EXPORT } from "../../../../../constants/functionLists";
 import { callGetCache } from "../../../../../actions/cacheAction";
-import { toIsoStringCus } from '../../../../../utils/function'
+import { toIsoStringCus } from '../../../../../utils/function';
+import { showModal, hideModal } from '../../../../../actions/modal';
+import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../../constants/keyCache";
+import { MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -36,7 +39,12 @@ class SearchCom extends React.Component {
             SearchData: InitSearchParams,
             totalAmount: '',
             param: {},
-            dataExport: []
+            dataExport: [],
+            pageIndex: 1,
+            exportTemplateID: "",
+            RewardTypeID: -1,
+            fromDate: toIsoStringCus(new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()).toISOString()),
+            toDate: new Date()
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -52,8 +60,26 @@ class SearchCom extends React.Component {
         })
         this.props.updatePagePath(PagePath);
         // this.handleCallData();
+        this.getCacheMTG();
     }
 
+
+    getCacheMTG() {
+        this.props.callGetCache(ERPCOMMONCACHE_TMSCONFIG).then((result) => {
+            if (result && !result.IsError && result.ResultObject) {
+
+                let _configValueTemplateID = result.ResultObject.CacheData.filter(x => x.TMSConfigID == "TEMPLATE_EXPORT_REWARDSHIPMENTORDERTYPE");
+                if (_configValueTemplateID) {
+                    this.setState({
+                        exportTemplateID: _configValueTemplateID[0].TMSConfigValue
+                    })
+                }
+
+            }
+
+
+        });
+    }
 
 
     handleCallData() {
@@ -66,7 +92,11 @@ class SearchCom extends React.Component {
             RewardTypeID: MLObject.RewardTypeID
         }
         this.setState({
-            params: param
+            params: param,
+            pageIndex: 1,
+            RewardTypeID: MLObject.RewardTypeID,
+            fromDate: toIsoStringCus(new Date(MLObject.FromDate).toISOString()),
+            toDate: toIsoStringCus(new Date(MLObject.ToDate).toISOString())
         })
 
         const postData = [
@@ -82,7 +112,14 @@ class SearchCom extends React.Component {
                 SearchKey: "@REWARDTYPEID",
                 SearchValue: MLObject.RewardTypeID
             },
-
+            {
+                SearchKey: "@PAGEINDEX",
+                SearchValue: 1
+            },
+            {
+                SearchKey: "@PAGESIZE",
+                SearchValue: 31
+            },
 
         ];
         this.callSearchData(postData);
@@ -173,6 +210,107 @@ class SearchCom extends React.Component {
         this.addNotification(result.Message, result.IsError);
     }
 
+    handleonChangePage(pageNum) {
+        // console.log("pageNum", pageNum)
+        let listMLObject = [];
+        // const aa = { SearchKey: "@PAGEINDEX", SearchValue: pageNum };
+        // listMLObject = Object.assign([], this.state.SearchData, { [3]: aa });
+        // 
+        const { RewardTypeID, fromDate, toDate } = this.state;
+
+        const postData = [
+            {
+                SearchKey: "@FROMDATE",
+                SearchValue: fromDate //MLObject.FromDate
+            },
+            {
+                SearchKey: "@TODATE",
+                SearchValue: toDate //MLObject.ToDate
+            },
+            {
+                SearchKey: "@REWARDTYPEID",
+                SearchValue: RewardTypeID
+            },
+            {
+                SearchKey: "@PAGEINDEX",
+                SearchValue: pageNum
+            },
+            {
+                SearchKey: "@PAGESIZE",
+                SearchValue: 31
+            },
+
+        ];
+        this.callSearchData(postData);
+
+        // this.callSearchData(listMLObject)
+        this.setState({
+            pageIndex: pageNum
+        });
+    }
+
+    handleExportFileFormSearch(FormData, MLObject) {
+        const { exportTemplateID } = this.state;
+
+        const fromDate = toIsoStringCus(new Date(MLObject.FromDate).toISOString());
+        const toDate = toIsoStringCus(new Date(MLObject.ToDate).toISOString());
+        const postData = [
+            {
+                SearchKey: "@FROMDATE",
+                SearchValue: fromDate //MLObject.FromDate
+            },
+            {
+                SearchKey: "@TODATE",
+                SearchValue: toDate //MLObject.ToDate
+            },
+            {
+                SearchKey: "@REWARDTYPEID",
+                SearchValue: MLObject.RewardTypeID
+            },
+            {
+                SearchKey: "@PAGEINDEX",
+                SearchValue: -1
+            },
+            {
+                SearchKey: "@PAGESIZE",
+                SearchValue: -1
+            },
+
+        ];
+
+
+        const postDataNew = {
+            DataExportTemplateID: exportTemplateID,
+            LoadDataStoreName: 'TMS.TMS_TMSREWARDDETAIL_SRHBYTYPE',
+            KeyCached: "TMS_TMSREWARD_SO_TYPE_VIEW",
+            SearchParamList: postData,
+            ExportDataParamsDescription: "FROMDATE: " + fromDate + " - TODATE: " + toDate + " - REWARDTYPEID: " + MLObject.RewardTypeID + " - PAGEINDEX: " + "-1" + " - PAGESIZE: " + "-1",
+        }
+
+        this.props.callFetchAPI(APIHostName, "api/DataExportQueue/AddQueueExport", postDataNew).then(apiResult => {
+            if (!apiResult.IsError) {
+                // console.log("aa", exportTemplateID, postDataNew, apiResult)
+                this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
+                    title: "Tải file",
+                    maxWidth: '1200px',
+                    ParamRequest: { DataExportTemplateID: exportTemplateID }
+                });
+            }
+            else {
+                this.showMessage(apiResult.Message)
+            }
+        });
+    };
+
+    handleHistorySearch() {
+        const { exportTemplateID } = this.state;
+        this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
+            title: "Tải file",
+            maxWidth: '1200px',
+            ParamRequest: { DataExportTemplateID: exportTemplateID }
+        });
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -184,6 +322,11 @@ class SearchCom extends React.Component {
                     onSubmit={this.handleSearchSubmit}
                     ref={this.searchref}
                     className="multiple"
+                    IsButtonExport={true}
+                    onExportSubmit={this.handleExportFileFormSearch.bind(this)}
+                    IsButtonhistory={true}
+                    colGroupAction={5}
+                    onHistorySubmit={this.handleHistorySearch.bind(this)}
                 />
 
                 <DataGrid
@@ -198,17 +341,17 @@ class SearchCom extends React.Component {
                     IsShowButtonPrint={false}
                     IsPrint={false}
                     IsAutoPaging={true}
-                    RowsPerPage={30}
+                    RowsPerPage={31}
                     totalCurrency={true}
                     params={this.state.params}
-                    totalCurrencyColSpan={3}
+                    isPaginationServer={true}
+                    PageNumber={this.state.pageIndex}
+                    totalCurrencyColSpan={2}
                     totalCurrencyNumber={this.state.totalAmount}
                     RequirePermission={TMS_TMSREWARD_SO_TYPE_VIEW}
                     xportPermission={TMS_TMSREWARD_SO_TYPE_EXPORT}
-                    IsExportFile={true}
-                    DataExport={this.state.dataExport}
-                    fileName="Danh sách thưởng giao hàng theo loại"
-                    onExportFile={this.handleExportFile.bind(this)}
+                    IsExportFile={false}
+                    onChangePage={this.handleonChangePage.bind(this)}
                     ref={this.gridref}
                 />
             </React.Fragment>
@@ -234,6 +377,12 @@ const mapDispatchToProps = dispatch => {
         },
         callGetCache: (cacheKeyID) => {
             return dispatch(callGetCache(cacheKeyID));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
+        },
+        hideModal: (type, props) => {
+            dispatch(hideModal(type, props));
         }
     };
 };

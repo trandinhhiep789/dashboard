@@ -53,6 +53,7 @@ class DetailCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
+            console.log("object", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -60,7 +61,7 @@ class DetailCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
-
+                apiResult.ResultObject.FileContent1 = apiResult.ResultObject.FileContent1 + apiResult.ResultObject.FileContent2;
 
                 this.setState({
                     IsPublished: apiResult.ResultObject.IsPublished,
@@ -176,8 +177,8 @@ class DetailCom extends React.Component {
 
                                 {
                                     IsPublished == false ?
-                                        <button className="btn btn-primary mr-3" type="button" onClick={() => this.handlePublish(0)}>Công bố</button>
-                                        : <button className="btn btn-primary mr-3" type="button" onClick={() => this.handlePublish(1)}>Không công bố</button>
+                                        <button className="btn btn-primary mr-3" type="button" onClick={() => this.handlePublish(0)}>Triển khai</button>
+                                        : <button className="btn btn-primary mr-3" type="button" onClick={() => this.handlePublish(1)}>Không triển khai</button>
                                 }
 
 

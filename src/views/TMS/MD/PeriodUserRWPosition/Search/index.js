@@ -113,10 +113,20 @@ class SearchCom extends React.Component {
             if ((!itemObject.ApplyFromDate || !itemObject.ApplyToDate) && _isError == false) {
                 this.addNotification("Vui lòng nhập ngày áp dụng.", true);
                 _isError = true;
-            } else if (!itemObject.UserName && _isError == false) {
+            }
+            else if (!itemObject.UserName && _isError == false) {
                 this.addNotification("Vui lòng chọn người dùng.", true);
                 _isError = true;
-            } else if (!itemObject.RewardPositionID && _isError == false) {
+            }
+            //kiểm tra khoản thời gian phải cùng tháng, năm
+            else if (itemObject.ApplyFromDate.getFullYear() != itemObject.ApplyToDate.getFullYear()) {
+                this.addNotification("Vui lòng chọn cùng năm (User: " + itemObject.UserName + ")", true);
+                _isError = true;
+            } else if (itemObject.ApplyFromDate.getMonth() != itemObject.ApplyToDate.getMonth()) {
+                this.addNotification("Vui lòng chọn cùng tháng (User: " + itemObject.UserName + ")", true);
+                _isError = true;
+            }
+            else if (!itemObject.RewardPositionID && _isError == false) {
                 this.addNotification("Vui lòng chọn mã vị trí thưởng.", true);
                 _isError = true;
             }

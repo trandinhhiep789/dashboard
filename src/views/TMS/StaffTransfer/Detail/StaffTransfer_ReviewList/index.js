@@ -95,7 +95,7 @@ class StaffTransfer_ReviewList extends React.Component {
             ReviewedNote: stateReviewedNote
         });
 
-        ModalManager.close;
+        ModalManager.close();
     }
 
     handleChangeReviewedNote(e) {
@@ -159,6 +159,7 @@ class StaffTransfer_ReviewList extends React.Component {
                                     <th className="jsgrid-header-cell">Người duyệt</th>
                                     <th className="jsgrid-header-cell">Trạng thái duyệt</th>
                                     <th className="jsgrid-header-cell">Ngày duyệt</th>
+                                    <th className="jsgrid-header-cell">Ghi chú duyệt</th>
                                     <th className="jsgrid-header-cell">Duyệt</th>
                                 </tr>
                             </thead>
@@ -171,6 +172,7 @@ class StaffTransfer_ReviewList extends React.Component {
                                                 <td>{item.UserName + ' - ' + item.UserFullName}</td>
                                                 <td>{item.IsReviewed ? "Đã duyệt" : "Chưa duyệt"}</td>
                                                 <td>{formatDate(item.ReviewedDate, true)}</td>
+                                                <td>{item.ReviewedNote}</td>
                                                 <td>
                                                     <Select
                                                         options={[{ value: 1, label: "Đồng ý" }, { value: 2, label: "Từ chối" }]}

@@ -94,7 +94,7 @@ class DetailCom extends React.Component {
                     <div className="col-md-12 col-sm-12 col-xs-12">
                         <div className="x_panel">
                             <div className="x_title">
-                                <h2>Thông tin nhóm điều phối</h2>
+                                <h2>Thông tin nhóm chi nhánh quản lý</h2>
                                 <div className="clearfix"></div>
                             </div>
 
@@ -102,13 +102,13 @@ class DetailCom extends React.Component {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Mã nhóm điều phối: </span>
+                                            <span>Mã nhóm chi nhánh quản lý: </span>
                                             <span className="xcode">{this.state.DataSource.CoordinatorGroupID}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Tên nhóm điều phối: </span>
+                                            <span>Tên nhóm chi nhánh quản lý: </span>
                                             <span>{this.state.DataSource.CoordinatorGroupName}</span>
                                         </div>
                                     </div>
@@ -139,14 +139,14 @@ class DetailCom extends React.Component {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Người tạo: </span>
-                                            <span>{this.state.DataSource.CreatedUserFullName}</span>
+                                            <span>Người cập nhật: </span>
+                                            <span>{this.state.DataSource.UpdatedUserFullName}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Ngày tạo: </span>
-                                            <span>{formatDate(this.state.DataSource.CreatedDate)}</span>
+                                            <span>Ngày cập nhật: </span>
+                                            <span>{formatDate(this.state.DataSource.UpdatedDate)}</span>
                                         </div>
                                     </div>
 

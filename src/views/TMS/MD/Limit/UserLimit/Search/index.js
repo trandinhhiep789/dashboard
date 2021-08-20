@@ -17,7 +17,8 @@ import {
     PagePath,
     SearchMLObjectDefinitionNew,
     SearchElementListNew,
-    DefaultMaxLimitCoil, DefaultMaxLimitAmount
+    DefaultMaxLimitCoil, DefaultMaxLimitAmount,
+    GetAllUserLimitAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../../actions/pageAction";
@@ -28,6 +29,9 @@ import { callGetCache, callClearLocalCache } from "../../../../../../actions/cac
 import { numberDecimalWithComma } from '../../../../../../utils/function';
 import { ERPCOMMONCACHE_LIMITTYPE, ERPCOMMONCACHE_USER_LIMIT } from "../../../../../../constants/keyCache";
 import { formatDate, formatMonthDate } from "../../../../../../common/library/CommonLib.js";
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+import readXlsxFile from 'read-excel-file'
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -39,6 +43,8 @@ class SearchCom extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.initGridDataSource = this.initGridDataSource.bind(this);
         this.initArrInputError = this.initArrInputError.bind(this);
+        this.handleExportCSV = this.handleExportCSV.bind(this);
+        this.getDataForExport = this.getDataForExport.bind(this);
 
         this.state = {
             gridDataSource: [],
@@ -47,7 +53,8 @@ class SearchCom extends React.Component {
             iconNotification: "",
             listColumn: [],
             arrInputError: [],
-            isErrorValidate: false
+            isErrorValidate: false,
+            DataExport: []
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -57,6 +64,70 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
+        this.getDataForExport();
+    }
+
+    getDataForExport() {
+        this.props.callFetchAPI(APIHostName, GetAllUserLimitAPIPath, null).then(apiResult => {
+            //console.log("apiResult", apiResult);
+            if (!apiResult.IsError && apiResult.ResultObject != null) {
+                const exelData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Mã nhân viên": item.UserName,
+                        "Tên nhân viên": item.FullName,
+                        "Mã loại giới hạn": item.LimitTypeID,
+                        "Tên loại giới hạn": item.LimitTypeName,
+                        "Giá trị giới hạn": item.LimitValue,
+                        "Ngày cập nhật": formatDate(item.UpdatedDate),
+                        "Người cập nhật": item.UpdatedUserFullName
+                    };
+                    return element;
+
+                })
+
+                this.setState({
+                    DataExport: exelData
+                });
+            }
+        });
+    }
+
+
+
+    handleExportCSV() {
+        const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+        const fileExtension = '.xlsx';
+        let result;
+        // if (!this.state.IsAllowExport) {
+        //     result = {
+        //         IsError: true,
+        //         Message: "Bạn không có quyền xuất file exel!"
+        //     };
+        // }
+        if (this.state.DataExport.length == 0) {
+            result = {
+                IsError: true,
+                Message: "Dữ liệu không tồn tại. Không thể xuất file!"
+            };
+        }
+        else {
+
+            const ws = XLSX.utils.json_to_sheet(this.state.DataExport);
+            const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+            const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+            const data = new Blob([excelBuffer], { type: fileType });
+
+
+            FileSaver.saveAs(data, "Danh sách giới hạn theo người dùng" + fileExtension);
+
+            result = {
+                IsError: false,
+                Message: "Xuất file thành công!"
+            };
+        }
+        //this.props.onExportFile(result);
+        this.addNotification(result.Message, result.IsError);
+
     }
 
     handleSearchSubmit(formData, MLObject) {
@@ -209,11 +280,30 @@ class SearchCom extends React.Component {
             const initInputError = this.initArrInputError(apiResult.ResultObject);
             const listColumn = this.getTableHeader(groupData);
 
+
+            let exelData = [];
+            if (!apiResult.IsError && apiResult.ResultObject != null) {
+                exelData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Mã nhân viên": item.UserName,
+                        "Tên nhân viên": item.FullName,
+                        "Mã loại giới hạn": item.LimitTypeID,
+                        "Tên loại giới hạn": item.LimitTypeName,
+                        "Giá trị giới hạn": item.LimitValue,
+                        "Ngày cập nhật": formatDate(item.UpdatedDate),
+                        "Người cập nhật": item.UpdatedUserFullName
+                    };
+                    return element;
+
+                })
+            }
+
             this.setState({
                 listColumn: listColumn,
                 gridDataSource: groupData,
-                arrInputError: initInputError
-            })
+                arrInputError: initInputError,
+                DataExport: exelData
+            });
 
         });
     }
@@ -234,23 +324,20 @@ class SearchCom extends React.Component {
     }
 
     addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
         if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
         } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={this.state.cssNotification}>
+                <div className={cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
+                        <i className={iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -265,6 +352,8 @@ class SearchCom extends React.Component {
             dismissable: { click: true }
         });
     }
+
+
 
     handleSubmit() {
         const { gridDataSource } = this.state;
@@ -468,7 +557,22 @@ class SearchCom extends React.Component {
                     className="multiple"
                 />
 
+                {/* xuất file exel */}
+                <div className="row">
+                    <div className="col-md-12">
+                        <div className="btn-toolbar" style={{ position: "absolute", bottom: "-40px", right: "30px", zIndex: "1" }}>
+                            <div className="btn-group btn-group-sm">
+                                <button type="button" className="btn btn-export ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.handleExportCSV}>
+                                    <span className="fa fa-file-excel-o"> Xuất file excel </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <div className="col-lg-12 user-limt">
+                    <br /><br />
                     <div className="card">
                         <div className="card-body">
                             <table className="table table-sm table-striped table-bordered table-hover table-condensed">

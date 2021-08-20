@@ -262,9 +262,9 @@ class SearchCom extends React.Component {
                         IsExportFile={true}
                         onExportFile={this.handleExportFile}
                         DataExport={dataExport}
-                        RequirePermission={STAFFTRANSFER_VIEW}
-                        DeletePermission={STAFFTRANSFERID_DELETE}
-                        ExportPermission={STAFFTRANSFERID_EXPORT}
+                    // RequirePermission={STAFFTRANSFER_VIEW}
+                    // DeletePermission={STAFFTRANSFERID_DELETE}
+                    // ExportPermission={STAFFTRANSFERID_EXPORT}
                     />
                 </React.Fragment>
             );

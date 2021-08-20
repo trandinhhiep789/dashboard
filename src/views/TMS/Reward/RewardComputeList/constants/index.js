@@ -2,7 +2,8 @@ export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/RewardComputeList/Search";
 export const ConfirmAPIPath = "api/RewardComputeList/Confirm";
 export const SearchConfirmLogAPIPath = "api/RewardComputeList_CFLog/Search";
-
+import { toIsoStringCus } from '../../../../../utils/function'
+export const ConfirmListAPIPath = "api/RewardComputeList/ConfirmListItem";
 
 
 
@@ -17,6 +18,26 @@ const dtFromdate = new Date();
 dtFromdate.setDate(new Date().getDate() - 30);
 
 export const SearchElementList = [
+    {
+        type: "Datetime",
+        name: "dtFromDate",
+        DataSourceMember: "FromDate",
+        label: "Từ ngày",
+        value: new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()),
+        timeFormat: false,
+        dateFormat: "DD/MM/YYYY",
+        colspan: 2,
+    },
+    {
+        type: "Datetime",
+        name: "dtToDate",
+        DataSourceMember: "ToDate",
+        label: "Đến ngày",
+        value: new Date(),
+        timeFormat: false,
+        dateFormat: "DD/MM/YYYY",
+        colspan: 2,
+    },
     {
         type: "ComboBoxNewChange",
         name: "cbRewardComputeTypeID",
@@ -35,8 +56,8 @@ export const SearchElementList = [
     },
     {
         type: "ComboBox",
-        name: "cbIscomPuted",
-        DataSourceMember: "IscomPuted",
+        name: "cbIsComputed",
+        DataSourceMember: "IsComputed",
         label: "Tính thưởng",
         colspan: 2,
         value: -1,
@@ -48,10 +69,11 @@ export const SearchElementList = [
             { value: 1, label: 'Đã tính' },
 
         ],
-        ValueMember: "IscomPuted",
-        NameMember: "IscomPutedName"
+        ValueMember: "IsComputed",
+        NameMember: "IsComputedName"
 
     },
+    
 ];
 
 export const MLObjectChangeConfirmModal = [
@@ -69,10 +91,20 @@ export const  SearchMLObjectDefinition = [
         BindControlName: "cbRewardComputeTypeID"
     },
     {
-        Name: "IscomPuted",
+        Name: "IsComputed",
         DefaultValue: "",
-        BindControlName: "cbIscomPuted"
-    }
+        BindControlName: "cbIsComputed"
+    },
+    {
+        Name: "FromDate",
+        DefaultValue: "",
+        BindControlName: "dtFromDate"
+    },
+    {
+        Name: "ToDate",
+        DefaultValue: "",
+        BindControlName: "dtToDate"
+    },
 ]
 
 export const InitSearchParams = [
@@ -84,52 +116,66 @@ export const InitSearchParams = [
         SearchKey: "@ISCOMPUTED",
         SearchValue: ""
     },
+    {
+        SearchKey: "@FROMDATE",
+        SearchValue:  toIsoStringCus(new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()))
+    },
+    {
+        SearchKey: "@TODATE",
+        SearchValue: new Date()
+    },
 ];
 
 export const GridColumnList = [
-    
+    {
+        Name: "chkSelect",
+        Type: "checkbox",
+        Caption: "Chọn",
+        DataSourceMember: "RewardComputeListID",
+        Width: "5%"
+    },
     {
         Name: "RewardComputeTypeName",
         Type: "text",
-        Caption: "Mã loại tính thưởng",
+        Caption: "Loại tính thưởng",
         DataSourceMember: "RewardComputeTypeName",
-        Width: 200
+        Width: "10%"
     },
     {
         Name: "RewardDate",
         Type: "date",
         Caption: "Ngày tính thưởng",
         DataSourceMember: "RewardDate",
-        Width: 150
+        Width: "10%"
     },
     
     {
-        Name: "IsComPuted",
+        Name: "IsComputed",
         Type: "checkicon",
         Caption: "Đã tính thưởng",
-        DataSourceMember: "IsComPuted",
-        Width: 100
+        DataSourceMember: "IsComputed",
+        Width: "10%"
     },
     {
         Name: "LastComputedDate",
-        Type: "date",
-        Caption: "Ngày tính thưởng cuối",
+        Type: "datetime",
+        Caption: "TG tính thưởng cuối",
         DataSourceMember: "LastComputedDate",
-        Width: 150
+        Width: "10%"
     },
     {
         Name: "IsConfirm",
         Type: "checkicon",
         Caption: "Đã chốt thưởng",
         DataSourceMember: "IsConfirm",
-        Width: 100
+        Width: "10%"
     },
     {
         Name: "ConfirmFullName",
         Type: "text",
         Caption: "Người chốt",
         DataSourceMember: "ConfirmFullName",
-        Width: 200
+        Width: "10%"
     },
 
     {
@@ -137,21 +183,21 @@ export const GridColumnList = [
         Type: "checkicon",
         Caption: "Đã bỏ chốt thưởng",
         DataSourceMember: "IsUnConfirm",
-        Width: 100
+        Width: "10%"
     },
     {
         Name: "UnConfirmFullName",
         Type: "text",
         Caption: "Người bỏ chốt",
         DataSourceMember: "UnConfirmFullName",
-        Width: 200
+        Width: "10%"
     },
     {
         Name: "IsConfirmStatus",
         Type: "btnActionConfirm",
         Caption: "Chốt thưởng",
         DataSourceMember: "IsConfirmStatus",
-        Width: "8%"
+        Width: "10%"
     },
     {
         Name: "History",

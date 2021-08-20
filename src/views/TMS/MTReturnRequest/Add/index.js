@@ -44,7 +44,6 @@ class AddCom extends React.Component {
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.onChangeDataMTRRequestDetail = this.onChangeDataMTRRequestDetail.bind(this);
         this.combineSameMaterial = this.combineSameMaterial.bind(this);
-        this.checkValidateArrCombineSameMaterial = this.checkValidateArrCombineSameMaterial.bind(this);
         this.handleCallGetCache = this.handleCallGetCache.bind(this);
         this.addKeyInventoryStatusName = this.addKeyInventoryStatusName.bind(this);
 
@@ -89,7 +88,7 @@ class AddCom extends React.Component {
             MtreturnRequestTypeID: this.props.location.state.MtreturnRequestTypeID,
             RequestStoreID: this.props.location.state.RequestStoreID
         }
-        this.testGetMTReturnRequestMobile(param1)
+        //this.testGetMTReturnRequestMobile(param1)
 
         this.handleCallGetCache();
     }
@@ -129,11 +128,12 @@ class AddCom extends React.Component {
 
     testGetMTReturnRequestMobile(param) {
         this.props.callFetchAPI(APIHostName, "api/MTReturnRequest/GetMTReturnRequestMobile", param).then(apiResult => {
-            console.log("GetMTReturnRequestMobile", param, apiResult)
+            console.log("GetMTReturnRequestMobile", "api/MTReturnRequest/GetMTReturnRequestMobile", param, apiResult)
         })
     }
 
     getDataMTReturnRequestRLByMTReturnRequestType(param) {
+        console.log("param", param)
         this.props.callFetchAPI(APIHostName, LoadAPIByMtreturnRequestTypeIDPath, param).then(apiResult => {
             if (apiResult.IsError) {
                 this.setState({
@@ -190,7 +190,7 @@ class AddCom extends React.Component {
 
     GetDataByRequestTypeID(MtreturnRequestTypeID) {
         this.props.callFetchAPI(APIHostName, LoadAPIByMTRRequestTypeIDPath, MtreturnRequestTypeID).then(apiResult => {
-            console.log("aa", apiResult)
+            console.log("aa", MtreturnRequestTypeID, apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -218,18 +218,6 @@ class AddCom extends React.Component {
         });
     }
 
-    checkValidateArrCombineSameMaterial(arrUniqueMaterial) {
-        const { isError, MTReturnRequestDetail } = this.state;
-        debugger
-        arrUniqueMaterial.forEach(item => {
-            if (item.Quantity > item.TotalQuantity) {
-                console.log(`Lỗi vật tư ${item.MaterialGroupID}-${item.ProductName} quá số lượng tạm ứng`)
-                return;
-            }
-        })
-
-    }
-
     combineSameMaterial() {
         const { MTReturnRequestDetailNew } = this.state;
         let arrUniqueMaterial = [];
@@ -240,7 +228,18 @@ class AddCom extends React.Component {
                 ...MTReturnRequestDetailNew[0], Quantity: parseInt(MTReturnRequestDetailNew[0].Quantity)
             });
 
-            if (MTReturnRequestDetailNew.length == 1) return MTReturnRequestDetailNew;
+            if (MTReturnRequestDetailNew.length == 1) {
+                const updateMTReturnRequestDetailNew = MTReturnRequestDetailNew.reduce((acc, val) => {
+                    if (val.Quantity != undefined && val.Quantity > 0) {
+                        const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : 0 }
+                        return [...acc, updateVal];
+                    } else {
+                        return acc;
+                    }
+                }, []);
+
+                return updateMTReturnRequestDetailNew;
+            }
 
             for (let index = 1; index < MTReturnRequestDetailNew.length; index++) {
                 const material = MTReturnRequestDetailNew[index];
@@ -259,8 +258,17 @@ class AddCom extends React.Component {
                     : arrUniqueMaterial.push({ ...material, Quantity: parseInt(material.Quantity) });
             }
         }
+
+        arrUniqueMaterial = arrUniqueMaterial.reduce((acc, val) => {
+            if (val.Quantity != undefined && val.Quantity > 0) {
+                const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : 0 }
+                return [...acc, updateVal];
+            } else {
+                return acc;
+            }
+        }, []);
+
         return arrUniqueMaterial
-        //this.checkValidateArrCombineSameMaterial(arrUniqueMaterial);
     }
 
     prevDataSubmit(formData, MLObject) {
@@ -284,11 +292,20 @@ class AddCom extends React.Component {
                 return cur.UserName;
             }, 0);
 
-            const MTReturnRequestDetail = MTReturnRequestDetailNew.filter((item, index) => {
-                if (item.Quantity != undefined && item.Quantity > 0) {
-                    return item;
+            // const MTReturnRequestDetail = MTReturnRequestDetailNew.filter((item, index) => {
+            //     if (item.Quantity != undefined && item.Quantity > 0) {
+            //         return item;
+            //     }
+            // });
+
+            const MTReturnRequestDetail = MTReturnRequestDetailNew.reduce((acc, val) => {
+                if (val.Quantity != undefined && val.Quantity > 0) {
+                    const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : 0 }
+                    return [...acc, updateVal];
+                } else {
+                    return acc;
                 }
-            });
+            }, []);
 
             if (isAutoReview) {
                 MLObject.IsreViewed = isAutoReview;
@@ -329,9 +346,8 @@ class AddCom extends React.Component {
             let itemCheck = []
             if (!!arrProductDetai) {
                 itemCheck = arrProductDetai.filter((item, index) => {
-                    if (item.Quantity > item.TotalQuantity) {
-                        return item;
-                    }
+                    if (item.InStockProductID != "") return item.ConvertQuantity > item.TotalQuantity;
+                    if (item.Quantity > item.TotalQuantity) return item;
                 })
             }
 
@@ -359,7 +375,6 @@ class AddCom extends React.Component {
 
     handleSubmit(MLObject) {
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
-            console.log("â", MLObject, apiResult)
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.MessageDetail);
         });
@@ -397,14 +412,32 @@ class AddCom extends React.Component {
     }
 
     handleinsertItemNew(data) {
+        const updateData = data.reduce((acc, val) => {
+            if (val.Quantity != undefined && val.Quantity > 0) {
+                const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : 0 }
+                return [...acc, updateVal];
+            } else {
+                return acc;
+            }
+        }, []);
+
         this.setState({
-            MTReturnRequestDetailNew: [...this.state.MTReturnRequestDetailNew, ...data]
+            MTReturnRequestDetailNew: [...this.state.MTReturnRequestDetailNew, ...updateData]
         })
     }
 
     onChangeDataMTRRequestDetail(data) {
+        const updateData = data.reduce((acc, val) => {
+            if (val.Quantity != undefined && val.Quantity > 0) {
+                const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : 0 }
+                return [...acc, updateVal];
+            } else {
+                return acc;
+            }
+        }, []);
+
         this.setState({
-            MTReturnRequestDetailNew: data
+            MTReturnRequestDetailNew: updateData
         })
     }
 
@@ -439,8 +472,18 @@ class AddCom extends React.Component {
         delete data[0].key
         const cloneData = [...MTReturnRequestDetailNew]
         cloneData[key] = data[0]
+
+        const updateData = cloneData.reduce((acc, val) => {
+            if (val.Quantity != undefined && val.Quantity > 0) {
+                const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : 0 }
+                return [...acc, updateVal];
+            } else {
+                return acc;
+            }
+        }, []);
+
         this.setState({
-            MTReturnRequestDetailNew: cloneData
+            MTReturnRequestDetailNew: updateData
         })
     }
 
@@ -500,17 +543,6 @@ class AddCom extends React.Component {
             },
             maxWidth: addImportMaterialModalWidth
         });
-    }
-
-    handleItemEdit(index) {
-        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: 'Cập nhật chi tiết nhập trả vật tư',
-            content: {
-                text: <div>chỉnh sửa</div>
-            },
-            maxWidth: '1000px'
-        });
-
     }
 
     render() {

@@ -26,6 +26,7 @@ import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
 import ConfirmModal from '../ConfirmModal'
 import { showModal, hideModal } from '../../../../../actions/modal';
 import DataGirdHistory from '../DataGirdHistory'
+import ConfirmListModal from '../ConfirmModal/ConfirmListModal.js'
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -73,17 +74,24 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-
+        console.log("search", formData, MLObject)
 
         const postData = [
-
+            {
+                SearchKey: "@FROMDATE",
+                SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString())
+            },
+            {
+                SearchKey: "@TODATE",
+                SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString())
+            },
             {
                 SearchKey: "@REWARDCOMPUTETYPEID",
                 SearchValue: MLObject.RewardComputeTypeID
             },
             {
                 SearchKey: "@ISCOMPUTED",
-                SearchValue: MLObject.IscomPuted
+                SearchValue: MLObject.IsComputed
             },
 
         ];
@@ -97,11 +105,17 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("data", apiResult)
+            console.log("data", searchData, apiResult)
             if (!apiResult.IsError) {
 
                 const tempData = apiResult.ResultObject.map((item, index) => {
-                    item.IsConfirmStatus = <span className='lbl-confirm'>Chốt thưởng</span>;
+                    if (item.IsConfirm) {
+                        item.IsConfirmStatus = <span className='lbl-unConfirm'><i className="ti-close"></i> Bỏ chốt</span>;
+                    }
+                    else {
+                        item.IsConfirmStatus = <span className='lbl-confirm'><i className="ti-check"></i> Chốt thưởng</span>;
+                    }
+
                     return item;
                 })
                 this.setState({
@@ -167,12 +181,12 @@ class SearchCom extends React.Component {
 
     onhandleUpdateItem(objId) {
 
-        const { gridDataSource } = this.state;
+        const { gridDataSource, SearchData } = this.state;
         const dataFind = gridDataSource.find(n => {
             return n.RewardComputeListID == objId[0].value
         });
 
-        if (dataFind.IsComPuted > 0) {
+        if (dataFind.IsComputed) {
             this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
                 title: "Chốt thưởng",
                 content: {
@@ -214,7 +228,7 @@ class SearchCom extends React.Component {
             }
             else {
 
-                if(apiResult.ResultObject.length > 0){
+                if (apiResult.ResultObject.length > 0) {
                     const tempData = apiResult.ResultObject.map((item, index) => {
 
                         if (item.ConfirmLogType == 1) {
@@ -227,10 +241,10 @@ class SearchCom extends React.Component {
                     })
                     this.onShowModalHistory(tempData, dataFind);
                 }
-                else{
+                else {
                     this.showMessage("Không tồn tại lịch sử chốt thưởng.");
                 }
-                
+
             }
         })
 
@@ -249,6 +263,93 @@ class SearchCom extends React.Component {
             },
             maxWidth: widthPercent + 'px'
         });
+    }
+
+    onHandleConfirmList(confirmListID, pkColumnName) {
+        const { gridDataSource, SearchData } = this.state;
+        let listMLObject = [];
+        confirmListID.map((row, index) => {
+            let MLObject = {};
+            pkColumnName.map((pkItem, pkIndex) => {
+                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
+            });
+            MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
+            listMLObject.push(MLObject);
+        });
+
+        let isComputed = true;
+
+        const dataFind = gridDataSource.filter(item1 => {
+            return listMLObject.find(item2 => item1.RewardComputeListID == item2.RewardComputeListID)
+        });
+
+
+        dataFind.map((item, index) => {
+            if(!item.IsComputed){
+                isComputed= false
+            }
+        })
+        if (isComputed) {
+            this.props.callFetchAPI(APIHostName, "api/RewardComputeSchedule/AddList", dataFind).then(apiResult => {
+                console.log("addd",dataFind, apiResult)
+                if (!apiResult.IsError) {
+                    this.addNotification(apiResult.Message, apiResult.IsError)
+                    this.callSearchData(SearchData);
+                }
+                else {
+                    this.showMessage(apiResult.Message)
+                }
+            });
+        }
+          else {
+            this.showMessage("Ngày tính thưởng này chưa tính nên không được thêm vào danh sách lịch tính thưởng.")
+        }
+            
+    }
+
+    onHandleConfirmListItem(confirmListID, pkColumnName) {
+        const { gridDataSource } = this.state;
+        let listMLObject = [];
+        confirmListID.map((row, index) => {
+            let MLObject = {};
+            pkColumnName.map((pkItem, pkIndex) => {
+                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
+            });
+            MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
+            listMLObject.push(MLObject);
+        });
+
+        let isComputed = true;
+
+        const dataFind = gridDataSource.filter(item1 => {
+            return listMLObject.find(item2 => item1.RewardComputeListID == item2.RewardComputeListID)
+        });
+
+
+        dataFind.map((item, index) => {
+            if(!item.IsComputed){
+                isComputed= false
+            }
+        })
+        console.log("arrTemp", dataFind, isComputed)
+
+
+        if (isComputed) {
+            this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+                title: "Chốt thưởng",
+                content: {
+                    text: <ConfirmListModal
+                        dataSource={dataFind}
+                        ObjDataRequest={this.HandleConfirmResult}
+                    />
+                },
+                maxWidth: '800px'
+            });
+        }
+        else {
+            this.showMessage("Loại tính thưởng này chưa tính nên không được chốt thưởng.")
+        }
+
     }
 
 
@@ -281,10 +382,17 @@ class SearchCom extends React.Component {
                     IsPrint={false}
                     IsExportFile={false}
                     IsAutoPaging={true}
-                    RowsPerPage={20}
+                    RowsPerPage={31}
                     RequirePermission={TMS_REWARDCOMPUTELIST_VIEW}
                     IsExportFile={false}
                     ref={this.gridref}
+                    IsUpdateListItem={true}
+                    onUpdateListItem={this.onHandleConfirmListItem.bind(this)}
+                    TitleUpdateListItem="Chốt thưởng"
+                    IsUpdateList={true}
+                    onUpdateList={this.onHandleConfirmList.bind(this)}
+                    TitleUpdateList="Thêm lịch tính thưởng"
+
                 />
             </React.Fragment>
         );

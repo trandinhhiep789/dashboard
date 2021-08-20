@@ -18,24 +18,24 @@ export const TitleFormDetail = "Thông tin tài liệu";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách tài liệu" }
+    { Link: "", Title: "Danh mục tài liệu" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/Documents", Title: "Danh sách tài liệu" },
+    { Link: "/Documents", Title: "Danh mục tài liệu" },
     { Link: "", Title: "Cập nhật" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/Documents", Title: "Danh sách tài liệu" },
+    { Link: "/Documents", Title: "Danh mục tài liệu" },
     { Link: "", Title: "Thêm" }
 ];
 
 export const DetailAPIPath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/Documents", Title: "Danh sách tài liệu" },
+    { Link: "/Documents", Title: "Danh mục tài liệu" },
     { Link: "", Title: "Chi tiết" }
 ];
 
@@ -79,6 +79,14 @@ export const DataGridColumnList = [
         Width: 60
     },
     {
+        Name: "DocumentID",
+        Type: "text",
+        Caption: "Mã tài liệu",
+        DataSourceMember: "DocumentID",
+        // Link: "/Documents/Detail/",
+        Width: 70
+    },
+    {
         Name: "DocumentName",
         Type: "texttolink",
         Caption: "Tên tài liệu",
@@ -103,7 +111,7 @@ export const DataGridColumnList = [
     },
     {
         Name: "PublishedDate",
-        Type: "date",
+        Type: "datetime",
         Caption: "Ngày xuất bản",
         DataSourceMember: "PublishedDate",
         Width: 100
@@ -131,7 +139,7 @@ export const DataGridColumnList = [
     },
     {
         Name: "ModifyDate",
-        Type: "date",
+        Type: "datetime",
         Caption: "Cập nhật lần cuối",
         DataSourceMember: "ModifyDate",
         Width: 100
@@ -314,12 +322,12 @@ export const listColumnDocument_CommentList = [
         Caption: "Nội dung",
         DataSourceMember: "Content"
     },
-    {
-        Name: "CommentedUser",
-        Type: "text",
-        Caption: "Mã nhân viên",
-        DataSourceMember: "CommentedUser"
-    },
+    // {
+    //     Name: "CommentedUser",
+    //     Type: "text",
+    //     Caption: "Mã nhân viên",
+    //     DataSourceMember: "CommentedUser"
+    // },
     {
         Name: "CommentedFullName",
         Type: "text",
@@ -329,19 +337,19 @@ export const listColumnDocument_CommentList = [
     {
         Name: "CommentedDate",
         Type: "datetime",
-        Caption: "Ngày bình luận",
+        Caption: "Ngày",
         DataSourceMember: "CommentedDate"
     },
 ]
 
 
 export const listColumnDocument_LikeList = [
-    {
-        Name: "LikedUser",
-        Type: "text",
-        Caption: "Mã nhân viên",
-        DataSourceMember: "LikedUser"
-    },
+    // {
+    //     Name: "LikedUser",
+    //     Type: "text",
+    //     Caption: "Mã nhân viên",
+    //     DataSourceMember: "LikedUser"
+    // },
     {
         Name: "LikedFullName",
         Type: "text",
@@ -349,9 +357,16 @@ export const listColumnDocument_LikeList = [
         DataSourceMember: "LikedFullName"
     },
     {
+        Name: "IsLike",
+        Type: "checkicon",
+        Caption: "Thích",
+        DataSourceMember: "IsLike",
+        Width: 200
+    },
+    {
         Name: "LikedDate",
         Type: "datetime",
-        Caption: "Ngày like",
+        Caption: "Ngày",
         DataSourceMember: "LikedDate"
     },
 ]

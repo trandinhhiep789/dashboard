@@ -67,6 +67,33 @@ export const ModalColumnList_Insert = [
         validatonList: ["number"]
     },
     {
+        Name: "IsRestrictCaptureInterval",
+        type: "checkbox",
+        label: "Có giới hạn khoảng thời gian chụp hình",
+        DataSourceMember: "IsRestrictCaptureInterval",
+        readonly: false,
+        validatonList: [],
+        value: false
+    },
+    {
+        Name: "CompareSampleImageID",
+        type: "text",
+        label: "Mã hình mẫu cần so sánh giới hạn",
+        maxSize: "200",
+        DataSourceMember: "CompareSampleImageID",
+        readonly: false,
+        validatonList: ["number"]
+    },
+    {
+        Name: "RestrictInterval",
+        type: "text",
+        label: "Khoảng thời gian giới hạn(tính bằng giây)",
+        maxSize: "20",
+        DataSourceMember: "RestrictInterval",
+        readonly: false,
+        validatonList: ["number"]
+    },
+    {
         Name: "InstructionNote",
         type: "textarea",
         label: "Hướng dẫn chụp hình",
@@ -98,6 +125,15 @@ export const ModalColumnList_Insert = [
 ];
 
 export const ModalColumnList_Edit = [
+    {
+        Name: "SampleImageID",
+        type: "text",
+        label: "Mã hình mẫu",
+        //maxSize: "200",
+        DataSourceMember: "SampleImageID",
+        readonly: true,
+        validatonList: []
+    },
     {
         Name: "SampleImageName",
         type: "text",
@@ -149,6 +185,33 @@ export const ModalColumnList_Edit = [
         validatonList: ["number"]
     },
     {
+        Name: "IsRestrictCaptureInterval",
+        type: "checkbox",
+        label: "Có giới hạn khoảng thời gian chụp hình",
+        DataSourceMember: "IsRestrictCaptureInterval",
+        readonly: false,
+        validatonList: [],
+        value: false
+    },
+    {
+        Name: "CompareSampleImageID",
+        type: "text",
+        label: "Mã hình mẫu cần so sánh giới hạn",
+        maxSize: "200",
+        DataSourceMember: "CompareSampleImageID",
+        readonly: false,
+        validatonList: ["number"]
+    },
+    {
+        Name: "RestrictInterval",
+        type: "text",
+        label: "Khoảng thời gian giới hạn(tính bằng giây)",
+        maxSize: "20",
+        DataSourceMember: "RestrictInterval",
+        readonly: false,
+        validatonList: ["number"]
+    },
+    {
         Name: "InstructionNote",
         type: "textarea",
         label: "Hướng dẫn chụp hình",
@@ -188,18 +251,25 @@ export const DataGridColumnList = [
         Width: 60
     },
     {
+        Name: "SampleImageID",
+        Type: "text",
+        Caption: "Mã hình mẫu",
+        DataSourceMember: "SampleImageID",
+        Width: 100
+    },
+    {
         Name: "SampleImageName",
         Type: "text",
         Caption: "Tên hình mẫu",
         DataSourceMember: "SampleImageName",
-        Width: 200
+        Width: 250
     },
     {
         Name: "SubGroupName",
         Type: "text",
         Caption: "Nhóm hàng",
         DataSourceMember: "SubGroupName",
-        Width: 200
+        Width: 250
     },
     {
         Name: "SampleImageFileURL",
@@ -235,7 +305,7 @@ export const DataGridColumnList = [
         Type: "edit",
         Caption: "Sửa",
         DataSourceMember: "SampleImageID",
-        Width: 100
+        Width: 60
     }
 
 ];
@@ -282,6 +352,24 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "SampleImageFileURL",
         DataSourceMember: "SampleImageFileURL"
+    },
+    {
+        Name: "IsRestrictCaptureInterval",
+        DefaultValue: 0,
+        BindControlName: "IsRestrictCaptureInterval",
+        DataSourceMember: "IsRestrictCaptureInterval"
+    },
+    {
+        Name: "CompareSampleImageID",
+        DefaultValue: 0,
+        BindControlName: "CompareSampleImageID",
+        DataSourceMember: "CompareSampleImageID"
+    },
+    {
+        Name: "RestrictInterval",
+        DefaultValue: 0,
+        BindControlName: "RestrictInterval",
+        DataSourceMember: "RestrictInterval"
     },
     {
         Name: "InstructionNote",

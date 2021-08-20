@@ -15,6 +15,7 @@ export const AddLink = "/User_Limit/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "UserName";
+export const GetAllUserLimitAPIPath = "api/User_Limit/GetAllUserLimit";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },

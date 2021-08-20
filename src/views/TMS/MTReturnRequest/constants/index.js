@@ -415,15 +415,29 @@ export const InputMTReturnRequestDetailColumnList = [
         Type: "textNew",
         Caption: "Số dư tạm ứng",
         DataSourceMember: "TotalQuantity",
-        Width: 80
+        Width: 70
     },
     {
         Name: "Quantity",
         Type: "textNew",
         Caption: "Số lượng nhập trả",
         DataSourceMember: "Quantity",
-        Width: 80
-    }
+        Width: 70
+    },
+    {
+        Name: "InStockConvertRatio",
+        Type: "textNew",
+        Caption: "Tỷ lệ quy đổi",
+        DataSourceMember: "InStockConvertRatio",
+        Width: 70
+    },
+    {
+        Name: "ConvertQuantity",
+        Type: "textNew",
+        Caption: "Số lượng quy đổi",
+        DataSourceMember: "ConvertQuantity",
+        Width: 70
+    },
 ];
 
 export const InputMTReturnRequestAddColumnList = [
@@ -474,6 +488,13 @@ export const InputMTReturnRequestAddColumnList = [
         Type: "textNew",
         Caption: "Số lượng nhập trả",
         DataSourceMember: "Quantity",
+        Width: 12.5
+    },
+    {
+        Name: "ConvertQuantity",
+        Type: "textNew",
+        Caption: "Số lượng quy đổi",
+        DataSourceMember: "ConvertQuantity",
         Width: 12.5
     },
     {
@@ -570,10 +591,19 @@ export const InputMTReturnRequestDetailColumnListNew = [
         Width: 70
     },
     {
+        Name: "InStockConvertRatio",
+        Type: "textNew",
+        Caption: "Tỷ lệ quy đổi",
+        DataSourceMember: "InStockConvertRatio",
+        Width: 70
+    },
+
+    {
         Name: "Quantity",
         Type: "inputNumber",
         Caption: "SL nhập trả",
         DataSourceMember: "Quantity",
+        maxLengthInputNumber: 7,
         Width: 100
     }
 ];

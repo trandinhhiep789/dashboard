@@ -39,12 +39,18 @@ class ProfileBoxCom extends React.Component {
             <Menu.Item key="changepassword">
                 <Link to="/changepassword"><i className="ti-lock"></i>{"  "}Đổi mật khẩu</Link>
             </Menu.Item>
+            <Menu.Item key="Forms">
+                <Link to="/Forms"><i className="ti-lock"></i>{"  "}Forms UI</Link>
+            </Menu.Item>
             <Menu.Item key="UseGuide">
                 <Link to="/UseGuide"><i className="ti-lock"></i>{"  "}Hướng dẫn sử dụng</Link>
             </Menu.Item>
             <Menu.Divider />
             <Menu.Item key="PageUI">
                 <Link to="/PageUI"><i className="ti-lock"></i>{"  "}Page UI</Link>
+            </Menu.Item>
+            <Menu.Item key="PartnerUI">
+                <Link to="/PartnerUI"><i className="ti-lock"></i>{"  "}PartnerUI</Link>
             </Menu.Item>
             <Menu.Divider />
             <Menu.Item key="logout">

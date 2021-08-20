@@ -19,16 +19,16 @@ export const listColumnNotReview = [
         DataSourceMember: "FullName"
     },
     {
-        Name: "FromCoordinatorGroupID",
+        Name: "FromCoordinatorGroupID_Name",
         Type: "text",
         Caption: "Nhóm quản lý hiện tại",
-        DataSourceMember: "FromCoordinatorGroupID"
+        DataSourceMember: "FromCoordinatorGroupID_Name"
     },
     {
-        Name: "ToCoordinatorGroupID",
+        Name: "ToCoordinatorGroupID_Name",
         Type: "text",
         Caption: "Nhóm quản lý được thuyên chuyển tới",
-        DataSourceMember: "ToCoordinatorGroupID"
+        DataSourceMember: "ToCoordinatorGroupID_Name"
     },
     {
         Name: "ApplyDate",
@@ -52,16 +52,16 @@ export const listColumnReviewed = [
         DataSourceMember: "FullName"
     },
     {
-        Name: "FromCoordinatorGroupID",
+        Name: "FromCoordinatorGroupID_Name",
         Type: "text",
         Caption: "Nhóm quản lý hiện tại",
-        DataSourceMember: "FromCoordinatorGroupID"
+        DataSourceMember: "FromCoordinatorGroupID_Name"
     },
     {
-        Name: "ToCoordinatorGroupID",
+        Name: "ToCoordinatorGroupID_Name",
         Type: "text",
         Caption: "Nhóm quản lý được thuyên chuyển tới",
-        DataSourceMember: "ToCoordinatorGroupID"
+        DataSourceMember: "ToCoordinatorGroupID_Name"
     },
     {
         Name: "ApplyDate",

@@ -170,7 +170,19 @@ class EditCom extends React.Component {
                 ...MTReturnRequestDetailNew[0], Quantity: parseInt(MTReturnRequestDetailNew[0].Quantity)
             });
 
-            if (MTReturnRequestDetailNew.length == 1) return MTReturnRequestDetailNew;
+            // if (MTReturnRequestDetailNew.length == 1) return MTReturnRequestDetailNew;
+            if (MTReturnRequestDetailNew.length == 1) {
+                const updateMTReturnRequestDetailNew = MTReturnRequestDetailNew.reduce((acc, val) => {
+                    if (val.Quantity != undefined && val.Quantity > 0) {
+                        const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : 0 }
+                        return [...acc, updateVal];
+                    } else {
+                        return acc;
+                    }
+                }, []);
+
+                return updateMTReturnRequestDetailNew;
+            }
 
             for (let index = 1; index < MTReturnRequestDetailNew.length; index++) {
                 const material = MTReturnRequestDetailNew[index];
@@ -189,8 +201,17 @@ class EditCom extends React.Component {
                     : arrUniqueMaterial.push({ ...material, Quantity: parseInt(material.Quantity) });
             }
         }
+
+        arrUniqueMaterial = arrUniqueMaterial.reduce((acc, val) => {
+            if (val.Quantity != undefined && val.Quantity > 0) {
+                const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : 0 }
+                return [...acc, updateVal];
+            } else {
+                return acc;
+            }
+        }, []);
+
         return arrUniqueMaterial
-        //this.checkValidateArrCombineSameMaterial(arrUniqueMaterial);
     }
 
     prevDataSubmit(formData, MLObject) {
@@ -236,13 +257,18 @@ class EditCom extends React.Component {
                 return;
             }
 
+            const updateMTReturnRequestDetailNew = MTReturnRequestDetailNew.map(item => {
+                return {
+                    ...item,
+                    ConvertQuantity: val.InStockProductID != "" ? item.Quantity * item.InStockConvertRatio : 0
+                }
+            })
 
             let itemCheck = []
             if (!!arrProductDetai) {
                 itemCheck = arrProductDetai.filter((item, index) => {
-                    if (item.Quantity > item.TotalQuantity) {
-                        return item;
-                    }
+                    if (item.InStockProductID != "") return item.ConvertQuantity > item.TotalQuantity;
+                    if (item.Quantity > item.TotalQuantity) return item;
                 })
             }
 
@@ -254,7 +280,8 @@ class EditCom extends React.Component {
                 return;
             }
 
-            MLObject.lstMTReturnRequestDetail = MTReturnRequestDetailNew;
+            // MLObject.lstMTReturnRequestDetail = MTReturnRequestDetailNew;
+            MLObject.lstMTReturnRequestDetail = updateMTReturnRequestDetailNew;
             MLObject.RequestUser = RequestUser;
 
             this.handleSubmit(MLObject)
@@ -266,6 +293,8 @@ class EditCom extends React.Component {
     }
 
     handleSubmit(MLObject) {
+        console.log(MLObject)
+        return
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.MessageDetail);
@@ -310,7 +339,7 @@ class EditCom extends React.Component {
     callLoadData(id) {
         // console.log('callLoadData', id)
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            // console.log("222", apiResult);
+            console.log("222", apiResult);
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -622,8 +651,17 @@ class EditCom extends React.Component {
     }
 
     handleinsertItemNew(data) {
+        const updateData = data.reduce((acc, val) => {
+            if (val.Quantity != undefined && val.Quantity > 0) {
+                const updateVal = { ...val, ConvertQuantity: val.InStockProductID != "" ? val.Quantity * val.InStockConvertRatio : 0 }
+                return [...acc, updateVal];
+            } else {
+                return acc;
+            }
+        }, []);
+
         this.setState({
-            MTReturnRequestDetailNew: [...this.state.MTReturnRequestDetailNew, ...data]
+            MTReturnRequestDetailNew: [...this.state.MTReturnRequestDetailNew, ...updateData]
         })
     }
 

@@ -2,6 +2,10 @@ export const APIHostName = "TMSAPI";
 export const AddAPIPath = "api/ShipmentOrderTypeWorkFlow/Add";
 export const UpdateAPIPath = "api/ShipmentOrderTypeWorkFlow/Update";
 export const DeleteAPIPath = "api/ShipmentOrderTypeWorkFlow/Delete";
+
+const dtFromdate = new Date();
+dtFromdate.setDate(new Date().getDate() - 30);
+
 export const MTabList = [
     {
         Name: "PieRequestTypeWorkflow",
@@ -324,6 +328,48 @@ export const MLObjectDefinition = [
         DataSourceMember: "IsCanUpdateCompleteDoService"
     },
     {
+        Name: "IsCheckReceiverGeoLocationStep",
+        DefaultValue: "",
+        BindControlName: "IsCheckReceiverGeoLocationStep",
+        DataSourceMember: "IsCheckReceiverGeoLocationStep"
+    },
+    {
+        Name: "IsShowToPartner",
+        DefaultValue: "",
+        BindControlName: "IsShowToPartner",
+        DataSourceMember: "IsShowToPartner"
+    },
+    {
+        Name: "IsShowToCustomer",
+        DefaultValue: "",
+        BindControlName: "IsShowToCustomer",
+        DataSourceMember: "IsShowToCustomer"
+    },
+    {
+        Name: "WebAppHelpDocumentID",
+        DefaultValue: "",
+        BindControlName: "WebAppHelpDocumentID",
+        DataSourceMember: "WebAppHelpDocumentID"
+    },
+    {
+        Name: "MobiAppHelpDocumentID",
+        DefaultValue: "",
+        BindControlName: "MobiAppHelpDocumentID",
+        DataSourceMember: "MobiAppHelpDocumentID"
+    },
+    {
+        Name: "WebAppHelpDocumentName",
+        DefaultValue: "",
+        BindControlName: "WebAppHelpDocumentName",
+        DataSourceMember: "WebAppHelpDocumentName"
+    },
+    {
+        Name: "MobiAppHelpDocumentName",
+        DefaultValue: "",
+        BindControlName: "MobiAppHelpDocumentName",
+        DataSourceMember: "MobiAppHelpDocumentName"
+    },
+    {
         Name: "OrderIndex",
         DefaultValue: "",
         BindControlName: "OrderIndex",
@@ -477,5 +523,179 @@ export const GridMLObjectModelNext = [
         DefaultValue: "",
         BindControlName: "ChooseFunctionName",
         DataSourceMember: "ChooseFunctionName"
+    }
+];
+
+export const SearchDocMLObjectDefinition = [
+    {
+        Name: "Keyword",
+        DefaultValue: "",
+        BindControlName: "txtKeyword"
+    },
+    {
+        Name: "DocumentTypeID",
+        DefaultValue: "",
+        BindControlName: "cbDocumentTypeID"
+    },
+    {
+        Name: "FromDate",
+        DefaultValue: "",
+        BindControlName: "dtFromDate"
+    },
+    {
+        Name: "ToDate",
+        DefaultValue: "",
+        BindControlName: "dtToDate"
+    },
+
+];
+
+export const SearchDocElementList = [
+    {
+        type: "text",
+        name: "txtKeyword",
+        DataSourceMember: "Keyword",
+        label: "Từ khóa",
+        value: "",
+        colspan: 2,
+        placeholder: "Từ khóa",
+        icon: ""
+    },
+    {
+        type: "ComboBox",
+        name: "cbDocumentTypeID",
+        DataSourceMember: "DocumentTypeID",
+        label: "Loại tài liệu",
+        colspan: 2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "---Vui lòng chọn---",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.DOCUMENTTYPE",
+        ValueMember: "DocumentTypeID",
+        NameMember: "DocumentTypeName",
+
+    },
+    {
+        type: "Datetime",
+        name: "dtFromDate",
+        DataSourceMember: "FromDate",
+        label: "Từ ngày",
+        value: new Date(),
+        timeFormat: false,
+        dateFormat: "DD/MM/YYYY",
+        colspan: 2,
+    },
+    {
+        type: "Datetime",
+        name: "dtToDate",
+        DataSourceMember: "ToDate",
+        label: "Đến ngày",
+        value: new Date(),
+        timeFormat: false,
+        dateFormat: "DD/MM/YYYY",
+        colspan: 2,
+    }
+];
+
+export const InitSearchDocParams = [
+    {
+        SearchKey: "@Keyword",
+        SearchValue: ""
+    },
+    {
+        SearchKey: "@DOCUMENTTYPEID",
+        SearchValue: "-1"
+    },
+    {
+        SearchKey: "@FROMDATE",
+        SearchValue: dtFromdate
+    },
+    {
+        SearchKey: "@TODATE",
+        SearchValue: new Date()
+    },
+    {
+        SearchKey: "@PAGESIZE",
+        SearchValue: 50
+    },
+    {
+        SearchKey: "@PAGEINDEX",
+        SearchValue: 1
+    }
+];
+
+export const listColumnDoc = [
+    {
+        Name: "chkSelect",
+        Type: "checkbox",
+        Caption: "Chọn",
+        DataSourceMember: "DocumentID",
+        Width: 60
+    },
+    {
+        Name: "DocumentID",
+        Type: "text",
+        Caption: "Mã tài liệu",
+        DataSourceMember: "DocumentID",
+        Width: 70
+    },
+    {
+        Name: "DocumentName",
+        Type: "texttolinkNewBlank",
+        Caption: "Tên tài liệu",
+        DataSourceMember: "DocumentName",
+        Link: "/Documents/Detail/",
+        Width: 150
+    },
+    {
+        Name: "DocumentFolderName",
+        Type: "text",
+        Caption: "Danh mục",
+        DataSourceMember: "DocumentFolderName",
+        Width: 150
+    },
+    {
+        Name: "IsPublished",
+        Type: "checkicon",
+        Caption: "Công bố",
+        DataSourceMember: "IsPublished",
+        Width: 80
+    },
+    {
+        Name: "PublishedDate",
+        Type: "datetime",
+        Caption: "Ngày xuất bản",
+        DataSourceMember: "PublishedDate",
+        Width: 100
+    },
+    {
+        Name: "DocumentTypeName",
+        Type: "text",
+        Caption: "Loại tài liệu",
+        DataSourceMember: "DocumentTypeName",
+        Width: 130
+    },
+    {
+        Name: "FileName",
+        Type: "text",
+        Caption: "Tập tin",
+        DataSourceMember: "FileName",
+        Width: 130
+    },
+    {
+        Name: "ExtendLable",
+        Type: "text",
+        Caption: "Thông tin tài liệu",
+        DataSourceMember: "ExtendLable",
+        Width: 120
+    },
+    {
+        Name: "ModifyDate",
+        Type: "datetime",
+        Caption: "Cập nhật lần cuối",
+        DataSourceMember: "ModifyDate",
+        Width: 100
     }
 ];

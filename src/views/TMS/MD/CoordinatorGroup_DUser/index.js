@@ -3,6 +3,8 @@ import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 import { MessageModal } from "../../../../common/components/Modal";
+import moment from 'moment';
+
 import DataGrid from "../../../../common/components/DataGrid";
 import { MODAL_TYPE_CONFIRMATION, MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import { showModal, hideModal } from '../../../../actions/modal';
@@ -17,7 +19,7 @@ import "react-notifications-component/dist/theme.css";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache, callGetUserCache } from "../../../../actions/cacheAction";
-import { GET_CACHE_USER_FUNCTION_LIST, DESTROYREQUESTTYPE_ADD, DESTROYREQUESTTYPE_DELETE, DESTROYREQUESTTYPE_UPDATE, COORDINATORGROUP_ADD, COORDINATORGROUP_UPDATE, COORDINATORGROUP_DELETE } from "../../../../constants/functionLists";
+import { GET_CACHE_USER_FUNCTION_LIST, DESTROYREQUESTTYPE_ADD, DESTROYREQUESTTYPE_DELETE, DESTROYREQUESTTYPE_UPDATE, COORDINATORGROUP_ADD, COORDINATORGROUP_UPDATE, COORDINATORGROUP_DELETE, MDM_COORDINATORGROUP_EXPORT } from "../../../../constants/functionLists";
 import CoordinatorUser from "./Components/CoordinatorUser";
 
 class CoordinatorGroup_DUserCom extends React.Component {
@@ -28,13 +30,14 @@ class CoordinatorGroup_DUserCom extends React.Component {
         this.handleEdit = this.handleEdit.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.onClose = this.onClose.bind(this);
+        this.setDataExport = this.setDataExport.bind(this);
+        this.handleExportFile = this.handleExportFile.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsCloseForm: false,
             cssNotification: "",
             iconNotification: "",
-            DataSource: this.props.DataSource ? this.props.DataSource : [],
             DataSource: this.props.DataSource ? this.props.DataSource : [],
             CoordinatorGroupID: this.props.CoordinatorGroupID,
             IsInsert: true,
@@ -377,6 +380,27 @@ class CoordinatorGroup_DUserCom extends React.Component {
 
     }
 
+    setDataExport() {
+        const { DataSource } = this.state;
+        try {
+            const excelData = DataSource.map(item => {
+                return {
+                    "Mã nhân viên giao hàng": item.UserName,
+                    "Tên nhân viên giao hàng": item.FullName,
+                    "Ngày cập nhật": moment(item.UpdatedDate).format("DD/MM/YYYY"),
+                    "Người cập nhật": item.UpdatedUserFullName
+                }
+            });
+
+            return excelData;
+        } catch (error) {
+            return [];
+        }
+    }
+
+    handleExportFile(result) {
+        this.addNotification(result.Message, result.IsError);
+    }
 
     render() {
         if (this.state.IsCloseForm) {
@@ -398,14 +422,19 @@ class CoordinatorGroup_DUserCom extends React.Component {
                     IsAutoPaging={false}
                     //RowsPerPage={10}
                     IsCustomAddLink={true}
-                    headingTitle={"Nhân viên giao hàng thuộc 1 nhóm điều phối"}
+                    headingTitle={"Nhân viên giao hàng thuộc nhóm chi nhánh quản lý"}
+                    IsExportFile={true}
+                    onExportFile={this.handleExportFile}
+                    DataExport={this.setDataExport()}
+                    fileName="Nhân viên giao hàng thuộc nhóm chi nhánh quản lý"
+                    ExportPermission={MDM_COORDINATORGROUP_EXPORT}
 
                     IsImportFile={true}
                     SchemaData={schema}
                     onImportFile={this.handleImportFile.bind(this)}
                     isExportFileTemplate={true}
                     DataTemplateExport={this.state.DataTemplateExport}
-                    fileNameTemplate={"Danh sách nhân viên giao hàng thuộc 1 nhóm điều phối"}
+                    fileNameTemplate={"Danh sách nhân viên giao hàng thuộc 1 nhóm chi nhánh quản lý"}
                     onExportFileTemplate={this.handleExportFileTemplate.bind(this)}
                 />
             </div>

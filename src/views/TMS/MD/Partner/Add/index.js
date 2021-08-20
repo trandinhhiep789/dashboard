@@ -21,6 +21,8 @@ import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_COUNTRY, ERPCOMMONCACHE_PROVINCE, ERPCOMMONCACHE_DISTRICT, ERPCOMMONCACHE_WARD } from "../../../../../constants/keyCache";
 import PartnerCoordinatorStore from "../../PartnerCoordinatorStore";
+import PartnerCustomerCom from './PartnerCustomer';
+import PartnerServiceRequestTypeCom from './PartnerServiceRequestType';
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -35,6 +37,8 @@ class AddCom extends React.Component {
         this.getFullAddress = this.getFullAddress.bind(this);
         // this.handleGetCache = this.handleGetCache.bind(this);
         // this.handleClearLocalCache = this.handleClearLocalCache.bind(this);
+        this.handlePartnerCustomer = this.handlePartnerCustomer.bind(this);
+        this.handlePartnerServiceRequestType = this.handlePartnerServiceRequestType.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -47,7 +51,9 @@ class AddCom extends React.Component {
             AddElementList: AddElementList,
             PartnerID: "",
             PartnerCoordinatorStore: [],
-            FullAddress: ""
+            FullAddress: "",
+            statePartnerCustomer: [],
+            statePartnerServiceRequestType: []
         };
     }
 
@@ -69,9 +75,7 @@ class AddCom extends React.Component {
     // getCacheDataCombobox(cacheKeyID) {
     //     let listOption = [];
     //     this.props.callGetCache(cacheKeyID).then((result) => {
-    //         //console.log("FormElement callGetCache: ", result)     
     //         if (!result.IsError && result.ResultObject.CacheData != null) {
-    //             //console.log("FormElement listOption: ", listOption)
     //             listOption = result.ResultObject.CacheData;
     //         }
     //         else {
@@ -102,7 +106,6 @@ class AddCom extends React.Component {
         // quốc gia
         this.props.callGetCache(ERPCOMMONCACHE_COUNTRY).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
-                //console.log("FormElement listOption: ", listOption)
                 this.setState({
                     Country: result.ResultObject.CacheData
                 });
@@ -112,7 +115,6 @@ class AddCom extends React.Component {
         // tỉnh thành phố
         this.props.callGetCache(ERPCOMMONCACHE_PROVINCE).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
-                //console.log("FormElement listOption: ", listOption)
                 this.setState({
                     Province: result.ResultObject.CacheData
                 });
@@ -122,7 +124,6 @@ class AddCom extends React.Component {
         // quận huyện
         this.props.callGetCache(ERPCOMMONCACHE_DISTRICT).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
-                //console.log("FormElement listOption: ", listOption)
                 this.setState({
                     District: result.ResultObject.CacheData
                 });
@@ -133,7 +134,6 @@ class AddCom extends React.Component {
         // phường xã
         this.props.callGetCache(ERPCOMMONCACHE_WARD).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
-                //console.log("FormElement listOption: ", listOption)
                 this.setState({
                     Ward: result.ResultObject.CacheData
                 });
@@ -199,7 +199,6 @@ class AddCom extends React.Component {
             }
         }
 
-        //console.log("full address", fullAddress);
         return fullAddress;
 
     }
@@ -229,7 +228,6 @@ class AddCom extends React.Component {
             fullAddress = this.getFullAddress(formData);
         }
 
-        //console.log("this.state.Province", this.state.Province);
         let country = [{ value: -1, label: "--Vui lòng chọn--" }];
         let province = [{ value: -1, label: "--Vui lòng chọn--" }];
         let district = [{ value: -1, label: "--Vui lòng chọn--" }];
@@ -310,6 +308,8 @@ class AddCom extends React.Component {
 
         MLObject.FullAddress = this.state.FullAddress;
         MLObject.PartnerCoordinatorStore = this.state.PartnerCoordinatorStore;
+        MLObject.lstPartner_Customer = this.state.statePartnerCustomer;
+        MLObject.lstPartner_ServiceRequestType = this.state.statePartnerServiceRequestType;
 
         var data = new FormData();
         data.append("LogoImageURL", this.state.Files.PictureURL);
@@ -340,6 +340,14 @@ class AddCom extends React.Component {
         );
     }
 
+    handlePartnerCustomer(data) {
+        this.setState({ statePartnerCustomer: data });
+    }
+
+    handlePartnerServiceRequestType(data) {
+        this.setState({ statePartnerServiceRequestType: data });
+    }
+
     render() {
         const dataSource = {
             IsActived: true
@@ -362,11 +370,19 @@ class AddCom extends React.Component {
                 RequirePermission={PARTNER_ADD}
                 ref={this.searchref}>
 
-                
+
                 {/* <PartnerCoordinatorStore
                     PartnerID={this.state.PartnerID}
                     onPartnerCoordinatorStoreChange={this.onPartnerCoordinatorStoreChange}
                 /> */}
+
+                <PartnerCustomerCom
+                    propsHandlePartnerCustomer={this.handlePartnerCustomer}
+                />
+
+                <PartnerServiceRequestTypeCom
+                    propsHandlePartnerServiceRequestType={this.handlePartnerServiceRequestType}
+                />
             </SimpleForm>
 
         );

@@ -36,6 +36,8 @@ export class DocumentInfo extends Component {
                             {DocumentInfo.DocumentName}
                         </label>
                     </div>
+
+
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Từ khóa tìm kiếm:</label>
                     </div>
@@ -60,9 +62,11 @@ export class DocumentInfo extends Component {
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">
-                            {DocumentInfo.DocumentTypeID + " - " + DocumentInfo.DocumentName}
+                            {DocumentInfo.DocumentTypeID + " - " + DocumentInfo.DocumentTypeName}
                         </label>
                     </div>
+
+
                 </div>
 
                 <div className="form-row">
@@ -107,28 +111,27 @@ export class DocumentInfo extends Component {
 
                 </div>
 
-
-
                 <div className="form-row">
                     <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Tổng thời gian video:</label>
+                        <label className="col-form-label bold">Người upload đầu tiên:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        {DocumentInfo.Duration}
+                        <label className="col-form-label">
+                            {DocumentInfo.UpLoadFullName}
+                        </label>
+
                     </div>
                     <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Khóa bình luận:</label>
+                        <label className="col-form-label bold">Ngày upload đầu tiên:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <div className="checkbox customCheckbox">
-                            <label>
-                                <input type="checkbox" disabled={true} defaultChecked={DocumentInfo.IsLockComment} />
-                                <span className="cr"><i className="cr-icon fa fa-check"></i>
-                                </span>
-                            </label>
-                        </div>
+                        <label className="col-form-label">
+                            {formatDate(DocumentInfo.UpLoadDate, false)}
+                        </label>
                     </div>
+
                 </div>
+
 
                 <div className="form-row">
                     <div className="form-group col-md-2">
@@ -147,31 +150,11 @@ export class DocumentInfo extends Component {
                     </div>
                 </div>
 
-                <div className="form-row">
-                    <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Người upload đầu tiên:</label>
-                    </div>
-                    <div className="form-group col-md-4">
-                        <label className="col-form-label">
-                            {DocumentInfo.UpLoadFullName}
-                        </label>
-                        
-                    </div>
-                    <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Ngày upload đầu tiên:</label>
-                    </div>
-                    <div className="form-group col-md-4">
-                        <label className="col-form-label">
-                            {formatDate(DocumentInfo.UpLoadDate, false)}
-                        </label>
-                    </div>
-
-                </div>
 
 
                 <div className="form-row">
                     <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Đã xuất bản:</label>
+                        <label className="col-form-label bold">Đã triển khai:</label>
                     </div>
                     <div className="form-group col-md-4">
 
@@ -184,7 +167,7 @@ export class DocumentInfo extends Component {
                         </div>
                     </div>
                     <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Ngày xuất bản:</label>
+                        <label className="col-form-label bold">Ngày triển khai:</label>
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">
@@ -196,12 +179,35 @@ export class DocumentInfo extends Component {
 
                 <div className="form-row">
                     <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Người xuất bản:</label>
+                        <label className="col-form-label bold">Người triển khai:</label>
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">
                             {DocumentInfo.PublishedFullName}
                         </label>
+                    </div>
+                    <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Khóa bình luận:</label>
+                    </div>
+                    <div className="form-group col-md-4">
+                        <div className="checkbox customCheckbox">
+                            <label>
+                                <input type="checkbox" disabled={true} defaultChecked={DocumentInfo.IsLockComment} />
+                                <span className="cr"><i className="cr-icon fa fa-check"></i>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="form-row">
+                    <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Nội dung:</label>
+                    </div>
+                    <div className="form-group col-md-10">
+                        <p className="col-form-label">
+                            {DocumentInfo.FileContent1}
+                        </p>
                     </div>
                 </div>
             </React.Fragment>

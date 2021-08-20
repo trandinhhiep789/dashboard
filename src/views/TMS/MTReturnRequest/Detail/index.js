@@ -34,8 +34,9 @@ import {
     TMS_MTRETURNREQUEST_CREATEDVOUCHER, GET_CACHE_USER_FUNCTION_LIST
 } from "../../../../constants/functionLists";
 import { callGetUserCache, callGetCache } from "../../../../actions/cacheAction";
+import { checkFileExtension } from '../../../../common/library/CommonLib';
 
-export class DetailCom extends Component {
+class DetailCom extends Component {
     constructor(props) {
         super(props);
 
@@ -269,21 +270,27 @@ export class DetailCom extends Component {
             RequestDate: RenfundSupplies.RequestDate,
         }
 
-        data.append('file', e.target.files[0])
+        data.append('file', e.target.files[0]);
         data.append("ObjMTReturnRequest_Attachment", JSON.stringify(MLObject));
 
-        this.props.callFetchAPI(APIHostName, AddAPIAttachment, data).then((apiResult) => {
-            if (apiResult.IsError) {
-                this.setState({
-                    IsCallAPIError: !apiResult.IsError
-                });
-                this.showMessage(apiResult.Message);
-            }
-            else {
-                this.callLoadData(MTReturnRequestID);
-                this.addNotification(apiResult.Message, apiResult.IsError)
-            }
-        })
+        // check định dạng file
+        const fileName = e.target.files[0].name;
+        if (checkFileExtension(fileName).IsError) {
+            this.showMessage(checkFileExtension(fileName).Message);
+        } else {
+            this.props.callFetchAPI(APIHostName, AddAPIAttachment, data).then((apiResult) => {
+                if (apiResult.IsError) {
+                    this.setState({
+                        IsCallAPIError: !apiResult.IsError
+                    });
+                    this.showMessage(apiResult.Message);
+                }
+                else {
+                    this.callLoadData(MTReturnRequestID);
+                    this.addNotification(apiResult.Message, apiResult.IsError)
+                }
+            })
+        }
     }
 
     handleDeletefile(id) {
@@ -340,7 +347,6 @@ export class DetailCom extends Component {
         MLObject.IsCreatedInputVoucher = true;
 
         this.props.callFetchAPI(APIHostName, UpdateCreateVocherAPIPath, MLObject).then((apiResult) => {
-            console.log("apiResult", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -396,7 +402,6 @@ export class DetailCom extends Component {
         MLObject.CurrentReviewLevelID = !!isLastList ? CurrentReviewLevelID : nextReviewLevelID[0].ReviewLevelID;
 
         this.props.callFetchAPI(APIHostName, UpdateCurrentReviewLevelAPIPath, MLObject).then((apiResult) => {
-            console.log("id", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError

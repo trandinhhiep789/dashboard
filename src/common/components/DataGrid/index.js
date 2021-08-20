@@ -279,6 +279,10 @@ class DataGridCom extends Component {
             // console.log("checkList", gridData);
             this.setState({ GridData: gridData });
         }
+
+        if (this.props.checkedData) {
+            this.props.checkedData(gridData);
+        }
     }
 
     handleKeyPress(e) {
@@ -305,6 +309,54 @@ class DataGridCom extends Component {
         mywindow.close();
 
         return true;
+
+    }
+
+    handleUpdateListItem() {
+
+        const idSelectColumnName = this.props.IDSelectColumnName;
+        let listID = [];
+        const idDeleteListObject = this.state.GridData[idSelectColumnName];
+        idDeleteListObject.map((item, index) => {
+            if (item.IsChecked) {
+                listID.push(item);
+            }
+        });
+        if (listID.length == 0) {
+            this.showMessage("Vui lòng chọn ít nhất một dòng cần cập nhật!");
+            return;
+        }
+        const confir = confirm("Bạn có chắc rằng muốn cập nhật?");
+        if (confir == 1) {
+            this.props.onUpdateListItem(listID, this.state.ListPKColumnName);
+            this.setState({
+                IsCheckAll: false
+            });
+        }
+
+    }
+
+    handleUpdateList() {
+
+        const idSelectColumnName = this.props.IDSelectColumnName;
+        let listID = [];
+        const idDeleteListObject = this.state.GridData[idSelectColumnName];
+        idDeleteListObject.map((item, index) => {
+            if (item.IsChecked) {
+                listID.push(item);
+            }
+        });
+        if (listID.length == 0) {
+            this.showMessage("Vui lòng chọn ít nhất một dòng cần cập nhật!");
+            return;
+        }
+        const confir = confirm("Bạn có chắc rằng muốn cập nhật?");
+        if (confir == 1) {
+            this.props.onUpdateList(listID, this.state.ListPKColumnName);
+            this.setState({
+                IsCheckAll: false
+            });
+        }
 
     }
 
@@ -711,6 +763,11 @@ class DataGridCom extends Component {
     }
 
     handleExportFileTemplate() {
+        if (this.props.propsIsCustomXLSX) {
+            this.props.onExportFileTemplate();
+            return;
+        }
+
         const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
         const fileExtension = '.xlsx';
         let result;
@@ -736,6 +793,11 @@ class DataGridCom extends Component {
     }
 
     handleImportFile() {
+        if (this.props.propsIsCustomXLSX) {
+            this.props.onImportFile();
+            return;
+        }
+
         const input = document.getElementById('buttonImportFile');
         input.click();
 
@@ -822,6 +884,8 @@ class DataGridCom extends Component {
         if (this.state.IsPermision === 'error') {
             return <p className="col-md-12">Lỗi khi kiểm tra quyền, vui lòng thử lại</p>
         }
+
+
         return (
 
             <div className="col-lg-12 SearchForm">
@@ -924,6 +988,24 @@ class DataGridCom extends Component {
                                             </button>
                                         }
 
+                                        {
+
+                                            this.props.IsUpdateListItem == true ?
+                                                <button type="button" className="btn btn-info ml-10" title="Cập nhật" data-provide="tooltip" data-original-title="Cập nhật" onClick={this.handleUpdateListItem.bind(this)}>
+                                                    <span className="ti-lock"> {(this.props.TitleUpdateListItem != "" && this.props.TitleUpdateListItem != undefined) ? this.props.TitleUpdateListItem : "Cập nhật"}  </span>
+                                                </button>
+                                                : ""
+                                        }
+
+                                        {
+
+                                            this.props.IsUpdateList == true ?
+                                                <button type="button" className="btn btn-info ml-10" title="Cập nhật" data-provide="tooltip" data-original-title="Cập nhật" onClick={this.handleUpdateList.bind(this)}>
+                                                    <span className="ti-plus"> {(this.props.TitleUpdateList != "" && this.props.TitleUpdateList != undefined) ? this.props.TitleUpdateList : "Cập nhật"}  </span>
+                                                </button>
+                                                : ""
+                                        }
+
                                     </div>
                                 </div>
                             </div>
@@ -984,6 +1066,10 @@ class DataGridCom extends Component {
         );
     }
 }
+
+DataGridCom.defaultProps = {
+    propsIsCustomXLSX: false
+};
 
 const mapStateToProps = state => {
     return {

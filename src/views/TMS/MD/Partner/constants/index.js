@@ -11,7 +11,7 @@ export const AddLogAPIPath = "api/UserActivity/Add";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "PartnerID";
 export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
-import {CDN_LOGO_IMAGE} from '../../../../../constants/systemVars';
+import { CDN_LOGO_IMAGE } from '../../../../../constants/systemVars';
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
@@ -902,7 +902,7 @@ export const MLObjectDefinition = [
         BindControlName: "txtDescription",
         DataSourceMember: "Description"
     },
-    
+
     {
         Name: "IsActived",
         DefaultValue: true,
@@ -1001,4 +1001,108 @@ export const DataGridColumnList = [
         Link: "/Partner/Edit/",
         LinkText: "Chỉnh sửa"
     }
+];
+
+
+export const listColumnPartnerCustomerAdd = [
+    {
+        Name: "chkSelect",
+        Type: "checkbox",
+        Caption: "Chọn",
+        DataSourceMember: "",
+        Width: 60
+    },
+    {
+        Name: "CustomerID",
+        Type: "text",
+        Caption: "Mã khách hàng",
+        DataSourceMember: "CustomerID"
+    },
+    {
+        Name: "CustomerName",
+        Type: "text",
+        Caption: "Tên khách hàng",
+        DataSourceMember: "CustomerName"
+    },
+    {
+        Name: "IsActived",
+        Type: "checkicon",
+        Caption: "Kích hoạt",
+        DataSourceMember: "IsActived"
+    },
+    {
+        Name: "IsSystem",
+        Type: "checkicon",
+        Caption: "Hệ thống",
+        DataSourceMember: "IsSystem"
+    },
+    {
+        Name: "",
+        Type: "edit",
+        Caption: "Chỉnh sửa",
+        DataSourceMember: "",
+        Width: 90
+    }
+]
+
+export const listColumnPartnerServiceRequestTypeAdd = [
+    {
+        Name: "chkSelect",
+        Type: "checkbox",
+        Caption: "Chọn",
+        DataSourceMember: "",
+        Width: 60
+    },
+    {
+        Name: "ServiceRequestTypeID",
+        Type: "text",
+        Caption: "Mã loại dịch vụ ",
+        DataSourceMember: "ServiceRequestTypeID"
+    },
+    {
+        Name: "ServiceRequestTypeName",
+        Type: "text",
+        Caption: "Tên loại dịch vụ ",
+        DataSourceMember: "ServiceRequestTypeName"
+    },
+    {
+        Name: "IsActived",
+        Type: "checkicon",
+        Caption: "Kích hoạt",
+        DataSourceMember: "IsActived"
+    },
+    {
+        Name: "IsSystem",
+        Type: "checkicon",
+        Caption: "Hệ thống",
+        DataSourceMember: "IsSystem"
+    },
+    {
+        Name: "",
+        Type: "edit",
+        Caption: "Chỉnh sửa",
+        DataSourceMember: "",
+        Width: 90
+    }
+];
+
+export const MLObjectDefinitionPartnerServiceRequestTypeModal = [
+    {
+        Name: "ServiceRequestTypeID",
+        DefaultValue: "",
+        BindControlName: "cbServiceRequestTypeID",
+        DataSourceMember: "ServiceRequestTypeID"
+    },
+    {
+        Name: "IsActived",
+        DefaultValue: "",
+        BindControlName: "chkIsActived",
+        DataSourceMember: "IsActived"
+    },
+    {
+        Name: "IsSystem",
+        DefaultValue: "",
+        BindControlName: "chkIsSystem",
+        DataSourceMember: "IsSystem"
+    },
 ];

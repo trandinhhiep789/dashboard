@@ -31,6 +31,7 @@ class ServicePriceTableDetailCom extends Component {
             IsDisableCbTechspecsValue: false,
             IsRequiredTechspecsValue: '',
             isDisableValue: false,
+            isDisableCheckPrice: true,
         }
 
     }
@@ -126,6 +127,18 @@ class ServicePriceTableDetailCom extends Component {
     }
 
     handleChange(formData, MLObject) {
+
+        if(formData.cbTechSpecs.value > 0 ){
+            this.setState({
+                isDisableCheckPrice: false
+            })
+        }
+        else{
+            this.setState({
+                isDisableCheckPrice: true
+            })
+        }
+      
         if (formData.ckIsPriceByTechspecsValueRange.value) {
 
             if (formData.txtFromTechspecsValue.value.toString().length > 0) {
@@ -213,15 +226,23 @@ class ServicePriceTableDetailCom extends Component {
 
     render() {
 
-        const { IsSystem, IsUpdate, IsDisableCbTechspecsValue, isDisableValue, IsDisableTechspecsValue } = this.state;
+        const { IsSystem, IsUpdate, IsDisableCbTechspecsValue, isDisableValue, IsDisableTechspecsValue, isDisableCheckPrice } = this.state;
         let isDisableCB = false;
+        let isDisableCheckBox = false;
 
 
-        if (IsUpdate == false && IsDisableCbTechspecsValue == false) {
+        if (IsUpdate == false && IsDisableCbTechspecsValue == false ) {
             isDisableCB = false
         }
         else {
             isDisableCB = true
+        }
+
+        if (IsUpdate == false && IsDisableCbTechspecsValue == false && isDisableCheckPrice == false) {
+            isDisableCheckBox = false
+        }
+        else {
+            isDisableCheckBox = true
         }
 
         let isDisableCBTechspecsValue = false;
@@ -397,8 +418,8 @@ class ServicePriceTableDetailCom extends Component {
                             name="ckIsPriceByTechspecsValueRange"
                             colspan="3"
                             labelcolspan="9"
-                            readOnly={isDisableCB}
-                            disabled={isDisableCB}
+                            readOnly={isDisableCheckBox}
+                            disabled={isDisableCheckBox}
                             label="Giá theo khoảng giá trị thông số kỹ thuật"
                             controltype="InputControl"
                             value=""

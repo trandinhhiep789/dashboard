@@ -62,7 +62,7 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
-      //  this.checkPermission();
+        //  this.checkPermission();
         //this.callDataFirstPage(this.state.SearchData)
         window.addEventListener("resize", this.updateWindowDimensions);
     }
@@ -80,14 +80,14 @@ class SearchCom extends React.Component {
 
     checkPermission() {
         let IsAllowedAdd = false;
-       
+
         this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
                 let isAllowAdd = result.ResultObject.CacheData.filter(x => x.FunctionID == TMS_PNSERVICEPRICETABLE_VIEW);
                 if (isAllowAdd && isAllowAdd.length > 0) {
                     IsAllowedAdd = true;
                 }
- 
+
                 this.setState({
                     IsAllowedAdd: IsAllowedAdd
                 });
@@ -376,25 +376,35 @@ class SearchCom extends React.Component {
 
     handleExportSubmit(formData, MLObject) {
 
+        var curDate = new Date();
+        var curMonth = curDate.getMonth();
+        var mldate = new Date(MLObject.SaleMonth);
+        var mlMonth = mldate.getMonth() + 1;
+        if (mlMonth > curMonth) {
+            this.addNotification("Vui lòng chọn tháng < " + (curMonth + 1), true);
+            return;
+        }
+
+
         const searchData = [
             {
                 SearchKey: "@SALEMONTH",
                 SearchValue: toIsoStringCus(new Date(MLObject.SaleMonth).toISOString())
             }
         ];
-        const postData={
-            DataExportTemplateID:2,
-            LoadDataStoreName:'TMS.TMS_MONTHLYSALEORDER_REPORT',
-            KeyCached:"SHIPMENTORDER_REPORT_EXPORT",
-            SearchParamList:searchData,
-            ExportDataParamsDescription:"Tháng" + toIsoStringCus(new Date(MLObject.SaleMonth).toISOString())
+        const postData = {
+            DataExportTemplateID: 2,
+            LoadDataStoreName: 'TMS.TMS_MONTHLYSALEORDER_REPORT',
+            KeyCached: "SHIPMENTORDER_REPORT_EXPORT",
+            SearchParamList: searchData,
+            ExportDataParamsDescription: "Tháng" + toIsoStringCus(new Date(MLObject.SaleMonth).toISOString())
         }
         this.props.callFetchAPI(APIHostName, "api/DataExportQueue/AddQueueExport", postData).then(apiResult => {
             if (!apiResult.IsError) {
                 this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
                     title: "Tải file",
                     maxWidth: '1200px',
-                    ParamRequest: {DataExportTemplateID:2}
+                    ParamRequest: { DataExportTemplateID: 2 }
                 });
             }
             else {
@@ -402,12 +412,11 @@ class SearchCom extends React.Component {
             }
         });
     }
-    handleHistorySearch()
-    {
+    handleHistorySearch() {
         this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
             title: "Tải file",
             maxWidth: '1200px',
-            ParamRequest:{DataExportTemplateID:2}
+            ParamRequest: { DataExportTemplateID: 2 }
         });
     }
 
@@ -440,7 +449,7 @@ class SearchCom extends React.Component {
                     MLObjectDefinition={SearchMLObjectDefinition}
                     listelement={SearchElementList}
                     onSubmit={this.handleSearchSubmit}
-                    IsShowButtonSearch ={false}
+                    IsShowButtonSearch={false}
                     IsButtonExport={true}
                     IsButtonhistory={true}
                     onHistorySubmit={this.handleHistorySearch}
@@ -449,7 +458,7 @@ class SearchCom extends React.Component {
                     ref={this.searchref}
                     //className="multiple"
                     classNamebtnSearch="groupAction"
-                />   
+                />
             </React.Fragment>
         );
 

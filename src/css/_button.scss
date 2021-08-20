@@ -6,10 +6,10 @@
     width: 100%;
     button {
         &.btnActionConfirm {
-            border: 1px solid #1c9536;
+            border: none;
             text-align: center;
             cursor: pointer;
-            background-color: #1c9536;
+            background-color: transparent;
             border-radius: 4px;
             color: #fff;
             font-size: 11px;
@@ -19,7 +19,26 @@
                 box-shadow: none;
                 outline: none;
             }
+            i{
+                font-size: 10px;
+            }
+            .lbl-unConfirm {
+                background: #dc3545;
+                padding: 5px 5px;
+                border-radius: 5px;
+            }
+            .lbl-confirm {
+                background: #1c9536;
+                padding: 5px 5px;
+                border-radius: 5px;
+                width: 100%;
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+            }
+            
         }
+       
     }
     
 }
@@ -59,6 +78,37 @@ button {
     }
 
     &.btn.btn-info {
+        line-height: 20px;
+        height: 30px;
+        padding: 0px 5px;
+        border-radius: 4px !important;
+
+        &:focus {
+            box-shadow: none;
+        }
+
+        &.tofixedButton{
+            position: fixed;
+            top: 106px;
+            left: 40px;
+            z-index: 99;
+            -webkit-transition: all 0.3s ease;
+            -moz-transition: all 0.3s ease;
+            transition: all 0.3s ease;
+        }
+        &.btn-export-cus{
+            height: 36px;
+            border-radius: 0 !important;
+            line-height: 20px;
+            padding-left: 45px !important;
+        }
+    }
+    &.btn.btn-history {
+        &.btn-warning{
+            padding-left: 45px;
+        }
+    }
+    &.btn.btn-confirm{
         line-height: 20px;
         height: 30px;
         padding: 0px 5px;

@@ -29,3 +29,12 @@
     margin: 0 auto;
     width: 10px;
   }
+  .title-tooltip-estimates {
+    max-width: 350px;
+    text-align: left;
+    padding: 5px !important;
+    
+    span {
+      display: inline-block;
+  }
+}

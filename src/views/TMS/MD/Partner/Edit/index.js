@@ -23,6 +23,9 @@ import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_COUNTRY, ERPCOMMONCACHE_PROVINCE, ERPCOMMONCACHE_DISTRICT, ERPCOMMONCACHE_WARD, ERPCOMMONCACHE_STORE } from "../../../../../constants/keyCache";
 import PartnerCoordinatorStore from "../../PartnerCoordinatorStore";
+import PartnerCustomerCom from './PartnerCustomer';
+import PartnerServiceRequestTypeCom from './PartnerServiceRequestType';
+
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
@@ -35,6 +38,9 @@ class EditCom extends React.Component {
         this.getFullAddress = this.getFullAddress.bind(this);
         this.onPartnerCoordinatorStoreChange = this.onPartnerCoordinatorStoreChange.bind(this);
         //this.getDataCombobox = this.getDataCombobox.bind(this);
+        this.handlePartnerCustomer = this.handlePartnerCustomer.bind(this);
+        this.handleDeletedPartnerCustomer = this.handleDeletedPartnerCustomer.bind(this);
+        this.handleSubmitPartnerServiceRequestType = this.handleSubmitPartnerServiceRequestType.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -50,8 +56,13 @@ class EditCom extends React.Component {
             EditElementList: EditElementList,
             PartnerCoordinatorStore: [],
             Store: [],
-            FullAddress: ""
+            FullAddress: "",
 
+            statePartnerCustomer: [],
+            stateDeletedPartnerCustomer: [],
+
+            stateConstPartnerServiceRequestType: [],
+            stateSubmitPartnerServiceRequestType: []
         };
     }
 
@@ -67,7 +78,15 @@ class EditCom extends React.Component {
                 this.showMessage(apiResult.Message);
             } else {
                 apiResult.ResultObject.IncorporationDate = apiResult.ResultObject.IncorporationDateString;
-                this.setState({ DataSource: apiResult.ResultObject, PartnerCoordinatorStore: apiResult.ResultObject.PartnerCoordinatorStore ? apiResult.ResultObject.PartnerCoordinatorStore : [] });
+                this.setState({
+                    DataSource: apiResult.ResultObject,
+                    PartnerCoordinatorStore: apiResult.ResultObject.PartnerCoordinatorStore ? apiResult.ResultObject.PartnerCoordinatorStore : [],
+
+                    statePartnerCustomer: apiResult.ResultObject.lstPartner_Customer,
+
+                    stateConstPartnerServiceRequestType: apiResult.ResultObject.lstPartner_ServiceRequestType,
+                    stateSubmitPartnerServiceRequestType: apiResult.ResultObject.lstPartner_ServiceRequestType,
+                });
                 this.setValueCombobox(apiResult.ResultObject.CountryID, apiResult.ResultObject.ProvinceID, apiResult.ResultObject.DistrictID, apiResult.ResultObject.WardID);
             }
             this.setState({
@@ -142,7 +161,7 @@ class EditCom extends React.Component {
             if (!result.IsError && result.ResultObject.CacheData != null) {
                 this.setState({
                     Store: result.ResultObject.CacheData
-                });   
+                });
             }
         });
     }
@@ -211,13 +230,11 @@ class EditCom extends React.Component {
             }
         }
 
-        //console.log("full address", fullAddress);
         return fullAddress;
 
     }
 
     onValueChange(elementname, elementvalue, formData) {
-        //console.log("formData", formData);
         let fullAddress = "";
         if (elementname == "txtCountryID") {
             fullAddress = "";
@@ -236,7 +253,6 @@ class EditCom extends React.Component {
         } else if (elementname == "txtAddress") {
             fullAddress = this.getFullAddress(formData);
         }
-        //console.log("ward state", this.state.Ward);
         let country = [{ value: -1, label: "--Vui lòng chọn--" }];
         let province = [{ value: -1, label: "--Vui lòng chọn--" }];
         let district = [{ value: -1, label: "--Vui lòng chọn--" }];
@@ -278,16 +294,29 @@ class EditCom extends React.Component {
             EditElementList: _EditElementList,
             FullAddress: fullAddress
         });
-
-        //console.log("onValueChange.Province", country, province, district, ward);
     }
 
     onPartnerCoordinatorStoreChange(list) {
         this.setState({ PartnerCoordinatorStore: list });
-        //console.log("onPartnerCoordinatorStoreChange", list);
     }
 
+    handlePartnerCustomer(updateStateDataGrid) {
+        this.setState({
+            statePartnerCustomer: updateStateDataGrid
+        });
+    }
 
+    handleSubmitPartnerServiceRequestType(data) {
+        this.setState({
+            stateSubmitPartnerServiceRequestType: data
+        });
+    }
+
+    handleDeletedPartnerCustomer(arrDeletedPartnerCustomer) {
+        this.setState({
+            stateDeletedPartnerCustomer: arrDeletedPartnerCustomer
+        })
+    }
 
     handleSubmit(formData, MLObject) {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
@@ -314,9 +343,19 @@ class EditCom extends React.Component {
             MLObject.WardID = -1;
         }
 
+        const lstPartner_Customer = this.state.stateDeletedPartnerCustomer.reduce((acc, val) => {
+            if (acc.find(item => item.CustomerID == val.CustomerID)) {
+                return acc;
+            } else {
+                return [...acc, val]
+            }
+        }, [...this.state.statePartnerCustomer]);
+
         MLObject.FullAddress = this.state.FullAddress;
         MLObject.PartnerCoordinatorStore = this.state.PartnerCoordinatorStore;
         MLObject.PartnerCoordinatorStore_DeleteList = this.state.PartnerCoordinatorStore_DeleteList;
+        MLObject.lstPartner_Customer = lstPartner_Customer;
+        MLObject.lstPartner_ServiceRequestType = this.state.stateSubmitPartnerServiceRequestType;
 
         var data = new FormData();
         data.append("LogoImageURL", this.state.Files.PictureURL);
@@ -328,7 +367,6 @@ class EditCom extends React.Component {
                 this.props.callClearLocalCache(ERPCOMMONCACHE_PARTNER);
             }
         });
-        //console.log("MLObject",MLObject);
     }
 
     handleCloseMessage() {
@@ -374,10 +412,19 @@ class EditCom extends React.Component {
                             Store={this.state.Store}
                             onPartnerCoordinatorStoreChange={this.onPartnerCoordinatorStoreChange}
                         /> */}
+
+                        <PartnerCustomerCom
+                            propsPartnerCustomer={this.state.statePartnerCustomer}
+                            propsHandlePartnerCustomer={this.handlePartnerCustomer}
+                            propsHandleDeletedPartnerCustomer={this.handleDeletedPartnerCustomer}
+                        />
+
+                        <PartnerServiceRequestTypeCom
+                            propsPartner={this.state.DataSource}
+                            propsConstPartnerServiceRequestType={this.state.stateConstPartnerServiceRequestType}
+                            propsHandlePartnerServiceRequestType={this.handleSubmitPartnerServiceRequestType}
+                        />
                     </SimpleForm>
-
-
-
                 </React.Fragment>
             );
         }

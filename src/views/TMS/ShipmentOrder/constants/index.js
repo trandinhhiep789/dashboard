@@ -1666,4 +1666,52 @@ export const UpdateCoordinatorStoreEdit = [
 
 ];
 
+export const MLObjectIgnoreCheckRCGeolocation = [
+    {
+        Name: "IgnoreCheckRCGeolocReasonID",
+        DefaultValue: "",
+        BindControlName: "IgnoreCheckRCGeolocReasonID",
+        DataSourceMember: "IgnoreCheckRCGeolocReasonID"
+    },
+    {
+        Name: "IgnoreCheckRCGeolocReasonNote",
+        DefaultValue: "",
+        BindControlName: "IgnoreCheckRCGeolocReasonNote",
+        DataSourceMember: "IgnoreCheckRCGeolocReasonNote"
+    }
+
+
+
+]
+export const IgnoreCheckRCGeolocationADD = [
+    {
+        name: "IgnoreCheckRCGeolocReasonID",
+        Type: "ComboBox",
+        Caption: "Lý do bỏ qua kiểm tra tọa độ",
+        label: "Lý do bỏ qua kiểm tra tọa độ",
+        value: -1,
+        datasourcemember: "IgnoreCheckRCGeolocReasonID",
+        validatonList: ["Comborequired"],
+        isautoloaditemfromcache: true,
+        loaditemcachekeyid: "ERPCOMMONCACHE.IGNORECHECKRCG",
+        valuemember: "IgnoreCheckRCGeolocReasonID",
+        nameMember: "IgnoreCheckRCGeolocReasonName",
+        Disabled: false,
+        OrderIndex: 1
+    },
+    {
+        name: "IgnoreCheckRCGeolocReasonNote",
+        Type: "TextArea",
+        label: "Ghi chú",
+        Caption: "Chi chú",
+        datasourcemember: "IgnoreCheckRCGeolocReasonNote",
+        OrderIndex: 5,
+        Colmd: 12,
+        hideInput: false,
+        labelcolspan: 2,
+        colspan: 10
+    }
+
+];
+
 

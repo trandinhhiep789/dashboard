@@ -254,7 +254,7 @@ class InputGridControlCom extends Component {
     }
 
     handleInsertClickEdit(index) {
-      
+
         if (this.props.onInsertClick === undefined) {
             let listColumnNew = this.props.listColumn.filter((person, index) => {
                 if ((this.props.listColumn[index].iputpop == true || this.props.listColumn[index].iputpop === undefined) && this.props.listColumn[index].forbiddenUpdate === undefined) { return person; }
@@ -386,7 +386,7 @@ class InputGridControlCom extends Component {
             if (listColumn[index].hideInput == true || listColumn[index].hideInput === undefined) { return person; }
         });
         let dataSource = this.props.dataSource;
-      
+
         if (this.props.value != null) {
             dataSource = this.props.value;
         }
@@ -433,42 +433,42 @@ class InputGridControlCom extends Component {
                                         let objlink = rowItem[this.props.PKColumnName];
                                         let objID = rowItem[this.props.PKColumnName];
                                         const cellData = <InputGridCell type={columnItem.Type}
+                                            CategoryTypeID={rowItem[columnItem.rowCategoryType]}
+                                            cation={columnItem.Caption}
                                             idItem={objID}
-                                            linkId={objlink}
-                                            text={ovjvalue}
-                                            value={ovjvalue}
-                                            to={columnItem.Link}
-                                            linkText={columnItem.LinkText}
-                                            name={columnItem.Name}
-                                            listoption={columnItem.listoption}
-                                            IsAutoLoadItemFromCache={columnItem.IsAutoLoadItemFromCache}
-                                            LoadItemCacheKeyID={columnItem.LoadItemCacheKeyID}
-                                            ValueMember={columnItem.ValueMember}
-                                            NameMember={columnItem.NameMember}
-                                            onInsertClickEdit={this.handleInsertClickEdit}
-                                            onValueChange={this.onValueChange}
                                             index={rowIndex}
+                                            IsAutoLoadItemFromCache={columnItem.IsAutoLoadItemFromCache}
+                                            isCategory={columnItem.isCategory}
                                             isChecked={isChecked}
+                                            isDisabled={this.props.isDisabled}
                                             IsFilterData={columnItem.IsFilterData}
+                                            IsPermisionAdd={this.props.IsPermisionAdd}
+                                            IsPermisionDelete={this.props.IsPermisionDelete}
+                                            IsPermisionEdit={this.props.IsPermisionEdit}
+                                            Ispopup={this.props.Ispopup === undefined ? false : this.props.Ispopup}
+                                            isSystem={this.state.IsSystem}
                                             KeyFilter={columnItem.KeyFilter}
-                                            ValueFilter={rowItem[columnItem.KeyFilter]}
-                                            onHandleEditClick={this.handleEditClick}
-                                            onValueChangeALL={this.handleClick}
+                                            label={columnItem.label}
+                                            linkId={objlink}
+                                            linkText={columnItem.LinkText}
+                                            listoption={columnItem.listoption}
+                                            LoadItemCacheKeyID={columnItem.LoadItemCacheKeyID}
+                                            name={columnItem.Name}
+                                            NameMember={columnItem.NameMember}
                                             onClickDelete={this.handleInsertClickDelete}
                                             onClickDeleteNew={this.handleInsertClickDeleteNew}
-                                            validationErrorMessage={validationErrorMessage}
-                                            label={columnItem.label}
-                                            cation={columnItem.Caption}
-                                            validatonList={columnItem.validatonList}
-                                            isDisabled={this.props.isDisabled}
-                                            isCategory={columnItem.isCategory}
-                                            CategoryTypeID={rowItem[columnItem.rowCategoryType]}
-                                            IsPermisionAdd={this.props.IsPermisionAdd}
-                                            IsPermisionEdit={this.props.IsPermisionEdit}
-                                            IsPermisionDelete={this.props.IsPermisionDelete}
-                                            isSystem={this.state.IsSystem}
-                                            Ispopup={this.props.Ispopup === undefined ? false : this.props.Ispopup}
+                                            onHandleEditClick={this.handleEditClick}
+                                            onInsertClickEdit={this.handleInsertClickEdit}
+                                            onValueChange={this.onValueChange}
+                                            onValueChangeALL={this.handleClick}
                                             rowsItem={rowItem}
+                                            text={ovjvalue}
+                                            to={columnItem.Link}
+                                            validationErrorMessage={validationErrorMessage}
+                                            validatonList={columnItem.validatonList}
+                                            value={ovjvalue}
+                                            ValueFilter={rowItem[columnItem.KeyFilter]}
+                                            ValueMember={columnItem.ValueMember}
                                         />;
                                         return (
                                             <td key={columnItem.Name} style={cellStyle}  >{cellData}</td>

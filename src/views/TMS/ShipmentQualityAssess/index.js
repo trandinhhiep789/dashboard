@@ -6,6 +6,7 @@ import {
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../actions/fetchAPIAction";
 import Search from "./Search";
+import Detail from "./Detail";
 
 import NotFound from '../../NotFound'
 class ShipmentOrderControlCom extends React.Component {
@@ -17,6 +18,7 @@ class ShipmentOrderControlCom extends React.Component {
         return (
             <Switch>
                 <Route exact path="/ShipmentQualityAssess" component={Search} />
+                <Route exact path="/ShipmentQualityAssess/Detail/:id" component={Detail} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );

@@ -77,10 +77,10 @@ export const DataGridColumnItemListFeeAppendix = [
     // },
     {
         Name: "FeeAppendixName",
-        Type: "texttolink",
+        Type: "text",
         Caption: "Tên Phụ lục",
         DataSourceMember: "FeeAppendixName",
-        Link: "/ServiceAgreement/FeeAppendix/Detail/",
+        // Link: "/ServiceAgreement/FeeAppendix/Detail/",
         Width: 150,
     },
     {
@@ -99,14 +99,14 @@ export const DataGridColumnItemListFeeAppendix = [
     },
     {
         Name: "ApplyFromDate",
-        Type: "date",
+        Type: "dateNew",
         Caption: "Từ ngày",
         DataSourceMember: "ApplyFromDate",
         Width: 250,
     },
     {
         Name: "ApplyToDate",
-        Type: "date",
+        Type: "dateNew",
         Caption: "Đến ngày",
         DataSourceMember: "ApplyToDate",
         Width: 250,
@@ -200,18 +200,18 @@ export const InitSearchParams = [
 ];
 
 export const PagePath = [
-    { Link: "/", Title: "Trang chủ",  icon: "fa fa-home"  },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "", Title: "Danh sách hợp đồng dịch vụ" }
 ];
 
 export const EditPagePath = [
-    { Link: "/", Title: "Trang chủ",  icon: "fa fa-home"  },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/ServiceAgreement", Title: "Danh sách hợp đồng dịch vụ" },
     { Link: "", Title: "Cập nhật" }
 ];
 
 export const AddPagePath = [
-    { Link: "/", Title: "Trang chủ",  icon: "fa fa-home"  },
+    { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/ServiceAgreement", Title: "Danh sách hợp đồng dịch vụ" },
     { Link: "", Title: "Thêm" }
 ];
@@ -257,7 +257,7 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Loại dịch vụ",
         DataSourceMember: "ServiceTypeName",
-        Width:  200
+        Width: 200
     },
     {
         Name: "AreaName",
@@ -367,7 +367,7 @@ export const SearchElementList = [
         placeholder: "---Vui lòng chọn---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.SERVICETYPE",
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.TMS_SERVICETYPE",
         ValueMember: "ServiceTypeID",
         NameMember: "ServiceTypeName",
 
@@ -640,90 +640,152 @@ export const MLObjectDefinition = [
 ];
 
 export const schema = {
-    'ServiceAgreementNumber': {
+    'Số hợp đồng': {
         prop: 'ServiceAgreementNumber',
-        type: String
+        type: String,
+        required: true
     },
-    'ServiceAgreementTypeID': {
+    'Loại hợp đồng': {
         prop: 'ServiceAgreementTypeID',
-        type: String
+        type: String,
         //type: Number,
-        //required: true
+        required: true
     },
-    'ServiceAreaID': {
-        prop: 'ServiceAreaID',
-        type: String
-        // type: Number,
-        // required: true
-    },
-
-    'ServiceTypeID': {
+    'Loại dịch vụ': {
         prop: 'ServiceTypeID',
         type: String,
         // type: Number,
-        // required: true
+        required: true
     },
-    'PartnerID': {
+    'Khu vực': {
+        prop: 'ServiceAreaID',
+        type: String,
+        // type: Number,
+        required: true
+    },
+    'Đơn vị vận chuyển': {
         prop: 'PartnerID',
         type: String,
         // type: Number,
-        // required: true
+        required: true
     },
-    'DeputyUserName': {
+    'Người đại diện': {
         prop: 'DeputyUserName',
-        type: String
+        type: String,
+        required: true
     },
-    'SignedDate': {
+    'Ngày ký hợp đồng': {
         prop: 'SignedDate',
-        type: Date
+        type: Date,
+        required: true
     },
-    'ExpiredDate': {
+    'Ngày hết hạn hợp đồng': {
         prop: 'ExpiredDate',
-        type: Date
+        type: Date,
+        required: true
     },
-    'IsExtended': {
+    'Đã gia hạn hợp đồng': {
         prop: 'IsExtended',
-        type: Number
+        type: Number,
+        required: true
     },
-    'ExtendedDate': {
+    'Gia hạn đến ngày': {
         prop: 'ExtendedDate',
         type: Date
     },
 
-    'IsLiquidated': {
+    'Đã thanh lý hợp đồng': {
         prop: 'IsLiquidated',
-        type: Number
+        type: Number,
+        required: true
     },
-    'Liquidateddate': {
+    'Ngày thanh lý hợp đồng': {
         prop: 'Liquidateddate',
         type: Date
     },
-    'IsDeposited': {
+    'Đã ký quỹ': {
         prop: 'IsDeposited',
-        type: Number
+        type: Number,
+        required: true
     },
-    'DepositMoney': {
+    'Số tiền ký quỹ': {
         prop: 'DepositMoney',
         type: Number
     },
-    'DepositedDate': {
+    'Ngày ký quỹ': {
         prop: 'DepositedDate',
         type: Date
     },
-    'DepositNote': {
+    'Ghi chú ký quỹ': {
         prop: 'DepositNote',
         type: String
     },
-    'Description': {
+    'Mô tả': {
         prop: 'Description',
         type: String
     },
-    'IsActived': {
+    'Kích hoạt': {
         prop: 'IsActived',
-        type: Number
+        type: Number,
+        value: 1
     },
-    'IsSystem': {
+    'Hệ thống': {
         prop: 'IsSystem',
-        type: Number
+        type: Number,
+        value: 0
     },
 }
+
+let DataGridColumnList_ImportFile = [];
+
+for (const key in schema) {
+    if (Object.hasOwnProperty.call(schema, key)) {
+        const element = schema[key];
+
+        if (element.required) {
+            DataGridColumnList_ImportFile.push({
+                Name: element.prop,
+                Type: element.type == Date ? "date" : "text",
+                Caption: key,
+                DataSourceMember: element.prop
+            })
+        }
+    }
+}
+
+DataGridColumnList_ImportFile.push({
+    Name: "Errors",
+    Type: "text",
+    Caption: "Cột lỗi",
+    DataSourceMember: "Errors"
+})
+
+export { DataGridColumnList_ImportFile };
+
+const SignedDate = new Date();
+SignedDate.setDate(1);
+
+const ExpiredDate = new Date();
+ExpiredDate.setDate(20);
+
+export const DataMasterTemplateExport = [
+    {
+        "Số hợp đồng": "0201/2020/HĐĐL/TT-DS",
+        "Loại hợp đồng": "1",
+        "Loại dịch vụ": "1",
+        "Khu vực": "5",
+        "Đơn vị vận chuyển": "101",
+        "Người đại diện": "0041014",
+        "Ngày ký hợp đồng": SignedDate,
+        "Ngày hết hạn hợp đồng": ExpiredDate,
+        "Đã gia hạn hợp đồng": "0",
+        "Gia hạn đến ngày": "",
+        "Đã thanh lý hợp đồng": "0",
+        "Ngày thanh lý hợp đồng": "",
+        "Đã ký quỹ": "0",
+        "Số tiền ký quỹ": "",
+        "Ngày ký quỹ": "",
+        "Ghi chú ký quỹ": "",
+        "Mô tả": "test",
+    }
+];

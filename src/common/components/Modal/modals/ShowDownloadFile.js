@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { hideModal } from '../../../../actions/modal';
 import { formatDate, formatMonthDate } from "../../../../common/library/CommonLib.js";
+import { Link } from "react-router-dom";
+
 const Overlay = styled.div`
   position: fixed;
   top: 0;
@@ -100,7 +102,6 @@ class ShowDownloadFileCom extends React.Component {
         return <h4 className="modal-title" id="myModalLabel">{title}</h4>
     }
     get close() {
-        console.log("bbb")
         const { onClose } = this.props;
         return onClose ?
             <button className='close' onClick={this.handleClose} ><span aria-hidden="true">×</span></button>
@@ -132,6 +133,7 @@ class ShowDownloadFileCom extends React.Component {
         // {RequestUser:98138,DataExportTemplateID:4}
 
         this.props.callFetchAPI(APIHostName, "api/DataExportQueue/GetByUserTemplateID", this.props.ParamRequest).then((apiResult) => {
+            console.log("GetByUserTemplateID", this.props.ParamRequest, apiResult)
             if (!apiResult.IsError) {
                 this.setState({
                     DataSource: apiResult.ResultObject,
@@ -148,8 +150,9 @@ class ShowDownloadFileCom extends React.Component {
     }
 
 
-
     render() {
+
+        const dateNow = new Date();
 
         let maxWidth = '90%';
         return (
@@ -183,6 +186,9 @@ class ShowDownloadFileCom extends React.Component {
                                             <tbody>
                                                 {
                                                     this.state.DataSource && this.state.DataSource.map((item, index) => {
+                                                        let ExpiredDateNew = new Date(item.ExpiredDate)
+                                                        let showbuttonDownload = ExpiredDateNew > dateNow;
+
                                                         return <tr
                                                             key={"Product" + index}
                                                         >
@@ -197,22 +203,24 @@ class ShowDownloadFileCom extends React.Component {
                                                             <td>{item.TotalExportDataIntervalStr}</td>
                                                             <td className="action-download">
                                                                 {(item.IsExported == true && item.IsExportedError == false) ?
-                                                                    (
-                                                                        <a
-                                                                            target="_blank"
-                                                                            className="btn-download-file"
-                                                                            href={item.ExportedFileURL}
-                                                                            data-url={item.ExportedFileURL}
-                                                                        >
-                                                                            <img className="item" src="/src/img/icon/icon-down.gif" alt="download file icon" />
-                                                                        </a>
-                                                                    ) :
-                                                                    (
-                                                                        <button className="btnHistory"  onClick={this.handleLoadSubmit.bind(this)} ><i className="fa fa-history"></i></button>
-                                                                    )
+                                                                    <React.Fragment>
+                                                                        {(showbuttonDownload == true) ?
+                                                                            <a
+                                                                                target="_blank"
+                                                                                className="btn-download-file"
+                                                                                href={item.ExportedFileURL}
+                                                                                data-url={item.ExportedFileURL}
+                                                                                download
+                                                                            >
+                                                                                <img className="item" src="/src/img/icon/icon-down.gif" alt="download file icon" />
+                                                                            </a>
+                                                                            : <label>Hết hạn</label>
+                                                                        }
+                                                                    </React.Fragment>
+                                                                    :
+                                                                    <button className="btnHistory" onClick={this.handleLoadSubmit.bind(this)} ><i className="fa fa-history"></i></button>
 
                                                                 }
-
                                                             </td>
                                                         </tr>
                                                     })

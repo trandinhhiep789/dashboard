@@ -80,7 +80,7 @@ class Document_CommentListCom extends React.Component {
                     IsShowButtonDelete={false}
                     IsExportFile={false}
                     IsAutoPaging={true}
-                    RowsPerPage={20}
+                    RowsPerPage={10}
                 />
             </React.Fragment>
         );

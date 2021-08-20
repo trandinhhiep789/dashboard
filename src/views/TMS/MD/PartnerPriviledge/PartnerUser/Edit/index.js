@@ -602,9 +602,9 @@ class EditCom extends React.Component {
         if (!MLObject.PassWord) {
             MLObject.PassWord = this.state.PassWordOld;
         } else {
-            MLObject.OldPassWord = MD5Digest(MLObject.OldPassWord);
-            MLObject.RawPass = MD5Digest(PassWord);
-            MLObject.PassWord = MD5Digest(PassWord);
+            MLObject.OldPassWord = MLObject.OldPassWord;
+            MLObject.RawPass = PassWord;
+            MLObject.PassWord = PassWord;
         }
 
         //hạn mức người dùng

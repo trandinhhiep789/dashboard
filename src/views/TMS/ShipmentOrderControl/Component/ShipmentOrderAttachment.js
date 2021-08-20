@@ -4,6 +4,8 @@ import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import {
     APIHostName,
 } from "../constants";
+import { checkFileExtension } from '../../../../common/library/CommonLib';
+
 class ShipmentOrderAttachmentCom extends Component {
     constructor(props) {
         super(props);
@@ -27,25 +29,32 @@ class ShipmentOrderAttachmentCom extends Component {
         data.append('ShipmentOrderID', this.props.ShipmentOrderAttachment.ShipmentOrderID);
         data.append('CreatedOrderTime', this.props.ShipmentOrderAttachment.CreatedOrderTime);
         data.append('CreatedUser', this.props.AppInfo.LoginInfo.Username);
-        this.props.callFetchAPI(APIHostName, "api/ShipmentOrder_Attachment/UploadFileNew", data).then((apiResult) => {
-            if (apiResult)
-                if (apiResult.IsError == false) {
-                    this.setState({
-                        ShipmentOrderAttachment: apiResult.ResultObject
-                    });
 
-                }
+        // check định dạng file
+        const fileName = e.target.files[0].name;
+        if (checkFileExtension(fileName).IsError) {
+            this.showMessage(checkFileExtension(fileName).Message);
+        } else {
+            this.props.callFetchAPI(APIHostName, "api/ShipmentOrder_Attachment/UploadFileNew", data).then((apiResult) => {
+                if (apiResult)
+                    if (apiResult.IsError == false) {
+                        this.setState({
+                            ShipmentOrderAttachment: apiResult.ResultObject
+                        });
+
+                    }
+                    else {
+                        let message = '';
+                        if (apiResult.MessageDetail === 'Maximum request length exceeded.')
+                            message = 'File vượt quá dung lượng cho phép';
+                        else message = apiResult.Message
+                        this._showMessage(message);
+                    }
                 else {
-                    let message = '';
-                    if (apiResult.MessageDetail === 'Maximum request length exceeded.')
-                        message = 'File vượt quá dung lượng cho phép';
-                    else message = apiResult.Message
-                    this._showMessage(message);
+                    this._showMessage("Không thể kết nối đến máy chủ. Vui lòng kiểm tra lại internet!");
                 }
-            else {
-                this._showMessage("Không thể kết nối đến máy chủ. Vui lòng kiểm tra lại internet!");
-            }
-        });
+            });
+        }
     }
 
     onDeletefile(e) {

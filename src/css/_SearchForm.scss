@@ -186,7 +186,16 @@
                 .btnSearch {
                     position: static;
                     clear: both;
-
+                    &.btnGroup{
+                        display: flex;
+                        flex-wrap: nowrap;
+                        align-content: center;
+                        justify-content: flex-start;
+                        align-items: center;
+                        .btn-settings{
+                            padding: 0 10px;
+                        }
+                    }
                 }
             }
 

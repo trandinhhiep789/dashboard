@@ -317,7 +317,7 @@ class DetailCom extends React.Component {
 
                         </div>
                         <footer className="card-footer text-right">
-                            <Link to="/RewardPriceTable">
+                            <Link to="/ServicePriceTable">
                                 <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button>
                             </Link>
                         </footer>

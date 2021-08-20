@@ -5,6 +5,7 @@ import { formatDate } from "../../../../../library/CommonLib.js";
 import { callGetCache } from "../../../../../../actions/cacheAction";
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 import { formatMoney, formatNumber } from '../../../../../../utils/function';
+import { TMS_REWARDCOMPUTELIST_CONFIRM } from '../../../../../../constants/functionLists.js';
 class InputGridCellCom extends Component {
     constructor(props) {
         super(props);
@@ -47,7 +48,7 @@ class InputGridCellCom extends Component {
         this.props.onClickDelete(this.props.index);
     }
 
-    handleDeleteNew(e){
+    handleDeleteNew(e) {
         if (this.props.isSystem) {
             return;
         }
@@ -115,6 +116,11 @@ class InputGridCellCom extends Component {
             case "date":
                 {
                     const datestring = formatDate(text);
+                    return <label>{datestring}</label>;
+                }
+            case "dateNew":
+                {
+                    const datestring = formatDate(text, true);
                     return <label>{datestring}</label>;
                 }
             case "checkicon":
@@ -204,21 +210,21 @@ class InputGridCellCom extends Component {
                     </button>
                 );
             case "buttonDelete":
-                const Item =  this.props.rowsItem;
+                const Item = this.props.rowsItem;
                 const myJSON = JSON.stringify(Item);
                 return (
                     <a title="" className="table-action hover-danger" onClick={this.handleDeleteNew.bind(this)} data-index={this.props.index} data-id={myJSON} title="Delete">
                         <i className="ti-trash"></i>
                     </a>
                 );
-                case "buttonDeleteNew":
-                    return (
-                        <div className="group-action group-action-new">
-                            <a title="" className="table-action hover-danger" onClick={this.handleonClickDeleteNew} data-id={this.props.idItem} title="Delete">
-                                <i className="ti-trash"></i>
-                            </a>
-                        </div>
-                    )
+            case "buttonDeleteNew":
+                return (
+                    <div className="group-action group-action-new">
+                        <a title="" className="table-action hover-danger" onClick={this.handleonClickDeleteNew} data-id={this.props.idItem} title="Delete">
+                            <i className="ti-trash"></i>
+                        </a>
+                    </div>
+                )
             default:
                 return <label>{text}</label>;
         }

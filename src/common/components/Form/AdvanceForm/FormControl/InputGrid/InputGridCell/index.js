@@ -515,7 +515,8 @@ class InputGridCellCom extends Component {
                         errorInputNumber,
                         errMsgInputNumber,
                         value,
-                        text
+                        text,
+                        maxLengthInputNumber
                     } = this.props;
 
                     return (
@@ -531,6 +532,7 @@ class InputGridCellCom extends Component {
                                 onChange={(e) => this.onChangeInputNumber(e)}
                                 defaultValue={text}
                                 value={value}
+                                maxLength={maxLengthInputNumber}
                             />
                             <div className={"text-danger"}>
                                 {errMsgInputNumber}

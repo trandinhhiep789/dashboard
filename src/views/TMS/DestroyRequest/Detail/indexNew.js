@@ -36,6 +36,7 @@ import Comment from "../../../../common/components/Comment";
 import { MODAL_TYPE_COMMONTMODALS } from "../../../../constants/actionTypes";
 import DestroyRequsestNoteRV from "../Component/DestroyRequsestNoteRV";
 import { el } from "date-fns/locale";
+import { checkFileExtension } from '../../../../common/library/CommonLib';
 class DetailCom extends React.Component {
     constructor(props) {
         super(props);
@@ -355,19 +356,24 @@ class DetailCom extends React.Component {
         data.append('file', e.target.files[0])
         data.append("ObjDestroyRequest_Attachment", JSON.stringify(MLObject));
 
-        this.props.callFetchAPI(APIHostName, AddAPIAttachment, data).then((apiResult) => {
-            if (apiResult.IsError) {
-                this.setState({
-                    IsCallAPIError: !apiResult.IsError
-                });
-                this.showMessage(apiResult.Message);
-            }
-            else {
-                this.callLoadData(DestroyRequestID);
-                this.addNotification(apiResult.Message, apiResult.IsError)
-            }
-        })
-
+        // check định dạng file
+        const fileName = e.target.files[0].name;
+        if (checkFileExtension(fileName).IsError) {
+            this.showMessage(checkFileExtension(fileName).Message);
+        } else {
+            this.props.callFetchAPI(APIHostName, AddAPIAttachment, data).then((apiResult) => {
+                if (apiResult.IsError) {
+                    this.setState({
+                        IsCallAPIError: !apiResult.IsError
+                    });
+                    this.showMessage(apiResult.Message);
+                }
+                else {
+                    this.callLoadData(DestroyRequestID);
+                    this.addNotification(apiResult.Message, apiResult.IsError)
+                }
+            })
+        }
     }
 
     handleDeletefile(id) {

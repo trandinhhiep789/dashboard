@@ -1,6 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+import readXlsxFile from 'read-excel-file';
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
+
 import SearchForm from "../../../../../common/components/Form/SearchForm";
 import DataGrid from "../../../../../common/components/DataGrid";
 import { MessageModal } from "../../../../../common/components/Modal";
@@ -15,15 +21,19 @@ import {
     IDSelectColumnName,
     PKColumnName,
     InitSearchParams,
-    PagePath
+    PagePath,
+    SchemaData,
+    DataTemplateExport
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_SHIPMENTFEETYPE } from "../../../../../constants/keyCache";
-import { SHIPMENTFEETYPE_VIEW, SHIPMENTFEETYPE_DELETE, DESTROYREQUESTTYPE_VIEW, DESTROYREQUESTTYPE_DELETE, COORDINATORGROUP_VIEW, COORDINATORGROUP_DELETE } from "../../../../../constants/functionLists";
+import { SHIPMENTFEETYPE_VIEW, SHIPMENTFEETYPE_DELETE, DESTROYREQUESTTYPE_VIEW, DESTROYREQUESTTYPE_DELETE, COORDINATORGROUP_VIEW, COORDINATORGROUP_DELETE, MDM_COORDINATORGROUP_EXPORT } from "../../../../../constants/functionLists";
+import { showModal } from '../../../../../actions/modal';
+import { MODAL_TYPE_COMMONTMODALS } from '../../../../../constants/actionTypes';
+import ImportExcelModalCom from './ImportExcelModal';
+import moment from "moment";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -31,6 +41,11 @@ class SearchCom extends React.Component {
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleExportFileTemplate = this.handleExportFileTemplate.bind(this);
+        this.handleImportFile = this.handleImportFile.bind(this);
+        this.handleSetImportData = this.handleSetImportData.bind(this);
+        this.handleExportFile = this.handleExportFile.bind(this);
+        this.handleSetDataExport = this.handleSetDataExport.bind(this);
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
@@ -86,6 +101,72 @@ class SearchCom extends React.Component {
         //this.gridref.current.clearData();
     }
 
+    handleExportFileTemplate() {
+        try {
+            const ws = XLSX.utils.json_to_sheet([{}]);
+            XLSX.utils.sheet_add_json(ws, DataTemplateExport);
+
+            const wb = {
+                Sheets: { "Danh sách trưởng nhóm": ws, "Danh sách nhân viên": ws },
+                SheetNames: ["Danh sách trưởng nhóm", "Danh sách nhân viên"]
+            };
+            const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+            const data = new Blob(
+                [excelBuffer],
+                { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' }
+            );
+            FileSaver.saveAs(data, "Mẫu danh sách nhóm chi nhánh quản lý.xlsx");
+
+            this.addNotification("Xuất file thành công!", false);
+        } catch (error) {
+            this.addNotification("Lỗi xuất file!", true);
+        }
+    }
+
+    handleImportFile() {
+        const input = document.getElementById("inputImportFile");
+        input.click();
+
+        input.addEventListener("change", () => {
+            const myPromise1 = new Promise((resolve, reject) => {
+                readXlsxFile(input.files[0], { sheet: "Danh sách trưởng nhóm" }).then((data) => {
+                    resolve({ CoordinatorGroupMember: data });
+                }).catch(error => reject(error));
+            });
+
+            const myPromise2 = new Promise((resolve, reject) => {
+                readXlsxFile(input.files[0], { sheet: "Danh sách nhân viên" }).then((data) => {
+                    resolve({ CoordinatorGroupDUser: data });
+                }).catch(error => reject(error));
+            });
+
+            Promise.all([myPromise1, myPromise2]).then((values) => {
+                if (values.length > 0) {
+                    this.handleSetImportData(values);
+                }
+            }).catch(error => {
+                alert("File vừa chọn lỗi. Vui lòng chọn file khác");
+            }).finally(() => {
+                input.value = "";
+            })
+        }, { once: true })
+    }
+
+    handleSetImportData(exportData) {
+        const { gridDataSource } = this.state;
+
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Kết quả nhập từ excel',
+            content: {
+                text: <ImportExcelModalCom
+                    propsExportData={exportData}
+                    propsMDCoordinatorGroup={gridDataSource}
+                />
+            },
+            maxWidth: '1000px'
+        })
+    }
+
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             //this.searchref.current.changeLoadComplete();
@@ -93,7 +174,8 @@ class SearchCom extends React.Component {
             if (!apiResult.IsError) {
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
-                    IsShowForm: true
+                    IsShowForm: true,
+                    DataExport: this.handleSetDataExport(apiResult.ResultObject)
                 });
             } else {
                 this.showMessage(apiResult.Message);
@@ -152,13 +234,32 @@ class SearchCom extends React.Component {
         });
     }
 
+    handleExportFile(result) {
+        this.addNotification(result.Message, result.IsError);
+    }
+
+    handleSetDataExport(ResultObject) {
+        const dataExport = ResultObject.map(item => {
+            return {
+                "Mã nhóm chi nhánh quản lý": item.CoordinatorGroupID,
+                "Tên nhóm chi nhánh quản lý": item.CoordinatorGroupName,
+                "Khu vực": item.AreaName,
+                "Kích hoạt": item.IsActived ? "Đã kích hoạt" : "Chưa kích hoạt",
+                "Ngày cập nhật": moment(item.UpdatedDate).format("DD/MM/YYYY"),
+                "Người cập nhật": `${item.UpdatedUser} - ${item.UpdatedUserFullName}`
+            }
+        });
+
+        return dataExport;
+    }
+
     render() {
         if (this.state.IsShowForm) {
             return (
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
-                        FormName="Tìm kiếm danh sách nhóm điều phối"
+                        FormName="Tìm kiếm danh sách nhóm chi nhánh quản lý"
                         MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
@@ -169,18 +270,31 @@ class SearchCom extends React.Component {
                     />
 
                     <DataGrid
-                        listColumn={DataGridColumnList}
-                        dataSource={this.state.gridDataSource}
                         AddLink={AddLink}
+                        DataExport={this.state.DataExport}
+                        dataSource={this.state.gridDataSource}
+                        DeletePermission={COORDINATORGROUP_DELETE}
+                        ExportPermission={MDM_COORDINATORGROUP_EXPORT}
+                        fileName="Nhóm chi nhánh quản lý"
                         IDSelectColumnName={IDSelectColumnName}
-                        PKColumnName={PKColumnName}
+                        IsAutoPaging={true}
+                        IsExportFile={true}
+                        listColumn={DataGridColumnList}
                         onDeleteClick={this.handleDelete}
+                        onExportFile={this.handleExportFile}
+                        PKColumnName={PKColumnName}
                         ref={this.gridref}
                         RequirePermission={COORDINATORGROUP_VIEW}
-                        DeletePermission={COORDINATORGROUP_DELETE}
-                        IsAutoPaging={true}
                         RowsPerPage={20}
+
+                        isExportFileTemplate={true}
+                        IsImportFile={true}
+                        onExportFileTemplate={this.handleExportFileTemplate}
+                        onImportFile={this.handleImportFile}
+                        propsIsCustomXLSX={true}
                     />
+
+                    <input type="file" id="inputImportFile" style={{ display: "none" }} />
                 </React.Fragment>
             );
         }
@@ -215,6 +329,9 @@ const mapDispatchToProps = dispatch => {
         },
         callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
         }
     };
 };
