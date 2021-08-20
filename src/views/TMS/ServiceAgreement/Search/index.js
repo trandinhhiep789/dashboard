@@ -360,12 +360,15 @@ class SearchCom extends React.Component {
 
     handleSetImportData(values) {
         let dataSource = values.rows.map(item => {
+            const uptServiceAgreementNumber = item.ServiceAgreementNumber.replace(/\s/g, "");
             return {
                 ...item,
+                ServiceAgreementNumber: uptServiceAgreementNumber,
                 Errors: ""
             }
         });
 
+        //#region set nội dung lỗi
         if (values.errors.length != 0) {
             for (const item of values.errors) {
                 let errorText = "";
@@ -377,6 +380,7 @@ class SearchCom extends React.Component {
                 dataSource[item.row - 1].Errors = errorText;
             }
         }
+        //#endregion
 
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Kết quả nhập từ excel',

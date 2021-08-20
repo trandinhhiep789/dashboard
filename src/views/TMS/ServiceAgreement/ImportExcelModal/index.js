@@ -43,8 +43,8 @@ class ImportExcelModalCom extends React.Component {
         return (
             <React.Fragment>
                 <h5 className="d-flex mb-2">Danh sách hợp đồng dịch vụ<i><small className="text-danger">&nbsp;(Chỉ chấp nhận những dòng hợp lệ)</small></i></h5>
-                <div className="container">
-                    <div className="row ">
+                <div className="container-fluid">
+                    <div className="row">
                         <div className="col d-flex justify-content-between align-items-center">
                             <p className="mb-0">Không hợp lệ: {this.props.dataSource.length - validArr.length}</p>
                             <p className="mb-0">Hợp lệ: {validArr.length}</p>
