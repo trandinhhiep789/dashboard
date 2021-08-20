@@ -33,12 +33,12 @@ class PNRewardPriceTableInfoCom extends Component {
                 </div>
 
                 <div className="form-row">
-                    <div className="form-group col-md-2">
+                    {/* <div className="form-group col-md-2">
                         <label className="col-form-label bold">khu vực: </label>
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">{PNRewardPriceTableInfo.ServiceAreaID + " - " + PNRewardPriceTableInfo.AreaName}</label>
-                    </div>
+                    </div> */}
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Người tạo:</label>
                     </div>

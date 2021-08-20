@@ -95,7 +95,7 @@ export function callLogin(username,password)
                 if(!registerResult.IsError)
                 {
                     
-                    return dispatch(callAPI(hostname,apiPath,postData));
+                    return dispatch(callLoginAPI(username,password));
                 }
                 else
                 {
