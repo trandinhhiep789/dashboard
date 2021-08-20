@@ -15,29 +15,29 @@ export const EditAPIRPTDetailPath = "api/PNServicePriceTableDetail/Update";
 export const AddAPIRPTDetailPath = "api/PNServicePriceTableDetail/Add";
 export const DeleteAPIRPTDetailPath = "api/PNServicePriceTableDetail/Delete";
 
-export const TitleFormDetail = "Thông tin đơn giá thưởng giao hàng và lắp đặt đối tác";
+export const TitleFormDetail = "Thông tin đơn giá giao hàng và lắp đặt đối tác";
 export const TitleFromRPTDetail = "Chi tiết bảng giá dịch vụ của đối tác";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách đơn giá thưởng giao hàng và lắp đặt đối tác" }
+    { Link: "", Title: "Danh sách đơn giá giao hàng và lắp đặt đối tác" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/PNServicePriceTable", Title: "Danh sách đơn giá thưởng giao hàng và lắp đặt đối tác" },
+    { Link: "/PNServicePriceTable", Title: "Danh sách đơn giá giao hàng và lắp đặt đối tác" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/PNServicePriceTable", Title: "Danh sách đơn giá thưởng giao hàng và lắp đặt đối tác" },
+    { Link: "/PNServicePriceTable", Title: "Danh sách đơn giá giao hàng và lắp đặt đối tác" },
     { Link: "", Title: "Thêm" }
 ];
 
 export const DetailPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/PNServicePriceTable", Title: "Danh sách đơn giá thưởng giao hàng và lắp đặt đối tác" },
+    { Link: "/PNServicePriceTable", Title: "Danh sách đơn giá giao hàng và lắp đặt đối tác" },
     { Link: "", Title: "Chi tiết" }
 ];
 
