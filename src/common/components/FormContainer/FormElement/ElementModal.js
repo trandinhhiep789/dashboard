@@ -195,10 +195,20 @@ class ElementModalComboBoxCom extends Component {
     }
 
     bindcombox(value, listOption) {
+        let { isMultiSelect } = this.props;
         let values = value;
         let selectedOption = [];
-        if (values == null || values === -1)
-            return { value: -1, label: "--Vui lòng chọn--" };
+
+
+        if (values == null || values === -1) {
+            if (isMultiSelect) {
+                return selectedOption;
+            }
+            else {
+                return { value: -1, label: "--Vui lòng chọn--" };
+            }
+        }
+        debugger;
         if (typeof values.toString() == "string")
             values = values.toString().split(",");
         for (let i = 0; i < values.length; i++) {
@@ -228,10 +238,17 @@ class ElementModalComboBoxCom extends Component {
 
     componentDidMount() {
         let listOption = this.props.listoption;
-        let { isautoloaditemfromcache, loaditemcachekeyid, valuemember, nameMember, filterValue, filterobj } = this.props;
+        let { isautoloaditemfromcache, loaditemcachekeyid, valuemember, nameMember, filterValue, filterobj, isMultiSelect } = this.props;
         if (isautoloaditemfromcache) {
             this.props.callGetCache(loaditemcachekeyid).then((result) => {
-                listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+
+                if (!isMultiSelect) {
+                    listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
+                }
+                else {
+                    listOption = []
+                }
+
                 if (!result.IsError && result.ResultObject.CacheData != null) {
                     if (typeof filterobj != undefined) {
                         result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
@@ -247,7 +264,9 @@ class ElementModalComboBoxCom extends Component {
                     }
                     //console.log("componentDidMount",loaditemcachekeyid,result.ResultObject.CacheData)
                     this.setState({ Listoption: listOption, Data: result.ResultObject.CacheData });
+                    console.log("SelectedOption a1a", this.props.value)
                     const strSelectedOption = this.bindcombox(this.props.value, listOption);
+                    console.log("SelectedOption a1a", strSelectedOption)
                     this.setState({ SelectedOption: strSelectedOption });
                 }
                 else {
@@ -265,9 +284,12 @@ class ElementModalComboBoxCom extends Component {
 
         if (JSON.stringify(this.props.filterValue) !== JSON.stringify(nextProps.filterValue)) // Check if it's a new user, you can also use some unique property, like the ID
         {
-            let { filterobj, valuemember, nameMember } = this.props;
+            let { filterobj, valuemember, nameMember, isMultiSelect } = this.props;
             if (typeof filterobj != undefined) {
                 let listoptionnew = [{ value: -1, label: "--Vui lòng chọn--" }];
+                if (isMultiSelect)
+                    listoptionnew = [];
+
                 if (typeof nextProps.filterValue != "undefined") {
                     this.state.Data.filter(n => n[filterobj] == nextProps.filterValue).map((cacheItem) => {
                         listoptionnew.push({ value: cacheItem[valuemember], label: cacheItem[nameMember] });
@@ -281,13 +303,14 @@ class ElementModalComboBoxCom extends Component {
 
         if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) {
             const aa = this.bindcombox(nextProps.value, this.state.Listoption);
+            console.log("SelectedOption aa", nextProps.value, this.props.value)
             this.setState({ SelectedOption: aa });
         }
     }
 
     render() {
         let { name, label, rowspan, colspan, labelcolspan, validatonList, isMultiSelect, disabled, validationErrorMessage, placeholder, listoption } = this.props;
-
+        let { SelectedOption } = this.state;
         let classNamecolmd = "col-md-6";
         if (this.props.Colmd != null)
             classNamecolmd = "col-md-" + this.props.Colmd;
@@ -313,7 +336,7 @@ class ElementModalComboBoxCom extends Component {
         if (validationErrorMessage != undefined && validationErrorMessage != "") {
             className += " is-invalid";
         }
-        const selectedOption = this.state.SelectedOption;
+
         const listOption = this.state.Listoption;
         return (
             <div className={classNamecolmd}>
@@ -325,7 +348,7 @@ class ElementModalComboBoxCom extends Component {
                     </div>
                     <div className={formGroupClassName}>
                         <Select
-                            value={selectedOption}
+                            value={SelectedOption}
                             name={name}
                             ref={this.props.inputRef}
                             onChange={this.handleValueChange}
@@ -773,7 +796,7 @@ class ElementModalComboBoxStoreCom extends Component {
                 if (!result.IsError && result.ResultObject.CacheData != null) {
                     if (typeof filterobj != "undefined" && othername != "undefined") {
                         result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
-                            if ( cacheItem[valuemember] != Othervalue) {
+                            if (cacheItem[valuemember] != Othervalue) {
                                 listOption.push({ value: cacheItem[valuemember], label: cacheItem[valuemember] + "-" + cacheItem[nameMember] });
                             }
 
@@ -817,7 +840,7 @@ class ElementModalComboBoxStoreCom extends Component {
                 let listoptionnew = [{ value: -1, label: "--Vui lòng chọn--" }];
                 if (typeof nextProps.filterValue != "undefined") {
                     this.state.Data.filter(n => n[filterobj] == nextProps.filterValue).map((cacheItem) => {
-                        if ( cacheItem[valuemember] != Othervalue) {
+                        if (cacheItem[valuemember] != Othervalue) {
                             listoptionnew.push({ value: cacheItem[valuemember], label: cacheItem[valuemember] + "-" + cacheItem[nameMember] });
                         }
                     }
@@ -825,7 +848,7 @@ class ElementModalComboBoxStoreCom extends Component {
                 }
                 this.setState({ Listoption: listoptionnew });
             }
-             else if (typeof filterobj != "undefined") {
+            else if (typeof filterobj != "undefined") {
                 let listoptionnew = [{ value: -1, label: "--Vui lòng chọn--" }];
                 if (typeof nextProps.filterValue != "undefined") {
                     this.state.Data.filter(n => n[filterobj] == nextProps.filterValue).map((cacheItem) => {

@@ -81,6 +81,7 @@ export const AddElementList = [
         placeholder: "",
         icon: "",
         listoption: [],
+        isMultiSelect:true,
         datasourcemember: "ShipmentOrderTypeID",
         readonly: false,
         validatonList: ["Comborequired"],
@@ -177,6 +178,7 @@ export const EditElementList = [
         label: "loại yêu cầu vận chuyển",
         value: "",
         listoption: [],
+        isMultiSelect:true,
         datasourcemember: "ShipmentOrderTypeID",
         readonly: false,
         validatonList: ["Comborequired"],
@@ -340,13 +342,13 @@ export const DataGridColumnList = [
         DataSourceMember: "InstallBundleName",
         Width: 280
     },
-    {
-        Name: "ShipmentOrderTypeName",
-        Type: "text",
-        Caption: "Loại yêu cầu vận chuyển",
-        DataSourceMember: "ShipmentOrderTypeName",
-        Width: 200
-    },
+    // {
+    //     Name: "ShipmentOrderTypeName",
+    //     Type: "text",
+    //     Caption: "Loại yêu cầu vận chuyển",
+    //     DataSourceMember: "ShipmentOrderTypeName",
+    //     Width: 200
+    // },
     {
         Name: "PartnerName",
         Type: "text",
