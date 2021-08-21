@@ -22,6 +22,7 @@ import AreaCom from '../Area';
 import DeliverUserList from "../../ShipmentOrder/Component/DeliverUserList";
 import FormContainer from "../../../../common/components/FormContainer";
 import FormControl from "../../../../common/components/FormContainer/FormControl";
+import StoreCom from '../Store';
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -31,6 +32,7 @@ class AddCom extends React.Component {
         this.notificationDOMRef = React.createRef();
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleServiceAgreementAreaSubmit = this.handleServiceAgreementAreaSubmit.bind(this);
+        this.handleServiceAgreementStoreSubmit = this.handleServiceAgreementStoreSubmit.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
 
         this.state = {
@@ -40,7 +42,8 @@ class AddCom extends React.Component {
             IsDeposited: false,
             IsExtended: false,
             IsLiquidated: false,
-            ServiceAgreementAreaSubmit: []
+            ServiceAgreementAreaSubmit: [],
+            ServiceAgreementStoreSubmit: []
         };
     }
 
@@ -84,6 +87,12 @@ class AddCom extends React.Component {
         })
     }
 
+    handleServiceAgreementStoreSubmit(value) {
+        this.setState({
+            ServiceAgreementStoreSubmit: value
+        })
+    }
+
     handleSubmit(formData, MLObject) {
         if (MLObject.IsExtended) {
             if (MLObject.ExtendedDate == '') {
@@ -115,6 +124,11 @@ class AddCom extends React.Component {
             return;
         }
 
+        if (this.state.ServiceAgreementStoreSubmit.length == 0) {
+            this.addNotification("Danh sách kho áp dụng hợp đồng không được để trống", true);
+            return;
+        }
+
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.DeputyUserName = MLObject.ShipmentOrder_DeliverUserList != undefined ? MLObject.ShipmentOrder_DeliverUserList[0].UserName : "";
         // MLObject.SignedDate = new Date(ExportStringToDate(MLObject.SignedDate));
@@ -129,6 +143,14 @@ class AddCom extends React.Component {
             }
         })
         MLObject.ServiceAgreement_AreaList = ServiceAgreement_AreaList;
+
+        const ServiceAgreement_StoreList = this.state.ServiceAgreementStoreSubmit.map(item => {
+            return {
+                ...item,
+                CreatedUser: this.props.AppInfo.LoginInfo.Username
+            }
+        })
+        MLObject.ServiceAgreement_StoreList = ServiceAgreement_StoreList;
 
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
@@ -733,6 +755,14 @@ class AddCom extends React.Component {
                         <div className="col-md-12">
                             <AreaCom
                                 serviceAgreementAreaSubmit={this.handleServiceAgreementAreaSubmit}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="row">
+                        <div className="col-md-12">
+                            <StoreCom
+                                serviceAgreementStoreSubmit={this.handleServiceAgreementStoreSubmit}
                             />
                         </div>
                     </div>

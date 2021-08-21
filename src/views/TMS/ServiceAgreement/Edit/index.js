@@ -13,21 +13,21 @@ import {
     TitleFormEdit,
     UpdateAPIPath
 } from "../constants";
-import FormContainer from "../../../../common/components/FormContainer";
-import { MessageModal } from "../../../../common/components/Modal";
-import FormControl from "../../../../common/components/FormContainer/FormControl";
+import {
+    ERPCOMMONCACHE_PARTNER,
+    ERPCOMMONCACHE_SERVICEAGREEMENTTYPE,
+    ERPCOMMONCACHE_TMS_SERVICETYPE
+} from "../../../../constants/keyCache";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
-import { updatePagePath } from "../../../../actions/pageAction";
-import indexedDBLib from "../../../../common/library/indexedDBLib.js";
-import { CACHE_OBJECT_STORENAME } from "../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
-import MultiSelectComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
-import { formatDate, formatDateNew } from "../../../../common/library/CommonLib.js";
-import DeliverUserList from "../../ShipmentOrder/Component/DeliverUserList";
-import { ExportStringToDate } from "../../../../common/library/ultils";
-import moment from 'moment';
-import { ERPCOMMONCACHE_SERVICEAGREEMENTTYPE, ERPCOMMONCACHE_TMS_SERVICETYPE, ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_AREATT } from "../../../../constants/keyCache";
+import { formatDate } from "../../../../common/library/CommonLib.js";
+import { MessageModal } from "../../../../common/components/Modal";
+import { updatePagePath } from "../../../../actions/pageAction";
 import AreaCom from '../Area';
+import DeliverUserList from "../../ShipmentOrder/Component/DeliverUserList";
+import FormContainer from "../../../../common/components/FormContainer";
+import FormControl from "../../../../common/components/FormContainer/FormControl";
+import StoreCom from '../Store';
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -37,6 +37,7 @@ class EditCom extends React.Component {
         this.notificationDOMRef = React.createRef();
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleServiceAgreementAreaSubmit = this.handleServiceAgreementAreaSubmit.bind(this);
+        this.handleServiceAgreementStoreSubmit = this.handleServiceAgreementStoreSubmit.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
 
         this.state = {
@@ -48,7 +49,8 @@ class EditCom extends React.Component {
             IsLiquidated: false,
             IsLoadDataComplete: false,
             IsSystem: false,
-            ServiceAgreementAreaSubmit: []
+            ServiceAgreementAreaSubmit: [],
+            ServiceAgreementStoreSubmit: []
         };
     }
 
@@ -93,6 +95,12 @@ class EditCom extends React.Component {
         })
     }
 
+    handleServiceAgreementStoreSubmit(value) {
+        this.setState({
+            ServiceAgreementStoreSubmit: value
+        })
+    }
+
     handleSubmit(formData, MLObject) {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.DeputyUserName = MLObject.ShipmentOrder_DeliverUserList[0].UserName;
@@ -125,6 +133,7 @@ class EditCom extends React.Component {
         MLObject.ServiceAgreementNumber = MLObject.ServiceAgreementNumber.replace(/\s/g, '');
         MLObject.ServiceAgreementID = this.props.match.params.id;
 
+        //#region xử lý ServiceAgreementArea data
         const cloneServiceAgreementAreaSubmit = this.state.ServiceAgreementAreaSubmit.filter(item => !item.IsDeleted);
         if (cloneServiceAgreementAreaSubmit.length == 0) {
             this.addNotification("Danh sách khu vực áp dụng hợp đồng không được để trống", true);
@@ -156,7 +165,45 @@ class EditCom extends React.Component {
                 }
             }
         })
+
         MLObject.ServiceAgreement_AreaList = uptServiceAgreement_AreaList;
+        //#endregion
+
+        //#region xử lý ServiceAgreementStore data
+        const cloneServiceAgreementStoreSubmit = this.state.ServiceAgreementStoreSubmit.filter(item => !item.IsDeleted);
+        if (cloneServiceAgreementStoreSubmit.length == 0) {
+            this.addNotification("Danh sách kho áp dụng hợp đồng không được để trống", true);
+            return;
+        }
+
+        const uptServiceAgreement_StoreList = this.state.ServiceAgreementStoreSubmit.map(item => {
+            if (item.IsDeleted) {
+                return {
+                    ...item,
+                    DeletedUser: this.props.AppInfo.LoginInfo.Username,
+                    DeletedDate: new Date()
+                }
+            } else if (!item.ServiceAgreementID) {
+                return {
+                    ...item,
+                    ServiceAgreementID: this.state.DataSource.ServiceAgreementID,
+                    SignedDate: this.state.DataSource.SignedDate,
+                    CreatedUser: this.props.AppInfo.LoginInfo.Username,
+                    CreatedDate: new Date(),
+                    UpdatedUser: this.props.AppInfo.LoginInfo.Username,
+                    UpdatedDate: new Date()
+                }
+            } else {
+                return {
+                    ...item,
+                    UpdatedUser: this.props.AppInfo.LoginInfo.Username,
+                    UpdatedDate: new Date()
+                }
+            }
+        })
+
+        MLObject.ServiceAgreement_StoreList = uptServiceAgreement_StoreList;
+        //#endregion
 
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
@@ -201,7 +248,8 @@ class EditCom extends React.Component {
                     IsLiquidated: apiResult.ResultObject.IsLiquidated,
                     IsLoadDataComplete: true,
                     IsSystem: apiResult.ResultObject.IsSystem,
-                    ServiceAgreementAreaSubmit: apiResult.ResultObject.ServiceAgreement_AreaList
+                    ServiceAgreementAreaSubmit: apiResult.ResultObject.ServiceAgreement_AreaList,
+                    ServiceAgreementStoreSubmit: apiResult.ResultObject.ServiceAgreement_StoreList
                 });
             }
         });
@@ -863,6 +911,15 @@ class EditCom extends React.Component {
                                 <AreaCom
                                     dataSource={this.state.DataSource.ServiceAgreement_AreaList}
                                     serviceAgreementAreaSubmit={this.handleServiceAgreementAreaSubmit}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="row">
+                            <div className="col-md-12">
+                                <StoreCom
+                                    dataSource={this.state.DataSource.ServiceAgreement_StoreList}
+                                    serviceAgreementStoreSubmit={this.handleServiceAgreementStoreSubmit}
                                 />
                             </div>
                         </div>

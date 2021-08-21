@@ -14,10 +14,10 @@ class AreaModalCom extends React.Component {
         this.state = {
             dataGrid: this.props.dataGrid,
             dataItem: this.props.dataItem,
-            errorArea: ""
+            errorStore: ""
         };
 
-        this.handleChangeArea = this.handleChangeArea.bind(this);
+        this.handleChangeStore = this.handleChangeStore.bind(this);
         this.handleChangeIsActived = this.handleChangeIsActived.bind(this);
         this.handleChangeIsSystem = this.handleChangeIsSystem.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,14 +27,14 @@ class AreaModalCom extends React.Component {
     componentDidMount() {
     }
 
-    handleChangeArea(value) {
+    handleChangeStore(value) {
         if (!value) {
             this.setState({
-                errorArea: "Vui lòng chọn khu vực áp dụng hợp đồng này"
+                errorStore: "Vui lòng chọn kho áp dụng hợp đồng này"
             })
         } else {
             this.setState({
-                errorArea: ""
+                errorStore: ""
             })
         }
 
@@ -68,9 +68,9 @@ class AreaModalCom extends React.Component {
         try {
             switch (this.props.modalType) {
                 case "ADD":
-                    if (this.state.dataItem.AreaID == "") {
+                    if (this.state.dataItem.StoreID == "") {
                         this.setState({
-                            errorArea: "Vui lòng chọn khu vực áp dụng hợp đồng này"
+                            errorStore: "Vui lòng chọn kho áp dụng hợp đồng này"
                         })
                         return;
                     }
@@ -81,7 +81,7 @@ class AreaModalCom extends React.Component {
 
                 case "EDIT":
                     const uptdataGrid = this.props.dataGrid.map(item => {
-                        if (item.AreaID == this.state.dataItem.AreaID) {
+                        if (item.StoreID == this.state.dataItem.StoreID) {
                             return this.state.dataItem;
                         } else {
                             return item;
@@ -117,26 +117,26 @@ class AreaModalCom extends React.Component {
                             colspan="8"
                             dataRemove={this.props.dataGrid} // những item đã tồn tại ở table => remove khỏi select
                             defaultValue={
-                                this.props.dataItem.AreaID == ""
+                                this.props.dataItem.StoreID == ""
                                     ? null
                                     : {
-                                        value: this.props.dataItem.AreaID,
-                                        label: `${this.props.dataItem.AreaID} - ${this.props.dataItem.AreaName}`
+                                        value: this.props.dataItem.StoreID,
+                                        label: `${this.props.dataItem.StoreID} - ${this.props.dataItem.StoreName}`
                                     }
                             }
-                            isDisabled={this.props.isDisabledArea}
+                            isDisabled={this.props.isDisabledStore}
                             isautoloaditemfromcache={true}
                             isMultiSelect={false}
                             isShowLable={false}
-                            label="khu vực"
+                            label="kho"
                             labelcolspan="4"
-                            loaditemcachekeyid="ERPCOMMONCACHE.AREATT"
-                            nameMember="AreaName"
-                            onChange={this.handleChangeArea}
-                            placeholder="Mã khu vực"
-                            validationErrorMessage={this.state.errorArea}
+                            loaditemcachekeyid="ERPCOMMONCACHE.STORE"
+                            nameMember="StoreName"
+                            onChange={this.handleChangeStore}
+                            placeholder="Mã kho"
+                            validationErrorMessage={this.state.errorStore}
                             validatonList={["Comborequired"]}
-                            valuemember="AreaID"
+                            valuemember="StoreID"
                         />
                     </div>
 
@@ -190,13 +190,13 @@ class AreaModalCom extends React.Component {
 
 AreaModalCom.defaultProps = {
     dataItem: {
-        AreaID: "",
+        StoreID: "",
         IsActived: true,
         IsSystem: false
     },
     dataGrid: [],
     dataSubmit: () => { },
-    isDisabledArea: false,
+    isDisabledStore: false,
     modalType: ""
 }
 

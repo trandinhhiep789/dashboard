@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { formatDate } from "../../../../common/library/CommonLib.js";
-import { listColumnArea2 } from "../constants";
+import { listColumnArea2, listColumnStore2 } from "../constants";
 import DataGrid from "../../../../common/components/DataGrid";
 
 class ServiceAgreementInfoCom extends Component {
@@ -188,7 +188,7 @@ class ServiceAgreementInfoCom extends Component {
                     </div>
                 </div>
 
-                <div className="form-row">
+                <div className="form-row mb-4">
                     <DataGrid
                         dataSource={this.props.ServiceAgreementInfo.ServiceAgreement_AreaList}
                         headingTitle="Danh sách khu vực áp dụng hợp đồng"
@@ -203,6 +203,25 @@ class ServiceAgreementInfoCom extends Component {
                         listColumn={listColumnArea2}
                         PKColumnName={""}
                         PKColumnName={"AreaID"}
+                        RowsPerPage={10}
+                    />
+                </div>
+
+                <div className="form-row mb-4">
+                    <DataGrid
+                        dataSource={this.props.ServiceAgreementInfo.ServiceAgreement_StoreList}
+                        headingTitle="Danh sách kho áp dụng hợp đồng"
+                        IDSelectColumnName={""}
+                        IsAutoPaging={true}
+                        IsExportFile={false}
+                        isHideHeaderToolbar={false}
+                        IsPrint={false}
+                        IsShowButtonAdd={false}
+                        IsShowButtonDelete={false}
+                        IsShowButtonPrint={false}
+                        listColumn={listColumnStore2}
+                        PKColumnName={""}
+                        PKColumnName={"StoreID"}
                         RowsPerPage={10}
                     />
                 </div>
