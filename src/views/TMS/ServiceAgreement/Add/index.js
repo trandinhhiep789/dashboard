@@ -110,8 +110,7 @@ class AddCom extends React.Component {
             }
         }
 
-        const cloneServiceAgreementAreaSubmit = this.state.ServiceAgreementAreaSubmit.filter(item => !item.IsDeleted);
-        if (cloneServiceAgreementAreaSubmit.length == 0) {
+        if (this.state.ServiceAgreementAreaSubmit.length == 0) {
             this.addNotification("Danh sách khu vực áp dụng hợp đồng không được để trống", true);
             return;
         }
@@ -122,7 +121,14 @@ class AddCom extends React.Component {
         // MLObject.ExpiredDate = new Date(ExportStringToDate(MLObject.ExpiredDate));
 
         MLObject.ServiceAgreementNumber = MLObject.ServiceAgreementNumber.replace(/\s/g, '')
-        MLObject.ServiceAgreement_AreaList = this.state.ServiceAgreementAreaSubmit;
+
+        const ServiceAgreement_AreaList = this.state.ServiceAgreementAreaSubmit.map(item => {
+            return {
+                ...item,
+                CreatedUser: this.props.AppInfo.LoginInfo.Username
+            }
+        })
+        MLObject.ServiceAgreement_AreaList = ServiceAgreement_AreaList;
 
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });

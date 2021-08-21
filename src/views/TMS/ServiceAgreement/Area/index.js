@@ -14,7 +14,8 @@ class AreaCom extends React.Component {
         super(props);
 
         this.state = {
-            dataSource: this.props.dataSource
+            dataSource: this.props.dataSource,
+            deletedData: []
         };
 
         this.handleDataSubmit = this.handleDataSubmit.bind(this);
@@ -28,10 +29,33 @@ class AreaCom extends React.Component {
     }
 
     handleDataSubmit(value) {
-        this.setState({
-            dataSource: value
-        })
-        this.props.serviceAgreementAreaSubmit(value);
+        if (this.props.dataSource.length == 0) {
+            this.setState({
+                dataSource: value
+            })
+            this.props.serviceAgreementAreaSubmit(value);
+        } else {
+            if (this.state.deletedData.length == 0) {
+                this.setState({
+                    dataSource: value
+                })
+                this.props.serviceAgreementAreaSubmit(value);
+            } else {
+                const uptValue = value.map(item => {
+                    const found = this.state.deletedData.find(item1 => item1.AreaID == item.AreaID);
+
+                    if (found == undefined) {
+                        return item;
+                    } else {
+                        return found;
+                    }
+                });
+                this.setState({
+                    dataSource: uptValue
+                })
+                this.props.serviceAgreementAreaSubmit(uptValue);
+            }
+        }
     }
 
     handleDeleteClick(listDeleteID, ListPKColumnName) {
@@ -47,27 +71,24 @@ class AreaCom extends React.Component {
             return found == undefined;
         })
 
-        switch (this.props.modalType) {
-            case "ADD":
-                this.props.serviceAgreementAreaSubmit(uptDataSource);
-                break;
+        if (this.props.dataSource.length == 0) {
+            this.props.serviceAgreementAreaSubmit(uptDataSource);
+        } else {
+            const deletedData = this.props.dataSource.reduce((acc, val) => {
+                const found = listDeleteAreaID.find(item1 => item1.AreaID == val.AreaID);
 
-            case "EDIT":
-                const deletedData = this.props.dataSource.reduce((acc, val) => {
-                    const found = listDeleteAreaID.find(item1 => item1.AreaID == val.AreaID);
+                if (found == undefined) {
+                    return acc;
+                } else {
+                    return [...acc, { ...val, IsDeleted: true }]
+                }
+            }, []);
 
-                    if (found == undefined) {
-                        return acc;
-                    } else {
-                        return [...acc, { ...val, IsDeleted: true }]
-                    }
-                }, []);
+            this.props.serviceAgreementAreaSubmit([...uptDataSource, ...deletedData]);
 
-                this.props.serviceAgreementAreaSubmit([...uptDataSource, ...deletedData]);
-                break;
-
-            default:
-                break;
+            this.setState({
+                deletedData // chỉ áp dụng cho bảng edit
+            })
         }
 
         this.setState({
@@ -138,7 +159,6 @@ class AreaCom extends React.Component {
                     onDeleteClick={this.handleDeleteClick}
                     onInsertClick={this.handleInsertClick}
                     onInsertClickEdit={this.handleInsertClickEdit}
-                    PKColumnName={""}
                     PKColumnName={"AreaID"}
                     RowsPerPage={10}
                 />

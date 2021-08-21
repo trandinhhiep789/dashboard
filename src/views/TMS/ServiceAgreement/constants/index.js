@@ -830,3 +830,30 @@ export const listColumnArea = [
         Width: 90
     },
 ]
+
+export const listColumnArea2 = [
+    {
+        Caption: "Mã khu vực",
+        DataSourceMember: "AreaID",
+        Name: "AreaID",
+        Type: "text",
+    },
+    {
+        Caption: "Tên khu vực",
+        DataSourceMember: "AreaName",
+        Name: "AreaName",
+        Type: "text",
+    },
+    {
+        Caption: "Kích hoạt",
+        DataSourceMember: "IsActived",
+        Name: "IsActived",
+        Type: "checkicon",
+    },
+    {
+        Caption: "Hệ thống",
+        DataSourceMember: "IsSystem",
+        Name: "IsSystem",
+        Type: "checkicon",
+    }
+]

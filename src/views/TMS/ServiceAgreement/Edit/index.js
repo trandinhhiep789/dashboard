@@ -1,21 +1,21 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
+import { Redirect } from "react-router-dom";
+import ReactNotification from "react-notifications-component";
+
+import {
+    APIHostName,
+    BackLink,
+    EditPagePath,
+    LoadNewAPIPath,
+    MLObjectDefinition,
+    TitleFormEdit,
+    UpdateAPIPath
+} from "../constants";
 import FormContainer from "../../../../common/components/FormContainer";
 import { MessageModal } from "../../../../common/components/Modal";
 import FormControl from "../../../../common/components/FormContainer/FormControl";
-import {
-
-    TitleFormEdit,
-    EditPagePath,
-    BackLink,
-    MLObjectDefinition,
-    LoadNewAPIPath,
-    APIHostName,
-    UpdateAPIPath
-
-} from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import indexedDBLib from "../../../../common/library/indexedDBLib.js";
@@ -23,32 +23,74 @@ import { CACHE_OBJECT_STORENAME } from "../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
 import MultiSelectComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
 import { formatDate, formatDateNew } from "../../../../common/library/CommonLib.js";
-
 import DeliverUserList from "../../ShipmentOrder/Component/DeliverUserList";
 import { ExportStringToDate } from "../../../../common/library/ultils";
 import moment from 'moment';
 import { ERPCOMMONCACHE_SERVICEAGREEMENTTYPE, ERPCOMMONCACHE_TMS_SERVICETYPE, ERPCOMMONCACHE_PARTNER, ERPCOMMONCACHE_AREATT } from "../../../../constants/keyCache";
+import AreaCom from '../Area';
 
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
+
+        this.addNotification = this.addNotification.bind(this);
+        this.notificationDOMRef = React.createRef();
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
+        this.handleServiceAgreementAreaSubmit = this.handleServiceAgreementAreaSubmit.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+
         this.state = {
+            DataSource: {},
             IsCallAPIError: false,
             IsCloseForm: false,
-            DataSource: {},
-            IsLoadDataComplete: false,
-            IsSystem: false,
+            IsDeposited: false,
             IsExtended: false,
             IsLiquidated: false,
-            IsDeposited: false
+            IsLoadDataComplete: false,
+            IsSystem: false,
+            ServiceAgreementAreaSubmit: []
         };
     }
 
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
         this.callLoadData(this.props.match.params.id);
+    }
+
+    addNotification(message, IsError) {
+        let cssNotification, iconNotification;
+        if (!IsError) {
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
+        } else {
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
+
+    handleServiceAgreementAreaSubmit(value) {
+        this.setState({
+            ServiceAgreementAreaSubmit: value
+        })
     }
 
     handleSubmit(formData, MLObject) {
@@ -80,10 +122,41 @@ class EditCom extends React.Component {
             }
         }
 
-        // console.log("MLObject", MLObject)
         MLObject.ServiceAgreementNumber = MLObject.ServiceAgreementNumber.replace(/\s/g, '');
         MLObject.ServiceAgreementID = this.props.match.params.id;
-        
+
+        const cloneServiceAgreementAreaSubmit = this.state.ServiceAgreementAreaSubmit.filter(item => !item.IsDeleted);
+        if (cloneServiceAgreementAreaSubmit.length == 0) {
+            this.addNotification("Danh sách khu vực áp dụng hợp đồng không được để trống", true);
+            return;
+        }
+
+        const uptServiceAgreement_AreaList = this.state.ServiceAgreementAreaSubmit.map(item => {
+            if (item.IsDeleted) {
+                return {
+                    ...item,
+                    DeletedUser: this.props.AppInfo.LoginInfo.Username,
+                    DeletedDate: new Date()
+                }
+            } else if (!item.ServiceAgreementID) {
+                return {
+                    ...item,
+                    ServiceAgreementID: this.state.DataSource.ServiceAgreementID,
+                    SignedDate: this.state.DataSource.SignedDate,
+                    CreatedUser: this.props.AppInfo.LoginInfo.Username,
+                    CreatedDate: new Date(),
+                    UpdatedUser: this.props.AppInfo.LoginInfo.Username,
+                    UpdatedDate: new Date()
+                }
+            } else {
+                return {
+                    ...item,
+                    UpdatedUser: this.props.AppInfo.LoginInfo.Username,
+                    UpdatedDate: new Date()
+                }
+            }
+        })
+        MLObject.ServiceAgreement_AreaList = uptServiceAgreement_AreaList;
 
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
@@ -110,7 +183,6 @@ class EditCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
-            // console.log("apiResult", apiResult);
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -124,11 +196,12 @@ class EditCom extends React.Component {
                 apiResult.ResultObject.ExpiredDateNew = formatDate(apiResult.ResultObject.ExpiredDate, true)
                 this.setState({
                     DataSource: apiResult.ResultObject,
-                    IsLoadDataComplete: true,
-                    IsSystem: apiResult.ResultObject.IsSystem,
+                    IsDeposited: apiResult.ResultObject.IsDeposited,
                     IsExtended: apiResult.ResultObject.IsExtended,
                     IsLiquidated: apiResult.ResultObject.IsLiquidated,
-                    IsDeposited: apiResult.ResultObject.IsDeposited,
+                    IsLoadDataComplete: true,
+                    IsSystem: apiResult.ResultObject.IsSystem,
+                    ServiceAgreementAreaSubmit: apiResult.ResultObject.ServiceAgreement_AreaList
                 });
             }
         });
@@ -301,8 +374,6 @@ class EditCom extends React.Component {
     }
 
     render() {
-
-
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
@@ -340,89 +411,92 @@ class EditCom extends React.Component {
         let currentDate = new Date();
         if (this.state.IsLoadDataComplete) {
             return (
-                <FormContainer
-                    FormName={TitleFormEdit}
-                    MLObjectDefinition={MLObjectDefinition}
-                    dataSource={this.state.DataSource}
-                    listelement={[]}
-                    BackLink={BackLink}
-                    onSubmit={this.handleSubmit}
-                    onchange={this.handleChange.bind(this)}
-                >
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
 
-                    <div className="row">
-                        <div className="col-md-6">
-                            <FormControl.TextBox
-                                name="txtServiceAgreementID"
-                                colspan="8"
-                                labelcolspan="4"
-                                readOnly={true}
-                                label="mã hợp đồng"
-                                placeholder="Mã hợp đồng"
-                                controltype="InputControl"
-                                value=""
-                                datasourcemember="ServiceAgreementID"
-                                validatonList={['required']}
-                            />
-                        </div>
-                        <div className="col-md-6">
-                            <FormControl.TextBox
-                                name="txtServiceAgreementNumber"
-                                colspan="8"
-                                labelcolspan="4"
-                                readOnly={false}
-                                label="số hợp đồng"
-                                placeholder="Mã hợp đồng"
-                                controltype="InputControl"
-                                value=""
-                                datasourcemember="ServiceAgreementNumber"
-                                validatonList={['required']}
-                            />
-                        </div>
+                    <FormContainer
+                        FormName={TitleFormEdit}
+                        MLObjectDefinition={MLObjectDefinition}
+                        dataSource={this.state.DataSource}
+                        listelement={[]}
+                        BackLink={BackLink}
+                        onSubmit={this.handleSubmit}
+                        onchange={this.handleChange.bind(this)}
+                    >
 
-                        <div className="col-md-6">
-                            <FormControl.ComboBoxSelect
-                                name="txtServiceAgreementTypeID"
-                                colspan="8"
-                                labelcolspan="4"
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
-                                label="loại hợp đồng"
-                                validatonList={["Comborequired"]}
-                                placeholder="-- Vui lòng chọn --"
-                                isautoloaditemfromcache={true}
-                                loaditemcachekeyid={ERPCOMMONCACHE_SERVICEAGREEMENTTYPE} //"ERPCOMMONCACHE.SERVICEAGREEMENTTYPE"
-                                valuemember="ServiceAgreementTypeID"
-                                nameMember="ServiceAgreementTypeName"
-                                controltype="InputControl"
-                                value={""}
-                                listoption={null}
-                                datasourcemember="ServiceAgreementTypeID" />
+                        <div className="row mb-4">
+                            <div className="col-md-6">
+                                <FormControl.TextBox
+                                    name="txtServiceAgreementID"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    readOnly={true}
+                                    label="mã hợp đồng"
+                                    placeholder="Mã hợp đồng"
+                                    controltype="InputControl"
+                                    value=""
+                                    datasourcemember="ServiceAgreementID"
+                                    validatonList={['required']}
+                                />
+                            </div>
+                            <div className="col-md-6">
+                                <FormControl.TextBox
+                                    name="txtServiceAgreementNumber"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    readOnly={false}
+                                    label="số hợp đồng"
+                                    placeholder="Mã hợp đồng"
+                                    controltype="InputControl"
+                                    value=""
+                                    datasourcemember="ServiceAgreementNumber"
+                                    validatonList={['required']}
+                                />
+                            </div>
 
-                        </div>
+                            <div className="col-md-6">
+                                <FormControl.ComboBoxSelect
+                                    name="txtServiceAgreementTypeID"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    disabled={this.state.IsSystem}
+                                    readOnly={this.state.IsSystem}
+                                    label="loại hợp đồng"
+                                    validatonList={["Comborequired"]}
+                                    placeholder="-- Vui lòng chọn --"
+                                    isautoloaditemfromcache={true}
+                                    loaditemcachekeyid={ERPCOMMONCACHE_SERVICEAGREEMENTTYPE} //"ERPCOMMONCACHE.SERVICEAGREEMENTTYPE"
+                                    valuemember="ServiceAgreementTypeID"
+                                    nameMember="ServiceAgreementTypeName"
+                                    controltype="InputControl"
+                                    value={""}
+                                    listoption={null}
+                                    datasourcemember="ServiceAgreementTypeID" />
 
-                        <div className="col-md-6">
-                            <FormControl.ComboBoxSelect
-                                name="txtServiceTypeID"
-                                colspan="8"
-                                labelcolspan="4"
-                                label="loại dịch vụ"
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
-                                placeholder="-- Vui lòng chọn --"
-                                validatonList={["Comborequired"]}
-                                isautoloaditemfromcache={true}
-                                loaditemcachekeyid={ERPCOMMONCACHE_TMS_SERVICETYPE} //"ERPCOMMONCACHE.TMS_SERVICETYPE"
-                                valuemember="ServiceTypeID"
-                                nameMember="ServiceTypeName"
-                                controltype="InputControl"
-                                value={""}
-                                listoption={null}
-                                datasourcemember="ServiceTypeID" />
-                        </div>
+                            </div>
 
-                        <div className="col-md-6">
-                            {/* <FormControl.ComboBoxSelect
+                            <div className="col-md-6">
+                                <FormControl.ComboBoxSelect
+                                    name="txtServiceTypeID"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    label="loại dịch vụ"
+                                    disabled={this.state.IsSystem}
+                                    readOnly={this.state.IsSystem}
+                                    placeholder="-- Vui lòng chọn --"
+                                    validatonList={["Comborequired"]}
+                                    isautoloaditemfromcache={true}
+                                    loaditemcachekeyid={ERPCOMMONCACHE_TMS_SERVICETYPE} //"ERPCOMMONCACHE.TMS_SERVICETYPE"
+                                    valuemember="ServiceTypeID"
+                                    nameMember="ServiceTypeName"
+                                    controltype="InputControl"
+                                    value={""}
+                                    listoption={null}
+                                    datasourcemember="ServiceTypeID" />
+                            </div>
+
+                            <div className="col-md-6">
+                                {/* <FormControl.ComboBoxSelect
                                 name="txtPartnerID"
                                 colspan="8"
                                 labelcolspan="4"
@@ -437,50 +511,50 @@ class EditCom extends React.Component {
                                 listoption={null}
                                 datasourcemember="PartnerID" /> */}
 
-                            <FormControl.FormControlComboBox
-                                name="txtPartnerID"
-                                colspan="8"
-                                labelcolspan="4"
-                                label="đơn vị vận chuyển"
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
-                                isautoloaditemfromcache={true}
-                                loaditemcachekeyid={ERPCOMMONCACHE_PARTNER}//"ERPCOMMONCACHE.PARTNER"
-                                valuemember="PartnerID"
-                                nameMember="PartnerName"
-                                controltype="InputControl"
-                                placeholder="---Vui lòng chọn---"
-                                value={""}
-                                listoption={null}
-                                filterValue={2}
-                                filterobj="PartnerTypeID"
-                                filterrest="ShipmentOrder_DeliverUserList"
-                                datasourcemember="PartnerID" />
-                        </div>
+                                <FormControl.FormControlComboBox
+                                    name="txtPartnerID"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    label="đơn vị vận chuyển"
+                                    disabled={this.state.IsSystem}
+                                    readOnly={this.state.IsSystem}
+                                    isautoloaditemfromcache={true}
+                                    loaditemcachekeyid={ERPCOMMONCACHE_PARTNER}//"ERPCOMMONCACHE.PARTNER"
+                                    valuemember="PartnerID"
+                                    nameMember="PartnerName"
+                                    controltype="InputControl"
+                                    placeholder="---Vui lòng chọn---"
+                                    value={""}
+                                    listoption={null}
+                                    filterValue={2}
+                                    filterobj="PartnerTypeID"
+                                    filterrest="ShipmentOrder_DeliverUserList"
+                                    datasourcemember="PartnerID" />
+                            </div>
 
-                        <div className="col-md-6">
-                            <FormControl.ComboBoxSelect
-                                name="txtServiceAreaID"
-                                colspan="8"
-                                labelcolspan="4"
-                                label="khu vực"
-                                disabled={this.state.IsSystem}
-                                placeholder="-- Vui lòng chọn --"
-                                readOnly={this.state.IsSystem}
-                                validatonList={["Comborequired"]}
-                                isautoloaditemfromcache={true}
-                                loaditemcachekeyid={ERPCOMMONCACHE_AREATT} //"ERPCOMMONCACHE.AREATT"
-                                valuemember="AreaID"
-                                nameMember="AreaName"
-                                controltype="InputControl"
-                                value={""}
-                                listoption={null}
-                                datasourcemember="ServiceAreaID" />
-                        </div>
+                            {/* <div className="col-md-6">
+                                <FormControl.ComboBoxSelect
+                                    name="txtServiceAreaID"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    label="khu vực"
+                                    disabled={this.state.IsSystem}
+                                    placeholder="-- Vui lòng chọn --"
+                                    readOnly={this.state.IsSystem}
+                                    validatonList={["Comborequired"]}
+                                    isautoloaditemfromcache={true}
+                                    loaditemcachekeyid={ERPCOMMONCACHE_AREATT} //"ERPCOMMONCACHE.AREATT"
+                                    valuemember="AreaID"
+                                    nameMember="AreaName"
+                                    controltype="InputControl"
+                                    value={""}
+                                    listoption={null}
+                                    datasourcemember="ServiceAreaID" />
+                            </div> */}
 
-                        <div className="col-md-6">
+                            <div className="col-md-6">
 
-                            {/* <MultiSelectComboBox
+                                {/* <MultiSelectComboBox
                                 name="ShipmentOrder_DeliverUserList"
                                 colspan="8"
                                 labelcolspan="4"
@@ -500,27 +574,27 @@ class EditCom extends React.Component {
                                 validationErrorMessage={''}
                             /> */}
 
-                            <DeliverUserList
-                                name="ShipmentOrder_DeliverUserList"
-                                colspan="8"
-                                labelcolspan="4"
-                                label="Nhân viên đại diện"
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
-                                IsLabelDiv={true}
-                                validatonList={["Comborequired"]}
-                                controltype="InputMultiControl"
-                                //MLObjectDefinition={GridMLDeliverUserDefinition}
-                                datasourcemember="ShipmentOrder_DeliverUserList"
-                                filterName="txtPartnerID"
-                                isMultiSelect={false}
-                            />
-                        </div>
-                        <div className="col-md-6">
-                           
-                        </div>
-                        <div className="col-md-6">
-                            {/* <FormControl.ElementDatetime
+                                <DeliverUserList
+                                    name="ShipmentOrder_DeliverUserList"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    label="Nhân viên đại diện"
+                                    disabled={this.state.IsSystem}
+                                    readOnly={this.state.IsSystem}
+                                    IsLabelDiv={true}
+                                    validatonList={["Comborequired"]}
+                                    controltype="InputMultiControl"
+                                    //MLObjectDefinition={GridMLDeliverUserDefinition}
+                                    datasourcemember="ShipmentOrder_DeliverUserList"
+                                    filterName="txtPartnerID"
+                                    isMultiSelect={false}
+                                />
+                            </div>
+                            <div className="col-md-6">
+
+                            </div>
+                            <div className="col-md-6">
+                                {/* <FormControl.ElementDatetime
                                 name="dtSignedDate"
                                 colspan="8"
                                 labelcolspan="4"
@@ -534,26 +608,26 @@ class EditCom extends React.Component {
                                 validatonList={["required"]}
                                 datasourcemember="SignedDate"
                             /> */}
-                            <FormControl.FormControlDatetimeNew
-                                name="dtSignedDate"
-                                colspan="8"
-                                labelcolspan="4"
-                                disabled={this.state.IsSystem}
-                                readOnly={false}
-                                showTime={false}
-                                timeFormat={false}
-                                dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
-                                label="ngày ký hợp đồng"
-                                placeholder="Ngày ký hợp đồng"
-                                controltype="InputControl"
-                                value=""
-                                validatonList={["required"]}
-                                datasourcemember="SignedDate"
-                            />
-                        </div>
+                                <FormControl.FormControlDatetimeNew
+                                    name="dtSignedDate"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    disabled={this.state.IsSystem}
+                                    readOnly={false}
+                                    showTime={false}
+                                    timeFormat={false}
+                                    dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
+                                    label="ngày ký hợp đồng"
+                                    placeholder="Ngày ký hợp đồng"
+                                    controltype="InputControl"
+                                    value=""
+                                    validatonList={["required"]}
+                                    datasourcemember="SignedDate"
+                                />
+                            </div>
 
-                        <div className="col-md-6">
-                            {/* <FormControl.ElementDatetime
+                            <div className="col-md-6">
+                                {/* <FormControl.ElementDatetime
                                 name="dtExpiredDate"
                                 colspan="8"
                                 labelcolspan="4"
@@ -567,40 +641,40 @@ class EditCom extends React.Component {
                                 validatonList={["required"]}
                                 datasourcemember="ExpiredDate"
                             /> */}
-                            <FormControl.FormControlDatetimeNew
-                                name="dtExpiredDate"
-                                colspan="8"
-                                labelcolspan="4"
-                                disabled={this.state.IsSystem}
-                                readOnly={false}
-                                showTime={false}
-                                timeFormat={false}
-                                dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
-                                label="ngày hết hạn hợp đồng"
-                                placeholder="Ngày hết hạn hợp đồng"
-                                controltype="InputControl"
-                                value=""
-                                validatonList={["required"]}
-                                datasourcemember="ExpiredDate"
-                            />
-                        </div>
+                                <FormControl.FormControlDatetimeNew
+                                    name="dtExpiredDate"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    disabled={this.state.IsSystem}
+                                    readOnly={false}
+                                    showTime={false}
+                                    timeFormat={false}
+                                    dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
+                                    label="ngày hết hạn hợp đồng"
+                                    placeholder="Ngày hết hạn hợp đồng"
+                                    controltype="InputControl"
+                                    value=""
+                                    validatonList={["required"]}
+                                    datasourcemember="ExpiredDate"
+                                />
+                            </div>
 
-                        <div className="col-md-6">
-                            <FormControl.CheckBox
-                                label="Đã gia hạn hợp đồng"
-                                name="chkIsExtended"
-                                datasourcemember="IsExtended"
-                                controltype="InputControl"
-                                colspan="8"
-                                labelcolspan="4"
-                                classNameCustom="customCheckbox"
-                                readOnly={this.state.IsSystem}
-                                disabled={this.state.IsSystem}
-                            />
-                        </div>
+                            <div className="col-md-6">
+                                <FormControl.CheckBox
+                                    label="Đã gia hạn hợp đồng"
+                                    name="chkIsExtended"
+                                    datasourcemember="IsExtended"
+                                    controltype="InputControl"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    classNameCustom="customCheckbox"
+                                    readOnly={this.state.IsSystem}
+                                    disabled={this.state.IsSystem}
+                                />
+                            </div>
 
-                        <div className="col-md-6">
-                            {/* <FormControl.ElementDatetime
+                            <div className="col-md-6">
+                                {/* <FormControl.ElementDatetime
                                 name="dtExtendedDate"
                                 colspan="8"
                                 labelcolspan="4"
@@ -614,39 +688,39 @@ class EditCom extends React.Component {
                                 //validatonList={[]}
                                 datasourcemember="ExtendedDate"
                             /> */}
-                            <FormControl.FormControlDatetimeNew
-                                name="dtExtendedDate"
-                                colspan="8"
-                                labelcolspan="4"
-                                disabled={isDisableExtended}
-                                readOnly={false}
-                                showTime={false}
-                                timeFormat={false}
-                                dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
-                                label="gia hạn đến ngày"
-                                placeholder={formatDate(currentDate, true)}
-                                controltype="InputControl"
-                                value=""
-                                datasourcemember="ExtendedDate"
-                            />
-                        </div>
+                                <FormControl.FormControlDatetimeNew
+                                    name="dtExtendedDate"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    disabled={isDisableExtended}
+                                    readOnly={false}
+                                    showTime={false}
+                                    timeFormat={false}
+                                    dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
+                                    label="gia hạn đến ngày"
+                                    placeholder={formatDate(currentDate, true)}
+                                    controltype="InputControl"
+                                    value=""
+                                    datasourcemember="ExtendedDate"
+                                />
+                            </div>
 
-                        <div className="col-md-6">
-                            <FormControl.CheckBox
-                                label="đã thanh lý hợp đồng"
-                                name="chkIsLiquidated"
-                                datasourcemember="IsLiquidated"
-                                controltype="InputControl"
-                                colspan="8"
-                                labelcolspan="4"
-                                classNameCustom="customCheckbox"
-                                readOnly={this.state.IsSystem}
-                                disabled={this.state.IsSystem}
-                            />
-                        </div>
+                            <div className="col-md-6">
+                                <FormControl.CheckBox
+                                    label="đã thanh lý hợp đồng"
+                                    name="chkIsLiquidated"
+                                    datasourcemember="IsLiquidated"
+                                    controltype="InputControl"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    classNameCustom="customCheckbox"
+                                    readOnly={this.state.IsSystem}
+                                    disabled={this.state.IsSystem}
+                                />
+                            </div>
 
-                        <div className="col-md-6">
-                            {/* <FormControl.ElementDatetime
+                            <div className="col-md-6">
+                                {/* <FormControl.ElementDatetime
                                 name="dtLiquidateddate"
                                 colspan="8"
                                 labelcolspan="4"
@@ -660,131 +734,140 @@ class EditCom extends React.Component {
                                 // validatonList={[]}
                                 datasourcemember="Liquidateddate"
                             /> */}
-                            <FormControl.FormControlDatetimeNew
-                                name="dtLiquidateddate"
-                                colspan="8"
-                                labelcolspan="4"
-                                disabled={isDisableLiquidated}
-                                readOnly={false}
-                                showTime={false}
-                                timeFormat={false}
-                                dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
-                                label="ngày thanh lý hợp đồng"
-                                placeholder={formatDate(currentDate, true)}
-                                controltype="InputControl"
-                                value=""
-                                datasourcemember="Liquidateddate"
-                            />
+                                <FormControl.FormControlDatetimeNew
+                                    name="dtLiquidateddate"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    disabled={isDisableLiquidated}
+                                    readOnly={false}
+                                    showTime={false}
+                                    timeFormat={false}
+                                    dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
+                                    label="ngày thanh lý hợp đồng"
+                                    placeholder={formatDate(currentDate, true)}
+                                    controltype="InputControl"
+                                    value=""
+                                    datasourcemember="Liquidateddate"
+                                />
+                            </div>
+
+                            <div className="col-md-6">
+                                <FormControl.CheckBox
+                                    label="đã ký quỹ"
+                                    name="chkIsDeposited"
+                                    datasourcemember="IsDeposited"
+                                    controltype="InputControl"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    classNameCustom="customCheckbox"
+                                    readOnly={this.state.IsSystem}
+                                    disabled={this.state.IsSystem}
+                                />
+                            </div>
+
+                            <div className="col-md-6">
+                                <FormControl.TextBoxCurrency
+                                    name="txtDepositMoney"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    readOnly={isDisableDeposited}
+                                    label="số tiền ký quỹ"
+                                    placeholder="Số tiền ký quỹ"
+                                    controltype="InputControl"
+                                    value=""
+                                    maxSize={15}
+                                    datasourcemember="DepositMoney"
+                                />
+                            </div>
+
+                            <div className="col-md-6">
+
+                                <FormControl.FormControlDatetimeNew
+                                    name="dtDepositedDate"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    disabled={isDisableDeposited}
+                                    readOnly={false}
+                                    showTime={false}
+                                    timeFormat={false}
+                                    dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
+                                    label="ngày ký quỹ"
+                                    placeholder={formatDate(currentDate, true)}
+                                    controltype="InputControl"
+                                    value=""
+                                    datasourcemember="DepositedDate"
+                                />
+                            </div>
+
+                            <div className="col-md-6">
+                                <FormControl.TextBox
+                                    name="txtDepositNote"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    readOnly={isDisableDeposited}
+                                    label="ghi chú ký quỹ"
+                                    placeholder="Ghi chú ký quỹ"
+                                    controltype="InputControl"
+                                    value=""
+                                    datasourcemember="DepositNote"
+                                />
+                            </div>
+
+                            <div className="col-md-12">
+                                <FormControl.TextArea
+                                    labelcolspan={2}
+                                    colspan={10}
+                                    name="txtDescription"
+                                    label="Mô tả"
+                                    placeholder="Mô tả"
+                                    datasourcemember="Description"
+                                    controltype="InputControl"
+                                    rows={6}
+                                    maxSize={500}
+                                    classNameCustom="customcontrol"
+                                    readOnly={this.state.IsSystem}
+                                    disabled={this.state.IsSystem}
+                                />
+                            </div>
+
+                            <div className="col-md-12">
+                                <FormControl.CheckBox
+                                    label="kích hoạt"
+                                    name="chkIsActived"
+                                    datasourcemember="IsActived"
+                                    controltype="InputControl"
+                                    colspan={10}
+                                    labelcolspan={2}
+                                    classNameCustom="customCheckbox"
+                                    readOnly={this.state.IsSystem}
+                                    disabled={this.state.IsSystem}
+                                />
+                            </div>
+
+                            <div className="col-md-12">
+                                <FormControl.CheckBox
+                                    label="hệ thống"
+                                    name="chkIsSystem"
+                                    datasourcemember="IsSystem"
+                                    controltype="InputControl"
+                                    colspan={10}
+                                    labelcolspan={2}
+                                    classNameCustom="customCheckbox"
+                                />
+                            </div>
+
                         </div>
 
-                        <div className="col-md-6">
-                            <FormControl.CheckBox
-                                label="đã ký quỹ"
-                                name="chkIsDeposited"
-                                datasourcemember="IsDeposited"
-                                controltype="InputControl"
-                                colspan="8"
-                                labelcolspan="4"
-                                classNameCustom="customCheckbox"
-                                readOnly={this.state.IsSystem}
-                                disabled={this.state.IsSystem}
-                            />
+                        <div className="row">
+                            <div className="col-md-12">
+                                <AreaCom
+                                    dataSource={this.state.DataSource.ServiceAgreement_AreaList}
+                                    serviceAgreementAreaSubmit={this.handleServiceAgreementAreaSubmit}
+                                />
+                            </div>
                         </div>
-
-                        <div className="col-md-6">
-                            <FormControl.TextBoxCurrency
-                                name="txtDepositMoney"
-                                colspan="8"
-                                labelcolspan="4"
-                                readOnly={isDisableDeposited}
-                                label="số tiền ký quỹ"
-                                placeholder="Số tiền ký quỹ"
-                                controltype="InputControl"
-                                value=""
-                                maxSize={15}
-                                datasourcemember="DepositMoney"
-                            />
-                        </div>
-
-                        <div className="col-md-6">
-
-                            <FormControl.FormControlDatetimeNew
-                                name="dtDepositedDate"
-                                colspan="8"
-                                labelcolspan="4"
-                                disabled={isDisableDeposited}
-                                readOnly={false}
-                                showTime={false}
-                                timeFormat={false}
-                                dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
-                                label="ngày ký quỹ"
-                                placeholder={formatDate(currentDate, true)}
-                                controltype="InputControl"
-                                value=""
-                                datasourcemember="DepositedDate"
-                            />
-                        </div>
-
-                        <div className="col-md-6">
-                            <FormControl.TextBox
-                                name="txtDepositNote"
-                                colspan="8"
-                                labelcolspan="4"
-                                readOnly={isDisableDeposited}
-                                label="ghi chú ký quỹ"
-                                placeholder="Ghi chú ký quỹ"
-                                controltype="InputControl"
-                                value=""
-                                datasourcemember="DepositNote"
-                            />
-                        </div>
-
-                        <div className="col-md-12">
-                            <FormControl.TextArea
-                                labelcolspan={2}
-                                colspan={10}
-                                name="txtDescription"
-                                label="Mô tả"
-                                placeholder="Mô tả"
-                                datasourcemember="Description"
-                                controltype="InputControl"
-                                rows={6}
-                                maxSize={500}
-                                classNameCustom="customcontrol"
-                                readOnly={this.state.IsSystem}
-                                disabled={this.state.IsSystem}
-                            />
-                        </div>
-
-                        <div className="col-md-12">
-                            <FormControl.CheckBox
-                                label="kích hoạt"
-                                name="chkIsActived"
-                                datasourcemember="IsActived"
-                                controltype="InputControl"
-                                colspan={10}
-                                labelcolspan={2}
-                                classNameCustom="customCheckbox"
-                                readOnly={this.state.IsSystem}
-                                disabled={this.state.IsSystem}
-                            />
-                        </div>
-
-                        <div className="col-md-12">
-                            <FormControl.CheckBox
-                                label="hệ thống"
-                                name="chkIsSystem"
-                                datasourcemember="IsSystem"
-                                controltype="InputControl"
-                                colspan={10}
-                                labelcolspan={2}
-                                classNameCustom="customCheckbox"
-                            />
-                        </div>
-
-                    </div>
-
-                </FormContainer>
+                    </FormContainer>
+                </React.Fragment>
             );
         }
         return <label>Đang nạp dữ liệu...</label>;
