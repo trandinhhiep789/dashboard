@@ -2808,6 +2808,7 @@ class PartialSelectCom extends React.Component {
         this.handleMenuOpen = this.handleMenuOpen.bind(this);
         this.handleMenuScrollToBottom = this.handleMenuScrollToBottom.bind(this);
         this.handleMenuScrollToTop = this.handleMenuScrollToTop.bind(this);
+        this.handleRemoveExistingFromDataGrid = this.handleRemoveExistingFromDataGrid.bind(this);
         this.initDataOptions = this.initDataOptions.bind(this);
     }
 
@@ -2824,10 +2825,10 @@ class PartialSelectCom extends React.Component {
 
     handleInputChange(value) {
         if (value == "") {
+            this.initDataOptions();
             this.setState({
                 inputValue: "",
-                filteredIndex: 0,
-                dataOptions: []
+                filteredIndex: 0
             })
             return;
         }
@@ -2857,8 +2858,9 @@ class PartialSelectCom extends React.Component {
                     }
                 })
 
+                this.handleRemoveExistingFromDataGrid(dataOptions);
                 this.setState({
-                    dataOptions,
+                    // dataOptions,
                     filteredIndex,
                     inputValue: value,
                 })
@@ -2887,17 +2889,21 @@ class PartialSelectCom extends React.Component {
                     while (i < this.state.quantityDownloadOnce) {
                         const item = result.ResultObject.CacheData[i + this.state.dataOptions.length];
 
-                        dataOptions.push({
-                            ...item,
-                            value: item[this.props.valuemember],
-                            label: `${item[this.props.valuemember]} - ${item[this.props.nameMember]}`
-                        });
+                        if (item) {
+                            dataOptions.push({
+                                ...item,
+                                value: item[this.props.valuemember],
+                                label: `${item[this.props.valuemember]} - ${item[this.props.nameMember]}`
+                            });
+                        }
+
                         i++;
                     }
 
-                    this.setState({
-                        dataOptions: [...this.state.dataOptions, ...dataOptions],
-                    })
+                    this.handleRemoveExistingFromDataGrid([...this.state.dataOptions, ...dataOptions])
+                    // this.setState({
+                    //     dataOptions: [...this.state.dataOptions, ...dataOptions],
+                    // })
                 }
             })
         } else {
@@ -2926,8 +2932,9 @@ class PartialSelectCom extends React.Component {
                         }
                     })
 
+                    this.handleRemoveExistingFromDataGrid([...this.state.dataOptions, ...dataOptions])
                     this.setState({
-                        dataOptions: [...this.state.dataOptions, ...dataOptions],
+                        // dataOptions: [...this.state.dataOptions, ...dataOptions],
                         filteredIndex
                     })
                 }
@@ -2938,6 +2945,20 @@ class PartialSelectCom extends React.Component {
     handleMenuScrollToTop() {
     }
 
+    handleRemoveExistingFromDataGrid(originalData = []) {
+        const uptOriginalData = originalData.filter(item => {
+            const found = this.props.dataRemove.find(item1 => item1[this.props.valuemember] == item.value);
+
+            if (found == undefined) {
+                return item;
+            }
+        })
+
+        this.setState({
+            dataOptions: uptOriginalData
+        })
+    }
+
     initDataOptions() {
         this.props.callGetCache(this.props.loaditemcachekeyid).then((result) => {
             if (!result.IsError && result.ResultObject.CacheData != null) {
@@ -2946,17 +2967,21 @@ class PartialSelectCom extends React.Component {
                 while (i < this.state.quantityDownloadOnce) {
                     const item = result.ResultObject.CacheData[i];
 
-                    dataOptions.push({
-                        ...item,
-                        value: item[this.props.valuemember],
-                        label: `${item[this.props.valuemember]} - ${item[this.props.nameMember]}`
-                    })
+                    if (item) {
+                        dataOptions.push({
+                            ...item,
+                            value: item[this.props.valuemember],
+                            label: `${item[this.props.valuemember]} - ${item[this.props.nameMember]}`
+                        })
+                    }
+
                     i++;
                 }
 
-                this.setState({
-                    dataOptions,
-                })
+                this.handleRemoveExistingFromDataGrid(dataOptions);
+                // this.setState({
+                //     dataOptions,
+                // })
             }
         })
     }
@@ -3001,6 +3026,7 @@ class PartialSelectCom extends React.Component {
                     <Select
                         className={classNameSelect}
                         defaultValue={this.props.defaultValue}
+                        isDisabled={this.props.isDisabled}
                         name={this.props.name}
                         onChange={this.handleChange}
                         onInputChange={this.handleInputChange}
@@ -3022,11 +3048,14 @@ class PartialSelectCom extends React.Component {
 }
 
 PartialSelectCom.defaultProps = {
+    dataRemove: [], // những item đã tồn tại ở table => remove khỏi select
+    defaultValue: null,
+    isDisabled: false,
     isShowLable: false,
     name: "",
     placeholder: "---Vui lòng chọn---",
     validationErrorMessage: "",
-    validatonList: [],
+    validatonList: []
 };
 
 const PartialSelect = connect(mapStateToProps, mapDispatchToProps)(PartialSelectCom);

@@ -236,77 +236,84 @@ export const DataGridColumnList = [
         Caption: "Mã HĐ",
         DataSourceMember: "ServiceAgreementID",
         Link: "/ServiceAgreement/Detail/",
-        Width: 70
+        // Width: 70
     },
     {
         Name: "ServiceAgreementNumber",
         Type: "text",
         Caption: "Số HĐ",
         DataSourceMember: "ServiceAgreementNumber",
-        Width: 200
+        // Width: 200
     },
     {
         Name: "PartnerName",
         Type: "text",
         Caption: "Đối tác",
         DataSourceMember: "PartnerName",
-        Width: 340
+        // Width: 340
     },
     {
         Name: "ServiceTypeName",
         Type: "text",
         Caption: "Loại dịch vụ",
         DataSourceMember: "ServiceTypeName",
-        Width: 200
+        // Width: 200
     },
     {
         Name: "AreaName",
         Type: "text",
         Caption: "Khu vực",
         DataSourceMember: "AreaName",
-        Width: 100
+        // Width: 100
     },
     {
         Name: "SignedDate",
         Type: "date",
         Caption: "Ngày ký HĐ",
         DataSourceMember: "SignedDate",
-        Width: 130
+        // Width: 130
     },
     {
         Name: "ExpiredDate",
         Type: "date",
         Caption: "Ngày hết hạn HĐ",
         DataSourceMember: "ExpiredDate",
-        Width: 130
+        // Width: 130
     },
     {
         Name: "ExtendLable",
         Type: "text",
         Caption: "Gia hạn đến",
         DataSourceMember: "ExtendLable",
-        Width: 150
+        // Width: 150
     },
     {
         Name: "DepositedLable",
         Type: "text",
         Caption: "Đã ký quỹ",
         DataSourceMember: "DepositedLable",
-        Width: 100
+        // Width: 100
+    },
+    {
+        Caption: "Đã thanh lý hợp đồng",
+        DataSourceMember: "IsLiquidated",
+        Name: "IsLiquidated",
+        Type: "checkicon",
+        // Width: 100
     },
     {
         Name: "StatusLable",
         Type: "text",
         Caption: "Trạng thái",
         DataSourceMember: "StatusLable",
-        Width: 100
+        // Width: 100
     },
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
         DataSourceMember: "ServiceAgreementID",
-        Width: 100,
+        // Width: 100,
         Link: "/ServiceAgreement/Edit/",
         LinkText: "Chỉnh sửa"
     },
@@ -789,3 +796,139 @@ export const DataMasterTemplateExport = [
         "Mô tả": "test",
     }
 ];
+
+export const listColumnArea = [
+    {
+        Caption: "Chọn",
+        DataSourceMember: "",
+        Name: "chkSelect",
+        Type: "checkbox",
+        Width: 60
+    },
+    {
+        Caption: "Mã khu vực",
+        DataSourceMember: "AreaID",
+        Name: "AreaID",
+        Type: "text",
+    },
+    {
+        Caption: "Tên khu vực",
+        DataSourceMember: "AreaName",
+        Name: "AreaName",
+        Type: "text",
+    },
+    {
+        Caption: "Kích hoạt",
+        DataSourceMember: "IsActived",
+        Name: "IsActived",
+        Type: "checkicon",
+    },
+    {
+        Caption: "Hệ thống",
+        DataSourceMember: "IsSystem",
+        Name: "IsSystem",
+        Type: "checkicon",
+    },
+    {
+        Caption: "Chỉnh sửa",
+        DataSourceMember: "",
+        Name: "",
+        Type: "edit",
+        Width: 90
+    },
+]
+
+export const listColumnArea2 = [
+    {
+        Caption: "Mã khu vực",
+        DataSourceMember: "AreaID",
+        Name: "AreaID",
+        Type: "text",
+    },
+    {
+        Caption: "Tên khu vực",
+        DataSourceMember: "AreaName",
+        Name: "AreaName",
+        Type: "text",
+    },
+    {
+        Caption: "Kích hoạt",
+        DataSourceMember: "IsActived",
+        Name: "IsActived",
+        Type: "checkicon",
+    },
+    {
+        Caption: "Hệ thống",
+        DataSourceMember: "IsSystem",
+        Name: "IsSystem",
+        Type: "checkicon",
+    }
+];
+
+export const listColumnStore = [
+    {
+        Caption: "Chọn",
+        DataSourceMember: "",
+        Name: "chkSelect",
+        Type: "checkbox",
+        Width: 60
+    },
+    {
+        Caption: "Mã kho",
+        DataSourceMember: "StoreID",
+        Name: "StoreID",
+        Type: "text",
+    },
+    {
+        Caption: "Tên kho",
+        DataSourceMember: "StoreName",
+        Name: "StoreName",
+        Type: "text",
+    },
+    {
+        Caption: "Kích hoạt",
+        DataSourceMember: "IsActived",
+        Name: "IsActived",
+        Type: "checkicon",
+    },
+    {
+        Caption: "Hệ thống",
+        DataSourceMember: "IsSystem",
+        Name: "IsSystem",
+        Type: "checkicon",
+    },
+    {
+        Caption: "Chỉnh sửa",
+        DataSourceMember: "",
+        Name: "",
+        Type: "edit",
+        Width: 90
+    },
+];
+
+export const listColumnStore2 = [
+    {
+        Caption: "Mã kho",
+        DataSourceMember: "StoreID",
+        Name: "StoreID",
+        Type: "text",
+    },
+    {
+        Caption: "Tên kho",
+        DataSourceMember: "StoreName",
+        Name: "StoreName",
+        Type: "text",
+    },
+    {
+        Caption: "Kích hoạt",
+        DataSourceMember: "IsActived",
+        Name: "IsActived",
+        Type: "checkicon",
+    },
+    {
+        Caption: "Hệ thống",
+        DataSourceMember: "IsSystem",
+        Name: "IsSystem",
+        Type: "checkicon",
+    }
+]

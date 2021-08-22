@@ -149,26 +149,22 @@ class PartnerCustomerCom extends React.Component {
                 <ReactNotification ref={this.notificationDOMRef} />
 
                 <DataGrid
-                    headingTitle="Danh sách khách hàng thuộc đối tác"
-                    listColumn={listColumnPartnerCustomerAdd}
                     dataSource={stateDataGrid}
-                    PKColumnName={"CustomerID"}
-
+                    headingTitle="Danh sách khách hàng thuộc đối tác"
+                    IDSelectColumnName={"chkSelect"}
+                    IsAdd={true}
+                    IsAutoPaging={true}
+                    IsCustomAddLink={true}
+                    IsDelete={true}
+                    IsExportFile={false}
                     isHideHeaderToolbar={false}
                     IsShowButtonAdd={true}
-                    IsAdd={true}
-                    IsCustomAddLink={true}
-                    onInsertClick={this.handleInsertClick}
-
                     IsShowButtonDelete={true}
-                    IsDelete={true}
-                    IDSelectColumnName={"chkSelect"}
+                    listColumn={listColumnPartnerCustomerAdd}
                     onDeleteClick={this.handleDelete}
-
+                    onInsertClick={this.handleInsertClick}
                     onInsertClickEdit={this.handleInsertClickEdit}
-
-                    IsExportFile={false}
-                    IsAutoPaging={true}
+                    PKColumnName={"CustomerID"}
                     RowsPerPage={10}
                 />
             </React.Fragment>
