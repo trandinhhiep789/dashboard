@@ -59,17 +59,38 @@ const ModalSlideImage = ({ ImageCaptureGeoLocation, afterClose, hideModal, conte
             id={"modalid-" + id}
             maxWidth={maxWidth}
         >
-            {content.lstImage != undefined && content.lstImage.length > 1 ? <ImageGallery
-                items={content.lstImage}
-                originalClass="img-original"
-                onSlide={handleImageCaptureTime}
-            />
-                // : <img src={content.lstImage[0].original} />
+            {
+                // content.lstImage != undefined && content.lstImage.length > 1
+                //     ? <ImageGallery
+                //         items={content.lstImage}
+                //         originalClass="img-original"
+                //         onSlide={handleImageCaptureTime}
+                //     />
+                //     // : <img src={content.lstImage[0].original} />
 
-                : <div className="img-slider-custom" style={{ backgroundImage: `url(${content.lstImage[0].original})` }}>img</div>
+                //     : <div className="img-slider-custom" style={{ backgroundImage: `url(${content.lstImage[0].original})` }}>img</div>
+                <ImageGallery
+                    items={content.lstImage}
+                    originalClass="img-original"
+                    onSlide={handleImageCaptureTime}
+                    showThumbnails={content.lstImage.length == 1 ? false : true}
+                />
             }
         </Modal>
     );
+};
+
+ModalSlideImage.defaultProps = {
+    content: {
+        lstImage: [
+            {
+                ImageCaptureGeoLocation: "",
+                ImageCaptureTimeNumber: "",
+                original: "",
+                thumbnail: ""
+            }
+        ]
+    }
 };
 
 ModalSlideImage.propTypes = {

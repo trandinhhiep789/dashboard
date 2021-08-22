@@ -49,10 +49,13 @@ class InfoHistoryWFCom extends Component {
         return result;
     }
 
-    renderItemImage(original, description) {
+    renderItemImage(original, description, versionApp) {
         return <div className="image-gallery-image image-gallery-image-custom">
             <img src={original} title={description} />
-            <span className="image-gallery-description-custom">{description}</span>
+            <span className="image-gallery-description-custom d-flex justify-content-around">
+                <div>{description}</div>
+                <div>{versionApp}</div>
+            </span>
         </div>;
     }
 
@@ -86,7 +89,7 @@ class InfoHistoryWFCom extends Component {
                 thumbnail: JSON.parse(objlst[i]).ImageFileURL,
                 ImageCaptureGeoLocation: JSON.parse(objlst[i]).ImageCaptureGeoLocation,
                 ImageCaptureTimeNumber: JSON.parse(objlst[i]).ImageCaptureTimeNumber,
-                renderItem: () => this.renderItemImage(JSON.parse(objlst[i]).ImageFileURL, description),
+                renderItem: () => this.renderItemImage(JSON.parse(objlst[i]).ImageFileURL, description, JSON.parse(objlst[i]).note),
                 renderThumbInner: () => this.renderThumbInner(JSON.parse(objlst[i]).ImageFileURL)
             });
         }
