@@ -1041,7 +1041,7 @@ class ListShipCoordinatorCom extends Component {
                                                                                         to={{ pathname: "/ShipmentOrder/Detail/" + item.ShipmentOrderID }}>
                                                                                         {item.ShipmentOrderID} </Link>
                                                                                 </span>
-                                                                                <span className="badge badge-warning time"><i className="ti ti-timer"></i> 08:00</span>
+                                                                                <span className="badge badge-warning time"><i className="ti ti-timer"></i> {item.ExpectedDeliveryDate != null ? this._genCommentTime(item.ExpectedDeliveryDate) : ""}</span>
                                                                             </li>
                                                                             <li className="item infoProduict">
                                                                                 <span data-tip data-for={item.ShipmentOrderID} data-id={item.ShipmentOrderID}>{item.PrimaryShipItemName}</span>

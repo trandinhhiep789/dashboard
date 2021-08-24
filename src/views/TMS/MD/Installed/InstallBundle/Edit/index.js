@@ -6,9 +6,6 @@ import FormContainer from "../../../../../../common/components/FormContainer";
 import InputGrid from "../../../../../../common/components/FormContainer/FormControl/InputGrid";
 import { MessageModal } from "../../../../../../common/components/Modal";
 import { showModal } from '../../../../../../actions/modal';
-import { MODAL_TYPE_SEARCH } from '../../../../../../constants/actionTypes';
-import SearchModal from "../../../../../../common/components/Form/AdvanceForm/FormControl/FormSearchModal"
-import MD5Digest from "../../../../../../common/library/cryptography/MD5Digest.js";
 import {
     APIHostName,
     LoadAPIPath,
@@ -41,7 +38,6 @@ class EditCom extends React.Component {
             EditElementList: EditElementList
 
         };
-        this.searchref = React.createRef();
     }
 
     handleCloseMessage() {
@@ -81,7 +77,12 @@ class EditCom extends React.Component {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        MLObject.ShipmentOrderTypeID= MLObject.ShipmentOrderTypeID.join();
+  
+        if (Array.isArray(MLObject.ShipmentOrderTypeID))
+        {
+            MLObject.ShipmentOrderTypeID= MLObject.ShipmentOrderTypeID.join();
+        }
+           
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {

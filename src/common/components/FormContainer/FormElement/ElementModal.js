@@ -208,7 +208,6 @@ class ElementModalComboBoxCom extends Component {
                 return { value: -1, label: "--Vui lòng chọn--" };
             }
         }
-        debugger;
         if (typeof values.toString() == "string")
             values = values.toString().split(",");
         for (let i = 0; i < values.length; i++) {
@@ -264,9 +263,7 @@ class ElementModalComboBoxCom extends Component {
                     }
                     //console.log("componentDidMount",loaditemcachekeyid,result.ResultObject.CacheData)
                     this.setState({ Listoption: listOption, Data: result.ResultObject.CacheData });
-                    console.log("SelectedOption a1a", this.props.value)
                     const strSelectedOption = this.bindcombox(this.props.value, listOption);
-                    console.log("SelectedOption a1a", strSelectedOption)
                     this.setState({ SelectedOption: strSelectedOption });
                 }
                 else {
@@ -303,7 +300,6 @@ class ElementModalComboBoxCom extends Component {
 
         if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) {
             const aa = this.bindcombox(nextProps.value, this.state.Listoption);
-            console.log("SelectedOption aa", nextProps.value, this.props.value)
             this.setState({ SelectedOption: aa });
         }
     }
