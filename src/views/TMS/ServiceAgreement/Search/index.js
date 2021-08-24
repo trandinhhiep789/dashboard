@@ -27,6 +27,7 @@ import {
     AddLink,
     AddLogAPIPath,
     APIHostName,
+    DataGridColumnList_ImportFile,
     DataGridColumnList,
     DataMasterTemplateExport,
     DeleteNewAPIPath,
@@ -38,7 +39,7 @@ import {
     SearchAPIPath,
     SearchElementList,
     SearchMLObjectDefinition,
-    TitleFormSearch,
+    TitleFormSearch
 } from "../constants";
 
 class SearchCom extends React.Component {
@@ -396,7 +397,10 @@ class SearchCom extends React.Component {
             content: {
                 text: <ImportExcelModalCom
                     dataSource={dataSource}
+                    listColumn={DataGridColumnList_ImportFile}
                     onSubmit={this.handleSubmitImportFile}
+                    PKColumnName={PKColumnName}
+                    titleModal="Danh sách hợp đồng dịch vụ"
                 />
             },
             maxWidth: '100%'

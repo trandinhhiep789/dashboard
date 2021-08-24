@@ -5,45 +5,59 @@ import {
     Switch,
     Link
 } from "react-router-dom";
-import { ModalManager } from "react-dynamic-modal";
 import { connect } from "react-redux";
-import { callFetchAPI } from "../../../../actions/fetchAPIAction";
-import { updatePagePath } from "../../../../actions/pageAction";
-import FormContainer from "../../../../common/components/FormContainer";
-import DataGrid from "../../../../common/components/DataGrid/getdataserver.js";
+import { ModalManager } from "react-dynamic-modal";
+import ReactNotification from "react-notifications-component";
+import readXlsxFile from 'read-excel-file';
 
 import {
+    AbilitySchema,
     APIHostName,
+    DataGridColumnItemListAbiliti,
+    DataGridColumnItemListFeeAppendix,
+    DataTemplateExportAbility,
+    DataTemplateExportFeeAppendix,
+    DeleteAbilityAPIPath,
+    DeleteAPIPath,
     DetailAPIPath,
+    FeeAppendixSchema,
+    listColumnImportFile_Ability,
+    listColumnImportFile_FeeAppendix,
     LoadNewAPIPath,
+    PKColumnNameAbiliti,
+    PKColumnNameFeeAppendix,
     TitleFormDetail,
     TitleFromAbiliti,
-    PKColumnNameFeeAppendix,
-    TitleFromFeeAppendix,
-    DataGridColumnItemListFeeAppendix,
-    DeleteAPIPath,
-    DataGridColumnItemListAbiliti,
-    PKColumnNameAbiliti,
-    DeleteAbilityAPIPath
-
+    TitleFromFeeAppendix
 } from "../constants";
-import { MessageModal } from "../../../../common/components/Modal";
-import ServiceAgreementInfo from "./ServiceAgreementInfo";
-import Abiliti from "./Abiliti";
-import FeeAppendix from './FeeAppendix';
 
-import InputGridControl from "../../../../common/components/FormContainer/FormControl/InputGrid/InputGridControl.js";
-import { showModal, hideModal } from '../../../../actions/modal';
+import { AddListAPIAbilitiPath, AddListAPIFeeAppendixPath } from './contants';
+import { callFetchAPI } from "../../../../actions/fetchAPIAction";
+import { MessageModal } from "../../../../common/components/Modal";
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
+import { showModal, hideModal } from '../../../../actions/modal';
+import { updatePagePath } from "../../../../actions/pageAction";
 import AbilityElement from "./Component/AbilityElement.js";
 import FeeAppendixDetailElement from "./Component/FeeAppendixDetailElement.js";
-import ReactNotification from "react-notifications-component";
-import  {Base64} from 'js-base64';
+import ImportExcelModalCom from '../ImportExcelModal';
+import InputGridControl from "../../../../common/components/FormContainer/FormControl/InputGrid/InputGridControl.js";
+import ServiceAgreementInfo from "./ServiceAgreementInfo";
+import { formatDate } from '../../../../common/library/CommonLib';
+
 
 class DetailCom extends React.Component {
     constructor(props) {
         super(props);
+
+        this.handleExportFileTeamplate = this.handleExportFileTeamplate.bind(this);
+        this.handleImportFileAbility = this.handleImportFileAbility.bind(this);
+        this.handleImportFileFeeAppendix = this.handleImportFileFeeAppendix.bind(this);
         this.handleInputChangeObjItem = this.handleInputChangeObjItem.bind(this);
+        this.handleSetImportFileAbility = this.handleSetImportFileAbility.bind(this);
+        this.handleSetImportFileFeeAppendix = this.handleSetImportFileFeeAppendix.bind(this);
+        this.handleSubmitImportFileAbility = this.handleSubmitImportFileAbility.bind(this);
+        this.handleSubmitImportFileFeeAppendix = this.handleSubmitImportFileFeeAppendix.bind(this);
+
         this.state = {
             DataSource: {},
             CallAPIMessage: "",
@@ -67,7 +81,7 @@ class DetailCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadNewAPIPath, id).then((apiResult) => {
-           
+
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -77,24 +91,24 @@ class DetailCom extends React.Component {
             else {
                 const tempDataFeeAppendix = apiResult.ResultObject.FeeAppendix_ItemList.map((item, index) => {
                     let elementFeeAppendix = {
-                        "Tên Phụ lục" : item.FeeAppendixName,
-                        "Loại thời vụ" : item.ServiceSeasonTypeName,
-                        "Từ ngày" : item.ApplyFromDate,
-                        "Đến ngày" :  item.ApplyToDate,
+                        "Tên Phụ lục": item.FeeAppendixName,
+                        "Loại thời vụ": item.ServiceSeasonTypeName,
+                        "Từ ngày": item.ApplyFromDate,
+                        "Đến ngày": item.ApplyToDate,
                     };
-                  
+
                     return elementFeeAppendix;
 
                 })
                 const tempDataAbility = apiResult.ResultObject.Ability_ItemList.map((item, index) => {
                     let elementAbility = {
                         "Tên Phụ lục": item.ServiceSeasonTypeName,
-                        "Từ ngày" : item.FromDate,
-                        "Đến ngày" : item.ToDate,
+                        "Từ ngày": item.FromDate,
+                        "Đến ngày": item.ToDate,
                         "Theo tháng": item.MonthlyAbilityValue,
-                        "Theo ngày" : item.DailyAbilityValue,
+                        "Theo ngày": item.DailyAbilityValue,
                     };
-                    
+
                     return elementAbility;
 
                 })
@@ -164,16 +178,204 @@ class DetailCom extends React.Component {
         });
     }
 
+    handleExportFileTeamplate(result) {
+        this.addNotification(result.Message, result.IsError);
+    }
+
+    handleImportFileAbility() {
+        const input = document.getElementById("inputImportFile");
+        input.click();
+
+        input.addEventListener("change", () => {
+            readXlsxFile(input.files[0], { sheet: "data", schema: AbilitySchema }).then((data) => {
+                this.handleSetImportFileAbility(data);
+            }).catch(error => {
+                console.log("handleImportFileAbility", error);
+                alert("File vừa chọn lỗi. Vui lòng chọn file khác");
+            }).finally(() => {
+                input.value = "";
+            })
+        }, { once: true })
+    }
+
+    handleImportFileFeeAppendix() {
+        const input = document.getElementById("inputImportFile");
+        input.click();
+
+        input.addEventListener("change", () => {
+            readXlsxFile(input.files[0], { sheet: "data", schema: FeeAppendixSchema }).then((data) => {
+                this.handleSetImportFileFeeAppendix(data);
+            }).catch(error => {
+                console.log("handleImportFileFeeAppendix", error);
+                alert("File vừa chọn lỗi. Vui lòng chọn file khác");
+            }).finally(() => {
+                input.value = "";
+            })
+        }, { once: true })
+    }
+
     handleInputChangeObjItem(id, apiResult) {
-        if(apiResult.IsError){
+        if (apiResult.IsError) {
             this.showMessage(apiResult.Message);
         }
-        else{
+        else {
             this.addNotification(apiResult.Message, apiResult.IsError);
             this.callLoadData(id);
             this.props.hideModal();
         }
-        
+
+    }
+
+    handleSetImportFileAbility(data = { errors: [], rows: [] }) {
+        let dataSource = data.rows.map(item => {
+            return {
+                ...item,
+                Errors: ""
+            }
+        });
+
+        //#region check lỗi file excel
+        if (data.errors.length != 0) {
+            for (const item of data.errors) {
+                let errorText = "";
+
+                if (dataSource[item.row - 1].Errors == "") {
+                    errorText = item.column;
+                } else {
+                    errorText = `${dataSource[item.row - 1].Errors}, ${item.column}`
+                }
+                dataSource[item.row - 1].Errors = errorText;
+            }
+        }
+        //#endregion
+
+        //#region check lỗi trùng
+        for (let index = 0; index < dataSource.length; index++) {
+            const found = this.state.DataSource.Ability_ItemList.find(item => item.ServiceSeasonTypeID == dataSource[index].ServiceSeasonTypeID && formatDate(item.FromDate, true) == formatDate(dataSource[index].FromDate, true) && formatDate(item.ToDate, true) == formatDate(dataSource[index].ToDate, true));
+
+            if (found) {
+                if (dataSource[index].Errors == "") {
+                    dataSource[index].Errors = "Nhập trùng";
+                } else {
+                    dataSource[index].Errors = `Nhập trùng, ${dataSource[index].Errors}`;
+                }
+            }
+        }
+        //#endregion
+
+
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Kết quả nhập từ excel',
+            content: {
+                text: <ImportExcelModalCom
+                    dataSource={dataSource}
+                    listColumn={listColumnImportFile_Ability}
+                    onSubmit={this.handleSubmitImportFileAbility}
+                    PKColumnName={""}
+                    titleModal="Năng lực"
+                />
+            },
+            maxWidth: '90%'
+        })
+    }
+
+    handleSetImportFileFeeAppendix(data = { errors: [], rows: [] }) {
+        let dataSource = data.rows.map(item => {
+            return {
+                ...item,
+                Errors: ""
+            }
+        });
+
+        //#region check lỗi file excel
+        if (data.errors.length != 0) {
+            for (const item of data.errors) {
+                let errorText = "";
+
+                if (dataSource[item.row - 1].Errors == "") {
+                    errorText = item.column;
+                } else {
+                    errorText = `${dataSource[item.row - 1].Errors}, ${item.column}`
+                }
+                dataSource[item.row - 1].Errors = errorText;
+            }
+        }
+        //#endregion
+
+        //#region check lỗi trùng
+        for (let index = 0; index < dataSource.length; index++) {
+            const found = this.state.DataSource.FeeAppendix_ItemList.find(item => item.ServiceSeasonTypeID == dataSource[index].ServiceSeasonTypeID && item.PNServicePriceTableID == dataSource[index].PNServicePriceTableID);
+
+            if (found) {
+                if (dataSource[index].Errors == "") {
+                    dataSource[index].Errors = "Nhập trùng";
+                } else {
+                    dataSource[index].Errors = `Nhập trùng, ${dataSource[index].Errors}`;
+                }
+            }
+        }
+        //#endregion
+
+
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Kết quả nhập từ excel',
+            content: {
+                text: <ImportExcelModalCom
+                    dataSource={dataSource}
+                    listColumn={listColumnImportFile_FeeAppendix}
+                    onSubmit={this.handleSubmitImportFileFeeAppendix}
+                    PKColumnName={""}
+                    titleModal="Phụ lục biểu phí"
+                />
+            },
+            maxWidth: '90%'
+        })
+    }
+
+    handleSubmitImportFileAbility(submitData = []) {
+        const uptSubmitData = submitData.map(item => {
+            return {
+                ...item,
+                CreatedUser: this.props.AppInfo.LoginInfo.Username,
+                IsActived: true,
+                IsSystem: false,
+                ServiceAgreementID: this.state.DataSource.ServiceAgreementID,
+                SignedDate: this.state.DataSource.SignedDate
+            }
+        });
+
+        this.props.callFetchAPI(APIHostName, AddListAPIAbilitiPath, uptSubmitData).then(apiResult => {
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.Message);
+            } else {
+                this.addNotification(apiResult.Message, apiResult.IsError);
+                this.callLoadData(this.state.DataSource.ServiceAgreementID);
+                this.props.hideModal();
+            }
+        });
+    }
+
+    handleSubmitImportFileFeeAppendix(submitData) {
+        const uptSubmitData = submitData.map(item => {
+            return {
+                ...item,
+                CreatedUser: this.props.AppInfo.LoginInfo.Username,
+                IsActived: true,
+                IsSystem: false,
+                ServiceAgreementID: this.state.DataSource.ServiceAgreementID,
+                SignedDate: this.state.DataSource.SignedDate
+            }
+        });
+
+        this.props.callFetchAPI(APIHostName, AddListAPIFeeAppendixPath, uptSubmitData).then(apiResult => {
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.Message);
+            } else {
+                this.addNotification(apiResult.Message, apiResult.IsError);
+                this.callLoadData(this.state.DataSource.ServiceAgreementID);
+                this.props.hideModal();
+            }
+        });
     }
 
     handleItemInsertAbiliti() {
@@ -268,63 +470,83 @@ class DetailCom extends React.Component {
         const { IsSystem } = this.state;
         if (this.state.IsLoadDataComplete) {
             return (
-                <div className="col-lg-12">
-                    <ReactNotification ref={this.notificationDOMRef} />
-                    <div className="card">
-                        <h4 className="card-title">
-                            <strong>{TitleFormDetail}</strong>
-                        </h4>
-                        <div className="card-body">
+                <React.Fragment>
+                    <div className="col-lg-12">
+                        <ReactNotification ref={this.notificationDOMRef} />
 
-                            <ServiceAgreementInfo
-                                ServiceAgreementInfo={this.state.ServiceAgreementInfo}
-                            />
+                        <div className="card">
+                            <h4 className="card-title">
+                                <strong>{TitleFormDetail}</strong>
+                            </h4>
+                            <div className="card-body">
 
-                            <InputGridControl
-                                name="FeeAppendix_ItemList"
-                                controltype="InputGridControl"
-                                title={TitleFromFeeAppendix}
-                                IDSelectColumnName={"FeeAppendixID"}
-                                listColumn={DataGridColumnItemListFeeAppendix}
-                                PKColumnName={PKColumnNameFeeAppendix}
-                                dataSource={this.state.ServiceAgreementInfo.FeeAppendix_ItemList}
-                                onInsertClick={this.handleItemInsertFeeAppendix.bind(this)}
-                                onEditClick={this.handleItemEditFeeAppendix.bind(this)}
-                                onDeleteClick={this.handleItemDeleteFeeAppendix.bind(this)}
-                                ref={this.gridref}
-                                IsExportFile={true}
-                                DataExport={this.state.dataExportFeeAppendix}
-                                fileName={TitleFromFeeAppendix}
-                                onExportFile={this.handleExportFileFeeAppendix.bind(this)}
-                                isSystem= {IsSystem}
-                            />
+                                <ServiceAgreementInfo
+                                    ServiceAgreementInfo={this.state.ServiceAgreementInfo}
+                                />
 
-                            <InputGridControl
-                                name="Ability_ItemList"
-                                controltype="InputGridControl"
-                                title={TitleFromAbiliti}
-                                IDSelectColumnName={"AbilityID"}
-                                PKColumnName={PKColumnNameAbiliti}
-                                listColumn={DataGridColumnItemListAbiliti}
-                                dataSource={this.state.ServiceAgreementInfo.Ability_ItemList}
-                                onInsertClick={this.handleItemInsertAbiliti.bind(this)}
-                                onEditClick={this.handleItemEditAbiliti.bind(this)}
-                                onDeleteClick={this.handleItemDeleteAbiliti.bind(this)}
-                                ref={this.gridref}
-                                IsExportFile={true}
-                                DataExport={this.state.dataExportAbility}
-                                fileName={TitleFromAbiliti}
-                                onExportFile={this.handleExportFileAbility.bind(this)}
-                                isSystem= {IsSystem}
-                            />
+                                <InputGridControl
+                                    controltype="InputGridControl"
+                                    DataExport={this.state.dataExportFeeAppendix}
+                                    dataSource={this.state.ServiceAgreementInfo.FeeAppendix_ItemList}
+                                    DataTemplateExport={DataTemplateExportFeeAppendix}
+                                    fileName={TitleFromFeeAppendix}
+                                    fileNameTemplate="Phụ lục biểu phí"
+                                    IDSelectColumnName={"FeeAppendixID"}
+                                    isCustomImportFile={true}
+                                    IsExportFile={true}
+                                    isExportFileTemplate={true}
+                                    isImportFile={true}
+                                    isSystem={IsSystem}
+                                    listColumn={DataGridColumnItemListFeeAppendix}
+                                    name="FeeAppendix_ItemList"
+                                    onDeleteClick={this.handleItemDeleteFeeAppendix.bind(this)}
+                                    onEditClick={this.handleItemEditFeeAppendix.bind(this)}
+                                    onExportFile={this.handleExportFileFeeAppendix.bind(this)}
+                                    onExportFileTemplate={this.handleExportFileTeamplate}
+                                    onImportFile={this.handleImportFileFeeAppendix}
+                                    onInsertClick={this.handleItemInsertFeeAppendix.bind(this)}
+                                    PKColumnName={PKColumnNameFeeAppendix}
+                                    ref={this.gridref}
+                                    title={TitleFromFeeAppendix}
+                                />
+
+                                <InputGridControl
+                                    controltype="InputGridControl"
+                                    DataExport={this.state.dataExportAbility}
+                                    dataSource={this.state.ServiceAgreementInfo.Ability_ItemList}
+                                    DataTemplateExport={DataTemplateExportAbility}
+                                    fileName={TitleFromAbiliti}
+                                    fileNameTemplate="Năng lực"
+                                    IDSelectColumnName={"AbilityID"}
+                                    isCustomImportFile={true}
+                                    IsExportFile={true}
+                                    isExportFileTemplate={true}
+                                    isImportFile={true}
+                                    isSystem={IsSystem}
+                                    listColumn={DataGridColumnItemListAbiliti}
+                                    name="Ability_ItemList"
+                                    onDeleteClick={this.handleItemDeleteAbiliti.bind(this)}
+                                    onEditClick={this.handleItemEditAbiliti.bind(this)}
+                                    onExportFile={this.handleExportFileAbility.bind(this)}
+                                    onExportFileTemplate={this.handleExportFileTeamplate}
+                                    onImportFile={this.handleImportFileAbility}
+                                    onInsertClick={this.handleItemInsertAbiliti.bind(this)}
+                                    PKColumnName={PKColumnNameAbiliti}
+                                    ref={this.gridref}
+                                    title={TitleFromAbiliti}
+                                />
+                            </div>
+
+                            <footer className="card-footer text-right">
+                                <Link to="/ServiceAgreement">
+                                    <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button>
+                                </Link>
+                            </footer>
                         </div>
-                        <footer className="card-footer text-right">
-                            <Link to="/ServiceAgreement">
-                                <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button>
-                            </Link>
-                        </footer>
                     </div>
-                </div>
+
+                    <input type="file" id="inputImportFile" hidden />
+                </React.Fragment>
             );
         }
         return (

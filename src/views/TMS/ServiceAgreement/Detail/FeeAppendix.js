@@ -40,7 +40,6 @@ class FeeAppendixCom extends Component {
     }
 
     handleItemInsert() {
-        console.log('handleItemInsert FeeAppendix')
     }
 
     handleonChangePage() {
@@ -49,8 +48,6 @@ class FeeAppendixCom extends Component {
 
 
     render() {
-
-        console.log('FeeAppendixCom', this.props, this.props.ServiceAgreementID)
         const ServiceAgreementID = this.props.ServiceAgreementID;
 
         return (

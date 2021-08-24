@@ -45,8 +45,6 @@ class FeeAppendixDetailElementCom extends Component {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         let lstMLObject = []
 
-        // console.log('MLObject', MLObject)
-        // console.log('length', MLObject.TechSpecsValueID.length)
         if (MLObject.TechSpecsID == -1) {
             let temp = {};
 
@@ -70,7 +68,7 @@ class FeeAppendixDetailElementCom extends Component {
         else {
             if (MLObject.TechSpecsValueID.length != undefined && MLObject.TechSpecsValueID.length > 0) {
                 let itemNew = MLObject.TechSpecsValueID.map((item) => {
-                     if(item != -1){
+                    if (item != -1) {
                         let temp = {};
 
                         temp.FeeAppendixID = MLObject.FeeAppendixID;
@@ -89,18 +87,18 @@ class FeeAppendixDetailElementCom extends Component {
                         temp.TechSpecsValueID = item;
                         temp.ApplyFromDate = MLObject.ApplyFromDate;
                         lstMLObject.push(temp)
-                     }
-                    
+                    }
+
                 })
             }
             else {
                 let temp = {};
                 let valuesTechSpecsID;
                 if (MLObject.TechSpecsValueID.length != undefined || MLObject.TechSpecsValueID.length == 0) {
-                     valuesTechSpecsID = -1
+                    valuesTechSpecsID = -1
                 }
                 else {
-                     valuesTechSpecsID = MLObject.TechSpecsValueID
+                    valuesTechSpecsID = MLObject.TechSpecsValueID
                 }
                 temp.FeeAppendixID = MLObject.FeeAppendixID;
                 temp.CreatedUser = MLObject.CreatedUser;
@@ -120,7 +118,7 @@ class FeeAppendixDetailElementCom extends Component {
                 lstMLObject.push(temp)
             }
         }
-        // console.log('arr', lstMLObject)
+
         this.props.callFetchAPI(APIHostName, AddFeeAppendixDetailPathNew, lstMLObject).then(apiResult => {
             this.props.onInputChangeObj(this.props.dataSource.FeeAppendixID, apiResult);
         });

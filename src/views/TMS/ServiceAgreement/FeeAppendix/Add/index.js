@@ -35,21 +35,19 @@ class AddCom extends React.Component {
     }
 
     componentDidMount() {
-        console.log(' FeeAppendix add 11111', this.props)
         this.props.updatePagePath(AddPagePath);
         this.getServiceAgreementById(this.props.location.state.params);
     }
 
     handleSubmit(formData, MLObject) {
         const { ServiceAgreement } = this.state;
-        
+
 
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.SignedDate = ServiceAgreement.SignedDate;
         MLObject.ServiceAgreementID = ServiceAgreement.ServiceAgreementID;
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
-            console.log('handleSubmit FeeAppendix', MLObject, apiResult)
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
 
@@ -59,8 +57,6 @@ class AddCom extends React.Component {
     getServiceAgreementById(id) {
 
         this.props.callFetchAPI(APIHostName, 'api/ServiceAgreement/Load', id).then(apiResult => {
-            console.log('getServiceAgreementById', apiResult)
-
             if (!apiResult.IsError) {
                 this.setState({
                     ServiceAgreement: apiResult.ResultObject,

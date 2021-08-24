@@ -289,10 +289,6 @@ class EditCom extends React.Component {
 
         })
 
-        // console.log("formData, MLObject", formData, MLObject)
-
-
-
         if (formData.dtExpiredDate.value.length > 0) {
 
             const SignedDate = new Date(formData.dtSignedDate.value);
@@ -314,7 +310,7 @@ class EditCom extends React.Component {
 
                 let ExpiredDate = new Date(formData.dtExpiredDate.value);
                 let ExtendedDate = new Date(formData.dtExtendedDate.value);
-                // console.log("11",ExtendedDate > ExpiredDate)
+
                 if (ExpiredDate < ExtendedDate) {
 
                     formData.dtExtendedDate.ErrorLst.IsValidatonError = false;

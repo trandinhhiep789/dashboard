@@ -42,7 +42,7 @@ class ImportExcelModalCom extends React.Component {
 
         return (
             <React.Fragment>
-                <h5 className="d-flex mb-2">Danh sách hợp đồng dịch vụ<i><small className="text-danger">&nbsp;(Chỉ chấp nhận những dòng hợp lệ)</small></i></h5>
+                <h5 className="d-flex mb-2">{this.props.titleModal}<i><small className="text-danger">&nbsp;(Chỉ chấp nhận những dòng hợp lệ)</small></i></h5>
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col d-flex justify-content-between align-items-center">
@@ -68,8 +68,10 @@ class ImportExcelModalCom extends React.Component {
                     headingTitle={this.returnHeadingTitle()}
                     IsAutoPaging={true}
                     isHideHeaderToolbar={true}
-                    listColumn={DataGridColumnList_ImportFile}
-                    PKColumnName={PKColumnName}
+                    // listColumn={DataGridColumnList_ImportFile}
+                    listColumn={this.props.listColumn}
+                    // PKColumnName={PKColumnName}
+                    PKColumnName={this.props.PKColumnName}
                     RowsPerPage={10}
                 />
             </React.Fragment>
@@ -78,7 +80,11 @@ class ImportExcelModalCom extends React.Component {
 }
 
 ImportExcelModalCom.defaultProps = {
-    dataSource: []
+    dataSource: [],
+    listColumn: [],
+    onSubmit: () => { },
+    PKColumnName: "",
+    titleModal: ""
 };
 
 const mapDispatchToProps = dispatch => {

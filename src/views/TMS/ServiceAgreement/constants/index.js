@@ -123,25 +123,95 @@ export const DataGridColumnItemListFeeAppendix = [
     }
 ];
 
+export const DataTemplateExportFeeAppendix = [
+    {
+        "Loại Thời Vụ": "1",
+        "Tên Phụ Lục": "Phụ lục 1",
+        "Từ ngày": new Date(),
+        "Đến ngày": new Date(),
+        "Bảng giá": "1",
+        "Mô tả": "Mô tả"
+    }
+];
+
+export const listColumnImportFile_FeeAppendix = [
+    {
+        Name: "ServiceSeasonTypeID",
+        Type: "text",
+        Caption: "Loại thời vụ",
+        DataSourceMember: "ServiceSeasonTypeID"
+    },
+    {
+        Name: "FeeAppendixName",
+        Type: "text",
+        Caption: "Tên phụ lục",
+        DataSourceMember: "FeeAppendixName"
+    },
+    {
+        Name: "ApplyFromDate",
+        Type: "date",
+        Caption: "Từ ngày",
+        DataSourceMember: "ApplyFromDate"
+    },
+    {
+        Name: "ApplyToDate",
+        Type: "date",
+        Caption: "Đến ngày",
+        DataSourceMember: "ApplyToDate"
+    },
+    {
+        Name: "PNServicePriceTableID",
+        Type: "text",
+        Caption: "Bảng giá",
+        DataSourceMember: "PNServicePriceTableID"
+    },
+    {
+        Name: "Description",
+        Type: "text",
+        Caption: "Mô tả",
+        DataSourceMember: "Description"
+    },
+    {
+        Name: "Errors",
+        Type: "text",
+        Caption: "Cột lỗi",
+        DataSourceMember: "Errors"
+    }
+];
+
+export const DataTemplateExportAbility = [
+    {
+        "Loại mùa vụ": "1",
+        "Từ ngày": new Date(),
+        "Đến ngày": new Date(),
+        "Theo tháng": "1",
+        "Theo ngày": "1",
+        "Ghi chú": "Ghi chú"
+    }
+];
+
 export const DataGridColumnItemListAbiliti = [
     {
         Name: "ServiceSeasonTypeName",
-        Type: "texttolink",
+        // Type: "texttolink",
+        Type: "text",
         Caption: " Loại mùa vụ",
         DataSourceMember: "ServiceSeasonTypeName",
-        Link: "/ServiceAgreement/Abiliti/Detail/",
+        // Link: "/ServiceAgreement/Abiliti/Detail/",
         Width: 150,
     },
     {
         Name: "FromDate",
-        Type: "date",
+        // Type: "date",
+        Type: "dateNew",
         Caption: "Từ ngày",
         DataSourceMember: "FromDate",
         Width: 250,
     },
     {
         Name: "ToDate",
-        Type: "date",
+        // Type: "date",
+        Type: "dateNew",
         Caption: "Đến ngày",
         DataSourceMember: "ToDate",
         Width: 250,
@@ -931,4 +1001,111 @@ export const listColumnStore2 = [
         Name: "IsSystem",
         Type: "checkicon",
     }
-]
+];
+
+export const FeeAppendixSchema = {
+    'Loại Thời Vụ': {
+        prop: 'ServiceSeasonTypeID',
+        type: Number,
+        required: true
+    },
+    'Tên Phụ Lục': {
+        prop: 'FeeAppendixName',
+        type: String,
+        required: true
+    },
+    'Từ ngày': {
+        prop: 'ApplyFromDate',
+        type: Date,
+        required: true
+    },
+    'Đến ngày': {
+        prop: 'ApplyToDate',
+        type: Date,
+        required: true
+    },
+    'Bảng giá': {
+        prop: 'PNServicePriceTableID',
+        type: Number,
+        required: true
+    },
+    'Mô tả': {
+        prop: 'Description',
+        type: String
+    }
+};
+
+export const AbilitySchema = {
+    'Loại mùa vụ': {
+        prop: 'ServiceSeasonTypeID',
+        type: Number,
+        required: true
+    },
+    'Từ ngày': {
+        prop: 'FromDate',
+        type: Date,
+        required: true
+    },
+    'Đến ngày': {
+        prop: 'ToDate',
+        type: Date,
+        required: true
+    },
+    'Theo tháng': {
+        prop: 'MonthlyAbilityValue',
+        type: Number
+    },
+    'Theo ngày': {
+        prop: 'DailyAbilityValue',
+        type: Number
+    },
+    'Ghi chú': {
+        prop: 'Note',
+        type: String
+    }
+};
+
+export const listColumnImportFile_Ability = [
+    {
+        Name: "ServiceSeasonTypeID",
+        Type: "text",
+        Caption: "Loại mùa vụ",
+        DataSourceMember: "ServiceSeasonTypeID"
+    },
+    {
+        Name: "FromDate",
+        Type: "date",
+        Caption: "Từ ngày",
+        DataSourceMember: "FromDate"
+    },
+    {
+        Name: "ToDate",
+        Type: "date",
+        Caption: "Đến ngày",
+        DataSourceMember: "ToDate"
+    },
+    {
+        Name: "MonthlyAbilityValue",
+        Type: "text",
+        Caption: "Theo tháng",
+        DataSourceMember: "MonthlyAbilityValue"
+    },
+    {
+        Name: "DailyAbilityValue",
+        Type: "text",
+        Caption: "Theo ngày",
+        DataSourceMember: "DailyAbilityValue"
+    },
+    {
+        Name: "Note",
+        Type: "text",
+        Caption: "Ghi chú",
+        DataSourceMember: "Note"
+    },
+    {
+        Name: "Errors",
+        Type: "text",
+        Caption: "Cột lỗi",
+        DataSourceMember: "Errors"
+    }
+];

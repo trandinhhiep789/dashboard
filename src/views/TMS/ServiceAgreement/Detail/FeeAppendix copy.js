@@ -26,10 +26,8 @@ class FeeAppendixCom extends Component {
 
 
     render() {
-        console.log('FeeAppendixCom',this.props.FeeAppendix)
-
         return (
-               <div className="card">
+            <div className="card">
                 <h4 className="card-title"><strong>Phụ lục biểu phí</strong></h4>
                 <div className="card-body">
                     <div className="form-row">
