@@ -193,7 +193,7 @@ class ServiceAgreementInfoCom extends Component {
                         dataSource={this.props.ServiceAgreementInfo.ServiceAgreement_AreaList}
                         headingTitle="Danh sách khu vực áp dụng hợp đồng"
                         IDSelectColumnName={""}
-                        IsAutoPaging={true}
+                        IsAutoPaging={false}
                         IsExportFile={false}
                         isHideHeaderToolbar={false}
                         IsPrint={false}
@@ -212,7 +212,7 @@ class ServiceAgreementInfoCom extends Component {
                         dataSource={this.props.ServiceAgreementInfo.ServiceAgreement_StoreList}
                         headingTitle="Danh sách kho áp dụng hợp đồng"
                         IDSelectColumnName={""}
-                        IsAutoPaging={true}
+                        IsAutoPaging={false}
                         IsExportFile={false}
                         isHideHeaderToolbar={false}
                         IsPrint={false}

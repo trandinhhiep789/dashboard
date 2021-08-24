@@ -365,7 +365,7 @@ export const DataGridColumnList = [
         // Width: 100
     },
     {
-        Caption: "Đã thanh lý hợp đồng",
+        Caption: "Đã thanh lý",
         DataSourceMember: "IsLiquidated",
         Name: "IsLiquidated",
         Type: "checkicon",

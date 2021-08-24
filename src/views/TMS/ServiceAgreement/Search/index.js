@@ -194,9 +194,9 @@ class SearchCom extends React.Component {
                         "Đã thanh lý hợp đồng": item.IsLiquidated == false ? 0 : 1,
                         "Ngày thanh lý hợp đồng": formatDate(item.Liquidateddate, true),
                         "Đã ký quỹ": item.IsDeposited == false ? 0 : 1,
-                        "Số tiền ký quỹ": item.DepositMoney,
-                        "Ngày ký quỹ": formatDate(item.DepositedDate, true),
-                        "Ghi chú ký quỹ": item.DepositNote,
+                        "Số tiền ký quỹ": item.dePoSitMoney,
+                        "Ngày ký quỹ": formatDate(item.dePOSitedDate, true),
+                        "Ghi chú ký quỹ": item.dePoSitNote,
                         "Mô tả": item.Description,
                     };
 

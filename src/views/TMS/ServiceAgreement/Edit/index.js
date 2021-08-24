@@ -170,11 +170,11 @@ class EditCom extends React.Component {
         //#endregion
 
         //#region xử lý ServiceAgreementStore data
-        const cloneServiceAgreementStoreSubmit = this.state.ServiceAgreementStoreSubmit.filter(item => !item.IsDeleted);
-        if (cloneServiceAgreementStoreSubmit.length == 0) {
-            this.addNotification("Danh sách kho áp dụng hợp đồng không được để trống", true);
-            return;
-        }
+        // const cloneServiceAgreementStoreSubmit = this.state.ServiceAgreementStoreSubmit.filter(item => !item.IsDeleted);
+        // if (cloneServiceAgreementStoreSubmit.length == 0) {
+        //     this.addNotification("Danh sách kho áp dụng hợp đồng không được để trống", true);
+        //     return;
+        // }
 
         const uptServiceAgreement_StoreList = this.state.ServiceAgreementStoreSubmit.map(item => {
             if (item.IsDeleted) {
