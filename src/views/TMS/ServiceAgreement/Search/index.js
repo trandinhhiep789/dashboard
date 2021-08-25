@@ -27,6 +27,7 @@ import {
     AddLink,
     AddLogAPIPath,
     APIHostName,
+    DataGridColumnList_ImportFile,
     DataGridColumnList,
     DataMasterTemplateExport,
     DeleteNewAPIPath,
@@ -38,7 +39,7 @@ import {
     SearchAPIPath,
     SearchElementList,
     SearchMLObjectDefinition,
-    TitleFormSearch,
+    TitleFormSearch
 } from "../constants";
 
 class SearchCom extends React.Component {
@@ -193,9 +194,9 @@ class SearchCom extends React.Component {
                         "Đã thanh lý hợp đồng": item.IsLiquidated == false ? 0 : 1,
                         "Ngày thanh lý hợp đồng": formatDate(item.Liquidateddate, true),
                         "Đã ký quỹ": item.IsDeposited == false ? 0 : 1,
-                        "Số tiền ký quỹ": item.DepositMoney,
-                        "Ngày ký quỹ": formatDate(item.DepositedDate, true),
-                        "Ghi chú ký quỹ": item.DepositNote,
+                        "Số tiền ký quỹ": item.dePoSitMoney,
+                        "Ngày ký quỹ": formatDate(item.dePOSitedDate, true),
+                        "Ghi chú ký quỹ": item.dePoSitNote,
                         "Mô tả": item.Description,
                     };
 
@@ -396,7 +397,10 @@ class SearchCom extends React.Component {
             content: {
                 text: <ImportExcelModalCom
                     dataSource={dataSource}
+                    listColumn={DataGridColumnList_ImportFile}
                     onSubmit={this.handleSubmitImportFile}
+                    PKColumnName={PKColumnName}
+                    titleModal="Danh sách hợp đồng dịch vụ"
                 />
             },
             maxWidth: '100%'

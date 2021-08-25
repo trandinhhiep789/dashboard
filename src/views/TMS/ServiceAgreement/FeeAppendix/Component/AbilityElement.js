@@ -18,7 +18,6 @@ class AbilityElementCom extends Component {
         }
     }
     handleSubmit(AbilityElementCom) {
-        console.log("AbilityElementCom", AbilityElementCom)
     }
 
     render() {

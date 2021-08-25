@@ -29,7 +29,6 @@ class AbilitiCom extends Component {
     }
 
     render() {
-        console.log('â', this.props, this.props.Abiliti)
         return (
             <div className="card">
                 <h4 className="card-title"><strong>Năng lực</strong></h4>

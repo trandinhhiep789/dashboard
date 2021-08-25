@@ -363,6 +363,11 @@ class InputGridControlCom extends Component {
     }
 
     handleImportFile() {
+        if (this.props.isCustomImportFile) {
+            this.props.onImportFile();
+            return;
+        }
+
         const input = document.getElementById('buttonImportFileInputGrid');
         input.click();
 
@@ -587,6 +592,12 @@ class InputGridControlCom extends Component {
         );
     }
 }
+
+InputGridControlCom.defaultProps = {
+    isCustomImportFile: false,
+    onImportFile: () => { }
+};
+
 //#region Map
 const mapStateToProps = state => {
     return {

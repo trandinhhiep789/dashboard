@@ -10,12 +10,14 @@ export const IDSelectColumnNameFeeAppendix = "chkSelect";
 export const AddLinkFeeAppendix = "/ServiceAgreement/FeeAppendix/Add";
 
 export const AddAPIAbilitiPath = "api/ServiceAgreement_Ability/Add";
+export const AddListAPIAbilitiPath = "api/ServiceAgreement_Ability/AddList";
 export const EditAPIAbilitiPath = "api/ServiceAgreement_Ability/Update";
 
-export const AddAPIFeeAppendixPath= "api/ServiceAgreement_FeeAppendix/Add";
-export const EditAPIFeeAppendixPath= "api/ServiceAgreement_FeeAppendix/Update";
+export const AddAPIFeeAppendixPath = "api/ServiceAgreement_FeeAppendix/Add";
+export const AddListAPIFeeAppendixPath = "api/ServiceAgreement_FeeAppendix/AddList";
+export const EditAPIFeeAppendixPath = "api/ServiceAgreement_FeeAppendix/Update";
 
-export const DataGridColumnItemListFeeAppendix=[
+export const DataGridColumnItemListFeeAppendix = [
     {
         Name: "FeeAppendixID",
         Type: "checkbox",
@@ -64,7 +66,7 @@ export const DataGridColumnItemListFeeAppendix=[
     }
 ]
 
-export const DataGridColumnItemListAbiliti=[
+export const DataGridColumnItemListAbiliti = [
     {
         Name: "AbilityID",
         Type: "checkbox",
@@ -117,7 +119,7 @@ export const DataGridColumnItemListAbiliti=[
     }
 ]
 
-export const MLObjectAbilitiItem=[
+export const MLObjectAbilitiItem = [
     {
         Name: "AbilityID",
         DefaultValue: "",
@@ -125,7 +127,6 @@ export const MLObjectAbilitiItem=[
         DataSourceMember: "AbilityID"
     },
     {
-        
         Name: "ServiceAgreementID",
         DefaultValue: "",
         BindControlName: "cbServiceAgreementID",
@@ -163,30 +164,27 @@ export const MLObjectAbilitiItem=[
         DataSourceMember: "DailyAbilityValue"
     },
     {
-        
         Name: "Note",
         DefaultValue: "",
         BindControlName: "txtNote",
         DataSourceMember: "Note"
     },
     {
-        
         Name: "IsActived",
         DefaultValue: "",
         BindControlName: "ckIsActived",
         DataSourceMember: "IsActived"
     },
     {
-        
         Name: "IsSystem",
         DefaultValue: "",
         BindControlName: "ckIsSystem",
         DataSourceMember: "IsSystem"
     },
-    
+
 ]
 
-export const MLObjectFeeAppendixDetailItem=[
+export const MLObjectFeeAppendixDetailItem = [
     {
         Name: "FeeAppendixID",
         DefaultValue: "",

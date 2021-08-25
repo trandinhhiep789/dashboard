@@ -63,11 +63,9 @@ class SearchCom extends React.Component {
     }
 
     handleDelete(id) {
-        console.log('handleDelete', id)
     }
 
     handleonChangePage(pageNum) {
-        console.log('handleonChangePage', pageNum)
 
     }
 
@@ -127,11 +125,11 @@ class SearchCom extends React.Component {
                 SearchKey: "@EXPIREDDATE",
                 SearchValue: MLObject.ExpiredDate
             }
-         
+
         ];
 
-        this.setState({ 
-            SearchData: DataSearch 
+        this.setState({
+            SearchData: DataSearch
         });
 
         this.callSearchData(DataSearch);

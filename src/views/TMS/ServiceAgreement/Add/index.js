@@ -124,10 +124,10 @@ class AddCom extends React.Component {
             return;
         }
 
-        if (this.state.ServiceAgreementStoreSubmit.length == 0) {
-            this.addNotification("Danh sách kho áp dụng hợp đồng không được để trống", true);
-            return;
-        }
+        // if (this.state.ServiceAgreementStoreSubmit.length == 0) {
+        //     this.addNotification("Danh sách kho áp dụng hợp đồng không được để trống", true);
+        //     return;
+        // }
 
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.DeputyUserName = MLObject.ShipmentOrder_DeliverUserList != undefined ? MLObject.ShipmentOrder_DeliverUserList[0].UserName : "";
@@ -136,6 +136,7 @@ class AddCom extends React.Component {
 
         MLObject.ServiceAgreementNumber = MLObject.ServiceAgreementNumber.replace(/\s/g, '')
 
+        //#region danh sách khu vực
         const ServiceAgreement_AreaList = this.state.ServiceAgreementAreaSubmit.map(item => {
             return {
                 ...item,
@@ -143,7 +144,9 @@ class AddCom extends React.Component {
             }
         })
         MLObject.ServiceAgreement_AreaList = ServiceAgreement_AreaList;
+        //#endregion
 
+        //#region danh sách kho
         const ServiceAgreement_StoreList = this.state.ServiceAgreementStoreSubmit.map(item => {
             return {
                 ...item,
@@ -151,6 +154,7 @@ class AddCom extends React.Component {
             }
         })
         MLObject.ServiceAgreement_StoreList = ServiceAgreement_StoreList;
+        //#endregion
 
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });

@@ -170,11 +170,11 @@ class EditCom extends React.Component {
         //#endregion
 
         //#region xử lý ServiceAgreementStore data
-        const cloneServiceAgreementStoreSubmit = this.state.ServiceAgreementStoreSubmit.filter(item => !item.IsDeleted);
-        if (cloneServiceAgreementStoreSubmit.length == 0) {
-            this.addNotification("Danh sách kho áp dụng hợp đồng không được để trống", true);
-            return;
-        }
+        // const cloneServiceAgreementStoreSubmit = this.state.ServiceAgreementStoreSubmit.filter(item => !item.IsDeleted);
+        // if (cloneServiceAgreementStoreSubmit.length == 0) {
+        //     this.addNotification("Danh sách kho áp dụng hợp đồng không được để trống", true);
+        //     return;
+        // }
 
         const uptServiceAgreement_StoreList = this.state.ServiceAgreementStoreSubmit.map(item => {
             if (item.IsDeleted) {
@@ -289,10 +289,6 @@ class EditCom extends React.Component {
 
         })
 
-        // console.log("formData, MLObject", formData, MLObject)
-
-
-
         if (formData.dtExpiredDate.value.length > 0) {
 
             const SignedDate = new Date(formData.dtSignedDate.value);
@@ -314,7 +310,7 @@ class EditCom extends React.Component {
 
                 let ExpiredDate = new Date(formData.dtExpiredDate.value);
                 let ExtendedDate = new Date(formData.dtExtendedDate.value);
-                // console.log("11",ExtendedDate > ExpiredDate)
+
                 if (ExpiredDate < ExtendedDate) {
 
                     formData.dtExtendedDate.ErrorLst.IsValidatonError = false;
