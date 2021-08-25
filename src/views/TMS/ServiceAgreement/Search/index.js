@@ -12,11 +12,12 @@ import { callGetCache } from "../../../../actions/cacheAction";
 import { formatDate } from "../../../../common/library/CommonLib.js";
 import { MessageModal } from "../../../../common/components/Modal";
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
+import { showModal } from '../../../../actions/modal';
 import { updatePagePath } from "../../../../actions/pageAction";
 import DataGrid from "../../../../common/components/DataGrid";
-import ImportExcelModalCom from '../ImportExcelModal';
+import ExportExcelModalCom from '../ExportExcelModal';
+import ImportSelectionModalCom from '../ImportExcelModal/ImportSelectionModal';
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
-import { showModal } from '../../../../actions/modal';
 import {
     SERVICEAGREEMENT_DELETE,
     SERVICEAGREEMENT_EXPORT,
@@ -181,6 +182,7 @@ class SearchCom extends React.Component {
 
 
                     let element = {
+                        "Mã hợp đồng": item.ServiceAgreementID,
                         "Số hợp đồng": item.ServiceAgreementNumber,
                         "Loại hợp đồng": item.ServiceTypeID + "-" + item.ServiceTypeName,
                         "Loại dịch vụ": item.ServiceTypeName,
@@ -313,19 +315,27 @@ class SearchCom extends React.Component {
     }
 
     handleImportFile() {
-        const input = document.getElementById("inputImportFile");
-        input.click();
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Nhập dữ liệu',
+            content: {
+                text: <ImportSelectionModalCom />
+            },
+            maxWidth: '30%'
+        })
 
-        input.addEventListener("change", () => {
-            readXlsxFile(input.files[0], { sheet: "Danh sách hợp đồng dịch vụ", schema }).then((data) => {
-                this.handleSetImportData(data);
-            }).catch(error => {
-                console.log("handleImportFile", error);
-                alert("File vừa chọn lỗi. Vui lòng chọn file khác")
-            }).finally(() => {
-                input.value = "";
-            })
-        }, { once: true })
+        // const input = document.getElementById("inputImportFile");
+        // input.click();
+
+        // input.addEventListener("change", () => {
+        //     readXlsxFile(input.files[0], { sheet: "Danh sách hợp đồng dịch vụ", schema }).then((data) => {
+        //         this.handleSetImportData(data);
+        //     }).catch(error => {
+        //         console.log("handleImportFile", error);
+        //         alert("File vừa chọn lỗi. Vui lòng chọn file khác")
+        //     }).finally(() => {
+        //         input.value = "";
+        //     })
+        // }, { once: true })
 
         //#region 
         // if (errors.length > 0) {
@@ -347,64 +357,52 @@ class SearchCom extends React.Component {
     }
 
     handleExportFileTemplate() {
-        try {
-            const ws = XLSX.utils.json_to_sheet([{}]);
-            XLSX.utils.sheet_add_json(ws, DataMasterTemplateExport);
-
-            const wb = {
-                Sheets: { "Danh sách hợp đồng dịch vụ": ws },
-                SheetNames: ["Danh sách hợp đồng dịch vụ"]
-            };
-            const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-            const data = new Blob(
-                [excelBuffer],
-                { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' }
-            );
-            FileSaver.saveAs(data, "Danh sách hợp đồng dịch vụ.xlsx");
-
-            this.addNotification("Xuất file thành công!", false);
-        } catch (error) {
-            this.addNotification("Lỗi xuất file!", true);
-        }
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Xuất file mẫu',
+            content: {
+                text: <ExportExcelModalCom />
+            },
+            maxWidth: '30%'
+        })
     }
 
     handleSetImportData(values) {
-        let dataSource = values.rows.map(item => {
-            const uptServiceAgreementNumber = item.ServiceAgreementNumber.replace(/\s/g, "");
-            return {
-                ...item,
-                ServiceAgreementNumber: uptServiceAgreementNumber,
-                Errors: ""
-            }
-        });
+        // let dataSource = values.rows.map(item => {
+        //     const uptServiceAgreementNumber = item.ServiceAgreementNumber.replace(/\s/g, "");
+        //     return {
+        //         ...item,
+        //         ServiceAgreementNumber: uptServiceAgreementNumber,
+        //         Errors: ""
+        //     }
+        // });
 
-        //#region set nội dung lỗi
-        if (values.errors.length != 0) {
-            for (const item of values.errors) {
-                let errorText = "";
-                if (dataSource[item.row - 1].Errors == "") {
-                    errorText = item.column;
-                } else {
-                    errorText = `${dataSource[item.row - 1].Errors}, ${item.column}`
-                }
-                dataSource[item.row - 1].Errors = errorText;
-            }
-        }
+        // //#region set nội dung lỗi
+        // if (values.errors.length != 0) {
+        //     for (const item of values.errors) {
+        //         let errorText = "";
+        //         if (dataSource[item.row - 1].Errors == "") {
+        //             errorText = item.column;
+        //         } else {
+        //             errorText = `${dataSource[item.row - 1].Errors}, ${item.column}`
+        //         }
+        //         dataSource[item.row - 1].Errors = errorText;
+        //     }
+        // }
         //#endregion
 
-        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: 'Kết quả nhập từ excel',
-            content: {
-                text: <ImportExcelModalCom
-                    dataSource={dataSource}
-                    listColumn={DataGridColumnList_ImportFile}
-                    onSubmit={this.handleSubmitImportFile}
-                    PKColumnName={PKColumnName}
-                    titleModal="Danh sách hợp đồng dịch vụ"
-                />
-            },
-            maxWidth: '100%'
-        })
+        // this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+        //     title: 'Kết quả nhập từ excel',
+        //     content: {
+        //         text: <ImportExcelModalCom
+        //             dataSource={dataSource}
+        //             listColumn={DataGridColumnList_ImportFile}
+        //             onSubmit={this.handleSubmitImportFile}
+        //             PKColumnName={PKColumnName}
+        //             titleModal="Danh sách hợp đồng dịch vụ"
+        //         />
+        //     },
+        //     maxWidth: '100%'
+        // })
     }
 
     handleSubmitImportFile(data) {
@@ -443,6 +441,8 @@ class SearchCom extends React.Component {
                     fileNameTemplate={"Template import hợp đồng"}
                     IDSelectColumnName={IDSelectColumnName}
                     IsAutoPaging={true}
+                    isCustomExportFileTemplate={true}
+                    isCustomImportFile={true}
                     IsDelete={true}
                     IsExportFile={true}
                     isExportFileTemplate={true}
@@ -453,13 +453,12 @@ class SearchCom extends React.Component {
                     onExportFileTemplate={this.handleExportFileTemplate.bind(this)}
                     onImportFile={this.handleImportFile.bind(this)}
                     PKColumnName={PKColumnName}
-                    propsIsCustomXLSX={true}
                     RequirePermission={SERVICEAGREEMENT_VIEW}
                     RowsPerPage={10}
                     SchemaData={schema}
                 />
 
-                <input type="file" id="inputImportFile" style={{ display: "none" }} />
+                {/* <input type="file" id="inputImportFile" style={{ display: "none" }} /> */}
             </React.Fragment>
         );
 

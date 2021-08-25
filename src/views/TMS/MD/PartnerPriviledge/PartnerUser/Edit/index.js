@@ -535,8 +535,6 @@ class EditCom extends React.Component {
     handleSubmit(formData, MLObject) {
         //check password valid
         let { PassWord, PassWordConfirm } = this.state;
-
-
         if (PassWord) {
             let _isStrongPassword = isStrongPassword(PassWord);
             if (!_isStrongPassword) {
@@ -552,9 +550,22 @@ class EditCom extends React.Component {
             }
         }
 
-
-
-
+        //vai trò 1 và 2 thì bắt buộc nhập họ tên, điện thoại, ngày sinh, CMND
+        if (MLObject.PartnerRoleID == 1 || MLObject.PartnerRoleID == 2) {
+            if (MLObject.FullName == "") {
+                this.showMessage("Vui lòng nhập họ tên.");
+                return false;
+            } else if (MLObject.PhoneNumber == "") {
+                this.showMessage("Vui lòng nhập điện thoại.");
+                return false;
+            } else if (MLObject.Birthday == "") {
+                this.showMessage("Vui lòng nhập ngày sinh.");
+                return false;
+            } else if (MLObject.IdCardNumber == "") {
+                this.showMessage("Vui lòng nhập CMND.");
+                return false;
+            }
+        }
 
 
         MLObject.FullName = MLObject.FullName.toUpperCase();
@@ -579,20 +590,22 @@ class EditCom extends React.Component {
             let temp = MLObject.Birthday.trim().split('/');
             let myDate = new Date(temp[1] + '/' + temp[0] + '/' + temp[2]);
             MLObject.Birthday = myDate;
+
+            ///kiểm tra người dùng đủ 18 tuổi
+            let validYearOld = (new Date()).getFullYear() - (new Date(MLObject.Birthday)).getFullYear();
+            if (validYearOld < 18) {
+                this.addNotification("Yêu cầu người dùng trên 18 tuổi.", true);
+                return false;
+            } else if (validYearOld > 100) {
+                this.addNotification("Yêu cầu người dùng dưới 100 tuổi.", true);
+                return false;
+            }
+
+            MLObject.Birthday = toIsoStringCus(new Date(MLObject.Birthday).toISOString());
         }
 
+        
 
-        ///kiểm tra người dùng đủ 18 tuổi
-        let validYearOld = (new Date()).getFullYear() - (new Date(MLObject.Birthday)).getFullYear();
-        if (validYearOld < 18) {
-            this.addNotification("Yêu cầu người dùng trên 18 tuổi.", true);
-            return;
-        } else if (validYearOld > 100) {
-            this.addNotification("Yêu cầu người dùng dưới 100 tuổi.", true);
-            return;
-        }
-
-        MLObject.Birthday = toIsoStringCus(new Date(MLObject.Birthday).toISOString());
         // try {
         //     MLObject.Birthday = toIsoStringCus(new Date(MLObject.Birthday).toISOString());
         // } catch (error) {
