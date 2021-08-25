@@ -484,7 +484,14 @@ class DataGridShipmentOderNewCom extends Component {
         });
         this.props.onSubmitItem(listMLObject);
     }
-
+    handleCloseModal() {
+        this.props.hideModal()
+        this.setState({
+            changeGird: false,
+            GridDataShip: [],
+            ShipmentRouteID: ""
+        })
+    }
     handleUserCoordinator() {
         this.props.hideModal();
         const { widthPercent } = this.state;
@@ -507,11 +514,11 @@ class DataGridShipmentOderNewCom extends Component {
                                 IsCoordinator={true}
                                 IsCancelDelivery={true}
                                 onChangeValue={this.handleShipmentOrder.bind(this)}
-                               
+                                onChangeClose={this.handleCloseModal.bind(this)}
 
                             />
                         },
-                        maxWidth: widthPercent + 'px'
+                        maxWidth: 850 + 'px'
                     });
                 }
                 else {
