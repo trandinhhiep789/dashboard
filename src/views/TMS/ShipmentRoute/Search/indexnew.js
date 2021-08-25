@@ -59,7 +59,6 @@ class SearchCom extends React.Component {
         this.props.updatePagePath(PagePath);
 
         jQuery(window).scroll(function () {
-            console.log("jQuery(this).scrollTop()", jQuery(this).scrollTop(), jQuery(this).scrollTop() > 200)
             if (jQuery(this).scrollTop() > 200) {
                 $("#fixedCard").addClass("fixedCard")
                 $("body").addClass("fixedScroll")
