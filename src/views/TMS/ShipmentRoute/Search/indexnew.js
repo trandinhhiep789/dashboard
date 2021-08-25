@@ -58,14 +58,14 @@ class SearchCom extends React.Component {
         this.callSearchData(listSearchDataObject);
         this.props.updatePagePath(PagePath);
 
-
         jQuery(window).scroll(function () {
-            if (jQuery(this).scrollTop() > 300) {
-                $("#btnUserCoordinator").addClass("tofixedButton")
-                $("#fixtable").addClass("tofixtable")
+            console.log("jQuery(this).scrollTop()", jQuery(this).scrollTop(), jQuery(this).scrollTop() > 200)
+            if (jQuery(this).scrollTop() > 200) {
+                $("#fixedCard").addClass("fixedCard")
+                $("body").addClass("fixedScroll")
             } else {
-                $("#btnUserCoordinator").removeClass("tofixedButton")
-                $("#fixtable").removeClass("tofixtable")
+                $("#fixedCard").removeClass("fixedCard")
+                $("body").removeClass("fixedScroll")
             }
         });
 

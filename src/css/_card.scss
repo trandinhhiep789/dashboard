@@ -207,6 +207,40 @@
                 }
             }
         }
+        &.ShipmentRouteCus{
+            clear: both;
+            .fixCardTitle{
+                display: none;
+                overflow: hidden;
+                &.fixedCard{
+                    width: 98%;
+                    display: block;
+                    position: fixed;
+                    top: 66px;
+                    height: 50px;
+                    background: white;
+                    z-index: 99999;
+                    left: 0;
+                    right: 0;
+                    margin: 0 auto;
+                    overflow: visible;
+                }
+            }
+            &.fixedCard{
+                position: fixed;
+                left: 0;
+                right: 0;
+                width: 98%;
+                margin: 0 auto;
+                top: 70px;
+                // z-index: 99999;
+                .card-body{
+                    // overflow-x: scroll;
+                    // max-height: 100vh;
+                }
+            }
+           
+        }
     }
     &.modalForm {
         margin-bottom: 0;
