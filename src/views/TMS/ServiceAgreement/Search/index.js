@@ -186,7 +186,7 @@ class SearchCom extends React.Component {
                         "Số hợp đồng": item.ServiceAgreementNumber,
                         "Loại hợp đồng": item.ServiceTypeID + "-" + item.ServiceTypeName,
                         "Loại dịch vụ": item.ServiceTypeName,
-                        "Khu vực": item.ServiceAreaID + "-" + item.AreaName,
+                        // "Khu vực": item.ServiceAreaID + "-" + item.AreaName,
                         "Đơn vị vận chuyển": item.PartnerID + "-" + item.PartnerName,
                         "Người đại diện": item.DeputyUserName,
                         "Ngày ký hợp đồng": formatDate(item.SignedDate, true),
