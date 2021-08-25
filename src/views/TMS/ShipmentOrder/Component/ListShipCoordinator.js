@@ -189,7 +189,7 @@ class ListShipCoordinatorCom extends Component {
             }
             if (row["TotalCOD"] > 0) {
                 row["ShipmentOrder_DeliverUserList"].map((item, indexRow) => {
-                    let objMultDeliverUser = { UserName: item.UserName,CarrierTypeID:row["CarrierTypeID"], TotalCOD: row["TotalCOD"] / row["ShipmentOrder_DeliverUserList"].length }
+                    let objMultDeliverUser = { UserName: item.UserName, CarrierTypeID: row["CarrierTypeID"], TotalCOD: row["TotalCOD"] / row["ShipmentOrder_DeliverUserList"].length }
                     element.push(objMultDeliverUser)
                     console.log("UserName", row["ShipmentOrderID"], item.UserName, row["TotalCOD"] / row["ShipmentOrder_DeliverUserList"].length)
                 });
@@ -198,14 +198,14 @@ class ListShipCoordinatorCom extends Component {
             //   row["COD"] = row["TotalCOD"] / row["ShipmentOrder_DeliverUserList"].length;
         });
 
-        console.log("element", this.groupByNew(element,['UserName','CarrierTypeID']))
-        this.state.ShipmentOrder[0].DeliverUserTotalCODList=this.groupByNew(element,['UserName','CarrierTypeID']);
+        console.log("element", this.groupByNew(element, ['UserName', 'CarrierTypeID']))
+        this.state.ShipmentOrder[0].DeliverUserTotalCODList = this.groupByNew(element, ['UserName', 'CarrierTypeID']);
         this.setState({ FormValidation: elementobject });
 
         if (this.checkInputName(elementobject) != "")
             return;
 
-        console.log("ShipmentOrdernew",this.state.ShipmentOrder)
+        console.log("ShipmentOrdernew", this.state.ShipmentOrder)
         this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/AddInfoCoordinatorLst', this.state.ShipmentOrder).then((apiResult) => {
             if (this.props.onChangeValue != null)
                 this.props.onChangeValue(apiResult);
@@ -334,6 +334,8 @@ class ListShipCoordinatorCom extends Component {
 
 
     render() {
+        const Usernamelst = "61700,24611,52443,30871,37531,30873,47260,31329,21176,61881,30407,29300,29686,30405,36886,27002,28849,62355,28111,27001,53788,30874,45524,66360,34073,52197,66309,30869,52196,38572,31685,81125,40416,40415,29685,29687";
+        let objUsernamecheck = Usernamelst.includes(this.props.AppInfo.LoginInfo.Username);
         const DataGridColumnItemList = [
             {
                 name: "ShipmentOrderID",
@@ -552,7 +554,10 @@ class ListShipCoordinatorCom extends Component {
                     />
                 </div>
                 <div className="modal-footer">
-                    <button className="btn btnEditCard" onClick={this.handleShipWorkFlowInsert.bind(this)} type="submit" > Cập nhật</button>
+                    {objUsernamecheck == false ? (
+                        <button className="btn btnEditCard" onClick={this.handleShipWorkFlowInsert.bind(this)} type="submit" > Cập nhật</button>
+
+                    ) : (<button className="btn btnEditCard" type="submit" disabled title="Bạn Không có quyền xử lý!" > Cập nhật</button>)}
                     <button type="button" className="btn btn-export ml-10" title="" onClick={this.handleCloseModal.bind(this)}>Đóng</button>
                 </div>
             </div>
