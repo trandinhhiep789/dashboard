@@ -44,6 +44,12 @@ body{
     .main-container{
         
     }
+    &.fixedScroll{
+        position: relative;
+        #fixedCard {
+            clear: both;
+        }
+    }
 }
 
 .errorAdvanceRequestDetail{
