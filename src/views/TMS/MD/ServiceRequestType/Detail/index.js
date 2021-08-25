@@ -127,13 +127,13 @@ class DetailCom extends React.Component {
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <span>Loại yêu cầu xuất: </span>
-                                            <span>{this.state.DataSource.SaleOrderTypeID}-{this.state.DataSource.SaleOrderTypeName}</span>
+                                            <span>{this.state.DataSource.SaleOrderTypeID > 0 ? this.state.DataSource.SaleOrderTypeID + "-" + this.state.DataSource.SaleOrderTypeName : ""}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <span> Hình thức xuất: </span>
-                                            <span>{this.state.DataSource.OutputTypeID}-{this.state.DataSource.OutputTypeName}</span>
+                                            <span>{this.state.DataSource.OutputTypeID > 0 ? this.state.DataSource.OutputTypeID + "-" + this.state.DataSource.OutputTypeName : ""}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -142,13 +142,13 @@ class DetailCom extends React.Component {
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <span>Hình thức thanh toán: </span>
-                                            <span>{this.state.DataSource.PayableTypeID}-{this.state.DataSource.PayableTypeName}</span>
+                                            <span>{this.state.DataSource.PayableTypeID > 0 ? this.state.DataSource.PayableTypeID + "-" + this.state.DataSource.PayableTypeName : ""}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <span>Hình thức giao hàng: </span>
-                                            <span>{this.state.DataSource.DeliveryTypeID}-{this.state.DataSource.DeliveryTypeName}</span>
+                                            <span>{this.state.DataSource.DeliveryTypeID > 0 ? this.state.DataSource.DeliveryTypeID + "-" + this.state.DataSource.DeliveryTypeName : ""}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -157,13 +157,13 @@ class DetailCom extends React.Component {
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <span>Hình thức thu chi: </span>
-                                            <span>{this.state.DataSource.VoucherTypeID}-{this.state.DataSource.VoucherTypeName}</span>
+                                            <span>{this.state.DataSource.VoucherTypeID > 0 ? this.state.DataSource.VoucherTypeID + "-" + this.state.DataSource.VoucherTypeName : ""}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <span>Loại yêu cầu vận chuyển: </span>
-                                            <span>{this.state.DataSource.ShipmentOrderTypeID}-{this.state.DataSource.ShipmentOrderTypeName}</span>
+                                            <span>{this.state.DataSource.ShipmentOrderTypeID > 0 ? this.state.DataSource.ShipmentOrderTypeID + "-" + this.state.DataSource.ShipmentOrderTypeName : ""}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -212,7 +212,7 @@ class DetailCom extends React.Component {
 
 
 
-                                
+
 
                                 <div className="row">
                                     <div className="col-md-6">
@@ -225,6 +225,15 @@ class DetailCom extends React.Component {
                                         <div className="form-group">
                                             <span>Ngày cập nhật: </span>
                                             <span>{formatDate(this.state.DataSource.UpdatedDate)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <div className="form-group">
+                                            <span>Đường dẫn hình đại diện: </span>
+                                            <span>{this.state.DataSource.ImageUrl}</span>
                                         </div>
                                     </div>
                                 </div>
