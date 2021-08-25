@@ -278,20 +278,20 @@ class SearchCom extends React.Component {
                         fileName="Nhóm chi nhánh quản lý"
                         IDSelectColumnName={IDSelectColumnName}
                         IsAutoPaging={true}
+                        isCustomExportFileTemplate={true}
+                        isCustomImportFile={true}
                         IsExportFile={true}
+                        isExportFileTemplate={true}
+                        IsImportFile={true}
                         listColumn={DataGridColumnList}
                         onDeleteClick={this.handleDelete}
                         onExportFile={this.handleExportFile}
+                        onExportFileTemplate={this.handleExportFileTemplate}
+                        onImportFile={this.handleImportFile}
                         PKColumnName={PKColumnName}
                         ref={this.gridref}
                         RequirePermission={COORDINATORGROUP_VIEW}
                         RowsPerPage={20}
-
-                        isExportFileTemplate={true}
-                        IsImportFile={true}
-                        onExportFileTemplate={this.handleExportFileTemplate}
-                        onImportFile={this.handleImportFile}
-                        propsIsCustomXLSX={true}
                     />
 
                     <input type="file" id="inputImportFile" style={{ display: "none" }} />

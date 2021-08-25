@@ -3,10 +3,6 @@ import { connect } from "react-redux";
 
 import { hideModal } from '../../../../actions/modal';
 import DataGrid from "../../../../common/components/DataGrid";
-import {
-    DataGridColumnList_ImportFile,
-    PKColumnName
-} from '../constants';
 
 class ImportExcelModalCom extends React.Component {
     constructor(props) {
@@ -68,9 +64,7 @@ class ImportExcelModalCom extends React.Component {
                     headingTitle={this.returnHeadingTitle()}
                     IsAutoPaging={true}
                     isHideHeaderToolbar={true}
-                    // listColumn={DataGridColumnList_ImportFile}
                     listColumn={this.props.listColumn}
-                    // PKColumnName={PKColumnName}
                     PKColumnName={this.props.PKColumnName}
                     RowsPerPage={10}
                 />

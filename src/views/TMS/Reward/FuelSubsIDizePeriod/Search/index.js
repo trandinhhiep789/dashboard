@@ -369,34 +369,33 @@ class SearchCom extends React.Component {
                     />
 
                     <DataGrid
-                        listColumn={listColumn}
-                        dataSource={stateDataSource}
-                        IDSelectColumnName={"chkSelect"}
-                        PKColumnName={"FuelSubsidizePeriodID"}
-                        isHideHeaderToolbar={false}
-                        IsShowButtonAdd={true}
                         AddLink={"/FuelSubsIDizePeriod/Add"}
-                        IsShowButtonDelete={true}
-                        IsDelete={true}
-                        onDeleteClick={this.handleDelete}
-                        IsExportFile={true}
-                        onExportFile={this.handleExportFile}
-                        IsAutoPaging={true}
-                        RowsPerPage={50}
-                        PageNumber={statePageNumber}
-                        isPaginationServer={true}
-                        onChangePage={this.handleChangePage}
-                        ref={this.gridref}
-
-                        propsIsCustomXLSX={true}
-                        IsImportFile={true}
-                        onImportFile={this.handleImportFile}
-                        isExportFileTemplate={true}
-                        onExportFileTemplate={this.handleExportFileTemplate}
-
-                        RequirePermission={FUELSUBSIDIZEPERIOD_VIEW}
+                        dataSource={stateDataSource}
                         DeletePermission={FUELSUBSIDIZEPERIOD_DEL}
                         ExportPermission={FUELSUBSIDIZEPERIOD_EXPORT}
+                        IDSelectColumnName={"chkSelect"}
+                        IsAutoPaging={true}
+                        isCustomExportFileTemplate={true}
+                        isCustomImportFile={true}
+                        IsDelete={true}
+                        IsExportFile={true}
+                        isExportFileTemplate={true}
+                        isHideHeaderToolbar={false}
+                        IsImportFile={true}
+                        isPaginationServer={true}
+                        IsShowButtonAdd={true}
+                        IsShowButtonDelete={true}
+                        listColumn={listColumn}
+                        onChangePage={this.handleChangePage}
+                        onDeleteClick={this.handleDelete}
+                        onExportFile={this.handleExportFile}
+                        onExportFileTemplate={this.handleExportFileTemplate}
+                        onImportFile={this.handleImportFile}
+                        PageNumber={statePageNumber}
+                        PKColumnName={"FuelSubsidizePeriodID"}
+                        ref={this.gridref}
+                        RequirePermission={FUELSUBSIDIZEPERIOD_VIEW}
+                        RowsPerPage={50}
                     />
 
                     <input type="file" id="inputImportFile" style={{ display: "none" }} />
