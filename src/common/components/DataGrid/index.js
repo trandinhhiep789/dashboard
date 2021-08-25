@@ -763,7 +763,7 @@ class DataGridCom extends Component {
     }
 
     handleExportFileTemplate() {
-        if (this.props.propsIsCustomXLSX) {
+        if (this.props.isCustomExportFileTemplate) {
             this.props.onExportFileTemplate();
             return;
         }
@@ -793,7 +793,7 @@ class DataGridCom extends Component {
     }
 
     handleImportFile() {
-        if (this.props.propsIsCustomXLSX) {
+        if (this.props.isCustomImportFile) {
             this.props.onImportFile();
             return;
         }
@@ -1068,7 +1068,8 @@ class DataGridCom extends Component {
 }
 
 DataGridCom.defaultProps = {
-    propsIsCustomXLSX: false
+    isCustomExportFileTemplate: false,
+    isCustomImportFile: false
 };
 
 const mapStateToProps = state => {
