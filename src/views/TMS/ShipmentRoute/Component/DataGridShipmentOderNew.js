@@ -75,14 +75,6 @@ class DataGridShipmentOderNewCom extends Component {
             const gridData = this.getCheckList(this.props.dataSource);
             this.setState({ GridData: gridData });
         }
-        let permissionKey = this.props.RequirePermission;
-        if (!permissionKey) {
-            this.setState({ IsPermision: true }); return;
-        }
-        this.checkPermission(permissionKey).then((result) => {
-            this.setState({ IsPermision: result });
-        })
-  
     }
 
 
@@ -1335,15 +1327,7 @@ class DataGridShipmentOderNewCom extends Component {
         let MultipleCheck = false;
         if (this.props.isMultipleCheck)
             MultipleCheck = true;
-        if (this.state.IsPermision == undefined) {
-            return <p className="col-md-12">Đang kiểm tra quyền...</p>
-        }
-        if (this.state.IsPermision == false) {
-            return <p className="col-md-12">Bạn không có quyền!</p>
-        }
-        if (this.state.IsPermision === 'error') {
-            return <p className="col-md-12">Lỗi khi kiểm tra quyền, vui lòng thử lại</p>
-        }
+            
         let classCustom;
         if (this.props.classCustom != "") {
             classCustom = "col-lg-12 SearchForm "
