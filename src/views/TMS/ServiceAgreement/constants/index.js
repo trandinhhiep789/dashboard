@@ -760,12 +760,12 @@ export const schema = {
         // type: Number,
         required: true
     },
-    'Khu vực': {
-        prop: 'ServiceAreaID',
-        type: String,
-        // type: Number,
-        required: true
-    },
+    // 'Khu vực': {
+    //     prop: 'ServiceAreaID',
+    //     type: String,
+    //     // type: Number,
+    //     required: true
+    // },
     'Đơn vị vận chuyển': {
         prop: 'PartnerID',
         type: String,
@@ -876,7 +876,7 @@ export const DataMasterTemplateExport = [
         "Số hợp đồng": "0201/2020/HĐĐL/TT-DS",
         "Loại hợp đồng": "1",
         "Loại dịch vụ": "1",
-        "Khu vực": "5",
+        // "Khu vực": "5",
         "Đơn vị vận chuyển": "101",
         "Người đại diện": "0041014",
         "Ngày ký hợp đồng": SignedDate,

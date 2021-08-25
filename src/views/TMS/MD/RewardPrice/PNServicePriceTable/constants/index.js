@@ -69,13 +69,20 @@ export const InitSearchParams = [
     }
 ];
 
-export const DataGridColumnList=[
+export const DataGridColumnList = [
     {
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
         DataSourceMember: "pnServicePriceTableID",
         Width: 60
+    },
+    {
+        Name: "pnServicePriceTableID",
+        Type: "text",
+        Caption: "Mã đơn giá",
+        DataSourceMember: "pnServicePriceTableID",
+        Width: 80
     },
     {
         Name: "pnServicePriceTableID",
@@ -99,7 +106,7 @@ export const DataGridColumnList=[
     //     DataSourceMember: "FullServiceArea",
     //     Width: 200
     // },
-   
+
     {
         Name: "CreateFullName",
         Type: "text",
@@ -162,7 +169,7 @@ export const MLObjectDefinition = [
         BindControlName: "chkIsSystem",
         DataSourceMember: "IsSystem"
     }
-   
+
 
 ]
 
@@ -238,10 +245,10 @@ export const DataGridColumnItemListRPTDetail = [
         DataSourceMember: "",
         Width: 70,
     }
-    
+
 ]
 
-export const MLObjectRPTDetailItem= [
+export const MLObjectRPTDetailItem = [
     {
         Name: "pnServicePriceTableDetailID",
         DefaultValue: {},
@@ -279,23 +286,23 @@ export const MLObjectRPTDetailItem= [
         BindControlName: "ckIsPriceByTechspecsValueRange",
         DataSourceMember: "IsPriceByTechspecsValueRange"
     },
-    
+
     {
         Name: "FromTechspecsValue",
         DefaultValue: {},
         BindControlName: "txtFromTechspecsValue",
         DataSourceMember: "FromTechspecsValue"
     },
-    
+
     {
         Name: "ToTechspecsValue",
         DefaultValue: {},
         BindControlName: "txtToTechspecsValue",
         DataSourceMember: "ToTechspecsValue"
     },
-    
+
     {
-        
+
         Name: "ProductID",
         DefaultValue: "",
         BindControlName: "cbProductID",
