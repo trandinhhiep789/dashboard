@@ -355,13 +355,13 @@ export const DataGridColumnList = [
         DataSourceMember: "ServiceTypeName",
         // Width: 200
     },
-    {
-        Name: "AreaName",
-        Type: "text",
-        Caption: "Khu vực",
-        DataSourceMember: "AreaName",
-        // Width: 100
-    },
+    // {
+    //     Name: "AreaName",
+    //     Type: "text",
+    //     Caption: "Khu vực",
+    //     DataSourceMember: "AreaName",
+    //     // Width: 100
+    // },
     {
         Name: "SignedDate",
         Type: "date",

@@ -518,6 +518,7 @@ class DataGridShipmentOderNewCom extends Component {
         this.props.hideModal()
     }
 
+
     handleUserCoordinator() {
         debugger
         this.props.hideModal();
@@ -545,7 +546,7 @@ class DataGridShipmentOderNewCom extends Component {
 
                             />
                         },
-                        maxWidth:   '900px'
+                        maxWidth: widthPercent + 'px'
                     });
                 }
                 else {
