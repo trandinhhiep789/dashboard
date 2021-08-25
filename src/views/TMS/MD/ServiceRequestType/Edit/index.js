@@ -72,7 +72,7 @@ class EditCom extends React.Component {
         }
         
         var data = new FormData();
-        data.append("LogoImageURL", this.state.Files.FolderImageURL);
+        data.append("LogoImageURL", this.state.Files.ImageUrl);
         data.append("ServiceRequestTypeObj", JSON.stringify(MLObject));
 
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, data).then(apiResult => {

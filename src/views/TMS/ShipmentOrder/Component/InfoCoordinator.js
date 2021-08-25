@@ -558,8 +558,7 @@ class InfoCoordinatorCom extends Component {
 
     }
 
-    handleIgnoreCheckRCGeolocation()
-    {
+    handleIgnoreCheckRCGeolocation() {
         this.props.showModal(MODAL_TYPE_CONFIRMATIONNEW, {
             title: 'Cập nhật bỏ qua kiểm tra tọa độ nhận hàng',
             onConfirmNew: (isConfirmed, formData) => {
@@ -664,6 +663,9 @@ class InfoCoordinatorCom extends Component {
             return <Redirect to={BackLink} />;
         }
 
+        const Usernamelst = "61700,24611,52443,30871,37531,30873,47260,31329,21176,61881,30407,29300,29686,30405,36886,27002,28849,62355,28111,27001,53788,30874,45524,66360,34073,52197,66309,30869,52196,38572,31685,81125,40416,40415,29685,29687";
+        let objUsernamecheck = Usernamelst.includes(this.props.AppInfo.LoginInfo.Username)
+
         let listOption = [];
         let objDeliverUser = [];
         let listOptionDriverUser = [];
@@ -680,7 +682,13 @@ class InfoCoordinatorCom extends Component {
         if (this.state.ShipmentOrder.DriverUser != "") {
             listOptionDriverUser.push({ value: this.state.ShipmentOrder.DriverUser, label: this.state.ShipmentOrder.DriverUser + "-" + this.state.ShipmentOrder.DriverUserFull, FullName: this.state.ShipmentOrder.DriverUserFull });
         }
+        let IsCoordinatorNew = this.props.IsCoordinator;
+        let IsUserCoordinatorNew = this.props.IsUserCoordinator;
 
+        if (objUsernamecheck == true) {
+            IsCoordinatorNew = false;
+            IsUserCoordinatorNew = false;
+        }
         return (
             <div className="card">
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -706,7 +714,7 @@ class InfoCoordinatorCom extends Component {
                                 datasourcemember="CarrierPartnerID"
                                 placeholder="---Vui lòng chọn---"
                                 isMultiSelect={false}
-                                disabled={!this.props.IsCoordinator}
+                                disabled={!IsCoordinatorNew}
                                 validationErrorMessage={this.state.validationErroCarrierPartner}
                             />
                         </div>
@@ -725,7 +733,7 @@ class InfoCoordinatorCom extends Component {
                                     colspan="8"
                                     labelcolspan="4"
                                     label="Nhân viên giao"
-                                    disabled={!this.props.IsUserCoordinator}
+                                    disabled={!IsUserCoordinatorNew}
                                     IsLabelDiv={true}
                                     isSelectedOption={true}
                                     isautoloaditemfromcache={false}
@@ -760,7 +768,7 @@ class InfoCoordinatorCom extends Component {
                                     isMultiSelect={true}
                                     filterValue={this.state.ShipmentOrder.CarrierPartnerID}
                                     filterobj="PartnerID"
-                                    disabled={!this.props.IsCoordinator}
+                                    disabled={!IsCoordinatorNew}
                                     isselectedOp={true}
                                 />
                             }
@@ -783,7 +791,7 @@ class InfoCoordinatorCom extends Component {
                                 datasourcemember="CarrierTypeID"
                                 placeholder="---Vui lòng chọn---"
                                 isMultiSelect={false}
-                                disabled={!this.props.IsCoordinator}
+                                disabled={!IsCoordinatorNew}
                                 validationErrorMessage={this.state.validationErroCarrierType}
                             />
                         </div>
@@ -904,9 +912,9 @@ class InfoCoordinatorCom extends Component {
 
                         <div className="form-group col-md-12 form-group-btncustom">
                             {
-                                this.state.ShipmentOrder.IsIGnoreCheckRCGeolocation ==false?<button className="btn btnDelivery mr-10" type="submit" onClick={this.handleIgnoreCheckRCGeolocation.bind(this)}><span className="fa fa-remove">Bỏ qua kiểm tra toạ độ</span></button>:""
+                                this.state.ShipmentOrder.IsIGnoreCheckRCGeolocation == false ? <button className="btn btnDelivery mr-10" type="submit" onClick={this.handleIgnoreCheckRCGeolocation.bind(this)}><span className="fa fa-remove">Bỏ qua kiểm tra toạ độ</span></button> : ""
                             }
-                            
+
                             {
                                 this.props.IsCancelDelivery == true ? <button className="btn btnDelivery mr-10" type="submit" onClick={this.handleCancelDelivery}><span className="fa fa-remove"> Hủy giao hàng</span></button> : <button className="btn btnDelivery mr-10" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-remove"> Hủy giao hàng</span></button>
                             }
