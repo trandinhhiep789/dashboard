@@ -256,6 +256,24 @@ class SearchCom extends React.Component {
                             return false;
                         }
 
+
+                        //vai trò 1 và 2 thì bắt buộc nhập họ tên, điện thoại, ngày sinh, CMND
+                        if (MLObject.PartnerRoleID == 1 || MLObject.PartnerRoleID == 2) {
+                            if (MLObject.FullName == "") {
+                                this.showMessage("Vui lòng nhập họ tên.");
+                                return;
+                            } else if (MLObject.PhoneNumber == "") {
+                                this.showMessage("Vui lòng nhập điện thoại.");
+                                return;
+                            } else if (MLObject.Birthday == "") {
+                                this.showMessage("Vui lòng nhập ngày sinh.");
+                                return;
+                            } else if (MLObject.IdCardNumber == "") {
+                                this.showMessage("Vui lòng nhập CMND.");
+                                return;
+                            }
+                        }
+
                         // if (!this.state.UserID) {
                         //     this.setState({ IsCallAPIError: true });
                         //     this.showMessage("Chưa có tên đăng nhập. Vui lòng bấm nút tạo tên đăng nhập.");
@@ -283,29 +301,25 @@ class SearchCom extends React.Component {
                         MLObject.PartnerID = MLObject.PartnerID && Array.isArray(MLObject.PartnerID) ? MLObject.PartnerID[0] : MLObject.PartnerID;
                         MLObject.PartnerRoleID = MLObject.PartnerRoleID && Array.isArray(MLObject.PartnerRoleID) ? MLObject.PartnerRoleID[0] : MLObject.PartnerRoleID;
 
+                        
                         if (MLObject.Birthday) {
                             let temp = MLObject.Birthday.trim().split('/');
                             let myDate = new Date(temp[1] + '/' + temp[0] + '/' + temp[2]);
                             MLObject.Birthday = myDate;
+
+                            ///kiểm tra người dùng đủ 18 tuổi
+                            let validYearOld = (new Date()).getFullYear() - (new Date(MLObject.Birthday)).getFullYear();
+                            if (validYearOld < 18) {
+                                this.addNotification("Yêu cầu người dùng trên 18 tuổi.", true);
+                                return;
+                            } else if (validYearOld > 100) {
+                                this.addNotification("Yêu cầu người dùng dưới 100 tuổi.", true);
+                                return;
+                            }
+                            MLObject.Birthday = toIsoStringCus(new Date(MLObject.Birthday).toISOString());
                         }
-
-                        ///kiểm tra người dùng đủ 18 tuổi
-                        let validYearOld = (new Date()).getFullYear() - (new Date(MLObject.Birthday)).getFullYear();
-                        if (validYearOld < 18) {
-                            this.addNotification("Yêu cầu người dùng trên 18 tuổi.", true);
-                            return;
-                        } else if (validYearOld > 100) {
-                            this.addNotification("Yêu cầu người dùng dưới 100 tuổi.", true);
-                            return;
-                        }
-
-                        MLObject.Birthday = toIsoStringCus(new Date(MLObject.Birthday).toISOString());
-
-
-
-
-
-
+                        
+                        
                         //hạn mức người dùng
                         if (MLObject.PartnerRoleID == 1) {// quản lý
                             MLObject.LimitValue = this.state.ADVANCELIMIT_LEADERPARTNER;
@@ -493,7 +507,7 @@ class SearchCom extends React.Component {
                         "Họ tên": item.FullName,
                         "Tên nhà cung cấp": item.PartnerName,
                         "Vai trò nhà cung cấp": item.PartnerRoleName,
-                        "Điện thoại": item.PhoneNumber,          
+                        "Điện thoại": item.PhoneNumber,
                         "Kích hoạt": item.IsActived ? "Có" : "Không",
                         "Ngày cập nhật": formatDate(item.UpdatedDate),
                         "Người cập nhật": item.UpdatedUserFullName
