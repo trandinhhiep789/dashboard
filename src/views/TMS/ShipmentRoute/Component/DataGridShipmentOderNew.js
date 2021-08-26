@@ -747,7 +747,7 @@ class DataGridShipmentOderNewCom extends Component {
     renderDataGrid() {
         const dataSource = this.state.DataSource;
         let { DataSource, changeGird } = this.state;
-        console.log("changeGird", changeGird)
+     
         if (changeGird) {
             return (
                 <React.Fragment>
@@ -921,11 +921,11 @@ class DataGridShipmentOderNewCom extends Component {
                     <table className="table table-sm table-striped table-bordered table-hover table-condensed datagirdshippingorder" cellSpacing="0" >
                         <thead className="thead-light">
                             <tr>
-                                <th className="jsgrid-header-cell" style={{ width: '5%' }}>Tác vụ</th>
+                                <th className="jsgrid-header-cell" style={{ width: '2%' }}></th>
                                 <th className="jsgrid-header-cell" style={{ width: '15%' }}>Thời gian giao</th>
                                 <th className="jsgrid-header-cell" style={{ width: '33%' }}>Địa chỉ</th>
                                 <th className="jsgrid-header-cell" style={{ width: '15%' }}>Mã/Loại yêu cầu vận chuyển</th>
-                                <th className="jsgrid-header-cell" style={{ width: '22%' }}>Tên sản phẩm/Ghi chú</th>
+                                <th className="jsgrid-header-cell" style={{ width: '24%' }}>Tên sản phẩm/Ghi chú</th>
                                 <th className="jsgrid-header-cell" style={{ width: '10%' }}>Thanh toán</th>
                             </tr>
                         </thead>
@@ -955,7 +955,7 @@ class DataGridShipmentOderNewCom extends Component {
                                     }
                                     // console.log("check",rowItem.ShipmentOrderID,this.state.GridDataShip,this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
                                     return (<tr key={rowIndex} className={rowtrClass}>
-                                        <td className={rowUndelivery} style={{ width: '5%' }}>
+                                        <td className={rowUndelivery} style={{ width: '2%' }}>
                                             <ul>
                                                 <li className="item">
                                                     <div className="group-action">
@@ -1092,7 +1092,7 @@ class DataGridShipmentOderNewCom extends Component {
                                                 }
                                             </div>
                                         </td>
-                                        <td className="group-address" style={{ width: '22%' }}>
+                                        <td className="group-address" style={{ width: '24%' }}>
                                             <div className="group-info-row">
                                                 <label className={rowItem.IsInputReturn == true ? "item address-repository-created lblReturns" : "item address-repository-created"}>
                                                     <span className="coordinatorUser">{rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(/;/g, '<br/>'))}</span>
