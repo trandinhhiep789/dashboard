@@ -426,11 +426,11 @@ export const SearchMLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "cbServiceTypeID"
     },
-    {
-        Name: "AreaID",
-        DefaultValue: "",
-        BindControlName: "cbAreaID"
-    },
+    // {
+    //     Name: "AreaID",
+    //     DefaultValue: "",
+    //     BindControlName: "cbAreaID"
+    // },
     {
         Name: "SignedDate",
         DefaultValue: "",
@@ -475,22 +475,22 @@ export const SearchElementList = [
         NameMember: "ServiceTypeName",
 
     },
-    {
-        type: "ComboBox",
-        name: "cbAreaID",
-        DataSourceMember: "AreaID",
-        label: "Khu vực",
-        colspan: 2,
-        value: -1,
-        isMultiSelect: false,
-        placeholder: "---Vui lòng chọn---",
-        listoption: [],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.AREATT",
-        ValueMember: "AreaID",
-        NameMember: "AreaName"
+    // {
+    //     type: "ComboBox",
+    //     name: "cbAreaID",
+    //     DataSourceMember: "AreaID",
+    //     label: "Khu vực",
+    //     colspan: 2,
+    //     value: -1,
+    //     isMultiSelect: false,
+    //     placeholder: "---Vui lòng chọn---",
+    //     listoption: [],
+    //     IsAutoLoadItemFromCache: true,
+    //     LoadItemCacheKeyID: "ERPCOMMONCACHE.AREATT",
+    //     ValueMember: "AreaID",
+    //     NameMember: "AreaName"
 
-    },
+    // },
     {
         type: "Datetime",
         name: "dtSignedDate",

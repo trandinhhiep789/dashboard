@@ -286,7 +286,7 @@ class SearchCom extends React.Component {
             },
             {
                 SearchKey: "@AREAID",
-                SearchValue: MLObject.AreaID
+                SearchValue: "-1"
             },
             {
                 SearchKey: "@FromDate",
@@ -422,7 +422,7 @@ class SearchCom extends React.Component {
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
-                    className="multiple multiple-custom"
+                    className="multiple"
                     FormName={TitleFormSearch}
                     listelement={SearchElementList}
                     MLObjectDefinition={SearchMLObjectDefinition}
