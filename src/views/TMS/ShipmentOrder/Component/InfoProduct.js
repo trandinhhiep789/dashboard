@@ -304,7 +304,7 @@ class InfoProductCom extends Component {
         let objgroupByInstallBundleID = [];
 
         if (this.state.ShipmentOrder.ShipmentOrder_Material2List != undefined && this.state.ShipmentOrder.ShipmentOrder_Material2List.length > 0) {
-            objgroupByInstallBundleID = this.groupByNew(this.state.ShipmentOrder.ShipmentOrder_Material2List, ['InstallProductID', 'InstallProductName']);
+            objgroupByInstallBundleID = this.groupByNew(this.state.ShipmentOrder.ShipmentOrder_Material2List, ['InstallProductID', 'InstallProductName','InstallBundleID']);
         }
         return (
             <React.Fragment>
@@ -633,13 +633,13 @@ class InfoProductCom extends Component {
                                         <tbody>
                                             {objgroupByInstallBundleID != null &&
                                                 objgroupByInstallBundleID.map((rowItem, rowIndex) => {
-                                                    let obj = this.state.ShipmentOrder.ShipmentOrder_Material2List.filter(n => n.InstallProductID == [rowItem.InstallProductID]);
+                                                    let obj = this.state.ShipmentOrder.ShipmentOrder_Material2List.filter(n => n.InstallProductID == [rowItem.InstallProductID] && n.InstallBundleID == [rowItem.InstallBundleID]);
                                                     return (
                                                         <React.Fragment key={rowIndex}>
                                                             <tr className="totalCurrency" key={"totalCurrency" + rowIndex}>
                                                                 <td colSpan={8}>
                                                                     <div className="groupTotalCurrency">
-                                                                        <span className="item txtTotal">{rowItem.InstallProductID + " - " + rowItem.InstallProductName}</span>
+                                                                        <span className="item txtTotal">{rowItem.InstallProductID + " - " + rowItem.InstallProductName+" ("+rowItem.InstallBundleID+")"}</span>
                                                                     </div>
                                                                 </td>
                                                             </tr>
