@@ -625,7 +625,7 @@ class InfoProductCom extends Component {
                                         <tbody>
                                             {objgroupByInstallBundleID != null &&
                                                 objgroupByInstallBundleID.map((rowItem, rowIndex) => {
-                                                    let obj = this.state.ShipmentOrder.ShipmentOrder_Material2List.filter(n => n.InstallProductID == [rowItem.InstallProductID]);
+                                                    let obj = this.state.ShipmentOrder.ShipmentOrder_Material2List.filter(n => n.InstallProductID == [rowItem.InstallProductID] && n.InstallBundleID == [rowItem.InstallBundleID]);
                                                     return (
                                                         <React.Fragment key={rowIndex}>
                                                             <tr className="totalCurrency" key={"totalCurrency" + rowIndex}>
