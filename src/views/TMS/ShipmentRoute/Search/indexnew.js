@@ -519,12 +519,11 @@ class SearchCom extends React.Component {
 
 
     render() {
-        console.log("SearchElementList", this.state.SearchElementList)
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
-                    <div className="col-lg-12 SearchFormCustom">
+                    <div className="col-lg-12 SearchFormCustom" id="SearchFormCustom">
                         <SearchForm
                             FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
                             MLObjectDefinition={SearchMLObjectDefinition}

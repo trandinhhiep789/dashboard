@@ -64,7 +64,6 @@ class DataGridShipmentOderNewCom extends Component {
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
     componentDidMount() {
-
         this.updateWindowDimensions();
         window.addEventListener("resize", this.updateWindowDimensions);
 
@@ -73,24 +72,18 @@ class DataGridShipmentOderNewCom extends Component {
             this.setState({ GridData: gridData });
         }
     }
-
-
-
     componentWillUnmount() {
         window.removeEventListener("resize", this.updateWindowDimensions);
     }
-
     updateWindowDimensions = () => {
         const widthModal = (window.innerWidth * 55) / 100;
+        const maxWidthGirdn = document.getElementById('SearchFormCustom').clientWidth;
         const clientWidth = document.getElementById('changeMaxWidthNew').clientWidth;
         this.setState({
             widthPercent: widthModal,
-            maxWidthGird: clientWidth
+            maxWidthGird: maxWidthGirdn 
         })
     };
-
-
-
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.dataSource) !== JSON.stringify(nextProps.dataSource)) // Check if it's a new user, you can also use some unique property, like the ID
         {
@@ -109,18 +102,9 @@ class DataGridShipmentOderNewCom extends Component {
                 GridDataShip: []
             });
         }
-
     }
 
-    handleCloseMessage() {
 
-    }
-    showMessage(message) {
-        ModalManager.open(<MessageModal title="Thông báo"
-            message={message} onRequestClose={() => true}
-            onCloseModal={this.handleCloseMessage}
-        />);
-    }
 
     handleInsertClickEdit(id, pkColumnName) {
         if (this.props.onInsertClickEdit != null)
@@ -499,15 +483,6 @@ class DataGridShipmentOderNewCom extends Component {
         this.props.onSubmitItem(listMLObject);
     }
 
-    handleClose = () => {
-        debugger
-        this.setState({
-            changeGird: false
-        })
-        this.props.hideModal()
-    }
-
-
     handleUserCoordinator() {
         this.props.hideModal();
         const { widthPercent } = this.state;
@@ -530,7 +505,7 @@ class DataGridShipmentOderNewCom extends Component {
                                 IsCoordinator={true}
                                 IsCancelDelivery={true}
                                 onChangeValue={this.handleShipmentOrder.bind(this)}
-
+                                onChangeClose={this.handleCloseModal.bind(this)}
 
                             />
                         },
@@ -546,7 +521,6 @@ class DataGridShipmentOderNewCom extends Component {
             this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!")
         }
     }
-
 
     handleSelected() {
         if (this.state.GridDataShip.length > 0) {
@@ -697,6 +671,16 @@ class DataGridShipmentOderNewCom extends Component {
         });
     }
 
+    handleCloseMessage() {
+
+    }
+    showMessage(message) {
+        ModalManager.open(<MessageModal title="Thông báo"
+            message={message} onRequestClose={() => true}
+            onCloseModal={this.handleCloseMessage}
+        />);
+    }
+
     handleClose = () => {
         this.setState({
             changeGird: false
@@ -826,9 +810,8 @@ class DataGridShipmentOderNewCom extends Component {
     }
 
     renderDataGrid() {
+        let {  changeGird } = this.state;
         const dataSource = this.state.DataSource;
-        let { DataSource, changeGird } = this.state;
-     
         if (changeGird) {
             return (
                 <React.Fragment>
@@ -1038,34 +1021,34 @@ class DataGridShipmentOderNewCom extends Component {
                                     return (<tr key={rowIndex} className={rowtrClass}>
                                         <td className={rowUndelivery} style={{ width: '2%' }}>
                                             <ul>
-                                            {rowItem.ShipmentRouteID == "" ?
-                                                        (<React.Fragment>
-                                                            <li className="item ">
-                                                                <div className="group-action">
-                                                                    <div className="checkbox item-action">
-                                                                        <label>
-                                                                            <input type="checkbox" readOnly className="form-control form-control-sm" name={"ShipmentOrderID"} onChange={this.handleCheckShip.bind(this)} value={rowItem.ShipmentOrderID} checked={this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID)} />
-                                                                            <span className="cr">
-                                                                                <i className="cr-icon fa fa-check"></i>
-                                                                            </span>
-                                                                        </label>
-                                                                    </div>
+                                                {rowItem.ShipmentRouteID == "" ?
+                                                    (<React.Fragment>
+                                                        <li className="item ">
+                                                            <div className="group-action">
+                                                                <div className="checkbox item-action">
+                                                                    <label>
+                                                                        <input type="checkbox" readOnly className="form-control form-control-sm" name={"ShipmentOrderID"} onChange={this.handleCheckShip.bind(this)} value={rowItem.ShipmentOrderID} checked={this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID)} />
+                                                                        <span className="cr">
+                                                                            <i className="cr-icon fa fa-check"></i>
+                                                                        </span>
+                                                                    </label>
                                                                 </div>
-                                                            </li>
-                                                            <li className="item ">
-                                                                <button className="btn" onClick={this.handleClickShip(rowItem.ShipmentOrderID)}>
-                                                                    <i className="fa fa-user-plus"></i>
-                                                                </button>
-                                                            </li>
-                                                        </React.Fragment>
-
-                                                        ) :
-                                                        (<li className="item ">
-                                                            <button onClick={this.handleClickShipmentRoute(rowItem.ShipmentRouteID)} className="btn btn-user-plus" title="Đã được phân tuyến">
-                                                                <i className="fa fa-user-plus" ></i>
+                                                            </div>
+                                                        </li>
+                                                        <li className="item ">
+                                                            <button className="btn" onClick={this.handleClickShip(rowItem.ShipmentOrderID)}>
+                                                                <i className="fa fa-user-plus"></i>
                                                             </button>
-                                                        </li>)
-                                                    }
+                                                        </li>
+                                                    </React.Fragment>
+
+                                                    ) :
+                                                    (<li className="item ">
+                                                        <button onClick={this.handleClickShipmentRoute(rowItem.ShipmentRouteID)} className="btn btn-user-plus" title="Đã được phân tuyến">
+                                                            <i className="fa fa-user-plus" ></i>
+                                                        </button>
+                                                    </li>)
+                                                }
                                                 <li className="item printing">
                                                     <button className="btn" onClick={this.handlePrintClickNew.bind(this)}>
                                                         <i className="ti ti-printer" data-id={rowItem.ShipmentOrderID}></i>
@@ -1450,10 +1433,10 @@ class DataGridShipmentOderNewCom extends Component {
                             <React.Fragment>
                                 {matches.small && this.renderDataGridSmallSize()}
                                 {matches.large && <div className={classCustom}>
-                                    <div id="changeMaxWidthNew" className="card cardShipmentOrder ShipmentRouteCus" style={{ maxWidth: this.state.changeGird == false ? 'auto' : this.state.maxWidthGird - this.state.widthPercent }}>
+                                    <div id="changeMaxWidthNew" className="card cardShipmentOrder ShipmentRouteCus"  style={{ maxWidth: this.state.changeGird == false ? this.state.maxWidthGird : this.state.maxWidthGird - this.state.widthPercent }}>
                                         <ReactNotification ref={this.notificationDOMRef} />
 
-                                        <div id="fixedCard" className={classhearderFix} style={{ maxWidth: this.state.changeGird == false ? 'auto' : this.state.maxWidthGird - this.state.widthPercent }}>
+                                        <div id="fixedCard" className={classhearderFix} style={{ maxWidth: this.state.changeGird == false ? this.state.maxWidthGird : this.state.maxWidthGird - this.state.widthPercent }}>
                                             {(this.props.title != undefined || this.props.title != '') && <h4 className="title">{this.props.title}</h4>}
 
                                             {hasHeaderToolbar &&
@@ -1463,7 +1446,7 @@ class DataGridShipmentOderNewCom extends Component {
                                                         <div className="btn-group btn-group-sm">
                                                             <div className="group-left">
                                                                 <button id="btnUserCoordinator" type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
-                                                                    <i className="fa fa-plus"> Gán nhân viên giao hàng</i>
+                                                                    <i className="fa fa-plus">Phân tuyến giao hàng</i>
                                                                 </button>
                                                                 <div className="groupActionRemember ml-10">
                                                                     <button type="button" onClick={this.handleSelected.bind(this)} className="btn " title="" data-provide="tooltip" data-original-title="Ghi nhớ">
@@ -1484,53 +1467,14 @@ class DataGridShipmentOderNewCom extends Component {
                                                                 </div>
 
                                                             </div>
-
                                                             <div className="group-count">
                                                                 <ul>
                                                                     <li>
                                                                         <span className="count-name">Tổng đơn:</span>
                                                                         <span className="count-number">{this.state.DataSource.length > 0 ? formatNumber(this.state.DataSource[0].TotaLRows) : ''}</span>
                                                                     </li>
-                                                                    {/* <li>
-                                                    <span className="count-name">Đã hoàn thành:</span>
-                                                    <span className="count-number">{this.state.DataSource.length}</span>
-                                                </li>
-                                                <li>
-                                                    <span className="count-name">Chưa hoàn thành:</span>
-                                                    <span className="count-number">{this.state.DataSource.length}</span>
-                                                </li> */}
                                                                 </ul>
                                                             </div>
-
-                                                            {(this.props.IsAdd == true || this.props.IsAdd == undefined) ?
-                                                                (!this.props.IsCustomAddLink == true ?
-                                                                    (<Link
-                                                                        to={{
-                                                                            pathname: this.props.AddLink,
-                                                                            state: {
-                                                                                params: this.props.params
-                                                                            }
-                                                                        }}
-                                                                    >
-                                                                        <button type="button" className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
-                                                                            <span className="fa fa-plus ff"> Thêm </span>
-                                                                        </button>
-                                                                    </Link>)
-                                                                    : (
-                                                                        <button type="button" onClick={this.handleInsertClick} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
-                                                                            <span className="fa fa-plus ff"> Thêm </span>
-                                                                        </button>
-                                                                    )
-                                                                )
-                                                                : ""
-                                                            }
-                                                            {
-                                                                (this.props.IsDelete == true || this.props.IsDelete == undefined) ?
-                                                                    (<button type="button" className="btn btn-danger btn-delete ml-10" title="" data-provide="tooltip" data-original-title="Xóa" onClick={this.handleDeleteClick}>
-                                                                        <span className="fa fa-remove"> Xóa </span>
-                                                                    </button>)
-                                                                    : ""
-                                                            }
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1547,7 +1491,7 @@ class DataGridShipmentOderNewCom extends Component {
                                                         <div className="btn-group btn-group-sm">
                                                             <div className="group-left">
                                                                 <button id="btnUserCoordinator" type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
-                                                                    <i className="fa fa-plus"> Gán nhân viên giao hàng</i>
+                                                                    <i className="fa fa-plus">Phân tuyến giao hàng</i>
                                                                 </button>
                                                                 <div className="groupActionRemember ml-10">
                                                                     <button type="button" onClick={this.handleSelected.bind(this)} className="btn " title="" data-provide="tooltip" data-original-title="Ghi nhớ">
@@ -1575,46 +1519,8 @@ class DataGridShipmentOderNewCom extends Component {
                                                                         <span className="count-name">Tổng đơn:</span>
                                                                         <span className="count-number">{this.state.DataSource.length > 0 ? formatNumber(this.state.DataSource[0].TotaLRows) : ''}</span>
                                                                     </li>
-                                                                    {/* <li>
-                                                    <span className="count-name">Đã hoàn thành:</span>
-                                                    <span className="count-number">{this.state.DataSource.length}</span>
-                                                </li>
-                                                <li>
-                                                    <span className="count-name">Chưa hoàn thành:</span>
-                                                    <span className="count-number">{this.state.DataSource.length}</span>
-                                                </li> */}
                                                                 </ul>
                                                             </div>
-
-                                                            {(this.props.IsAdd == true || this.props.IsAdd == undefined) ?
-                                                                (!this.props.IsCustomAddLink == true ?
-                                                                    (<Link
-                                                                        to={{
-                                                                            pathname: this.props.AddLink,
-                                                                            state: {
-                                                                                params: this.props.params
-                                                                            }
-                                                                        }}
-                                                                    >
-                                                                        <button type="button" className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
-                                                                            <span className="fa fa-plus ff"> Thêm </span>
-                                                                        </button>
-                                                                    </Link>)
-                                                                    : (
-                                                                        <button type="button" onClick={this.handleInsertClick} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
-                                                                            <span className="fa fa-plus ff"> Thêm </span>
-                                                                        </button>
-                                                                    )
-                                                                )
-                                                                : ""
-                                                            }
-                                                            {
-                                                                (this.props.IsDelete == true || this.props.IsDelete == undefined) ?
-                                                                    (<button type="button" className="btn btn-danger btn-delete ml-10" title="" data-provide="tooltip" data-original-title="Xóa" onClick={this.handleDeleteClick}>
-                                                                        <span className="fa fa-remove"> Xóa </span>
-                                                                    </button>)
-                                                                    : ""
-                                                            }
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1636,21 +1542,6 @@ class DataGridShipmentOderNewCom extends Component {
                                     : (this.props.IsAutoPaging && <GridPage numPage={pageCount} currentPage={this.state.PageNumber} maxPageShow={5} onChangePage={this.onChangePageHandle} />)
                             }
                         </Media> */}
-
-                                            {HideHeaderToolbarGroupTextBox &&
-                                                <div className="flexbox mb-20 ">
-                                                    <div></div>
-                                                    <div className="btn-toolbar">
-                                                        <div className="btn-group btn-group-sm">
-                                                            <button className="btn btn-w-md btn-round btn-info" onClick={this.handleOneInsertClick}>Chọn</button>
-                                                            {MultipleCheck &&
-                                                                <button className="btn btn-w-md btn-round btn-info ml-20" onClick={this.handleMultipleInsertClick}>Chọn & Tiếp tục</button>
-                                                            }
-                                                            <button className="btn btn-w-md btn-round btn-secondary  ml-20" onClick={this.handleCloseModel} >Bỏ qua</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            }
                                         </div>
                                     </div>
                                 </div>}
