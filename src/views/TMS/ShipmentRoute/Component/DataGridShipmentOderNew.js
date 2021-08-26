@@ -63,9 +63,6 @@ class DataGridShipmentOderNewCom extends Component {
         this.handleClose = this.handleClose.bind(this)
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
-
-
-
     componentDidMount() {
 
         this.updateWindowDimensions();
@@ -85,7 +82,6 @@ class DataGridShipmentOderNewCom extends Component {
 
     updateWindowDimensions = () => {
         const widthModal = (window.innerWidth * 55) / 100;
-        console.log("widthModal", widthModal)
         const clientWidth = document.getElementById('changeMaxWidthNew').clientWidth;
         this.setState({
             widthPercent: widthModal,

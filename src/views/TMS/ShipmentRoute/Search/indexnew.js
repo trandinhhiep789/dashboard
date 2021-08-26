@@ -15,14 +15,13 @@ import {
     IDSelectColumnName,
     PKColumnName,
     InitSearchParams,
-    PagePath
+    PagePath,
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import SOPrintTemplate from "../../../../common/components/PrintTemplate/SOPrintTemplate";
-import { callGetCache } from "../../../../actions/cacheAction";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -50,8 +49,9 @@ class SearchCom extends React.Component {
     }
 
     componentDidMount() {
+
+
         const localShipmentOrderInfo = localStorage.getItem('SearchShipmentOrderInfo');
-       
         let InitSearchParams = [];
         if (localShipmentOrderInfo == null) {
             InitSearchParams = [
@@ -125,21 +125,20 @@ class SearchCom extends React.Component {
                     SearchValue: 0
                 }
             ];
-
         }
         else {
             const ShipmentOrderInfo = JSON.parse(localShipmentOrderInfo);
-            this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderTypeID').value=ShipmentOrderInfo.ShipmentOrderTypeID;
+            this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderTypeID').value = ShipmentOrderInfo.ShipmentOrderTypeID;
             // this.state.SearchElementList.find(n => n.name == 'dtCreatedOrderTimeFo').value=ShipmentOrderInfo.CreatedOrderTimeFo;
             // this.state.SearchElementList.find(n => n.name == 'dtCreatedOrderTimeTo').value=ShipmentOrderInfo.CreatedOrderTimeTo;
-            this.state.SearchElementList.find(n => n.name == 'cbReceiverProvinceID').value=ShipmentOrderInfo.ReceiverProvinceID;
-            this.state.SearchElementList.find(n => n.name == 'cbReceiverDistrictID').value=ShipmentOrderInfo.ReceiverDistrictID;
-            this.state.SearchElementList.find(n => n.name == 'cbReceiverWardID').value=ShipmentOrderInfo.ReceiverWardID;
-            this.state.SearchElementList.find(n => n.name == 'cbSenderStoreID').value=ShipmentOrderInfo.SenderStoreID;
-            this.state.SearchElementList.find(n => n.name == 'cbCoordinatorStoreID').value=ShipmentOrderInfo.CoordinatorStoreID;
-            this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderStatusGroupID').value=ShipmentOrderInfo.ShipmentOrderStatusGroupID;
-            this.state.SearchElementList.find(n => n.name == 'cbIsCoordinator').value=ShipmentOrderInfo.IsCoordinator;
-            this.state.SearchElementList.find(n => n.name == 'cbCarrierTypeID').value=ShipmentOrderInfo.CarrierTypeID;
+            this.state.SearchElementList.find(n => n.name == 'cbReceiverProvinceID').value = ShipmentOrderInfo.ReceiverProvinceID;
+            this.state.SearchElementList.find(n => n.name == 'cbReceiverDistrictID').value = ShipmentOrderInfo.ReceiverDistrictID;
+            this.state.SearchElementList.find(n => n.name == 'cbReceiverWardID').value = ShipmentOrderInfo.ReceiverWardID;
+            this.state.SearchElementList.find(n => n.name == 'cbSenderStoreID').value = ShipmentOrderInfo.SenderStoreID;
+            this.state.SearchElementList.find(n => n.name == 'cbCoordinatorStoreID').value = ShipmentOrderInfo.CoordinatorStoreID;
+            this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderStatusGroupID').value = ShipmentOrderInfo.ShipmentOrderStatusGroupID;
+            this.state.SearchElementList.find(n => n.name == 'cbIsCoordinator').value = ShipmentOrderInfo.IsCoordinator;
+            this.state.SearchElementList.find(n => n.name == 'cbCarrierTypeID').value = ShipmentOrderInfo.CarrierTypeID;
             InitSearchParams = [
                 {
                     SearchKey: "@Keyword",
@@ -164,7 +163,7 @@ class SearchCom extends React.Component {
                 ,
                 {
                     SearchKey: "@RECEIVERPROVINCEID",
-                    SearchValue:ShipmentOrderInfo.ReceiverProvinceID
+                    SearchValue: ShipmentOrderInfo.ReceiverProvinceID
                 },
                 {
                     SearchKey: "@RECEIVERDISTRICTID",
@@ -213,7 +212,7 @@ class SearchCom extends React.Component {
             ];
         }
 
-        this.setState({ SearchData: InitSearchParams });
+        this.setState({ SearchData: InitSearchParams, SearchElementList: this.state.SearchElementList });
         this.callSearchData(InitSearchParams);
         this.props.updatePagePath(PagePath);
 
@@ -251,7 +250,7 @@ class SearchCom extends React.Component {
 
     handleonSearchEvent(Keywordid) {
         if (Keywordid != "") {
-            if (Keywordid.trim().length==15) {
+            if (Keywordid.trim().length == 15) {
                 this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByKeyword", String(Keywordid).trim()).then(apiResult => {
                     if (!apiResult.IsError) {
                         this.setState({
@@ -260,7 +259,7 @@ class SearchCom extends React.Component {
                     }
                 });
             }
-             else if(Keywordid.trim().length==10) {
+            else if (Keywordid.trim().length == 10) {
                 this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByPhoneNember", String(Keywordid).trim()).then(apiResult => {
                     if (!apiResult.IsError) {
                         this.setState({
@@ -370,6 +369,7 @@ class SearchCom extends React.Component {
         this.setState({ SearchData: postData });
         this.callSearchData(postData);
     }
+
     callSearchData(searchData) {
         this.setState({
             IsLoadData: false
@@ -503,10 +503,6 @@ class SearchCom extends React.Component {
     }
 
     handlePrintClick() {
-
-        // window.print();
-        // return;
-
         var mywindow = window.open('', '', 'right=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0');
         mywindow.document.write('<html><head>');
         mywindow.document.write('<title>Đơn vận chuyển</title>');
@@ -517,27 +513,29 @@ class SearchCom extends React.Component {
         // mywindow.document.getElementsByName('body').css( "-webkit-print-color-adjust", "exact !important");
         mywindow.print();
         mywindow.close();
-
         return true;
-
     }
 
 
+
     render() {
-        this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderStatusGroupID').value = this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : "1,2,3"
+        console.log("SearchElementList", this.state.SearchElementList)
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
-                    <SearchForm
-                        FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
-                        MLObjectDefinition={SearchMLObjectDefinition}
-                        listelement={this.state.SearchElementList}
-                        onSubmit={this.handleSearchSubmit}
-                        btnGroup= 'btnSearch btncustom btnGroup'
-                        IsSetting={true}
-                        className="multiple multiple-custom multiple-custom-display"
-                    />
+                    <div className="col-lg-12 SearchFormCustom">
+                        <SearchForm
+                            FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
+                            MLObjectDefinition={SearchMLObjectDefinition}
+                            listelement={this.state.SearchElementList}
+                            onSubmit={this.handleSearchSubmit}
+                            ref={this.searchref}
+                            btnGroup='btnSearch btncustom btnGroup'
+                            IsSetting={true}
+                            className="multiple multiple-custom multiple-custom-display"
+                        />
+                    </div>
                     <DataGridShipmentOderNew
                         listColumn={DataGridColumnList}
                         dataSource={this.state.gridDataSource}
@@ -573,9 +571,10 @@ class SearchCom extends React.Component {
                     <SearchForm
                         FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
                         MLObjectDefinition={SearchMLObjectDefinition}
-                        listelement={SearchElementList}
+                        listelement={this.state.SearchElementList}
                         onSubmit={this.handleSearchSubmit}
-                        btnGroup= 'btnSearch btncustom btnGroup'
+                        ref={this.searchref}
+                        btnGroup='btnSearch btncustom btnGroup'
                         IsSetting={true}
                         className="multiple multiple-custom multiple-custom-display"
                     />
@@ -600,9 +599,6 @@ const mapDispatchToProps = dispatch => {
         },
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
-        },
-        callGetCache: (cacheKeyID) => {
-            return dispatch(callGetCache(cacheKeyID));
         }
     };
 };
