@@ -39,7 +39,7 @@ class AbilitiCom extends Component {
                                 <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                     <thead className="thead-light">
                                         <tr>
-                                            <th className="jsgrid-header-cell">Loại mùa vụ</th>
+                                            <th className="jsgrid-header-cell">Loại mùa dịch vụ</th>
                                             <th className="jsgrid-header-cell">Từ ngày</th>
                                             <th className="jsgrid-header-cell">Đến ngày</th>
                                             <th className="jsgrid-header-cell">Theo tháng</th>

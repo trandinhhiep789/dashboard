@@ -41,7 +41,7 @@ class DetailCom extends React.Component {
                     AbilityItem: apiResult.ResultObject,
                     IsLoadDataComplete: true
                 });
-                const id= apiResult.ResultObject.ServiceAgreementID;
+                const id = apiResult.ResultObject.ServiceAgreementID;
                 const PagePath = [
                     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
                     { Link: "/ServiceAgreement", Title: "Danh sách hợp đồng dịch vụ " },
@@ -78,7 +78,7 @@ class DetailCom extends React.Component {
                         <div className="card-body">
                             <div className="form-row">
                                 <div className="form-group col-md-2">
-                                    <label className="col-form-label bold">Loại mùa vụ</label>
+                                    <label className="col-form-label bold">Loại mùa dịch vụ</label>
                                 </div>
                                 <div className="form-group col-md-4">
                                     <label className="col-form-label">

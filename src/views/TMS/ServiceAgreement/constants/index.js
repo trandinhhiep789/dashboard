@@ -86,7 +86,7 @@ export const DataGridColumnItemListFeeAppendix = [
     {
         Name: "ServiceSeasonTypeName",
         Type: "text",
-        Caption: "Loại thời vụ",
+        Caption: "Loại mùa dịch vụ",
         DataSourceMember: "ServiceSeasonTypeName",
         Width: 250,
     },
@@ -125,7 +125,7 @@ export const DataGridColumnItemListFeeAppendix = [
 
 export const DataTemplateExportFeeAppendix = [
     {
-        "Loại Thời Vụ": "1",
+        "Loại mùa dịch vụ": "1",
         "Tên Phụ Lục": "Phụ lục 1",
         "Từ ngày": new Date(),
         "Đến ngày": new Date(),
@@ -138,7 +138,7 @@ export const DataTemplateExportFeeAppendix2 = [
     {
         "Mã hợp đồng": "1",
         "Ngày ký HĐ": new Date(),
-        "Loại Thời Vụ": "1",
+        "Loại mùa dịch vụ": "1",
         "Tên Phụ Lục": "Phụ lục 1",
         "Từ ngày": new Date(),
         "Đến ngày": new Date(),
@@ -151,7 +151,7 @@ export const listColumnImportFile_FeeAppendix = [
     {
         Name: "ServiceSeasonTypeID",
         Type: "text",
-        Caption: "Loại thời vụ",
+        Caption: "Loại mùa dịch vụ",
         DataSourceMember: "ServiceSeasonTypeID"
     },
     {
@@ -194,7 +194,7 @@ export const listColumnImportFile_FeeAppendix = [
 
 export const DataTemplateExportAbility = [
     {
-        "Loại mùa vụ": "1",
+        "Loại mùa dịch vụ": "1",
         "Từ ngày": new Date(),
         "Đến ngày": new Date(),
         "Theo tháng": "1",
@@ -207,7 +207,7 @@ export const DataTemplateExportAbility2 = [
     {
         "Mã hợp đồng": "1",
         "Ngày ký HĐ": new Date(),
-        "Loại mùa vụ": "1",
+        "Loại mùa dịch vụ": "1",
         "Từ ngày": new Date(),
         "Đến ngày": new Date(),
         "Theo tháng": "1",
@@ -221,7 +221,7 @@ export const DataGridColumnItemListAbiliti = [
         Name: "ServiceSeasonTypeName",
         // Type: "texttolink",
         Type: "text",
-        Caption: " Loại mùa vụ",
+        Caption: " Loại mùa dịch vụ",
         DataSourceMember: "ServiceSeasonTypeName",
         // Link: "/ServiceAgreement/Abiliti/Detail/",
         Width: 150,
@@ -932,7 +932,77 @@ export const listColumnArea = [
         Type: "edit",
         Width: 90
     },
-]
+];
+
+export const listColumnImportFileArea = [
+    {
+        Caption: "Mã khu vực",
+        DataSourceMember: "AreaID",
+        Name: "AreaID",
+        Type: "text",
+    },
+    {
+        Caption: "Tên khu vực",
+        DataSourceMember: "AreaName",
+        Name: "AreaName",
+        Type: "text",
+    },
+    {
+        Caption: "Lỗi",
+        DataSourceMember: "Errors",
+        Name: "Errors",
+        Type: "text",
+    }
+];
+
+export const listColumnImportFileStore = [
+    {
+        Caption: "Mã kho",
+        DataSourceMember: "StoreID",
+        Name: "StoreID",
+        Type: "text",
+    },
+    {
+        Caption: "Tên kho",
+        DataSourceMember: "StoreName",
+        Name: "StoreName",
+        Type: "text",
+    },
+    {
+        Caption: "Lỗi",
+        DataSourceMember: "Errors",
+        Name: "Errors",
+        Type: "text",
+    }
+];
+
+export const AreaSchema = {
+    'Mã khu vực': {
+        prop: 'AreaID',
+        type: Number,
+        required: true
+    }
+};
+
+export const StoreSchema = {
+    'Mã kho': {
+        prop: 'StoreID',
+        type: Number,
+        required: true
+    }
+};
+
+export const DataTemplateExportArea = [
+    {
+        "Mã khu vực": 1
+    }
+];
+
+export const DataTemplateExportStore = [
+    {
+        "Mã kho": 1
+    }
+];
 
 export const listColumnArea2 = [
     {
@@ -1030,7 +1100,7 @@ export const listColumnStore2 = [
 ];
 
 export const FeeAppendixSchema = {
-    'Loại Thời Vụ': {
+    'Loại mùa dịch vụ': {
         prop: 'ServiceSeasonTypeID',
         type: Number,
         required: true
@@ -1072,7 +1142,7 @@ export const FeeAppendixSchema2 = {
         type: Date,
         required: true
     },
-    'Loại Thời Vụ': {
+    'Loại mùa dịch vụ': {
         prop: 'ServiceSeasonTypeID',
         type: Number,
         required: true
@@ -1119,7 +1189,7 @@ export const listColumnImportFile_FeeAppendix2 = [
     {
         Name: "ServiceSeasonTypeID",
         Type: "text",
-        Caption: "Loại Thời Vụ",
+        Caption: "Loại mùa dịch vụ",
         DataSourceMember: "ServiceSeasonTypeID"
     },
     {
@@ -1161,7 +1231,7 @@ export const listColumnImportFile_FeeAppendix2 = [
 ]
 
 export const AbilitySchema = {
-    'Loại mùa vụ': {
+    'Loại mùa dịch vụ': {
         prop: 'ServiceSeasonTypeID',
         type: Number,
         required: true
@@ -1201,7 +1271,7 @@ export const AbilitySchema2 = {
         type: Date,
         required: true
     },
-    'Loại mùa vụ': {
+    'Loại mùa dịch vụ': {
         prop: 'ServiceSeasonTypeID',
         type: Number,
         required: true
@@ -1246,7 +1316,7 @@ export const listColumnImportFile_Ability2 = [
     {
         Name: "ServiceSeasonTypeID",
         Type: "text",
-        Caption: "Loại mùa vụ",
+        Caption: "Loại mùa dịch vụ",
         DataSourceMember: "ServiceSeasonTypeID"
     },
     {
@@ -1291,7 +1361,7 @@ export const listColumnImportFile_Ability = [
     {
         Name: "ServiceSeasonTypeID",
         Type: "text",
-        Caption: "Loại mùa vụ",
+        Caption: "Loại mùa dịch vụ",
         DataSourceMember: "ServiceSeasonTypeID"
     },
     {

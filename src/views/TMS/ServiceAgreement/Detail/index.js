@@ -92,7 +92,7 @@ class DetailCom extends React.Component {
                 const tempDataFeeAppendix = apiResult.ResultObject.FeeAppendix_ItemList.map((item, index) => {
                     let elementFeeAppendix = {
                         "Tên Phụ lục": item.FeeAppendixName,
-                        "Loại thời vụ": item.ServiceSeasonTypeName,
+                        "Loại mùa dịch vụ": item.ServiceSeasonTypeName,
                         "Từ ngày": item.ApplyFromDate,
                         "Đến ngày": item.ApplyToDate,
                     };
@@ -102,7 +102,7 @@ class DetailCom extends React.Component {
                 })
                 const tempDataAbility = apiResult.ResultObject.Ability_ItemList.map((item, index) => {
                     let elementAbility = {
-                        "Tên Phụ lục": item.ServiceSeasonTypeName,
+                        "Loại mùa dịch vụ": item.ServiceSeasonTypeName,
                         "Từ ngày": item.FromDate,
                         "Đến ngày": item.ToDate,
                         "Theo tháng": item.MonthlyAbilityValue,

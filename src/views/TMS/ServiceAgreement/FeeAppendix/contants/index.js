@@ -21,10 +21,10 @@ export const AddLinkFeeAppendixDetail = "/ServiceAgreement/FeeAppendix/Add";
 export const IDSelectColumnNameFeeAppendixDetail = "chkSelect";
 export const PKColumnNameFeeAppendixDetail = "FeeAppendixDetailID"
 
-export const AddFeeAppendixDetailPath ="api/ServiceAgreement_FeeAppendixDetail/Add";
-export const AddFeeAppendixDetailPathNew ="api/ServiceAgreement_FeeAppendixDetail/AddList";
-export const  EditFeeAppendixDetailPath="api/ServiceAgreement_FeeAppendixDetail/Update";
-export const  DeleteFeeAppendixDetailPath="api/ServiceAgreement_FeeAppendixDetail/Delete";
+export const AddFeeAppendixDetailPath = "api/ServiceAgreement_FeeAppendixDetail/Add";
+export const AddFeeAppendixDetailPathNew = "api/ServiceAgreement_FeeAppendixDetail/AddList";
+export const EditFeeAppendixDetailPath = "api/ServiceAgreement_FeeAppendixDetail/Update";
+export const DeleteFeeAppendixDetailPath = "api/ServiceAgreement_FeeAppendixDetail/Delete";
 
 
 
@@ -150,7 +150,7 @@ export const AddElementList = [
     {
         type: "select",
         name: "selServiceSeasonTypeID",
-        label: "loại thời vụ",
+        label: "Loại mùa dịch vụ",
         value: -1,
         placeholder: "",
         icon: "",
@@ -259,7 +259,7 @@ export const DataGridColumnList = [
     {
         Name: "ServiceSeasonTypeName",
         Type: "text",
-        Caption: "Loại thời vụ",
+        Caption: "Loại mùa dịch vụ",
         DataSourceMember: "ServiceSeasonTypeName",
         Width: 230
     },
@@ -387,28 +387,28 @@ export const MLObjectFeeAppendixDetailItem = [
         DataSourceMember: "TechSpecsValueID"
     },
     {
-        
+
         Name: "ProductID",
         DefaultValue: "",
         BindControlName: "cbProductID",
         DataSourceMember: "ProductID"
     },
     {
-        
+
         Name: "ServiceFee",
         DefaultValue: "",
         BindControlName: "txtServiceFee",
         DataSourceMember: "ServiceFee"
     },
     {
-        
+
         Name: "IsActived",
         DefaultValue: "",
         BindControlName: "ckIsActived",
         DataSourceMember: "IsActived"
     },
     {
-        
+
         Name: "IsSystem",
         DefaultValue: "",
         BindControlName: "ckIsSystem",

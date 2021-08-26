@@ -36,7 +36,7 @@ export const DataGridColumnItemListFeeAppendix = [
     {
         Name: "ServiceSeasonTypeName",
         Type: "text",
-        Caption: "Loại thời vụ",
+        Caption: "Loại mùa dịch vụ",
         DataSourceMember: "ServiceSeasonTypeName",
         Width: 250,
     },
@@ -77,7 +77,7 @@ export const DataGridColumnItemListAbiliti = [
     {
         Name: "ServiceSeasonTypeName",
         Type: "texttolink",
-        Caption: " Loại mùa vụ",
+        Caption: " Loại mùa dịch vụ",
         DataSourceMember: "ServiceSeasonTypeName",
         Link: "/Abiliti/Detail/",
         Width: 150,

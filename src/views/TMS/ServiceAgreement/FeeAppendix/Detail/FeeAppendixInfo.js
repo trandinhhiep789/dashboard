@@ -14,7 +14,7 @@ class FeeAppendixInfoInfoCom extends Component {
     }
 
     render() {
-        
+
         return (
             <React.Fragment>
                 <div className="form-row">
@@ -24,7 +24,7 @@ class FeeAppendixInfoInfoCom extends Component {
                     <div className="form-group col-md-4">
                         <label className="col-form-label">{this.props.FeeAppendixInfo.FeeAppendixName}</label>
                     </div><div className="form-group col-md-2">
-                        <label className="col-form-label bold">Loại thời vụ:</label>
+                        <label className="col-form-label bold">Loại mùa dịch vụ:</label>
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">
