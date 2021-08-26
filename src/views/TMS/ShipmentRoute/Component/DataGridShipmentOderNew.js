@@ -77,11 +77,10 @@ class DataGridShipmentOderNewCom extends Component {
     }
     updateWindowDimensions = () => {
         const widthModal = (window.innerWidth * 55) / 100;
-        const maxWidthGirdn = document.getElementById('SearchFormCustom').clientWidth;
-        const clientWidth = document.getElementById('changeMaxWidthNew').clientWidth;
+        const clientWidth = document.getElementById('SearchFormCustom').clientWidth;
         this.setState({
             widthPercent: widthModal,
-            maxWidthGird: maxWidthGirdn 
+            maxWidthGird: clientWidth 
         })
     };
     componentWillReceiveProps(nextProps) {
