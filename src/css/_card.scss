@@ -101,10 +101,16 @@
                     margin-left: 0;
                     .group-left{
                         clear: both;
-                        width: 70%;
+                        width: 80%;
                         display: inline-flex;
                         justify-content: flex-start;
                         .groupActionRemember{
+                            display: flex;
+                            flex-direction: row;
+                            flex-wrap: nowrap;
+                            align-content: center;
+                            justify-content: center;
+                            align-items: stretch;
                              button {
                                 padding: 0 10px;
                                 height: 31px;
@@ -121,6 +127,7 @@
 
                             }
                             .input-group-append {
+                                max-height: 30px;
                                 button {
                                     height: 30px;
                                     font-size: 12px;
