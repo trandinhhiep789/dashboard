@@ -193,7 +193,14 @@
                         justify-content: flex-start;
                         align-items: center;
                         .btn-settings{
+                            cursor: pointer;
                             padding: 0 10px;
+                            &:hover{
+                                
+                                i{
+                                    color: #48b0f7;
+                                }
+                            }
                         }
                     }
                 }
