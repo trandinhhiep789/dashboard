@@ -553,7 +553,19 @@
                 }
                 td{
                     &.btngroupleft{
-
+                        clear: both;
+                        ul{
+                            li{
+                                button{
+                                    padding: 0;
+                                    border: none;
+                                    background: transparent;
+                                    width: 15px;
+                                    color: #fff;
+                                    height: 25px;
+                                }
+                            }
+                        }
                         .group-action{
                             display: flex;
                         }

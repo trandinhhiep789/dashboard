@@ -198,6 +198,7 @@ $font-weight-600: 600;
                         }
                         &.undelivery{
                             background-color: #ec3838;
+                            clear: both;
                         }
                         &.waitingDelivery{
                             background-color: #cec823;
@@ -671,8 +672,21 @@ $font-weight-600: 600;
                 }
                 .btngroupleft {
                     width: 0.2rem;
+                    ul{
+                        li{
+                            button{
+                                padding: 0;
+                                border: none;
+                                background: transparent;
+                                width: 15px;
+                                color: #fff;
+                                height: 25px;
+                            }
+                        }
+                    }
                     &.undelivery{
                         background-color: #fb5353;
+                        clear: both;
                     }
                     &.uncoordinated{
                         background-color: #f3a31e;
