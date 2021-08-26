@@ -697,6 +697,75 @@ class DataGridShipmentOderNewCom extends Component {
         });
     }
 
+    handleClickShip = (ShipmentOrderID) => e => {
+        const { widthPercent } = this.state;
+
+        this.props.hideModal();
+        this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderDeliver", ShipmentOrderID).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.setState({ changeGird: true });
+                let resultdd = this.state.GridDataShip.find(n => n.ShipmentOrderID == ShipmentOrderID)
+                if (resultdd == undefined)
+                    this.state.GridDataShip.push(apiResult.ResultObject.ShipmentOrderDeliver);
+                this.props.showModal(MODAL_TYPE_VIEW, {
+                    title: 'Phân tuyến điều phối vận đơn ',
+                    isShowOverlay: false,
+                    onhideModal: this.handleClose,
+                    content: {
+                        text: <ListShipCoordinator
+                            ShipmentOrderID={0}
+                            ShipmentRouteID={this.state.ShipmentRouteID}
+                            InfoCoordinator={this.state.GridDataShip}
+                            ShipmentOrderSame={apiResult.ResultObject.ShipmentOrderDeliverList}
+                            IsUserCoordinator={true}
+                            IsCoordinator={true}
+                            IsCancelDelivery={true}
+                            onChangeValue={this.handleShipmentOrder.bind(this)}
+                            onChangeClose={this.handleCloseModal.bind(this)}
+
+                        />
+                    },
+                    maxWidth: widthPercent + 'px'
+                });
+            }
+            else {
+                this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!")
+            }
+        });
+    };
+
+    handleClickShipmentRoute = (RouteID) => e => {
+        const { widthPercent, ShipmentRouteID } = this.state;
+        this.props.hideModal();
+        this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetShipmentOrderRouteLst", RouteID).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.setState({ ShipmentRouteID: RouteID, GridDataShip: apiResult.ResultObject, changeGird: true });
+                this.props.showModal(MODAL_TYPE_VIEW, {
+                    title: 'Phân tuyến điều phối vận đơn ',
+                    isShowOverlay: false,
+                    onhideModal: this.handleClose,
+                    content: {
+                        text: <ListShipCoordinator
+                            ShipmentOrderID={0}
+                            ShipmentRouteID={RouteID}
+                            InfoCoordinator={this.state.GridDataShip}
+                            IsUserCoordinator={true}
+                            ShipmentOrderSame={[]}
+                            IsCoordinator={true}
+                            IsCancelDelivery={true}
+                            onChangeValue={this.handleShipmentOrder.bind(this)}
+                            onChangeClose={this.handleCloseModal.bind(this)}
+                        />
+                    },
+                    maxWidth: widthPercent + 'px'
+                });
+            }
+            else {
+                this.showMessage(apiResult.message)
+            }
+        });
+    };
+
     handlePrintClickNew(e) {
         const ShipmentOrderID = e.target.attributes['data-id'].value;
         this.setState({
@@ -953,24 +1022,34 @@ class DataGridShipmentOderNewCom extends Component {
                                     return (<tr key={rowIndex} className={rowtrClass}>
                                         <td className={rowUndelivery} style={{ width: '2%' }}>
                                             <ul>
-                                                <li className="item">
-                                                    <div className="group-action">
-                                                        <div className="checkbox item-action">
-                                                            <label>
-                                                                <input type="checkbox" readOnly className="form-control form-control-sm" name={"ShipmentOrderID"} onChange={this.handleCheckShip.bind(this)} value={rowItem.ShipmentOrderID} checked={this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID)} />
-                                                                <span className="cr">
-                                                                    <i className="cr-icon fa fa-check"></i>
-                                                                </span>
-                                                            </label>
-                                                        </div>
-                                                        {/* <a title="" className="nav-link hover-primary  item-action" title="Edit">
-                                                    <i className="ti-pencil"></i>
-                                                </a>
-                                                <a title="" className="table-action hover-danger item-action" title="Xóa">
-                                                    <i className="ti-trash"></i>
-                                                </a> */}
-                                                    </div>
-                                                </li>
+                                            {rowItem.ShipmentRouteID == "" ?
+                                                        (<React.Fragment>
+                                                            <li className="item ">
+                                                                <div className="group-action">
+                                                                    <div className="checkbox item-action">
+                                                                        <label>
+                                                                            <input type="checkbox" readOnly className="form-control form-control-sm" name={"ShipmentOrderID"} onChange={this.handleCheckShip.bind(this)} value={rowItem.ShipmentOrderID} checked={this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID)} />
+                                                                            <span className="cr">
+                                                                                <i className="cr-icon fa fa-check"></i>
+                                                                            </span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                            <li className="item ">
+                                                                <button className="btn" onClick={this.handleClickShip(rowItem.ShipmentOrderID)}>
+                                                                    <i className="fa fa-user-plus"></i>
+                                                                </button>
+                                                            </li>
+                                                        </React.Fragment>
+
+                                                        ) :
+                                                        (<li className="item ">
+                                                            <button onClick={this.handleClickShipmentRoute(rowItem.ShipmentRouteID)} className="btn btn-user-plus" title="Đã được phân tuyến">
+                                                                <i className="fa fa-user-plus" ></i>
+                                                            </button>
+                                                        </li>)
+                                                    }
                                                 <li className="item printing">
                                                     <button className="btn" onClick={this.handlePrintClickNew.bind(this)}>
                                                         <i className="ti ti-printer" data-id={rowItem.ShipmentOrderID}></i>
