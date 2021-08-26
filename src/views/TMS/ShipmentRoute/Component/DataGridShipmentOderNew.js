@@ -32,16 +32,9 @@ class DataGridShipmentOderNewCom extends Component {
         this.onValueChange = this.onValueChange.bind(this);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
-        this.handleDeleteClick = this.handleDeleteClick.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.onChangePageHandle = this.onChangePageHandle.bind(this);
-        this.handleInsertClickEdit = this.handleInsertClickEdit.bind(this);
-        this.handleInsertClick = this.handleInsertClick.bind(this);
         this.handleCloseModel = this.handleCloseModel.bind(this);
-        this.handleMultipleInsertClick = this.handleMultipleInsertClick.bind(this);
-        this.handleOneInsertClick = this.handleOneInsertClick.bind(this);
-        this.handleonClickDelete = this.handleonClickDelete.bind(this);
-
         this.checkAll = this.checkAll.bind(this);
         this.getCheckList = this.getCheckList.bind(this);
         const pkColumnName = this.props.PKColumnName.split(',');
@@ -80,7 +73,7 @@ class DataGridShipmentOderNewCom extends Component {
         const clientWidth = document.getElementById('SearchFormCustom').clientWidth;
         this.setState({
             widthPercent: widthModal,
-            maxWidthGird: clientWidth 
+            maxWidthGird: clientWidth
         })
     };
     componentWillReceiveProps(nextProps) {
@@ -101,18 +94,6 @@ class DataGridShipmentOderNewCom extends Component {
                 GridDataShip: []
             });
         }
-    }
-
-
-
-    handleInsertClickEdit(id, pkColumnName) {
-        if (this.props.onInsertClickEdit != null)
-            this.props.onInsertClickEdit(id, pkColumnName);
-    }
-
-    handleInsertClick() {
-        if (this.props.onInsertClick != null)
-            this.props.onInsertClick(this.props.MLObjectDefinition, this.props.modalElementList, this.props.dataSource);
     }
 
     checkAll(e) {
@@ -253,85 +234,49 @@ class DataGridShipmentOderNewCom extends Component {
         this.setState({ KeywordId: e.target.value });
         if (e.key == "Enter") {
             const searchText = e.target.value;
-            if (this.props.onSearchEvent != null) {
-                this.props.onSearchEvent(searchText)
-            }
+            this.handleonSearchEvent(searchText);
         }
     }
-
     handleonChange(e) {
         this.setState({ KeywordId: e.target.value });
     }
     handleSearchShip() {
-        if (this.props.onSearchEvent != null) {
-            this.props.onSearchEvent(this.state.KeywordId)
+        this.handleonSearchEvent(this.state.KeywordId);
+    }
+
+    handleonSearchEvent(Keywordid) {
+        if (Keywordid != "") {
+            if (Keywordid.trim().length == 15) {
+                this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByKeyword", String(Keywordid).trim()).then(apiResult => {
+                    if (!apiResult.IsError) {
+                        this.setState({
+                            DataSource: apiResult.ResultObject
+                        });
+                    }
+                });
+            }
+            else if (Keywordid.trim().length == 10) {
+                this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByPhoneNember", String(Keywordid).trim()).then(apiResult => {
+                    if (!apiResult.IsError) {
+                        this.setState({
+                            DataSource: apiResult.ResultObject
+                        });
+                    }
+                });
+            }
+            else {
+                this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByPartnerSaleOrderID", String(Keywordid).trim()).then(apiResult => {
+                    if (!apiResult.IsError) {
+                        this.setState({
+                            DataSource: apiResult.ResultObject
+                        });
+                    }
+                });
+            }
         }
     }
 
-    handleonClickDelete(id) {
-        var doDelete = () => {
 
-            const confir = confirm("Bạn có chắc rằng muốn xóa ?");
-            if (confir == 1) {
-                this.props.onDeleteClick(id);
-            }
-        }
-        if (this.props.DeletePermission) {
-            this.checkPermission(this.props.DeletePermission).then(result => {
-                if (result == true) {
-                    doDelete();
-                }
-                else if (result == 'error') {
-                    this.showMessage("Lỗi khi kiểm tra quyền")
-                } else {
-                    this.showMessage("Bạn không có quyền xóa!")
-                }
-            })
-        } else {
-            doDelete();
-        }
-
-    }
-
-
-    handleDeleteClick() {
-        var doDelete = () => {
-            const idSelectColumnName = this.props.IDSelectColumnName;
-            let listDeleteID = [];
-            const idDeleteListObject = this.state.GridData[idSelectColumnName];
-            idDeleteListObject.map((item, index) => {
-                if (item.IsChecked) {
-                    listDeleteID.push(item);
-                }
-            });
-            if (listDeleteID.length == 0) {
-                this.showMessage("Vui lòng chọn ít nhất một dòng cần xóa!");
-                return;
-            }
-            const confir = confirm("Bạn có chắc rằng muốn xóa ?");
-            if (confir == 1) {
-                this.props.onDeleteClick(listDeleteID, this.state.ListPKColumnName);
-                // this.setState({
-                //     GridData: {},
-                //     IsCheckAll: false
-                // });
-            }
-        }
-        if (this.props.DeletePermission) {
-            this.checkPermission(this.props.DeletePermission).then(result => {
-                if (result == true) {
-                    doDelete();
-                }
-                else if (result == 'error') {
-                    this.showMessage("Lỗi khi kiểm tra quyền")
-                } else {
-                    this.showMessage("Bạn không có quyền xóa!")
-                }
-            })
-        } else {
-            doDelete();
-        }
-    }
 
     handleSearchSubmit(event) {
         event.preventDefault();
@@ -437,49 +382,6 @@ class DataGridShipmentOderNewCom extends Component {
 
     handleCloseModel() {
         this.props.hideModal();
-    }
-
-    handleOneInsertClick() {
-        const idSelectColumnName = this.props.IDSelectColumnName;
-        let listSelectID = [];
-        let listMLObject = [];
-        const idSelectListObject = this.state.GridData[idSelectColumnName];
-        idSelectListObject.map((item, index) => {
-            if (item.IsChecked) {
-                listSelectID.push(item);
-            }
-        });
-        const lstPKColumnName = this.state.ListPKColumnName;
-        listSelectID.map((row, index) => {
-            let MLObject = {};
-            lstPKColumnName.map((pkItem, pkIndex) => {
-                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
-            });
-            listMLObject.push(MLObject);
-        });
-        this.props.onSubmitItem(listMLObject);
-        this.handleCloseModel();
-    }
-
-    handleMultipleInsertClick() {
-        const idSelectColumnName = this.props.IDSelectColumnName;
-        let listSelectID = [];
-        let listMLObject = [];
-        const idSelectListObject = this.state.GridData[idSelectColumnName];
-        idSelectListObject.map((item, index) => {
-            if (item.IsChecked) {
-                listSelectID.push(item);
-            }
-        });
-        const lstPKColumnName = this.state.ListPKColumnName;
-        listSelectID.map((row, index) => {
-            let MLObject = {};
-            lstPKColumnName.map((pkItem, pkIndex) => {
-                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
-            });
-            listMLObject.push(MLObject);
-        });
-        this.props.onSubmitItem(listMLObject);
     }
 
     handleUserCoordinator() {
@@ -809,7 +711,7 @@ class DataGridShipmentOderNewCom extends Component {
     }
 
     renderDataGrid() {
-        let {  changeGird } = this.state;
+        let { changeGird } = this.state;
         const dataSource = this.state.DataSource;
         if (changeGird) {
             return (
@@ -863,7 +765,7 @@ class DataGridShipmentOderNewCom extends Component {
                                                                     </div>
                                                                 </li>
                                                                 <li className="item ">
-                                                                    <button className="btn">
+                                                                    <button className="btn" onClick={this.handleClickShip(rowItem.ShipmentOrderID)}>
                                                                         <i className="fa fa-user-plus"></i>
                                                                     </button>
                                                                 </li>
@@ -1432,7 +1334,7 @@ class DataGridShipmentOderNewCom extends Component {
                             <React.Fragment>
                                 {matches.small && this.renderDataGridSmallSize()}
                                 {matches.large && <div className={classCustom}>
-                                    <div id="changeMaxWidthNew" className="card cardShipmentOrder ShipmentRouteCus"  style={{ maxWidth: this.state.changeGird == false ? this.state.maxWidthGird : this.state.maxWidthGird - this.state.widthPercent }}>
+                                    <div id="changeMaxWidthNew" className="card cardShipmentOrder ShipmentRouteCus" style={{ maxWidth: this.state.changeGird == false ? this.state.maxWidthGird : this.state.maxWidthGird - this.state.widthPercent }}>
                                         <ReactNotification ref={this.notificationDOMRef} />
 
                                         <div id="fixedCard" className={classhearderFix} style={{ maxWidth: this.state.changeGird == false ? this.state.maxWidthGird : this.state.maxWidthGird - this.state.widthPercent }}>
