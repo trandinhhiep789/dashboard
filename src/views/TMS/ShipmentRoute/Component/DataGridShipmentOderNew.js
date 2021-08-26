@@ -697,6 +697,22 @@ class DataGridShipmentOderNewCom extends Component {
         });
     }
 
+    handleClose = () => {
+        this.setState({
+            changeGird: false
+        })
+        this.props.hideModal()
+    }
+    handleCloseModal() {
+        this.props.hideModal()
+        this.setState({
+            changeGird: false,
+            GridDataShip: [],
+            ShipmentRouteID: ""
+        })
+    }
+
+
     handleClickShip = (ShipmentOrderID) => e => {
         const { widthPercent } = this.state;
 
