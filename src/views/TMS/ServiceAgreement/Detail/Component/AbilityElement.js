@@ -31,23 +31,23 @@ class AbilityElementCom extends Component {
     }
 
     handleSubmit(formData, MLObject) {
+        if (MLObject.DailyAbilityValue == "" || parseFloat(MLObject.DailyAbilityValue) == 0) {
+            formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = true;
+            formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng nhập số";
+            return;
+        }
 
-        // if (MLObject.MonthlyAbilityValue == "" && MLObject.DailyAbilityValue == "") {
-        //     formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = true;
-        //     formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng thêm dữ liệu";
-
-        //     formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = true;
-        //     formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng thêm dữ liệu";
-        // }
-        // else {
+        if (MLObject.MonthlyAbilityValue == "" || parseFloat(MLObject.MonthlyAbilityValue) == 0) {
+            formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = true;
+            formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng nhập số";
+            return;
+        }
 
         MLObject.DailyAbilityValue = parseFloat(MLObject.DailyAbilityValue);
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.MonthlyAbilityValue = parseFloat(MLObject.MonthlyAbilityValue);
         MLObject.ServiceAgreementID = this.props.dataSource.ServiceAgreementID.trim();
         MLObject.SignedDate = this.props.dataSource.SignedDate;
-
-        console.log(MLObject)
 
         if (this.props.index != undefined) {
             MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
@@ -61,9 +61,6 @@ class AbilityElementCom extends Component {
                 this.props.onInputChangeObj(this.props.dataSource.ServiceAgreementID, apiResult);
             });
         }
-        // }
-
-
     }
 
     handleChange(formData, MLObject) {
@@ -78,65 +75,26 @@ class AbilityElementCom extends Component {
             }
         }
 
-        // if (formData.txtDailyAbilityValue.value != '' || formData.txtMonthlyAbilityValue.value != '') {
         if (formData.txtDailyAbilityValue.value != '') {
-            // if (/^[0-9][0-9]*$/.test(formData.txtDailyAbilityValue.value.toString())) {
-            //     formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = false;
-            //     formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "";
-            //     formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = false;
-            //     formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = ""
-            // } else {
-            //     formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = true;
-            //     formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng nhập số";
-            // }
-            if (/^\d{1,2}(\.\d{1,2})?$/ig.test(formData.txtDailyAbilityValue.value.toString())) {
+            if (/^\d*\.?\d+$/.test(formData.txtDailyAbilityValue.value.toString())) {
                 formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = false;
                 formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "";
-                // formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = false;
-                // formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = ""
             } else {
                 formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = true;
-                formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng nhập đúng định dạng, ví dụ: 12.00";
+                formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng nhập số";
             }
         }
 
         if (formData.txtMonthlyAbilityValue.value != "") {
-            // if (/^[0-9][0-9]*$/.test(formData.txtMonthlyAbilityValue.value.toString())) {
-            //     formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = false;
-            //     formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = ""
-            //     formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = false;
-            //     formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "";
-            // }
-            // else {
-            //     formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = true;
-            //     formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng nhập số";
-            // }
-
-            if (/^\d{1,2}(\.\d{1,2})?$/ig.test(formData.txtMonthlyAbilityValue.value.toString())) {
+            if (/^\d*\.?\d+$/.test(formData.txtMonthlyAbilityValue.value.toString())) {
                 formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = false;
                 formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = ""
-                // formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = false;
-                // formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "";
             }
             else {
                 formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = true;
-                formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng nhập đúng định dạng, ví dụ: 12.00";
+                formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng nhập số";
             }
         }
-        // } else {
-        // formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = true;
-        // formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng thêm dữ liệu";
-
-        // formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = true;
-        // formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng thêm dữ liệu";
-
-        // formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = false;
-        // formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "";
-
-        // formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = false;
-        // formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = "";
-        // }
-
     }
 
     render() {
