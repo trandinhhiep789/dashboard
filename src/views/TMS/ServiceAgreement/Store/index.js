@@ -215,19 +215,19 @@ class StoreCom extends React.Component {
         });
 
         //#region set nội dung lỗi
-        if (values.errors.length != 0) {
-            for (const item of values.errors) {
-                let errorText = "";
-                if (dataSource[item.row - 1]) {
-                    if (dataSource[item.row - 1].Errors == "") {
-                        errorText = item.column;
-                    } else {
-                        errorText = `${dataSource[item.row - 1].Errors}, ${item.column}`
-                    }
-                    dataSource[item.row - 1].Errors = errorText;
-                }
-            }
-        }
+        // if (values.errors.length != 0) {
+        //     for (const item of values.errors) {
+        //         let errorText = "";
+        //         if (dataSource[item.row - 1]) {
+        //             if (dataSource[item.row - 1].Errors == "") {
+        //                 errorText = item.column;
+        //             } else {
+        //                 errorText = `${dataSource[item.row - 1].Errors}, ${item.column}`
+        //             }
+        //             dataSource[item.row - 1].Errors = errorText;
+        //         }
+        //     }
+        // }
         //#endregion
 
         //#region check nhập trùng

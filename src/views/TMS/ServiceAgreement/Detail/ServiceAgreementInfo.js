@@ -11,7 +11,11 @@ import {
     listColumnArea,
     APIHostName,
     AreaSchema,
-    listColumnImportFileArea
+    StoreSchema,
+    listColumnImportFileArea,
+    DataTemplateExportStore,
+    listColumnStore,
+    listColumnImportFileStore
 } from "../constants";
 
 import { MessageModal } from "../../../../common/components/Modal";
@@ -21,7 +25,8 @@ import { formatDate } from "../../../../common/library/CommonLib.js";
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import { showModal, hideModal } from '../../../../actions/modal';
 import DataGrid from "../../../../common/components/DataGrid";
-import ModalCom from '../Area/Modal';
+import AreaModalCom from '../Area/Modal';
+import StoreModalCom from '../Store/Modal';
 import ImportExcelModalCom from '../ImportExcelModal';
 
 class ServiceAgreementInfoCom extends Component {
@@ -29,20 +34,31 @@ class ServiceAgreementInfoCom extends Component {
         super(props);
 
         this.state = {
-            ServiceAgreementAreaData: this.props.ServiceAgreementInfo.ServiceAgreement_AreaList
+            ServiceAgreementAreaData: this.props.ServiceAgreementInfo.ServiceAgreement_AreaList,
+            ServiceAgreementStoreData: this.props.ServiceAgreementInfo.ServiceAgreement_StoreList
         }
 
         this.addNotification = this.addNotification.bind(this);
         this.callLoadData_ServiceAgreementArea = this.callLoadData_ServiceAgreementArea.bind(this);
+        this.callLoadData_ServiceAgreementStore = this.callLoadData_ServiceAgreementStore.bind(this);
         this.handleDataSubmit_ServiceAgreementArea = this.handleDataSubmit_ServiceAgreementArea.bind(this);
+        this.handleDataSubmit_ServiceAgreementStore = this.handleDataSubmit_ServiceAgreementStore.bind(this);
         this.handleDeleteClick_ServiceAgreementArea = this.handleDeleteClick_ServiceAgreementArea.bind(this);
+        this.handleDeleteClick_ServiceAgreementStore = this.handleDeleteClick_ServiceAgreementStore.bind(this);
         this.handleExportFileTemplate_ServiceAgreementArea = this.handleExportFileTemplate_ServiceAgreementArea.bind(this);
+        this.handleExportFileTemplate_ServiceAgreementStore = this.handleExportFileTemplate_ServiceAgreementStore.bind(this);
         this.handleImportFile_ServiceAgreementArea = this.handleImportFile_ServiceAgreementArea.bind(this);
+        this.handleImportFile_ServiceAgreementStore = this.handleImportFile_ServiceAgreementStore.bind(this);
         this.handleInsertClick_ServiceAgreementArea = this.handleInsertClick_ServiceAgreementArea.bind(this);
+        this.handleInsertClick_ServiceAgreementStore = this.handleInsertClick_ServiceAgreementStore.bind(this);
         this.handleInsertClickEdit_ServiceAgreementArea = this.handleInsertClickEdit_ServiceAgreementArea.bind(this);
+        this.handleInsertClickEdit_ServiceAgreementStore = this.handleInsertClickEdit_ServiceAgreementStore.bind(this);
         this.handleSetImportData_ServiceAgreementArea = this.handleSetImportData_ServiceAgreementArea.bind(this);
+        this.handleSetImportData_ServiceAgreementStore = this.handleSetImportData_ServiceAgreementStore.bind(this);
         this.handleSubmitEdit_ServiceAgreementArea = this.handleSubmitEdit_ServiceAgreementArea.bind(this);
+        this.handleSubmitEdit_ServiceAgreementStore = this.handleSubmitEdit_ServiceAgreementStore.bind(this);
         this.handleSubmitImportFile_ServiceAgreementArea = this.handleSubmitImportFile_ServiceAgreementArea.bind(this);
+        this.handleSubmitImportFile_ServiceAgreementStore = this.handleSubmitImportFile_ServiceAgreementStore.bind(this);
         this.notificationDOMRef = React.createRef();
         this.showMessage = this.showMessage.bind(this);
     }
@@ -90,6 +106,16 @@ class ServiceAgreementInfoCom extends Component {
         });
     }
 
+    callLoadData_ServiceAgreementStore() {
+        this.props.callFetchAPI(APIHostName, "api/ServiceAgreement_Store/Search", this.props.ServiceAgreementInfo.ServiceAgreementID).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.setState({
+                    ServiceAgreementStoreData: apiResult.ResultObject
+                })
+            }
+        });
+    }
+
     handleDataSubmit_ServiceAgreementArea(ServiceArgeementAreaTotal, newServiceArgeementArea) {
         const dataSubmit = {
             ...newServiceArgeementArea,
@@ -101,6 +127,22 @@ class ServiceAgreementInfoCom extends Component {
         this.props.callFetchAPI(APIHostName, "api/ServiceAgreement_Area/Add", dataSubmit).then(apiResult => {
             if (!apiResult.IsError) {
                 this.callLoadData_ServiceAgreementArea();
+            }
+            this.addNotification(apiResult.Message, apiResult.IsError);
+        });
+    }
+
+    handleDataSubmit_ServiceAgreementStore(ServiceArgeementStoreTotal, newServiceArgeementStore) {
+        const dataSubmit = {
+            ...newServiceArgeementStore,
+            CreatedUser: this.props.AppInfo.LoginInfo.Username,
+            ServiceAgreementID: this.props.ServiceAgreementInfo.ServiceAgreementID,
+            SignedDate: this.props.ServiceAgreementInfo.SignedDate
+        };
+
+        this.props.callFetchAPI(APIHostName, "api/ServiceAgreement_Store/AddList", [dataSubmit]).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.callLoadData_ServiceAgreementStore();
             }
             this.addNotification(apiResult.Message, apiResult.IsError);
         });
@@ -123,7 +165,28 @@ class ServiceAgreementInfoCom extends Component {
         });
     }
 
+    handleDeleteClick_ServiceAgreementStore(listDeleteID, ListPKColumnName) {
+        const listDeleteStore = listDeleteID.map(item => {
+            return {
+                ServiceAgreementID: this.props.ServiceAgreementInfo.ServiceAgreementID,
+                StoreID: item.pkColumnName[0].value,
+                DeletedUser: this.props.AppInfo.LoginInfo.Username
+            }
+        })
+
+        this.props.callFetchAPI(APIHostName, "api/ServiceAgreement_Store/DeleteList", listDeleteStore).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.callLoadData_ServiceAgreementStore();
+            }
+            this.addNotification(apiResult.Message, apiResult.IsError);
+        });
+    }
+
     handleExportFileTemplate_ServiceAgreementArea(result) {
+        this.addNotification(result.Message, result.IsError);
+    }
+
+    handleExportFileTemplate_ServiceAgreementStore(result) {
         this.addNotification(result.Message, result.IsError);
     }
 
@@ -143,13 +206,43 @@ class ServiceAgreementInfoCom extends Component {
         }, { once: true })
     }
 
+    handleImportFile_ServiceAgreementStore() {
+        const input = document.getElementById("inputImportFile");
+        input.click();
+
+        input.addEventListener("change", () => {
+            readXlsxFile(input.files[0], { sheet: "data", schema: StoreSchema }).then((data) => {
+                this.handleSetImportData_ServiceAgreementStore(data);
+            }).catch(error => {
+                console.log("handleImportFile_ServiceAgreementStore", error);
+                alert("File vừa chọn lỗi. Vui lòng chọn file khác");
+            }).finally(() => {
+                input.value = "";
+            })
+        }, { once: true })
+    }
+
     handleInsertClick_ServiceAgreementArea() {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Thêm khu vực áp dụng hợp đồng này',
             content: {
-                text: <ModalCom
+                text: <AreaModalCom
                     dataGrid={this.state.ServiceAgreementAreaData}
                     dataSubmit={this.handleDataSubmit_ServiceAgreementArea}
+                    modalType="ADD"
+                />
+            },
+            maxWidth: '800px'
+        });
+    }
+
+    handleInsertClick_ServiceAgreementStore() {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Thêm kho áp dụng hợp đồng này',
+            content: {
+                text: <StoreModalCom
+                    dataGrid={this.state.ServiceAgreementStoreData}
+                    dataSubmit={this.handleDataSubmit_ServiceAgreementStore}
                     modalType="ADD"
                 />
             },
@@ -163,11 +256,29 @@ class ServiceAgreementInfoCom extends Component {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Cập nhật khu vực áp dụng hợp đồng này',
             content: {
-                text: <ModalCom
+                text: <AreaModalCom
                     dataGrid={this.state.ServiceAgreementAreaData}
                     dataItem={dataItem}
                     dataSubmit={this.handleSubmitEdit_ServiceAgreementArea}
                     isDisabledArea={true}
+                    modalType="EDIT"
+                />
+            },
+            maxWidth: '800px'
+        });
+    }
+
+    handleInsertClickEdit_ServiceAgreementStore(id, pkColumnName) {
+        const dataItem = this.state.ServiceAgreementStoreData.find(item => item.StoreID == id.pkColumnName[0].value);
+
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Cập nhật kho áp dụng hợp đồng này',
+            content: {
+                text: <StoreModalCom
+                    dataGrid={this.state.ServiceAgreementStoreData}
+                    dataItem={dataItem}
+                    dataSubmit={this.handleSubmitEdit_ServiceAgreementStore}
+                    isDisabledStore={true}
                     modalType="EDIT"
                 />
             },
@@ -184,19 +295,19 @@ class ServiceAgreementInfoCom extends Component {
         });
 
         //#region set nội dung lỗi
-        if (values.errors.length != 0) {
-            for (const item of values.errors) {
-                let errorText = "";
-                if (dataSource[item.row - 1]) {
-                    if (dataSource[item.row - 1].Errors == "") {
-                        errorText = item.column;
-                    } else {
-                        errorText = `${dataSource[item.row - 1].Errors}, ${item.column}`
-                    }
-                    dataSource[item.row - 1].Errors = errorText;
-                }
-            }
-        }
+        // if (values.errors.length != 0) {
+        //     for (const item of values.errors) {
+        //         let errorText = "";
+        //         if (dataSource[item.row - 1]) {
+        //             if (dataSource[item.row - 1].Errors == "") {
+        //                 errorText = item.column;
+        //             } else {
+        //                 errorText = `${dataSource[item.row - 1].Errors}, ${item.column}`
+        //             }
+        //             dataSource[item.row - 1].Errors = errorText;
+        //         }
+        //     }
+        // }
         //#endregion
 
         //#region check nhập trùng
@@ -268,10 +379,113 @@ class ServiceAgreementInfoCom extends Component {
             })
     }
 
+    handleSetImportData_ServiceAgreementStore(values) {
+        let dataSource = values.rows.map(item => {
+            return {
+                ...item,
+                Errors: ""
+            }
+        });
+
+        //#region set nội dung lỗi
+        // if (values.errors.length != 0) {
+        //     for (const item of values.errors) {
+        //         let errorText = "";
+        //         if (dataSource[item.row - 1]) {
+        //             if (dataSource[item.row - 1].Errors == "") {
+        //                 errorText = item.column;
+        //             } else {
+        //                 errorText = `${dataSource[item.row - 1].Errors}, ${item.column}`
+        //             }
+        //             dataSource[item.row - 1].Errors = errorText;
+        //         }
+        //     }
+        // }
+        //#endregion
+
+        //#region check nhập trùng
+        if (this.state.ServiceAgreementStoreData.length != 0) {
+            dataSource.forEach((element, index) => {
+                const found = this.state.ServiceAgreementStoreData.find(item => item.StoreID == element.StoreID);
+
+                if (found) {
+                    let errorText = "";
+                    if (dataSource[index].Errors == "") {
+                        errorText = "Nhập trùng";
+                    } else {
+                        errorText = `Nhập trùng, ${dataSource[index].Errors}`
+                    }
+
+                    dataSource[index].Errors = errorText;
+                }
+            });
+        }
+        //#endregion
+
+        this.props.callGetCache("ERPCOMMONCACHE.STORE")
+            .then((result) => {
+                if (!result.IsError && result.ResultObject.CacheData != null) {
+
+                    //#region check tồn tại mã kho
+                    dataSource.forEach((element, index) => {
+                        const found = result.ResultObject.CacheData.find(item => item.StoreID == element.StoreID);
+
+                        if (found) {
+                            dataSource[index] = {
+                                ...dataSource[index],
+                                ...found
+                            };
+                        } else {
+                            let errorText = "";
+                            if (dataSource[index].Errors == "") {
+                                errorText = "Không tồn tại mã kho";
+                            } else {
+                                errorText = `Không tồn tại mã kho, ${dataSource[index].Errors}`
+                            }
+
+                            dataSource[index].StoreName = "";
+                            dataSource[index].Errors = errorText;
+                        }
+                    });
+                    //#endregion
+
+                    this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+                        title: 'Kết quả nhập từ excel',
+                        content: {
+                            text: <ImportExcelModalCom
+                                dataSource={dataSource}
+                                listColumn={listColumnImportFileStore}
+                                onSubmit={this.handleSubmitImportFile_ServiceAgreementStore}
+                                PKColumnName="StoreID"
+                                titleModal="Danh sách kho áp dụng hợp đồng"
+                            />
+                        },
+                        maxWidth: '80%'
+                    })
+                } else {
+                    this.showMessage("Lỗi import file");
+                }
+            })
+            .catch(error => {
+                console.log("handleSetImportData_ServiceAgreementStore", error);
+                this.showMessage("Lỗi import file");
+            })
+    }
+
     handleSubmitEdit_ServiceAgreementArea(ServiceArgeementAreaTotal = [], newServiceArgeementArea) {
         this.props.callFetchAPI(APIHostName, "api/ServiceAgreement_Area/UpdateList", [newServiceArgeementArea]).then(apiResult => {
             if (!apiResult.IsError) {
                 this.callLoadData_ServiceAgreementArea();
+                this.props.hideModal();
+            }
+            this.addNotification(apiResult.Message, apiResult.IsError);
+        });
+    }
+
+    handleSubmitEdit_ServiceAgreementStore(ServiceArgeementStoreTotal = [], newServiceArgeementStore) {
+        this.props.callFetchAPI(APIHostName, "api/ServiceAgreement_Store/UpdateList", [newServiceArgeementStore]).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.callLoadData_ServiceAgreementStore();
                 this.props.hideModal();
             }
             this.addNotification(apiResult.Message, apiResult.IsError);
@@ -293,6 +507,27 @@ class ServiceAgreementInfoCom extends Component {
         this.props.callFetchAPI(APIHostName, "api/ServiceAgreement_Area/AddList", uptData).then(apiResult => {
             if (!apiResult.IsError) {
                 this.callLoadData_ServiceAgreementArea();
+                this.props.hideModal();
+            }
+            this.addNotification(apiResult.Message, apiResult.IsError);
+        });
+    }
+
+    handleSubmitImportFile_ServiceAgreementStore(data = []) {
+        const uptData = data.map(item => {
+            return {
+                ...item,
+                CreatedUser: this.props.AppInfo.LoginInfo.Username,
+                ServiceAgreementID: this.props.ServiceAgreementInfo.ServiceAgreementID,
+                SignedDate: this.props.ServiceAgreementInfo.SignedDate,
+                IsActived: true,
+                IsSystem: false
+            }
+        });
+
+        this.props.callFetchAPI(APIHostName, "api/ServiceAgreement_Store/AddList", uptData).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.callLoadData_ServiceAgreementStore();
                 this.props.hideModal();
             }
             this.addNotification(apiResult.Message, apiResult.IsError);
@@ -529,7 +764,7 @@ class ServiceAgreementInfoCom extends Component {
                 </div>
 
                 <div className="form-row mb-4">
-                    <DataGrid
+                    {/* <DataGrid
                         dataSource={this.props.ServiceAgreementInfo.ServiceAgreement_StoreList}
                         headingTitle="Danh sách kho áp dụng hợp đồng"
                         IDSelectColumnName={""}
@@ -541,6 +776,35 @@ class ServiceAgreementInfoCom extends Component {
                         IsShowButtonDelete={false}
                         IsShowButtonPrint={false}
                         listColumn={listColumnStore2}
+                        PKColumnName={"StoreID"}
+                        RowsPerPage={10}
+                    /> */}
+
+                    <DataGrid
+                        dataSource={this.state.ServiceAgreementStoreData}
+                        DataTemplateExport={DataTemplateExportStore}
+                        fileNameTemplate="Danh sách kho áp dụng hợp đồng"
+                        headingTitle="Danh sách kho áp dụng hợp đồng"
+                        IDSelectColumnName={"chkSelect"}
+                        IsAdd={true}
+                        IsAutoPaging={false}
+                        IsCustomAddLink={true}
+                        isCustomImportFile={true}
+                        IsDelete={true}
+                        IsExportFile={false}
+                        isExportFileTemplate={true}
+                        isHideHeaderToolbar={false}
+                        IsImportFile={true}
+                        IsPrint={false}
+                        IsShowButtonAdd={true}
+                        IsShowButtonDelete={true}
+                        IsShowButtonPrint={false}
+                        listColumn={listColumnStore}
+                        onDeleteClick={this.handleDeleteClick_ServiceAgreementStore}
+                        onExportFileTemplate={this.handleExportFileTemplate_ServiceAgreementStore}
+                        onImportFile={this.handleImportFile_ServiceAgreementStore}
+                        onInsertClick={this.handleInsertClick_ServiceAgreementStore}
+                        onInsertClickEdit={this.handleInsertClickEdit_ServiceAgreementStore}
                         PKColumnName={"StoreID"}
                         RowsPerPage={10}
                     />

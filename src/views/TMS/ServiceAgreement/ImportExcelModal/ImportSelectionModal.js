@@ -137,17 +137,17 @@ class ImportSelectionModalCom extends React.Component {
         });
 
         //#region set nội dung lỗi
-        if (values.errors.length != 0) {
-            for (const item of values.errors) {
-                let errorText = "";
-                if (dataSource[item.row - 1].Errors == "") {
-                    errorText = item.column;
-                } else {
-                    errorText = `${dataSource[item.row - 1].Errors}, ${item.column}`
-                }
-                dataSource[item.row - 1].Errors = errorText;
-            }
-        }
+        // if (values.errors.length != 0) {
+        //     for (const item of values.errors) {
+        //         let errorText = "";
+        //         if (dataSource[item.row - 1].Errors == "") {
+        //             errorText = item.column;
+        //         } else {
+        //             errorText = `${dataSource[item.row - 1].Errors}, ${item.column}`
+        //         }
+        //         dataSource[item.row - 1].Errors = errorText;
+        //     }
+        // }
         //#endregion
 
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
@@ -175,17 +175,17 @@ class ImportSelectionModalCom extends React.Component {
         });
 
         //#region set nội dung lỗi
-        if (values.errors.length != 0) {
-            for (const item of values.errors) {
-                let errorText = "";
-                if (dataSource[item.row - 1].Errors == "") {
-                    errorText = item.column;
-                } else {
-                    errorText = `${dataSource[item.row - 1].Errors}, ${item.column}`
-                }
-                dataSource[item.row - 1].Errors = errorText;
-            }
-        }
+        // if (values.errors.length != 0) {
+        //     for (const item of values.errors) {
+        //         let errorText = "";
+        //         if (dataSource[item.row - 1].Errors == "") {
+        //             errorText = item.column;
+        //         } else {
+        //             errorText = `${dataSource[item.row - 1].Errors}, ${item.column}`
+        //         }
+        //         dataSource[item.row - 1].Errors = errorText;
+        //     }
+        // }
         //#endregion
 
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
@@ -215,17 +215,17 @@ class ImportSelectionModalCom extends React.Component {
         });
 
         //#region set nội dung lỗi
-        if (values.errors.length != 0) {
-            for (const item of values.errors) {
-                let errorText = "";
-                if (dataSource[item.row - 1].Errors == "") {
-                    errorText = item.column;
-                } else {
-                    errorText = `${dataSource[item.row - 1].Errors}, ${item.column}`
-                }
-                dataSource[item.row - 1].Errors = errorText;
-            }
-        }
+        // if (values.errors.length != 0) {
+        //     for (const item of values.errors) {
+        //         let errorText = "";
+        //         if (dataSource[item.row - 1].Errors == "") {
+        //             errorText = item.column;
+        //         } else {
+        //             errorText = `${dataSource[item.row - 1].Errors}, ${item.column}`
+        //         }
+        //         dataSource[item.row - 1].Errors = errorText;
+        //     }
+        // }
         //#endregion
 
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
@@ -253,19 +253,19 @@ class ImportSelectionModalCom extends React.Component {
         });
 
         //#region set nội dung lỗi
-        if (values.errors.length != 0) {
-            for (const item of values.errors) {
-                if (dataSource[item.row - 1]) {
-                    let errorText = "";
-                    if (dataSource[item.row - 1].Errors == "") {
-                        errorText = item.column;
-                    } else {
-                        errorText = `${dataSource[item.row - 1].Errors}, ${item.column}`
-                    }
-                    dataSource[item.row - 1].Errors = errorText;
-                }
-            }
-        }
+        // if (values.errors.length != 0) {
+        //     for (const item of values.errors) {
+        //         if (dataSource[item.row - 1]) {
+        //             let errorText = "";
+        //             if (dataSource[item.row - 1].Errors == "") {
+        //                 errorText = item.column;
+        //             } else {
+        //                 errorText = `${dataSource[item.row - 1].Errors}, ${item.column}`
+        //             }
+        //             dataSource[item.row - 1].Errors = errorText;
+        //         }
+        //     }
+        // }
         //#endregion
 
         this.props.callGetCache("ERPCOMMONCACHE.AREATT")
@@ -328,19 +328,19 @@ class ImportSelectionModalCom extends React.Component {
         });
 
         //#region set nội dung lỗi
-        if (values.errors.length != 0) {
-            for (const item of values.errors) {
-                if (dataSource[item.row - 1]) {
-                    let errorText = "";
-                    if (dataSource[item.row - 1].Errors == "") {
-                        errorText = item.column;
-                    } else {
-                        errorText = `${dataSource[item.row - 1].Errors}, ${item.column}`
-                    }
-                    dataSource[item.row - 1].Errors = errorText;
-                }
-            }
-        }
+        // if (values.errors.length != 0) {
+        //     for (const item of values.errors) {
+        //         if (dataSource[item.row - 1]) {
+        //             let errorText = "";
+        //             if (dataSource[item.row - 1].Errors == "") {
+        //                 errorText = item.column;
+        //             } else {
+        //                 errorText = `${dataSource[item.row - 1].Errors}, ${item.column}`
+        //             }
+        //             dataSource[item.row - 1].Errors = errorText;
+        //         }
+        //     }
+        // }
         //#endregion
 
         this.props.callGetCache("ERPCOMMONCACHE.STORE")

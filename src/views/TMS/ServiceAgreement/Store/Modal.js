@@ -7,7 +7,7 @@ import { MessageModal } from "../../../../common/components/Modal";
 import { showModal, hideModal } from '../../../../actions/modal';
 import FormControl from "../../../../common/components/FormContainer/FormControl";
 
-class AreaModalCom extends React.Component {
+class StoreModalCom extends React.Component {
     constructor(props) {
         super(props);
 
@@ -75,19 +75,22 @@ class AreaModalCom extends React.Component {
                         return;
                     }
 
-                    this.props.dataSubmit([...this.props.dataGrid, this.state.dataItem]);
+                    this.props.dataSubmit([...this.props.dataGrid, this.state.dataItem], this.state.dataItem);
                     this.props.hideModal();
                     break;
 
                 case "EDIT":
                     const uptdataGrid = this.props.dataGrid.map(item => {
                         if (item.StoreID == this.state.dataItem.StoreID) {
-                            return this.state.dataItem;
+                            return {
+                                ...this.state.dataItem,
+                                UpdatedUser: this.props.AppInfo.LoginInfo.Username
+                            };
                         } else {
                             return item;
                         }
                     })
-                    this.props.dataSubmit(uptdataGrid);
+                    this.props.dataSubmit(uptdataGrid, { ...this.state.dataItem, UpdatedUser: this.props.AppInfo.LoginInfo.Username });
                     this.props.hideModal();
                     break;
                 default:
@@ -188,7 +191,7 @@ class AreaModalCom extends React.Component {
     }
 }
 
-AreaModalCom.defaultProps = {
+StoreModalCom.defaultProps = {
     dataItem: {
         StoreID: "",
         IsActived: true,
@@ -221,4 +224,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AreaModalCom);
+export default connect(mapStateToProps, mapDispatchToProps)(StoreModalCom);

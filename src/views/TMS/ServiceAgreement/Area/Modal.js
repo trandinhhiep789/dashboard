@@ -82,12 +82,15 @@ class AreaModalCom extends React.Component {
                 case "EDIT":
                     const uptdataGrid = this.props.dataGrid.map(item => {
                         if (item.AreaID == this.state.dataItem.AreaID) {
-                            return this.state.dataItem;
+                            return {
+                                ...this.state.dataItem,
+                                UpdatedUser: this.props.AppInfo.LoginInfo.Username
+                            };
                         } else {
                             return item;
                         }
                     })
-                    this.props.dataSubmit(uptdataGrid, this.state.dataItem);
+                    this.props.dataSubmit(uptdataGrid, { ...this.state.dataItem, UpdatedUser: this.props.AppInfo.LoginInfo.Username });
                     this.props.hideModal();
                     break;
                 default:
