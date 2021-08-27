@@ -1,26 +1,319 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+import { Modal, ModalManager, Effect } from 'react-dynamic-modal';
+import ReactNotification from "react-notifications-component";
+import readXlsxFile from 'read-excel-file';
 
+import {
+    DataTemplateExportArea,
+    listColumnArea2,
+    listColumnStore2,
+    listColumnArea,
+    APIHostName,
+    AreaSchema,
+    listColumnImportFileArea
+} from "../constants";
+
+import { MessageModal } from "../../../../common/components/Modal";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
+import { callGetCache } from "../../../../actions/cacheAction";
 import { formatDate } from "../../../../common/library/CommonLib.js";
-import { listColumnArea2, listColumnStore2 } from "../constants";
+import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
+import { showModal, hideModal } from '../../../../actions/modal';
 import DataGrid from "../../../../common/components/DataGrid";
+import ModalCom from '../Area/Modal';
+import ImportExcelModalCom from '../ImportExcelModal';
 
 class ServiceAgreementInfoCom extends Component {
     constructor(props) {
         super(props);
-        this.state = {
 
+        this.state = {
+            ServiceAgreementAreaData: this.props.ServiceAgreementInfo.ServiceAgreement_AreaList
         }
+
+        this.addNotification = this.addNotification.bind(this);
+        this.callLoadData_ServiceAgreementArea = this.callLoadData_ServiceAgreementArea.bind(this);
+        this.handleDataSubmit_ServiceAgreementArea = this.handleDataSubmit_ServiceAgreementArea.bind(this);
+        this.handleDeleteClick_ServiceAgreementArea = this.handleDeleteClick_ServiceAgreementArea.bind(this);
+        this.handleExportFileTemplate_ServiceAgreementArea = this.handleExportFileTemplate_ServiceAgreementArea.bind(this);
+        this.handleImportFile_ServiceAgreementArea = this.handleImportFile_ServiceAgreementArea.bind(this);
+        this.handleInsertClick_ServiceAgreementArea = this.handleInsertClick_ServiceAgreementArea.bind(this);
+        this.handleInsertClickEdit_ServiceAgreementArea = this.handleInsertClickEdit_ServiceAgreementArea.bind(this);
+        this.handleSetImportData_ServiceAgreementArea = this.handleSetImportData_ServiceAgreementArea.bind(this);
+        this.handleSubmitEdit_ServiceAgreementArea = this.handleSubmitEdit_ServiceAgreementArea.bind(this);
+        this.handleSubmitImportFile_ServiceAgreementArea = this.handleSubmitImportFile_ServiceAgreementArea.bind(this);
+        this.notificationDOMRef = React.createRef();
+        this.showMessage = this.showMessage.bind(this);
     }
 
     componentDidMount() {
     }
 
+    addNotification(message, IsError) {
+        let cssNotification, iconNotification;
+        if (!IsError) {
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
+        } else {
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
+
+    callLoadData_ServiceAgreementArea() {
+        this.props.callFetchAPI(APIHostName, "api/ServiceAgreement_Area/Search", this.props.ServiceAgreementInfo.ServiceAgreementID).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.setState({
+                    ServiceAgreementAreaData: apiResult.ResultObject
+                })
+            }
+        });
+    }
+
+    handleDataSubmit_ServiceAgreementArea(ServiceArgeementAreaTotal, newServiceArgeementArea) {
+        const dataSubmit = {
+            ...newServiceArgeementArea,
+            CreatedUser: this.props.AppInfo.LoginInfo.Username,
+            ServiceAgreementID: this.props.ServiceAgreementInfo.ServiceAgreementID,
+            SignedDate: this.props.ServiceAgreementInfo.SignedDate
+        };
+
+        this.props.callFetchAPI(APIHostName, "api/ServiceAgreement_Area/Add", dataSubmit).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.callLoadData_ServiceAgreementArea();
+            }
+            this.addNotification(apiResult.Message, apiResult.IsError);
+        });
+    }
+
+    handleDeleteClick_ServiceAgreementArea(listDeleteID, ListPKColumnName) {
+        const listDeleteArea = listDeleteID.map(item => {
+            return {
+                ServiceAgreementID: this.props.ServiceAgreementInfo.ServiceAgreementID,
+                AreaID: item.pkColumnName[0].value,
+                DeletedUser: this.props.AppInfo.LoginInfo.Username
+            }
+        })
+
+        this.props.callFetchAPI(APIHostName, "api/ServiceAgreement_Area/DeleteList", listDeleteArea).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.callLoadData_ServiceAgreementArea();
+            }
+            this.addNotification(apiResult.Message, apiResult.IsError);
+        });
+    }
+
+    handleExportFileTemplate_ServiceAgreementArea(result) {
+        this.addNotification(result.Message, result.IsError);
+    }
+
+    handleImportFile_ServiceAgreementArea() {
+        const input = document.getElementById("inputImportFile");
+        input.click();
+
+        input.addEventListener("change", () => {
+            readXlsxFile(input.files[0], { sheet: "data", schema: AreaSchema }).then((data) => {
+                this.handleSetImportData_ServiceAgreementArea(data);
+            }).catch(error => {
+                console.log("handleImportFile_ServiceAgreementArea", error);
+                alert("File vừa chọn lỗi. Vui lòng chọn file khác");
+            }).finally(() => {
+                input.value = "";
+            })
+        }, { once: true })
+    }
+
+    handleInsertClick_ServiceAgreementArea() {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Thêm khu vực áp dụng hợp đồng này',
+            content: {
+                text: <ModalCom
+                    dataGrid={this.state.ServiceAgreementAreaData}
+                    dataSubmit={this.handleDataSubmit_ServiceAgreementArea}
+                    modalType="ADD"
+                />
+            },
+            maxWidth: '800px'
+        });
+    }
+
+    handleInsertClickEdit_ServiceAgreementArea(id, pkColumnName) {
+        const dataItem = this.state.ServiceAgreementAreaData.find(item => item.AreaID == id.pkColumnName[0].value);
+
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Cập nhật khu vực áp dụng hợp đồng này',
+            content: {
+                text: <ModalCom
+                    dataGrid={this.state.ServiceAgreementAreaData}
+                    dataItem={dataItem}
+                    dataSubmit={this.handleSubmitEdit_ServiceAgreementArea}
+                    isDisabledArea={true}
+                    modalType="EDIT"
+                />
+            },
+            maxWidth: '800px'
+        });
+    }
+
+    handleSetImportData_ServiceAgreementArea(values) {
+        let dataSource = values.rows.map(item => {
+            return {
+                ...item,
+                Errors: ""
+            }
+        });
+
+        //#region set nội dung lỗi
+        if (values.errors.length != 0) {
+            for (const item of values.errors) {
+                let errorText = "";
+                if (dataSource[item.row - 1]) {
+                    if (dataSource[item.row - 1].Errors == "") {
+                        errorText = item.column;
+                    } else {
+                        errorText = `${dataSource[item.row - 1].Errors}, ${item.column}`
+                    }
+                    dataSource[item.row - 1].Errors = errorText;
+                }
+            }
+        }
+        //#endregion
+
+        //#region check nhập trùng
+        if (this.state.ServiceAgreementAreaData.length != 0) {
+            dataSource.forEach((element, index) => {
+                const found = this.state.ServiceAgreementAreaData.find(item => item.AreaID == element.AreaID);
+
+                if (found) {
+                    let errorText = "";
+                    if (dataSource[index].Errors == "") {
+                        errorText = "Nhập trùng";
+                    } else {
+                        errorText = `Nhập trùng, ${dataSource[index].Errors}`
+                    }
+
+                    dataSource[index].Errors = errorText;
+                }
+            });
+        }
+        //#endregion
+
+        this.props.callGetCache("ERPCOMMONCACHE.AREATT")
+            .then((result) => {
+                if (!result.IsError && result.ResultObject.CacheData != null) {
+
+                    //#region check tồn tại mã khu vực
+                    dataSource.forEach((element, index) => {
+                        const found = result.ResultObject.CacheData.find(item => item.AreaID == element.AreaID);
+
+                        if (found) {
+                            dataSource[index] = {
+                                ...dataSource[index],
+                                ...found
+                            };
+                        } else {
+                            let errorText = "";
+                            if (dataSource[index].Errors == "") {
+                                errorText = "Không tồn tại mã khu vực";
+                            } else {
+                                errorText = `Không tồn tại mã khu vực, ${dataSource[index].Errors}`
+                            }
+
+                            dataSource[index].AreaName = "";
+                            dataSource[index].Errors = errorText;
+                        }
+                    });
+                    //#endregion
+
+                    this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+                        title: 'Kết quả nhập từ excel',
+                        content: {
+                            text: <ImportExcelModalCom
+                                dataSource={dataSource}
+                                listColumn={listColumnImportFileArea}
+                                onSubmit={this.handleSubmitImportFile_ServiceAgreementArea}
+                                PKColumnName="AreaID"
+                                titleModal="Danh sách khu vực áp dụng hợp đồng"
+                            />
+                        },
+                        maxWidth: '80%'
+                    })
+                } else {
+                    this.showMessage("Lỗi import file");
+                }
+            })
+            .catch(error => {
+                console.log("handleSetImportData_ServiceAgreementArea", error);
+                this.showMessage("Lỗi import file");
+            })
+    }
+
+    handleSubmitEdit_ServiceAgreementArea(ServiceArgeementAreaTotal = [], newServiceArgeementArea) {
+        this.props.callFetchAPI(APIHostName, "api/ServiceAgreement_Area/UpdateList", [newServiceArgeementArea]).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.callLoadData_ServiceAgreementArea();
+                this.props.hideModal();
+            }
+            this.addNotification(apiResult.Message, apiResult.IsError);
+        });
+    }
+
+    handleSubmitImportFile_ServiceAgreementArea(data = []) {
+        const uptData = data.map(item => {
+            return {
+                ...item,
+                CreatedUser: this.props.AppInfo.LoginInfo.Username,
+                ServiceAgreementID: this.props.ServiceAgreementInfo.ServiceAgreementID,
+                SignedDate: this.props.ServiceAgreementInfo.SignedDate,
+                IsActived: true,
+                IsSystem: false
+            }
+        });
+
+        this.props.callFetchAPI(APIHostName, "api/ServiceAgreement_Area/AddList", uptData).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.callLoadData_ServiceAgreementArea();
+                this.props.hideModal();
+            }
+            this.addNotification(apiResult.Message, apiResult.IsError);
+        });
+    }
+
+    showMessage(message) {
+        ModalManager.open(
+            <MessageModal
+                title="Thông báo"
+                message={message}
+                onRequestClose={() => true}
+            />
+        );
+    }
 
     render() {
         return (
             <React.Fragment>
+                <ReactNotification ref={this.notificationDOMRef} />
+
                 <div className="form-row">
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Số hợp đồng:</label>
@@ -189,7 +482,7 @@ class ServiceAgreementInfoCom extends Component {
                 </div>
 
                 <div className="form-row mb-4">
-                    <DataGrid
+                    {/* <DataGrid
                         dataSource={this.props.ServiceAgreementInfo.ServiceAgreement_AreaList}
                         headingTitle="Danh sách khu vực áp dụng hợp đồng"
                         IDSelectColumnName={""}
@@ -201,7 +494,35 @@ class ServiceAgreementInfoCom extends Component {
                         IsShowButtonDelete={false}
                         IsShowButtonPrint={false}
                         listColumn={listColumnArea2}
-                        PKColumnName={""}
+                        PKColumnName={"AreaID"}
+                        RowsPerPage={10}
+                    /> */}
+
+                    <DataGrid
+                        dataSource={this.state.ServiceAgreementAreaData}
+                        DataTemplateExport={DataTemplateExportArea}
+                        fileNameTemplate="Danh sách khu vực áp dụng hợp đồng"
+                        headingTitle="Danh sách khu vực áp dụng hợp đồng"
+                        IDSelectColumnName={"chkSelect"}
+                        IsAdd={true}
+                        IsAutoPaging={false}
+                        IsCustomAddLink={true}
+                        isCustomImportFile={true}
+                        IsDelete={true}
+                        IsExportFile={false}
+                        isExportFileTemplate={true}
+                        isHideHeaderToolbar={false}
+                        IsImportFile={true}
+                        IsPrint={false}
+                        IsShowButtonAdd={true}
+                        IsShowButtonDelete={true}
+                        IsShowButtonPrint={false}
+                        listColumn={listColumnArea}
+                        onDeleteClick={this.handleDeleteClick_ServiceAgreementArea}
+                        onExportFileTemplate={this.handleExportFileTemplate_ServiceAgreementArea}
+                        onImportFile={this.handleImportFile_ServiceAgreementArea}
+                        onInsertClick={this.handleInsertClick_ServiceAgreementArea}
+                        onInsertClickEdit={this.handleInsertClickEdit_ServiceAgreementArea}
                         PKColumnName={"AreaID"}
                         RowsPerPage={10}
                     />
@@ -220,15 +541,23 @@ class ServiceAgreementInfoCom extends Component {
                         IsShowButtonDelete={false}
                         IsShowButtonPrint={false}
                         listColumn={listColumnStore2}
-                        PKColumnName={""}
                         PKColumnName={"StoreID"}
                         RowsPerPage={10}
                     />
                 </div>
+
+                <input type="file" id="inputImportFile" hidden />
             </React.Fragment>
         );
     }
 }
+
+ServiceAgreementInfoCom.defaultProps = {
+    ServiceAgreementInfo: {
+        ServiceAgreement_AreaList: [],
+        ServiceAgreement_StoreList: []
+    }
+};
 
 const mapStateToProps = state => {
     return {
@@ -244,6 +573,12 @@ const mapDispatchToProps = dispatch => {
         },
         showModal: (type, props) => {
             dispatch(showModal(type, props));
+        },
+        hideModal: (type, props) => {
+            dispatch(hideModal(type, props));
+        },
+        callGetCache: (cacheKeyID) => {
+            return dispatch(callGetCache(cacheKeyID));
         }
     }
 }

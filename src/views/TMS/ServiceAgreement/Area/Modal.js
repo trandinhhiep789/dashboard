@@ -75,7 +75,7 @@ class AreaModalCom extends React.Component {
                         return;
                     }
 
-                    this.props.dataSubmit([...this.props.dataGrid, this.state.dataItem]);
+                    this.props.dataSubmit([...this.props.dataGrid, this.state.dataItem], this.state.dataItem);
                     this.props.hideModal();
                     break;
 
@@ -87,7 +87,7 @@ class AreaModalCom extends React.Component {
                             return item;
                         }
                     })
-                    this.props.dataSubmit(uptdataGrid);
+                    this.props.dataSubmit(uptdataGrid, this.state.dataItem);
                     this.props.hideModal();
                     break;
                 default:
