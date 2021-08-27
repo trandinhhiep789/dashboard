@@ -1,27 +1,25 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import FormContainer from "../../../../../common/components/FormContainer";
-import FormControl from "../../../../../common/components/FormContainer/FormControl";
-import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 
 import {
-    LoadAPIPath,
-    MLObjectAbilitiItem,
-    AddAPIAbilityPath,
-    APIHostName,
     AddAPIAbilitiPath,
-    EditAPIAbilitiPath
+    APIHostName,
+    EditAPIAbilitiPath,
+    MLObjectAbilitiItem
 } from "../contants/index.js";
+import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { ERPCOMMONCACHE_SERVICESEASONTYPE } from "../../../../../constants/keyCache";
+import FormContainer from "../../../../../common/components/FormContainer";
+import FormControl from "../../../../../common/components/FormContainer/FormControl";
 
 class AbilityElementCom extends Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
+
         this.state = {
             IsSystem: false
         }
-
     }
 
     componentDidMount() {
@@ -42,10 +40,14 @@ class AbilityElementCom extends Component {
         //     formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng thêm dữ liệu";
         // }
         // else {
+
+        MLObject.DailyAbilityValue = parseFloat(MLObject.DailyAbilityValue);
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        MLObject.MonthlyAbilityValue = parseFloat(MLObject.MonthlyAbilityValue);
         MLObject.ServiceAgreementID = this.props.dataSource.ServiceAgreementID.trim();
         MLObject.SignedDate = this.props.dataSource.SignedDate;
 
+        console.log(MLObject)
 
         if (this.props.index != undefined) {
             MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
@@ -64,7 +66,6 @@ class AbilityElementCom extends Component {
 
     }
 
-
     handleChange(formData, MLObject) {
         if (formData.dtToDate.value.length > 0) {
             if (formData.dtFromDate.value >= formData.dtToDate.value) {
@@ -77,50 +78,66 @@ class AbilityElementCom extends Component {
             }
         }
 
-        if (formData.txtDailyAbilityValue.value != '' || formData.txtMonthlyAbilityValue.value != '') {
-            if (formData.txtDailyAbilityValue.value != '') {
-                if (/^[0-9][0-9]*$/.test(formData.txtDailyAbilityValue.value.toString())) {
-                    formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = false;
-                    formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "";
-                    formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = false;
-                    formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = ""
-                } else {
-
-                    formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = true;
-                    formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng nhập số";
-                }
-            }
-
-            if (formData.txtMonthlyAbilityValue.value != "") {
-                if (/^[0-9][0-9]*$/.test(formData.txtMonthlyAbilityValue.value.toString())) {
-                    formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = false;
-                    formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = ""
-                    formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = false;
-                    formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "";
-                }
-                else {
-                    ;
-                    formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = true;
-                    formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng nhập số";
-                }
+        // if (formData.txtDailyAbilityValue.value != '' || formData.txtMonthlyAbilityValue.value != '') {
+        if (formData.txtDailyAbilityValue.value != '') {
+            // if (/^[0-9][0-9]*$/.test(formData.txtDailyAbilityValue.value.toString())) {
+            //     formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = false;
+            //     formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "";
+            //     formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = false;
+            //     formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = ""
+            // } else {
+            //     formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = true;
+            //     formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng nhập số";
+            // }
+            if (/^\d{1,2}(\.\d{1,2})?$/ig.test(formData.txtDailyAbilityValue.value.toString())) {
+                formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = false;
+                formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "";
+                // formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = false;
+                // formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = ""
+            } else {
+                formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = true;
+                formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng nhập đúng định dạng, ví dụ: 12.00";
             }
         }
-        else {
-            // formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = true;
-            // formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng thêm dữ liệu";
 
-            // formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = true;
-            // formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng thêm dữ liệu";
+        if (formData.txtMonthlyAbilityValue.value != "") {
+            // if (/^[0-9][0-9]*$/.test(formData.txtMonthlyAbilityValue.value.toString())) {
+            //     formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = false;
+            //     formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = ""
+            //     formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = false;
+            //     formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "";
+            // }
+            // else {
+            //     formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = true;
+            //     formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng nhập số";
+            // }
 
-            formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = false;
-            formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "";
-
-            formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = false;
-            formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = "";
+            if (/^\d{1,2}(\.\d{1,2})?$/ig.test(formData.txtMonthlyAbilityValue.value.toString())) {
+                formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = false;
+                formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = ""
+                // formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = false;
+                // formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "";
+            }
+            else {
+                formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = true;
+                formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng nhập đúng định dạng, ví dụ: 12.00";
+            }
         }
+        // } else {
+        // formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = true;
+        // formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng thêm dữ liệu";
+
+        // formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = true;
+        // formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = "Vui lòng thêm dữ liệu";
+
+        // formData.txtDailyAbilityValue.ErrorLst.IsValidatonError = false;
+        // formData.txtDailyAbilityValue.ErrorLst.ValidatonErrorMessage = "";
+
+        // formData.txtMonthlyAbilityValue.ErrorLst.IsValidatonError = false;
+        // formData.txtMonthlyAbilityValue.ErrorLst.ValidatonErrorMessage = "";
+        // }
 
     }
-
 
     render() {
 
@@ -139,35 +156,35 @@ class AbilityElementCom extends Component {
                 <div className="row">
                     <div className="col-md-12">
                         <FormControl.FormControlTextBox
-                            name="txtAbilityID"
                             colspan="9"
-                            labelcolspan="3"
-                            readOnly={true}
+                            controltype="InputControl"
+                            datasourcemember="AbilityID"
                             hidenControll={true}
                             label="mã năng lực"
+                            labelcolspan="3"
+                            name="txtAbilityID"
                             placeholder="Mã năng lực tự động nhập"
-                            controltype="InputControl"
+                            readOnly={true}
                             value=""
-                            datasourcemember="AbilityID"
                         />
 
                     </div>
                     <div className="col-md-6">
                         <FormControl.FormControlComboBox
-                            name="cbServiceSeasonTypeID"
                             colspan="9"
-                            labelcolspan="3"
-                            label="Loại mùa dịch vụ"
-                            disabled={IsSystem}
-                            validatonList={["Comborequired"]}
-                            isautoloaditemfromcache={true}
-                            loaditemcachekeyid={ERPCOMMONCACHE_SERVICESEASONTYPE} //"ERPCOMMONCACHE.SERVICESEASONTYPE"
-                            valuemember="ServiceSeasonTypeID"
-                            nameMember="ServiceSeasonTypeName"
                             controltype="InputControl"
-                            value={-1}
-                            listoption={[]}
                             datasourcemember="ServiceSeasonTypeID"
+                            disabled={IsSystem}
+                            isautoloaditemfromcache={true}
+                            label="Loại mùa dịch vụ"
+                            labelcolspan="3"
+                            listoption={[]}
+                            loaditemcachekeyid={ERPCOMMONCACHE_SERVICESEASONTYPE} //"ERPCOMMONCACHE.SERVICESEASONTYPE"
+                            name="cbServiceSeasonTypeID"
+                            nameMember="ServiceSeasonTypeName"
+                            validatonList={["Comborequired"]}
+                            value={-1}
+                            valuemember="ServiceSeasonTypeID"
                         />
 
                     </div>
@@ -176,89 +193,89 @@ class AbilityElementCom extends Component {
 
                     <div className="col-md-6">
                         <FormControl.FormControlDatetimeNew
-                            name="dtFromDate"
                             colspan="9"
-                            labelcolspan="3"
-                            readOnly={false}
-                            timeFormat={false}
-                            showTime={false}
-                            disabled={IsSystem}
-                            dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
-                            label="Từ ngày"
-                            placeholder="Từ ngày"
                             controltype="InputControl"
-                            value={""}
-                            validatonList={["required"]}
                             datasourcemember="FromDate"
+                            dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
+                            disabled={IsSystem}
+                            label="Từ ngày"
+                            labelcolspan="3"
+                            name="dtFromDate"
+                            placeholder="Từ ngày"
+                            readOnly={false}
+                            showTime={false}
+                            timeFormat={false}
+                            validatonList={["required"]}
+                            value={""}
 
                         />
                     </div>
 
                     <div className="col-md-6">
                         <FormControl.FormControlDatetimeNew
-                            name="dtToDate"
                             colspan="9"
-                            labelcolspan="3"
-                            readOnly={false}
+                            controltype="InputControl"
+                            datasourcemember="ToDate"
+                            dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
                             disabled={IsSystem}
+                            label="đến ngày"
+                            labelcolspan="3"
+                            name="dtToDate"
+                            placeholder="đến ngày"
+                            readOnly={false}
                             showTime={false}
                             timeFormat={false}
-                            dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
-                            label="đến ngày"
-                            placeholder="đến ngày"
-                            controltype="InputControl"
-                            value={""}
                             validatonList={["required"]}
-                            datasourcemember="ToDate"
+                            value={""}
 
                         />
                     </div>
 
                     <div className="col-md-6">
                         <FormControl.TextBox
-                            name="txtMonthlyAbilityValue"
+                            classNameCustom="customcontrol"
                             colspan="9"
-                            labelcolspan="3"
-                            readOnly={IsSystem}
+                            controltype="InputControl"
+                            datasourcemember="MonthlyAbilityValue"
                             disabled={IsSystem}
                             label="theo tháng"
-                            placeholder="theo tháng"
-                            controltype="InputControl"
-                            value=""
-                            datasourcemember="MonthlyAbilityValue"
-                            classNameCustom="customcontrol"
+                            labelcolspan="3"
                             maxSize={6}
+                            name="txtMonthlyAbilityValue"
+                            placeholder="theo tháng"
+                            readOnly={IsSystem}
+                            value=""
                         />
                     </div>
                     <div className="col-md-6">
                         <FormControl.TextBox
-                            name="txtDailyAbilityValue"
+                            classNameCustom="customcontrol"
                             colspan="9"
-                            labelcolspan="3"
-                            readOnly={IsSystem}
+                            controltype="InputControl"
+                            datasourcemember="DailyAbilityValue"
                             disabled={IsSystem}
                             label="theo ngày"
-                            placeholder="theo ngày"
-                            controltype="InputControl"
-                            value=""
-                            datasourcemember="DailyAbilityValue"
-                            classNameCustom="customcontrol"
+                            labelcolspan="3"
                             maxSize={6}
+                            name="txtDailyAbilityValue"
+                            placeholder="theo ngày"
+                            readOnly={IsSystem}
+                            value=""
                         />
                     </div>
 
                     <div className="col-md-6">
                         <FormControl.TextBox
-                            name="txtNote"
+                            classNameCustom="customcontrol"
                             colspan="9"
-                            labelcolspan="3"
-                            readOnly={IsSystem}
+                            controltype="InputControl"
+                            datasourcemember="Note"
                             disabled={IsSystem}
                             label="Ghi chú"
-                            controltype="InputControl"
+                            labelcolspan="3"
+                            name="txtNote"
+                            readOnly={IsSystem}
                             value=""
-                            datasourcemember="Note"
-                            classNameCustom="customcontrol"
                         />
                     </div>
 
@@ -266,29 +283,29 @@ class AbilityElementCom extends Component {
 
                     <div className="col-md-6">
                         <FormControl.CheckBox
-                            name="ckIsActived"
+                            classNameCustom="customCheckbox"
                             colspan="9"
-                            labelcolspan="3"
-                            readOnly={IsSystem}
+                            controltype="InputControl"
+                            datasourcemember="IsActived"
                             disabled={IsSystem}
                             label="kích hoạt"
-                            controltype="InputControl"
+                            labelcolspan="3"
+                            name="ckIsActived"
+                            readOnly={IsSystem}
                             value={true}
-                            datasourcemember="IsActived"
-                            classNameCustom="customCheckbox"
                         />
                     </div>
                     <div className="col-md-6">
                         <FormControl.CheckBox
-                            name="ckIsSystem"
-                            colspan="9"
-                            labelcolspan="3"
-                            readOnly={false}
-                            label="hệ thống"
-                            controltype="InputControl"
-                            value=""
-                            datasourcemember="IsSystem"
                             classNameCustom="customCheckbox"
+                            colspan="9"
+                            controltype="InputControl"
+                            datasourcemember="IsSystem"
+                            label="hệ thống"
+                            labelcolspan="3"
+                            name="ckIsSystem"
+                            readOnly={false}
+                            value=""
                         />
                     </div>
 

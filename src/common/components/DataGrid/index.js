@@ -616,30 +616,31 @@ class DataGridCom extends Component {
 
                                                 const { RelatedVoucherID } = rowItem;
 
-                                                const cellData = <GridCell type={columnItem.Type}
-                                                    text={rowItem[columnItem.DataSourceMember]}
-                                                    value={value}
-                                                    popupContent={rowItem[columnItem.PopupContent]}
-                                                    link={columnItem.Link}
-                                                    linkText={columnItem.LinkText}
-                                                    name={columnItem.Name}
+                                                const cellData = <GridCell
                                                     caption={columnItem.Caption}
-                                                    onValueChange={this.onValueChange}
+                                                    hyperLink={columnItem.Hyperlinks}
                                                     index={rowIndex}
                                                     isChecked={isChecked}
-                                                    onInsertClickEdit={this.handleInsertClickEdit}
+                                                    link={columnItem.Link}
+                                                    linkText={columnItem.LinkText}
+                                                    linkTo={this.state.ListPKColumnName + index}
+                                                    name={columnItem.Name}
                                                     onDetailtClick={this.handleDetailClick}
                                                     onDetailtModalClick={this.handleDetailModalClick.bind(this)}
-                                                    onModalClick={this.handleShowModalClick.bind(this)}
-                                                    onUpdateClick={this.handleUpdateItemClick.bind(this)}
                                                     onHistoryClick={this.handleHistoryItemClick.bind(this)}
+                                                    onInsertClickEdit={this.handleInsertClickEdit}
+                                                    onModalClick={this.handleShowModalClick.bind(this)}
                                                     onShowImageClick={this.handleShowImageClick.bind(this)}
-                                                    pkColumnName={this.state.ListPKColumnName}
+                                                    onUpdateClick={this.handleUpdateItemClick.bind(this)}
+                                                    onValueChange={this.onValueChange}
                                                     params={this.props.params}
-                                                    linkTo={this.state.ListPKColumnName + index}
+                                                    pkColumnName={this.state.ListPKColumnName}
+                                                    popupContent={rowItem[columnItem.PopupContent]}
                                                     rowItem={rowItem}
-                                                    hyperLink={columnItem.Hyperlinks}
+                                                    text={rowItem[columnItem.DataSourceMember]}
                                                     textHyperLink={RelatedVoucherID}
+                                                    value={value}
+                                                    type={columnItem.Type}
                                                 />;
                                                 return (
                                                     <td key={columnItem.Name} style={cellStyle}>{cellData}</td>

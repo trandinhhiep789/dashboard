@@ -1,21 +1,19 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { Modal, ModalManager, Effect } from 'react-dynamic-modal';
+import { ModalManager } from 'react-dynamic-modal';
 import ReactNotification from "react-notifications-component";
 import readXlsxFile from 'read-excel-file';
 
 import {
-    DataTemplateExportArea,
-    listColumnArea2,
-    listColumnStore2,
-    listColumnArea,
     APIHostName,
     AreaSchema,
-    StoreSchema,
-    listColumnImportFileArea,
+    DataTemplateExportArea,
     DataTemplateExportStore,
+    listColumnArea,
+    listColumnImportFileArea,
+    listColumnImportFileStore,
     listColumnStore,
-    listColumnImportFileStore
+    StoreSchema
 } from "../constants";
 
 import { MessageModal } from "../../../../common/components/Modal";
@@ -28,6 +26,7 @@ import DataGrid from "../../../../common/components/DataGrid";
 import AreaModalCom from '../Area/Modal';
 import StoreModalCom from '../Store/Modal';
 import ImportExcelModalCom from '../ImportExcelModal';
+import { formatMoney } from '../../../../utils/function';
 
 class ServiceAgreementInfoCom extends Component {
     constructor(props) {
@@ -560,7 +559,7 @@ class ServiceAgreementInfoCom extends Component {
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">
-                            {this.props.ServiceAgreementInfo.ServiceAgreementTypeName}
+                            {`${this.props.ServiceAgreementInfo.ServiceAgreementTypeID} - ${this.props.ServiceAgreementInfo.ServiceAgreementTypeName}`}
                         </label>
                     </div>
                 </div>
@@ -570,12 +569,12 @@ class ServiceAgreementInfoCom extends Component {
                         <label className="col-form-label bold">Loại dịch vụ:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{this.props.ServiceAgreementInfo.ServiceTypeName}</label>
+                        <label className="col-form-label">{`${this.props.ServiceAgreementInfo.ServiceTypeID} - ${this.props.ServiceAgreementInfo.ServiceTypeName}`}</label>
                     </div><div className="form-group col-md-2">
                         <label className="col-form-label bold">Đơn vị vận chuyển:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{this.props.ServiceAgreementInfo.PartnerName}</label>
+                        <label className="col-form-label">{`${this.props.ServiceAgreementInfo.PartnerID} - ${this.props.ServiceAgreementInfo.PartnerName}`}</label>
                     </div>
                 </div>
 
@@ -663,7 +662,7 @@ class ServiceAgreementInfoCom extends Component {
                         <label className="col-form-label bold">Số tiền ký quỹ:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{this.props.ServiceAgreementInfo.DepositMoney}</label>
+                        <label className="col-form-label">{formatMoney(this.props.ServiceAgreementInfo.DepositMoney, 0)}</label>
                     </div>
                 </div>
 
@@ -846,7 +845,6 @@ const mapDispatchToProps = dispatch => {
         }
     }
 }
-
 
 const ServiceAgreementInfo = connect(mapStateToProps, mapDispatchToProps)(ServiceAgreementInfoCom);
 export default ServiceAgreementInfo;

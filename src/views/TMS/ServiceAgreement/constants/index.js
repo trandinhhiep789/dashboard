@@ -324,7 +324,7 @@ export const DataGridColumnList = [
         Type: "checkbox",
         Caption: "Chọn",
         DataSourceMember: "ServiceAgreementID",
-        Width: 60
+        Width: 50
     },
     {
         Name: "ServiceAgreementID",
@@ -388,6 +388,13 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Đã ký quỹ",
         DataSourceMember: "DepositedLable",
+        // Width: 100
+    },
+    {
+        Name: "dePoSitMoney",
+        Type: "textCurrency",
+        Caption: "Số tiền ký quỹ",
+        DataSourceMember: "dePoSitMoney",
         // Width: 100
     },
     {
