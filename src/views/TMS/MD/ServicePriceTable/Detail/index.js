@@ -46,7 +46,9 @@ class DetailCom extends React.Component {
             IsSystem: false,
             ServicePriceTableID: '',
             ServicePriceTableDetail: [],
-            ServicePriceTableArea: []
+            ServicePriceTableArea: [],
+            DataExportPriceTableDetail: [],
+            DataExportServicePriceTableArea: []
 
         }
         this.notificationDOMRef = React.createRef();
@@ -81,6 +83,26 @@ class DetailCom extends React.Component {
                 }
 
 
+                let tempData = [];
+                if (ServicePriceTableDetailList.length > 0) {
+                    tempData = ServicePriceTableDetailList.map((item, index) => {
+                        let element = {
+                            "Mã bảng giá dịch vụ": item.ServiceGroupName,
+                            "Nghành hàng": item.MainGroupFullName,
+                            "Nhóm hàng": item.SubGroupFullName,
+                            "Thông số kỹ thuật": item.TechspecsName,
+                            "Giá trị TSKT": item.TechspecsValue,
+                            "Tính theo giá trị TSKT": item.IsPriceByTechspecsValueRange == true ? "1" : "0",
+                            "Giá trị TSKT từ": item.FromTechspecsValue,
+                            "Giá trị TSKT đến": item.ToTechspecsValue,
+                            "Sản phẩm": item.ProductName,
+                            "Giá dịch vụ": item.ServicePrice,
+                        };
+
+                        return element;
+                    })
+                }
+
 
 
                 this.setState({
@@ -88,7 +110,9 @@ class DetailCom extends React.Component {
                     ServicePriceTableArea: apiResult.ResultObject.ServicePriceTable_AreaList,
                     ServicePriceTableDetail: ServicePriceTableDetailList,
                     IsLoadDataComplete: true,
-                    IsSystem: apiResult.ResultObject.IsSystem
+                    IsSystem: apiResult.ResultObject.IsSystem,
+                    DataExportPriceTableDetail: tempData,
+
                 });
             }
         });
@@ -184,6 +208,7 @@ class DetailCom extends React.Component {
         MLObject.ServicePriceTableID = ServicePriceTableID;
 
         this.props.callFetchAPI(APIHostName, DeleteAPISPTDetailPath, MLObject).then((apiResult) => {
+
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
@@ -295,7 +320,9 @@ class DetailCom extends React.Component {
                                 onDeleteClick={this.handleItemDeleteSPTDetail.bind(this)}
                                 ref={this.gridref}
                                 isSystem={IsSystem}
-                                IsExportFile={false}
+                                IsExportFile={true}
+                                DataExport={this.state.DataExportPriceTableDetail}
+                                fileName="Danh sách chi tiết bảng giá dịch vụ"
                             />
 
 
