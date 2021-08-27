@@ -58,7 +58,7 @@ class SearchCom extends React.Component {
         // var LoginInfo = JSON.stringify(listSearchDataObject);
         // localStorage.setItem('SearchInfo', LoginInfo)
         const localShipmentOrderInfo = localStorage.getItem('SearchShipmentOrderInfo');
-       
+  
         let InitSearchParams = [];
         if (localShipmentOrderInfo == null) {
             InitSearchParams = [
@@ -223,8 +223,6 @@ class SearchCom extends React.Component {
         this.setState({ SearchData: InitSearchParams });
         this.callSearchData(InitSearchParams);
         this.props.updatePagePath(PagePath);
-
-
         jQuery(window).scroll(function () {
             if (jQuery(this).scrollTop() > 300) {
                 $("#btnUserCoordinator").addClass("tofixedButton")
@@ -586,7 +584,7 @@ class SearchCom extends React.Component {
                     <SearchForm
                         FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
                         MLObjectDefinition={SearchMLObjectDefinition}
-                        listelement={SearchElementList}
+                        listelement={this.state.SearchElementList}
                         onSubmit={this.handleSearchSubmit}
                         ref={this.searchref}
                         className="multiple multiple-custom multiple-custom-display"

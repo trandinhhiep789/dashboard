@@ -52,7 +52,7 @@ class AbilityElementCom extends Component {
                             name="cbServiceSeasonTypeID"
                             colspan="9"
                             labelcolspan="3"
-                            label="Loại mùa vụ"
+                            label="Loại mùa dịch vụ"
                             validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             loaditemcachekeyid="ERPCOMMONCACHE.SERVICESEASONTYPE"

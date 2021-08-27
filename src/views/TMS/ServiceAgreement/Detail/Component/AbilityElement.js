@@ -157,7 +157,7 @@ class AbilityElementCom extends Component {
                             name="cbServiceSeasonTypeID"
                             colspan="9"
                             labelcolspan="3"
-                            label="loại mùa vụ"
+                            label="Loại mùa dịch vụ"
                             disabled={IsSystem}
                             validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}

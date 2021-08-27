@@ -3,8 +3,6 @@ import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 import DataGridShipmentOderNew from "../Component/DataGridShipmentOderNew";
-
-import InputGridNew from "../../../../common/components/FormContainer/FormControl/InputGridNew";
 import { MessageModal } from "../../../../common/components/Modal";
 import {
     SearchElementList,
@@ -18,14 +16,12 @@ import {
     PKColumnName,
     InitSearchParams,
     PagePath,
-    AddLogAPIPath
-} from "../../ShipmentOrder/constants";
+} from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import SOPrintTemplate from "../../../../common/components/PrintTemplate/SOPrintTemplate";
-import { callGetCache } from "../../../../actions/cacheAction";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -53,19 +49,180 @@ class SearchCom extends React.Component {
     }
 
     componentDidMount() {
-        const ShipOrdStatusGroupID = { SearchKey: "@SHIPMENTORDERSTATUSGROUPID", SearchValue: this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : "1,2,3" };
-        let listSearchDataObject = Object.assign([], this.state.SearchData, { [9]: ShipOrdStatusGroupID });
-        this.callSearchData(listSearchDataObject);
+
+
+        const localShipmentOrderInfo = localStorage.getItem('SearchShipmentOrderInfo');
+        let InitSearchParams = [];
+        if (localShipmentOrderInfo == null) {
+            InitSearchParams = [
+                {
+                    SearchKey: "@Keyword",
+                    SearchValue: ""
+                },
+                {
+                    SearchKey: "@RECEIVERPHONENUMBER",
+                    SearchValue: ""
+                },
+                {
+                    SearchKey: "@SHIPMENTORDERTYPEID",
+                    SearchValue: ""
+                },
+                {
+                    SearchKey: "@FromDate",
+                    SearchValue: new Date()
+                },
+                {
+                    SearchKey: "@ToDate",
+                    SearchValue: new Date()
+                }
+                ,
+                {
+                    SearchKey: "@RECEIVERPROVINCEID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@RECEIVERDISTRICTID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@RECEIVERWARDID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@SENDERSTOREID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@COORDINATORSTOREID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
+                    SearchValue: this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : "1,2,3"
+                },
+                {
+                    SearchKey: "@IsCoordinator",
+                    SearchValue: 2
+                },
+                {
+                    SearchKey: "@Typename",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@RequestStoreID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@CarrierTypeID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@PAGESIZE",
+                    SearchValue: 100
+                },
+                {
+                    SearchKey: "@PAGEINDEX",
+                    SearchValue: 0
+                }
+            ];
+        }
+        else {
+            const ShipmentOrderInfo = JSON.parse(localShipmentOrderInfo);
+            this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderTypeID').value = ShipmentOrderInfo.ShipmentOrderTypeID;
+            // this.state.SearchElementList.find(n => n.name == 'dtCreatedOrderTimeFo').value=ShipmentOrderInfo.CreatedOrderTimeFo;
+            // this.state.SearchElementList.find(n => n.name == 'dtCreatedOrderTimeTo').value=ShipmentOrderInfo.CreatedOrderTimeTo;
+            this.state.SearchElementList.find(n => n.name == 'cbReceiverProvinceID').value = ShipmentOrderInfo.ReceiverProvinceID;
+            this.state.SearchElementList.find(n => n.name == 'cbReceiverDistrictID').value = ShipmentOrderInfo.ReceiverDistrictID;
+            this.state.SearchElementList.find(n => n.name == 'cbReceiverWardID').value = ShipmentOrderInfo.ReceiverWardID;
+            this.state.SearchElementList.find(n => n.name == 'cbSenderStoreID').value = ShipmentOrderInfo.SenderStoreID;
+            this.state.SearchElementList.find(n => n.name == 'cbCoordinatorStoreID').value = ShipmentOrderInfo.CoordinatorStoreID;
+            this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderStatusGroupID').value = ShipmentOrderInfo.ShipmentOrderStatusGroupID;
+            this.state.SearchElementList.find(n => n.name == 'cbIsCoordinator').value = ShipmentOrderInfo.IsCoordinator;
+            this.state.SearchElementList.find(n => n.name == 'cbCarrierTypeID').value = ShipmentOrderInfo.CarrierTypeID;
+            InitSearchParams = [
+                {
+                    SearchKey: "@Keyword",
+                    SearchValue: ""
+                },
+                {
+                    SearchKey: "@RECEIVERPHONENUMBER",
+                    SearchValue: ""
+                },
+                {
+                    SearchKey: "@SHIPMENTORDERTYPEID",
+                    SearchValue: ShipmentOrderInfo.ShipmentOrderTypeID
+                },
+                {
+                    SearchKey: "@FromDate",
+                    SearchValue: new Date()
+                },
+                {
+                    SearchKey: "@ToDate",
+                    SearchValue: new Date()
+                }
+                ,
+                {
+                    SearchKey: "@RECEIVERPROVINCEID",
+                    SearchValue: ShipmentOrderInfo.ReceiverProvinceID
+                },
+                {
+                    SearchKey: "@RECEIVERDISTRICTID",
+                    SearchValue: ShipmentOrderInfo.ReceiverDistrictID
+                },
+                {
+                    SearchKey: "@RECEIVERWARDID",
+                    SearchValue: ShipmentOrderInfo.ReceiverWardID
+                },
+                {
+                    SearchKey: "@SENDERSTOREID",
+                    SearchValue: ShipmentOrderInfo.SenderStoreID
+                },
+                {
+                    SearchKey: "@COORDINATORSTOREID",
+                    SearchValue: ShipmentOrderInfo.CoordinatorStoreID
+                },
+                {
+                    SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
+                    SearchValue: ShipmentOrderInfo.ShipmentOrderStatusGroupID
+                },
+                {
+                    SearchKey: "@IsCoordinator",
+                    SearchValue: ShipmentOrderInfo.IsCoordinator
+                },
+                {
+                    SearchKey: "@Typename",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@RequestStoreID",
+                    SearchValue: -1
+                },
+                {
+                    SearchKey: "@CarrierTypeID",
+                    SearchValue: ShipmentOrderInfo.CarrierTypeID
+                },
+                {
+                    SearchKey: "@PAGESIZE",
+                    SearchValue: 100
+                },
+                {
+                    SearchKey: "@PAGEINDEX",
+                    SearchValue: 0
+                }
+            ];
+        }
+
+        this.setState({ SearchData: InitSearchParams, SearchElementList: this.state.SearchElementList });
+        this.callSearchData(InitSearchParams);
         this.props.updatePagePath(PagePath);
 
-
         jQuery(window).scroll(function () {
-            if (jQuery(this).scrollTop() > 300) {
-                $("#btnUserCoordinator").addClass("tofixedButton")
-                $("#fixtable").addClass("tofixtable")
+            if (jQuery(this).scrollTop() > 200) {
+                $("#fixedCard").addClass("fixedCard")
+                $("body").addClass("fixedScroll")
             } else {
-                $("#btnUserCoordinator").removeClass("tofixedButton")
-                $("#fixtable").removeClass("tofixtable")
+                $("#fixedCard").removeClass("fixedCard")
+                $("body").removeClass("fixedScroll")
             }
         });
 
@@ -93,7 +250,7 @@ class SearchCom extends React.Component {
 
     handleonSearchEvent(Keywordid) {
         if (Keywordid != "") {
-            if (Keywordid.trim().length==15) {
+            if (Keywordid.trim().length == 15) {
                 this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByKeyword", String(Keywordid).trim()).then(apiResult => {
                     if (!apiResult.IsError) {
                         this.setState({
@@ -102,7 +259,7 @@ class SearchCom extends React.Component {
                     }
                 });
             }
-             else if(Keywordid.trim().length==10) {
+            else if (Keywordid.trim().length == 10) {
                 this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByPhoneNember", String(Keywordid).trim()).then(apiResult => {
                     if (!apiResult.IsError) {
                         this.setState({
@@ -138,14 +295,6 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        // let result="";
-        // if ( MLObject.ShipmentOrderTypeID != -1 &&  MLObject.ShipmentOrderTypeID != null &&  MLObject.ShipmentOrderTypeID != "") {
-        //     result =  MLObject.ShipmentOrderTypeID.reduce((data, item, index) => {
-        //         const comma = data.length ? "," : "";
-        //         return data + comma + item;
-        //     }, '');
-        // }
-
 
         const postData = [
             {
@@ -177,6 +326,10 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.ReceiverDistrictID
             },
             {
+                SearchKey: "@RECEIVERWARDID",
+                SearchValue: MLObject.ReceiverWardID
+            },
+            {
                 SearchKey: "@SENDERSTOREID",
                 SearchValue: MLObject.SenderStoreID
             },
@@ -193,12 +346,16 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.IsCoordinator
             },
             {
+                SearchKey: "@CARRIERTYPEID",
+                SearchValue: MLObject.CarrierTypeID
+            },
+            {
                 SearchKey: "@Typename",
                 SearchValue: MLObject.Typename
             },
             {
                 SearchKey: "@RequestStoreID",
-                SearchValue: MLObject.RequestStoreID
+                SearchValue: -1
             },
             {
                 SearchKey: "@PAGESIZE",
@@ -210,7 +367,7 @@ class SearchCom extends React.Component {
             }
         ];
         this.setState({ SearchData: postData });
-         this.callSearchData(postData);
+        this.callSearchData(postData);
     }
 
     callSearchData(searchData) {
@@ -346,10 +503,6 @@ class SearchCom extends React.Component {
     }
 
     handlePrintClick() {
-
-        // window.print();
-        // return;
-
         var mywindow = window.open('', '', 'right=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0');
         mywindow.document.write('<html><head>');
         mywindow.document.write('<title>Đơn vận chuyển</title>');
@@ -360,27 +513,28 @@ class SearchCom extends React.Component {
         // mywindow.document.getElementsByName('body').css( "-webkit-print-color-adjust", "exact !important");
         mywindow.print();
         mywindow.close();
-
         return true;
-
     }
 
 
+
     render() {
-        this.state.SearchElementList.find(n => n.name == 'cbShipmentOrderStatusGroupID').value = this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : "1,2,3"
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
-                    <SearchForm
-                        FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
-                        MLObjectDefinition={SearchMLObjectDefinition}
-                        listelement={this.state.SearchElementList}
-                        onSubmit={this.handleSearchSubmit}
-                        ref={this.searchref}
-                        btnGroup= 'btnSearch btncustom btnGroup'
-                        className="multiple multiple-custom multiple-custom-display"
-                    />
+                    <div className="col-lg-12 SearchFormCustom" id="SearchFormCustom">
+                        <SearchForm
+                            FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
+                            MLObjectDefinition={SearchMLObjectDefinition}
+                            listelement={this.state.SearchElementList}
+                            onSubmit={this.handleSearchSubmit}
+                            ref={this.searchref}
+                            btnGroup='btnSearch btncustom btnGroup'
+                            IsSetting={true}
+                            className="multiple multiple-custom multiple-custom-display"
+                        />
+                    </div>
                     <DataGridShipmentOderNew
                         listColumn={DataGridColumnList}
                         dataSource={this.state.gridDataSource}
@@ -416,11 +570,12 @@ class SearchCom extends React.Component {
                     <SearchForm
                         FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
                         MLObjectDefinition={SearchMLObjectDefinition}
-                        listelement={SearchElementList}
+                        listelement={this.state.SearchElementList}
                         onSubmit={this.handleSearchSubmit}
                         ref={this.searchref}
+                        btnGroup='btnSearch btncustom btnGroup'
+                        IsSetting={true}
                         className="multiple multiple-custom multiple-custom-display"
-                        classNamebtnSearch="btn-custom-right"
                     />
                     <label>Đang nạp dữ liệu...</label>
                 </React.Fragment>
@@ -443,9 +598,6 @@ const mapDispatchToProps = dispatch => {
         },
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
-        },
-        callGetCache: (cacheKeyID) => {
-            return dispatch(callGetCache(cacheKeyID));
         }
     };
 };

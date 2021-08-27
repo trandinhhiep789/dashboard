@@ -97,7 +97,7 @@ class FeeAppendixDetailElementCom extends Component {
                             colspan="9"
                             labelcolspan="3"
                             disabled={IsSystem}
-                            label="loại thời vụ"
+                            label="Loại mùa dịch vụ"
                             validatonList={["Comborequired"]}
                             isautoloaditemfromcache={true}
                             loaditemcachekeyid={ERPCOMMONCACHE_SERVICESEASONTYPE} //"ERPCOMMONCACHE.SERVICESEASONTYPE"
