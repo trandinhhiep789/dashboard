@@ -1407,7 +1407,29 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    {
+                        MenuName: 'PnReceivableDetail',
+                        MenuTitle: 'Bảng kê doanh thu chi tiết',
+                        LinkTo: '/PnReceivableDetail',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
 
+                ]
+            },
+            {
+                MenuName: 'Receivable',
+                MenuTitle: 'Doanh thu',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'PnReceivableDetailReport',
+                        MenuTitle: 'Doanh thu chi tiết',
+                        LinkTo: '/PnReceivableDetailReport',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
                 ]
             },
             {

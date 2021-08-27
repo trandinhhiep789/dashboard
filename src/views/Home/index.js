@@ -195,6 +195,8 @@ import AppDataSyncLog from "../TMS/MD/AppDataSyncLog";
 import IgnoreCheckRcGeoLocReason from "../TMS/MD/IgnoreCheckRcGeoLocReason";
 import DeliveryAbilityStore from "../TMS/MD/DeliveryAbilityStore";
 import ServiceRequestType from "../TMS/MD/ServiceRequestType";
+import PnReceivableDetail from "../TMS/ReportShipmentOrder/PnReceivableDetail";
+import PnReceivableDetailReport from "../TMS/ReportShipmentOrder/PnReceivableDetailReport";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -473,6 +475,9 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/IgnoreCheckRcGeoLocReason" component={IgnoreCheckRcGeoLocReason} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/DeliveryAbilityStore" component={DeliveryAbilityStore} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ServiceRequestType" component={ServiceRequestType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+
+                                    <PrivateRoute path="/PnReceivableDetail" component={PnReceivableDetail} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/PnReceivableDetailReport" component={PnReceivableDetailReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
