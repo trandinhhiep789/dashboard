@@ -893,6 +893,22 @@ export const DataMasterTemplateExport = [
     }
 ];
 
+export const DataAreaTemplateExport = [
+    {
+        "Mã hợp đồng": "12345",
+        "Mã khu vực": "1",
+        "Ngày ký hợp đồng": new Date()
+    }
+];
+
+export const DataStoreTemplateExport = [
+    {
+        "Mã hợp đồng": "12345",
+        "Mã kho": "1",
+        "Ngày ký hợp đồng": new Date()
+    }
+];
+
 export const listColumnArea = [
     {
         Caption: "Chọn",
@@ -955,6 +971,39 @@ export const listColumnImportFileArea = [
     }
 ];
 
+export const listColumnImportFileArea2 = [
+    {
+        Caption: "Mã hợp đồng",
+        DataSourceMember: "ServiceAgreementID",
+        Name: "ServiceAgreementID",
+        Type: "text",
+    },
+    {
+        Caption: "Mã khu vực",
+        DataSourceMember: "AreaID",
+        Name: "AreaID",
+        Type: "text",
+    },
+    {
+        Caption: "Tên khu vực",
+        DataSourceMember: "AreaName",
+        Name: "AreaName",
+        Type: "text",
+    },
+    {
+        Caption: "Ngày ký hợp đồng",
+        DataSourceMember: "SignedDate",
+        Name: "SignedDate",
+        Type: "date",
+    },
+    {
+        Caption: "Lỗi",
+        DataSourceMember: "Errors",
+        Name: "Errors",
+        Type: "text",
+    }
+];
+
 export const listColumnImportFileStore = [
     {
         Caption: "Mã kho",
@@ -976,6 +1025,39 @@ export const listColumnImportFileStore = [
     }
 ];
 
+export const listColumnImportFileStore2 = [
+    {
+        Caption: "Mã hợp đồng",
+        DataSourceMember: "ServiceAgreementID",
+        Name: "ServiceAgreementID",
+        Type: "text",
+    },
+    {
+        Caption: "Mã kho",
+        DataSourceMember: "StoreID",
+        Name: "StoreID",
+        Type: "text",
+    },
+    {
+        Caption: "Tên kho",
+        DataSourceMember: "StoreName",
+        Name: "StoreName",
+        Type: "text",
+    },
+    {
+        Caption: "Ngày ký hợp đồng",
+        DataSourceMember: "SignedDate",
+        Name: "SignedDate",
+        Type: "date",
+    },
+    {
+        Caption: "Lỗi",
+        DataSourceMember: "Errors",
+        Name: "Errors",
+        Type: "text",
+    }
+];
+
 export const AreaSchema = {
     'Mã khu vực': {
         prop: 'AreaID',
@@ -984,10 +1066,46 @@ export const AreaSchema = {
     }
 };
 
+export const AreaSchema2 = {
+    'Mã hợp đồng': {
+        prop: 'ServiceAgreementID',
+        type: String,
+        required: true
+    },
+    'Mã khu vực': {
+        prop: 'AreaID',
+        type: Number,
+        required: true
+    },
+    'Ngày ký hợp đồng': {
+        prop: 'SignedDate',
+        type: Date,
+        required: true
+    }
+}
+
 export const StoreSchema = {
     'Mã kho': {
         prop: 'StoreID',
         type: Number,
+        required: true
+    }
+};
+
+export const StoreSchema2 = {
+    'Mã hợp đồng': {
+        prop: 'ServiceAgreementID',
+        type: String,
+        required: true
+    },
+    'Mã kho': {
+        prop: 'StoreID',
+        type: Number,
+        required: true
+    },
+    'Ngày ký hợp đồng': {
+        prop: 'SignedDate',
+        type: Date,
         required: true
     }
 };

@@ -375,7 +375,7 @@ class AreaCom extends React.Component {
                     headingTitle="Danh sách khu vực áp dụng hợp đồng"
                     IDSelectColumnName={"chkSelect"}
                     IsAdd={true}
-                    IsAutoPaging={true}
+                    IsAutoPaging={false}
                     IsCustomAddLink={true}
                     isCustomImportFile={true}
                     IsDelete={true}

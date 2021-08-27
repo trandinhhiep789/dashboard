@@ -375,7 +375,7 @@ class StoreCom extends React.Component {
                     headingTitle="Danh sách kho áp dụng hợp đồng"
                     IDSelectColumnName={"chkSelect"}
                     IsAdd={true}
-                    IsAutoPaging={true}
+                    IsAutoPaging={false}
                     IsCustomAddLink={true}
                     isCustomImportFile={true}
                     IsDelete={true}

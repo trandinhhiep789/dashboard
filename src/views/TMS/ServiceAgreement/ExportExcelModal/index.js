@@ -5,7 +5,9 @@ import * as XLSX from 'xlsx';
 import ReactNotification from "react-notifications-component";
 
 import {
+    DataAreaTemplateExport,
     DataMasterTemplateExport,
+    DataStoreTemplateExport,
     DataTemplateExportAbility2,
     DataTemplateExportFeeAppendix2
 } from "../constants";
@@ -21,6 +23,8 @@ class ExportExcelModalCom extends React.Component {
         this.handleClickAbility = this.handleClickAbility.bind(this);
         this.handleClickFeeAppendix = this.handleClickFeeAppendix.bind(this);
         this.handleClickServiceAgreement = this.handleClickServiceAgreement.bind(this);
+        this.handleClickServiceAgreementArea = this.handleClickServiceAgreementArea.bind(this);
+        this.handleClickServiceAgreementStore = this.handleClickServiceAgreementStore.bind(this);
         this.handleExportFileTemplate = this.handleExportFileTemplate.bind(this);
         this.notificationDOMRef = React.createRef();
     }
@@ -38,6 +42,14 @@ class ExportExcelModalCom extends React.Component {
 
     handleClickServiceAgreement() {
         this.handleExportFileTemplate(DataMasterTemplateExport, "Danh sách hợp đồng dịch vụ");
+    }
+
+    handleClickServiceAgreementArea() {
+        this.handleExportFileTemplate(DataAreaTemplateExport, "Danh sách khu vực áp dụng hợp đồng");
+    }
+
+    handleClickServiceAgreementStore() {
+        this.handleExportFileTemplate(DataStoreTemplateExport, "Danh sách kho áp dụng hợp đồng");
     }
 
     handleExportFileTemplate(dataTemplate, fileName) {
@@ -106,6 +118,12 @@ class ExportExcelModalCom extends React.Component {
                     </button>
                     <button type="button" className="btn btn-info mb-2" onClick={this.handleClickAbility}>
                         Năng lực
+                    </button>
+                    <button type="button" className="btn btn-info mb-2" onClick={this.handleClickServiceAgreementArea}>
+                        Khu vực áp dụng hợp đồng
+                    </button>
+                    <button type="button" className="btn btn-info mb-2" onClick={this.handleClickServiceAgreementStore}>
+                        Kho áp dụng hợp đồng
                     </button>
                 </div>
             </React.Fragment >

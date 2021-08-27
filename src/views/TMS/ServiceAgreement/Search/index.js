@@ -1,11 +1,8 @@
 import React from "react";
 import "react-notifications-component/dist/theme.css";
 import { connect } from "react-redux";
-import { Modal, ModalManager, Effect } from "react-dynamic-modal";
-import * as XLSX from 'xlsx';
-import * as FileSaver from 'file-saver';
+import { ModalManager } from "react-dynamic-modal";
 import ReactNotification from "react-notifications-component";
-import readXlsxFile from 'read-excel-file';
 
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { callGetCache } from "../../../../actions/cacheAction";
