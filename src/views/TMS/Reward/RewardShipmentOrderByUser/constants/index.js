@@ -32,6 +32,10 @@ export const InitSearchParams = [
         SearchValue: new Date()
     },
     {
+        SearchKey: "@REWARDTYPEID",
+        SearchValue: -1
+    },
+    {
         SearchKey: "@USERNAMELIST",
         SearchValue: ""
     },
@@ -40,47 +44,60 @@ export const InitSearchParams = [
 
 
 export const SearchElementList = [
-    
     {
-        type: "Datetime",
-        name: "dtFromDate",
+        colspan: 2,
         DataSourceMember: "FromDate",
+        dateFormat: "DD/MM/YYYY",
         label: "Từ Ngày",
-        value: new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()),
+        name: "dtFromDate",
         timeFormat: false,
-        dateFormat: "DD/MM/YYYY",
-        colspan: 2,
-    },
-    {
         type: "Datetime",
-        name: "dtToDate",
-        DataSourceMember: "ToDate",
-        label: "Đến Ngày",
-        value: new Date(),
-        timeFormat: false,
-        dateFormat: "DD/MM/YYYY",
-        colspan: 2,
+        value: new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear())
     },
     {
-        type: "MultiSelectUser",
-        name: "cbUserName",
-        DataSourceMember: "UserName",
-        label: "Nhân viên",
-        colspan: 12,
-        rowspan: 5,
-        labelcolspan: 12,
-        IsLabelDiv: true,
-        value: -1,
-        placeholder: "---Vui lòng chọn---",
-        listoption: [],
-        IsAutoLoadItemFromCache: false,
-        isMultiSelect: true
-
+        colspan: 2,
+        DataSourceMember: "ToDate",
+        dateFormat: "DD/MM/YYYY",
+        label: "Đến Ngày",
+        name: "dtToDate",
+        timeFormat: false,
+        type: "Datetime",
+        value: new Date()
     },
-
+    {
+        classNameCol: "col-custom",
+        colspan: 2,
+        DataSourceMember: "cbRewardTypeID",
+        IsAutoLoadItemFromCache: true,
+        isMultiSelect: false,
+        label: "Loại thưởng",
+        listoption: [],
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.TMSREWARDTYPE",
+        name: "cbRewardTypeID",
+        NameMember: "RewardTypeName",
+        placeholder: "---Loại thưởng---",
+        type: "ComboBoxNewChange",
+        value: "-1",
+        ValueMember: "RewardTypeID"
+    },
+    {
+        colspan: 12,
+        DataSourceMember: "UserName",
+        IsAutoLoadItemFromCache: false,
+        IsLabelDiv: true,
+        isMultiSelect: true,
+        label: "Nhân viên",
+        labelcolspan: 12,
+        listoption: [],
+        name: "cbUserName",
+        placeholder: "---Vui lòng chọn---",
+        rowspan: 3,
+        type: "MultiSelectUser",
+        value: -1
+    }
 ]
 
-export const  SearchMLObjectDefinition = [
+export const SearchMLObjectDefinition = [
     {
         Name: "FromDate",
         DefaultValue: "",
@@ -90,6 +107,11 @@ export const  SearchMLObjectDefinition = [
         Name: "ToDate",
         DefaultValue: "",
         BindControlName: "dtToDate"
+    },
+    {
+        Name: "RewardTypeID",
+        DefaultValue: "",
+        BindControlName: "cbRewardTypeID"
     },
     {
         Name: "UserName",
@@ -121,7 +143,7 @@ export const GridColumnList = [
         DataSourceMember: "NoteReward",
         Width: 300
     },
-    
+
 ]
 
 export const GridColumnListByDate = [

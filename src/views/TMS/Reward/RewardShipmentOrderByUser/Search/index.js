@@ -94,7 +94,6 @@ class SearchCom extends React.Component {
             params: param
         })
 
-
         const postData = [
             {
                 SearchKey: "@FROMDATE",
@@ -105,10 +104,13 @@ class SearchCom extends React.Component {
                 SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString()) // MLObject.ToDate
             },
             {
+                SearchKey: "@REWARDTYPEID",
+                SearchValue: MLObject.RewardTypeID
+            },
+            {
                 SearchKey: "@USERNAMELIST",
                 SearchValue: result  //MLObject.CoordinatorStoreID
-            },
-
+            }
         ];
 
         this.callSearchData(postData);
@@ -116,7 +118,6 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchNewAPIPath, searchData).then(apiResult => {
-            // console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
 
                 const totalAmount = apiResult.ResultObject.reduce((sum, curValue, curIndex, []) => {
@@ -143,7 +144,6 @@ class SearchCom extends React.Component {
             }
         });
     }
-
 
     showMessage(message) {
         ModalManager.open(
@@ -188,42 +188,40 @@ class SearchCom extends React.Component {
         });
     }
 
-
-
     render() {
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
+                        className="multiple"
                         FormName="Tìm kiếm danh sách thống kê vận đơn theo ngày"
-                        MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
+                        MLObjectDefinition={SearchMLObjectDefinition}
                         onSubmit={this.handleSearchSubmit}
                         ref={this.searchref}
-                        className="multiple"
                     />
 
                     <DataGrid
-                        listColumn={GridColumnList}
-                        dataSource={this.state.gridDataSource}
                         // AddLink=""
                         // IDSelectColumnName={"TotalReward"}
-                        PKColumnName={"RewardDate"}
+                        dataSource={this.state.gridDataSource}
+                        IsAutoPaging={true}
+                        IsExportFile={false}
                         isHideHeaderToolbar={false}
+                        IsPrint={false}
                         IsShowButtonAdd={false}
                         IsShowButtonDelete={false}
                         IsShowButtonPrint={false}
-                        IsPrint={false}
-                        IsExportFile={false}
-                        IsAutoPaging={true}
+                        listColumn={GridColumnList}
                         params={this.state.params}
-                        RowsPerPage={31}
+                        PKColumnName={"RewardDate"}
+                        ref={this.gridref}
                         RequirePermission={TMS_TMSREWARD_VIEW}
+                        RowsPerPage={31}
                         totalCurrency={true}
                         totalCurrencyColSpan={2}
                         totalCurrencyNumber={this.state.totalAmount}
-                        ref={this.gridref}
                     />
                 </React.Fragment>
             );
