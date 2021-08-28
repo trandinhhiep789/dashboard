@@ -46,6 +46,7 @@ class DataGridShipmentOderNewCom extends Component {
             GridDataShip: [],
             KeywordId: '',
             printDataID: '',
+            ShipmentRouteID: "",
             widthPercent: 0,
             changeGird: false,
             maxWidthGird: 0
@@ -76,6 +77,7 @@ class DataGridShipmentOderNewCom extends Component {
             maxWidthGird: clientWidth
         })
     };
+
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.dataSource) !== JSON.stringify(nextProps.dataSource)) // Check if it's a new user, you can also use some unique property, like the ID
         {
@@ -84,17 +86,22 @@ class DataGridShipmentOderNewCom extends Component {
                 GridData: gridData,
                 GridDataShip: [],
                 DataSource: nextProps.dataSource,
-                PageNumber: nextProps.PageNumber
+                PageNumber: nextProps.PageNumber,
+                ShipmentRouteID: ""
             });
         }
 
         if (JSON.stringify(this.props.IsLoadData) !== JSON.stringify(nextProps.IsLoadData)) // Check if it's a new user, you can also use some unique property, like the ID
         {
             this.setState({
-                GridDataShip: []
+                GridDataShip: [],
+                DataSource: nextProps.dataSource,
+                ShipmentRouteID: ""
             });
         }
+
     }
+
 
     checkAll(e) {
         const isCheck = e.target.checked;
@@ -448,7 +455,7 @@ class DataGridShipmentOderNewCom extends Component {
         this.addNotification(apiResult.Message, apiResult.IsError);
         if (!apiResult.IsError) {
             this.props.hideModal();
-            this.setState({ GridDataShip: [] });
+            this.setState({ ShipmentRouteID: "", GridDataShip: [] , changeGird: false});
             if (this.props.onChangePageLoad != null)
                 this.props.onChangePageLoad();
         }
@@ -766,7 +773,7 @@ class DataGridShipmentOderNewCom extends Component {
                                                                 </li>
                                                                 <li className="item ">
                                                                     <button className="btn" onClick={this.handleClickShip(rowItem.ShipmentOrderID)}>
-                                                                        <i className="fa fa-user-plus"></i>
+                                                                        <i className="fa"></i>
                                                                     </button>
                                                                 </li>
                                                             </React.Fragment>

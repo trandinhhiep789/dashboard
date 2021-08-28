@@ -216,7 +216,6 @@ class ShipmentRouteCom extends React.Component {
                         onSubmit={this.handleSearchSubmit}
                         ref={this.searchref}
                         className="multiple multiple-custom multiple-custom-display"
-
                     />
                   <label>Đang nạp dữ liệu...</label>
                 </React.Fragment>
