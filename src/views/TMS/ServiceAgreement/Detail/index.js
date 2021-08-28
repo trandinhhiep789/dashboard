@@ -235,18 +235,18 @@ class DetailCom extends React.Component {
         });
 
         //#region check lỗi file excel
-        if (data.errors.length != 0) {
-            for (const item of data.errors) {
-                let errorText = "";
+        // if (data.errors.length != 0) {
+        //     for (const item of data.errors) {
+        //         let errorText = "";
 
-                if (dataSource[item.row - 1].Errors == "") {
-                    errorText = item.column;
-                } else {
-                    errorText = `${dataSource[item.row - 1].Errors}, ${item.column}`
-                }
-                dataSource[item.row - 1].Errors = errorText;
-            }
-        }
+        //         if (dataSource[item.row - 1].Errors == "") {
+        //             errorText = item.column;
+        //         } else {
+        //             errorText = `${dataSource[item.row - 1].Errors}, ${item.column}`
+        //         }
+        //         dataSource[item.row - 1].Errors = errorText;
+        //     }
+        // }
         //#endregion
 
         //#region check lỗi trùng
@@ -288,18 +288,18 @@ class DetailCom extends React.Component {
         });
 
         //#region check lỗi file excel
-        if (data.errors.length != 0) {
-            for (const item of data.errors) {
-                let errorText = "";
+        // if (data.errors.length != 0) {
+        //     for (const item of data.errors) {
+        //         let errorText = "";
 
-                if (dataSource[item.row - 1].Errors == "") {
-                    errorText = item.column;
-                } else {
-                    errorText = `${dataSource[item.row - 1].Errors}, ${item.column}`
-                }
-                dataSource[item.row - 1].Errors = errorText;
-            }
-        }
+        //         if (dataSource[item.row - 1].Errors == "") {
+        //             errorText = item.column;
+        //         } else {
+        //             errorText = `${dataSource[item.row - 1].Errors}, ${item.column}`
+        //         }
+        //         dataSource[item.row - 1].Errors = errorText;
+        //     }
+        // }
         //#endregion
 
         //#region check lỗi trùng

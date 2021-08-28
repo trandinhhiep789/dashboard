@@ -394,7 +394,15 @@ class ImportSelectionModalCom extends React.Component {
     }
 
     handleSubmitImportAbilityFile(data) {
-        this.props.callFetchAPI(APIHostName, AddListAPIAbilitiPath, data).then(apiResult => {
+        const uptData = data.map(item => {
+            return {
+                ...item,
+                IsActived: true,
+                IsSystem: false
+            }
+        });
+
+        this.props.callFetchAPI(APIHostName, AddListAPIAbilitiPath, uptData).then(apiResult => {
             if (apiResult.IsError) {
                 this.showMessage(apiResult.Message);
             }
@@ -406,7 +414,15 @@ class ImportSelectionModalCom extends React.Component {
     }
 
     handleSubmitImportFeeAppendixFile(data) {
-        this.props.callFetchAPI(APIHostName, AddListAPIFeeAppendixPath, data).then(apiResult => {
+        const uptData = data.map(item => {
+            return {
+                ...item,
+                IsActived: true,
+                IsSystem: false
+            }
+        });
+
+        this.props.callFetchAPI(APIHostName, AddListAPIFeeAppendixPath, uptData).then(apiResult => {
             if (apiResult.IsError) {
                 this.showMessage(apiResult.Message);
             }
@@ -438,7 +454,15 @@ class ImportSelectionModalCom extends React.Component {
     }
 
     handleSubmitImportServiceAgreementFile(data) {
-        this.props.callFetchAPI(APIHostName, "api/ServiceAgreement/AddImport", { ServiceAgreementList: data }).then(apiResult => {
+        const uptData = data.map(item => {
+            return {
+                ...item,
+                IsActived: true,
+                IsSystem: false
+            }
+        })
+
+        this.props.callFetchAPI(APIHostName, "api/ServiceAgreement/AddImport", { ServiceAgreementList: uptData }).then(apiResult => {
             if (apiResult.IsError) {
                 this.showMessage(apiResult.Message);
             }
