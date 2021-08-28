@@ -58,9 +58,7 @@ class ElementTextCom extends Component {
                         name={name}
                         onChange={this.handleValueChange}
                         readOnly={readonly}
-                        defaultValue={value}
                         value={value}
-                        defaultChecked={value}
                         placeholder={placeholder} />
                     <div className="invalid-feedback">{ValidatonErrorMessage}</div>
                 </div>

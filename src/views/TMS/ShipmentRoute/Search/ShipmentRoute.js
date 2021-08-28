@@ -7,16 +7,15 @@ import { MessageModal } from "../../../../common/components/Modal";
 import {
     SearchElementRouteList,
     SearchMLObjectRouteDefinition,
-    DataGridColumnList,
-    AddLink,
+    SearchShipmentRouteAPIPath,
     APIHostName,
-    SearchAPIPath,
     DeleteAPIPath,
-    IDSelectColumnName,
-    PKColumnName,
-    InitSearchParams,
+    InitSearchShipmentRouteParams,
     PagePath,
-    AddLogAPIPath
+    DataGridColumnList,
+    IDSelectColumnName,
+    PKColumnName
+
 } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
@@ -37,7 +36,7 @@ class ShipmentRouteCom extends React.Component {
             CallAPIMessage: "",
             gridDataSource: [],
             IsCallAPIError: false,
-            SearchData: InitSearchParams,
+            SearchData: InitSearchShipmentRouteParams,
             cssNotification: "",
             iconNotification: "",
             PageNumber: 1,
@@ -49,17 +48,22 @@ class ShipmentRouteCom extends React.Component {
     }
 
     componentDidMount() {
-        const LoginInfo = localStorage.getItem('LoginInfo');
-        console.log("LoginInfo",LoginInfo);
-        const ShipOrdStatusGroupID = { SearchKey: "@SHIPMENTORDERSTATUSGROUPID", SearchValue: -1 };
-        let listSearchDataObject = Object.assign([], this.state.SearchData, { [9]: ShipOrdStatusGroupID });
-        this.callSearchData(listSearchDataObject);
+     
+        this.callSearchData(this.state.SearchData);
         this.props.updatePagePath(PagePath);
     }
 
-    handleDelete(id) {
-        const ShipmentOrder = { ShipmentOrderID: id, DeletedUser: this.props.AppInfo.LoginInfo.Username };
-        this.props.callFetchAPI(APIHostName, DeleteAPIPath, ShipmentOrder).then(apiResult => {
+    handleDelete(deleteList, pkColumnName) {
+        let listMLObject = [];
+        deleteList.map((row, index) => {
+            let MLObject = {};
+            pkColumnName.map((pkItem, pkIndex) => {
+                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
+            });
+            MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
+            listMLObject.push(MLObject);
+        });
+        this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
@@ -71,7 +75,7 @@ class ShipmentRouteCom extends React.Component {
     handleonChangePage(pageNum) {
         let listMLObject = [];
         const aa = { SearchKey: "@PAGEINDEX", SearchValue: pageNum - 1 };
-        listMLObject = Object.assign([], this.state.SearchData, { [13]: aa });
+        listMLObject = Object.assign([], this.state.SearchData, { [4]: aa });
         this.callSearchData(listMLObject)
         this.setState({
             PageNumber: pageNum
@@ -84,7 +88,10 @@ class ShipmentRouteCom extends React.Component {
                 SearchKey: "@Keyword",
                 SearchValue: MLObject.Keyword
             },
-           
+            {
+                SearchKey: "@FROMDATE",
+                SearchValue: MLObject.CreatedOrderTimeFo
+            },
             {
                 SearchKey: "@ToDate",
                 SearchValue: MLObject.CreatedOrderTimeTo
@@ -104,7 +111,7 @@ class ShipmentRouteCom extends React.Component {
 
     callSearchData(searchData) {
     
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, SearchShipmentRouteAPIPath, searchData).then(apiResult => {
             if (!apiResult.IsError) {
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
@@ -170,6 +177,7 @@ class ShipmentRouteCom extends React.Component {
             return (
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
+                    <div className="col-lg-12 SearchFormCustom">
                     <SearchForm
                         FormName="Tìm kiếm danh sách vận chuyển"
                         MLObjectDefinition={SearchMLObjectRouteDefinition}
@@ -177,22 +185,22 @@ class ShipmentRouteCom extends React.Component {
                         onSubmit={this.handleSearchSubmit}
                         ref={this.searchref}
                         className="multiple multiple-custom multiple-custom-display"
-                        classNamebtnSearch="btn-custom-right" 
                     />
-                    {/* <DataGrid
+                    </div>
+                    <DataGrid
                         listColumn={DataGridColumnList}
                         dataSource={this.state.gridDataSource}
-                        AddLink={AddLink}
                         IDSelectColumnName={IDSelectColumnName}
                         PKColumnName={PKColumnName}
                         onDeleteClick={this.handleDelete}
-                        onChangePage={this.handleonChangePage}
-                        IsDelete={false}
+                        IsDelete={true}
                         IsAdd={false}
+                        isPaginationServer={true}
                         PageNumber={this.state.PageNumber}
+                        onChangePage={this.handleonChangePage.bind(this)}
                         IsAutoPaging={true}
                         RowsPerPage={10}
-                    /> */}
+                    />
                 </React.Fragment>
             );
         }
