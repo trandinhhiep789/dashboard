@@ -93,8 +93,10 @@ class DetailCom extends React.Component {
                     let elementFeeAppendix = {
                         "Tên Phụ lục": item.FeeAppendixName,
                         "Loại mùa dịch vụ": item.ServiceSeasonTypeName,
+                        "Bảng giá": item.PNServicePriceTableName,
                         "Từ ngày": item.ApplyFromDate,
                         "Đến ngày": item.ApplyToDate,
+                        "Thứ tự ưu tiên": item.PriorityIndex
                     };
 
                     return elementFeeAppendix;

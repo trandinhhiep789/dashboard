@@ -81,35 +81,42 @@ export const DataGridColumnItemListFeeAppendix = [
         Caption: "Tên Phụ lục",
         DataSourceMember: "FeeAppendixName",
         // Link: "/ServiceAgreement/FeeAppendix/Detail/",
-        Width: 150,
+        // Width: 150,
     },
     {
         Name: "ServiceSeasonTypeName",
         Type: "text",
         Caption: "Loại mùa dịch vụ",
         DataSourceMember: "ServiceSeasonTypeName",
-        Width: 250,
+        // Width: 250,
     },
     {
         Name: "PNServicePriceTableName",
         Type: "text",
         Caption: "Bảng giá",
         DataSourceMember: "PNServicePriceTableName",
-        Width: 250,
+        // Width: 250,
     },
     {
         Name: "ApplyFromDate",
         Type: "dateNew",
         Caption: "Từ ngày",
         DataSourceMember: "ApplyFromDate",
-        Width: 250,
+        // Width: 250,
     },
     {
         Name: "ApplyToDate",
         Type: "dateNew",
         Caption: "Đến ngày",
         DataSourceMember: "ApplyToDate",
-        Width: 250,
+        // Width: 250,
+    },
+    {
+        Name: "PriorityIndex",
+        Type: "text",
+        Caption: "Thứ tự ưu tiên",
+        DataSourceMember: "PriorityIndex",
+        // Width: 250,
     },
     {
 
@@ -130,7 +137,8 @@ export const DataTemplateExportFeeAppendix = [
         "Từ ngày": new Date(),
         "Đến ngày": new Date(),
         "Bảng giá": "1",
-        "Mô tả": "Mô tả"
+        "Mô tả": "Mô tả",
+        "Thứ tự ưu tiên": "1"
     }
 ];
 
@@ -183,6 +191,12 @@ export const listColumnImportFile_FeeAppendix = [
         Type: "text",
         Caption: "Mô tả",
         DataSourceMember: "Description"
+    },
+    {
+        Name: "PriorityIndex",
+        Type: "text",
+        Caption: "Thứ tự ưu tiên",
+        DataSourceMember: "PriorityIndex"
     },
     {
         Name: "Errors",
@@ -1253,7 +1267,12 @@ export const FeeAppendixSchema = {
     'Mô tả': {
         prop: 'Description',
         type: String
-    }
+    },
+    'Thứ tự ưu tiên': {
+        prop: 'PriorityIndex',
+        type: Number,
+        required: true
+    },
 };
 
 export const FeeAppendixSchema2 = {

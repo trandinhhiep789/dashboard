@@ -246,4 +246,10 @@ export const MLObjectFeeAppendixDetailItem = [
         BindControlName: "",
         DataSourceMember: "CreatedUser"
     },
+    {
+        Name: "PriorityIndex",
+        DefaultValue: 1,
+        BindControlName: "numPriorityIndex",
+        DataSourceMember: "PriorityIndex"
+    },
 ]
