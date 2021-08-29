@@ -60,7 +60,6 @@ class DataGridShipmentOderNewCom extends Component {
     componentDidMount() {
         this.updateWindowDimensions();
         window.addEventListener("resize", this.updateWindowDimensions);
-
         if (this.props.dataSource) {
             const gridData = this.getCheckList(this.props.dataSource);
             this.setState({ GridData: gridData });
