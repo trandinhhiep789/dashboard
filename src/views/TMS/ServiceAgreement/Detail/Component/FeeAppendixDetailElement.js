@@ -33,6 +33,7 @@ class FeeAppendixDetailElementCom extends Component {
     handleSubmit(From, MLObject) {
         MLObject.SignedDate = this.props.dataSource.SignedDate;
         MLObject.ServiceAgreementID = this.props.dataSource.ServiceAgreementID;
+        MLObject.PriorityIndex = parseInt(MLObject.PriorityIndex);
 
         if (this.props.index != undefined) {
             MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
@@ -42,7 +43,6 @@ class FeeAppendixDetailElementCom extends Component {
         }
         else {
             MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-
             this.props.callFetchAPI(APIHostName, AddAPIFeeAppendixPath, MLObject).then(apiResult => {
                 this.props.onInputChangeObj(this.props.dataSource.ServiceAgreementID, apiResult);
 
@@ -64,13 +64,12 @@ class FeeAppendixDetailElementCom extends Component {
     }
 
     render() {
-        const AddElementListFeeAppendix = []
         const { IsSystem } = this.state;
         return (
             <FormContainer
                 MLObjectDefinition={MLObjectFeeAppendixDetailItem}
                 dataSource={this.props.index != undefined ? this.props.dataSource.FeeAppendix_ItemList[this.props.index] : null}
-                listelement={AddElementListFeeAppendix}
+                listelement={[]}
                 onSubmit={this.handleSubmit}
                 IsCloseModal={true}
                 onchange={this.handleChange.bind(this)}
@@ -188,7 +187,20 @@ class FeeAppendixDetailElementCom extends Component {
 
                     </div>
 
-                    <div className="col-md-6"></div>
+                    <div className="col-md-6">
+                        <FormControl.FormControlTextBox
+                            name="numPriorityIndex"
+                            colspan="9"
+                            labelcolspan="3"
+                            readOnly={IsSystem}
+                            label="thứ tự ưu tiên"
+                            placeholder="Thứ tự ưu tiên"
+                            controltype="InputControl"
+                            value=""
+                            validatonList={["required", "number"]}
+                            datasourcemember="PriorityIndex"
+                        />
+                    </div>
 
 
                     <div className="col-md-6">
