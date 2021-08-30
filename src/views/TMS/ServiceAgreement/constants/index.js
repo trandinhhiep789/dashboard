@@ -355,11 +355,18 @@ export const DataGridColumnList = [
         DataSourceMember: "ServiceAgreementNumber",
         // Width: 200
     },
+    // {
+    //     Name: "PartnerName",
+    //     Type: "text",
+    //     Caption: "Đối tác",
+    //     DataSourceMember: "PartnerName",
+    //     // Width: 340
+    // },
     {
-        Name: "PartnerName",
+        Name: "PartnerIDName",
         Type: "text",
         Caption: "Đối tác",
-        DataSourceMember: "PartnerName",
+        DataSourceMember: "PartnerIDName",
         // Width: 340
     },
     {
