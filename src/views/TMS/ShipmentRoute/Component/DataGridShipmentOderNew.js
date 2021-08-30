@@ -772,11 +772,10 @@ class DataGridShipmentOderNewCom extends Component {
                                                                 </li>
                                                                 <li className="item ">
                                                                     <button className="btn" onClick={this.handleClickShip(rowItem.ShipmentOrderID)}>
-                                                                        <i className="fa"></i>
+                                                                        <i className="fa fa-user-plus"></i>
                                                                     </button>
                                                                 </li>
                                                             </React.Fragment>
-
                                                             ) :
                                                             (<li className="item ">
                                                                 <button onClick={this.handleClickShipmentRoute(rowItem.ShipmentRouteID)} className="btn btn-user-plus" title="Đã được phân tuyến">
