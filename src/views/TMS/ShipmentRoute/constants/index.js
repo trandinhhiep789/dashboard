@@ -488,7 +488,7 @@ export const InitSearchShipmentRouteParams = [
     },
     {
         SearchKey: "@ISDISTANCE",
-        SearchValue: 1
+        SearchValue: -1
     },
     {
         SearchKey: "@PAGESIZE",
@@ -515,21 +515,14 @@ export const DataGridColumnList = [
         Caption: "Mã yêu cầu phân tuyến",
         DataSourceMember: "ShipmentRouteID",
         Link: "/ShipmentRouteID/Detail/",
-        Width: 140
+        Width: 120
     },
     {
         Name: "CreatedDate",
         Type: "datetime",
         Caption: "Ngày phân tuyến",
         DataSourceMember: "CreatedDate",
-        Width: 130
-    },
-    {
-        Name: "ActualDeliveryDistance",
-        Type: "text",
-        Caption: "Khoản cách thực tế",
-        DataSourceMember: "ActualDeliveryDistance",
-        Width: 250
+        Width: 100
     },
     {
         Name: "ExpectedBeginDeliveryDate",
@@ -539,10 +532,18 @@ export const DataGridColumnList = [
         Width: 100
     },
     {
+        Name: "ActualDeliveryDistance",
+        Type: "text",
+        Caption: "Khoản cách thực tế",
+        DataSourceMember: "ActualDeliveryDistance",
+        Width: 100
+    },
+   
+    {
         Name: "RouteNote",
         Type: "text",
         Caption: "tuyến đường phần tuyến",
         DataSourceMember: "RouteNote",
-        Width: 250
+        Width: 520
     }
 ];

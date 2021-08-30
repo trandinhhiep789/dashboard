@@ -292,6 +292,27 @@ class DataGridCom extends Component {
         }
     }
 
+    handleInsertCustomClick() {
+  
+            const idSelectColumnName = this.props.IDSelectColumnName;
+            let listDeleteID = [];
+            const idDeleteListObject = this.state.GridData[idSelectColumnName];
+            idDeleteListObject.map((item, index) => {
+                if (item.IsChecked) {
+                    listDeleteID.push(item);
+                }
+            });
+            if (listDeleteID.length == 0) {
+                this.showMessage("Vui lòng chọn ít nhất một dòng cần tính khoản cách!");
+                return;
+            }
+            const confir = confirm("Bạn có chắc rằng muốn tính khoản cách ?");
+            if (confir == 1) {
+                if (this.props.onInsertCustom != null)
+                this.props.onInsertCustom(listDeleteID, this.state.ListPKColumnName);
+            }
+    }
+
     handleSearchSubmit(event) {
         event.preventDefault();
         let MLObject = {};
@@ -606,12 +627,19 @@ class DataGridCom extends Component {
                                                         <span className="fa fa-plus ff"> Thêm </span>
                                                     </button>
                                                 )
-                                            )
-                                            : (
-                                                <button type="button" className="btn btn-info" disabled title="Bạn Không có quyền xử lý!" data-provide="tooltip" data-original-title="Thêm">
-                                                    <span className="fa fa-plus ff"> Thêm </span>
-                                                </button>
-                                            )
+                                            ) : ""
+                                            // : (
+                                            //     <button type="button" className="btn btn-info" disabled title="Bạn Không có quyền xử lý!" data-provide="tooltip" data-original-title="Thêm">
+                                            //         <span className="fa fa-plus ff"> Thêm </span>
+                                            //     </button>
+                                            // )
+                                        }
+                                        {
+                                            this.props.IsCustomAddNew == true  ?
+                                                (<button type="button" onClick={this.handleInsertCustomClick.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
+                                                    <span className="fa fa-plus ff"> Tính lại tuyến đường </span>
+                                                </button>)
+                                                : ""
                                         }
                                         {
                                             (this.props.IsDelete == true || this.props.IsDelete == undefined) ?
