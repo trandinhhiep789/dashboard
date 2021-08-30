@@ -75,7 +75,7 @@ class ShipmentRouteCom extends React.Component {
     handleonChangePage(pageNum) {
         let listMLObject = [];
         const aa = { SearchKey: "@PAGEINDEX", SearchValue: pageNum - 1 };
-        listMLObject = Object.assign([], this.state.SearchData, { [4]: aa });
+        listMLObject = Object.assign([], this.state.SearchData, { [5]: aa });
         this.callSearchData(listMLObject)
         this.setState({
             PageNumber: pageNum
@@ -89,12 +89,20 @@ class ShipmentRouteCom extends React.Component {
                 SearchValue: MLObject.Keyword
             },
             {
+                SearchKey: "@COORDINATORSTOREID",
+                SearchValue: MLObject.CoordinatorStoreID
+            },
+            {
                 SearchKey: "@FROMDATE",
                 SearchValue: MLObject.CreatedOrderTimeFo
             },
             {
                 SearchKey: "@ToDate",
                 SearchValue: MLObject.CreatedOrderTimeTo
+            },
+            {
+                SearchKey: "@ISDISTANCE",
+                SearchValue: MLObject.IsDistance
             },
             {
                 SearchKey: "@PAGESIZE",
@@ -199,7 +207,7 @@ class ShipmentRouteCom extends React.Component {
                         PageNumber={this.state.PageNumber}
                         onChangePage={this.handleonChangePage.bind(this)}
                         IsAutoPaging={true}
-                        RowsPerPage={10}
+                        RowsPerPage={100}
                     />
                 </React.Fragment>
             );
