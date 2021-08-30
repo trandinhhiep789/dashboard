@@ -72,6 +72,27 @@ class ShipmentRouteCom extends React.Component {
         });
     }
 
+    handleInsertCustom(deleteList, pkColumnName) {
+        let listMLObject = [];
+        deleteList.map((row, index) => {
+            let MLObject = {};
+            pkColumnName.map((pkItem, pkIndex) => {
+                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
+            });
+            listMLObject.push(MLObject);
+        });
+
+        this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/EstimateDeliveryDistance", listMLObject).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            if (!apiResult.IsError) {
+                this.callSearchData(this.state.SearchData);
+            }
+        });
+    }
+
+    
+
     handleonChangePage(pageNum) {
         let listMLObject = [];
         const aa = { SearchKey: "@PAGEINDEX", SearchValue: pageNum - 1 };
@@ -201,6 +222,8 @@ class ShipmentRouteCom extends React.Component {
                         IDSelectColumnName={IDSelectColumnName}
                         PKColumnName={PKColumnName}
                         onDeleteClick={this.handleDelete}
+                        onInsertCustom ={this.handleInsertCustom.bind(this)}
+                        IsCustomAddNew={true}
                         IsDelete={true}
                         IsAdd={false}
                         isPaginationServer={true}
