@@ -114,6 +114,10 @@ class SearchCom extends React.Component {
         ];
 
         this.callSearchData(postData);
+
+        if (this.state.gridDataSource.length == 0) {
+            this.addNotification("Dữ liệu tìm kiếm trống", false);
+        }
     }
 
     callSearchData(searchData) {

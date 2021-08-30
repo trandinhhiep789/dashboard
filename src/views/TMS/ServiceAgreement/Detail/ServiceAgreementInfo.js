@@ -589,7 +589,7 @@ class ServiceAgreementInfoCom extends Component {
                         <label className="col-form-label bold">Nhân viên đại diện:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{this.props.ServiceAgreementInfo.DeputyUserName}</label>
+                        <label className="col-form-label">{this.props.ServiceAgreementInfo.DeputyUserName} - {this.props.ServiceAgreementInfo.FullName}</label>
                     </div>
                 </div>
 
