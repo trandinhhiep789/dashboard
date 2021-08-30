@@ -22,7 +22,7 @@ class PNRewardPriceTableInfoCom extends Component {
                         <label className="col-form-label bold">Tên bảng đơn giá thưởng:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{PNRewardPriceTableInfo.pnServicePriceTableName}</label>
+                        <label className="col-form-label">{PNRewardPriceTableInfo.PNServicePriceTableName}</label>
                     </div>
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Loại mùa vụ:</label>

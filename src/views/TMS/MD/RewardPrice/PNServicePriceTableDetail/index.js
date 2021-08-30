@@ -50,8 +50,8 @@ class PNServicePriceTableDetailCom extends Component {
     }
 
     handleSubmit(formData, MLObject) {
-        console.log("MLObject", MLObject)
-        MLObject.pnServicePriceTableID = this.props.dataSource.pnServicePriceTableID;
+        // console.log("MLObject", MLObject)
+        MLObject.PNServicePriceTableID = this.props.dataSource.pnServicePriceTableID;
         MLObject.ProductID = MLObject.ProductID && Array.isArray(MLObject.ProductID) ? MLObject.ProductID[0].ProductID : MLObject.ProductID;
         
         if (MLObject.IsPriceByTechspecsValueRange || MLObject.IsPriceByTechspecsValueRange != "") {
@@ -72,6 +72,7 @@ class PNServicePriceTableDetailCom extends Component {
                 MLObject.FromTechspecsValue = 0
                 MLObject.ToTechspecsValue = 0
                 MLObject.IsPriceByTechspecsValueRange = 0
+                MLObject.TechspecsValueID = -1
             }
             else {
                 MLObject.MainGroupID = MLObject.MainGroupID;
@@ -79,6 +80,7 @@ class PNServicePriceTableDetailCom extends Component {
                 MLObject.TechspecsID = MLObject.TechspecsID;
                 MLObject.FromTechspecsValue = MLObject.FromTechspecsValue;
                 MLObject.ToTechspecsValue = MLObject.ToTechspecsValue;
+                MLObject.TechspecsValueID = MLObject.TechspecsValueID
             }
         }
 
@@ -95,13 +97,13 @@ class PNServicePriceTableDetailCom extends Component {
 
             if (this.props.index != undefined) {
                 this.props.callFetchAPI(APIHostName, EditAPIRPTDetailPath, MLObject).then(apiResult => {
-                    console.log("update", MLObject, apiResult)
+                    // console.log("update", MLObject, apiResult)
                     this.props.onInputChangeObj(this.props.dataSource.pnServicePriceTableID, apiResult);
                 });
             }
             else {
                 this.props.callFetchAPI(APIHostName, AddAPIRPTDetailPath, MLObject).then(apiResult => {
-                    console.log("adđ", MLObject, apiResult)
+                    // console.log("adđ", MLObject, apiResult)
                     this.props.onInputChangeObj(this.props.dataSource.pnServicePriceTableID, apiResult);
                 });
             }
@@ -151,7 +153,7 @@ class PNServicePriceTableDetailCom extends Component {
 
             }
 
-            if (formData.cbProductID.value != undefined) {
+            if (formData.cbProductID.value != undefined && formData.cbProductID.value != "" ) {
                 if (formData.cbProductID.value[0].ProductID != null) {
                     this.setState({
                         IsDisableTechspecsValue: true,
@@ -181,7 +183,7 @@ class PNServicePriceTableDetailCom extends Component {
                 IsDisableTechspecsValue: true,
             })
         }
-        if (formData.cbProductID.value != undefined) {
+        if (formData.cbProductID.value != undefined && formData.cbProductID.value != "") {
             if (formData.cbProductID.value[0].ProductID != null) {
                 this.setState({
                     IsDisableCbTechspecsValue: true
@@ -249,7 +251,7 @@ class PNServicePriceTableDetailCom extends Component {
                 <div className="row">
                     <div className="col-md-12">
                         <FormControl.FormControlTextBox
-                            name="txtpnServicePriceTableDetailID"
+                            name="txtPNServicePriceTableDetailID"
                             colspan="9"
                             labelcolspan="3"
                             readOnly={true}
@@ -258,7 +260,7 @@ class PNServicePriceTableDetailCom extends Component {
                             placeholder="Mã đơn giá thưởng tự động nhập"
                             controltype="InputControl"
                             value=""
-                            datasourcemember="pnServicePriceTableDetailID"
+                            datasourcemember="PNServicePriceTableDetailID"
                         />
 
                     </div>
@@ -446,6 +448,22 @@ class PNServicePriceTableDetailCom extends Component {
                             datasourcemember="ServicePrice"
                             maxSize={11}
                         />
+                    </div>
+                    
+                    <div className="col-md-6">
+                        <FormControl.TextBox
+                            name="txtPNServicePriceTableDetailName"
+                            colspan="6"
+                            labelcolspan="6"
+                            label="Tên chi tiết bảng giá"
+                            placeholder="Tên chi tiết bảng giá"
+                            controltype="InputControl"
+                            value=""
+                            validatonList={["required"]}
+                            datasourcemember="PNServicePriceTableDetailName"
+                            maxSize={9}
+                        />
+
                     </div>
 
                     <div className="col-md-6">

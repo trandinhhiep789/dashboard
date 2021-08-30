@@ -22,6 +22,8 @@ import { updatePagePath } from "../../../../../../actions/pageAction";
 import { TMS_PNSERVICEPRICETABLE_VIEW, TMS_PNSERVICEPRICETABLE_DELETE } from "../../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
+import { ERPCOMMONCACHE_PNSERVICEPRICETABLE } from "../../../../../../constants/keyCache";
+import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -46,7 +48,7 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.callSearchData(this.state.SearchData);
         this.props.updatePagePath(PagePath);
-         this.testRewardMobi()
+       // this.testRewardMobi()
     }
 
     testRewardMobi() {
@@ -61,7 +63,8 @@ class SearchCom extends React.Component {
 
 
     handleDelete(deleteList, pkColumnName) {
-        let listMLObject = [];
+        const { gridDataSource } = this.state;
+        let listMLObject = [], listMLObjectNew = [];
         deleteList.map((row, index) => {
             let MLObject = {};
             pkColumnName.map((pkItem, pkIndex) => {
@@ -70,12 +73,22 @@ class SearchCom extends React.Component {
             MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
             listMLObject.push(MLObject);
         });
-        this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
+
+        listMLObject.map((item, index)=>{
+            gridDataSource.filter((item1, index1)=>{
+                if(item1.pnServicePriceTableID == item.pnServicePriceTableID){
+                    item1.DeletedUser = this.props.AppInfo.LoginInfo.Username;
+                    listMLObjectNew.push(item1)
+                }
+            })
+        })
+
+        this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObjectNew).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
+                this.callSearchData(this.state.SearchData);
                 this.props.callClearLocalCache(ERPCOMMONCACHE_PNSERVICEPRICETABLE);
-                this.callSearchData(this.state.SearchData);   
             }
         });
     }
@@ -93,6 +106,7 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            console.log("á", apiResult)
             if (!apiResult.IsError) {
                 const temp = apiResult.ResultObject.map((item, index) => {
                     item.FullServiceArea = item.ServiceAreaID + " - " + item.AreaName;

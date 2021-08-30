@@ -85,7 +85,7 @@ export const DataGridColumnList = [
         Width: 80
     },
     {
-        Name: "pnServicePriceTableID",
+        Name: "pnServicePriceTableName",
         Type: "texttolink",
         Caption: "Tên đơn giá",
         DataSourceMember: "pnServicePriceTableName",
@@ -175,6 +175,13 @@ export const MLObjectDefinition = [
 
 export const DataGridColumnItemListRPTDetail = [
     {
+        Name: "PNServicePriceTableDetailName",
+        Type: "text",
+        Caption: "Tên chi tiết bảng giá",
+        DataSourceMember: "PNServicePriceTableDetailName",
+        Width: 100
+    },
+    {
         Name: "MainGroupName",
         Type: "text",
         Caption: "Nghành hàng",
@@ -250,10 +257,10 @@ export const DataGridColumnItemListRPTDetail = [
 
 export const MLObjectRPTDetailItem = [
     {
-        Name: "pnServicePriceTableDetailID",
+        Name: "PNServicePriceTableDetailID",
         DefaultValue: {},
-        BindControlName: "txtpnServicePriceTableDetailID",
-        DataSourceMember: "pnServicePriceTableDetailID"
+        BindControlName: "txtPNServicePriceTableDetailID",
+        DataSourceMember: "PNServicePriceTableDetailID"
     },
     {
         Name: "MainGroupID",
@@ -314,6 +321,13 @@ export const MLObjectRPTDetailItem = [
         DefaultValue: {},
         BindControlName: "txtServicePrice",
         DataSourceMember: "ServicePrice"
+    },
+
+    {
+        Name: "PNServicePriceTableDetailName",
+        DefaultValue: {},
+        BindControlName: "txtPNServicePriceTableDetailName",
+        DataSourceMember: "PNServicePriceTableDetailName"
     },
 
     {

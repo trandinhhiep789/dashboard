@@ -134,9 +134,10 @@ class DetailCom extends React.Component {
 
         const resultItem = DataSource.PNServicePriceTableDetailList[index];
         let MLObject = {};
-        MLObject.pnServicePriceTableDetailID = resultItem.pnServicePriceTableDetailID.trim();
+        MLObject.PNServicePriceTableDetailID = resultItem.PNServicePriceTableDetailID.trim();
 
-        this.props.callFetchAPI(APIHostName, DeleteAPIRPTDetailPath, MLObject).then((apiResult) => {
+        this.props.callFetchAPI(APIHostName, DeleteAPIRPTDetailPath, resultItem).then((apiResult) => {
+            console.log("del", resultItem, apiResult)
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
