@@ -68,11 +68,9 @@ class DetailCom extends React.Component {
         // let objAdvanceRequestLoad=
         // {ShipmentOrderID:'210707000000085',RCNotContactableUpdatedUser:'73309',RCNotContactableUpdateNote:"hoclenho"}
 
-        this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetBankAccount",'210824000000363').then((apiResult) => {
-            console.log("apiResult.ResultObject",apiResult)
-        });
-
-
+        // this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetBankAccount",'210828000000420').then((apiResult) => {
+        //     console.log("apiResult.ResultObject",apiResult)
+        // });
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
             if (apiResult.IsError) {
                 this.setState({

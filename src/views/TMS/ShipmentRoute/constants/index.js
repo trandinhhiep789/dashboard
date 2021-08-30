@@ -391,6 +391,23 @@ export const SearchElementRouteList = [
         listoption: {}
     },
     {
+        type: "ComboBox",
+        name: "cbCoordinatorStoreID",
+        DataSourceMember: "CoordinatorStoreID",
+        colspan: 2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "---Kho điều phối---",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
+        ValueMember: "StoreID",
+        NameMember: "StoreName",
+        filterValue: 10,
+        filterobj: "CompanyID",
+        classNameCol: "col-custom"
+    },
+    {
         type: "Datetime",
         name: "dtCreatedOrderTimeFo",
         DataSourceMember: "CreatedOrderTimeFo",
@@ -411,6 +428,17 @@ export const SearchElementRouteList = [
         dateFormat: "DD/MM/YYYY",
         colspan: 1,
         classNameCol: "col-custom"
+    },
+    {
+        type: "ComboBox",
+        name: "cbIsDistance",
+        DataSourceMember: "IsDistance",
+        colspan: 2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "--Trạng thái khoản cách--",
+        listoption: [{ value: -1, label: "--Trạng thái khoản cách--" }, { value: 1, label: "Đã tính khoản cách" }, { value: 2, label: "Chưa tính khoản cách" }],
+        classNameCol: "col-custom"
     }
 ];
 export const SearchMLObjectRouteDefinition = [
@@ -418,6 +446,11 @@ export const SearchMLObjectRouteDefinition = [
         Name: "Keyword",
         DefaultValue: "",
         BindControlName: "txtKeyword"
+    },
+    {
+        Name: "CoordinatorStoreID",
+        DefaultValue: -1,
+        BindControlName: "cbCoordinatorStoreID"
     },
     {
         Name: "CreatedOrderTimeFo",
@@ -428,6 +461,11 @@ export const SearchMLObjectRouteDefinition = [
         Name: "CreatedOrderTimeTo",
         DefaultValue: "",
         BindControlName: "dtCreatedOrderTimeTo"
+    },
+    {
+        Name: "IsDistance",
+        DefaultValue: -1,
+        BindControlName: "cbIsDistance"
     }
     
 ];
@@ -437,12 +475,20 @@ export const InitSearchShipmentRouteParams = [
         SearchValue: ""
     },
     {
+        SearchKey: "@COORDINATORSTOREID",
+        SearchValue: -1
+    },
+    {
         SearchKey: "@FromDate",
         SearchValue: new Date()
     },
     {
         SearchKey: "@ToDate",
         SearchValue: new Date()
+    },
+    {
+        SearchKey: "@ISDISTANCE",
+        SearchValue: 1
     },
     {
         SearchKey: "@PAGESIZE",
@@ -481,14 +527,14 @@ export const DataGridColumnList = [
     {
         Name: "ActualDeliveryDistance",
         Type: "text",
-        Caption: "Kho gửi",
+        Caption: "Khoản cách thực tế",
         DataSourceMember: "ActualDeliveryDistance",
         Width: 250
     },
     {
         Name: "ExpectedBeginDeliveryDate",
         Type: "datetime",
-        Caption: "Người nhận",
+        Caption: "Thời gian bắt đầu đi",
         DataSourceMember: "ExpectedBeginDeliveryDate",
         Width: 100
     },
