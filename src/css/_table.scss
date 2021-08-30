@@ -561,8 +561,11 @@
                                     border: none;
                                     background: transparent;
                                     width: 15px;
-                                    color: #48b0f7;
+                                    color: #fff;
                                     height: 25px;
+                                    &.btn-user-plus{
+                                        color: #48b0f7;
+                                    }
                                 }
                             }
                         }
