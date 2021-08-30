@@ -1,54 +1,57 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
-// import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
-import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
-import { MessageModal } from "../../../../../common/components/Modal";
-import DataGrid from "../../../../../common/components/DataGrid";
-import {
-    PagePath,
-    SearchMLObjectDefinition,
-    SearchElementList,
-    GridColumnList,
-    APIHostName,
-    SearchNewAPIPath,
-    InitSearchParams
-} from "../constants";
-import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
-import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { TMS_TMSREWARD_VIEW, TMS_TMSREWARD_SO_TYPE_VIEW, TMS_TMSREWARD_SO_TYPE_EXPORT } from "../../../../../constants/functionLists";
+
+import {
+    APIHostName,
+    GridColumnList,
+    // InitSearchParams,
+    PagePath,
+    SearchElementList,
+    SearchMLObjectDefinition,
+    SearchNewAPIPath
+} from "../constants";
+
+// import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
+import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
-import { toIsoStringCus } from '../../../../../utils/function';
-import { showModal, hideModal } from '../../../../../actions/modal';
 import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../../constants/keyCache";
+import { MessageModal } from "../../../../../common/components/Modal";
 import { MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
+import { showModal, hideModal } from '../../../../../actions/modal';
+import { TMS_TMSREWARD_VIEW, TMS_TMSREWARD_SO_TYPE_VIEW, TMS_TMSREWARD_SO_TYPE_EXPORT } from "../../../../../constants/functionLists";
+import { toIsoStringCus } from '../../../../../utils/function';
+import { updatePagePath } from "../../../../../actions/pageAction";
+import DataGrid from "../../../../../common/components/DataGrid";
+import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
 
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
-        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
-        this.callSearchData = this.callSearchData.bind(this);
-        this.handleCallData = this.handleCallData.bind(this);
 
         this.state = {
-            IsCallAPIError: false,
-            gridDataSource: [],
-            IsLoadDataComplete: false,
-            SearchData: InitSearchParams,
-            totalAmount: '',
-            param: {},
+            // IsCallAPIError: false,
+            // IsLoadDataComplete: false,
             dataExport: [],
-            pageIndex: 1,
             exportTemplateID: "",
-            RewardTypeID: -1,
             fromDate: toIsoStringCus(new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()).toISOString()),
-            toDate: new Date()
+            gridDataSource: [],
+            pageIndex: 1,
+            param: {},
+            RewardTypeID: -1,
+            // SearchData: InitSearchParams,
+            toDate: new Date(),
+            totalAmount: ''
         };
+
+        // this.handleCallData = this.handleCallData.bind(this);
+        this.callSearchData = this.callSearchData.bind(this);
         this.gridref = React.createRef();
-        this.searchref = React.createRef();
+        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.notificationDOMRef = React.createRef();
+        this.searchref = React.createRef();
     }
 
     componentDidMount() {
@@ -82,22 +85,15 @@ class SearchCom extends React.Component {
     }
 
 
-    handleCallData() {
-        const { SearchData } = this.state;
-        this.callSearchData(SearchData);
-    }
+    // handleCallData() {
+    //     const { SearchData } = this.state;
+    //     this.callSearchData(SearchData);
+    // }
 
     handleSearchSubmit(formData, MLObject) {
         const param = {
             RewardTypeID: MLObject.RewardTypeID
         }
-        this.setState({
-            params: param,
-            pageIndex: 1,
-            RewardTypeID: MLObject.RewardTypeID,
-            fromDate: toIsoStringCus(new Date(MLObject.FromDate).toISOString()),
-            toDate: toIsoStringCus(new Date(MLObject.ToDate).toISOString())
-        })
 
         const postData = [
             {
@@ -122,12 +118,20 @@ class SearchCom extends React.Component {
             },
 
         ];
+
         this.callSearchData(postData);
+
+        this.setState({
+            params: param,
+            pageIndex: 1,
+            RewardTypeID: MLObject.RewardTypeID,
+            fromDate: toIsoStringCus(new Date(MLObject.FromDate).toISOString()),
+            toDate: toIsoStringCus(new Date(MLObject.ToDate).toISOString())
+        })
     }
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchNewAPIPath, searchData).then(apiResult => {
-            console.log("1111", searchData, apiResult)
             if (!apiResult.IsError) {
                 // const totalAmount = apiResult.ResultObject.reduce((sum, curValue, curIndex, []) => {
                 //     sum += curValue.TotalReward
@@ -152,13 +156,17 @@ class SearchCom extends React.Component {
 
                 // })
 
+                if (apiResult.ResultObject.length == 0) {
+                    this.addNotification("Dữ liệu tìm kiếm trống", false);
+                }
+
                 this.setState({
+                    // IsCallAPIError: apiResult.IsError,
+                    // IsLoadDataComplete: true,
+                    dataExport: tempDataExport,
                     gridDataSource: apiResult.ResultObject,
-                    IsCallAPIError: apiResult.IsError,
-                    totalAmount: apiResult.ResultObject[0].SumTotalReward,
-                    IsLoadDataComplete: true,
-                    dataExport: tempDataExport
-                });
+                    totalAmount: apiResult.ResultObject[0] ? apiResult.ResultObject[0].SumTotalReward : 0
+                }, () => console.log(this.state));
             }
             else {
                 this.showMessage(apiResult.MessageDetail)
@@ -212,7 +220,7 @@ class SearchCom extends React.Component {
 
     handleonChangePage(pageNum) {
         // console.log("pageNum", pageNum)
-        let listMLObject = [];
+        // let listMLObject = [];
         // const aa = { SearchKey: "@PAGEINDEX", SearchValue: pageNum };
         // listMLObject = Object.assign([], this.state.SearchData, { [3]: aa });
         // 
@@ -316,43 +324,43 @@ class SearchCom extends React.Component {
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
+                    className="multiple"
+                    colGroupAction={5}
                     FormName="Tìm kiếm danh sách tổng thương giao hàng"
-                    MLObjectDefinition={SearchMLObjectDefinition}
+                    IsButtonExport={true}
+                    IsButtonhistory={true}
                     listelement={SearchElementList}
+                    MLObjectDefinition={SearchMLObjectDefinition}
+                    onExportSubmit={this.handleExportFileFormSearch.bind(this)}
+                    onHistorySubmit={this.handleHistorySearch.bind(this)}
                     onSubmit={this.handleSearchSubmit}
                     ref={this.searchref}
-                    className="multiple"
-                    IsButtonExport={true}
-                    onExportSubmit={this.handleExportFileFormSearch.bind(this)}
-                    IsButtonhistory={true}
-                    colGroupAction={5}
-                    onHistorySubmit={this.handleHistorySearch.bind(this)}
                 />
 
                 <DataGrid
-                    listColumn={GridColumnList}
-                    dataSource={this.state.gridDataSource}
                     // AddLink=""
+                    dataSource={this.state.gridDataSource}
                     IDSelectColumnName={'RewardDate'}
-                    PKColumnName={'RewardDate'}
+                    IsAutoPaging={true}
+                    IsExportFile={false}
                     isHideHeaderToolbar={false}
+                    isPaginationServer={true}
+                    IsPrint={false}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
                     IsShowButtonPrint={false}
-                    IsPrint={false}
-                    IsAutoPaging={true}
+                    listColumn={GridColumnList}
+                    onChangePage={this.handleonChangePage.bind(this)}
+                    PageNumber={this.state.pageIndex}
+                    params={this.state.params}
+                    PKColumnName={'RewardDate'}
+                    ref={this.gridref}
+                    RequirePermission={TMS_TMSREWARD_SO_TYPE_VIEW}
                     RowsPerPage={31}
                     totalCurrency={true}
-                    params={this.state.params}
-                    isPaginationServer={true}
-                    PageNumber={this.state.pageIndex}
                     totalCurrencyColSpan={2}
                     totalCurrencyNumber={this.state.totalAmount}
-                    RequirePermission={TMS_TMSREWARD_SO_TYPE_VIEW}
                     xportPermission={TMS_TMSREWARD_SO_TYPE_EXPORT}
-                    IsExportFile={false}
-                    onChangePage={this.handleonChangePage.bind(this)}
-                    ref={this.gridref}
                 />
             </React.Fragment>
         );

@@ -23,7 +23,7 @@ const dtFromdate = new Date();
 dtFromdate.setDate(new Date().getDate() - 30);
 
 export const SearchElementList = [
-    
+
     {
         type: "Datetime",
         name: "dtFromDate",
@@ -50,7 +50,7 @@ export const SearchElementList = [
         DataSourceMember: "cbRewardTypeID",
         label: "Loại thưởng",
         colspan: 3,
-        value: "-1",
+        value: -1,
         isMultiSelect: false,
         placeholder: "---Loại thưởng---",
         listoption: [],
@@ -58,13 +58,13 @@ export const SearchElementList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.TMSREWARDTYPE",
         ValueMember: "RewardTypeID",
         NameMember: "RewardTypeName",
-        classNameCol:"col-custom"
+        classNameCol: "col-custom"
     },
 
 
 ]
 
-export const  SearchMLObjectDefinition = [
+export const SearchMLObjectDefinition = [
     {
         Name: "FromDate",
         DefaultValue: "",
@@ -80,7 +80,7 @@ export const  SearchMLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "cbRewardTypeID"
     },
-    
+
 ]
 
 export const InitSearchParams = [
@@ -105,7 +105,7 @@ export const InitSearchParams = [
         SearchKey: "@PAGESIZE",
         SearchValue: 31
     },
-   
+
 ];
 
 export const GridColumnList = [
@@ -131,7 +131,7 @@ export const GridColumnList = [
         DataSourceMember: "NoteReward",
         Width: 300
     },
-    
+
 ]
 
 export const GridColumnListByUserName = [
@@ -150,8 +150,8 @@ export const GridColumnListByUserName = [
         DataSourceMember: "TotalReward",
         Width: 100
     },
-  
-    
+
+
 ]
 
 export const GridColumnListByDate = [
@@ -178,7 +178,7 @@ export const GridColumnListByDate = [
         Width: 200
     },
     {
-       
+
         Name: "ShipmentOrderID",
         Type: "texttolink",
         Caption: "Mã vận đơn",
