@@ -36,6 +36,10 @@ export const InitSearchParams = [
         SearchValue: -1
     },
     {
+        SearchKey: "@REWARDCOMPUTETYPEID",
+        SearchValue: -1
+    },
+    {
         SearchKey: "@USERNAMELIST",
         SearchValue: ""
     },
@@ -65,7 +69,7 @@ export const SearchElementList = [
         value: new Date()
     },
     {
-        classNameCol: "col-custom",
+        //classNameCol: "col-custom",
         colspan: 2,
         DataSourceMember: "cbRewardTypeID",
         IsAutoLoadItemFromCache: true,
@@ -81,6 +85,22 @@ export const SearchElementList = [
         ValueMember: "RewardTypeID"
     },
     {
+        //classNameCol: "col-custom",
+        colspan: 2,
+        DataSourceMember: "cbRewardComputeTypeID",
+        IsAutoLoadItemFromCache: true,
+        isMultiSelect: false,
+        label: "Loại tính thưởng",
+        listoption: [],
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.REWARDCOMPUTETYPE",
+        name: "cbRewardComputeTypeID",
+        NameMember: "RewardComputeTypeName",
+        placeholder: "---Loại thưởng---",
+        type: "ComboBoxNewChange",
+        value: "-1",
+        ValueMember: "RewardComputeTypeID"
+    },
+    {
         colspan: 12,
         DataSourceMember: "UserName",
         IsAutoLoadItemFromCache: false,
@@ -91,7 +111,7 @@ export const SearchElementList = [
         listoption: [],
         name: "cbUserName",
         placeholder: "---Vui lòng chọn---",
-        rowspan: 3,
+        rowspan: 2,
         type: "MultiSelectUser",
         value: -1
     }
@@ -112,6 +132,11 @@ export const SearchMLObjectDefinition = [
         Name: "RewardTypeID",
         DefaultValue: "",
         BindControlName: "cbRewardTypeID"
+    },
+    {
+        Name: "RewardComputeTypeID",
+        DefaultValue: "",
+        BindControlName: "cbRewardComputeTypeID"
     },
     {
         Name: "UserName",

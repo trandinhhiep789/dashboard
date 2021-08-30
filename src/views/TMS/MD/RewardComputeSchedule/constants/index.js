@@ -73,6 +73,22 @@ export const AddElementList = [
         validatonList: ["required"]
     },
     {
+        type: "select",
+        name: "cbRewardComputeTypeID",
+        label: "loại tính thưởng",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "RewardComputeTypeID",
+        readonly: false,
+        validatonList: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.REWARDCOMPUTETYPE",
+        ValueMember: "RewardComputeTypeID",
+        NameMember: "RewardComputeTypeName"
+    },
+    {
         type: "textarea",
         name: "txtDescription",
         label: "Mô tả:",
@@ -146,6 +162,22 @@ export const EditElementList = [
         icon: "",
         DataSourceMember: "RewardDateString",
         validatonList: ["required"]
+    },
+    {
+        type: "select",
+        name: "cbRewardComputeTypeID",
+        label: "loại tính thưởng",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "RewardComputeTypeID",
+        readonly: false,
+        validatonList: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.REWARDCOMPUTETYPE",
+        ValueMember: "RewardComputeTypeID",
+        NameMember: "RewardComputeTypeName"
     },
     {
         type: "textarea",
@@ -250,6 +282,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "txtPriorityIndex",
         DataSourceMember: "PriorityIndex"
+    },
+    {
+        Name: "RewardComputeTypeID",
+        DefaultValue: "",
+        BindControlName: "cbRewardComputeTypeID",
+        DataSourceMember: "RewardComputeTypeID"
     },
     {
         Name: "IsActived",

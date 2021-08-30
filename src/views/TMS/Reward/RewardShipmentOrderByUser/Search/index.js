@@ -108,6 +108,10 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.RewardTypeID
             },
             {
+                SearchKey: "@REWARDCOMPUTETYPEID",
+                SearchValue: MLObject.RewardComputeTypeID
+            },
+            {
                 SearchKey: "@USERNAMELIST",
                 SearchValue: result  //MLObject.CoordinatorStoreID
             }
@@ -120,6 +124,7 @@ class SearchCom extends React.Component {
         }
     }
 
+    
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchNewAPIPath, searchData).then(apiResult => {
             if (!apiResult.IsError) {
@@ -198,12 +203,14 @@ class SearchCom extends React.Component {
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
-                        className="multiple"
-                        FormName="Tìm kiếm danh sách thống kê vận đơn theo ngày"
+                        //className="multiple"
+                        FormName="Tìm kiếm danh sách thưởng giao hàng theo nhân viên"
                         listelement={SearchElementList}
                         MLObjectDefinition={SearchMLObjectDefinition}
                         onSubmit={this.handleSearchSubmit}
                         ref={this.searchref}
+                        className="multiple multiple-custom multiple-custom-display"
+                        classNamebtnSearch="btn-custom-bottom"
                     />
 
                     <DataGrid
