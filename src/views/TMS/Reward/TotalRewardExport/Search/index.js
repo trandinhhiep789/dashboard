@@ -23,8 +23,9 @@ import { TMS_TMSREWARD_EXPORT, TMS_TMSREWARD_VIEW } from "../../../../../constan
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { toIsoStringCus } from '../../../../../utils/function'
 import DataGirdRewardShipmentOrder from '../component/DataGirdRewardShipmentOrder'
-import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
+import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
 import { showModal, hideModal } from '../../../../../actions/modal';
+import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../../constants/keyCache";
 
 
 class SearchCom extends React.Component {
@@ -45,7 +46,8 @@ class SearchCom extends React.Component {
             widthPercent: "",
             fromDate: '',
             toDate: '',
-            listColumn: []
+            listColumn: [],
+            exportTemplateID:""
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -58,7 +60,26 @@ class SearchCom extends React.Component {
         this.updateWindowDimensions();
         this.initTableHeader();
         window.addEventListener("resize", this.updateWindowDimensions);
+        this.getCacheMTG();
     }
+
+    getCacheMTG() {
+        this.props.callGetCache(ERPCOMMONCACHE_TMSCONFIG).then((result) => {
+            if (result && !result.IsError && result.ResultObject) {
+                let _configValue = result.ResultObject.CacheData.filter(x => x.TMSConfigID == "TEMPLATE_EXPORT_TOTAL_REWARD");
+                if (_configValue) {
+                    this.setState({
+                        exportTemplateID: _configValue[0].TMSConfigValue
+                    })
+                }
+
+
+            }
+
+
+        });
+    }
+
 
     componentWillUnmount() {
         window.removeEventListener("resize", this.updateWindowDimensions);
@@ -299,6 +320,59 @@ class SearchCom extends React.Component {
         });
     }
 
+    handleHistorySearch() {
+        const { exportTemplateID } = this.state;
+        this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
+            title: "Tải file",
+            maxWidth: '1200px',
+            ParamRequest: { DataExportTemplateID: exportTemplateID }
+        });
+    }
+
+    handleExportFileFormSearch(FormData, MLObject) {
+        const { exportTemplateID } = this.state
+        const postDataNew = [
+            {
+                SearchKey: "@FROMDATE",
+                SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString())//MLObject.FromDate
+            },
+            {
+                SearchKey: "@TODATE",
+                SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString()) //MLObject.ToDate
+            },
+            {
+                SearchKey: "@REWARDPOSITIONID",
+                SearchValue: MLObject.RewardPositionID
+            },
+            {
+                SearchKey: "@REWARDTYPEID",
+                SearchValue: MLObject.RewardTypeID
+            }
+        ];
+
+        
+        const postData = {
+            DataExportTemplateID: exportTemplateID,
+            LoadDataStoreName: 'TMS.TMS_RWD_EXPBYDATE',
+            KeyCached: "TMS_TMSREWARD_EXPORT",
+            SearchParamList: postDataNew,
+            ExportDataParamsDescription: "FROMDATE: " + MLObject.FromDate + " - TODATE: " + MLObject.ToDate + " - REWARDPOSITIONID: " + MLObject.RewardPositionID + " - REWARDTYPEID: " + MLObject.RewardTypeID 
+        }
+
+        this.props.callFetchAPI(APIHostName, "api/DataExportQueue/AddQueueExport", postData).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
+                    title: "Tải file",
+                    maxWidth: '1200px',
+                    ParamRequest: {  DataExportTemplateID: exportTemplateID}
+                });
+            }
+            else {
+                this.showMessage(apiResult.Message)
+            }
+        });
+    };
+
     render() {
         return (
             <React.Fragment>
@@ -310,6 +384,10 @@ class SearchCom extends React.Component {
                     onSubmit={this.handleSearchSubmit}
                     ref={this.searchref}
                     className="multiple"
+                    IsButtonhistory={true}
+                    onHistorySubmit={this.handleHistorySearch.bind(this)}
+                    IsButtonExport={true}
+                    onExportSubmit={this.handleExportFileFormSearch.bind(this)}
                 />
 
                 <DataGrid
@@ -329,7 +407,7 @@ class SearchCom extends React.Component {
                     RowsPerPage={50}
                     RequirePermission={TMS_TMSREWARD_VIEW}
                     ExportPermission={TMS_TMSREWARD_EXPORT}
-                    IsExportFile={true}
+                    IsExportFile={false}
                     DataExport={this.state.dataExport}
                     fileName="Danh sách tổng xuất thưởng"
                     onExportFile={this.handleExportFile.bind(this)}

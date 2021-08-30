@@ -12,7 +12,7 @@ import {
     AddAPIRPTDetailPath,
     MLObjectRPTDetailItem
 } from "../RewardPriceTable/constants";
-import {  ERPCOMMONCACHE_SUBGROUP, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE, ERPCOMMONCACHE_MAINGROUP } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_SUBGROUP, ERPCOMMONCACHE_SUBGROUPTECHSPECS, ERPCOMMONCACHE_TECHSPECSVALUE, ERPCOMMONCACHE_MAINGROUP } from "../../../../../constants/keyCache";
 import ProductComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/ProductComboBox.js";
 import { ModalManager } from "react-dynamic-modal";
 import { showModal, hideModal } from '../../../../../actions/modal';
@@ -83,7 +83,7 @@ class RewardPriceTableDetailCom extends Component {
             }
         }
 
-        if(parseFloat(MLObject.RewardPrice) < 0 || parseFloat(MLObject.RewardPriceWithoutInstall) < 0 ){
+        if (parseFloat(MLObject.RewardPrice) < 0 || parseFloat(MLObject.RewardPriceWithoutInstall) < 0) {
             this.showMessage("Dữ liệu bạn nhập vào không đúng. Vui lòng nhập lại!")
             return;
         }
@@ -119,18 +119,18 @@ class RewardPriceTableDetailCom extends Component {
 
     handleChange(formData, MLObject) {
 
-        
-        if(formData.cbTechSpecs.value > 0 ){
+
+        if (formData.cbTechSpecs.value > 0) {
             this.setState({
                 isDisableCheckPrice: false
             })
         }
-        else{
+        else {
             this.setState({
                 isDisableCheckPrice: true
             })
         }
-      
+
 
         if (formData.ckIsPriceByTechspecsValueRange.value) {
 
@@ -164,7 +164,7 @@ class RewardPriceTableDetailCom extends Component {
             }
 
             if (formData.cbProductID.value != undefined) {
-                const temProductID= formData.cbProductID.value && Array.isArray(formData.cbProductID.value) ? formData.cbProductID.value[0].ProductID : formData.cbProductID.value;
+                const temProductID = formData.cbProductID.value && Array.isArray(formData.cbProductID.value) ? formData.cbProductID.value[0].ProductID : formData.cbProductID.value;
                 if (temProductID != null) {
                     this.setState({
                         IsDisableTechspecsValue: true,
@@ -195,7 +195,7 @@ class RewardPriceTableDetailCom extends Component {
             })
         }
         if (formData.cbProductID.value != undefined) {
-            const temProductID= formData.cbProductID.value && Array.isArray(formData.cbProductID.value) ? formData.cbProductID.value[0].ProductID : formData.cbProductID.value;
+            const temProductID = formData.cbProductID.value && Array.isArray(formData.cbProductID.value) ? formData.cbProductID.value[0].ProductID : formData.cbProductID.value;
             if (temProductID != null) {
                 this.setState({
                     IsDisableCbTechspecsValue: true
@@ -269,7 +269,7 @@ class RewardPriceTableDetailCom extends Component {
             >
 
                 <div className="row">
-                    
+
                     <div className="col-md-12">
                         <FormControl.FormControlTextBox
                             name="txtRewardPriceTableDetailID"
@@ -459,7 +459,19 @@ class RewardPriceTableDetailCom extends Component {
                         />
                     </div>
 
-                    <div className="col-md-6"></div>
+                    <div className="col-md-6">
+                        <FormControl.TextBox
+                            name="txtRewardPriceTableDetailName"
+                            colspan="6"
+                            labelcolspan="6"
+                            label="Tên chi tiết bảng giá"
+                            placeholder="Tên chi tiết bảng giá"
+                            controltype="InputControl"
+                            value=""
+                            validatonList={["required"]}
+                            datasourcemember="RewardPriceTableDetailName"
+                        />
+                    </div>
 
                     <div className="col-md-6">
 

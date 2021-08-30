@@ -62,6 +62,7 @@ class PartnerPayableDetailCom extends React.Component {
 
     callData(SearchData) {
         this.props.callFetchAPI(APIHostName, SearchByDateAPIPath, SearchData).then(apiResult => {
+            console.log("apiResult",SearchData, apiResult)
             if (!apiResult.IsError) {
                 if (apiResult.ResultObject.length > 0) {
                     const totalPayableAmount = apiResult.ResultObject.reduce((sum, curValue, curIndex, []) => {

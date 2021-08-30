@@ -214,6 +214,13 @@ export const MLObjectDefinition = [
 
 export const DataGridColumnItemListRPTDetail = [
     {
+        Name: "RewardPriceTableDetailName",
+        Type: "text",
+        Caption: "Tên chi tiết bảng giá",
+        DataSourceMember: "RewardPriceTableDetailName",
+        Width: 100
+    },
+    {
         Name: "MainGroupFullName",
         Type: "text",
         Caption: "Nghành hàng",
@@ -361,12 +368,20 @@ export const MLObjectRPTDetailItem = [
         DataSourceMember: "ToTechspecsValue"
     },
 
+
     {
 
         Name: "ProductID",
         DefaultValue: "",
         BindControlName: "cbProductID",
         DataSourceMember: "ProductID"
+    },
+
+    {
+        Name: "RewardPriceTableDetailName",
+        DefaultValue: {},
+        BindControlName: "txtRewardPriceTableDetailName",
+        DataSourceMember: "RewardPriceTableDetailName"
     },
 
     {

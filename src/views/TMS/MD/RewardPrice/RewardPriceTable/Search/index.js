@@ -50,7 +50,8 @@ class SearchCom extends React.Component {
 
 
     handleDelete(deleteList, pkColumnName) {
-        let listMLObject = [];
+        const {gridDataSource} = this.state
+        let listMLObject = [], listMLObjectNew = [];
         deleteList.map((row, index) => {
             let MLObject = {};
             pkColumnName.map((pkItem, pkIndex) => {
@@ -59,7 +60,21 @@ class SearchCom extends React.Component {
             MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
             listMLObject.push(MLObject);
         });
-        this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObject).then(apiResult => {
+
+        
+        listMLObject.map((item, index)=>{
+            gridDataSource.filter((item1, index1)=>{
+                if(item1.RewardPriceTableID == item.RewardPriceTableID){
+                    item1.DeletedUser = this.props.AppInfo.LoginInfo.Username;
+                    listMLObjectNew.push(item1)
+                }
+            })
+        })
+
+        console.log("gridDataSource", gridDataSource, listMLObject, listMLObjectNew)
+
+
+        this.props.callFetchAPI(APIHostName, DeleteAPIPath, listMLObjectNew).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {

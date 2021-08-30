@@ -199,7 +199,7 @@ class Search extends React.Component {
                 this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
                     title: "Tải file",
                     maxWidth: '1200px',
-                    ParamRequest: { RequestUser: 98138, DataExportTemplateID: 1}
+                    ParamRequest: { DataExportTemplateID: 1 }
                 });
             }
             else {
@@ -208,12 +208,11 @@ class Search extends React.Component {
         });
     };
 
-    handleHistorySearch()
-    {
+    handleHistorySearch() {
         this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
             title: "Tải file",
             maxWidth: '1200px',
-            ParamRequest:{RequestUser:73309,DataExportTemplateID:1}
+            ParamRequest: { DataExportTemplateID: 1 }
         });
     }
 
