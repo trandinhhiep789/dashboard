@@ -151,7 +151,8 @@ export const DataTemplateExportFeeAppendix2 = [
         "Từ ngày": new Date(),
         "Đến ngày": new Date(),
         "Bảng giá": "1",
-        "Mô tả": "Mô tả"
+        "Mô tả": "Mô tả",
+        "Thứ tự ưu tiên": "1"
     }
 ];
 
@@ -1321,6 +1322,11 @@ export const FeeAppendixSchema2 = {
     'Mô tả': {
         prop: 'Description',
         type: String
+    },
+    'Thứ tự ưu tiên': {
+        prop: 'PriorityIndex',
+        type: Number,
+        require: true
     }
 };
 
