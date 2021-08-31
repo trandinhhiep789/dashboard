@@ -155,6 +155,7 @@ export const SearchComputeElementList = [
         format: "MM-YYYY",
         colspan: 2,
         placeholder: "MM-YYYY",
+        classNameCustom: "groupMonthPicker"
     },
 
 ]
