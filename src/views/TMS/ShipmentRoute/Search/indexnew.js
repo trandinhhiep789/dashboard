@@ -118,7 +118,7 @@ class SearchCom extends React.Component {
                 },
                 {
                     SearchKey: "@PAGESIZE",
-                    SearchValue: 100
+                    SearchValue: 1000
                 },
                 {
                     SearchKey: "@PAGEINDEX",
@@ -359,7 +359,7 @@ class SearchCom extends React.Component {
             },
             {
                 SearchKey: "@PAGESIZE",
-                SearchValue: 100
+                SearchValue: 1000
             },
             {
                 SearchKey: "@PAGEINDEX",
@@ -554,7 +554,7 @@ class SearchCom extends React.Component {
                         DeletePermission={"SHIPMENTORDER_DELETE"}
                         EditPermission={"SHIPMENTORDER_UPDATE"}
                         IsAutoPaging={true}
-                        RowsPerPage={100}
+                        RowsPerPage={1000}
                     />
                     <div style={{ display: 'none' }}>
                         <SOPrintTemplate ref={el => (this.componentRef = el)} data={this.state.dataPrint} DataID={this.state.PrintID} />

@@ -49,7 +49,8 @@ class DataGridShipmentOderNewCom extends Component {
             ShipmentRouteID: "",
             widthPercent: 0,
             changeGird: false,
-            maxWidthGird: 0
+            maxWidthGird: 0,
+            changeIsserver: false,
 
         };
         this.notificationDOMRef = React.createRef();
@@ -62,7 +63,15 @@ class DataGridShipmentOderNewCom extends Component {
         window.addEventListener("resize", this.updateWindowDimensions);
         if (this.props.dataSource) {
             const gridData = this.getCheckList(this.props.dataSource);
-            this.setState({ GridData: gridData });
+
+            const localIsserverInfo = localStorage.getItem('IsserverInfo');
+            if (localIsserverInfo != null) {
+                const IsserverInfo = JSON.parse(localIsserverInfo);
+                this.setState({ GridData: gridData, changeIsserver: IsserverInfo.Isserver });
+            }
+            else {
+                this.setState({ GridData: gridData });
+            }
         }
     }
     componentWillUnmount() {
@@ -251,38 +260,50 @@ class DataGridShipmentOderNewCom extends Component {
     }
 
     handleonSearchEvent(Keywordid) {
-        if (Keywordid != "") {
-            if (Keywordid.trim().length == 15) {
-                this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByKeyword", String(Keywordid).trim()).then(apiResult => {
-                    if (!apiResult.IsError) {
-                        this.setState({
-                            DataSource: apiResult.ResultObject
-                        });
-                    }
-                });
-            }
-            else if (Keywordid.trim().length == 10) {
-                this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByPhoneNember", String(Keywordid).trim()).then(apiResult => {
-                    if (!apiResult.IsError) {
-                        this.setState({
-                            DataSource: apiResult.ResultObject
-                        });
-                    }
-                });
-            }
-            else {
-                this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByPartnerSaleOrderID", String(Keywordid).trim()).then(apiResult => {
-                    if (!apiResult.IsError) {
-                        this.setState({
-                            DataSource: apiResult.ResultObject
-                        });
-                    }
-                });
+        let { changeIsserver } = this.state;
+        if (changeIsserver) {
+            let resultShipment = this.props.dataSource.filter(n => n.ShipmentOrderID.toLowerCase().includes(Keywordid.toLowerCase())
+                || n.ReceiverFullName.toLowerCase().includes(Keywordid.toLowerCase())
+                || n.ReceiverPhoneNumber.toLowerCase().includes(Keywordid.toLowerCase())
+                || n.PartnerSaleOrderID.toLowerCase().includes(Keywordid.toLowerCase())
+                || n.PrimaryShipItemName.toLowerCase().includes(Keywordid.toLowerCase())
+                || n.ReceiverFullAddress.toLowerCase().includes(Keywordid.toLowerCase())
+                || n.ShipItemNameList.toLowerCase().includes(Keywordid.toLowerCase())
+            );
+            this.setState({ DataSource: resultShipment });
+        }
+        else {
+            if (Keywordid != "") {
+                if (Keywordid.trim().length == 15) {
+                    this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByKeyword", String(Keywordid).trim()).then(apiResult => {
+                        if (!apiResult.IsError) {
+                            this.setState({
+                                DataSource: apiResult.ResultObject
+                            });
+                        }
+                    });
+                }
+                else if (Keywordid.trim().length == 10) {
+                    this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByPhoneNember", String(Keywordid).trim()).then(apiResult => {
+                        if (!apiResult.IsError) {
+                            this.setState({
+                                DataSource: apiResult.ResultObject
+                            });
+                        }
+                    });
+                }
+                else {
+                    this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByPartnerSaleOrderID", String(Keywordid).trim()).then(apiResult => {
+                        if (!apiResult.IsError) {
+                            this.setState({
+                                DataSource: apiResult.ResultObject
+                            });
+                        }
+                    });
+                }
             }
         }
     }
-
-
 
     handleSearchSubmit(event) {
         event.preventDefault();
@@ -454,7 +475,7 @@ class DataGridShipmentOderNewCom extends Component {
         this.addNotification(apiResult.Message, apiResult.IsError);
         if (!apiResult.IsError) {
             this.props.hideModal();
-            this.setState({ ShipmentRouteID: "", GridDataShip: [] , changeGird: false});
+            this.setState({ ShipmentRouteID: "", GridDataShip: [], changeGird: false });
             if (this.props.onChangePageLoad != null)
                 this.props.onChangePageLoad();
         }
@@ -714,6 +735,15 @@ class DataGridShipmentOderNewCom extends Component {
         let temponaryInput = $('<input>').val(ShipmentOrderID).appendTo('body').select();
         document.execCommand("copy");
         temponaryInput.remove();
+    }
+
+    handleChangeIsserver(Isserver) {
+
+        this.setState({ changeIsserver: !Isserver });
+
+        let MLObject = { Isserver: !Isserver };
+        var MLObjectInfo = JSON.stringify(MLObject);
+        localStorage.setItem('IsserverInfo', MLObjectInfo)
     }
 
     renderDataGrid() {
@@ -1354,7 +1384,7 @@ class DataGridShipmentOderNewCom extends Component {
                                                                 <button id="btnUserCoordinator" type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
                                                                     <i className="fa fa-plus">Phân tuyến giao hàng</i>
                                                                 </button>
-                                                                <div className="groupActionRemember ml-10">
+                                                                {/* <div className="groupActionRemember ml-10">
                                                                     <button type="button" onClick={this.handleSelected.bind(this)} className="btn " title="" data-provide="tooltip" data-original-title="Ghi nhớ">
                                                                         <i className="fa fa-save"></i>
                                                                     </button>
@@ -1362,13 +1392,14 @@ class DataGridShipmentOderNewCom extends Component {
                                                                     <button type="button" onClick={this.handleSelectedView.bind(this)} className="btn " title="" data-provide="tooltip" data-original-title="Thêm">
                                                                         <i className="fa fa-history"></i>
                                                                     </button>
-                                                                </div>
+                                                                </div> */}
 
 
                                                                 <div className="input-group input-group-select">
                                                                     <input type="text" onChange={this.handleonChange.bind(this)} onKeyPress={this.handleKeyPress} className="form-control" aria-label="Text input with dropdown button" placeholder="Từ khóa" />
-                                                                    <div className="input-group-append" onClick={this.handleSearchShip.bind(this)}>
-                                                                        <span className="input-group-text"><i className="ti-search"></i></span>
+                                                                    <div className="input-group-append">
+                                                                        <span onClick={this.handleSearchShip.bind(this)} className="input-group-text"><i className="ti-search"></i></span>
+                                                                        <span onClick={() => this.handleChangeIsserver(this.state.changeIsserver)} className="input-group-text"><i className={this.state.changeIsserver==true ? "fa fa-eye" : "fa"}></i></span>
                                                                     </div>
                                                                 </div>
 
@@ -1412,8 +1443,9 @@ class DataGridShipmentOderNewCom extends Component {
 
                                                                 <div className="input-group input-group-select">
                                                                     <input type="text" onChange={this.handleonChange.bind(this)} onKeyPress={this.handleKeyPress} className="form-control" aria-label="Text input with dropdown button" placeholder="Từ khóa" />
-                                                                    <div className="input-group-append" onClick={this.handleSearchShip.bind(this)}>
-                                                                        <span className="input-group-text"><i className="ti-search"></i></span>
+                                                                    <div className="input-group-append">
+                                                                        <span onClick={this.handleSearchShip.bind(this)} className="input-group-text"><i className="ti-search"></i></span>
+                                                                        <span onClick={() => this.handleChangeIsserver(this.state.changeIsserver)} className="input-group-text"><i className={this.state.changeIsserver==true ? "fa fa-eye" : "fa"}></i></span>
                                                                     </div>
                                                                 </div>
 

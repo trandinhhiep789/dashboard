@@ -75,7 +75,7 @@ class ComputeCom extends React.Component {
                     onSubmit={this.handleSearchSubmit.bind(this)}
                     ref={this.searchref}
                     className="multiple"
-                    TitleButton="Thêm"
+                    TitleButton="Tính chi phí"
                 />
 
             </React.Fragment>
