@@ -156,6 +156,7 @@ import RewardPosImportSchedule from "../TMS/MD/RewardPosImportSchedule";
 import RewardComputeLog from "../TMS/MD/RewardComputeLog";
 import ShipmentOrderStepGroup from "../TMS/MD/ShipmentOrderStepGroup";
 import TMSConfig from "../TMS/MD/TMSConfig";
+import SvCategoryType from "../TMS/MD/SvCategoryType";
 import DeliveryDateUpdateType from "../TMS/MD/DeliveryDateUpdateType";
 import DeliveryDateUpdateReason from "../TMS/MD/DeliveryDateUpdateReason";
 import PeriodUserRWPosition from "../TMS/MD/PeriodUserRWPosition";
@@ -291,7 +292,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/PageUI" component={PageUI} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="/PartnerUI" component={PartnerUI} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
-                                    
+
 
                                     <PrivateRoute path="/TestModal" component={TestModal} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/TestCache" component={TestCache} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
@@ -434,6 +435,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/AppFeedBackCategory" component={AppFeedBackCategory} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/AppFeedBackType" component={AppFeedBackType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/TMSConfig" component={TMSConfig} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/SvCategoryType" component={SvCategoryType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/DeliveryDateUpdateType" component={DeliveryDateUpdateType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/DeliveryDateUpdateReason" component={DeliveryDateUpdateReason} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/DeliveryGoodsGroup" component={DeliveryGoodsGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
