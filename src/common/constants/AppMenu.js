@@ -901,7 +901,14 @@ const AppMenu = [
                 LinkTo: '/PNServicePriceTable',
                 MenuIcon: '',
                 SubMenu: []
-            }
+            },
+            {
+                MenuName: 'PNRCComputeSchedule',
+                MenuTitle: 'Lịch tính doanh thu phải thu từ đối tác',
+                LinkTo: '/PNRCComputeSchedule',
+                MenuIcon: '',
+                SubMenu: []
+            },
         ]
     },
 
