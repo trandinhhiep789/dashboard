@@ -5,13 +5,13 @@ import {
     Switch
 } from "react-router-dom";
 import { connect } from "react-redux";
-import { callFetchAPI } from "../../../actions/fetchAPIAction";
+import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import Search from "./Search";
-import Searchnew from "./Search/indexnew";
-import SearchShipmentRoute from "./Search/ShipmentRoute";
-import NotFound from '../../NotFound'
-
-class ShipmentRouteCom extends React.Component {
+import Add from "./Add";
+import Edit from "./Edit";
+import NotFound from '../../../NotFound'
+import Detail from "./Detail";
+class PNRCComputeScheduleCom extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -19,9 +19,10 @@ class ShipmentRouteCom extends React.Component {
     render() {
         return (
             <Switch>
-                <Route exact path="/ShipmentRoute" component={Searchnew} />
-                <Route exact path="/ShipmentRoute/indexnew" component={Search} />
-                <Route exact path="/ShipmentRoute/Manager" component={SearchShipmentRoute} />
+                <Route exact path="/PNRCComputeSchedule" component={Search} />
+                <Route exact path="/PNRCComputeSchedule/Add" component={Add} />
+                <Route exact path="/PNRCComputeSchedule/Edit/:id" component={Edit} />
+                <Route exact path="/PNRCComputeSchedule/Detail/:id" component={Detail} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );
@@ -43,8 +44,8 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const ShipmentRoute = connect(
+const PNRCComputeSchedule = connect(
     mapStateToProps,
     mapDispatchToProps
-)(ShipmentRouteCom);
-export default ShipmentRoute;
+)(PNRCComputeScheduleCom);
+export default PNRCComputeSchedule;
