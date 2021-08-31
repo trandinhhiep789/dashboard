@@ -129,8 +129,10 @@ class SearchCom extends React.Component {
                     else {
                         item.DepositedLable = "Chưa ký";
                     }
-                    return item;
 
+                    item.PartnerIDName = `${item.PartnerID} - ${item.PartnerName}`
+
+                    return item;
                 })
 
                 const tempData = apiResult.ResultObject.map((item, index) => {

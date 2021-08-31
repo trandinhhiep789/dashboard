@@ -19,8 +19,8 @@ class ShipmentRouteCom extends React.Component {
     render() {
         return (
             <Switch>
-                <Route exact path="/ShipmentRoute" component={Search} />
-                <Route exact path="/ShipmentRoute/indexnew" component={Searchnew} />
+                <Route exact path="/ShipmentRoute" component={Searchnew} />
+                <Route exact path="/ShipmentRoute/indexnew" component={Search} />
                 <Route exact path="/ShipmentRoute/Manager" component={SearchShipmentRoute} />
                 <Route path="*" component={NotFound} />
             </Switch>

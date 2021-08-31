@@ -151,7 +151,8 @@ export const DataTemplateExportFeeAppendix2 = [
         "Từ ngày": new Date(),
         "Đến ngày": new Date(),
         "Bảng giá": "1",
-        "Mô tả": "Mô tả"
+        "Mô tả": "Mô tả",
+        "Thứ tự ưu tiên": "1"
     }
 ];
 
@@ -355,11 +356,18 @@ export const DataGridColumnList = [
         DataSourceMember: "ServiceAgreementNumber",
         // Width: 200
     },
+    // {
+    //     Name: "PartnerName",
+    //     Type: "text",
+    //     Caption: "Đối tác",
+    //     DataSourceMember: "PartnerName",
+    //     // Width: 340
+    // },
     {
-        Name: "PartnerName",
+        Name: "PartnerIDName",
         Type: "text",
         Caption: "Đối tác",
-        DataSourceMember: "PartnerName",
+        DataSourceMember: "PartnerIDName",
         // Width: 340
     },
     {
@@ -1314,6 +1322,11 @@ export const FeeAppendixSchema2 = {
     'Mô tả': {
         prop: 'Description',
         type: String
+    },
+    'Thứ tự ưu tiên': {
+        prop: 'PriorityIndex',
+        type: Number,
+        require: true
     }
 };
 
