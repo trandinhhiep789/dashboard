@@ -118,7 +118,7 @@ class SearchCom extends React.Component {
                 },
                 {
                     SearchKey: "@PAGESIZE",
-                    SearchValue: 100
+                    SearchValue: 1000
                 },
                 {
                     SearchKey: "@PAGEINDEX",
