@@ -106,12 +106,6 @@ export const listelement_Search = [
 
 export const MLObjectDefinition_Add = [
     {
-        Name: "svCategoryTypeID",
-        DefaultValue: "",
-        BindControlName: "txtsvCategoryTypeID",
-        DataSourceMember: "svCategoryTypeID"
-    },
-    {
         Name: "svCategoryTypeName",
         DefaultValue: "",
         BindControlName: "txtsvCategoryTypeName",

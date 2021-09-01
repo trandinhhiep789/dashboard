@@ -96,6 +96,7 @@ class EditCom extends React.Component {
             LoginlogID: JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID,
             OrderIndex: parseInt(MLObject.OrderIndex),
             svCategoryTypeID: parseInt(MLObject.svCategoryTypeID),
+            svCategoryTypeID: parseInt(this.props.match.params.id),
             UpdatedUser: this.props.AppInfo.LoginInfo.Username
         }
 
@@ -141,22 +142,6 @@ class EditCom extends React.Component {
                                 <FormControl.TextBox
                                     colspan="8"
                                     controltype="InputControl"
-                                    datasourcemember="svCategoryTypeID"
-                                    label="mã loại danh mục dịch vụ"
-                                    labelcolspan="4"
-                                    maxSize={4}
-                                    name="txtsvCategoryTypeID"
-                                    placeholder="Mã loại danh mục dịch vụ"
-                                    readOnly={false}
-                                    validatonList={['required', 'number']}
-                                    value={this.state.dataSource.svCategoryTypeID}
-                                />
-                            </div>
-
-                            <div className="col-md-6">
-                                <FormControl.TextBox
-                                    colspan="8"
-                                    controltype="InputControl"
                                     datasourcemember="svCategoryTypeName"
                                     label="tên loại danh mục dịch vụ"
                                     labelcolspan="4"
@@ -166,22 +151,6 @@ class EditCom extends React.Component {
                                     readOnly={false}
                                     validatonList={['required']}
                                     value={this.state.dataSource.svCategoryTypeName}
-                                />
-                            </div>
-
-                            <div className="col-md-6">
-                                <FormControl.TextArea
-                                    classNameCustom="customcontrol"
-                                    colspan="8"
-                                    controltype="InputControl"
-                                    datasourcemember="Description"
-                                    label="Mô tả"
-                                    labelcolspan="4"
-                                    maxSize={500}
-                                    name="txtDescription"
-                                    placeholder="Mô tả"
-                                    rows={6}
-                                    value={this.state.dataSource.Description}
                                 />
                             </div>
 
@@ -198,6 +167,22 @@ class EditCom extends React.Component {
                                     readOnly={false}
                                     validatonList={['required', 'number']}
                                     value={this.state.dataSource.OrderIndex}
+                                />
+                            </div>
+
+                            <div className="col-md-6">
+                                <FormControl.TextArea
+                                    classNameCustom="customcontrol"
+                                    colspan="8"
+                                    controltype="InputControl"
+                                    datasourcemember="Description"
+                                    label="Mô tả"
+                                    labelcolspan="4"
+                                    maxSize={500}
+                                    name="txtDescription"
+                                    placeholder="Mô tả"
+                                    rows={6}
+                                    value={this.state.dataSource.Description}
                                 />
                             </div>
 

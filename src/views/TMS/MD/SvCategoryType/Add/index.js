@@ -79,8 +79,7 @@ class AddCom extends React.Component {
             CreatedUser: this.props.AppInfo.LoginInfo.Username,
             IsSystem: MLObject.IsSystem == undefined ? false : MLObject.IsSystem,
             LoginlogID: JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID,
-            OrderIndex: parseInt(MLObject.OrderIndex),
-            svCategoryTypeID: parseInt(MLObject.svCategoryTypeID)
+            OrderIndex: parseInt(MLObject.OrderIndex)
         }
 
         this.props.callFetchAPI(APIHostName, API_SvCategoryType_Add, dataSubmit).then(apiResult => {
@@ -122,22 +121,6 @@ class AddCom extends React.Component {
                             <FormControl.TextBox
                                 colspan="8"
                                 controltype="InputControl"
-                                datasourcemember="svCategoryTypeID"
-                                label="mã loại danh mục dịch vụ"
-                                labelcolspan="4"
-                                maxSize={4}
-                                name="txtsvCategoryTypeID"
-                                placeholder="Mã loại danh mục dịch vụ"
-                                readOnly={false}
-                                validatonList={['required', 'number']}
-                                value=""
-                            />
-                        </div>
-
-                        <div className="col-md-6">
-                            <FormControl.TextBox
-                                colspan="8"
-                                controltype="InputControl"
                                 datasourcemember="svCategoryTypeName"
                                 label="tên loại danh mục dịch vụ"
                                 labelcolspan="4"
@@ -147,21 +130,6 @@ class AddCom extends React.Component {
                                 readOnly={false}
                                 validatonList={['required']}
                                 value=""
-                            />
-                        </div>
-
-                        <div className="col-md-6">
-                            <FormControl.TextArea
-                                classNameCustom="customcontrol"
-                                colspan="8"
-                                controltype="InputControl"
-                                datasourcemember="Description"
-                                label="Mô tả"
-                                labelcolspan="4"
-                                maxSize={500}
-                                name="txtDescription"
-                                placeholder="Mô tả"
-                                rows={6}
                             />
                         </div>
 
@@ -178,6 +146,21 @@ class AddCom extends React.Component {
                                 readOnly={false}
                                 validatonList={['required', 'number']}
                                 value=""
+                            />
+                        </div>
+
+                        <div className="col-md-6">
+                            <FormControl.TextArea
+                                classNameCustom="customcontrol"
+                                colspan="8"
+                                controltype="InputControl"
+                                datasourcemember="Description"
+                                label="Mô tả"
+                                labelcolspan="4"
+                                maxSize={500}
+                                name="txtDescription"
+                                placeholder="Mô tả"
+                                rows={6}
                             />
                         </div>
 
