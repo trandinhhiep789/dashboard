@@ -415,6 +415,7 @@ class DataGridShipmentOderNewCom extends Component {
         this.props.hideModal();
         const { widthPercent } = this.state;
         if (this.state.GridDataShip.length > 0) {
+            this.state.GridDataShip[0].ShipmentOrderTypelst =this.props.ShipmentOrderTypelst;
             this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderNewLst", this.state.GridDataShip).then(apiResult => {
                 if (!apiResult.IsError) {
                     this.setState({ GridDataShip: apiResult.ResultObject.ShipmentOrderDeliverList, changeGird: true });
