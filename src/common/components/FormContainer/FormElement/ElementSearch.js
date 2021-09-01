@@ -1079,9 +1079,14 @@ class ElementDatetimeMonthYearCom extends Component {
         if (ValidatonErrorMessage && ValidatonErrorMessage != "") {
             className += " is-invalid";
         }
+        let classnameCus = "form-group form-group-input form-group-input-date "
+        if(this.props.classNameCustom != undefined || this.props.classNameCustom != "" ){
+            classnameCus ="form-group form-group-input form-group-input-date " + this.props.classNameCustom
+        }
+
         return (
             <div className={colspanClassName}  >
-                <div className="form-group form-group-input form-group-input-date">
+                <div className={classnameCus}>
                     {labeldiv}
                     <div className="input-group ">
                         <DatePicker

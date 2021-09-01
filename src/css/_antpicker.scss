@@ -47,6 +47,7 @@
             }
         }
     }
+
     &.custom-month {
         width: 100%;
         border-color: #808080;
@@ -72,4 +73,41 @@
             }
         }
     }
+}
+.form-group-input{
+    &.form-group-input-date {
+        &.groupMonthPicker{
+            .input-group{
+                height: initial;
+            }
+            .ant-picker{
+                &.custom-month {
+                    width: 100%;
+                    border-color: #808080;
+                    padding: 3px 11px 3px;
+                    .ant-picker-input{
+                        & > input{
+                            color: #5f6165;
+                            letter-spacing: .5px;
+                            font-size: 15px;
+                        }
+                    }
+                    &.ant-picker-focused {
+                        border-color: #1890ff;
+                        border-right-width: 1px !important;
+                        outline: 0;
+                        -webkit-box-shadow: 0 0 0 0.1rem #1890ff;
+                        box-shadow: 0 0 0 0.1rem #5eaff9;
+                    }
+                    &.is-invalid{
+                        border-color: #f96868;
+                        &~ .invalid-feedback{
+                            display: block;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
 }
