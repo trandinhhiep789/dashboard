@@ -91,11 +91,38 @@ export const listColumn_SvCategory = [
     }
 ];
 
-export const MLObjectDefinition_Search = [
+export const listColumn_SvCategoryProduct = [
+    // {
+    //     Name: "chkSelect",
+    //     Type: "checkbox",
+    //     Caption: "",
+    //     DataSourceMember: "ProductID",
+    //     Width: 60
+    // },
     {
-        Name: "Keyword",
-        DefaultValue: "",
-        BindControlName: "txtKeyword"
+        Name: "ProductID",
+        Type: "text",
+        Caption: "Mã sản phẩm",
+        DataSourceMember: "ProductID"
+    },
+    {
+        Name: "OrderIndex",
+        Type: "text",
+        Caption: "Thứ tự hiển thị",
+        DataSourceMember: "OrderIndex"
+    },
+    {
+        Name: "Comments",
+        Type: "text",
+        Caption: "Ghi chú",
+        DataSourceMember: "Comments"
+    },
+    {
+        Name: "Action",
+        Type: "edit",
+        Caption: "Tác vụ",
+        DataSourceMember: "ProductID",
+        Width: 60
     }
 ];
 
@@ -108,57 +135,6 @@ export const listelement_Search = [
         placeholder: "",
         icon: "",
         listoption: {}
-    }
-];
-
-export const MLObjectDefinition_Add = [
-    {
-        Name: "ParentID",
-        DefaultValue: "",
-        BindControlName: "cbParentID",
-        DataSourceMember: "ParentID"
-    },
-    {
-        Name: "svCategoryName",
-        DefaultValue: "",
-        BindControlName: "txtsvCategoryName",
-        DataSourceMember: "svCategoryName"
-    },
-    {
-        Name: "svCategoryTypeID",
-        DefaultValue: "",
-        BindControlName: "cbsvCategoryTypeID",
-        DataSourceMember: "svCategoryTypeID"
-    },
-    {
-        Name: "svCategoryImageURL",
-        DefaultValue: "",
-        BindControlName: "txtsvCategoryImageURL",
-        DataSourceMember: "svCategoryImageURL"
-    },
-    {
-        Name: "Description",
-        DefaultValue: "",
-        BindControlName: "txtDescription",
-        DataSourceMember: "Description"
-    },
-    {
-        Name: "OrderIndex",
-        DefaultValue: "",
-        BindControlName: "numOrderIndex",
-        DataSourceMember: "OrderIndex"
-    },
-    {
-        Name: "IsActived",
-        DefaultValue: true,
-        BindControlName: "chkIsActived",
-        DataSourceMember: "IsActived"
-    },
-    {
-        Name: "IsSystem",
-        DefaultValue: false,
-        BindControlName: "chkIsSystem",
-        DataSourceMember: "IsSystem"
     }
 ];
 
@@ -263,3 +239,124 @@ export const listelement_Add = [
         DataSourceMember: "IsSystem"
     },
 ];
+
+export const listelement_svCategoryProduct = [
+    {
+        DataSourceMember: "ProductID",
+        icon: "",
+        label: "mã sản phẩm",
+        listoption: {},
+        maxSize: "20",
+        name: "ProductID",
+        placeholder: "",
+        readonly: false,
+        type: "text",
+        validatonList: ["required"],
+        value: ""
+    },
+    {
+        DataSourceMember: "OrderIndex",
+        label: "thứ tự hiển thị",
+        max: 9999999999,
+        min: 0,
+        name: "OrderIndex",
+        readonly: false,
+        type: "number",
+        validatonList: ["required"],
+        value: ""
+    },
+    {
+        DataSourceMember: "Comments",
+        icon: "",
+        label: "ghi chú",
+        listoption: {},
+        maxSize: "2000",
+        name: "Comments",
+        placeholder: "",
+        readonly: false,
+        type: "text",
+        validatonList: [],
+        value: ""
+    },
+]
+
+export const MLObjectDefinition_Search = [
+    {
+        Name: "Keyword",
+        DefaultValue: "",
+        BindControlName: "txtKeyword"
+    }
+];
+
+export const MLObjectDefinition_Add = [
+    {
+        Name: "ParentID",
+        DefaultValue: "",
+        BindControlName: "cbParentID",
+        DataSourceMember: "ParentID"
+    },
+    {
+        Name: "svCategoryName",
+        DefaultValue: "",
+        BindControlName: "txtsvCategoryName",
+        DataSourceMember: "svCategoryName"
+    },
+    {
+        Name: "svCategoryTypeID",
+        DefaultValue: "",
+        BindControlName: "cbsvCategoryTypeID",
+        DataSourceMember: "svCategoryTypeID"
+    },
+    {
+        Name: "svCategoryImageURL",
+        DefaultValue: "",
+        BindControlName: "txtsvCategoryImageURL",
+        DataSourceMember: "svCategoryImageURL"
+    },
+    {
+        Name: "Description",
+        DefaultValue: "",
+        BindControlName: "txtDescription",
+        DataSourceMember: "Description"
+    },
+    {
+        Name: "OrderIndex",
+        DefaultValue: "",
+        BindControlName: "numOrderIndex",
+        DataSourceMember: "OrderIndex"
+    },
+    {
+        Name: "IsActived",
+        DefaultValue: true,
+        BindControlName: "chkIsActived",
+        DataSourceMember: "IsActived"
+    },
+    {
+        Name: "IsSystem",
+        DefaultValue: false,
+        BindControlName: "chkIsSystem",
+        DataSourceMember: "IsSystem"
+    }
+];
+
+export const MLObjectDefinition_svCategoryProduct = [
+    {
+        Name: "ProductID",
+        DefaultValue: "",
+        BindControlName: "ProductID",
+        DataSourceMember: "ProductID"
+    },
+    {
+        Name: "OrderIndex",
+        DefaultValue: "",
+        BindControlName: "OrderIndex",
+        DataSourceMember: "OrderIndex"
+    },
+    {
+        Name: "Comments",
+        DefaultValue: "",
+        BindControlName: "Comments",
+        DataSourceMember: "Comments"
+    }
+];
+

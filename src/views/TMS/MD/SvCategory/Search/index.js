@@ -87,7 +87,7 @@ class SearchCom extends React.Component {
                     return {
                         ...item,
                         CreatedUserIDName: `${item.CreatedUser} - ${item.CreatedUserName}`,
-                        ParentIDName: `${item.ParentID} - ${item.ParentName}`,
+                        ParentIDName: item.ParentID == -1 ? "" : `${item.ParentID} - ${item.ParentName}`,
                         svCategoryIDName: `${item.svCategoryID} - ${item.svCategoryName}`,
                         svCategoryTypeIDName: `${item.svCategoryTypeID} - ${item.svCategoryTypeName}`
                     }
@@ -103,7 +103,6 @@ class SearchCom extends React.Component {
     }
 
     handleDeleteClick(listDeleteID, ListPKColumnName) {
-        console.log(listDeleteID, ListPKColumnName);
         const dataDelete = listDeleteID.map(item => {
             return {
                 svCategoryID: item.pkColumnName[0].value,

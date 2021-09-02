@@ -4,21 +4,27 @@ import ReactNotification from "react-notifications-component";
 import { ModalManager } from 'react-dynamic-modal';
 
 import {
+    API_SvCategory_Add,
     API_SvCategory_Search,
     API_SvCategoryType_Search,
     APIHostName,
     initSearchData,
+    listColumn_SvCategoryProduct,
     listelement_Add,
+    listelement_svCategoryProduct,
     MLObjectDefinition_Add,
+    MLObjectDefinition_svCategoryProduct,
     PagePath_Add
 } from "../constants";
 
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { createListTree } from "../../../../../common/library/ultils";
 import { MessageModal } from "../../../../../common/components/Modal";
+import { MODAL_TYPE_COMMONTMODALS } from '../../../../../constants/actionTypes';
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { updatePagePath } from "../../../../../actions/pageAction";
 import FormContainer from "../../../../../common/components/Form/AdvanceForm/FormContainer";
+import InputGrid from '../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid';
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -28,7 +34,8 @@ class AddCom extends React.Component {
             Files: {},
             listelementAdd: listelement_Add,
             svCategory: null,
-            svCategoryType: null,
+            svCategoryProduct: [],
+            svCategoryType: null
         };
 
         this.gridref = React.createRef();
@@ -38,9 +45,14 @@ class AddCom extends React.Component {
         this.addNotification = this.addNotification.bind(this);
         this.fetchsvCategory = this.fetchsvCategory.bind(this);
         this.fetchsvCategoryType = this.fetchsvCategoryType.bind(this);
+        this.handelDeleteSvCategoryProduct = this.handelDeleteSvCategoryProduct.bind(this);
+        this.handleInsertEditSvCategoryProduct = this.handleInsertEditSvCategoryProduct.bind(this);
+        this.handleInsertSvCategoryProduct = this.handleInsertSvCategoryProduct.bind(this);
         this.handleSelectedFile = this.handleSelectedFile.bind(this);
         this.handleSelectSvCategoryType = this.handleSelectSvCategoryType.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleSubmitInsertEditSvCategoryProduct = this.handleSubmitInsertEditSvCategoryProduct.bind(this);
+        this.handleSubmitSvCategoryProduct = this.handleSubmitSvCategoryProduct.bind(this);
         this.handleTreeSelectParentID = this.handleTreeSelectParentID.bind(this);
         this.showMessage = this.showMessage.bind(this);
     }
@@ -108,6 +120,65 @@ class AddCom extends React.Component {
         });
     }
 
+    handelDeleteSvCategoryProduct(listDeleteObject, dataSource, ListDataSourceMember) {
+        try {
+            const uptListDelete = listDeleteObject.map(item => {
+                return item[0].value;
+            })
+
+            const uptSvCategoryProduct = this.state.svCategoryProduct.filter(item => {
+                return !uptListDelete.find(item1 => item1 == item.ProductID);
+            });
+
+            this.setState({
+                svCategoryProduct: uptSvCategoryProduct
+            })
+        } catch (error) {
+            console.log(error);
+            this.addNotification("Lỗi xóa", true);
+        }
+    }
+
+    handleInsertEditSvCategoryProduct(id) {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: "Chỉnh sửa sản phẩm/dịch vụ thuộc 1 danh mục dịch vụ",
+            content: {
+                text: <FormContainer
+                    ClosePopup={() => this.props.hideModal()}
+                    dataSource={this.state.svCategoryProduct[id]}
+                    FormMessage={""}
+                    IsAutoLayout={true}
+                    IsErrorMessage={false}
+                    listelement={listelement_svCategoryProduct}
+                    MLObjectDefinition={MLObjectDefinition_svCategoryProduct}
+                    onSubmit={(formData, MLObject) => this.handleSubmitInsertEditSvCategoryProduct(formData, MLObject, id)}
+                />
+            },
+            afterClose: () => { },
+            maxWidth: "80%"
+        });
+    }
+
+    handleInsertSvCategoryProduct(MLObjectDefinition, modalElementList, dataSource, formData) {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: "Thêm sản phẩm/dịch vụ thuộc 1 danh mục dịch vụ",
+            content: {
+                text: <FormContainer
+                    ClosePopup={() => this.props.hideModal()}
+                    dataSource={[]}
+                    FormMessage={""}
+                    IsAutoLayout={true}
+                    IsErrorMessage={false}
+                    listelement={listelement_svCategoryProduct}
+                    MLObjectDefinition={MLObjectDefinition_svCategoryProduct}
+                    onSubmit={this.handleSubmitSvCategoryProduct}
+                />
+            },
+            afterClose: () => { },
+            maxWidth: "80%"
+        });
+    }
+
     handleSelectedFile(file, nameValue, isDeletetedFile) {
         const filelist = { [nameValue]: file };
         this.setState({ Files: filelist });
@@ -151,18 +222,68 @@ class AddCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
-        MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-        MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        const uptMLObject = {
+            ...MLObject,
+            CreatedUser: this.props.AppInfo.LoginInfo.Username,
+            LoginLogID: JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID,
+            lstSvCategory_Product: this.state.svCategoryProduct,
+            OrderIndex: parseInt(MLObject.OrderIndex),
+            svCategoryTypeID: parseInt(MLObject.svCategoryTypeID)
+        };
 
         let data = new FormData();
         data.append("svCategoryImageURL", this.state.Files.svCategoryImageURL);
-        data.append("svCategoryObj", JSON.stringify(MLObject));
+        data.append("svCategoryObj", JSON.stringify(uptMLObject));
 
-        console.log(data, MLObject); return;
-
-        this.props.callFetchAPI(APIHostName, AddAPIPath, data).then(apiResult => {
-
+        this.props.callFetchAPI(APIHostName, API_SvCategory_Add, data).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.showMessage(apiResult.Message);
+                this.props.history.push("/SvCategory");
+            } else {
+                this.addNotification(apiResult.Message, apiResult.IsError);
+            }
         });
+    }
+
+    handleSubmitInsertEditSvCategoryProduct(formData, MLObject, id) {
+        const uptMLObject = {
+            ...MLObject,
+            OrderIndex: parseInt(MLObject.OrderIndex),
+            ProductID: MLObject.ProductID.replace(/\s/g, "")
+        };
+
+        const uptSvCategoryProduct = this.state.svCategoryProduct.map((item, index) => {
+            if (index == id) {
+                return uptMLObject;
+            } else {
+                return item;
+            }
+        })
+
+        this.setState({
+            svCategoryProduct: uptSvCategoryProduct
+        })
+
+        this.props.hideModal();
+    }
+
+    handleSubmitSvCategoryProduct(formData, MLObject) {
+        const uptMLObject = {
+            ...MLObject,
+            OrderIndex: parseInt(MLObject.OrderIndex),
+            ProductID: MLObject.ProductID.replace(/\s/g, "")
+        };
+
+        if (this.state.svCategoryProduct.find(item => item.ProductID == uptMLObject.ProductID)) {
+            this.addNotification("Mã sản phẩm đã tồn tại", true);
+            return;
+        }
+
+        this.setState({
+            svCategoryProduct: [...this.state.svCategoryProduct, uptMLObject]
+        });
+
+        this.props.hideModal();
     }
 
     handleTreeSelectParentID(data = []) {
@@ -233,6 +354,22 @@ class AddCom extends React.Component {
                         onHandleSelectedFile={this.handleSelectedFile}
                         onSubmit={this.handleSubmit}
                     >
+                        <InputGrid
+                            // onDeleteClick_Customize={this.handelDeleteSvCategoryProduct}
+                            colspan="12"
+                            controltype="GridControl"
+                            dataSource={this.state.svCategoryProduct}
+                            headingTitle="Danh sách sản phẩm/dịch vụ thuộc 1 danh mục dịch vụ"
+                            IDSelectColumnName="chkSelect"
+                            IsAutoPaging={true}
+                            IsDelete={false}
+                            listColumn={listColumn_SvCategoryProduct}
+                            MLObjectDefinition={MLObjectDefinition_svCategoryProduct}
+                            name="svCategoryProduct"
+                            onInsertClick={this.handleInsertSvCategoryProduct}
+                            PKColumnName="ProductID"
+                            onInsertClickEdit={this.handleInsertEditSvCategoryProduct}
+                        />
                     </FormContainer>
                 </React.Fragment>
             );

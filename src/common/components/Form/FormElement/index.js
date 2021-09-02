@@ -68,12 +68,12 @@ class FormElementCom extends Component {
     }
     createCategoryTree(originListItem) {
         let childListItem = originListItem.filter(item => item.ParentID == -1);
-        // console.log("createCategoryTree childListItem:", childListItem);
+
         let itemListResult = [{ value: -1, label: "--Vui lòng chọn--" }];
         for (let i = 0; i < childListItem.length; i++) {
             itemListResult.push({ value: childListItem[i].value, label: childListItem[i].label });
             let childItemTree = this.createChildCategoryTree(originListItem, childListItem[i].value, 1);
-            // console.log("createCategoryTree childItemTree:", childItemTree);
+
             for (let j = 0; j < childItemTree.length; j++) {
                 //itemListResult.push(childItemTree[j]);
                 itemListResult.push({ value: childItemTree[j].value, label: childItemTree[j].label });
@@ -84,18 +84,16 @@ class FormElementCom extends Component {
 
     createChildCategoryTree(originListItem, parentID, categoryLevel) {
         let childListItem = originListItem.filter(item => item.ParentID == parentID);
-        // console.log("createChildCategoryTree childListItem:", childListItem);
+
         let itemListResult = []
         for (let i = 0; i < childListItem.length; i++) {
             let item = childListItem[i];
             item.label = this.categoryNamePrefix(categoryLevel) + item.label;
-            // console.log("createChildCategoryTree childListItem:",item);
             itemListResult.push(item);
             //itemListResult.push({ value: item.CategoryID, label: item.CategoryName });
             const newCategoryLevel = categoryLevel + 1;
 
             let childListItem2 = originListItem.filter(item1 => item1.ParentID == item.value);
-            //  console.log("createChildCategoryTree childListItem2:",childListItem2);
             if (childListItem2.length > 0) {
                 const childItemTree2 = this.createChildCategoryTree(originListItem, item.value, newCategoryLevel);
                 for (let j = 0; j < childItemTree2.length; j++) {
@@ -109,8 +107,6 @@ class FormElementCom extends Component {
     }
 
     componentDidMount() {
-        //console.log("this.props.IsSystem", this.props.IsSystem);
-        //console.log('FormElementCom', this.props.validatonList.includes("required"))
         if (this.props.type == "Editor") {
             this.setState({
                 content: this.props.value
@@ -139,7 +135,6 @@ class FormElementCom extends Component {
             this.setState({ src: this.state.defaultImage });
         }
 
-        //console.log("FormElement: ", this.props)
         if (this.props.type == "select" || this.props.type == "multiselect" || this.props.type == "groupTextAndSelect") {
             let listOption = this.props.listoption;
             if (this.props.IsAutoLoadItemFromCache) {
@@ -152,7 +147,6 @@ class FormElementCom extends Component {
                 let tempCacheData = [];
 
                 this.props.callGetCache(cacheKeyID).then((result) => {
-                    //console.log("FormElement callGetCache: ", result)
                     listOption = [{ value: -1, label: this.props.type == "multiselect" ? "------ Chọn ------" : "------ Vui lòng chọn ------" }];
                     if (!result.IsError && result.ResultObject.CacheData != null) {
                         if (keyFilter && valueFilter) {
@@ -169,7 +163,6 @@ class FormElementCom extends Component {
                             cacheData = result.ResultObject.CacheData;
                         }
                         cacheData.map((cacheItem) => {
-                            // console.log("FormElement listOption: ", cacheItem)
                             //listOption.push({ value: cacheItem[valueMember], label: this.props.type == "multiselect" ? cacheItem[nameMember] : cacheItem[valueMember] + " - " + cacheItem[nameMember], name: cacheItem[nameMember] });
                             listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + " - " + cacheItem[nameMember], name: cacheItem[nameMember] });
                         });
@@ -190,7 +183,6 @@ class FormElementCom extends Component {
                     this.setState({ Listoption: listOption });
                 }
             }
-            //console.log("FormElement listOption 2: ", listOption)
         }
 
         if (this.props.type == 'treeSelect') {
@@ -220,16 +212,13 @@ class FormElementCom extends Component {
         }
     }
     componentWillReceiveProps(nextProps) {
-        //console.log("FormElement componentWillReceiveProps:", this.props);
         //this.setState({value: this.props.value});
         if (nextProps.type == "select" && nextProps.listoption != undefined && nextProps.listoption.length > 0) {
-            //console.log("FormElement componentWillReceiveProps:", nextProps.selectedValue);
             let listOption = nextProps.listoption;
             this.setState({ Listoption: listOption });
         }
 
         if (nextProps.type == "multiselect" && nextProps.listoption != undefined && nextProps.listoption.length > 0) {
-            //console.log("FormElement componentWillReceiveProps:", nextProps);
             let listOption = nextProps.listoption;
             this.setState({ Listoption: listOption });
         }
@@ -237,11 +226,9 @@ class FormElementCom extends Component {
     }
 
     onChangeEditor() {
-        //console.log("FormElement componentWillReceiveProps:", this.props);
         //this.setState({value: this.props.value});
     }
     onChangeEditor = editorState => {
-        //console.log("editorState", editorState);
         this.props.onValueChange(this.props.name, editorState, false, "");
 
     };
@@ -310,7 +297,6 @@ class FormElementCom extends Component {
         if (this.props.onHandleSelectedFile != null && isValidAcceptedFile) {
             this.props.onHandleSelectedFile(event.target.files[0], this.props.NameMember, false);
             this.setState({ value: event.target.files[0].name, src: URL.createObjectURL(event.target.files[0]) });
-            //console.log("selipfile", event.target.files[0]);
         }
     }
 
@@ -383,7 +369,7 @@ class FormElementCom extends Component {
     };
 
     onSelect = value => {
-        console.log("Select:", value);
+
     };
 
     render() {
@@ -674,47 +660,46 @@ class FormElementCom extends Component {
                 const isCheckPassword = this.props.elementItem.isCheckPassword
                 if (isCheckPassword) {
                     const PasswordStrength = getPasswordStrength(this.props.value)
-                    //console.log("isCheckPassword", isCheckPassword, PasswordStrength)
                     let titleStatus = "blank";
                     let titleNameStatus = "Yếu";
                     let progressPercent = 0;
-                    let progressStatus= "exception"
+                    let progressStatus = "exception"
                     switch (PasswordStrength) {
                         case 1:
                             titleStatus = "veryWeak"
                             titleNameStatus = "Quá yếu";
-                            progressStatus= "exception"
+                            progressStatus = "exception"
                             progressPercent = 10;
                             break;
                         case 2:
                             titleStatus = "weak";
                             titleNameStatus = "Yếu";
-                            progressStatus= "exception"
+                            progressStatus = "exception"
                             progressPercent = 20;
                             break;
                         case 3:
                             titleStatus = "medium"
                             titleNameStatus = "Trung bình";
-                            progressStatus= "normal"
+                            progressStatus = "normal"
                             progressPercent = 50;
                             break;
                         case 4:
                             titleStatus = "strong"
                             titleNameStatus = "Mạnh";
-                            progressStatus= "active"
+                            progressStatus = "active"
                             progressPercent = 85;
 
                             break;
                         case 5:
                             titleStatus = "veryStrong"
                             titleNameStatus = "Quá mạnh";
-                            progressStatus= "success"
+                            progressStatus = "success"
                             progressPercent = 100;
                             break;
                         default:
                             titleStatus = "blank"
                             titleNameStatus = "Quá yếu";
-                            progressStatus= "exception"
+                            progressStatus = "exception"
                             progressPercent = 0;
                             break
                     }
@@ -722,7 +707,7 @@ class FormElementCom extends Component {
                     control = <React.Fragment>
                         <input className={controlCSSClassName} name={this.props.name} type={this.props.type} placeholder={this.props.placeholder} defaultValue={this.props.value} onChange={this.handleInputChange} readOnly={this.props.readonly} ref={this.props.inputRef} />
                         {
-                            PasswordStrength > 0 && <div className="pass-status"><Progress steps={10}  percent={progressPercent}  status={progressStatus} /> <span className={"title " + titleStatus}>{titleNameStatus}</span> </div>
+                            PasswordStrength > 0 && <div className="pass-status"><Progress steps={10} percent={progressPercent} status={progressStatus} /> <span className={"title " + titleStatus}>{titleNameStatus}</span> </div>
                         }
 
                     </React.Fragment>;
