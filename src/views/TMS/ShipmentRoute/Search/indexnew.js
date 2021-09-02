@@ -203,7 +203,7 @@ class SearchCom extends React.Component {
                 },
                 {
                     SearchKey: "@PAGESIZE",
-                    SearchValue: 100
+                    SearchValue: 1000
                 },
                 {
                     SearchKey: "@PAGEINDEX",
@@ -438,8 +438,6 @@ class SearchCom extends React.Component {
             dismissable: { click: true }
         });
     }
-
-
     handlePrint(id) {
         this.setState({
             PrintID: id
@@ -501,7 +499,6 @@ class SearchCom extends React.Component {
 
 
     }
-
     handlePrintClick() {
         var mywindow = window.open('', '', 'right=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0');
         mywindow.document.write('<html><head>');
@@ -515,8 +512,6 @@ class SearchCom extends React.Component {
         mywindow.close();
         return true;
     }
-
-
 
     render() {
         if (this.state.IsLoadDataComplete) {
@@ -549,6 +544,7 @@ class SearchCom extends React.Component {
                         onChangePageLoad={this.onChangePageLoad.bind(this)}
                         onPrint={this.handlePrint.bind(this)}
                         IsDelete={false}
+                        ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
                         IsAdd={false}
                         PageNumber={this.state.PageNumber}
                         DeletePermission={"SHIPMENTORDER_DELETE"}

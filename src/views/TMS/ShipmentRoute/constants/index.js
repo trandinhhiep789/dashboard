@@ -514,7 +514,7 @@ export const DataGridColumnList = [
         Type: "texttolink",
         Caption: "Mã yêu cầu phân tuyến",
         DataSourceMember: "ShipmentRouteID",
-        Link: "/ShipmentRouteID/Detail/",
+        Link: "/ShipmentRoute/Detail/",
         Width: 120
     },
     {
