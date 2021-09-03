@@ -141,7 +141,7 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, "api/DataExportQueue/AddQueueExport", searchData).then(apiResult => {
-            console.log("apiResult", apiResult, searchData)
+            console.log("apiResult", apiResult, searchData, this.state.templateID )
             if (!apiResult.IsError) {
 
                 // const tempDataExport = apiResult.ResultObject.map((item, index) => {
@@ -222,7 +222,7 @@ class SearchCom extends React.Component {
         this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
             title: "Tải file",
             maxWidth: '1200px',
-            ParamRequest: { RequestUser: 98138, DataExportTemplateID: 7 }
+            ParamRequest: { DataExportTemplateID: this.state.templateID }
         });
     }
 

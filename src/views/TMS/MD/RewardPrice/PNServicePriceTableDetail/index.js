@@ -53,7 +53,7 @@ class PNServicePriceTableDetailCom extends Component {
         // console.log("MLObject", MLObject)
         MLObject.PNServicePriceTableID = this.props.dataSource.pnServicePriceTableID;
         MLObject.ProductID = MLObject.ProductID && Array.isArray(MLObject.ProductID) ? MLObject.ProductID[0].ProductID : MLObject.ProductID;
-        
+
         if (MLObject.IsPriceByTechspecsValueRange || MLObject.IsPriceByTechspecsValueRange != "") {
             MLObject.TechSpecsValueID = -1;
         }
@@ -153,7 +153,7 @@ class PNServicePriceTableDetailCom extends Component {
 
             }
 
-            if (formData.cbProductID.value != undefined && formData.cbProductID.value != "" ) {
+            if (formData.cbProductID.value != undefined && formData.cbProductID.value != "") {
                 if (formData.cbProductID.value[0].ProductID != null) {
                     this.setState({
                         IsDisableTechspecsValue: true,
@@ -449,9 +449,9 @@ class PNServicePriceTableDetailCom extends Component {
                             maxSize={11}
                         />
                     </div>
-                    
+
                     <div className="col-md-6">
-                        <FormControl.TextBox
+                        {/* <FormControl.TextBox
                             name="txtPNServicePriceTableDetailName"
                             colspan="6"
                             labelcolspan="6"
@@ -461,7 +461,20 @@ class PNServicePriceTableDetailCom extends Component {
                             value=""
                             validatonList={["required"]}
                             datasourcemember="PNServicePriceTableDetailName"
-                            maxSize={9}
+                            maxSize={500}
+                        /> */}
+
+                        <FormControl.TextArea
+                            name="txtPNServicePriceTableDetailName"
+                            colspan="6"
+                            labelcolspan="6"
+                            label="Tên chi tiết bảng giá"
+                            placeholder="Tên chi tiết bảng giá"
+                            controltype="InputControl"
+                            value=""
+                            validatonList={["required"]}
+                            datasourcemember="PNServicePriceTableDetailName"
+                            maxSize={500}
                         />
 
                     </div>

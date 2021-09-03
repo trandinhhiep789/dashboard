@@ -157,6 +157,7 @@ import RewardComputeLog from "../TMS/MD/RewardComputeLog";
 import ShipmentOrderStepGroup from "../TMS/MD/ShipmentOrderStepGroup";
 import TMSConfig from "../TMS/MD/TMSConfig";
 import SvCategoryType from "../TMS/MD/SvCategoryType";
+import SvCategory from "../TMS/MD/SvCategory";
 import DeliveryDateUpdateType from "../TMS/MD/DeliveryDateUpdateType";
 import DeliveryDateUpdateReason from "../TMS/MD/DeliveryDateUpdateReason";
 import PeriodUserRWPosition from "../TMS/MD/PeriodUserRWPosition";
@@ -199,6 +200,7 @@ import ServiceRequestType from "../TMS/MD/ServiceRequestType";
 import PnReceivableDetail from "../TMS/ReportShipmentOrder/PnReceivableDetail";
 import PnReceivableDetailReport from "../TMS/ReportShipmentOrder/PnReceivableDetailReport";
 import PNRCComputeSchedule from "../TMS/MD/PNRCComputeSchedule";
+import PNRCComputeLog from "../TMS/MD/PNRCComputeLog";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -437,6 +439,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/AppFeedBackType" component={AppFeedBackType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/TMSConfig" component={TMSConfig} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/SvCategoryType" component={SvCategoryType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/SvCategory" component={SvCategory} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/DeliveryDateUpdateType" component={DeliveryDateUpdateType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/DeliveryDateUpdateReason" component={DeliveryDateUpdateReason} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/DeliveryGoodsGroup" component={DeliveryGoodsGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
@@ -483,6 +486,8 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/PnReceivableDetailReport" component={PnReceivableDetailReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="/PNRCComputeSchedule" component={PNRCComputeSchedule} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+
+                                    <PrivateRoute path="/PNRCComputeLog" component={PNRCComputeLog} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
