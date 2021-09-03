@@ -380,7 +380,7 @@ class ListShipCoordinatorCom extends Component {
                 const validationObject = { IsValidatonError: false, ValidationErrorMessage: "" };
                 elementobject = Object.assign({}, elementobject, { ["CarrierTypeID-" + indexRow]: validationObject });
             }
-            if (row["TotalCOD"] > 0) {
+            if (row["TotalCOD"] > 0 && row["IsPaidIn"] == false) {
                 row["ShipmentOrder_DeliverUserList"].map((item, indexRow) => {
                     let objMultDeliverUser = { UserName: item.UserName, CarrierTypeID: row["CarrierTypeID"], TotalCOD: row["TotalCOD"] / row["ShipmentOrder_DeliverUserList"].length }
                     element.push(objMultDeliverUser)
