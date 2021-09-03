@@ -200,6 +200,7 @@ import ServiceRequestType from "../TMS/MD/ServiceRequestType";
 import PnReceivableDetail from "../TMS/ReportShipmentOrder/PnReceivableDetail";
 import PnReceivableDetailReport from "../TMS/ReportShipmentOrder/PnReceivableDetailReport";
 import PNRCComputeSchedule from "../TMS/MD/PNRCComputeSchedule";
+import PNRCComputeLog from "../TMS/MD/PNRCComputeLog";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -485,6 +486,8 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/PnReceivableDetailReport" component={PnReceivableDetailReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="/PNRCComputeSchedule" component={PNRCComputeSchedule} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+
+                                    <PrivateRoute path="/PNRCComputeLog" component={PNRCComputeLog} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 

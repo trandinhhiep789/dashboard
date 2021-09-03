@@ -1128,7 +1128,14 @@ const AppMenu = [
                 LinkTo: '/SoAssessSynSchedule',
                 MenuIcon: '',
                 SubMenu: []
-            }
+            },
+            {
+                MenuName: 'PNRCComputeLog',
+                MenuTitle: 'Nhật ký tính doanh thu phải thu đối tác',
+                LinkTo: '/PNRCComputeLog',
+                MenuIcon: '',
+                SubMenu: []
+            },
 
         ]
     },

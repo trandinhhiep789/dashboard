@@ -119,7 +119,7 @@ export const AddElementList = [
         type: "checkbox",
         name: "chkIsActived",
         label: "Kích hoạt:",
-        value: false,
+        value: true,
         placeholder: "",
         icon: "",
         listoption: {},
@@ -347,12 +347,19 @@ export const DataGridColumnList = [
         Width: 110
     },
     {
-        Name: "Description",
+        Name: "RewardComputeTypeName",
         Type: "text",
-        Caption: "Mô tả",
-        DataSourceMember: "Description",
-        Width: 160
+        Caption: "Loại tính thưởng",
+        DataSourceMember: "RewardComputeTypeName",
+        Width: 200
     },
+    // {
+    //     Name: "Description",
+    //     Type: "text",
+    //     Caption: "Mô tả",
+    //     DataSourceMember: "Description",
+    //     Width: 160
+    // },
     {
         Name: "IsAutoAdd",
         Type: "checkicon",
@@ -363,23 +370,23 @@ export const DataGridColumnList = [
     {
         Name: "IsCompletedCompute",
         Type: "checkicon",
-        Caption: "Kết thúc tính thưởng",
+        Caption: "Kết thúc tính",
         DataSourceMember: "IsCompletedCompute",
-        Width: 120
+        Width: 90
     },
     {
         Name: "ComputeIntervalString",
         Type: "text",
         Caption: "Thời gian tính",
         DataSourceMember: "ComputeIntervalString",
-        Width: 150
+        Width: 90
     },
     {
         Name: "IsComputeError",
         Type: "checkicon",
         Caption: "Lỗi tính thưởng",
         DataSourceMember: "IsComputeError",
-        Width: 100
+        Width: 90
     },
     {
         Name: "IsActived",
@@ -401,7 +408,7 @@ export const DataGridColumnList = [
         Type: "date",
         Caption: "Ngày cập nhật",
         DataSourceMember: "UpdatedDate",
-        Width: 140
+        Width: 100
     },
     {
         Name: "UpdatedUserFullName",
