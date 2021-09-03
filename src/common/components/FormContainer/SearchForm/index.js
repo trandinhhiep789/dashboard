@@ -151,7 +151,7 @@ export default class SearchForm extends Component {
 
     renderSearchForm() {
         const listElement = this.props.listelement;
-        let cssSearchButton = "";
+
         let classNamebtnSearch;
         let colGroupAction = (this.props.colGroupAction == "" || this.props.colGroupAction == undefined) ? 2 : this.props.colGroupAction;
 

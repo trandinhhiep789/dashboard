@@ -1428,6 +1428,13 @@ const AppMenu = [
                         MenuIcon: '',
                         SubMenu: []
                     },
+                    {
+                        MenuName: 'AirConditionerMTOrderReport',
+                        MenuTitle: 'Doanh thu đơn hàng vật tư máy lạnh',
+                        LinkTo: '/AirConditionerMTOrderReport',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
 
                 ]
             },
