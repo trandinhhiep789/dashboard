@@ -201,6 +201,7 @@ import PnReceivableDetail from "../TMS/ReportShipmentOrder/PnReceivableDetail";
 import PnReceivableDetailReport from "../TMS/ReportShipmentOrder/PnReceivableDetailReport";
 import PNRCComputeSchedule from "../TMS/MD/PNRCComputeSchedule";
 import PNRCComputeLog from "../TMS/MD/PNRCComputeLog";
+import ConfirmReward from "../TMS/Reward/ConfirmReward"
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -388,7 +389,8 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/RewardComputeList" component={RewardComputeList} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/FuelSubsIDizePeriod" component={FuelSubsIDizePeriod} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/RewardComputeType" component={RewardComputeType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
-
+                                    <PrivateRoute path="/ConfirmReward" component={ConfirmReward} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    
 
                                     <PrivateRoute path="/AreaType" component={AreaType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/Area" component={Area} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />

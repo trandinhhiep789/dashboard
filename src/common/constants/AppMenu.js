@@ -1235,6 +1235,13 @@ const AppMenu = [
                         LinkTo: '/RewardDetailExport',
                         MenuIcon: '',
                         SubMenu: []
+                    },
+                    {
+                        MenuName: 'ConfirmReward',
+                        MenuTitle: 'Xuất dữ liệu chốt thưởng',
+                        LinkTo: '/ConfirmReward',
+                        MenuIcon: '',
+                        SubMenu: []
                     }
                 ]
             },
