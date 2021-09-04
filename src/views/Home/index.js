@@ -198,6 +198,7 @@ import IgnoreCheckRcGeoLocReason from "../TMS/MD/IgnoreCheckRcGeoLocReason";
 import DeliveryAbilityStore from "../TMS/MD/DeliveryAbilityStore";
 import ServiceRequestType from "../TMS/MD/ServiceRequestType";
 import PnReceivableDetail from "../TMS/ReportShipmentOrder/PnReceivableDetail";
+import AirConditionerMTOrderReport from "../TMS/ReportShipmentOrder/AirConditionerMTOrderReport";
 import PnReceivableDetailReport from "../TMS/ReportShipmentOrder/PnReceivableDetailReport";
 import PNRCComputeSchedule from "../TMS/MD/PNRCComputeSchedule";
 import PNRCComputeLog from "../TMS/MD/PNRCComputeLog";
@@ -485,6 +486,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/ServiceRequestType" component={ServiceRequestType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="/PnReceivableDetail" component={PnReceivableDetail} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/AirConditionerMTOrderReport" component={AirConditionerMTOrderReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/PnReceivableDetailReport" component={PnReceivableDetailReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="/PNRCComputeSchedule" component={PNRCComputeSchedule} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />

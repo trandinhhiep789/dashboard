@@ -523,7 +523,7 @@ class SearchCom extends React.Component {
         }
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/CrossCheckReport", objDataNewol).then(apiResult => {
             if (!apiResult.IsError) {
-  
+
                 // xuất exel
                 const exelData = apiResult.ResultObject.map((item, index) => {
                     let element = {
@@ -532,7 +532,7 @@ class SearchCom extends React.Component {
                         "TMS": formatNumberNew(item.quantitytms),
                         "ERP": formatNumberNew(item.quantityerp),
                         "Chênh lệch": formatNumberNew(item.differencequantity),
-                       
+
                     };
                     return element;
 
@@ -541,7 +541,7 @@ class SearchCom extends React.Component {
 
             }
             else {
-              
+
                 this.showMessage("Lỗi hệ thống. Vui lòng liên hệ quản trị viên.")
             }
         });
@@ -581,14 +581,15 @@ class SearchCom extends React.Component {
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
+                    className="multiple"
+                    colGroupAction={3}
                     FormName="Tìm kiếm danh sách báo đối soát"
-                    MLObjectDefinition={SearchMLObjectDefinition}
+                    IsButtonExport={true}
                     listelement={SearchElementList}
+                    MLObjectDefinition={SearchMLObjectDefinition}
+                    onExportSubmit={this.handleExportSubmit.bind(this)}
                     onSubmit={this.handleSearchSubmit}
                     ref={this.searchref}
-                    className="multiple"
-                    IsButtonExport={true}
-                    onExportSubmit={this.handleExportSubmit.bind(this)}
                 />
 
 

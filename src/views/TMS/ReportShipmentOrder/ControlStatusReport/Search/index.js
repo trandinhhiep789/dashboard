@@ -244,18 +244,18 @@ class Search extends React.Component {
                 <ReactNotification ref={this.notificationDOMRef} />
 
                 <SearchForm
-                    FormName="Tìm kiếm chi tiết vận đơn quá hạn"
                     className="multiple multiple-custom"
                     classNamebtnSearch="groupAction"
-                    listelement={SearchElementList}
-                    MLObjectDefinition={SearchMLObjectDefinition}
-                    ref={this.searchref}
+                    colGroupAction={3}
+                    FormName="Tìm kiếm chi tiết vận đơn quá hạn"
                     IsButtonExport={true}
                     IsButtonhistory={true}
-                    onHistorySubmit={this.handleHistorySearch}
+                    listelement={SearchElementList}
+                    MLObjectDefinition={SearchMLObjectDefinition}
                     onExportSubmit={this.handleExportFileFormSearch}
+                    onHistorySubmit={this.handleHistorySearch}
                     onSubmit={this.handleSearchSubmit}
-                    classNamebtnSearch="groupAction"
+                    ref={this.searchref}
                 />
 
                 <DataGrid

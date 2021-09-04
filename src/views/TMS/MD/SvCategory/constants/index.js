@@ -140,17 +140,17 @@ export const listelement_Search = [
 
 export const listelement_Add = [
     {
-        type: "text",
-        name: "txtsvCategoryName",
-        label: "tên danh mục dịch vụ",
-        maxSize: "200",
-        value: "",
-        placeholder: "",
-        icon: "",
-        listoption: {},
         DataSourceMember: "svCategoryName",
+        icon: "",
+        label: "tên danh mục dịch vụ",
+        listoption: {},
+        maxSize: "200",
+        name: "txtsvCategoryName",
+        placeholder: "",
         readonly: false,
-        validatonList: ["required"]
+        type: "text",
+        validatonList: ["required"],
+        value: ""
     },
     {
         DataSourceMember: "svCategoryTypeID",
@@ -170,26 +170,27 @@ export const listelement_Add = [
         ValueMember: "svCategoryTypeID"
     },
     {
-        type: "number",
-        name: "numOrderIndex",
+        DataSourceMember: "OrderIndex",
         label: "thứ tự hiện thị",
         max: 9999999999,
         min: 0,
-        value: "",
+        name: "numOrderIndex",
         readonly: false,
-        validatonList: ["required"]
+        type: "number",
+        validatonList: ["required"],
+        value: ""
     },
     {
-        type: "textarea",
-        name: "txtDescription",
+        DataSourceMember: "Description",
+        icon: "",
         label: "mô tả",
         maxSize: "2000",
-        value: "",
+        name: "txtDescription",
         placeholder: "",
-        icon: "",
-        DataSourceMember: "Description",
         readonly: false,
-        validatonList: []
+        type: "textarea",
+        validatonList: [],
+        value: ""
     },
     {
         DataSourceMember: "ParentID",
@@ -225,19 +226,19 @@ export const listelement_Add = [
         value: ""
     },
     {
-        type: "checkbox",
-        name: "chkIsActived",
+        DataSourceMember: "IsActived",
         label: "kích hoạt",
-        value: true,
-        DataSourceMember: "IsActived"
+        name: "chkIsActived",
+        type: "checkbox",
+        value: true
     },
     {
-        type: "checkbox",
-        name: "chkIsSystem",
+        DataSourceMember: "IsSystem",
         label: "hệ thống",
-        value: false,
-        DataSourceMember: "IsSystem"
-    },
+        name: "chkIsSystem",
+        type: "checkbox",
+        value: false
+    }
 ];
 
 export const listelement_svCategoryProduct = [
