@@ -12,9 +12,7 @@ import {
     initSearchData,
     listColumn_SvCategoryProduct,
     listelement_Add,
-    listelement_svCategoryProduct,
     MLObjectDefinition_Add,
-    MLObjectDefinition_svCategoryProduct,
     PagePath_Edit
 } from "../constants";
 
@@ -24,8 +22,9 @@ import { MessageModal } from "../../../../../common/components/Modal";
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../../constants/actionTypes';
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { updatePagePath } from "../../../../../actions/pageAction";
+import DataGrid from "../../../../../common/components/DataGrid";
 import FormContainer from "../../../../../common/components/Form/AdvanceForm/FormContainer";
-import InputGrid from '../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid';
+import SvCategoryProductModalCom from '../SvCategoryProductModal';
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -49,7 +48,7 @@ class EditCom extends React.Component {
         this.fetchSvCategoryInfo = this.fetchSvCategoryInfo.bind(this);
         this.fetchsvCategoryType = this.fetchsvCategoryType.bind(this);
         this.handelDeleteSvCategoryProduct = this.handelDeleteSvCategoryProduct.bind(this);
-        this.handleInsertEditSvCategoryProduct = this.handleInsertEditSvCategoryProduct.bind(this);
+        this.handleEditSvCategoryProduct = this.handleEditSvCategoryProduct.bind(this);
         this.handleInsertSvCategoryProduct = this.handleInsertSvCategoryProduct.bind(this);
         this.handleSelectedFile = this.handleSelectedFile.bind(this);
         this.handleSelectSvCategoryType = this.handleSelectSvCategoryType.bind(this);
@@ -157,43 +156,34 @@ class EditCom extends React.Component {
         }
     }
 
-    handleInsertEditSvCategoryProduct(id) {
+    handleEditSvCategoryProduct(value, pkColumnName) {
+        const dataItem = this.state.svCategoryProduct.find(item => item.ProductID == value.pkColumnName[0].value);
+        const initData = {
+            Product: [{ ProductID: dataItem.ProductID, ProductName: dataItem.ProductName }],
+            OrderIndex: dataItem.OrderIndex,
+            Comments: dataItem.Comments
+        };
+
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: "Chỉnh sửa sản phẩm/dịch vụ thuộc 1 danh mục dịch vụ",
             content: {
-                text: <FormContainer
-                    ClosePopup={() => this.props.hideModal()}
-                    dataSource={this.state.svCategoryProduct[id]}
-                    FormMessage={""}
-                    IsAutoLayout={true}
-                    IsErrorMessage={false}
-                    listelement={listelement_svCategoryProduct}
-                    MLObjectDefinition={MLObjectDefinition_svCategoryProduct}
-                    onSubmit={(formData, MLObject) => this.handleSubmitInsertEditSvCategoryProduct(formData, MLObject, id)}
+                text: <SvCategoryProductModalCom
+                    handleSubmit={this.handleSubmitInsertEditSvCategoryProduct}
+                    initData={initData}
+                    initProductID={value.pkColumnName[0].value}
                 />
-            },
-            afterClose: () => { },
-            maxWidth: "80%"
+            }
         });
     }
 
-    handleInsertSvCategoryProduct(MLObjectDefinition, modalElementList, dataSource, formData) {
+    handleInsertSvCategoryProduct() {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: "Thêm sản phẩm/dịch vụ thuộc 1 danh mục dịch vụ",
             content: {
-                text: <FormContainer
-                    ClosePopup={() => this.props.hideModal()}
-                    dataSource={[]}
-                    FormMessage={""}
-                    IsAutoLayout={true}
-                    IsErrorMessage={false}
-                    listelement={listelement_svCategoryProduct}
-                    MLObjectDefinition={MLObjectDefinition_svCategoryProduct}
-                    onSubmit={this.handleSubmitSvCategoryProduct}
+                text: <SvCategoryProductModalCom
+                    handleSubmit={this.handleSubmitSvCategoryProduct}
                 />
-            },
-            afterClose: () => { },
-            maxWidth: "80%"
+            }
         });
     }
 
@@ -264,16 +254,10 @@ class EditCom extends React.Component {
         });
     }
 
-    handleSubmitInsertEditSvCategoryProduct(formData, MLObject, id) {
-        const uptMLObject = {
-            ...MLObject,
-            OrderIndex: parseInt(MLObject.OrderIndex),
-            ProductID: MLObject.ProductID.replace(/\s/g, "")
-        };
-
+    handleSubmitInsertEditSvCategoryProduct(data, initProductID) {
         const uptSvCategoryProduct = this.state.svCategoryProduct.map((item, index) => {
-            if (index == id) {
-                return uptMLObject;
+            if (item.ProductID == initProductID) {
+                return data;
             } else {
                 return item;
             }
@@ -286,20 +270,14 @@ class EditCom extends React.Component {
         this.props.hideModal();
     }
 
-    handleSubmitSvCategoryProduct(formData, MLObject) {
-        const uptMLObject = {
-            ...MLObject,
-            OrderIndex: parseInt(MLObject.OrderIndex),
-            ProductID: MLObject.ProductID.replace(/\s/g, "")
-        };
-
-        if (this.state.svCategoryProduct.find(item => item.ProductID == uptMLObject.ProductID)) {
+    handleSubmitSvCategoryProduct(data) {
+        if (this.state.svCategoryProduct.find(item => item.ProductID == data.ProductID)) {
             this.addNotification("Mã sản phẩm đã tồn tại", true);
             return;
         }
 
         this.setState({
-            svCategoryProduct: [...this.state.svCategoryProduct, uptMLObject]
+            svCategoryProduct: [...this.state.svCategoryProduct, data]
         });
 
         this.props.hideModal();
@@ -375,21 +353,17 @@ class EditCom extends React.Component {
                         onHandleSelectedFile={this.handleSelectedFile}
                         onSubmit={this.handleSubmit}
                     >
-                        <InputGrid
-                            // onDeleteClick_Customize={this.handelDeleteSvCategoryProduct}
-                            colspan="12"
-                            controltype="GridControl"
+                        <DataGrid
                             dataSource={this.state.svCategoryProduct}
-                            headingTitle="Danh sách sản phẩm/dịch vụ thuộc 1 danh mục dịch vụ"
-                            IDSelectColumnName="chkSelect"
+                            headingTitle={"Danh sách sản phẩm/dịch vụ thuộc 1 danh mục dịch vụ"}
+                            IDSelectColumnName={"ProductID"}
                             IsAutoPaging={true}
-                            IsDelete={false}
+                            IsCustomAddLink={true}
+                            IsShowButtonDelete={false}
                             listColumn={listColumn_SvCategoryProduct}
-                            MLObjectDefinition={MLObjectDefinition_svCategoryProduct}
-                            name="svCategoryProduct"
                             onInsertClick={this.handleInsertSvCategoryProduct}
-                            PKColumnName="ProductID"
-                            onInsertClickEdit={this.handleInsertEditSvCategoryProduct}
+                            onInsertClickEdit={this.handleEditSvCategoryProduct}
+                            PKColumnName={"ProductID"}
                         />
                     </FormContainer>
                 </React.Fragment>

@@ -2,7 +2,7 @@ export const APIHostName = "TMSAPI";
 export const AddAPIPath = "api/Store_Area/Add";
 export const UpdateAPIPath = "api/Store_Area/Update";
 export const DeleteAPIPath = "api/Store_Area/Delete";
-export const AddByFileAPIPath ="api/Store_Area/AddByFile";
+export const AddByFileAPIPath = "api/Store_Area/AddByFile";
 
 export const ModalColumnList_Insert = [
     // {
@@ -118,13 +118,13 @@ export const DataGridColumnList = [
         DataSourceMember: "UpdatedUserFullName",
         Width: 140
     },
-    {
-        Name: "AreaStoreCSID",
-        Type: "edit",
-        Caption: "Sửa",
-        DataSourceMember: "AreaStoreCSID",
-        Width: 100
-    }
+    // {
+    //     Name: "AreaStoreCSID",
+    //     Type: "edit",
+    //     Caption: "Sửa",
+    //     DataSourceMember: "AreaStoreCSID",
+    //     Width: 100
+    // }
 
 ];
 

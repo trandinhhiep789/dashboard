@@ -92,18 +92,17 @@ export const listColumn_SvCategory = [
 ];
 
 export const listColumn_SvCategoryProduct = [
-    // {
-    //     Name: "chkSelect",
-    //     Type: "checkbox",
-    //     Caption: "",
-    //     DataSourceMember: "ProductID",
-    //     Width: 60
-    // },
     {
         Name: "ProductID",
         Type: "text",
-        Caption: "Mã sản phẩm",
+        Caption: "Mã sản phẩm/dịch vụ",
         DataSourceMember: "ProductID"
+    },
+    {
+        Name: "ProductName",
+        Type: "text",
+        Caption: "Tên sản phẩm/dịch vụ",
+        DataSourceMember: "ProductName"
     },
     {
         Name: "OrderIndex",
@@ -242,19 +241,19 @@ export const listelement_Add = [
 ];
 
 export const listelement_svCategoryProduct = [
-    {
-        DataSourceMember: "ProductID",
-        icon: "",
-        label: "mã sản phẩm",
-        listoption: {},
-        maxSize: "20",
-        name: "ProductID",
-        placeholder: "",
-        readonly: false,
-        type: "text",
-        validatonList: ["required"],
-        value: ""
-    },
+    // {
+    //     DataSourceMember: "ProductID",
+    //     icon: "",
+    //     label: "mã sản phẩm",
+    //     listoption: {},
+    //     maxSize: "20",
+    //     name: "ProductID",
+    //     placeholder: "",
+    //     readonly: false,
+    //     type: "ProductCombo",
+    //     validatonList: ["required"],
+    //     value: ""
+    // },
     {
         DataSourceMember: "OrderIndex",
         label: "thứ tự hiển thị",
@@ -340,12 +339,18 @@ export const MLObjectDefinition_Add = [
     }
 ];
 
-export const MLObjectDefinition_svCategoryProduct = [
+export const MLObjectDefinitionSvCategoryProductModal = [
     {
         Name: "ProductID",
         DefaultValue: "",
         BindControlName: "ProductID",
         DataSourceMember: "ProductID"
+    },
+    {
+        Name: "ProductName",
+        DefaultValue: "",
+        BindControlName: "ProductName",
+        DataSourceMember: "ProductName"
     },
     {
         Name: "OrderIndex",
@@ -359,5 +364,4 @@ export const MLObjectDefinition_svCategoryProduct = [
         BindControlName: "Comments",
         DataSourceMember: "Comments"
     }
-];
-
+]
