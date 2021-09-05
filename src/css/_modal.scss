@@ -51,18 +51,36 @@
        }
         .group-info-Route{
             clear: both;
+            .btn-close {
+                border: 0;
+                background: transparent;
+                font-size: 10px;
+                cursor: pointer;
+                padding: 0 5px;
+
+                &:hover{
+                    color: #1b83e2;
+                }
+                &:focus{
+                    outline: none;
+                    box-shadow: none;
+                    border: 0;
+                }
+            }
             ul{
                 padding-left: 5px;
                 li{
                     float: left;
                     list-style: none;
                     margin-right: 10px;
+                    clear: both;
                     &.kmestimates{
                         
                         .numkm{
                             color: #33cabb;
                         }
                     }
+                   
                 }
             }
         }

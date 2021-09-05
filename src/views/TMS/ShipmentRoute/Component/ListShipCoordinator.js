@@ -919,7 +919,7 @@ class ListShipCoordinatorCom extends Component {
                                     <ul>
                                         {ShipmentRouteID != "" ? (
                                             <li>
-                                                <span>Mã tuyến: <span className="fw-600">{ShipmentRouteID}</span></span>
+                                                <span>Mã tuyến: <span className="fw-600">{ShipmentRouteID}</span> <button className="btn-close"><i className="ti-close"></i></button></span>
                                             </li>
                                         ) : ""}
 

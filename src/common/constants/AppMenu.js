@@ -780,10 +780,28 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-
-
-
-
+            {
+                MenuName: 'SvCategory',
+                MenuTitle: 'Danh mục dịch vụ',
+                LinkTo: '',
+                MenuIcon: '',
+                SubMenu: [
+                    {
+                        MenuName: 'SvCategoryType',
+                        MenuTitle: 'Loại danh mục dịch vụ',
+                        LinkTo: '/SvCategoryType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'SvCategory',
+                        MenuTitle: 'Danh mục dịch vụ',
+                        LinkTo: '/SvCategory',
+                        MenuIcon: '',
+                        SubMenu: []
+                    }
+                ]
+            }
         ]
     },
     {
