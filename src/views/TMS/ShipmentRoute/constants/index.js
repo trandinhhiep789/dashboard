@@ -15,23 +15,23 @@ export const PKColumnName = "ShipmentRouteID";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách yêu cầu vận chuyển" }
+    { Link: "", Title: "Danh sách phân tuyến vận chuyển" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/ShipmentOrder", Title: "Danh sách yêu cầu vận chuyển" },
+    { Link: "/ShipmentRoute", Title: "Danh sách phân tuyến vận chuyển" },
     { Link: "", Title: "Sửa" }
 ];
 export const DetailAPIPath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/ShipmentOrder", Title: "Danh sách yêu cầu vận chuyển" },
+    { Link: "/ShipmentRoute/Manager", Title: "Danh sách phân tuyến vận chuyển" },
     { Link: "", Title: "Chi tiết" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/ShipmentOrder", Title: "Danh sách yêu cầu vận chuyển" },
+    { Link: "/ShipmentRoute", Title: "Danh sách phân tuyến vận chuyển" },
     { Link: "", Title: "Thêm" }
 ];
 
@@ -507,7 +507,7 @@ export const DataGridColumnList = [
         Type: "checkbox",
         Caption: "Chọn",
         DataSourceMember: "ShipmentRouteID",
-        Width: 60
+        Width: 40
     },
     {
         Name: "ShipmentRouteID",
@@ -515,7 +515,7 @@ export const DataGridColumnList = [
         Caption: "Mã yêu cầu phân tuyến",
         DataSourceMember: "ShipmentRouteID",
         Link: "/ShipmentRoute/Detail/",
-        Width: 120
+        Width: 100
     },
     {
         Name: "CreatedDate",
@@ -527,7 +527,7 @@ export const DataGridColumnList = [
     {
         Name: "ExpectedBeginDeliveryDate",
         Type: "datetime",
-        Caption: "Thời gian bắt đầu đi",
+        Caption: "Thời gian bắt đầu",
         DataSourceMember: "ExpectedBeginDeliveryDate",
         Width: 100
     },
@@ -538,12 +538,19 @@ export const DataGridColumnList = [
         DataSourceMember: "ActualDeliveryDistance",
         Width: 100
     },
+    {
+        Name: "DeliverUserFullNameList",
+        Type: "text",
+        Caption: "Nhân viên giao",
+        DataSourceMember: "DeliverUserFullNameList",
+        Width: 200
+    },
    
     {
         Name: "RouteNote",
         Type: "text",
         Caption: "tuyến đường phần tuyến",
         DataSourceMember: "RouteNote",
-        Width: 520
+        Width: 460
     }
 ];

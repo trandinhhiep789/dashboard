@@ -7,16 +7,10 @@ import {
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
-import ShipmentOrderDetail from '../Component/ShipmentOrderDetail.js';
-import ShipmentOrderTypeWF from '../Component/ShipmentOrderTypeWF.js';
-import ShipmentOrderAddress from '../Component/ShipmentOrderAddress.js';
-import InfoProduct from '../Component/InfoProduct.js';
-import InfoCoordinator from '../Component/InfoCoordinator.js';
-import InfoHistoryWF from '../Component/InfoHistoryWF.js';
-import ShipmentOrderAttachment from '../Component/ShipmentOrderAttachment.js';
-import ShipmentOrderComment from '../Component/ShipmentOrderComment.js';
 import { Modal, ModalManager, Effect } from 'react-dynamic-modal';
 import { MessageModal } from "../../../../common/components/Modal";
+import { formatDate, formatDateNew } from "../../../../common/library/CommonLib.js";
+import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 import {
     APIHostName,
     LoadAPIPath,
@@ -74,7 +68,7 @@ class DetailCom extends React.Component {
     }
 
     render() {
-        let {DataSource}= this.state;
+        let { DataSource } = this.state;
         if (this.state.IsLoadDataComplete) {
             return (
                 <div className="col-lg-12 page-detail">
@@ -83,20 +77,83 @@ class DetailCom extends React.Component {
                             <strong>thông tin phân tuyến</strong>
                         </h4>
                         <div className="card-body">
-                        <div className="form-row">
-                    <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Tên bảng đơn giá thưởng:</label>
-                    </div>
-                    <div className="form-group col-md-4">
-                        <label className="col-form-label">{DataSource.ShipmentRouteID}</label>
-                    </div>
-                    <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Loại mùa vụ:</label>
-                    </div>
-                    <div className="form-group col-md-4">
-                        <label className="col-form-label">{PNRewardPriceTableInfo.ServiceSeasonTypeID + " - " + PNRewardPriceTableInfo.ServiceSeasonTypeName}</label>
-                    </div>
-                </div>
+                            <div className="form-row">
+                                <div className="form-group col-md-2">
+                                    <label className="col-form-label bold">Tên bảng đơn giá thưởng:</label>
+                                </div>
+                                <div className="form-group col-md-4">
+                                    <label className="col-form-label">{DataSource.ShipmentRouteID}</label>
+                                </div>
+                                <div className="form-group col-md-2">
+                                    <label className="col-form-label bold">Ngày phân tuyến:</label>
+                                </div>
+                                <div className="form-group col-md-4">
+                                    <label className="col-form-label">{formatDate(DataSource.CreatedDate)}</label>
+                                </div>
+                            </div>
+
+                            <div className="form-row">
+                                <div className="form-group col-md-2">
+                                    <label className="col-form-label bold">Thời gian bắt đầu đi:</label>
+                                </div>
+                                <div className="form-group col-md-4">
+                                    <label className="col-form-label">{formatDate(DataSource.ExpectedBeginDeliveryDate)}</label>
+                                </div>
+                                <div className="form-group col-md-2">
+                                    <label className="col-form-label bold">Khoản cách thực tế:</label>
+                                </div>
+                                <div className="form-group col-md-4">
+                                    <label className="col-form-label">{DataSource.ActualDeliveryDistance}</label>
+                                </div>
+                            </div>
+
+                            <div className="form-row">
+                                <div className="form-group col-md-2">
+                                    <label className="col-form-label bold">Nhân viên giao:</label>
+                                </div>
+                                <div className="form-group col-md-4">
+                                    <label className="col-form-label">{DataSource.DeliverUserFullNameList}</label>
+                                </div>
+                                <div className="form-group col-md-2">
+                                    <label className="col-form-label bold">Tuyến đường giao:</label>
+                                </div>
+                                <div className="form-group col-md-4">
+                                    <label className="col-form-label">{DataSource.RouteNote == "" ? DataSource.RouteNote : ReactHtmlParser(DataSource.RouteNote.replace(/;/g, '<br/>'))}</label>
+                                </div>
+                            </div>
+                            <div className="card-body">
+                                <div className="form-row">
+                                    <div className="col-md-12">
+                                        <div className="table-responsive">
+                                            <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                                <thead className="thead-light">
+                                                    <tr>
+                                                        <th className="jsgrid-header-cell">Mã vận đơn</th>
+                                                        <th className="jsgrid-header-cell">Thời gian hẹn giao</th>
+                                                        <th className="jsgrid-header-cell">Tạo độ thực giao</th>
+                                                        <th className="jsgrid-header-cell">Thời gian đến nhà khách</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {DataSource != null &&
+                                                        DataSource.ShipmentRoute_OrderItemList.map((rowItem, rowIndex) => {
+                                                            return (
+
+                                                                <tr key={"OrderI" + rowIndex}>
+                                                                    <td>{rowItem.ShipmentOrderID}</td>
+                                                                    <td>{formatDate(rowItem.ExpectedBeginDeliveryDate)}</td>
+                                                                    <td>{rowItem.ActualReceiverGeoLocation}</td>
+                                                                    <td>{formatDate(rowItem.ActualDeliveryDate)}</td>
+                                                                    
+                                                                </tr>
+                                                            );
+                                                        })}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
