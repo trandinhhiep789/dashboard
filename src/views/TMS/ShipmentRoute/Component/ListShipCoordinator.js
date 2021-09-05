@@ -630,6 +630,23 @@ class ListShipCoordinatorCom extends Component {
 
         }
     }
+
+    handleDeleteRoute = (RouteID) => e => {
+        let listMLObject = [];
+        let MLObject = { ShipmentRouteID: RouteID };
+        listMLObject.push(MLObject);
+
+        this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/DeleteList", listMLObject).then(apiResult => {
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            if (!apiResult.IsError) {
+                if (this.props.onChangeValue != null)
+                    this.props.onChangeValue(apiResult);
+            }
+        });
+
+    };
+
+
     render() {
         let { ShipmentOrder, ShipmentRouteID, ShipmentOrderSameLst, ShipmentRouteLst, ShipmentRouteSameLst, Distances_RouteLst, Via_Distances, Via_Durations, girdSlide } = this.state;
         let resultShipmentRoute = ShipmentRouteLst.filter(n => n.ShipmentRouteID != ShipmentRouteID);
@@ -762,7 +779,14 @@ class ListShipCoordinatorCom extends Component {
                                                                                     to={{ pathname: "/ShipmentOrder/Detail/" + item.ShipmentOrderID }}>
                                                                                     {item.ShipmentOrderID} </Link>
                                                                             </span>
-                                                                            <span className="badge badge-warning time"><i className="ti ti-timer"></i> {item.ExpectedDeliveryDate != null ? this._genCommentTime(item.ExpectedDeliveryDate) : ""}</span>
+                                                                            {item.ActualDeliveryDate == null ?
+                                                                                (
+                                                                                    <span className="badge badge-warning time"><i className="ti ti-timer"></i> {item.ExpectedDeliveryDate != null ? this._genCommentTime(item.ExpectedDeliveryDate) : ""}</span>
+                                                                                ) :
+                                                                                (
+                                                                                    <span className="badge badge-warning time"><i className="ti ti-timer"></i> {item.ShipmentOrderStatusName}</span>
+                                                                                )
+                                                                            }
                                                                         </li>
                                                                         <li className="item infoProduict">
                                                                             <span data-tip data-for={item.ShipmentOrderID} data-id={item.ShipmentOrderID}>{item.PrimaryShipItemName}</span>
@@ -919,7 +943,7 @@ class ListShipCoordinatorCom extends Component {
                                     <ul>
                                         {ShipmentRouteID != "" ? (
                                             <li>
-                                                <span>Mã tuyến: <span className="fw-600">{ShipmentRouteID}</span> <button className="btn-close"><i className="ti-close"></i></button></span>
+                                                <span>Mã tuyến: <span className="fw-600">{ShipmentRouteID}</span> <button onClick={this.handleDeleteRoute(ShipmentRouteID)} className="btn-close"><i className="ti-close"></i></button></span>
                                             </li>
                                         ) : ""}
 
