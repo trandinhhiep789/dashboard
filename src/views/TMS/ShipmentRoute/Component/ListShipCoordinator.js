@@ -297,7 +297,7 @@ class ListShipCoordinatorCom extends Component {
                 Rowelement.push(item.UserName)
             });
         }
-        if (JSON.stringify(element) != JSON.stringify(Rowelement)) {
+        if (JSON.stringify(element.sort()) != JSON.stringify(Rowelement.sort())) {
             return false;
         }
         return true;
@@ -724,10 +724,6 @@ class ListShipCoordinatorCom extends Component {
                                                 {
                                                     ShipmentOrder && ShipmentOrder.map((item, index) => {
                                                         let isPermission = false;
-                                                        // if (this.state.objCoordinator.IsRoute == true) {
-                                                        //     isPermission = true
-                                                        // }
-
                                                         if (item.IsPermission == false) {
                                                             isPermission = true
                                                         }
@@ -744,6 +740,14 @@ class ListShipCoordinatorCom extends Component {
                                                                 listOption.push({ value: item2.UserName, label: item2.UserName + "-" + item2.FullName, FullName: item2.FullName });
                                                             })
                                                         }
+
+                                                        let CarrierTypeCss = "badge badge-secondary mr-10";
+                                                        let CarrierTypeTruncCss = "badge badge-secondary badge-active";
+                                                        if (item.CarrierTypeID == 1) {
+                                                            CarrierTypeCss = "badge badge-secondary  mr-10 badge-active";
+                                                            CarrierTypeTruncCss = "badge badge-secondary";
+                                                        }
+
                                                         return (
                                                             <tr key={index} className="jsgrid-row">
                                                                 <td className="jsgrid-cell high-priority" style={{ width: '1%' }}>
@@ -769,18 +773,19 @@ class ListShipCoordinatorCom extends Component {
                                                                         </li>
                                                                         <li className="item delivery-status">
                                                                             <div className="item group-status">
-                                                                                {item.CarrierTypeID == 1 ? (
-                                                                                    <span className="badge badge-secondary  mr-10 badge-active" onClick={this.handleChangeCourse(1, index)}><i className="fa fa-motorcycle"></i> Xe máy</span>
+
+                                                                                {isPermission == false ? (
+                                                                                    <span className={CarrierTypeCss} onClick={this.handleChangeCourse(1, index)}><i className="fa fa-motorcycle"></i> Xe máy</span>
                                                                                 ) :
                                                                                     (
-                                                                                        <span className="badge badge-secondary mr-10" onClick={this.handleChangeCourse(1, index)}><i className="fa fa-motorcycle"></i> Xe máy</span>
+                                                                                        <span className={CarrierTypeCss}><i className="fa fa-motorcycle fffff"></i> Xe máy</span>
                                                                                     )
                                                                                 }
-                                                                                {item.CarrierTypeID == 1 ? (
-                                                                                    <span className="badge badge-secondary " onClick={this.handleChangeCourse(2, index)}><i className="fa fa-truck"></i> Xe tải</span>
+                                                                                {isPermission == false ? (
+                                                                                    <span className={CarrierTypeTruncCss} onClick={this.handleChangeCourse(2, index)}><i className="fa fa-truck"></i> Xe tải</span>
                                                                                 ) :
                                                                                     (
-                                                                                        <span className="badge badge-secondary badge-active" onClick={this.handleChangeCourse(2, index)}><i className="fa fa-truck"></i> Xe tải</span>
+                                                                                        <span className={CarrierTypeTruncCss} ><i className="fa fa-truck fff"></i> Xe tải</span>
                                                                                     )
                                                                                 }
                                                                             </div>
@@ -881,10 +886,12 @@ class ListShipCoordinatorCom extends Component {
                                                                             ) :
                                                                             ""
                                                                         }
-                                                                        <a onClick={this.handleDeleteID(item.ShipmentOrderID)} className="table-action hover-danger item-action">
-                                                                            <i className="ti-trash"></i>
-                                                                        </a>
-
+                                                                        {isPermission == false ?
+                                                                            (<a titel="Bạn không có quyền thao tác" onClick={this.handleDeleteID(item.ShipmentOrderID)} className="table-action hover-danger item-action">
+                                                                                <i className="ti-trash"></i>
+                                                                            </a>) :
+                                                                            ""
+                                                                        }
                                                                         {ShipmentOrder.length > 1 ?
                                                                             (
                                                                                 <a onClick={this.handleChangeOder(index, 1)} className="table-action hover-danger item-action">
@@ -893,7 +900,6 @@ class ListShipCoordinatorCom extends Component {
                                                                             ) :
                                                                             ""
                                                                         }
-
                                                                     </div>
                                                                 </td>
                                                             </tr>

@@ -663,7 +663,7 @@ class InfoCoordinatorCom extends Component {
             return <Redirect to={BackLink} />;
         }
 
-        const Usernamelst = "61700,24611,52443,30871,37531,30873,47260,31329,21176,61881,30407,29300,29686,30405,36886,27002,28849,62355,28111,27001,53788,30874,45524,66360,34073,52197,66309,30869,52196,38572,31685,81125,40416,40415,29685,29687";
+        const Usernamelst = "73309,55503,142168";
         let objUsernamecheck = Usernamelst.includes(this.props.AppInfo.LoginInfo.Username)
 
         let listOption = [];
@@ -682,13 +682,16 @@ class InfoCoordinatorCom extends Component {
         if (this.state.ShipmentOrder.DriverUser != "") {
             listOptionDriverUser.push({ value: this.state.ShipmentOrder.DriverUser, label: this.state.ShipmentOrder.DriverUser + "-" + this.state.ShipmentOrder.DriverUserFull, FullName: this.state.ShipmentOrder.DriverUserFull });
         }
-        let IsCoordinatorNew = this.props.IsCoordinator;
-        let IsUserCoordinatorNew = this.props.IsUserCoordinator;
+        // let IsCoordinatorNew = this.props.IsCoordinator;
+        // let IsUserCoordinatorNew = this.props.IsUserCoordinator;
+        let IsCoordinatorNew = false;
+        let IsUserCoordinatorNew = false;
 
         if (objUsernamecheck == true) {
-            IsCoordinatorNew = false;
-            IsUserCoordinatorNew = false;
+            IsCoordinatorNew = true;
+            IsUserCoordinatorNew = true;
         }
+        
         return (
             <div className="card">
                 <ReactNotification ref={this.notificationDOMRef} />

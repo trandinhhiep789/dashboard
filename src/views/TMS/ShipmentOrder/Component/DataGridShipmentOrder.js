@@ -1161,9 +1161,9 @@ class DataGridShipmentOderCom extends Component {
                                                     <div className="btn-toolbar">
                                                         <div className="btn-group btn-group-sm">
                                                             <div className="group-left">
-                                                                <button id="btnUserCoordinator" type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
+                                                                {/* <button id="btnUserCoordinator" type="button" onClick={this.handleUserCoordinator.bind(this)} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
                                                                     <i className="fa fa-plus"> Gán nhân viên giao hàng</i>
-                                                                </button>
+                                                                </button> */}
                                                                 <div className="groupActionRemember ml-10">
                                                                     <button type="button" onClick={this.handleSelected.bind(this)} className="btn " title="" data-provide="tooltip" data-original-title="Ghi nhớ">
                                                                         <i className="fa fa-save"></i>
