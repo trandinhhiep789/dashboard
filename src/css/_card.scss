@@ -119,6 +119,9 @@
                         .input-group-select {
                             margin-left: 10px;
                             margin-right: 10px;
+                            .input-group-text{
+                                cursor: pointer;
+                            }
                             input {
                                 height: 30px;
                                 line-height: 30px;
