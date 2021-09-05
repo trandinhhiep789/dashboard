@@ -25,6 +25,8 @@ import { toIsoStringCus } from '../../../../../utils/function'
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_DOWNLOAD_EXCEL, MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
 import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../../constants/keyCache";
+import { formatDate } from "../../../../../common/library/CommonLib";
+import ConfirmReward from "./ConfirmReward";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -58,7 +60,7 @@ class SearchCom extends React.Component {
                 this.showMessage(apiResult.Message)
             }
             else {
-                let templateID = apiResult.ResultObject.CacheData.filter(x => x.TMSConfigID == "TEMPLATE_EXPORT_REWARDDETAIL");
+                let templateID = apiResult.ResultObject.CacheData.filter(x => x.TMSConfigID == "TEMPLATE_EXPORT_CONFIRMREWARD");
                 this.setState({
                     templateID: templateID[0].TMSConfigValue,
                 })
@@ -74,20 +76,110 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        // console.log("MLObject", formData, MLObject)
+        console.log("MLObject", formData, MLObject)
+        const postData = [
+            {
+                SearchKey: "@FROMDATE",
+                SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString())
+            },
+            {
+                SearchKey: "@TODATE",
+                SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString())
+            },
+            {
+                SearchKey: "@REWARDCOMPUTETYPEID",
+                SearchValue: MLObject.RewardTypeID
+            },
 
-        let result, result2;
+        ];
+        this.props.callFetchAPI(APIHostName, "api/TMSConfirmReward/Search", postData).then(apiResult => {
+            if (!apiResult.IsError) {
+                let tempData = apiResult.ResultObject.map((item, index) => {
+                    item.value = item.TMSConfirmRewardID,
+                        item.label = "Ngày Thưởng: " + formatDate(item.RewardDate, true) + ", Ngày chốt: " + formatDate(item.ConfirmDate, true),
+                        item.name = item.TMSConfirmRewardID
+                    return item
+                })
 
-        if (MLObject.RewardTypeID != -1 && MLObject.RewardTypeID != null && MLObject.RewardTypeID != "") {
-            result = MLObject.RewardTypeID.reduce((data, item, index) => {
-                const comma = data.length ? "," : "";
-                return data + comma + item;
-            }, '');
-        }
-        else {
-            result = ""
-        }
+                const dataSource = tempData.reduce((catsSoFar, item, index) => {
+                    if (!catsSoFar[item.RewardDate]) catsSoFar[item.RewardDate] = [];
+                    catsSoFar[item.RewardDate].push(item);
+                    return catsSoFar;
+                }, {});
 
+                const newDatasource = Object.keys(dataSource).map(function (key) {
+                    let element = {}
+                    element.parentKey = key,
+                        element.RewardDate = formatDate(key, true),
+                        element.children = dataSource[key],
+                        element.name = dataSource[key][0].value,
+                        element.value = dataSource[key][0].value
+                    return element
+
+                })
+                console.log("dataSource", dataSource, newDatasource)
+                this.onShowModalConfirm(MLObject, newDatasource)
+            }
+            else {
+                this.showMessage(apiResult.Message)
+            }
+        })
+
+        // let result, result2;
+
+        // if (MLObject.RewardTypeID != -1 && MLObject.RewardTypeID != null && MLObject.RewardTypeID != "") {
+        //     result = MLObject.RewardTypeID.reduce((data, item, index) => {
+        //         const comma = data.length ? "," : "";
+        //         return data + comma + item;
+        //     }, '');
+        // }
+        // else {
+        //     result = ""
+        // }
+
+        // if (MLObject.RewardPositionID != -1 && MLObject.RewardPositionID != null && MLObject.RewardPositionID != "") {
+        //     result2 = MLObject.RewardPositionID.reduce((data, item, index) => {
+        //         const comma = data.length ? "," : "";
+        //         return data + comma + item;
+        //     }, '');
+        // }
+        // else {
+        //     result2 = ""
+        // }
+
+        // const postData = [
+        //     {
+        //         SearchKey: "@FROMDATE",
+        //         SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString())//MLObject.FromDate
+        //     },
+        //     {
+        //         SearchKey: "@TODATE",
+        //         SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString())//MLObject.ToDate
+        //     },
+        //     {
+        //         SearchKey: "@REWARDTYPEID",
+        //         SearchValue: result //MLObject.RewardTypeID
+        //     },
+        //     {
+        //         SearchKey: "@REWARDPOSITIONID",
+        //         SearchValue: result2 //MLObject.RewardPositionID
+        //     }
+        // ];
+
+        // const postDataNew = {
+        //     DataExportTemplateID: this.state.templateID,
+        //     LoadDataStoreName: 'TMS.TMS_RWD_EXP',
+        //     KeyCached: "TMS_TMSREWARD_EXPORT",
+        //     SearchParamList: postData,
+        //     ExportDataParamsDescription: "FROMDATE: " + toIsoStringCus(new Date(MLObject.FromDate).toISOString()) + " - TODATE: " + toIsoStringCus(new Date(MLObject.ToDate).toISOString()) + " - REWARDTYPEID: " + result + " - REWARDPOSITIONID: " + result2
+        // }
+
+        // this.callSearchData(postDataNew);
+    }
+
+    HandleConfirmReward(MLObject, result) {
+        console.log("aaa", MLObject, result)
+        let result2;
         if (MLObject.RewardPositionID != -1 && MLObject.RewardPositionID != null && MLObject.RewardPositionID != "") {
             result2 = MLObject.RewardPositionID.reduce((data, item, index) => {
                 const comma = data.length ? "," : "";
@@ -109,23 +201,40 @@ class SearchCom extends React.Component {
             },
             {
                 SearchKey: "@REWARDTYPEID",
-                SearchValue: result //MLObject.RewardTypeID
+                SearchValue: MLObject.RewardTypeID
             },
             {
                 SearchKey: "@REWARDPOSITIONID",
                 SearchValue: result2 //MLObject.RewardPositionID
+            },
+            {
+                SearchKey: "@TMSCONFIRMREWARDID",
+                SearchValue: result //MLObject.RewardPositionID
             }
         ];
-
         const postDataNew = {
             DataExportTemplateID: this.state.templateID,
-            LoadDataStoreName: 'TMS.TMS_RWD_EXP',
+            LoadDataStoreName: 'TMS.TMS_TMSCONFIRMREWARDDETAIL_SRH',
             KeyCached: "TMS_TMSREWARD_EXPORT",
             SearchParamList: postData,
-            ExportDataParamsDescription: "FROMDATE: " + toIsoStringCus(new Date(MLObject.FromDate).toISOString()) + " - TODATE: " + toIsoStringCus(new Date(MLObject.ToDate).toISOString()) + " - REWARDTYPEID: " + result + " - REWARDPOSITIONID: " + result2
+            ExportDataParamsDescription: "FROMDATE: " + toIsoStringCus(new Date(MLObject.FromDate).toISOString()) + " - TODATE: " + toIsoStringCus(new Date(MLObject.ToDate).toISOString()) + " - REWARDTYPEID: " + MLObject.RewardTypeID + " - REWARDPOSITIONID: " + result2+ " - TMSCONFIRMREWARDID: " + result
         }
 
         this.callSearchData(postDataNew);
+    }
+
+    onShowModalConfirm(MLObject, data) {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: "Ngày chốt thưởng",
+            content: {
+                text: <ConfirmReward
+                    ConfirmRewardData={data}
+                    MLObject={MLObject}
+                    onSubmitConfirmReward={this.HandleConfirmReward.bind(this)}
+                />
+            },
+            maxWidth: '800px'
+        });
     }
 
 
@@ -141,32 +250,8 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
 
         this.props.callFetchAPI(APIHostName, "api/DataExportQueue/AddQueueExport", searchData).then(apiResult => {
-            console.log("apiResult", apiResult, searchData, this.state.templateID )
+            console.log("apiResult", apiResult, searchData, this.state.templateID)
             if (!apiResult.IsError) {
-
-                // const tempDataExport = apiResult.ResultObject.map((item, index) => {
-                //     let element = {
-                //         "Mã nhân viên": item.RewardUser.trim(),
-                //         "Tên nhân viên": item.FullName.trim(),
-                //         "Mã vận đơn": item.ShipmentOrderID.trim(),
-                //         "Mã đơn hàng": item.PartnerSaleOrderID.trim(),
-                //         "Ngày thưởng": item.RewardDate.trim(),
-                //         "Mã sản phẩm": item.ProductID.trim(),
-                //         "Tên sản phẩm": item.ProductName.trim(),
-                //         "Số lượng": item.Quantity,
-                //         "Đơn giá thưởng": item.RewardPrice,
-                //         "Tỷ lệ thưởng": item.RewardRatio,
-                //         "Vị trí thưởng": item.RewardPositionID + "-" + item.RewardPositionName.trim(),
-                //         "Loại thưởng": item.RewardTypeID + "-" + item.RewardTypeName.trim(),
-                //         "Tổng thưởng": item.TotalReward,
-
-                //     };
-
-                //     return element;
-
-                // })
-                // this.handleExportCSV(tempDataExport)
-                // this.onShowModalDownloadFile(apiResult.Message)
 
                 this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
                     title: "Tải file",
