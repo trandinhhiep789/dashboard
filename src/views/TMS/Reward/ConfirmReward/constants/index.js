@@ -38,14 +38,15 @@ export const SearchElementList = [
         label: "Loại thưởng",
         colspan: 3,
         value: "-1",
-        isMultiSelect: true,
+        isMultiSelect: false,
         placeholder: "---Loại thưởng---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: "ERPCOMMONCACHE.TMSREWARDTYPE",
         ValueMember: "RewardTypeID",
         NameMember: "RewardTypeName",
-        classNameCol: "col-custom"
+        classNameCol: "col-custom",
+        validatonList: ["Comborequired"],
     },
     {
         type: "ComboBoxNewChange",
