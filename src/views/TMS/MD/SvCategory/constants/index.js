@@ -96,25 +96,29 @@ export const listColumn_SvCategoryProduct = [
         Name: "ProductID",
         Type: "text",
         Caption: "Mã sản phẩm/dịch vụ",
-        DataSourceMember: "ProductID"
+        DataSourceMember: "ProductID",
+        Width: 70
     },
     {
         Name: "ProductName",
         Type: "text",
         Caption: "Tên sản phẩm/dịch vụ",
-        DataSourceMember: "ProductName"
+        DataSourceMember: "ProductName",
+        Width: 260
     },
     {
         Name: "OrderIndex",
         Type: "text",
         Caption: "Thứ tự hiển thị",
-        DataSourceMember: "OrderIndex"
+        DataSourceMember: "OrderIndex",
+        Width: 70
     },
     {
         Name: "Comments",
         Type: "text",
         Caption: "Ghi chú",
-        DataSourceMember: "Comments"
+        DataSourceMember: "Comments",
+        Width: 260
     },
     {
         Name: "Action",
