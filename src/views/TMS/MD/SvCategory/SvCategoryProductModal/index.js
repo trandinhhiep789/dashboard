@@ -4,10 +4,6 @@ import ReactNotification from "react-notifications-component";
 import { ModalManager } from 'react-dynamic-modal';
 
 import {
-    PagePath,
-    APIHostName,
-    MLObjectDefinition_svCategoryProduct,
-    listelement_svCategoryProduct,
     MLObjectDefinitionSvCategoryProductModal
 } from "../constants";
 
@@ -25,10 +21,11 @@ class SvCategoryProductModalCom extends React.Component {
         super(props);
 
         this.state = {
-            initData: this.props.initData,
             validationErrorMessage: {
                 OrderIndex: ""
-            }
+            },
+            dataSubmit: this.props.selectedItem,
+            selectedIndex: -1
         };
 
         this.gridref = React.createRef();
@@ -36,15 +33,15 @@ class SvCategoryProductModalCom extends React.Component {
         this.notificationDOMRef = React.createRef();
 
         this.addNotification = this.addNotification.bind(this);
-        this.callSearchData = this.callSearchData.bind(this);
         this.handleChangeComments = this.handleChangeComments.bind(this);
         this.handleChangeOrderIndex = this.handleChangeOrderIndex.bind(this);
+        this.handleSetSelectedIndex = this.handleSetSelectedIndex.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.showMessage = this.showMessage.bind(this);
     }
 
     componentDidMount() {
-        this.props.updatePagePath(PagePath);
+        this.handleSetSelectedIndex();
     }
 
     addNotification(message, IsError) {
@@ -77,20 +74,10 @@ class SvCategoryProductModalCom extends React.Component {
         });
     }
 
-    callSearchData(searchData) {
-        this.props.callFetchAPI(APIHostName, "", searchData).then(apiResult => {
-            if (!apiResult.IsError) {
-
-            } else {
-                this.showMessage(apiResult.Message);
-            }
-        });
-    }
-
     handleChangeComments(name, value) {
         this.setState({
-            initData: {
-                ...this.state.initData,
+            dataSubmit: {
+                ...this.state.dataSubmit,
                 Comments: value
             }
         })
@@ -98,9 +85,9 @@ class SvCategoryProductModalCom extends React.Component {
 
     handleChangeOrderIndex(name, value) {
         this.setState({
-            initData: {
-                ...this.state.initData,
-                OrderIndex: value
+            dataSubmit: {
+                ...this.state.dataSubmit,
+                OrderIndex: value == "" ? "" : parseInt(value)
             },
             validationErrorMessage: {
                 ...this.state.validationErrorMessage,
@@ -109,12 +96,21 @@ class SvCategoryProductModalCom extends React.Component {
         });
     }
 
+    handleSetSelectedIndex() {
+        const { ProductID } = this.props.selectedItem.Product[0];
+        const selectedIndex = this.props.initDataGrid.findIndex(item => item.ProductID == ProductID);
+
+        this.setState({
+            selectedIndex
+        })
+    }
+
     handleSubmit(FormData, MLObject) {
         if (MLObject.ProductID[0].ProductID == "" || !MLObject.ProductID[0].ProductID) {
             this.addNotification("Vui lòng chọn Sản phẩm/ dịch vụ", true);
             return;
         }
-        if (/\D/g.test(this.state.initData.OrderIndex)) {
+        if (/\D/g.test(this.state.dataSubmit.OrderIndex)) {
             this.setState({
                 validationErrorMessage: {
                     ...this.state.validationErrorMessage,
@@ -122,7 +118,7 @@ class SvCategoryProductModalCom extends React.Component {
                 }
             })
             return;
-        } else if (this.state.initData.OrderIndex == "") {
+        } else if (this.state.dataSubmit.OrderIndex == "") {
             this.setState({
                 validationErrorMessage: {
                     ...this.state.validationErrorMessage,
@@ -132,11 +128,40 @@ class SvCategoryProductModalCom extends React.Component {
             return;
         }
 
-        this.props.handleSubmit({
-            ...MLObject.ProductID[0],
-            OrderIndex: parseInt(this.state.initData.OrderIndex),
-            Comments: this.state.initData.Comments
-        }, this.props.initProductID)
+        if (this.state.selectedIndex == -1) { //modal add
+            if (!this.props.initDataGrid.find(item => item.ProductID == MLObject.ProductID[0].ProductID)) {
+                this.props.handleSubmit([
+                    ...this.props.initDataGrid,
+                    {
+                        ...MLObject.ProductID[0],
+                        OrderIndex: this.state.dataSubmit.OrderIndex,
+                        Comments: this.state.dataSubmit.Comments
+                    }
+                ])
+            } else {
+                this.addNotification("Mã sản phẩm đã tồn tại", true);
+            }
+        } else { //modal edit
+            const tempInitDataGrid = this.props.initDataGrid.filter((item, index) => index != this.state.selectedIndex);
+
+            if (!tempInitDataGrid.find(item => item.ProductID == MLObject.ProductID[0].ProductID)) {
+                const uptInitDataGrid = this.props.initDataGrid.map((item, index) => {
+                    if (index == this.state.selectedIndex) {
+                        return {
+                            ...MLObject.ProductID[0],
+                            OrderIndex: this.state.dataSubmit.OrderIndex,
+                            Comments: this.state.dataSubmit.Comments
+                        }
+                    } else {
+                        return item;
+                    }
+                });
+
+                this.props.handleSubmit(uptInitDataGrid);
+            } else {
+                this.addNotification("Mã sản phẩm đã tồn tại", true);
+            }
+        }
     }
 
     showMessage(message) {
@@ -164,7 +189,7 @@ class SvCategoryProductModalCom extends React.Component {
                         colspan="8"
                         controltype="InputControl"
                         datasourcemember="ProductID"
-                        disabled={false}
+                        disabled={this.props.disableProduct}
                         IsLabelDiv={true}
                         isMulti={false}
                         label="sản phẩm/dịch vụ"
@@ -173,7 +198,7 @@ class SvCategoryProductModalCom extends React.Component {
                         placeholder="Sản phẩm/dịch vụ"
                         validationErrorMessage={"123"}
                         validatonList={["Comborequired"]}
-                        value={this.state.initData.Product}
+                        value={this.state.dataSubmit.Product}
                     />
 
                     <FormControl.TextBox
@@ -188,7 +213,7 @@ class SvCategoryProductModalCom extends React.Component {
                         placeholder="Thứ Tự Hiển Thị"
                         validationErrorMessage={this.state.validationErrorMessage.OrderIndex}
                         validatonList={['required', 'numbers']}
-                        value={this.state.initData.OrderIndex}
+                        value={this.state.dataSubmit.OrderIndex}
                     />
 
                     <FormControl.TextArea
@@ -202,7 +227,7 @@ class SvCategoryProductModalCom extends React.Component {
                         onValueChange={this.handleChangeComments}
                         placeholder="Ghi chú"
                         validatonList={[]}
-                        value={this.state.initData.Comments}
+                        value={this.state.dataSubmit.Comments}
                     />
                 </FormContainer>
             </React.Fragment>
@@ -211,13 +236,14 @@ class SvCategoryProductModalCom extends React.Component {
 }
 
 SvCategoryProductModalCom.defaultProps = {
-    initData: {
+    selectedItem: {
         Product: [{ ProductID: "", ProductName: "" }],
         OrderIndex: "",
         Comments: ""
     },
+    disableProduct: false,
     handleSubmit: () => { },
-    initProductID: -1
+    initDataGrid: []
 }
 
 const mapStateToProps = state => {
