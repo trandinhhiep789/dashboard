@@ -110,7 +110,7 @@ class EditCom extends React.Component {
                         apiResult.ResultObject.FileURLNew = "";
                         AttachmentListData.push(File);
                     }
-                    
+
                     item = apiResult.ResultObject;
                     item.FileURL = "";
                     this.setState({
@@ -118,7 +118,7 @@ class EditCom extends React.Component {
                     })
                 }
                 else {
-                   
+
                     item = apiResult.ResultObject;
                     this.setState({
                         AttachmentListData: []
@@ -144,9 +144,9 @@ class EditCom extends React.Component {
         // console.log("Files", Files, this.props)
         // console.log("MLObject", AttachmentList, MLObject, fileSize, DataSource);
 
-        const strDecs =  MLObject.FileContent1;
-
         const strDecs = MLObject.FileContent1;
+
+        // const strDecs = MLObject.FileContent1;
         if (strDecs.length > 0) {
             if (strDecs.length > 2900) {
                 MLObject.FileContent1 = strDecs.substr(0, 2900);
