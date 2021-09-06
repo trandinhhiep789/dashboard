@@ -428,6 +428,7 @@ class EditCom extends React.Component {
                             controltype="InputControl"
                             rows={8}
                             maxSize={5800}
+                            value={""}
                             // readOnly={(DocumentTypeID == parseInt(keyUploadVideo) || DocumentTypeID == parseInt(keyUploadLink)) ? false : true}
                             // disabled={(DocumentTypeID == parseInt(keyUploadVideo) || DocumentTypeID == parseInt(keyUploadLink)) ? false : true}
                             classNameCustom="customcontrol"
