@@ -146,12 +146,19 @@ class EditCom extends React.Component {
 
         const strDecs =  MLObject.FileContent1;
 
-        if (MLObject.FileContent1.length > 2900) {
-            MLObject.FileContent1 = strDecs.substr(0, 2900);
-            MLObject.FileContent2 = strDecs.substr(2900, 2900)
+        const strDecs = MLObject.FileContent1;
+        if (strDecs.length > 0) {
+            if (strDecs.length > 2900) {
+                MLObject.FileContent1 = strDecs.substr(0, 2900);
+                MLObject.FileContent2 = strDecs.substr(2900, 2900)
+            }
+            else {
+                MLObject.FileContent1 = MLObject.FileContent1;
+                MLObject.FileContent2 = ""
+            }
         }
         else {
-            MLObject.FileContent1 = MLObject.FileContent1;
+            MLObject.FileContent1 = "";
             MLObject.FileContent2 = ""
         }
 
@@ -421,6 +428,7 @@ class EditCom extends React.Component {
                             controltype="InputControl"
                             rows={8}
                             maxSize={5800}
+                            value={""}
                             // readOnly={(DocumentTypeID == parseInt(keyUploadVideo) || DocumentTypeID == parseInt(keyUploadLink)) ? false : true}
                             // disabled={(DocumentTypeID == parseInt(keyUploadVideo) || DocumentTypeID == parseInt(keyUploadLink)) ? false : true}
                             classNameCustom="customcontrol"
