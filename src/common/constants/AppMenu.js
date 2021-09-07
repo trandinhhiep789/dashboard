@@ -636,6 +636,13 @@ const AppMenu = [
                     //     MenuIcon: '',
                     //     SubMenu: []
                     // },
+                    {
+                        MenuName: 'UserDebtLimit',
+                        MenuTitle: 'Hạn mức công nợ theo nhân viên',
+                        LinkTo: '/UserDebtLimit',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
 
 
 

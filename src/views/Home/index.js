@@ -203,6 +203,7 @@ import PnReceivableDetailReport from "../TMS/ReportShipmentOrder/PnReceivableDet
 import PNRCComputeSchedule from "../TMS/MD/PNRCComputeSchedule";
 import PNRCComputeLog from "../TMS/MD/PNRCComputeLog";
 import ConfirmReward from "../TMS/Reward/ConfirmReward"
+import UserDebtLimit from "../TMS/MD/UserDebtLimit";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -488,10 +489,10 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/PnReceivableDetail" component={PnReceivableDetail} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/AirConditionerMTOrderReport" component={AirConditionerMTOrderReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/PnReceivableDetailReport" component={PnReceivableDetailReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
-
                                     <PrivateRoute path="/PNRCComputeSchedule" component={PNRCComputeSchedule} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
-
                                     <PrivateRoute path="/PNRCComputeLog" component={PNRCComputeLog} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+
+                                    <PrivateRoute path="/UserDebtLimit" component={UserDebtLimit} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
