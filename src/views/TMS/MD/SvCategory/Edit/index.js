@@ -56,8 +56,8 @@ class EditCom extends React.Component {
         this.handleSubmitInsertEditSvCategoryProduct = this.handleSubmitInsertEditSvCategoryProduct.bind(this);
         this.handleSubmitSvCategoryProduct = this.handleSubmitSvCategoryProduct.bind(this);
         this.handleTreeSelectParentID = this.handleTreeSelectParentID.bind(this);
+        this.setDisableEditSvCategoryProduct = this.setDisableEditSvCategoryProduct.bind(this);
         this.showMessage = this.showMessage.bind(this);
-
     }
 
     componentDidMount() {
@@ -116,7 +116,7 @@ class EditCom extends React.Component {
             if (!apiResult.IsError) {
                 this.setState({
                     svCategoryInfo: apiResult.ResultObject,
-                    svCategoryProduct: !apiResult.ResultObject.lstSvCategory_Product ? [] : apiResult.ResultObject.lstSvCategory_Product
+                    svCategoryProduct: this.setDisableEditSvCategoryProduct(!apiResult.ResultObject.lstSvCategory_Product ? [] : apiResult.ResultObject.lstSvCategory_Product)
                 })
             } else {
                 this.addNotification(apiResult.Message, true);
@@ -157,20 +157,21 @@ class EditCom extends React.Component {
     }
 
     handleEditSvCategoryProduct(value, pkColumnName) {
-        const dataItem = this.state.svCategoryProduct.find(item => item.ProductID == value.pkColumnName[0].value);
-        const initData = {
-            Product: [{ ProductID: dataItem.ProductID, ProductName: dataItem.ProductName }],
-            OrderIndex: dataItem.OrderIndex,
-            Comments: dataItem.Comments
-        };
+        const selectedFound = this.state.svCategoryProduct.find(item => item.ProductID == value.pkColumnName[0].value);
+        const selectedItem = {
+            Product: [{ ProductID: selectedFound.ProductID, ProductName: selectedFound.ProductName }],
+            OrderIndex: selectedFound.OrderIndex,
+            Comments: selectedFound.Comments
+        }
 
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: "Chỉnh sửa sản phẩm/dịch vụ thuộc 1 danh mục dịch vụ",
             content: {
                 text: <SvCategoryProductModalCom
                     handleSubmit={this.handleSubmitInsertEditSvCategoryProduct}
-                    initData={initData}
-                    initProductID={value.pkColumnName[0].value}
+                    initDataGrid={this.state.svCategoryProduct}
+                    selectedItem={selectedItem}
+                    disableProduct={selectedFound.disableProduct}
                 />
             }
         });
@@ -182,6 +183,7 @@ class EditCom extends React.Component {
             content: {
                 text: <SvCategoryProductModalCom
                     handleSubmit={this.handleSubmitSvCategoryProduct}
+                    initDataGrid={this.state.svCategoryProduct}
                 />
             }
         });
@@ -255,29 +257,16 @@ class EditCom extends React.Component {
     }
 
     handleSubmitInsertEditSvCategoryProduct(data, initProductID) {
-        const uptSvCategoryProduct = this.state.svCategoryProduct.map((item, index) => {
-            if (item.ProductID == initProductID) {
-                return data;
-            } else {
-                return item;
-            }
-        })
-
         this.setState({
-            svCategoryProduct: uptSvCategoryProduct
+            svCategoryProduct: data
         })
 
         this.props.hideModal();
     }
 
     handleSubmitSvCategoryProduct(data) {
-        if (this.state.svCategoryProduct.find(item => item.ProductID == data.ProductID)) {
-            this.addNotification("Mã sản phẩm đã tồn tại", true);
-            return;
-        }
-
         this.setState({
-            svCategoryProduct: [...this.state.svCategoryProduct, data]
+            svCategoryProduct: data
         });
 
         this.props.hideModal();
@@ -320,6 +309,17 @@ class EditCom extends React.Component {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    setDisableEditSvCategoryProduct(data = []) {
+        const result = data.map(item => {
+            return {
+                ...item,
+                disableProduct: true
+            }
+        });
+
+        return result;
     }
 
     showMessage(message) {
