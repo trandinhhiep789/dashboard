@@ -121,7 +121,7 @@ export const AddElementList = [
         type: "checkbox",
         name: "chkIsActived",
         label: "Kích hoạt:",
-        value: false,
+        value: true,
         placeholder: "",
         icon: "",
         listoption: {},
@@ -408,7 +408,7 @@ export const DataGridColumnList = [
     // },
     {
         Name: "UpdatedDate",
-        Type: "date",
+        Type: "datetime",
         Caption: "Ngày cập nhật",
         DataSourceMember: "UpdatedDate",
         Width: 110

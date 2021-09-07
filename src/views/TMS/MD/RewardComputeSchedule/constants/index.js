@@ -405,7 +405,7 @@ export const DataGridColumnList = [
     // },
     {
         Name: "UpdatedDate",
-        Type: "date",
+        Type: "datetime",
         Caption: "Ngày cập nhật",
         DataSourceMember: "UpdatedDate",
         Width: 100

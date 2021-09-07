@@ -499,7 +499,7 @@ class Area_ProvinceCom extends React.Component {
                 MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
             });
 
-            let _deleteList = _DataSource.filter(item => item.AreaStoreCSID == MLObject.AreaStoreCSID);
+            let _deleteList = _DataSource.filter(item => item.ProvinceID == MLObject.ProvinceID);
             if (_deleteList && _deleteList.length > 0) {
                 _deleteList[0].DeletedUser = this.props.AppInfo.LoginInfo.Username;
                 listMLObject.push(_deleteList[0]);
