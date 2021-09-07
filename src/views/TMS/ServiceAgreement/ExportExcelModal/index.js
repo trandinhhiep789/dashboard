@@ -5,12 +5,16 @@ import * as XLSX from 'xlsx';
 import ReactNotification from "react-notifications-component";
 
 import {
-    DataAreaTemplateExport,
-    DataMasterTemplateExport,
-    DataStoreTemplateExport,
-    DataTemplateExportAbility2,
-    DataTemplateExportFeeAppendix2
-} from "../constants";
+    APIExportServiceAgreementAbility,
+    APIExportServiceAgreementArea,
+    APIExportServiceAgreementFeeAppendix,
+    APIExportServiceAgreementStore,
+    APIHostName,
+    InitSearchParams,
+    SearchAPIPath,
+} from '../constants';
+import { callFetchAPI } from "../../../../actions/fetchAPIAction";
+import { formatDate } from "../../../../common/library/CommonLib.js";
 
 class ExportExcelModalCom extends React.Component {
     constructor(props) {
@@ -33,23 +37,174 @@ class ExportExcelModalCom extends React.Component {
     }
 
     handleClickAbility() {
-        this.handleExportFileTemplate(DataTemplateExportAbility2, "Năng lực");
+        this.props.callFetchAPI(APIHostName, APIExportServiceAgreementAbility, this.props.searchParamater).then(apiResult => {
+            if (apiResult.IsError) {
+                this.addNotification(apiResult.Message, apiResult.IsError);
+            }
+            else {
+                const dataExport = apiResult.ResultObject.map((item) => {
+                    return {
+                        "Mã hợp đồng": item.ServiceAgreementID,
+                        "Số hợp đồng": item.ServiceAgreementNumber,
+                        "Loại mùa dịch vụ": item.ServiceSeasonTypeName,
+                        "Từ ngày": item.FromDate,
+                        "Đến ngày": item.ToDate,
+                        "Theo tháng": item.MonthlyAbilityValue,
+                        "Theo ngày": item.DailyAbilityValue
+                    }
+                });
+
+                this.handleExportFileTemplate(dataExport, "Năng lực");
+            }
+        })
     }
 
     handleClickFeeAppendix() {
-        this.handleExportFileTemplate(DataTemplateExportFeeAppendix2, "Phụ lục biểu phí");
+        this.props.callFetchAPI(APIHostName, APIExportServiceAgreementFeeAppendix, this.props.searchParamater).then(apiResult => {
+            if (apiResult.IsError) {
+                this.addNotification(apiResult.Message, apiResult.IsError);
+            }
+            else {
+                const dataExport = apiResult.ResultObject.map((item) => {
+                    return {
+                        "Mã hợp đồng": item.ServiceAgreementID,
+                        "Số hợp đồng": item.ServiceAgreementNumber,
+                        "Tên Phụ lục": item.FeeAppendixName,
+                        "Loại mùa dịch vụ": item.ServiceSeasonTypeName,
+                        "Bảng giá": item.PNServicePriceTableName,
+                        "Từ ngày": item.ApplyFromDate,
+                        "Đến ngày": item.ApplyToDate,
+                        "Thứ tự ưu tiên": item.PriorityIndex
+                    }
+                });
+
+                this.handleExportFileTemplate(dataExport, "Phụ lục biểu phí");
+            }
+        })
     }
 
     handleClickServiceAgreement() {
-        this.handleExportFileTemplate(DataMasterTemplateExport, "Danh sách hợp đồng dịch vụ");
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, this.props.searchParamater).then(apiResult => {
+            if (apiResult.IsError) {
+                this.addNotification(apiResult.Message, apiResult.IsError);
+            }
+            else {
+                const dataExport = apiResult.ResultObject.map((item, index) => {
+                    item.ExtendAgreement = item.ExtendedDate ? formatDate(item.ExtendedDate) : 'Chưa gia hạn';
+
+                    let currentDate = new Date();
+
+
+                    if (item.ExtendedDate != null) {
+                        const ExtendedDate = new Date(item.ExtendedDate);
+                        var timeDiff = Math.abs(currentDate.getTime() - ExtendedDate.getTime());
+                        var diffDays = parseInt((timeDiff / (1000 * 3600 * 24)));
+
+                        if (ExtendedDate.getTime() - currentDate.getTime() < 0) {
+                            item.StatusAgreement = "Hết hạn";
+                        }
+                        else {
+                            if (diffDays < 30) {
+                                item.StatusAgreement = `Còn ${diffDays} ngày`;
+                            }
+                            else {
+                                item.StatusAgreement = "Còn hạn";
+                            }
+                        }
+                    }
+                    else {
+
+                        const ExpiredDate = new Date(item.ExpiredDate);
+                        var timeDiff = Math.abs(currentDate.getTime() - ExpiredDate.getTime());
+                        var diffDays = parseInt((timeDiff / (1000 * 3600 * 24)));
+                        if (ExpiredDate.getTime() - currentDate.getTime() < 0) {
+                            item.StatusAgreement = "Hết hạn";
+                        }
+                        else {
+                            var timeDiff = Math.abs(currentDate.getTime() - ExpiredDate.getTime());
+                            var diffDays = parseInt((timeDiff / (1000 * 3600 * 24)));
+                            if (diffDays < 30) {
+                                item.StatusAgreement = `Còn ${diffDays} ngày`;
+                            }
+                            else {
+                                item.StatusAgreement = "Còn hạn";
+                            }
+                        }
+                    }
+
+
+                    let element = {
+                        "Mã hợp đồng": item.ServiceAgreementID,
+                        "Số hợp đồng": item.ServiceAgreementNumber,
+                        "Loại hợp đồng": item.ServiceTypeID + "-" + item.ServiceTypeName,
+                        "Loại dịch vụ": item.ServiceTypeName,
+                        "Đơn vị vận chuyển": item.PartnerID + "-" + item.PartnerName,
+                        "Người đại diện": item.DeputyUserName,
+                        "Ngày ký hợp đồng": formatDate(item.SignedDate, true),
+                        "Ngày hết hạn hợp đồng": formatDate(item.ExpiredDate, true),
+                        "Đã gia hạn hợp đồng": item.IsExtended == false ? 0 : 1,
+                        "Gia hạn đến ngày": formatDate(item.ExtendedDate, true),
+                        "Đã thanh lý hợp đồng": item.IsLiquidated == false ? 0 : 1,
+                        "Ngày thanh lý hợp đồng": formatDate(item.Liquidateddate, true),
+                        "Đã ký quỹ": item.IsDeposited == false ? 0 : 1,
+                        "Số tiền ký quỹ": item.dePoSitMoney,
+                        "Ngày ký quỹ": formatDate(item.dePOSitedDate, true),
+                        "Ghi chú ký quỹ": item.dePoSitNote,
+                        "Mô tả": item.Description,
+                    };
+
+                    return element;
+                });
+
+                this.handleExportFileTemplate(dataExport, "Danh sách hợp đồng dịch vụ");
+            }
+        });
     }
 
     handleClickServiceAgreementArea() {
-        this.handleExportFileTemplate(DataAreaTemplateExport, "Danh sách khu vực áp dụng hợp đồng");
+        this.props.callFetchAPI(APIHostName, APIExportServiceAgreementArea, this.props.searchParamater).then(apiResult => {
+            if (apiResult.IsError) {
+                this.addNotification(apiResult.Message, apiResult.IsError);
+            }
+            else {
+                const dataExport = apiResult.ResultObject.map((item) => {
+                    return {
+                        "Mã hợp đồng": item.ServiceAgreementID,
+                        "Số hợp đồng": item.ServiceAgreementNumber,
+                        "Mã khu vực": item.AreaID,
+                        "Tên khu vực": item.AreaName,
+                        "Ngày ký": item.SignedDate,
+                        "Kích hoạt": item.IsActived ? "Có" : "",
+                        "Hệ thống": item.IsSystem ? "Có" : ""
+                    }
+                });
+
+                this.handleExportFileTemplate(dataExport, "Danh sách khu vực áp dụng hợp đồng");
+            }
+        })
     }
 
     handleClickServiceAgreementStore() {
-        this.handleExportFileTemplate(DataStoreTemplateExport, "Danh sách kho áp dụng hợp đồng");
+        this.props.callFetchAPI(APIHostName, APIExportServiceAgreementStore, this.props.searchParamater).then(apiResult => {
+            if (apiResult.IsError) {
+                this.addNotification(apiResult.Message, apiResult.IsError);
+            }
+            else {
+                const dataExport = apiResult.ResultObject.map((item) => {
+                    return {
+                        "Mã hợp đồng": item.ServiceAgreementID,
+                        "Số hợp đồng": item.ServiceAgreementNumber,
+                        "Mã kho": item.StoreID,
+                        "Tên kho": item.StoreName,
+                        "Ngày ký": item.SignedDate,
+                        "Kích hoạt": item.IsActived ? "Có" : "",
+                        "Hệ thống": item.IsSystem ? "Có" : ""
+                    }
+                });
+
+                this.handleExportFileTemplate(dataExport, "Danh sách kho áp dụng hợp đồng");
+            }
+        })
     }
 
     handleExportFileTemplate(dataTemplate, fileName) {
@@ -131,4 +286,16 @@ class ExportExcelModalCom extends React.Component {
     }
 }
 
-export default connect(null, null)(ExportExcelModalCom);
+ExportExcelModalCom.defaultProps = {
+    searchParamater: InitSearchParams
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        callFetchAPI: (hostname, hostURL, postData) => {
+            return dispatch(callFetchAPI(hostname, hostURL, postData));
+        }
+    };
+};
+
+export default connect(null, mapDispatchToProps)(ExportExcelModalCom);

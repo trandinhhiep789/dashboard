@@ -404,7 +404,7 @@ class DataGridCom extends Component {
         const fileExtension = '.xlsx';
         let result;
 
-        if (this.props.isPaginationServer) {
+        if (this.props.isPaginationServer || this.props.isCustomExportFile) {
             this.props.onExportFile()
         } else {
             if (this.props.DataExport.length == 0) {
@@ -1069,8 +1069,10 @@ class DataGridCom extends Component {
 }
 
 DataGridCom.defaultProps = {
+    isCustomExportFile: false,
     isCustomExportFileTemplate: false,
-    isCustomImportFile: false
+    isCustomImportFile: false,
+    isPaginationServer: false
 };
 
 const mapStateToProps = state => {
