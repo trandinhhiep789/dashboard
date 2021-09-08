@@ -96,7 +96,7 @@ class SearchCom extends React.Component {
             if (!apiResult.IsError) {
                 let tempData = apiResult.ResultObject.map((item, index) => {
                     item.value = item.TMSConfirmRewardID,
-                        item.label = "Ngày Thưởng: " + formatDate(item.RewardDate, true) + ", Ngày chốt: " + formatDate(item.ConfirmDate, true),
+                        item.label = "Ngày Thưởng: " + formatDate(item.RewardDate, false) + ", Ngày chốt: " + formatDate(item.ConfirmDate, false),
                         item.name = item.TMSConfirmRewardID
                     return item
                 })
