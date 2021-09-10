@@ -184,7 +184,7 @@ export const DataGridColumnItemListRPTDetail = [
     {
         Name: "MainGroupName",
         Type: "text",
-        Caption: "Nghành hàng",
+        Caption: "Ngành hàng",
         DataSourceMember: "MainGroupName",
         Width: 100
     },

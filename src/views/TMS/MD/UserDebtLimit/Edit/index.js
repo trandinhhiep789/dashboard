@@ -25,11 +25,12 @@ import { callGetCache, callClearLocalCache, callGetUserCache } from "../../../..
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { ERPUSERCACHE_FUNCTION } from "../../../../../constants/keyCache";
-import { GET_CACHE_USER_FUNCTION_LIST, USER_LIMIT_VIEW, USER_LIMIT_ADD } from "../../../../../constants/functionLists";
+import { GET_CACHE_USER_FUNCTION_LIST, USER_LIMIT_VIEW, USER_LIMIT_ADD, USERDEBTLIMIT_VIEW, USERDEBTLIMIT_ADD } from "../../../../../constants/functionLists";
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 import readXlsxFile from 'read-excel-file'
 import { formatDate } from "../../../../../common/library/CommonLib";
+import { numberDecimalWithComma } from "../../../../../utils/function";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -64,17 +65,17 @@ class EditCom extends React.Component {
     checkAddPermission() {
         this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
             if (result && !result.IsError && result.ResultObject) {
-                let _view = result.ResultObject.CacheData.filter(x => x.FunctionID == USER_LIMIT_VIEW);
+                let _view = result.ResultObject.CacheData.filter(x => x.FunctionID == USERDEBTLIMIT_VIEW);
                 if (_view && _view.length > 0) {
                     this.setState({ IsAllowView: true });
                 }
 
-                let _update = result.ResultObject.CacheData.filter(x => x.FunctionID == USER_LIMIT_ADD);
+                let _update = result.ResultObject.CacheData.filter(x => x.FunctionID == USERDEBTLIMIT_ADD);
                 if (_update && _update.length > 0) {
                     this.setState({ IsAllowUpdate: true });
                 }
 
-                let _export = result.ResultObject.CacheData.filter(x => x.FunctionID == USER_LIMIT_VIEW);
+                let _export = result.ResultObject.CacheData.filter(x => x.FunctionID == USERDEBTLIMIT_VIEW);
                 if (_export && _export.length > 0) {
                     this.setState({ IsAllowExport: true });
                 }
@@ -151,8 +152,8 @@ class EditCom extends React.Component {
                 } else {
                     let xemayvalue = dataResult.filter(x => x.CarrierTypeID == 1)[0].LimitValue;
                     let xetaivalue = dataResult.filter(x => x.CarrierTypeID == 2)[0].LimitValue;
-                    document.getElementsByName("xemay")[0].value = xemayvalue;
-                    document.getElementsByName("xetai")[0].value = xetaivalue;
+                    document.getElementsByName("xemay")[0].value = numberDecimalWithComma(xemayvalue);
+                    document.getElementsByName("xetai")[0].value = numberDecimalWithComma(xetaivalue);
                 }
 
                 this.setState({
@@ -201,17 +202,8 @@ class EditCom extends React.Component {
         // let name = e.target.name.split("-")[0];
         // let index = e.target.name.split("-")[1];
         let { DataSource } = this.state;
-        if (name == "xemay") {
-            let xemay = { UserName: this.state.Username, CarrierTypeID: 1, LimitValue: inputvalue };
-            const index = DataSource.findIndex(item => item.CarrierTypeID == 1);
-            if (index >= 0) {
-                DataSource.splice(index, 1);
-            }
-
-            DataSource.push(xemay);
-
-        }
-
+        
+        inputvalue = parseFloat(inputvalue.replace(/,/g, ''));
         if (name == "xemay") {
             let xemay = { UserName: this.state.Username, CarrierTypeID: 1, LimitValue: inputvalue };
             const index = DataSource.findIndex(item => item.CarrierTypeID == 1);
@@ -226,6 +218,11 @@ class EditCom extends React.Component {
                 DataSource.splice(index, 1);
             }
             DataSource.push(xetai);
+        }
+
+        if (name == "xemay" || name == "xetai") {
+            document.getElementsByName(name)[0].value = numberDecimalWithComma(inputvalue);
+
         }
 
         // if (e.target.type.toString().indexOf("select") !== -1) {
@@ -280,6 +277,8 @@ class EditCom extends React.Component {
             if (data.length > 0) {
                 data[0].CreatedUser = this.props.AppInfo.LoginInfo.Username;
                 data[0].LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+            }else{
+                return;
             }
 
 
@@ -288,11 +287,16 @@ class EditCom extends React.Component {
                 return;
             }
 
+            const confir = confirm("Nếu có phát sinh rủi ro thất thoát công nợ, Trưởng Phòng chịu trách nhiệm hoàn toàn tiền Công ty theo quy định.");
+            if (confir == 1) {
+                this.props.callFetchAPI(APIHostName, AddAPIPath, data).then(apiResult => {
+                    this.addNotification(apiResult.Message, apiResult.IsError);
+                });
+            }
+
             //console.log("this.state.DataSource", this.state.DataSource);
 
-            this.props.callFetchAPI(APIHostName, AddAPIPath, data).then(apiResult => {
-                this.addNotification(apiResult.Message, apiResult.IsError);
-            });
+
 
             // let countSelected = 0;
             // countSelected = data.filter(item => item.IsSelected == true && (item.RewardPositionID === 1 || item.RewardPositionID === 5)).length;

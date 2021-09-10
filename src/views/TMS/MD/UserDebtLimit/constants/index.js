@@ -11,7 +11,7 @@ export const GetAllByUserNameAPIPath = "api/UserDebtLimit/GetAllByUserName";
 export const GetAllAPIPath = "api/UserDebtLimit/GeAllUserRewardPosition";
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Vị trí thưởng của một nhân viên" }
+    { Link: "", Title: "Hạn mức công nợ theo nhân viên" }
 ];
 
 
