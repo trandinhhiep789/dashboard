@@ -5,6 +5,9 @@ export const API_SvCategory_Load = "api/svCategory/Load";
 export const API_SvCategory_Search = "api/svCategory/Search";
 export const API_SvCategory_Update = "api/svCategory/Update";
 export const API_SvCategoryType_Search = "api/svCategoryType/Search";
+export const API_SvCategoryProduct_Delete = "api/svCategory_Product/Delete";
+export const API_SvCategoryProduct_Add = "api/svCategory_Product/Add";
+export const API_SvCategoryProduct_Update = "api/svCategory_Product/Update";
 
 export const initSearchData = [
     {
@@ -92,6 +95,13 @@ export const listColumn_SvCategory = [
 ];
 
 export const listColumn_SvCategoryProduct = [
+    {
+        Name: "chkSelect",
+        Type: "checkbox",
+        Caption: "Chọn",
+        DataSourceMember: "ProductID",
+        Width: 60,
+    },
     {
         Name: "ProductID",
         Type: "text",

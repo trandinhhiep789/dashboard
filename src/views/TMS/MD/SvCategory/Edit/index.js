@@ -7,13 +7,16 @@ import {
     API_SvCategory_Load,
     API_SvCategory_Search,
     API_SvCategory_Update,
+    API_SvCategoryProduct_Add,
+    API_SvCategoryProduct_Delete,
+    API_SvCategoryProduct_Update,
     API_SvCategoryType_Search,
     APIHostName,
     initSearchData,
     listColumn_SvCategoryProduct,
     listelement_Add,
     MLObjectDefinition_Add,
-    PagePath_Edit
+    PagePath_Edit,
 } from "../constants";
 
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
@@ -47,7 +50,7 @@ class EditCom extends React.Component {
         this.fetchsvCategory = this.fetchsvCategory.bind(this);
         this.fetchSvCategoryInfo = this.fetchSvCategoryInfo.bind(this);
         this.fetchsvCategoryType = this.fetchsvCategoryType.bind(this);
-        this.handelDeleteSvCategoryProduct = this.handelDeleteSvCategoryProduct.bind(this);
+        this.handleDeleteSvCategoryProduct = this.handleDeleteSvCategoryProduct.bind(this);
         this.handleEditSvCategoryProduct = this.handleEditSvCategoryProduct.bind(this);
         this.handleInsertSvCategoryProduct = this.handleInsertSvCategoryProduct.bind(this);
         this.handleSelectedFile = this.handleSelectedFile.bind(this);
@@ -56,7 +59,6 @@ class EditCom extends React.Component {
         this.handleSubmitInsertEditSvCategoryProduct = this.handleSubmitInsertEditSvCategoryProduct.bind(this);
         this.handleSubmitSvCategoryProduct = this.handleSubmitSvCategoryProduct.bind(this);
         this.handleTreeSelectParentID = this.handleTreeSelectParentID.bind(this);
-        this.setDisableEditSvCategoryProduct = this.setDisableEditSvCategoryProduct.bind(this);
         this.showMessage = this.showMessage.bind(this);
     }
 
@@ -116,7 +118,7 @@ class EditCom extends React.Component {
             if (!apiResult.IsError) {
                 this.setState({
                     svCategoryInfo: apiResult.ResultObject,
-                    svCategoryProduct: this.setDisableEditSvCategoryProduct(!apiResult.ResultObject.lstSvCategory_Product ? [] : apiResult.ResultObject.lstSvCategory_Product)
+                    svCategoryProduct: apiResult.ResultObject.lstSvCategory_Product
                 })
             } else {
                 this.addNotification(apiResult.Message, true);
@@ -137,19 +139,29 @@ class EditCom extends React.Component {
         });
     }
 
-    handelDeleteSvCategoryProduct(listDeleteObject, dataSource, ListDataSourceMember) {
+    handleDeleteSvCategoryProduct(listDeleteID, ListPKColumnName) {
         try {
-            const uptListDelete = listDeleteObject.map(item => {
-                return item[0].value;
+            const uptListDelete = listDeleteID.map(item => {
+                return {
+                    svCategoryID: parseInt(this.props.match.params.id),
+                    ProductID: item.pkColumnName[0].value
+                }
             })
 
-            const uptSvCategoryProduct = this.state.svCategoryProduct.filter(item => {
-                return !uptListDelete.find(item1 => item1 == item.ProductID);
+            this.props.callFetchAPI(APIHostName, API_SvCategoryProduct_Delete, uptListDelete).then(apiResult => {
+                if (apiResult.IsError) {
+                    this.addNotification(apiResult.Message, true);
+                } else {
+                    const uptSvCategoryProduct = this.state.svCategoryProduct.filter(item => {
+                        return !uptListDelete.find(item1 => item1.ProductID == item.ProductID);
+                    })
+
+                    this.setState({
+                        svCategoryProduct: uptSvCategoryProduct
+                    })
+                }
             });
 
-            this.setState({
-                svCategoryProduct: uptSvCategoryProduct
-            })
         } catch (error) {
             console.log(error);
             this.addNotification("Lỗi xóa", true);
@@ -169,9 +181,9 @@ class EditCom extends React.Component {
             content: {
                 text: <SvCategoryProductModalCom
                     handleSubmit={this.handleSubmitInsertEditSvCategoryProduct}
-                    initDataGrid={this.state.svCategoryProduct}
+                    initDataGrid={this.state.svCategoryProduct ? this.state.svCategoryProduct : []}
                     selectedItem={selectedItem}
-                    disableProduct={selectedFound.disableProduct}
+                    disableProduct={true}
                 />
             }
         });
@@ -183,7 +195,7 @@ class EditCom extends React.Component {
             content: {
                 text: <SvCategoryProductModalCom
                     handleSubmit={this.handleSubmitSvCategoryProduct}
-                    initDataGrid={this.state.svCategoryProduct}
+                    initDataGrid={this.state.svCategoryProduct ? this.state.svCategoryProduct : []}
                 />
             }
         });
@@ -235,7 +247,6 @@ class EditCom extends React.Component {
         const uptMLObject = {
             ...MLObject,
             LoginLogID: JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID,
-            lstSvCategory_Product: this.state.svCategoryProduct,
             OrderIndex: parseInt(MLObject.OrderIndex),
             svCategoryID: parseInt(this.props.match.params.id),
             svCategoryTypeID: parseInt(MLObject.svCategoryTypeID),
@@ -256,15 +267,35 @@ class EditCom extends React.Component {
         });
     }
 
-    handleSubmitInsertEditSvCategoryProduct(data, initProductID) {
-        this.setState({
-            svCategoryProduct: data
-        })
+    handleSubmitInsertEditSvCategoryProduct(data, uptItem) {
+        this.props.callFetchAPI(APIHostName, API_SvCategoryProduct_Update, uptItem).then(apiResult => {
+            if (apiResult.IsError) {
+                this.addNotification(apiResult.Message, true);
+            } else {
+                this.setState({
+                    svCategoryProduct: data
+                })
+            }
+        });
 
         this.props.hideModal();
     }
 
-    handleSubmitSvCategoryProduct(data) {
+    handleSubmitSvCategoryProduct(data, newSvCategoryProduct) {
+        const uptNewSvCategoryProduct = {
+            ...newSvCategoryProduct,
+            svCategoryID: parseInt(this.props.match.params.id)
+        }
+        this.props.callFetchAPI(APIHostName, API_SvCategoryProduct_Add, uptNewSvCategoryProduct).then(apiResult => {
+            if (apiResult.IsError) {
+                this.addNotification(apiResult.Message, true);
+            } else {
+                this.setState({
+                    svCategoryProduct: data
+                })
+            }
+        });
+
         this.setState({
             svCategoryProduct: data
         });
@@ -311,17 +342,6 @@ class EditCom extends React.Component {
         }
     }
 
-    setDisableEditSvCategoryProduct(data = []) {
-        const result = data.map(item => {
-            return {
-                ...item,
-                disableProduct: true
-            }
-        });
-
-        return result;
-    }
-
     showMessage(message) {
         ModalManager.open(
             <MessageModal
@@ -356,11 +376,14 @@ class EditCom extends React.Component {
                         <DataGrid
                             dataSource={this.state.svCategoryProduct}
                             headingTitle={"Danh sách sản phẩm/dịch vụ thuộc 1 danh mục dịch vụ"}
-                            IDSelectColumnName={"ProductID"}
+                            IDSelectColumnName={"chkSelect"}
                             IsAutoPaging={true}
                             IsCustomAddLink={true}
+                            IsDelete={true}
                             IsShowButtonDelete={false}
+                            IsShowButtonDelete={true}
                             listColumn={listColumn_SvCategoryProduct}
+                            onDeleteClick={this.handleDeleteSvCategoryProduct}
                             onInsertClick={this.handleInsertSvCategoryProduct}
                             onInsertClickEdit={this.handleEditSvCategoryProduct}
                             PKColumnName={"ProductID"}

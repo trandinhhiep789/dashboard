@@ -130,14 +130,14 @@ class SvCategoryProductModalCom extends React.Component {
 
         if (this.state.selectedIndex == -1) { //modal add
             if (!this.props.initDataGrid.find(item => item.ProductID == MLObject.ProductID[0].ProductID)) {
-                this.props.handleSubmit([
-                    ...this.props.initDataGrid,
-                    {
-                        ...MLObject.ProductID[0],
-                        OrderIndex: this.state.dataSubmit.OrderIndex,
-                        Comments: this.state.dataSubmit.Comments
-                    }
-                ])
+
+                const newSvCategoryProduct = {
+                    ...MLObject.ProductID[0],
+                    OrderIndex: this.state.dataSubmit.OrderIndex,
+                    Comments: this.state.dataSubmit.Comments
+                }
+
+                this.props.handleSubmit([...this.props.initDataGrid, newSvCategoryProduct], newSvCategoryProduct)
             } else {
                 this.addNotification("Mã sản phẩm đã tồn tại", true);
             }
@@ -145,19 +145,22 @@ class SvCategoryProductModalCom extends React.Component {
             const tempInitDataGrid = this.props.initDataGrid.filter((item, index) => index != this.state.selectedIndex);
 
             if (!tempInitDataGrid.find(item => item.ProductID == MLObject.ProductID[0].ProductID)) {
+                let newSvCategoryProduct = {};
+
                 const uptInitDataGrid = this.props.initDataGrid.map((item, index) => {
                     if (index == this.state.selectedIndex) {
-                        return {
-                            ...MLObject.ProductID[0],
+                        newSvCategoryProduct = {
+                            ...item,
                             OrderIndex: this.state.dataSubmit.OrderIndex,
                             Comments: this.state.dataSubmit.Comments
                         }
+                        return newSvCategoryProduct
                     } else {
                         return item;
                     }
                 });
 
-                this.props.handleSubmit(uptInitDataGrid);
+                this.props.handleSubmit(uptInitDataGrid, newSvCategoryProduct);
             } else {
                 this.addNotification("Mã sản phẩm đã tồn tại", true);
             }
