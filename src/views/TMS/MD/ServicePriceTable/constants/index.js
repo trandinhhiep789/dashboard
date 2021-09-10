@@ -185,7 +185,7 @@ export const DataGridColumnSPTDetailItemList = [
     {
         Name: "MainGroupFullName",
         Type: "text",
-        Caption: "Nghành hàng",
+        Caption: "Ngành hàng",
         DataSourceMember: "MainGroupFullName",
         Width: 100
     },
