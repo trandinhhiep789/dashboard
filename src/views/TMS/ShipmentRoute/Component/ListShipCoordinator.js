@@ -359,14 +359,14 @@ class ListShipCoordinatorCom extends Component {
         this.state.ShipmentOrder.map((row, indexRow) => {
             if (this.state.objCoordinator.IsRoute == true && row.CarrierTypeID != this.state.ShipmentOrder[0].CarrierTypeID) {
                 //  this.addNotification("không cùng phương tiện giao hàng", true);
-                const validationObject = { IsValidatonError: true, ValidationErrorMessage: "Vui lòng chọn phương tiện" };
+                const validationObject = { IsValidatonError: true, ValidationErrorMessage: "Vui lòng chọn lại, bắt buộc cùng loại phương tiện trong một tuyến." };
                 elementobject = Object.assign({}, elementobject, { ["CarrierTypeID-" + indexRow]: validationObject });
                 return;
             }
             if (this.state.objCoordinator.IsRoute == true) {
                 if (this.checkDeliverUser(row.ShipmentOrder_DeliverUserList, this.state.ShipmentOrder[0].ShipmentOrder_DeliverUserList) == false) {
                     //   this.addNotification("không cùng nhân viên giao hàng", true);
-                    const validationObject = { IsValidatonError: true, ValidationErrorMessage: "không cùng nhân viên giao hàng" };
+                    const validationObject = { IsValidatonError: true, ValidationErrorMessage: "Vui lòng chọn lại, bắt buộc cùng nhân viên giao hàng trong một tuyến." };
                     elementobject = Object.assign({}, elementobject, { ["ShipmentOrder_DeliverUserList-" + indexRow]: validationObject });
                     return;
                 }
@@ -973,7 +973,7 @@ class ListShipCoordinatorCom extends Component {
                                 <div className="nav-group-action">
                                     {ShipmentOrder.length > 1 ?
                                         (
-                                            <button className="btn btn-w-md btn-round btn-info" type="button" onClick={this.handleDistances.bind(this)}>Tính khoản cách</button>
+                                            <button className="btn btn-w-md btn-round btn-info" type="button" onClick={this.handleDistances.bind(this)}>Tính khoảng cách</button>
                                         ) : ""
                                     }
                                     <button type="button" onClick={() => this.HandleChangeGird(1)}><i className="ti-menu-alt"></i></button>

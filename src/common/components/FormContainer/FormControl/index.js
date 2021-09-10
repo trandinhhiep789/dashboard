@@ -1240,6 +1240,10 @@ class TextArea extends React.Component {
         if (this.props.classNameCustom != null || this.props.classNameCustom != undefined) {
             formRowClassName += this.props.classNameCustom;
         }
+        if (this.props.validationErrorMessage != "" && this.props.validationErrorMessage != undefined) {
+            className += " is-invalid";
+        }
+
         return (
 
             <div className={formRowClassName} >
@@ -1260,6 +1264,7 @@ class TextArea extends React.Component {
                         disabled={this.props.disabled}
                         maxLength={this.props.maxSize}
                     />
+                  <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.props.validationErrorMessage}</li></ul></div>
                 </div>
             </div>
 

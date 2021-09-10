@@ -10,6 +10,7 @@ import FormControl from "../../../../common/components/FormContainer/FormControl
 import { MessageModal } from "../../../../common/components/Modal";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_SEARCH, MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_CONFIRMATION, MODAL_TYPE_CONFIRMATIONNEW } from '../../../../constants/actionTypes';
+import ListShipCoordinator from '../Component/ListShipCoordinator.js';
 import Select from 'react-select';
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
@@ -655,6 +656,23 @@ class InfoCoordinatorCom extends Component {
         }
 
     }
+
+    handleCancelDeliveryNew() {
+
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Điều phối nhân viên ',
+            content: {
+                text: <ListShipCoordinator
+                    ShipmentOrderID={0}
+                    InfoCoordinator={[]}
+                    IsUserCoordinator={true}
+                    IsCoordinator={true}
+                    IsCancelDelivery={true}
+                />
+            },
+            maxWidth: '1300px'
+        });
+    }
     //End chuyển kho điều phối
 
     render() {
@@ -691,7 +709,7 @@ class InfoCoordinatorCom extends Component {
             IsCoordinatorNew = true;
             IsUserCoordinatorNew = true;
         }
-        
+
         return (
             <div className="card">
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -919,7 +937,7 @@ class InfoCoordinatorCom extends Component {
                             }
 
                             {
-                                this.props.IsCancelDelivery == true ? <button className="btn btnDelivery mr-10" type="submit" onClick={this.handleCancelDelivery}><span className="fa fa-remove"> Hủy giao hàng</span></button> : <button className="btn btnDelivery mr-10" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-remove"> Hủy giao hàng</span></button>
+                                this.props.IsCancelDelivery == true ? <button className="btn btnDelivery mr-10" type="submit" onClick={this.handleCancelDelivery.bind(this)}><span className="fa fa-remove"> Hủy giao hàng</span></button> : <button className="btn btnDelivery mr-10" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-remove"> Hủy giao hàng</span></button>
                             }
                             {
                                 this.props.IsCoordinator == true ? <button className="btn btnEditCard mr-10" type="submit" onClick={this.handleCoordinatorStore.bind(this)}>Chuyển kho điều phối</button> : <button className="btn btnEditCard mr-10" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-edit">Chuyển kho điều phối</span></button>
