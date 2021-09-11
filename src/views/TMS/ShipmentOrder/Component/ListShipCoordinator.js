@@ -22,7 +22,7 @@ class ListShipCoordinatorCom extends Component {
 
         this.state = {
             ShipmentOrderID: this.props.ShipmentOrderID,
-            InfoCoordinator:this.props.InfoCoordinator,
+            InfoCoordinator: this.props.InfoCoordinator,
             objCoordinator: { CancelDeliveryReasonID: -1, CancelDeliveryUser: "", CancelDeliveryReasonNote: "" },
             ErrorCoordinator: { CancelDeliveryReasonID: "", CancelDeliveryUser: "", CancelDeliveryReasonNote: "" },
             CallAPIMessage: "",
@@ -35,10 +35,23 @@ class ListShipCoordinatorCom extends Component {
 
     handleOnValueChange(name, value) {
 
-        let { objCoordinator, ErrorCoordinator } = this.state;
+        let { objCoordinator, ErrorCoordinator, InfoCoordinator } = this.state;
         objCoordinator[name] = value;
         if (name == "CancelDeliveryReasonID" && value == -1) {
             ErrorCoordinator[name] = "Vui lòng chọn lý do hủy giao"
+        }
+        else if (name == "CancelDeliveryUser") {
+            if (value == "") {
+                ErrorCoordinator[name] = "Vui lòng chọn nhân viên yêu cầu";
+            }
+            else {
+                if (InfoCoordinator.DeliverUserLst != "" && InfoCoordinator.DeliverUserLst.includes(value.value) == false) {
+                    ErrorCoordinator[name] = "Vui lòng chọn nhân viên yêu cầu đúng với nhân viên giao hàng";
+                }
+                else {
+                    ErrorCoordinator[name] = ""
+                }
+            }
         }
         else if (name == "CancelDeliveryReasonNote" && (value == "" || value.length == 0)) {
             ErrorCoordinator[name] = "Vui lòng nhập nội dung"
@@ -72,14 +85,18 @@ class ListShipCoordinatorCom extends Component {
 
     handleCancelDeliveryInsert() {
 
-        let { objCoordinator, ErrorCoordinator ,ShipmentOrderID} = this.state;
+        let { objCoordinator, ErrorCoordinator, ShipmentOrderID, InfoCoordinator } = this.state;
         if (objCoordinator.CancelDeliveryReasonID == -1) {
             ErrorCoordinator.CancelDeliveryReasonID = "Vui lòng chọn lý do hủy giao";
         }
         if (objCoordinator.CancelDeliveryUser == "") {
             ErrorCoordinator.CancelDeliveryUser = "Vui lòng chọn nhân viên yêu cầu";
-
         }
+
+        if (InfoCoordinator.DeliverUserLst != "" && InfoCoordinator.DeliverUserLst.includes(objCoordinator.CancelDeliveryUser.value) == false) {
+            ErrorCoordinator[name] = "Vui lòng chọn nhân viên yêu cầu đúng với nhân viên giao hàng";
+        }
+
         if (objCoordinator.CancelDeliveryReasonNote == "" || objCoordinator.CancelDeliveryReasonNote.length == 0 || String(objCoordinator.CancelDeliveryReasonNote).trim() == "") {
             ErrorCoordinator.CancelDeliveryReasonNote = "Vui lòng nhập nội dung";
         }
@@ -87,8 +104,8 @@ class ListShipCoordinatorCom extends Component {
             ErrorCoordinator, ErrorCoordinator
         })
         if (ErrorCoordinator.CancelDeliveryReasonID == "" && ErrorCoordinator.CancelDeliveryUser == "" && ErrorCoordinator.CancelDeliveryReasonNote == "") {
-            let ShipmentOrder ={};
-            ShipmentOrder.ShipmentOrderID=ShipmentOrderID;
+            let ShipmentOrder = {};
+            ShipmentOrder.ShipmentOrderID = ShipmentOrderID;
             ShipmentOrder.CancelDeliveryReasonID = objCoordinator.CancelDeliveryReasonID;
             ShipmentOrder.CancelDeliveryUser = objCoordinator.CancelDeliveryUser.value;
             ShipmentOrder.CancelDeliveryReasonNote = objCoordinator.CancelDeliveryReasonNote;
@@ -235,8 +252,8 @@ class ListShipCoordinatorCom extends Component {
 
 
     render() {
-        let { objCoordinator, ErrorCoordinator,InfoCoordinator } = this.state;
-         
+        let { objCoordinator, ErrorCoordinator, InfoCoordinator } = this.state;
+
         const DataGridColumnItemList = [
             {
                 name: "ShipmentOrderID",
@@ -357,6 +374,7 @@ class ListShipCoordinatorCom extends Component {
             //     iputpop: false
             // }
         ];
+        console.log("InfoCoordinator", InfoCoordinator)
 
         return (
             <div className="card modalForm">
@@ -514,7 +532,7 @@ class ListShipCoordinatorCom extends Component {
                                     </table>
                                 </div>
                             </div>) : ""}
-                   
+
                     </div>
                 </div>
                 <div className="modal-footer">
