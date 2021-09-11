@@ -29,10 +29,8 @@ class InfoCoordinatorCom extends Component {
         this.handleValueChange = this.handleValueChange.bind(this);
         this.handleValueChange1 = this.handleValueChange1.bind(this);
         this.handleOnValueChange = this.handleOnValueChange.bind(this);
-
         this.handleOnValueChangeDeliverUser = this.handleOnValueChangeDeliverUser.bind(this);
         this.handleCancelDelivery = this.handleCancelDelivery.bind(this);
-        this.handleCancelDeliveryInsert = this.handleCancelDeliveryInsert.bind(this);
 
         this.state = {
             ShipmentOrder: this.props.InfoCoordinator,
@@ -110,122 +108,6 @@ class InfoCoordinatorCom extends Component {
                 ShipmentOrder: nextProps.InfoCoordinator
             })
         }
-    }
-
-    handleValueCancelDeliveryReason(selectedOption) {
-        let validationErrorCancelDeliveryReason = null
-        if (selectedOption.value == undefined || selectedOption.value == -1) {
-            validationErrorCancelDeliveryReason = "Vui lòng chọn lý do hủy giào"
-        }
-
-        this.setState({ selectedOption: selectedOption, validationErrorCancelDeliveryReason: validationErrorCancelDeliveryReason }, () => {
-            this.openCancelDeliveryModal();
-        });
-
-    }
-    handleValueCancelDeliveryReasonNote(e) {
-        let value = e.target.value;
-        let { validationCancelDeliveryReasonNote } = this.state;
-        if (value == undefined || value.length == 0 || String(value).trim() == "") {
-            validationCancelDeliveryReasonNote = "Vui lòng nhập nội dung"
-        }
-        else {
-            validationCancelDeliveryReasonNote = null
-        }
-
-
-        this.setState({ CancelDeliveryReasonNote: value, validationCancelDeliveryReasonNote: validationCancelDeliveryReasonNote }, () => {
-            this.openCancelDeliveryModal();
-        });
-
-    }
-
-    handleCancelDelivery() {
-        this.openCancelDeliveryModal();
-    }
-
-    openCancelDeliveryModal() {
-        let formGroupclassName = "form-group col-md-9";
-        let selectclassName = "form-control form-control-sm";
-        if (this.state.validationCancelDeliveryReasonNote != null) {
-            if (this.state.validationCancelDeliveryReasonNote.length > 0) {
-                formGroupclassName += " has-error has-danger";
-                selectclassName += " is-invalid";
-            }
-        }
-        ModalManager.open(
-            <ModelContainer
-                title="Thông tin hủy giao hàng"
-                name=""
-                content={"Cập nhật loại đơn vị thành công!"} onRequestClose={() => false}
-                onChangeModal={this.handleCancelDeliveryInsert}  >
-                <div className="form-row">
-                    <div className="form-group col-md-3">
-                        <label className="col-form-label 6">Lý do hủy giao hàng<span className="text-danger">*</span></label>
-                    </div>
-                    <div className="form-group col-md-9">
-                        <div className="form-group-input-select">
-                            <Select
-                                value={this.state.selectedOption}
-                                name={"CancelDeliveryReasonID"}
-                                onChange={this.handleValueCancelDeliveryReason.bind(this)}
-                                options={this.state.CANCELDELIVERYREASON}
-                                isMulti={false}
-                                isSearchable={true}
-                                className={(this.state.validationErrorCancelDeliveryReason != null ? "react-select is-invalid" : "react-select")}
-                                placeholder="--Vui lòng chọn--"
-                            />
-                            <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.state.validationErrorCancelDeliveryReason}</li></ul></div>
-                        </div>
-                    </div>
-                </div>
-                <div className="form-row">
-                    <div className="form-group col-md-3">
-                        <label className="col-form-label bold">Nội dung hủy giao hàng <span className="text-danger"> *</span></label>
-                    </div>
-                    <div className={formGroupclassName}>
-                        <textarea className={selectclassName} maxLength={1950}
-                            rows="5" cols="50" name="Title"
-                            value={this.state.CancelDeliveryReasonNote}
-                            onChange={this.handleValueCancelDeliveryReasonNote.bind(this)}
-                            placeholder="Nội dung" />
-                        <div className="invalid-feedback"><ul className="list-unstyled"><li>{this.state.validationCancelDeliveryReasonNote}</li></ul></div>
-                    </div>
-                </div>
-            </ModelContainer>
-        );
-    }
-
-    handleCancelDeliveryInsert() {
-
-        let { ShipmentOrder, selectedOption, CancelDeliveryReasonNote, validationErrorCancelDeliveryReason, validationCancelDeliveryReasonNote } = this.state;
-        if (selectedOption.value == undefined || selectedOption.length == 0) {
-            validationErrorCancelDeliveryReason = "Vui lòng chọn lý do hủy giao"
-            this.setState({ validationErrorCancelDeliveryReason: validationErrorCancelDeliveryReason }, () => {
-                this.openCancelDeliveryModal();
-            });
-        }
-        else if (CancelDeliveryReasonNote == undefined || CancelDeliveryReasonNote.length == 0 || String(CancelDeliveryReasonNote).trim() == "") {
-            validationCancelDeliveryReasonNote = "Vui lòng nhập nội dung"
-            this.setState({ validationCancelDeliveryReasonNote: validationCancelDeliveryReasonNote }, () => {
-                this.openCancelDeliveryModal();
-            });
-        }
-        else {
-            ShipmentOrder.CancelDeliveryReasonID = selectedOption.value;
-            ShipmentOrder.CancelDeliveryUser = this.props.AppInfo.LoginInfo.Username;
-            ShipmentOrder.CancelDeliveryReasonNote = CancelDeliveryReasonNote;
-            this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateCancelDelivery', ShipmentOrder).then((apiResult) => {
-                this.addNotification(apiResult.Message, apiResult.IsError);
-                if (!apiResult.IsError) {
-                    if (this.props.onhandleChange != null)
-                        this.props.onhandleChange(apiResult.ResultObject)
-
-                    ModalManager.close();
-                }
-            });
-        }
-
     }
 
     handleValueChange(e) {
@@ -656,7 +538,9 @@ class InfoCoordinatorCom extends Component {
         }
 
     }
-    
+    //End chuyển kho điều phối
+
+     //hủy giao hàng
     handleShipCancelDelivery(apiResult) {
         this.addNotification(apiResult.Message, apiResult.IsError);
         if (!apiResult.IsError) {
@@ -669,10 +553,10 @@ class InfoCoordinatorCom extends Component {
         }
     }
 
-    handleCancelDeliveryNew() {
+    handleCancelDelivery() {
 
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: 'Điều phối nhân viên ',
+            title: 'Thông tin hủy giao hàng',
             content: {
                 text: <ListShipCoordinator
                     ShipmentOrderID={this.state.ShipmentOrder.ShipmentOrderID}
@@ -686,7 +570,7 @@ class InfoCoordinatorCom extends Component {
             maxWidth: '1300px'
         });
     }
-    //End chuyển kho điều phối
+    //End hủy giao hàng
 
     render() {
 
@@ -950,7 +834,7 @@ class InfoCoordinatorCom extends Component {
                             }
 
                             {
-                                this.props.IsCancelDelivery == true ? <button className="btn btnDelivery mr-10" type="submit" onClick={this.handleCancelDeliveryNew.bind(this)}><span className="fa fa-remove"> Hủy giao hàng</span></button> : <button className="btn btnDelivery mr-10" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-remove"> Hủy giao hàng</span></button>
+                                this.props.IsCancelDelivery == true ? <button className="btn btnDelivery mr-10" type="submit" onClick={this.handleCancelDelivery.bind(this)}><span className="fa fa-remove"> Hủy giao hàng</span></button> : <button className="btn btnDelivery mr-10" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-remove"> Hủy giao hàng</span></button>
                             }
                             {
                                 this.props.IsCoordinator == true ? <button className="btn btnEditCard mr-10" type="submit" onClick={this.handleCoordinatorStore.bind(this)}>Chuyển kho điều phối</button> : <button className="btn btnEditCard mr-10" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-edit">Chuyển kho điều phối</span></button>
