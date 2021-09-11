@@ -233,129 +233,6 @@ class ListShipCoordinatorCom extends Component {
     }
     render() {
         let { objCoordinator, ErrorCoordinator, InfoCoordinator } = this.state;
-
-        const DataGridColumnItemList = [
-            {
-                name: "ShipmentOrderID",
-                type: "text",
-                caption: "Mã vận đơn",
-                dataSourcemember: "ShipmentOrderID",
-                width: 50
-            },
-            {
-                name: "CarrierPartnerID",
-                type: "ComboBox",
-                caption: "Đối tác",
-                dataSourcemember: "CarrierPartnerID",
-                width: 250,
-                isautoloaditemfromcache: true,
-                loaditemcachekeyid: "ERPCOMMONCACHE.PARTNER",
-                valuemember: "PartnerID",
-                nameMember: "PartnerName",
-                value: -1,
-                listoption: null,
-                filterValue: "2",
-                filterobj: "PartnerTypeID",
-                placeholder: "---Vui lòng chọn---",
-                isMultiSelect: false,
-                disabled: false
-            },
-            {
-                name: "ShipmentOrder_DeliverUserList",
-                type: "ComboUserBox",
-                caption: "Nhân viên giao nhận",
-                dataSourcemember: "ShipmentOrder_DeliverUserList",
-                width: 250,
-                isautoloaditemfromcache: true,
-                loaditemcachekeyid: "ERPCOMMONCACHE.PARTNERUSER",
-                valuemember: "UserName",
-                nameMember: "FullName",
-                value: -1,
-                listoption: null,
-                placeholder: "---Nhân viên giao nhận---",
-                isMultiSelect: true,
-                disabled: false,
-                isPartner: true,
-                filterValue: "-1",
-                filterobj: "PartnerID",
-                filterrest: "CarrierPartnerID"
-            },
-            {
-                name: "CarrierTypeID",
-                type: "ComboBox",
-                caption: "Phương tiện",
-                dataSourcemember: "CarrierTypeID",
-                width: 150,
-                isautoloaditemfromcache: true,
-                loaditemcachekeyid: "ERPCOMMONCACHE.CARRIERTYPE",
-                valuemember: "CarrierTypeID",
-                nameMember: "CarrierTypeName",
-                value: -1,
-                listoption: null,
-                placeholder: "---Phương tiện---",
-                isMultiSelect: false,
-                disabled: false
-            },
-            {
-                name: "VehicleID",
-                type: "ComboBox",
-                caption: "Xe tải",
-                dataSourcemember: "VehicleID",
-                width: 150,
-                isautoloaditemfromcache: true,
-                loaditemcachekeyid: "ERPCOMMONCACHE.VEHICLE",
-                valuemember: "VehicleID",
-                nameMember: "LicensePlateNumber",
-                value: -1,
-                listoption: null,
-                filterValue: "4121",
-                filterobj: "MaincoordinAtorStoreID",
-                placeholder: "---Chọn---",
-                isMultiSelect: false,
-                disabled: false
-            },
-            {
-                name: "DriverUser",
-                type: "ComboUserDriverUserBox",
-                caption: "Tài xế",
-                dataSourcemember: "DriverUser",
-                width: 150,
-                isautoloaditemfromcache: false,
-                value: -1,
-                listoption: null,
-                placeholder: "---Nhân viên tài xế---",
-                isMultiSelect: false,
-                disabled: false,
-            },
-            {
-                name: "ShipmentOrderID",
-                type: "edit",
-                caption: "Tác vụ",
-                dataSourcemember: "ShipmentOrderID",
-                width: 50
-
-            },
-            {
-                name: "IsPermission",
-                type: "text",
-                caption: "Mã vận đơn",
-                dataSourcemember: "IsPermission",
-                width: 50,
-                hideInput: false
-            }
-            // },
-            // {
-            //     Name: "Action",
-            //     Type: "editnew",
-            //     Caption: "Tác vụ",
-            //     label:"Mã vận đơn",
-            //     DataSourceMember: "CarrierPartnerID",
-            //     Width: 70,
-            //     iputpop: false
-            // }
-        ];
-        console.log("InfoCoordinator", InfoCoordinator)
-
         return (
             <div className="card modalForm">
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -386,7 +263,7 @@ class ListShipCoordinatorCom extends Component {
                                 name="CancelDeliveryUser"
                                 colspan="8"
                                 labelcolspan="4"
-                                label="Nhân viên giao"
+                                label="Nhân viên yêu cầu"
                                 IsLabelDiv={true}
                                 isSelectedOption={true}
                                 isautoloaditemfromcache={false}
