@@ -663,8 +663,8 @@ class InfoCoordinatorCom extends Component {
             title: 'Điều phối nhân viên ',
             content: {
                 text: <ListShipCoordinator
-                    ShipmentOrderID={0}
-                    InfoCoordinator={[]}
+                    ShipmentOrderID={this.state.ShipmentOrder.ShipmentOrderID}
+                    InfoCoordinator={this.state.ShipmentOrder}
                     IsUserCoordinator={true}
                     IsCoordinator={true}
                     IsCancelDelivery={true}
@@ -937,7 +937,7 @@ class InfoCoordinatorCom extends Component {
                             }
 
                             {
-                                this.props.IsCancelDelivery == true ? <button className="btn btnDelivery mr-10" type="submit" onClick={this.handleCancelDelivery.bind(this)}><span className="fa fa-remove"> Hủy giao hàng</span></button> : <button className="btn btnDelivery mr-10" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-remove"> Hủy giao hàng</span></button>
+                                this.props.IsCancelDelivery == true ? <button className="btn btnDelivery mr-10" type="submit" onClick={this.handleCancelDeliveryNew.bind(this)}><span className="fa fa-remove"> Hủy giao hàng</span></button> : <button className="btn btnDelivery mr-10" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-remove"> Hủy giao hàng</span></button>
                             }
                             {
                                 this.props.IsCoordinator == true ? <button className="btn btnEditCard mr-10" type="submit" onClick={this.handleCoordinatorStore.bind(this)}>Chuyển kho điều phối</button> : <button className="btn btnEditCard mr-10" disabled title="Bạn Không có quyền xử lý!" type="submit"  ><span className="fa fa-edit">Chuyển kho điều phối</span></button>

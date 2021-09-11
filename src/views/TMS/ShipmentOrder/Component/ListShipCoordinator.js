@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { ModalManager } from 'react-dynamic-modal';
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
-import { callGetCache } from "../../../../actions/cacheAction";
 import MultiSelectComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
 import FormControl from "../../../../common/components/FormContainer/FormControl";
 import { MessageModal } from "../../../../common/components/Modal";
-import InputGridChageControl from "../../../../common/components/FormContainer/FormControl/InputGrid/InputGridChageControl";
+import { formatDate } from "../../../../common/library/CommonLib.js";
+import { formatMoney } from '../../../../utils/function';
 import { showModal, hideModal } from '../../../../actions/modal';
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
@@ -21,7 +21,8 @@ class ListShipCoordinatorCom extends Component {
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
 
         this.state = {
-            ShipmentOrder: this.props.InfoCoordinator,
+            ShipmentOrderID: this.props.ShipmentOrderID,
+            InfoCoordinator:this.props.InfoCoordinator,
             objCoordinator: { CancelDeliveryReasonID: -1, CancelDeliveryUser: "", CancelDeliveryReasonNote: "" },
             ErrorCoordinator: { CancelDeliveryReasonID: "", CancelDeliveryUser: "", CancelDeliveryReasonNote: "" },
             CallAPIMessage: "",
@@ -71,35 +72,37 @@ class ListShipCoordinatorCom extends Component {
 
     handleCancelDeliveryInsert() {
 
-        let { objCoordinator, ErrorCoordinator } = this.state;
-        if (objCoordinator.CancelDeliveryReasonID ==-1) {
-            ErrorCoordinator.CancelDeliveryReasonID= "Vui lòng chọn lý do hủy giao";
+        let { objCoordinator, ErrorCoordinator ,ShipmentOrderID} = this.state;
+        if (objCoordinator.CancelDeliveryReasonID == -1) {
+            ErrorCoordinator.CancelDeliveryReasonID = "Vui lòng chọn lý do hủy giao";
         }
         if (objCoordinator.CancelDeliveryUser == "") {
             ErrorCoordinator.CancelDeliveryUser = "Vui lòng chọn nhân viên yêu cầu";
-         
+
         }
         if (objCoordinator.CancelDeliveryReasonNote == "" || objCoordinator.CancelDeliveryReasonNote.length == 0 || String(objCoordinator.CancelDeliveryReasonNote).trim() == "") {
             ErrorCoordinator.CancelDeliveryReasonNote = "Vui lòng nhập nội dung";
         }
-        // else {
-        //     ShipmentOrder.CancelDeliveryReasonID = selectedOption.value;
-        //     ShipmentOrder.CancelDeliveryUser = this.props.AppInfo.LoginInfo.Username;
-        //     ShipmentOrder.CancelDeliveryReasonNote = CancelDeliveryReasonNote;
-        //     this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateCancelDelivery', ShipmentOrder).then((apiResult) => {
-        //         this.addNotification(apiResult.Message, apiResult.IsError);
-        //         if (!apiResult.IsError) {
-        //             if (this.props.onhandleChange != null)
-        //                 this.props.onhandleChange(apiResult.ResultObject)
-
-        //             ModalManager.close();
-        //         }
-        //     });
-        // }
         this.setState({
             ErrorCoordinator, ErrorCoordinator
         })
+        if (ErrorCoordinator.CancelDeliveryReasonID == "" && ErrorCoordinator.CancelDeliveryUser == "" && ErrorCoordinator.CancelDeliveryReasonNote == "") {
+            let ShipmentOrder ={};
+            ShipmentOrder.ShipmentOrderID=ShipmentOrderID;
+            ShipmentOrder.CancelDeliveryReasonID = objCoordinator.CancelDeliveryReasonID;
+            ShipmentOrder.CancelDeliveryUser = objCoordinator.CancelDeliveryUser.value;
+            ShipmentOrder.CancelDeliveryReasonNote = objCoordinator.CancelDeliveryReasonNote;
 
+            // this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateCancelDelivery', ShipmentOrder).then((apiResult) => {
+            //     this.addNotification(apiResult.Message, apiResult.IsError);
+            //     if (!apiResult.IsError) {
+            //         if (this.props.onhandleChange != null)
+            //             this.props.onhandleChange(apiResult.ResultObject)
+
+            //         ModalManager.close();
+            //     }
+            // });
+        }
     }
 
     checkInputName(formValidation) {
@@ -153,8 +156,87 @@ class ListShipCoordinatorCom extends Component {
         });
     }
 
+    sortDataShipmentOrderItemList(data) {
+        try {
+            if (data.length == 1) {
+                return data;
+            }
+
+            let cloneData = [...data], tempIndex = [];
+
+            // lấy sản phẩm chính
+            const mainProduct = cloneData.filter((item, index) => {
+                // if (item.Price != 0 || item.ProductSerial != "") {
+                if (item.Price != 0) {
+                    tempIndex.push(index);
+                    return true;
+                }
+                return false;
+            });
+
+            // xóa sản phẩm chính khỏi arr ban đầu
+            tempIndex.sort((a, b) => b - a);
+            for (let index = 0; index < tempIndex.length; index++) {
+                cloneData.splice(tempIndex[index], 1);
+            }
+            tempIndex.length = 0;
+
+            let result = mainProduct.reduce((acc, val) => {
+                let arrTemp = [];
+
+                // lấy danh sách sản phẩm khuyến mãi theo sp chính
+                cloneData.forEach((ele, index) => {
+                    if (val.ProductID.trim() == ele.RelateProductID.trim()) {
+                        let isExist = false;
+
+                        // không lấy trùng lặp
+                        arrTemp.forEach(ele1 => {
+                            if (ele1.ProductID == ele.ProductID) {
+                                isExist = true;
+                            }
+                        });
+                        if (isExist == false) {
+                            arrTemp.push(ele);
+                            tempIndex.push(index);
+                        }
+                    }
+                });
+
+                // remove những sp khuyến mãi khỏi mảng ban đầu
+                tempIndex.sort((a, b) => b - a);
+                for (let index = 0; index < tempIndex.length; index++) {
+                    cloneData.splice(tempIndex[index], 1);
+                }
+                tempIndex.length = 0;
+
+                // sắp xếp thứ tự sp khuyến mãi
+                arrTemp.sort((a, b) => a.ProductID.trim() - b.ProductID.trim());
+
+                return [...acc, val, ...arrTemp];
+            }, []);
+
+            // push những sản phẩm không liên quan còn lại
+            if (cloneData.length > 0) {
+                cloneData.sort((a, b) => a.ProductID.trim() - b.ProductID.trim());
+                result.push(...cloneData);
+            };
+
+            // kiem tra có đúng so luong san pham
+            if (result.length != data.length) {
+                return data;
+            } else {
+                return result;
+            }
+
+        } catch (error) {
+            return data;
+        }
+    }
+
+
     render() {
-        let { objCoordinator, ErrorCoordinator } = this.state;
+        let { objCoordinator, ErrorCoordinator,InfoCoordinator } = this.state;
+         
         const DataGridColumnItemList = [
             {
                 name: "ShipmentOrderID",
@@ -275,6 +357,7 @@ class ListShipCoordinatorCom extends Component {
             //     iputpop: false
             // }
         ];
+
         return (
             <div className="card modalForm">
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -339,13 +422,100 @@ class ListShipCoordinatorCom extends Component {
                         </div>
                     </div>
 
-                    <InputGridChageControl
-                        name="ShipmentOrder_ItemList"
-                        controltype="InputGridControl"
-                        title="Danh sách vận đơn"
-                        listColumn={DataGridColumnItemList}
-                        dataSource={this.state.ShipmentOrder}
-                    />
+                    <div className="card-body">
+                        <div className="form-row">
+                            <div className="table-responsive">
+                                <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                    <thead className="thead-light">
+                                        <tr>
+                                            <th className="jsgrid-header-cell" style={{ width: "6%" }}>Cần lắp</th>
+                                            <th className="jsgrid-header-cell" style={{ width: "10%" }}>Mã sản phẩm</th>
+                                            <th className="jsgrid-header-cell" style={{ width: "36%" }}>Sản phẩm</th>
+                                            <th className="jsgrid-header-cell" style={{ width: "12%" }}>Serial/IMEI</th>
+                                            <th className="jsgrid-header-cell" style={{ width: "8%" }}>Kiện</th>
+                                            <th className="jsgrid-header-cell" style={{ width: "8%" }}>Giá</th>
+                                            <th className="jsgrid-header-cell" style={{ width: "8%" }}>Số lượng</th>
+                                            <th className="jsgrid-header-cell" style={{ width: "12%" }}>Đơn vị tính</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            InfoCoordinator.ShipmentOrder_ItemList
+                                            && this.sortDataShipmentOrderItemList(InfoCoordinator.ShipmentOrder_ItemList).map((item, index) => {
+                                                return <tr
+                                                    key={"Product" + index}
+                                                    className={parseFloat(item.Price) != 0 || item.ProductSerial.trim() != ""
+                                                        ? "row-main-product" : undefined}
+                                                >
+                                                    <td>
+                                                        <div className="checkbox">
+                                                            <label>
+                                                                <input type="checkbox" readOnly className="form-control form-control-sm" checked={item.IsInstallItem} />
+                                                                <span className="cr">
+                                                                    <i className="cr-icon fa fa-check"></i>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                    <td>{item.ProductID}</td>
+                                                    <td>{item.ProductName}</td>
+                                                    <td>{item.ProductSerial}</td>
+                                                    <td>{item.PackingUnitName}</td>
+                                                    <td>{formatMoney(item.Price, 0)}đ</td>
+                                                    <td>{item.Quantity}</td>
+                                                    <td>{item.QuantityUnitName}</td>
+                                                </tr>
+                                            })
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        {InfoCoordinator.ReturnItemList.length > 0 ?
+                            (<div className="form-row">
+                                <div className="col-md-12">
+                                    <h3 className="title">Danh sách sản phẩm trả lại</h3>
+                                </div>
+                                <div className="table-responsive">
+                                    <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                        <thead className="thead-light">
+                                            <tr>
+                                                <th className="jsgrid-header-cell" style={{ width: "10%" }}>Mã sản phẩm</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "25%" }}>Sản phẩm</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "10%" }}>Serial/IMEI</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "7%" }}>Số lượng trả</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "8%" }}>Giá</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "6%" }}>Đã trả hàng</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "8%" }}>Mã trả hàng</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "10%" }}>Ngày trả hàng</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "13%" }}>Ghi chú</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                InfoCoordinator.ReturnItemList && InfoCoordinator.ReturnItemList.map((item, index) => {
+                                                    return (
+                                                        <tr key={"ReturnItem" + index}>
+                                                            <td>{item.ProductID}</td>
+                                                            <td>{item.ProductName}</td>
+                                                            <td>{item.ProductSerial}</td>
+                                                            <td>{item.Quantity}</td>
+                                                            <td>{formatMoney(item.ReturnPrice, 0)}đ</td>
+                                                            <td>{item.IsCreatedInputVoucherReturn == true ? <span className="fa fa-check"></span> : ""}</td>
+                                                            <td>{item.InputVoucherID}</td>
+                                                            <td>{formatDate(item.ReturnInputDate)}</td>
+                                                            <td>{item.Note}</td>
+                                                        </tr>
+                                                    )
+                                                })
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>) : ""}
+                   
+                    </div>
                 </div>
                 <div className="modal-footer">
                     <button className="btn btnEditCard" onClick={this.handleCancelDeliveryInsert.bind(this)} type="submit" > Cập nhật</button>
