@@ -656,6 +656,18 @@ class InfoCoordinatorCom extends Component {
         }
 
     }
+    
+    handleShipCancelDelivery(apiResult) {
+        this.addNotification(apiResult.Message, apiResult.IsError);
+        if (!apiResult.IsError) {
+            this.props.hideModal();
+            this.setState({ GridDataShip: [] });
+            if (!apiResult.IsError) {
+                if (this.props.onhandleChange != null)
+                    this.props.onhandleChange(apiResult.ResultObject)
+            }
+        }
+    }
 
     handleCancelDeliveryNew() {
 
@@ -668,6 +680,7 @@ class InfoCoordinatorCom extends Component {
                     IsUserCoordinator={true}
                     IsCoordinator={true}
                     IsCancelDelivery={true}
+                    onhandleChange={this.handleShipCancelDelivery.bind(this)}
                 />
             },
             maxWidth: '1300px'

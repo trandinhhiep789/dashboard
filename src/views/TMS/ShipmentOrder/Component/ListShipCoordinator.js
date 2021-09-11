@@ -110,31 +110,13 @@ class ListShipCoordinatorCom extends Component {
             ShipmentOrder.CancelDeliveryUser = objCoordinator.CancelDeliveryUser.value;
             ShipmentOrder.CancelDeliveryReasonNote = objCoordinator.CancelDeliveryReasonNote;
 
-            // this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateCancelDelivery', ShipmentOrder).then((apiResult) => {
-            //     this.addNotification(apiResult.Message, apiResult.IsError);
-            //     if (!apiResult.IsError) {
-            //         if (this.props.onhandleChange != null)
-            //             this.props.onhandleChange(apiResult.ResultObject)
-
-            //         ModalManager.close();
-            //     }
-            // });
-        }
-    }
-
-    checkInputName(formValidation) {
-        for (const key in formValidation) {
-            //      console.log("formValidation:", formValidation);
-
-            if (formValidation[key] != undefined) {
-                // console.log("validation:", key, this.elementItemRefs[key]);
-                if (formValidation[key] != [] && formValidation[key].IsValidatonError) {
-
-                    return key;
+            this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder/UpdateCancelDelivery', ShipmentOrder).then((apiResult) => {
+                if (!apiResult.IsError) {
+                    if (this.props.onhandleChange != null)
+                        this.props.onhandleChange(apiResult)
                 }
-            }
+            });
         }
-        return "";
     }
 
     handleCloseModal() {
@@ -249,8 +231,6 @@ class ListShipCoordinatorCom extends Component {
             return data;
         }
     }
-
-
     render() {
         let { objCoordinator, ErrorCoordinator, InfoCoordinator } = this.state;
 
