@@ -420,8 +420,62 @@ class ListShipCoordinatorCom extends Component {
                         </div>
                     </div>
 
-                    <div className="card-body">
+                    <div className="card-body table-scrollbar">
                         <div className="form-row">
+                            <div className="jsgrid">
+                                <div className="jsgrid-grid-header jsgrid-header-scrollbar">
+                                    <table className="jsgrid-table">
+                                        <thead className="jsgrid-header-row">
+                                            <tr>
+                                                <th className="jsgrid-header-cell" style={{ width: "6%" }}>Cần lắp</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "10%" }}>Mã sản phẩm</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "36%" }}>Sản phẩm</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "12%" }}>Serial/IMEI</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "8%" }}>Kiện</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "8%" }}>Giá</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "8%" }}>Số lượng</th>
+                                                <th className="jsgrid-header-cell" style={{ width: "12%" }}>Đơn vị tính</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div className="jsgrid-grid-body">
+                                    <table className="jsgrid-table">
+                                        <tbody>
+                                            {
+                                                InfoCoordinator.ShipmentOrder_ItemList
+                                                && this.sortDataShipmentOrderItemList(InfoCoordinator.ShipmentOrder_ItemList).map((item, index) => {
+                                                    return <tr
+                                                        key={"Product" + index}
+                                                        className={parseFloat(item.Price) != 0 || item.ProductSerial.trim() != ""
+                                                            ? "jsgrid-row row-main-product" : "jsgrid-row " + undefined}
+                                                    >
+                                                        <td className="jsgrid-cell  td-check" style={{ width: "6%" }}>
+                                                            <div className="checkbox">
+                                                                <label>
+                                                                    <input type="checkbox" readOnly className="form-control form-control-sm" checked={item.IsInstallItem} />
+                                                                    <span className="cr">
+                                                                        <i className="cr-icon fa fa-check"></i>
+                                                                    </span>
+                                                                </label>
+                                                            </div>
+                                                        </td>
+                                                        <td className="jsgrid-cell" style={{ width: "10%" }}>{item.ProductID}</td>
+                                                        <td className="jsgrid-cell txt-product-name" style={{ width: "36%" }}>{item.ProductName}</td>
+                                                        <td className="jsgrid-cell" style={{ width: "12%" }}>{item.ProductSerial}</td>
+                                                        <td className="jsgrid-cell" style={{ width: "8%" }}>{item.PackingUnitName}</td>
+                                                        <td className="jsgrid-cell" style={{ width: "8%" }}>{formatMoney(item.Price, 0)}đ</td>
+                                                        <td className="jsgrid-cell" style={{ width: "8%" }}>{item.Quantity}</td>
+                                                        <td className="jsgrid-cell" style={{ width: "12%" }}>{item.QuantityUnitName}</td>
+                                                    </tr>
+                                                })
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        {/* <div className="form-row">
                             <div className="table-responsive">
                                 <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                     <thead className="thead-light">
@@ -468,7 +522,7 @@ class ListShipCoordinatorCom extends Component {
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        </div> */}
 
                         {InfoCoordinator.ReturnItemList.length > 0 ?
                             (<div className="form-row">
