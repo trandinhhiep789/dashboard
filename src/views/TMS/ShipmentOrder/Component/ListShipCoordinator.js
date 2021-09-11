@@ -155,7 +155,8 @@ class ListShipCoordinatorCom extends Component {
         });
     }
 
-    sortDataShipmentOrderItemList(data) {
+    sortDataShipmentOrderItemList(dataa) {
+        let data =dataa.filter(n  =>  n.MainGroupID !=704||(n.MainGroupID ==704&&n.ProductID =="7042011000112"))
         try {
             if (data.length == 1) {
                 return data;
@@ -304,14 +305,11 @@ class ListShipCoordinatorCom extends Component {
                                     <table className="jsgrid-table">
                                         <thead className="jsgrid-header-row">
                                             <tr>
-                                                <th className="jsgrid-header-cell" style={{ width: "6%" }}>Cần lắp</th>
                                                 <th className="jsgrid-header-cell" style={{ width: "10%" }}>Mã sản phẩm</th>
                                                 <th className="jsgrid-header-cell" style={{ width: "36%" }}>Sản phẩm</th>
                                                 <th className="jsgrid-header-cell" style={{ width: "12%" }}>Serial/IMEI</th>
-                                                <th className="jsgrid-header-cell" style={{ width: "8%" }}>Kiện</th>
                                                 <th className="jsgrid-header-cell" style={{ width: "8%" }}>Giá</th>
                                                 <th className="jsgrid-header-cell" style={{ width: "8%" }}>Số lượng</th>
-                                                <th className="jsgrid-header-cell" style={{ width: "12%" }}>Đơn vị tính</th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -327,23 +325,11 @@ class ListShipCoordinatorCom extends Component {
                                                         className={parseFloat(item.Price) != 0 || item.ProductSerial.trim() != ""
                                                             ? "jsgrid-row row-main-product" : "jsgrid-row " + undefined}
                                                     >
-                                                        <td className="jsgrid-cell  td-check" style={{ width: "6%" }}>
-                                                            <div className="checkbox">
-                                                                <label>
-                                                                    <input type="checkbox" readOnly className="form-control form-control-sm" checked={item.IsInstallItem} />
-                                                                    <span className="cr">
-                                                                        <i className="cr-icon fa fa-check"></i>
-                                                                    </span>
-                                                                </label>
-                                                            </div>
-                                                        </td>
-                                                        <td className="jsgrid-cell" style={{ width: "10%" }}>{item.ProductID}</td>
+                                                        <td className="jsgrid-cell txt-product-name" style={{ width: "10%" }}>{item.ProductID}</td>
                                                         <td className="jsgrid-cell txt-product-name" style={{ width: "36%" }}>{item.ProductName}</td>
                                                         <td className="jsgrid-cell" style={{ width: "12%" }}>{item.ProductSerial}</td>
-                                                        <td className="jsgrid-cell" style={{ width: "8%" }}>{item.PackingUnitName}</td>
                                                         <td className="jsgrid-cell" style={{ width: "8%" }}>{formatMoney(item.Price, 0)}đ</td>
                                                         <td className="jsgrid-cell" style={{ width: "8%" }}>{item.Quantity}</td>
-                                                        <td className="jsgrid-cell" style={{ width: "12%" }}>{item.QuantityUnitName}</td>
                                                     </tr>
                                                 })
                                             }
@@ -352,100 +338,10 @@ class ListShipCoordinatorCom extends Component {
                                 </div>
                             </div>
                         </div>
-                        {/* <div className="form-row">
-                            <div className="table-responsive">
-                                <table className="table table-sm table-striped table-bordered table-hover table-condensed">
-                                    <thead className="thead-light">
-                                        <tr>
-                                            <th className="jsgrid-header-cell" style={{ width: "6%" }}>Cần lắp</th>
-                                            <th className="jsgrid-header-cell" style={{ width: "10%" }}>Mã sản phẩm</th>
-                                            <th className="jsgrid-header-cell" style={{ width: "36%" }}>Sản phẩm</th>
-                                            <th className="jsgrid-header-cell" style={{ width: "12%" }}>Serial/IMEI</th>
-                                            <th className="jsgrid-header-cell" style={{ width: "8%" }}>Kiện</th>
-                                            <th className="jsgrid-header-cell" style={{ width: "8%" }}>Giá</th>
-                                            <th className="jsgrid-header-cell" style={{ width: "8%" }}>Số lượng</th>
-                                            <th className="jsgrid-header-cell" style={{ width: "12%" }}>Đơn vị tính</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            InfoCoordinator.ShipmentOrder_ItemList
-                                            && this.sortDataShipmentOrderItemList(InfoCoordinator.ShipmentOrder_ItemList).map((item, index) => {
-                                                return <tr
-                                                    key={"Product" + index}
-                                                    className={parseFloat(item.Price) != 0 || item.ProductSerial.trim() != ""
-                                                        ? "row-main-product" : undefined}
-                                                >
-                                                    <td>
-                                                        <div className="checkbox">
-                                                            <label>
-                                                                <input type="checkbox" readOnly className="form-control form-control-sm" checked={item.IsInstallItem} />
-                                                                <span className="cr">
-                                                                    <i className="cr-icon fa fa-check"></i>
-                                                                </span>
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                    <td>{item.ProductID}</td>
-                                                    <td>{item.ProductName}</td>
-                                                    <td>{item.ProductSerial}</td>
-                                                    <td>{item.PackingUnitName}</td>
-                                                    <td>{formatMoney(item.Price, 0)}đ</td>
-                                                    <td>{item.Quantity}</td>
-                                                    <td>{item.QuantityUnitName}</td>
-                                                </tr>
-                                            })
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div> */}
-
-                        {InfoCoordinator.ReturnItemList.length > 0 ?
-                            (<div className="form-row">
-                                <div className="col-md-12">
-                                    <h3 className="title">Danh sách sản phẩm trả lại</h3>
-                                </div>
-                                <div className="table-responsive">
-                                    <table className="table table-sm table-striped table-bordered table-hover table-condensed">
-                                        <thead className="thead-light">
-                                            <tr>
-                                                <th className="jsgrid-header-cell" style={{ width: "10%" }}>Mã sản phẩm</th>
-                                                <th className="jsgrid-header-cell" style={{ width: "25%" }}>Sản phẩm</th>
-                                                <th className="jsgrid-header-cell" style={{ width: "10%" }}>Serial/IMEI</th>
-                                                <th className="jsgrid-header-cell" style={{ width: "7%" }}>Số lượng trả</th>
-                                                <th className="jsgrid-header-cell" style={{ width: "8%" }}>Giá</th>
-                                                <th className="jsgrid-header-cell" style={{ width: "6%" }}>Đã trả hàng</th>
-                                                <th className="jsgrid-header-cell" style={{ width: "8%" }}>Mã trả hàng</th>
-                                                <th className="jsgrid-header-cell" style={{ width: "10%" }}>Ngày trả hàng</th>
-                                                <th className="jsgrid-header-cell" style={{ width: "13%" }}>Ghi chú</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {
-                                                InfoCoordinator.ReturnItemList && InfoCoordinator.ReturnItemList.map((item, index) => {
-                                                    return (
-                                                        <tr key={"ReturnItem" + index}>
-                                                            <td>{item.ProductID}</td>
-                                                            <td>{item.ProductName}</td>
-                                                            <td>{item.ProductSerial}</td>
-                                                            <td>{item.Quantity}</td>
-                                                            <td>{formatMoney(item.ReturnPrice, 0)}đ</td>
-                                                            <td>{item.IsCreatedInputVoucherReturn == true ? <span className="fa fa-check"></span> : ""}</td>
-                                                            <td>{item.InputVoucherID}</td>
-                                                            <td>{formatDate(item.ReturnInputDate)}</td>
-                                                            <td>{item.Note}</td>
-                                                        </tr>
-                                                    )
-                                                })
-                                            }
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>) : ""}
-
                     </div>
                 </div>
+
+               
                 <div className="modal-footer">
                     <button className="btn btnEditCard" onClick={this.handleCancelDeliveryInsert.bind(this)} type="submit" > Cập nhật</button>
                     <button type="button" className="btn btn-export ml-10" title="" onClick={this.handleCloseModal.bind(this)}>Đóng</button>
