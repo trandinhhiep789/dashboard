@@ -24,12 +24,13 @@ import {
     ExpectedDeliveryDateEdit
 } from "../constants";
 import { Link } from "react-router-dom";
+import FindStoreDeliveryTime from "./FindStoreDeliveryTime.js";
 class ShipmentOrderDetailCom extends Component {
     constructor(props) {
         super(props);
         this.handleShipWorkFlowInsert = this.handleShipWorkFlowInsert.bind(this);
         this.handleUpdateExpectedDelivery = this.handleUpdateExpectedDelivery.bind(this);
-
+        this.showFindStoreDeliveryTime = this.showFindStoreDeliveryTime.bind(this)
         this.state = {
             ShipmentOrder: this.props.ShipmentOrderDetail,
             validationErrorMessage: null,
@@ -344,6 +345,21 @@ class ShipmentOrderDetailCom extends Component {
             dtExpectedDeliveryDate: mod
         })
     }
+
+
+    showFindStoreDeliveryTime() {
+        const { ListSuggestTime, _ExpectedDeliveryDateEdit } = this.state;
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Cập nhật thời gian giao dự kiến',
+            content: {
+                text: <FindStoreDeliveryTime
+                    DeliveryTimeAllGroup={ListSuggestTime}
+                />
+            },
+            maxWidth: '800px'
+        });
+    }
+
 
     handleUpdateExpectedDelivery() {
         const { ListSuggestTime, _ExpectedDeliveryDateEdit } = this.state;
@@ -703,7 +719,7 @@ class ShipmentOrderDetailCom extends Component {
                                 <div className="form-group col-md-1">
                                     {(onclin == true || IsExpectedDeliveryDate == true) ?
                                         <div className="group-btn-update">
-                                            <button className="btn btn-update-submit" type="button" onClick={() => this.handleUpdateExpectedDelivery()}>
+                                            <button className="btn btn-update-submit" type="button" onClick={() => this.showFindStoreDeliveryTime()}>
                                                 <i className="ti ti-pencil-alt"></i>
                                             </button>
                                             <button className="btn btn-round btn-secondary" type="button" onClick={() => this.handleShowDataExpectedDelivery()}>

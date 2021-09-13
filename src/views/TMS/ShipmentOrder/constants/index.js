@@ -1525,6 +1525,37 @@ export const MLObjectExpectedDelivery = [
     }
 
 ]
+
+//Update Expected Delivery Date new
+export const MLObjectExpectedDeliveryNew = [
+    {
+        Name: "DeliverydateUpdateReasonID",
+        DefaultValue: "",
+        BindControlName: "cbDeliverydateUpdateReasonID",
+        DataSourceMember: "DeliverydateUpdateReasonID"
+    },
+    {
+        Name: "DeliveryDate",
+        DefaultValue: "",
+        BindControlName: "cbDeliveryDate",
+        DataSourceMember: "DeliveryDate"
+    }
+    ,
+    {
+        Name: "DeliveryValue",
+        DefaultValue: "",
+        BindControlName: "cbDeliveryTime",
+        DataSourceMember: "DeliveryValue"
+    },
+    {
+        Name: "DeliverydateUpdateReasonNote",
+        DefaultValue: "",
+        BindControlName: "txtDeliverydateUpdateReasonNote",
+        DataSourceMember: "DeliverydateUpdateReasonNote"
+    }
+
+]
+
 export const ExpectedDeliveryDateEdit = [
     // {
     //     name: "DeliverydateUpdateTypeID",
