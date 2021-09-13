@@ -166,6 +166,9 @@ class ConfirmationNew extends React.Component {
             FormData: FormDataContolLstd,
         });
 
+        //console.log("object", FormDataContolLstd)
+
+        //this.props.onChangeFormModal(FormDataContolLstd)
     }
     //#region validation InputControl
     validationFormNew() {

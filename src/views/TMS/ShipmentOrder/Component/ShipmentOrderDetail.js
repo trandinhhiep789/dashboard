@@ -40,7 +40,10 @@ class ShipmentOrderDetailCom extends Component {
             IsExpectedDeliveryDate: false,
             dtExpectedDeliveryDate: this.props.ShipmentOrderDetail.ExpectedDeliveryDate,
             ShipmentOrder_DLDateLogItemList: [],
-            HistoryTransactionItemList: []
+            HistoryTransactionItemList: [],
+            ListSuggestTime: this.props.ListSuggestTime,
+            _ExpectedDeliveryDateEdit : ExpectedDeliveryDateEdit,
+            ListSuggestTimeChildren: []
         }
         this.notificationDOMRef = React.createRef();
     }
@@ -49,6 +52,12 @@ class ShipmentOrderDetailCom extends Component {
         if (JSON.stringify(this.props.ShipmentOrderDetail) !== JSON.stringify(nextProps.ShipmentOrderDetail)) {
             this.setState({
                 ShipmentOrder: nextProps.ShipmentOrderDetail
+            })
+        }
+
+        if (JSON.stringify(this.props.ListSuggestTime) !== JSON.stringify(nextProps.ListSuggestTime)) {
+            this.setState({
+                ListSuggestTime: nextProps.ListSuggestTime
             })
         }
     }
@@ -259,6 +268,7 @@ class ShipmentOrderDetailCom extends Component {
             </ModelContainer>
         );
     }
+
     handleShipWorkFlowInsert() {
         let { ShipmentOrder_WorkFlow, validationErrorMessage } = this.state;
 
@@ -336,11 +346,26 @@ class ShipmentOrderDetailCom extends Component {
     }
 
     handleUpdateExpectedDelivery() {
+        const { ListSuggestTime, _ExpectedDeliveryDateEdit } = this.state;
+        console.log("object", this.props, ListSuggestTime)
+
+
+        _ExpectedDeliveryDateEdit.forEach(function (objElement) {
+            if (objElement.name == 'cbDeliveryDate') {
+                objElement.listoption = ListSuggestTime;
+                objElement.value = -1;
+            }
+        });
+        this.setState({
+            _ExpectedDeliveryDateEdit: _ExpectedDeliveryDateEdit,
+            IsLoadDataComplete: true
+        });
+
         const dtFromdate = new Date()
         this.props.showModal(MODAL_TYPE_CONFIRMATIONNEW, {
             title: 'Cập nhật thời gian giao dự kiến',
             onConfirmNew: (isConfirmed, formData) => {
-                
+
                 let objDLDateLog =
                 {
                     ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID,
@@ -355,8 +380,8 @@ class ShipmentOrderDetailCom extends Component {
                     // NewExpectedDeliveryDateNew: toIsoStringCus(new Date(formData.NewExpectedDeliveryDate).toISOString()),
                 }
 
-              
-                
+
+
                 this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder_DLDateLog/Add', objDLDateLog).then((apiResult) => {
                     this.addNotification(apiResult.Message, apiResult.IsError);
                     if (!apiResult.IsError) {
@@ -368,13 +393,40 @@ class ShipmentOrderDetailCom extends Component {
                 });
 
             },
-            modalElementList: ExpectedDeliveryDateEdit,
+            modalElementList: _ExpectedDeliveryDateEdit,
             modalElementOl: MLObjectExpectedDelivery,
             dataSource: { OldExpectedDeliveryDate: this.state.dtExpectedDeliveryDate, NewExpectedDeliveryDate: dtFromdate },
             isaddComboBox: true
 
         });
     }
+
+    // handleChangeModal(FormData){
+    //     console.log("FormData", FormData)
+    //     const { ListSuggestTime, _ExpectedDeliveryDateEdit, ListSuggestTimeChildren } = this.state;
+    //     console.log("object", this.props, ListSuggestTime)
+      
+    //     if (FormData.cbDeliveryDate.value != "" || FormData.cbDeliveryDate.value > 0) {
+    //         const ListSuggestTimeChildren = ListSuggestTime.find(e => { return e.value == FormData.cbDeliveryDate.value })
+    //         this.setState({
+    //             ListSuggestTimeChildren: ListSuggestTimeChildren.children
+    //         })
+
+    //     }
+
+
+    //     _ExpectedDeliveryDateEdit.forEach(function (objElement) {
+    //         if (objElement.name == 'NewExpectedDeliveryDate') {
+    //             objElement.listoption = ListSuggestTimeChildren.children;
+    //             objElement.value = -1;
+    //         }
+    //     });
+       
+
+    //     this.setState({
+    //         _ExpectedDeliveryDateEdit: _ExpectedDeliveryDateEdit
+    //     })
+    // }
 
 
     _CheckTime(dates, id) {
@@ -551,7 +603,6 @@ class ShipmentOrderDetailCom extends Component {
         }
 
         let triggerDropdown = this.state.ShipmentOrder.ShipmentOrderType_WF_NextList != undefined && this.state.ShipmentOrder.ShipmentOrderType_WF_NextList.length > 0 ? "click" : "contextMenu";
-
         return (
             <div className="ShipmentOrderDetail">
                 <ReactNotification ref={this.notificationDOMRef} />

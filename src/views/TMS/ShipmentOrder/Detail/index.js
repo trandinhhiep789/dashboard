@@ -23,7 +23,10 @@ import {
     PagePath,
     DetailAPIPath
 } from "../constants";
-
+import { toIsoStringCusNew, toIsoStringNew } from "../../../../utils/function";
+import { ExportStringToDate } from "../../../../common/library/ultils";
+import moment from 'moment';
+import { formatDate, formatDateCusNew } from "../../../../common/library/CommonLib";
 
 class DetailCom extends React.Component {
     constructor(props) {
@@ -34,10 +37,11 @@ class DetailCom extends React.Component {
             DataSource: {},
             ShipmentOrderType_WorkFlowList: null,
             CurrentShipmentOrderStepID: 0,
-            IsCancelDelivery:false,
+            IsCancelDelivery: false,
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsLoadDataComplete: false,
+            ListSuggestTime: []
         }
     }
 
@@ -60,48 +64,60 @@ class DetailCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(DetailAPIPath);
-         this.callLoadData(this.props.match.params.id);
+        this.callLoadData(this.props.match.params.id);
 
-        const param = {
-            "lstOutputStoreID": "1700",
-            "iCreateStoreID": "1",
-            "VehicleType": "2",
-            "iProvinceID": "3",
-            "iDistrictID": 2087,
-            "iWardID": 27125,
-            "lstProduct": [
-                {
-                    "PRODUCTID": "4241412000001",
-                    "QUANTITY": 1,
-                    "ISSETUPPRODUCT": 1,
-                    "MAINGROUPID": 305,
-                    "SUBGROUPID": 1097,
-                    "ISONLINEONLY": 0,
-                    "ISPARTNER": 0,
-                    "ISNORMAL": 0,
-                    "OUTPUTSTOREID": 1700,
-                    "COMBOID": 0,
-                    "SALEORDERDETAILONLINEID": null,
-                    "APPLYSALEODERDETAILID": null,
-                    "SALEPRICE": 0.0,
-                    "OUTPUTTYPEID": 8
-                }
-            ],
-            "dtDateFrom": "2021-09-09",
-            "dtDateTo": "2021-09-18",
-            "decRange": "0",
-            "iDayTranfer": "0",
-            "isCheckProvince": "true",
-            "intDeliveryTypeID": "281"
-        }
-        this._FindStoreDeliveryTime(param)
+
     }
 
-     
+
     _FindStoreDeliveryTime(param) {
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/FindStoreDeliveryTime", param).then((apiResult) => {
             console.log('_FindStoreDeliveryTime', param, apiResult)
-            
+            if (apiResult.IsError) {
+                this.showMessage("Lỗi lấy thông tin tải giao hàng");
+            }
+            else {
+                if (!!apiResult.ResultObject.Data.LSTSUGGESTTIME && apiResult.ResultObject.Data.LSTSUGGESTTIME != null && apiResult.ResultObject.Data.LSTSUGGESTTIME.length > 0) {
+                    const tempData = apiResult.ResultObject.Data.LSTSUGGESTTIME
+                    console.log("tempData", tempData)
+                    tempData.map((item, index) => {
+                        item.value = item.DELIVERYVALUE,
+                            item.label = item.DELIVERYTEXT,
+                            item.name = item.DELIVERYVALUE
+                    })
+
+                    const dataSource = tempData.reduce((catsSoFar, item, index) => {
+                        const tempArray = item.DELIVERYVALUE.split('T')
+                        const deliveryValue = tempArray[0]
+                        if (!catsSoFar[deliveryValue]) catsSoFar[deliveryValue] = [];
+                        catsSoFar[deliveryValue].push(item);
+                        return catsSoFar;
+                    }, {});
+
+                    const newDatasource = Object.keys(dataSource).map(function (key) {
+                        let element = {}
+                        element.parentKey = key
+                        element.label = formatDate(key, true),
+                            element.name = key,
+                            element.value = key,
+                            element.children = dataSource[key]
+                        return element
+
+                    })
+
+                    console.log("newDatasource", newDatasource)
+
+                    this.setState({
+                        ListSuggestTime: newDatasource,
+                        IsLoadDataComplete: true
+                    })
+
+                    // this.showFindStoreDeliveryTime(newDatasource, MLObject)
+                }
+                else {
+                    this.showMessage("Lỗi lấy danh sách tải giao hàng", true);
+                }
+            }
         });
     }
 
@@ -115,6 +131,7 @@ class DetailCom extends React.Component {
         //     console.log("apiResult.ResultObject",apiResult)
         // });
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
+            console.log("id", id, apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -123,12 +140,57 @@ class DetailCom extends React.Component {
             }
             else {
                 //    console.log("apiResult.ResultObject.ShipmentOrderType_WorkFlowList",apiResult.ResultObject.ShipmentOrderType_WorkFlowList)
+
                 this.setState({
                     DataSource: apiResult.ResultObject,
                     ShipmentOrderType_WorkFlowList: apiResult.ResultObject.ShipmentOrderType_WorkFlowList,
                     CurrentShipmentOrderStepID: apiResult.ResultObject.CurrentShipmentOrderStepID,
-                    IsLoadDataComplete: true
+                  
                 });
+
+
+                const lstProduct = apiResult.ResultObject.ShipmentOrder_ItemList.map((item, index) => {
+                    return {
+
+                        PRODUCTID: item.ProductID,
+                        QUANTITY: item.Quantity,
+                        ISSETUPPRODUCT: item.IsInstallItem == true ? 1 : 0,
+                        MAINGROUPID: item.MainGroupID,
+                        SUBGROUPID: item.SubGroupID,
+                        ISONLINEONLY: 0,
+                        ISPARTNER: 0,
+                        ISNORMAL: 0,
+                        OUTPUTSTOREID: apiResult.ResultObject.SenderStoreID,
+                        COMBOID: 0,
+                        SALEORDERDETAILONLINEID: null,
+                        APPLYSALEODERDETAILID: null,
+                        SALEPRICE: 0.0,
+                        OUTPUTTYPEID: 8
+                    }
+                })
+
+                const dtFromdate = new Date();
+                const toDate = new Date();
+                toDate.setDate(new Date().getDate() + 2);
+                const param = {
+                    "lstOutputStoreID": apiResult.ResultObject.SenderStoreID,
+                    "VehicleType": apiResult.ResultObject.CarrierTypeID,
+                    "iProvinceID": apiResult.ResultObject.ReceiverProvinceID,
+                    "iDistrictID": apiResult.ResultObject.ReceiverDistrictID,
+                    "iWardID": apiResult.ResultObject.ReceiverWardID,
+                    "dtDateFrom": formatDateCusNew(dtFromdate, true),
+                    "dtDateTo": formatDateCusNew(toDate, true),
+                    "decRange": "0",
+                    "iDayTranfer": "0",
+                    "isCheckProvince": "true",
+                    "intDeliveryTypeID": "281",
+                    "iCreateStoreID": "1",
+                    "lstProduct": lstProduct
+                }
+
+                console.log("param", param)
+                this._FindStoreDeliveryTime(param)
+
             }
         });
     }
@@ -145,7 +207,7 @@ class DetailCom extends React.Component {
         this.setState({
             ShipmentOrderType_WorkFlowList: ShipmentOrderData.ShipmentOrderType_WorkFlowList,
             CurrentShipmentOrderStepID: ShipmentOrderData.CurrentShipmentOrderStepID,
-            IsCancelDelivery:ShipmentOrderData.IsCancelDelivery
+            IsCancelDelivery: ShipmentOrderData.IsCancelDelivery
         });
     }
 
@@ -164,14 +226,15 @@ class DetailCom extends React.Component {
                         TotalReturnPrice={this.state.DataSource.TotalReturnPrice}
                         IsCancelDelivery={this.state.IsCancelDelivery}
                     />
-                    
+
                     <ShipmentOrderDetail
                         ShipmentOrderID={this.props.match.params.id}
                         ShipmentOrderDetail={this.state.DataSource}
                         onhandleChange={this.ChangeLoadData}
                         IsShipDetail={this.CheckPermissionUser(1)}
+                        ListSuggestTime= {this.state.ListSuggestTime}
                     />
-                     <InfoCoordinator
+                    <InfoCoordinator
                         ShipmentOrderID={this.props.match.params.id}
                         InfoCoordinator={this.state.DataSource}
                         onhandleChange={this.ChangeLoadData}
