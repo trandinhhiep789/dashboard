@@ -193,15 +193,15 @@ class FindStoreDeliveryTimeCom extends Component {
     }
 
     handleChangeForm(formData, MLObject) {
-        // console.log("object", formData, MLObject)
         const { ListSuggestTimeChildren, DeliveryTimeAllGroup } = this.state;
 
-        if (formData.cbDeliveryDate.value > 0 || formData.cbDeliveryDate.value != undefined) {
+        if (formData.cbDeliveryDate.value != "" || formData.cbDeliveryDate.value > 0 ) {
             const ListSuggestTimeChildren = DeliveryTimeAllGroup.find(e => { return e.value == formData.cbDeliveryDate.value })
             this.setState({
                 ListSuggestTimeChildren: ListSuggestTimeChildren.children
             })
         }
+
     }
 
 
@@ -216,7 +216,7 @@ class FindStoreDeliveryTimeCom extends Component {
         } else {
 
             cssNotification = "notification-danger",
-            iconNotification = "fa fa-exclamation"
+                iconNotification = "fa fa-exclamation"
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
@@ -243,97 +243,100 @@ class FindStoreDeliveryTimeCom extends Component {
         const { DeliveryTimeAllGroup, ListSuggestTime } = this.state;
 
         return (
+            <React.Fragment>
+                <ReactNotification ref={this.notificationDOMRef} />
+                <FormContainer
+                    // FormName='Cập nhật thời gian giao dự kiến'
+                    MLObjectDefinition={MLObjectExpectedDeliveryNew}
+                    listelement={[]}
+                    // BackLink={BackLink}
+                    onSubmit={this.handleSubmit.bind(this)}
+                    onchange={this.handleChangeForm.bind(this)}
+                >
+                    <div className="form-row">
+                        <div className="col-md-6">
 
-            <FormContainer
-                // FormName='Cập nhật thời gian giao dự kiến'
-                MLObjectDefinition={MLObjectExpectedDeliveryNew}
-                listelement={[]}
-                // BackLink={BackLink}
-                onSubmit={this.handleSubmit.bind(this)}
-                onchange={this.handleChangeForm.bind(this)}
-            >
-                <div className="form-row">
-                    <div className="col-md-6">
+                            <FormControl.FormControlComboBox
+                                name="cbDeliverydateUpdateReasonID"
+                                label="Lý do thay đổi"
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid="ERPCOMMONCACHE.DELIVERYDATEUPDATEREASON"
+                                valuemember="DeliverydateUpdateReasonID"
+                                nameMember="DeliverydateUpdateReasonName"
+                                controltype="InputControl"
+                                value={-1}
+                                listoption={[]}
+                                datasourcemember="DeliverydateUpdateReasonID"
+                                labelcolspan={4}
+                                colspan={8}
+                                validatonList={["Comborequired"]}
+                            />
 
-                        <FormControl.FormControlComboBox
-                            name="cbDeliverydateUpdateReasonID"
-                            label="Lý do thay đổi"
-                            isautoloaditemfromcache={true}
-                            loaditemcachekeyid="ERPCOMMONCACHE.DELIVERYDATEUPDATEREASON"
-                            valuemember="DeliverydateUpdateReasonID"
-                            nameMember="DeliverydateUpdateReasonName"
-                            controltype="InputControl"
-                            value={-1}
-                            listoption={[]}
-                            datasourcemember="DeliverydateUpdateReasonID"
-                            labelcolspan={4}
-                            colspan={8}
-                            validatonList={["Comborequired"]}
-                        />
+                        </div>
+                        <div className="col-md-6"></div>
+                        <div className="col-md-6">
+                            <FormControl.FormControlComboBox
+                                name="cbDeliveryDate"
+                                labelcolspan={4}
+                                colspan={8}
+                                label="Ngày hẹn"
+                                validatonList={["Comborequired"]}
+                                placeholder="-- Vui lòng chọn --"
+                                isautoloaditemfromcache={false}
+                                valuemember="DeliveryValue"
+                                nameMember="DeliveryText"
+                                controltype="InputControl"
+                                value={this.state.valueDate}
+                                listoption={this.state.DeliveryTimeAllGroup}
+                                datasourcemember="DeliveryDate"
+                                validationErrorMessage={this.state.MessageError}
+                            />
+
+
+
+                        </div>
+                        <div className="col-md-6">
+
+                            <FormControl.FormControlComboBox
+                                name="cbDeliveryTime"
+                                labelcolspan={4}
+                                colspan={8}
+                                label="Giờ hẹn"
+                                validatonList={["Comborequired"]}
+                                placeholder="-- Vui lòng chọn --"
+                                isautoloaditemfromcache={false}
+                                valuemember="DeliveryValue"
+                                nameMember="DeliveryText"
+                                controltype="InputControl"
+                                value={this.state.valueTime}
+                                listoption={this.state.ListSuggestTimeChildren}
+                                datasourcemember="DeliveryValue"
+                                validationErrorMessage={this.state.MessageErrorValueTime}
+                            />
+
+
+                        </div>
+
+                        <div className="col-md-12">
+                            <FormControl.TextArea
+                                labelcolspan={2}
+                                colspan={10}
+                                name="txtDeliverydateUpdateReasonNote"
+                                label="Ghi chú"
+                                placeholder="Nội dung chỉ giới hạn 5500 ký tự"
+                                datasourcemember="DeliverydateUpdateReasonNote"
+                                controltype="InputControl"
+                                rows={8}
+                                value=""
+                                classNameCustom="customcontrol"
+                            />
+                        </div>
 
                     </div>
-                    <div className="col-md-6"></div>
-                    <div className="col-md-6">
-                        <FormControl.FormControlComboBox
-                            name="cbDeliveryDate"
-                            labelcolspan={4}
-                            colspan={8}
-                            label="Ngày hẹn"
-                            validatonList={["Comborequired"]}
-                            placeholder="-- Vui lòng chọn --"
-                            isautoloaditemfromcache={false}
-                            valuemember="DeliveryValue"
-                            nameMember="DeliveryText"
-                            controltype="InputControl"
-                            value={this.state.valueDate}
-                            listoption={this.state.DeliveryTimeAllGroup}
-                            datasourcemember="DeliveryDate"
-                            validationErrorMessage={this.state.MessageError}
-                        />
 
+                </FormContainer>
 
-
-                    </div>
-                    <div className="col-md-6">
-
-                        <FormControl.FormControlComboBox
-                            name="cbDeliveryTime"
-                            labelcolspan={4}
-                            colspan={8}
-                            label="Giờ hẹn"
-                            validatonList={["Comborequired"]}
-                            placeholder="-- Vui lòng chọn --"
-                            isautoloaditemfromcache={false}
-                            valuemember="DeliveryValue"
-                            nameMember="DeliveryText"
-                            controltype="InputControl"
-                            value={this.state.valueTime}
-                            listoption={this.state.ListSuggestTimeChildren}
-                            datasourcemember="DeliveryValue"
-                            validationErrorMessage={this.state.MessageErrorValueTime}
-                        />
-
-
-                    </div>
-
-                    <div className="col-md-12">
-                        <FormControl.TextArea
-                            labelcolspan={2}
-                            colspan={10}
-                            name="txtDeliverydateUpdateReasonNote"
-                            label="Ghi chú"
-                            placeholder="Nội dung chỉ giới hạn 5500 ký tự"
-                            datasourcemember="DeliverydateUpdateReasonNote"
-                            controltype="InputControl"
-                            rows={8}
-                            value=""
-                            classNameCustom="customcontrol"
-                        />
-                    </div>
-
-                </div>
-
-            </FormContainer>
+            </React.Fragment>
 
         )
     }
