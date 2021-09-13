@@ -3,7 +3,7 @@ export const SearchAPIPath = "api/TMSRewardDetail/SearchExportRewardDetail";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Xuất chi tiết thưởng" }
+    { Link: "", Title: "Xuất dữ liệu chốt thưởng" }
 ];
 
 const dtFromdate = new Date();
