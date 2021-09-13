@@ -60,8 +60,51 @@ class DetailCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(DetailAPIPath);
-        this.callLoadData(this.props.match.params.id);
+         this.callLoadData(this.props.match.params.id);
+
+        const param = {
+            "lstOutputStoreID": "1700",
+            "iCreateStoreID": "1",
+            "VehicleType": "2",
+            "iProvinceID": "3",
+            "iDistrictID": 2087,
+            "iWardID": 27125,
+            "lstProduct": [
+                {
+                    "PRODUCTID": "4241412000001",
+                    "QUANTITY": 1,
+                    "ISSETUPPRODUCT": 1,
+                    "MAINGROUPID": 305,
+                    "SUBGROUPID": 1097,
+                    "ISONLINEONLY": 0,
+                    "ISPARTNER": 0,
+                    "ISNORMAL": 0,
+                    "OUTPUTSTOREID": 1700,
+                    "COMBOID": 0,
+                    "SALEORDERDETAILONLINEID": null,
+                    "APPLYSALEODERDETAILID": null,
+                    "SALEPRICE": 0.0,
+                    "OUTPUTTYPEID": 8
+                }
+            ],
+            "dtDateFrom": "2021-09-09",
+            "dtDateTo": "2021-09-18",
+            "decRange": "0",
+            "iDayTranfer": "0",
+            "isCheckProvince": "true",
+            "intDeliveryTypeID": "281"
+        }
+        this._FindStoreDeliveryTime(param)
     }
+
+     
+    _FindStoreDeliveryTime(param) {
+        this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/FindStoreDeliveryTime", param).then((apiResult) => {
+            console.log('_FindStoreDeliveryTime', param, apiResult)
+            
+        });
+    }
+
 
     callLoadData(id) {
 
