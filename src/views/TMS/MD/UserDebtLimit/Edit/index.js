@@ -65,17 +65,17 @@ class EditCom extends React.Component {
     checkAddPermission() {
         this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
             if (result && !result.IsError && result.ResultObject) {
-                let _view = result.ResultObject.CacheData.filter(x => x.FunctionID == USERDEBTLIMIT_VIEW);
+                let _view = result.ResultObject.CacheData.filter(x => x.FunctionID == USER_LIMIT_VIEW);
                 if (_view && _view.length > 0) {
                     this.setState({ IsAllowView: true });
                 }
 
-                let _update = result.ResultObject.CacheData.filter(x => x.FunctionID == USERDEBTLIMIT_ADD);
+                let _update = result.ResultObject.CacheData.filter(x => x.FunctionID == USER_LIMIT_ADD);
                 if (_update && _update.length > 0) {
                     this.setState({ IsAllowUpdate: true });
                 }
 
-                let _export = result.ResultObject.CacheData.filter(x => x.FunctionID == USERDEBTLIMIT_VIEW);
+                let _export = result.ResultObject.CacheData.filter(x => x.FunctionID == USER_LIMIT_VIEW);
                 if (_export && _export.length > 0) {
                     this.setState({ IsAllowExport: true });
                 }
@@ -202,7 +202,7 @@ class EditCom extends React.Component {
         // let name = e.target.name.split("-")[0];
         // let index = e.target.name.split("-")[1];
         let { DataSource } = this.state;
-        
+
         inputvalue = parseFloat(inputvalue.replace(/,/g, ''));
         if (name == "xemay") {
             let xemay = { UserName: this.state.Username, CarrierTypeID: 1, LimitValue: inputvalue };
@@ -255,7 +255,12 @@ class EditCom extends React.Component {
             if (isNaN(item.LimitValue)) {
                 this.addNotification("Vui lòng nhập số", true);
                 isError = true;
-            } else if (item.CarrierTypeID == 1) {
+            }
+            else if (item.LimitValue < 0) {
+                this.addNotification("Vui lòng nhập số dương", true);
+                isError = true;
+            }
+            else if (item.CarrierTypeID == 1) {
                 if (item.LimitValue > 50000000) {
                     this.addNotification("Hạn mức xe máy tối đa 50.000.000đ", true);
                     isError = true;
@@ -277,7 +282,7 @@ class EditCom extends React.Component {
             if (data.length > 0) {
                 data[0].CreatedUser = this.props.AppInfo.LoginInfo.Username;
                 data[0].LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-            }else{
+            } else {
                 return;
             }
 
@@ -287,7 +292,7 @@ class EditCom extends React.Component {
                 return;
             }
 
-            const confir = confirm("Nếu có phát sinh rủi ro thất thoát công nợ, Trưởng Phòng chịu trách nhiệm hoàn toàn tiền Công ty theo quy định.");
+            const confir = confirm("Nếu có phát sinh rủi ro thất thoát công nợ Trưởng Phòng chịu trách nhiệm hoàn tiền Công ty theo quy định.");
             if (confir == 1) {
                 this.props.callFetchAPI(APIHostName, AddAPIPath, data).then(apiResult => {
                     this.addNotification(apiResult.Message, apiResult.IsError);
