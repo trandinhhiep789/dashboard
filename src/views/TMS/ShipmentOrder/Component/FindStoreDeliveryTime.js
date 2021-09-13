@@ -69,11 +69,28 @@ class FindStoreDeliveryTimeCom extends Component {
 
     handleSubmit(formData, MLObject) {
         console.log("submit", formData, MLObject)
+        let objDLDateLog =
+        {
+            ShipmentOrderID: this.props.ShipmentOrder.ShipmentOrderID,
+            PartnerSaleOrderID: this.props.ShipmentOrder.PartnerSaleOrderID,
+            CreatedOrderTime: this.props.ShipmentOrder.CreatedOrderTime,
+            DeliverydateUpdateTypeID: 2,
+            DeliverydateUpdateReasonID: MLObject.DeliverydateUpdateReasonID,
+            OldExpectedDeliveryDate: this.props.ShipmentOrder.ExpectedDeliveryDate,
+            NewExpectedDeliveryDate: MLObject.DeliveryValue,
+            DeliverydateUpdateReasonNote:MLObject.DeliverydateUpdateReasonNote,
+        
+        }
+        this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder_DLDateLog/Add', objDLDateLog).then((apiResult) => {
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            if (!apiResult.IsError) {
+                this.props.hideModal();
+            }
+        });
     
     }
    
     handleChangeForm(formData, MLObject) {
-        console.log("object", formData, MLObject)
         const { ListSuggestTimeChildren, DeliveryTimeAllGroup } = this.state;
 
         if (formData.cbDeliveryDate.value > 0 || formData.cbDeliveryDate.value != undefined) {
@@ -82,6 +99,8 @@ class FindStoreDeliveryTimeCom extends Component {
                 ListSuggestTimeChildren: ListSuggestTimeChildren.children
             })
         }
+
+      
 
     }
 

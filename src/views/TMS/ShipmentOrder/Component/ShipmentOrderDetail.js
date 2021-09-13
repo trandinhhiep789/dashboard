@@ -354,6 +354,7 @@ class ShipmentOrderDetailCom extends Component {
             content: {
                 text: <FindStoreDeliveryTime
                     DeliveryTimeAllGroup={ListSuggestTime}
+                    ShipmentOrder = {this.state.ShipmentOrder}
                 />
             },
             maxWidth: '800px'
