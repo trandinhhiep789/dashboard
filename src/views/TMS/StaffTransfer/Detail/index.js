@@ -4,7 +4,17 @@ import { ModalManager } from "react-dynamic-modal";
 import ReactNotification from "react-notifications-component";
 import { Link } from "react-router-dom";
 
-import { PagePath, APIHostName, LoadInfoEdit, AddAPIComment, SearchAPIComment, AddAPIAttachment, APIUpdateBrowse } from './constants';
+import {
+    AddAPIComment,
+    APIAttachmentAdd,
+    APIAttachmentDelete,
+    APIAttachmentSearch,
+    APIHostName,
+    APIUpdateBrowse,
+    LoadInfoEdit,
+    PagePath,
+    SearchAPIComment,
+} from './constants';
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { updatePagePath } from "../../../../actions/pageAction";
@@ -25,28 +35,30 @@ class DetailCom extends React.Component {
         super(props);
 
         this.state = {
-            stateDataSource: null,
-            stateDataComment: null,
             stateDataAttachment: null,
+            stateDataComment: null,
+            stateDataSource: null
         };
 
         this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
 
-        this.fetchStaffTransferDetail = this.fetchStaffTransferDetail.bind(this);
         this.fetchCommentData = this.fetchCommentData.bind(this);
+        this.fetchStaffTransferAttachment = this.fetchStaffTransferAttachment.bind(this);
+        this.fetchStaffTransferDetail = this.fetchStaffTransferDetail.bind(this);
         this.handleAgreeOrRefuse = this.handleAgreeOrRefuse.bind(this);
-        this.handleSelectFile = this.handleSelectFile.bind(this);
-        this.handleDeleteFile = this.handleDeleteFile.bind(this);
         this.handleCommentChange = this.handleCommentChange.bind(this);
         this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
+        this.handleDeleteFile = this.handleDeleteFile.bind(this);
+        this.handleSelectFile = this.handleSelectFile.bind(this);
         this.handleTransferButton = this.handleTransferButton.bind(this);
     }
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
-        this.fetchStaffTransferDetail();
         this.fetchCommentData();
+        this.fetchStaffTransferAttachment();
+        this.fetchStaffTransferDetail();
     }
 
     showMessage(message) {
@@ -105,15 +117,29 @@ class DetailCom extends React.Component {
     }
 
     fetchCommentData() {
-        const { id } = this.props.match.params;
-
-        this.props.callFetchAPI(APIHostName, SearchAPIComment, id).then((apiResult) => {
+        this.props.callFetchAPI(APIHostName, SearchAPIComment, this.props.match.params.id).then((apiResult) => {
             if (apiResult.IsError) {
                 this.showMessage(apiResult.Message);
             }
             else {
                 this.setState({
                     stateDataComment: apiResult.ResultObject
+                })
+            }
+        })
+    }
+
+    fetchStaffTransferAttachment() {
+        this.props.callFetchAPI(APIHostName, APIAttachmentSearch, this.props.match.params.id).then((apiResult) => {
+            this.setState({
+                stateDataAttachment: []
+            })
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.Message);
+            }
+            else {
+                this.setState({
+                    stateDataAttachment: apiResult.ResultObject
                 })
             }
         })
@@ -185,15 +211,12 @@ class DetailCom extends React.Component {
     }
 
     handleSelectFile(e) {
-        this.showMessage("Tính năng đang phát triển")
-        return
         const { stateDataSource } = this.state;
 
         let data = new FormData();
         const MLObject = {
             StaffTransferID: stateDataSource.StaffTransferID,
-            RequestDate: stateDataSource.RequestDate,
-            CreatedUser: this.props.AppInfo.LoginInfo.Username
+            RequestDate: stateDataSource.RequestDate
         };
 
         data.append('file', e.target.files[0])
@@ -204,19 +227,29 @@ class DetailCom extends React.Component {
         if (checkFileExtension(fileName).IsError) {
             this.showMessage(checkFileExtension(fileName).Message);
         } else {
-            this.props.callFetchAPI(APIHostName, AddAPIAttachment, data).then((apiResult) => {
+            this.props.callFetchAPI(APIHostName, APIAttachmentAdd, data).then((apiResult) => {
                 if (apiResult.IsError) {
                     this.showMessage(apiResult.Message);
                 }
                 else {
-                    this.showMessage("ok")
+                    this.fetchStaffTransferAttachment();
                 }
             })
         }
     }
 
-    handleDeleteFile() {
-
+    handleDeleteFile(id) {
+        const deleteData = {
+            AttachmentID: id
+        }
+        this.props.callFetchAPI(APIHostName, APIAttachmentDelete, deleteData).then((apiResult) => {
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.Message);
+            }
+            else {
+                this.fetchStaffTransferAttachment();
+            }
+        })
     }
 
     handleCommentChange() {
@@ -284,11 +317,11 @@ class DetailCom extends React.Component {
     }
 
     render() {
-        const { stateDataSource, stateDataComment } = this.state;
+        const { stateDataSource, stateDataComment, stateDataAttachment } = this.state;
 
-        if (stateDataSource == null || stateDataComment == null) {
+        if (stateDataSource == null || stateDataComment == null || stateDataAttachment == null) {
             return (
-                <React.Fragment></React.Fragment>
+                <React.Fragment>Đang nạp dữ liệu ...</React.Fragment>
             )
         } else {
             return (
@@ -321,7 +354,7 @@ class DetailCom extends React.Component {
                                     IsAttachment={true}
                                     onSelectFile={this.handleSelectFile}
                                     onDeletefile={this.handleDeleteFile}
-                                    DataAttachment={[]}
+                                    DataAttachment={stateDataAttachment}
                                 />
 
                                 <Comment
