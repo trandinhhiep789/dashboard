@@ -43,7 +43,7 @@ class ShipmentOrderDetailCom extends Component {
             ShipmentOrder_DLDateLogItemList: [],
             HistoryTransactionItemList: [],
             ListSuggestTime: this.props.ListSuggestTime,
-            _ExpectedDeliveryDateEdit : ExpectedDeliveryDateEdit,
+            _ExpectedDeliveryDateEdit: ExpectedDeliveryDateEdit,
             ListSuggestTimeChildren: []
         }
         this.notificationDOMRef = React.createRef();
@@ -348,12 +348,12 @@ class ShipmentOrderDetailCom extends Component {
 
 
     showFindStoreDeliveryTime() {
-        const { ListSuggestTime, _ExpectedDeliveryDateEdit } = this.state;
+        const { ListSuggestTime, _ExpectedDeliveryDateEdit, ShipmentOrder } = this.state;
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Cập nhật thời gian giao dự kiến',
             content: {
                 text: <FindStoreDeliveryTime
-                    DeliveryTimeAllGroup={ListSuggestTime}
+                    ShipmentOrder={ShipmentOrder}
                 />
             },
             maxWidth: '800px'
@@ -421,7 +421,7 @@ class ShipmentOrderDetailCom extends Component {
     //     console.log("FormData", FormData)
     //     const { ListSuggestTime, _ExpectedDeliveryDateEdit, ListSuggestTimeChildren } = this.state;
     //     console.log("object", this.props, ListSuggestTime)
-      
+
     //     if (FormData.cbDeliveryDate.value != "" || FormData.cbDeliveryDate.value > 0) {
     //         const ListSuggestTimeChildren = ListSuggestTime.find(e => { return e.value == FormData.cbDeliveryDate.value })
     //         this.setState({
@@ -437,7 +437,7 @@ class ShipmentOrderDetailCom extends Component {
     //             objElement.value = -1;
     //         }
     //     });
-       
+
 
     //     this.setState({
     //         _ExpectedDeliveryDateEdit: _ExpectedDeliveryDateEdit

@@ -12,7 +12,7 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { Link, Redirect, useHistory, withRouter } from "react-router-dom";
 import {
-
+    APIHostName,
     MLObjectExpectedDeliveryNew,
 } from "../constants";
 import FormContainer from "../../../../common/components/FormContainer";
@@ -20,6 +20,7 @@ import { Menu, Dropdown } from 'antd';
 
 import { showModal, hideModal } from '../../../../actions/modal';
 import { ERPCOMMONCACHE_TMS_SERVICETYPE, ERPCOMMONCACHE_SERVICEREQUESTTYPE, ERPCOMMONCACHE_PARTNER_CUSTOMER } from "../../../../constants/keyCache";
+import { formatDate, formatDateCusNew } from "../../../../common/library/CommonLib";
 
 class FindStoreDeliveryTimeCom extends Component {
     constructor(props) {
@@ -30,7 +31,8 @@ class FindStoreDeliveryTimeCom extends Component {
             ServiceRequestTypeID: '',
             MessageError: '',
             MessageErrorValueTime: '',
-            DeliveryTimeAllGroup: this.props.DeliveryTimeAllGroup,
+            DeliveryTimeAllGroup: [],
+            ShipmentOrder: this.props.ShipmentOrder,
             ListSuggestTime: [],
             DeliveryTime: "",
             MLObject: this.props.MLObject,
@@ -44,6 +46,106 @@ class FindStoreDeliveryTimeCom extends Component {
     }
 
     componentDidMount() {
+        console.log("object", this.props)
+        const {ShipmentOrder} = this.props
+        
+        const lstProduct = ShipmentOrder.ShipmentOrder_ItemList.map((item, index) => {
+            return {
+
+                PRODUCTID: item.ProductID,
+                QUANTITY: item.Quantity,
+                ISSETUPPRODUCT: item.IsInstallItem == true ? 1 : 0,
+                MAINGROUPID: item.MainGroupID,
+                SUBGROUPID: item.SubGroupID,
+                ISONLINEONLY: 0,
+                ISPARTNER: 0,
+                ISNORMAL: 0,
+                OUTPUTSTOREID: ShipmentOrder.SenderStoreID,
+                COMBOID: 0,
+                SALEORDERDETAILONLINEID: null,
+                APPLYSALEODERDETAILID: null,
+                SALEPRICE: 0.0,
+                OUTPUTTYPEID: 8
+            }
+        })
+
+        const dtFromdate = new Date();
+        const toDate = new Date();
+        toDate.setDate(new Date().getDate() + 2);
+        const param = {
+            "lstOutputStoreID": ShipmentOrder.SenderStoreID,
+            "VehicleType": ShipmentOrder.CarrierTypeID,
+            "iProvinceID": ShipmentOrder.ReceiverProvinceID,
+            "iDistrictID": ShipmentOrder.ReceiverDistrictID,
+            "iWardID": ShipmentOrder.ReceiverWardID,
+            "dtDateFrom": formatDateCusNew(dtFromdate, true),
+            "dtDateTo": formatDateCusNew(toDate, true),
+            "decRange": "0",
+            "iDayTranfer": "0",
+            "isCheckProvince": "true",
+            "intDeliveryTypeID": "281",
+            "iCreateStoreID": "1",
+            "lstProduct": lstProduct
+        }
+
+        this._FindStoreDeliveryTime(param)
+    }
+
+    _FindStoreDeliveryTime(param) {
+        this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/FindStoreDeliveryTime", param).then((apiResult) => {
+            if (apiResult.IsError) {
+                this.showMessage("Lỗi lấy thông tin tải giao hàng");
+            }
+            else {
+                if (!!apiResult.ResultObject.Data.LSTSUGGESTTIME && apiResult.ResultObject.Data.LSTSUGGESTTIME != null && apiResult.ResultObject.Data.LSTSUGGESTTIME.length > 0) {
+                    const tempData = apiResult.ResultObject.Data.LSTSUGGESTTIME;
+                    let tempDataNew =[];
+                    if(tempData.length > 0){
+                        tempData.map((item, index) => {
+               
+                            if (item.ISWARNING == false) {
+                                item.value = item.DELIVERYVALUE;
+                                item.label = item.DELIVERYTEXT;
+                                item.name = item.DELIVERYVALUE;   
+                                tempDataNew.push(item)
+                            }
+                        })
+                        const dataSource = tempDataNew.reduce((catsSoFar, item, index) => {
+                            const tempArray = item.DELIVERYVALUE.split('T')
+                            const deliveryValue = tempArray[0]
+                            if (!catsSoFar[deliveryValue]) catsSoFar[deliveryValue] = [];
+                            catsSoFar[deliveryValue].push(item);
+                            return catsSoFar;
+                        }, {});
+    
+                        const newDatasource = Object.keys(dataSource).map(function (key) {
+                            let element = {}
+                            element.parentKey = key
+                            element.label = formatDate(key, true),
+                                element.name = key,
+                                element.value = key,
+                                element.children = dataSource[key]
+                            return element
+    
+                        })
+    
+                        this.setState({
+                            DeliveryTimeAllGroup: newDatasource,
+                          
+                        })
+                    } 
+                    else {
+                        this.showMessage("Danh sách tải không tồn tại");
+                    }
+                
+
+                    // this.showFindStoreDeliveryTime(newDatasource, MLObject)
+                }
+                else {
+                    this.showMessage("Lỗi lấy danh sách tải giao hàng");
+                }
+            }
+        });
     }
 
     handleCloseMessage() {
@@ -69,11 +171,12 @@ class FindStoreDeliveryTimeCom extends Component {
 
     handleSubmit(formData, MLObject) {
         console.log("submit", formData, MLObject)
+        this.props.hideModal();
     
     }
    
     handleChangeForm(formData, MLObject) {
-        console.log("object", formData, MLObject)
+        // console.log("object", formData, MLObject)
         const { ListSuggestTimeChildren, DeliveryTimeAllGroup } = this.state;
 
         if (formData.cbDeliveryDate.value > 0 || formData.cbDeliveryDate.value != undefined) {
@@ -88,7 +191,6 @@ class FindStoreDeliveryTimeCom extends Component {
     render() {
         const { DeliveryTimeAllGroup, ListSuggestTime } = this.state;
 
-        console.log("â", this.state.ListSuggestTimeChildren)
         return (
 
             <FormContainer
