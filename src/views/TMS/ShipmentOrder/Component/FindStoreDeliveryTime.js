@@ -47,8 +47,8 @@ class FindStoreDeliveryTimeCom extends Component {
 
     componentDidMount() {
         console.log("object", this.props)
-        const {ShipmentOrder} = this.props
-        
+        const { ShipmentOrder } = this.props
+
         const lstProduct = ShipmentOrder.ShipmentOrder_ItemList.map((item, index) => {
             return {
 
@@ -99,14 +99,14 @@ class FindStoreDeliveryTimeCom extends Component {
             else {
                 if (!!apiResult.ResultObject.Data.LSTSUGGESTTIME && apiResult.ResultObject.Data.LSTSUGGESTTIME != null && apiResult.ResultObject.Data.LSTSUGGESTTIME.length > 0) {
                     const tempData = apiResult.ResultObject.Data.LSTSUGGESTTIME;
-                    let tempDataNew =[];
-                    if(tempData.length > 0){
+                    let tempDataNew = [];
+                    if (tempData.length > 0) {
                         tempData.map((item, index) => {
-               
+
                             if (item.ISWARNING == false) {
                                 item.value = item.DELIVERYVALUE;
                                 item.label = item.DELIVERYTEXT;
-                                item.name = item.DELIVERYVALUE;   
+                                item.name = item.DELIVERYVALUE;
                                 tempDataNew.push(item)
                             }
                         })
@@ -117,7 +117,7 @@ class FindStoreDeliveryTimeCom extends Component {
                             catsSoFar[deliveryValue].push(item);
                             return catsSoFar;
                         }, {});
-    
+
                         const newDatasource = Object.keys(dataSource).map(function (key) {
                             let element = {}
                             element.parentKey = key
@@ -126,18 +126,18 @@ class FindStoreDeliveryTimeCom extends Component {
                                 element.value = key,
                                 element.children = dataSource[key]
                             return element
-    
+
                         })
-    
+
                         this.setState({
                             DeliveryTimeAllGroup: newDatasource,
-                          
+
                         })
-                    } 
+                    }
                     else {
                         this.showMessage("Danh sách tải không tồn tại");
                     }
-                
+
 
                     // this.showFindStoreDeliveryTime(newDatasource, MLObject)
                 }
@@ -171,10 +171,27 @@ class FindStoreDeliveryTimeCom extends Component {
 
     handleSubmit(formData, MLObject) {
         console.log("submit", formData, MLObject)
-        this.props.hideModal();
-    
+        let objDLDateLog =
+        {
+            ShipmentOrderID: this.props.ShipmentOrder.ShipmentOrderID,
+            PartnerSaleOrderID: this.props.ShipmentOrder.PartnerSaleOrderID,
+            CreatedOrderTime: this.props.ShipmentOrder.CreatedOrderTime,
+            DeliverydateUpdateTypeID: 2,
+            DeliverydateUpdateReasonID: MLObject.DeliverydateUpdateReasonID,
+            OldExpectedDeliveryDate: this.props.ShipmentOrder.ExpectedDeliveryDate,
+            NewExpectedDeliveryDate: MLObject.DeliveryValue,
+            DeliverydateUpdateReasonNote: MLObject.DeliverydateUpdateReasonNote,
+
+        }
+        this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder_DLDateLog/Add', objDLDateLog).then((apiResult) => {
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            if (!apiResult.IsError) {
+                this.props.hideModal();
+            }
+        });
+
     }
-   
+
     handleChangeForm(formData, MLObject) {
         // console.log("object", formData, MLObject)
         const { ListSuggestTimeChildren, DeliveryTimeAllGroup } = this.state;
@@ -185,7 +202,41 @@ class FindStoreDeliveryTimeCom extends Component {
                 ListSuggestTimeChildren: ListSuggestTimeChildren.children
             })
         }
+    }
 
+
+    addNotification(message1, IsError) {
+        let cssNotification = "";
+        let iconNotification = "";
+        if (!IsError) {
+
+            cssNotification = "notification-custom-success"
+            iconNotification = "fa fa-check"
+
+        } else {
+
+            cssNotification = "notification-danger",
+            iconNotification = "fa fa-exclamation"
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
     }
 
     render() {
