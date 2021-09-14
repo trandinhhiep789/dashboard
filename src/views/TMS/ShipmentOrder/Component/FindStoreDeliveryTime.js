@@ -84,7 +84,7 @@ class FindStoreDeliveryTimeCom extends Component {
             "iDayTranfer": "0",
             "isCheckProvince": "true",
             "intDeliveryTypeID": "281",
-            "iCreateStoreID": "1",
+            "iCreateStoreID": "0",
             "lstProduct": lstProduct
         }
 
