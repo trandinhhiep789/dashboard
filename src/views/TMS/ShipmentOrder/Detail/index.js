@@ -23,7 +23,10 @@ import {
     PagePath,
     DetailAPIPath
 } from "../constants";
-
+import { toIsoStringCusNew, toIsoStringNew } from "../../../../utils/function";
+import { ExportStringToDate } from "../../../../common/library/ultils";
+import moment from 'moment';
+import { formatDate, formatDateCusNew } from "../../../../common/library/CommonLib";
 
 class DetailCom extends React.Component {
     constructor(props) {
@@ -34,10 +37,11 @@ class DetailCom extends React.Component {
             DataSource: {},
             ShipmentOrderType_WorkFlowList: null,
             CurrentShipmentOrderStepID: 0,
-            IsCancelDelivery:false,
+            IsCancelDelivery: false,
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsLoadDataComplete: false,
+            ListSuggestTime: []
         }
     }
 
@@ -60,51 +64,8 @@ class DetailCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(DetailAPIPath);
-         this.callLoadData(this.props.match.params.id);
-
-        const param = {
-            "lstOutputStoreID": "1700",
-            "iCreateStoreID": "1",
-            "VehicleType": "2",
-            "iProvinceID": "3",
-            "iDistrictID": 2087,
-            "iWardID": 27125,
-            "lstProduct": [
-                {
-                    "PRODUCTID": "4241412000001",
-                    "QUANTITY": 1,
-                    "ISSETUPPRODUCT": 1,
-                    "MAINGROUPID": 305,
-                    "SUBGROUPID": 1097,
-                    "ISONLINEONLY": 0,
-                    "ISPARTNER": 0,
-                    "ISNORMAL": 0,
-                    "OUTPUTSTOREID": 1700,
-                    "COMBOID": 0,
-                    "SALEORDERDETAILONLINEID": null,
-                    "APPLYSALEODERDETAILID": null,
-                    "SALEPRICE": 0.0,
-                    "OUTPUTTYPEID": 8
-                }
-            ],
-            "dtDateFrom": "2021-09-09",
-            "dtDateTo": "2021-09-18",
-            "decRange": "0",
-            "iDayTranfer": "0",
-            "isCheckProvince": "true",
-            "intDeliveryTypeID": "281"
-        }
-        this._FindStoreDeliveryTime(param)
+        this.callLoadData(this.props.match.params.id);
     }
-
-     
-    _FindStoreDeliveryTime(param) {
-        this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/FindStoreDeliveryTime", param).then((apiResult) => {
-            console.log('_FindStoreDeliveryTime', param, apiResult)
-            
-        });
-    }
-
 
     callLoadData(id) {
 
@@ -122,7 +83,6 @@ class DetailCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
-                //    console.log("apiResult.ResultObject.ShipmentOrderType_WorkFlowList",apiResult.ResultObject.ShipmentOrderType_WorkFlowList)
                 this.setState({
                     DataSource: apiResult.ResultObject,
                     ShipmentOrderType_WorkFlowList: apiResult.ResultObject.ShipmentOrderType_WorkFlowList,
@@ -145,7 +105,7 @@ class DetailCom extends React.Component {
         this.setState({
             ShipmentOrderType_WorkFlowList: ShipmentOrderData.ShipmentOrderType_WorkFlowList,
             CurrentShipmentOrderStepID: ShipmentOrderData.CurrentShipmentOrderStepID,
-            IsCancelDelivery:ShipmentOrderData.IsCancelDelivery
+            IsCancelDelivery: ShipmentOrderData.IsCancelDelivery
         });
     }
 
@@ -164,14 +124,14 @@ class DetailCom extends React.Component {
                         TotalReturnPrice={this.state.DataSource.TotalReturnPrice}
                         IsCancelDelivery={this.state.IsCancelDelivery}
                     />
-                    
+
                     <ShipmentOrderDetail
                         ShipmentOrderID={this.props.match.params.id}
                         ShipmentOrderDetail={this.state.DataSource}
                         onhandleChange={this.ChangeLoadData}
                         IsShipDetail={this.CheckPermissionUser(1)}
                     />
-                     <InfoCoordinator
+                    <InfoCoordinator
                         ShipmentOrderID={this.props.match.params.id}
                         InfoCoordinator={this.state.DataSource}
                         onhandleChange={this.ChangeLoadData}

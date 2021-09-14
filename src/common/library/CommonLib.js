@@ -80,6 +80,21 @@ export function formatDate(dateString, notGetTime) {
     return dateString;
 }
 
+export function formatDateCusNew(dateString, notGetTime) {
+    if (dateString) {
+        try {
+            const d = new Date(Date.parse(dateString));
+            let dateStringFormated = d.getFullYear().toString() + "-" + ConvertStr(d.getMonth() + 1) + "-" + ConvertStr(d.getDate())
+            if (!notGetTime)
+                dateStringFormated += " " + ConvertStr(d.getHours()) + ":" + ConvertStr(d.getMinutes());
+            return dateStringFormated;
+        } catch (error) {
+            return dateString;
+        }
+    }
+    return dateString;
+}
+
 // export function formatStrToDate(dateString, notGetTime) {
 //     try {
 //         const arrDateString = dateString.split(/[\s,-.]+/);

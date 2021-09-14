@@ -1525,6 +1525,37 @@ export const MLObjectExpectedDelivery = [
     }
 
 ]
+
+//Update Expected Delivery Date new
+export const MLObjectExpectedDeliveryNew = [
+    {
+        Name: "DeliverydateUpdateReasonID",
+        DefaultValue: "",
+        BindControlName: "cbDeliverydateUpdateReasonID",
+        DataSourceMember: "DeliverydateUpdateReasonID"
+    },
+    {
+        Name: "DeliveryDate",
+        DefaultValue: "",
+        BindControlName: "cbDeliveryDate",
+        DataSourceMember: "DeliveryDate"
+    }
+    ,
+    {
+        Name: "DeliveryValue",
+        DefaultValue: "",
+        BindControlName: "cbDeliveryTime",
+        DataSourceMember: "DeliveryValue"
+    },
+    {
+        Name: "DeliverydateUpdateReasonNote",
+        DefaultValue: "",
+        BindControlName: "txtDeliverydateUpdateReasonNote",
+        DataSourceMember: "DeliverydateUpdateReasonNote"
+    }
+
+]
+
 export const ExpectedDeliveryDateEdit = [
     // {
     //     name: "DeliverydateUpdateTypeID",
@@ -1566,26 +1597,50 @@ export const ExpectedDeliveryDateEdit = [
     //     IsGetTime:true,
     //     OrderIndex: 3
     // },
+    // {
+    //     name: "NewExpectedDeliveryDate",
+    //     Type: "Datetime",
+    //     Caption: "Ngày hẹn giao",
+    //     label: "Ngày hẹn giao",
+    //     datasourcemember: "NewExpectedDeliveryDate",
+    //     validatonList: ["required"],
+    //     timeFormat: false,
+    //     ISdisabledDate: true,
+    //     dateFormat: "DD-MM-YYYY HH:mm",//"YYYY-MM-DD HH:mm"
+    //     IsGetTime: true,
+    //     OrderIndex: 4
+    // },
     {
-        name: "NewExpectedDeliveryDate",
-        Type: "Datetime",
-        Caption: "Ngày hẹn giao",
-        label: "Ngày hẹn giao",
-        datasourcemember: "NewExpectedDeliveryDate",
-        validatonList: ["required"],
-        timeFormat: false,
-        ISdisabledDate: true,
-        dateFormat: "DD-MM-YYYY HH:mm",//"YYYY-MM-DD HH:mm"
-        IsGetTime: true,
+        name: "cbDeliveryDate",
+        Type: "ComboBoxEdit",
+        Caption: "Ngày hẹn",
+        label: "Ngày hẹn",
+        value: -1,
+        datasourcemember: "DeliveryDate",
+        isautoloaditemfromcache: false,
+        listoption: [],
         OrderIndex: 4
     },
+    {
+        name: "NewExpectedDeliveryDate",
+        Type: "ComboBoxEdit",
+        Caption: "Giờ hẹn",
+        label: "Giờ hẹn",
+        value: -1,
+        datasourcemember: "NewExpectedDeliveryDate",
+        validatonList: ["Comborequired"],
+        isautoloaditemfromcache: false,
+        listoption: [],
+        OrderIndex: 5
+    },
+
     {
         name: "DeliverydateUpdateReasonNote",
         Type: "TextArea",
         label: "Ghi chú",
         Caption: "Ghi chú",
         datasourcemember: "DeliverydateUpdateReasonNote",
-        OrderIndex: 5,
+        OrderIndex: 6,
         Colmd: 12,
         hideInput: false,
         labelcolspan: 2,
