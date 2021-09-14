@@ -31,7 +31,7 @@ import ReactNotification from "react-notifications-component";
 import DeliverUserList from "../../../ShipmentOrder/Component/DeliverUserList";
 import MultiSelectComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
 import MultiStoreComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiStoreComboBox";
-
+import { Base64 } from 'js-base64';
 import { ERPCOMMONCACHE_WORKINGSHIFT } from "../../../../../constants/keyCache";
 
 
@@ -52,6 +52,7 @@ class EditCom extends React.Component {
             MainDriverUser: "",
             IsSystem: false,
             MainCoordinatorStoreID: "",
+            params: {}
 
         };
         this.searchref = React.createRef();
@@ -62,12 +63,22 @@ class EditCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
-        this.callLoadData(this.props.match.params.id);
+        const param = Base64.decode(this.props.match.params.id);
+        const myParam = JSON.parse(param);
+        const params = {
+            WorkingShiftID: myParam.WorkingShiftID,
+            DeliveryTimeFrameID: myParam.DeliveryTimeFrameID
+        }
+        this.setState({
+            params: params
+        })
+        this.callLoadData(params);
 
     }
 
-    callLoadData(id) {
-        this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
+    callLoadData(params) {
+        this.props.callFetchAPI(APIHostName, LoadAPIPath, params).then((apiResult) => {
+            console.log("id", params, apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -75,19 +86,6 @@ class EditCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
-                const start = apiResult.ResultObject.TimeStart;
-                const hourStart = Math.floor(start / 60);
-                const minStart =  start%60;//Math.floor((apiResult.ResultObject.TimeStart - hourStart) / 60);
-                const timeStart = (hourStart + ":" + minStart).toString()
-
-                const end = apiResult.ResultObject.TimeEnd;
-                const hourEnd = Math.floor(end / 60);
-                const minEnd = end%60//Math.floor((apiResult.ResultObject.TimeEnd - hourEnd) / 60);
-
-                const timeEnd = (hourEnd + ":" + minEnd).toString()
-
-                apiResult.ResultObject.TimeStart = timeStart;
-                apiResult.ResultObject.TimeEnd = timeEnd;
 
                 this.setState({
                     DataSource: apiResult.ResultObject,
@@ -115,47 +113,14 @@ class EditCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
+        const {params} = this.state;
         console.log('aa', formData, MLObject)
-
-        MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-        MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        const start = MLObject.TimeStart.split(':');
-        const end = MLObject.TimeEnd.split(':');
-        const countStart = (parseInt(start[0]) * 60) + parseInt(start[1]);
-        const countEnd = (parseInt(end[0]) * 60) + parseInt(end[1]);
-        MLObject.TimeStart = countStart;
-        MLObject.TimeEnd = countEnd;
-
-        if (countEnd < countStart) {
-            formData.txtTimeEnd.ErrorLst.IsValidatonError = true;
-            formData.txtTimeEnd.ErrorLst.ValidatonErrorMessage = "Thời gian kết thúc phải lớn hơn thời gian bắt đầu làm việc";
-            return;
-        }
-
+        MLObject.OldWorkingShiftID = params.WorkingShiftID;
+        MLObject.OldDeliveryTimeFrameID = params.DeliveryTimeFrameID;
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
-            if (!apiResult.IsError) {
-                this.props.callClearLocalCache(ERPCOMMONCACHE_WORKINGSHIFT);
-            }
         });
-    }
-
-    handleChange(formData, MLObject) {
-        if (formData.txtTimeEnd.value != '' && formData.txtTimeStart.value != '') {
-            const start = formData.txtTimeStart.value.split(':');
-            const end = formData.txtTimeEnd.value.split(':');
-            const countStart = (parseInt(start[0]) * 60) + parseInt(start[1]);
-            const countEnd = (parseInt(end[0]) * 60) + parseInt(end[1]);
-            if (countEnd <= countStart) {
-                formData.txtTimeEnd.ErrorLst.IsValidatonError = true;
-                formData.txtTimeEnd.ErrorLst.ValidatonErrorMessage = "Thời gian kết thúc phải lớn hơn thời gian bắt đầu làm việc";
-            }
-            else {
-                formData.txtTimeEnd.ErrorLst.IsValidatonError = false;
-                formData.txtTimeEnd.ErrorLst.ValidatonErrorMessage = "";
-            }
-        }
     }
 
 
@@ -168,109 +133,25 @@ class EditCom extends React.Component {
 
         return (
             <React.Fragment>
-                <FormContainer
-                    FormName="Cập nhật ca làm việc"
+                 <FormContainer
+                    FormName="Thêm khung giờ của một ca làm việcc"
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={[]}
-                    onSubmit={this.handleSubmit}
                     dataSource={this.state.DataSource}
+                    onSubmit={this.handleSubmit}
                     BackLink={BackLink}
-                    onchange={this.handleChange.bind(this)}
-                    RequirePermission={WORKINGSHIFT_UPDATE}
+                // onchange={this.handleChange.bind(this)}
+                // RequirePermission={WORKINGSHIFTTIMEFRAME_ADD}
                 >
 
                     <div className="row">
                         <div className="col-md-6">
-                            <FormControl.TextBox
-                                name="txtWorkingShiftID"
+                            <FormControl.ComboBoxSelect
+
+                                name="cbWorkingShift"
                                 colspan="8"
                                 labelcolspan="4"
-                                disabled={true}
-                                readOnly={true}
-                                label="mã ca làm việc"
-                                placeholder="Mã ca làm việc"
-                                controltype="InputControl"
-                                value=""
-                                maxSize={9}
-                                datasourcemember="WorkingShiftID"
-                                validatonList={['required', 'number']}
-                            />
-                        </div>
-                        <div className="col-md-6">
-                            <FormControl.TextBox
-                                name="txtWorkingShiftName"
-                                colspan="8"
-                                labelcolspan="4"
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
                                 label="ca làm việc"
-                                placeholder="Ca làm việc"
-                                controltype="InputControl"
-                                value=""
-                                datasourcemember="WorkingShiftName"
-                                validatonList={['required']}
-                            />
-                        </div>
-
-                        <div className="col-md-6">
-                            <FormControl.FormControlHour
-                                name="txtTimeStart"
-                                colspan="8"
-                                labelcolspan="4"
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
-                                label="thời gian bắt đầu"
-                                placeholder="Thời gian bắt đầu"
-                                controltype="InputControl"
-                                formatHour="HH:mm"
-                                value=""
-                                datasourcemember="TimeStart"
-                                validatonList={['required']}
-                            />
-                        </div>
-
-
-                        <div className="col-md-6">
-
-                            <FormControl.FormControlHour
-                                name="txtTimeEnd"
-                                colspan="8"
-                                labelcolspan="4"
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
-                                formatHour="HH:mm"
-                                label="thời gian kết thúc làm việc"
-                                placeholder="Thời gian kết thúc làm việc"
-                                controltype="InputControl"
-                                value=""
-                                datasourcemember="TimeEnd"
-                                validatonList={['required']}
-                            />
-                        </div>
-
-                        <div className="col-md-6">
-                            <FormControl.TextBox
-                                name="txtShiftNumber"
-                                colspan="8"
-                                labelcolspan="4"
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
-                                label="ca làm việc"
-                                placeholder="Ca làm việc"
-                                controltype="InputControl"
-                                value=""
-                                maxSize={9}
-                                datasourcemember="ShiftNumber"
-                                validatonList={['required', 'number']}
-                            />
-                            {/* <FormControl.ComboBoxSelect
-
-                                name="cbShiftNumber"
-                                colspan="8"
-                                labelcolspan="4"
-                                label="ca làm việc số"
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
                                 validatonList={["Comborequired"]}
                                 placeholder="-- Vui lòng chọn --"
                                 isautoloaditemfromcache={true}
@@ -280,7 +161,26 @@ class EditCom extends React.Component {
                                 controltype="InputControl"
                                 value={""}
                                 listoption={null}
-                                datasourcemember="WorkingShiftID" /> */}
+                                datasourcemember="WorkingShiftID" />
+                        </div>
+                        <div className="col-md-6">
+                            <FormControl.FormControlComboBox
+
+                                name="cbDeliveryTimeFrame"
+                                colspan="8"
+                                labelcolspan="4"
+                                label="khung thời gian"
+                                validatonList={["Comborequired"]}
+                                placeholder="-- Vui lòng chọn --"
+                                isMultiSelect={false}
+                                isautoloaditemfromcache={true}
+                                loaditemcachekeyid="ERPCOMMONCACHE.DELIVERYTIMEFRAME"
+                                valuemember="DeliveryTimeFrameID"
+                                nameMember="DeliveryTimeFrame"
+                                controltype="InputControl"
+                                value={""}
+                                listoption={null}
+                                datasourcemember="DeliveryTimeFrameID" />
                         </div>
 
                     </div>
@@ -291,16 +191,15 @@ class EditCom extends React.Component {
                             <FormControl.TextArea
                                 labelcolspan={2}
                                 colspan={10}
-                                name="txtDescription"
-                                label="Mô tả"
-                                placeholder="Mô tả"
-                                datasourcemember="Description"
+                                name="txtNote"
+                                label="Ghi chú"
+                                placeholder="Ghi chú"
+                                datasourcemember="Note"
                                 controltype="InputControl"
                                 rows={6}
-                                maxSize={500}
+                                maxSize={1500}
+                                value=""
                                 classNameCustom="customcontrol"
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
                             />
                         </div>
 
@@ -309,8 +208,7 @@ class EditCom extends React.Component {
                                 name="chkIsActived"
                                 colspan="8"
                                 labelcolspan="4"
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
+                                readOnly={false}
                                 label="kích hoạt"
                                 controltype="InputControl"
                                 value={true}
@@ -327,7 +225,7 @@ class EditCom extends React.Component {
                                 readOnly={false}
                                 label="hệ thống"
                                 controltype="InputControl"
-                                value=""
+                                value={false}
                                 datasourcemember="IsSystem"
                                 classNameCustom="customCheckbox"
                             />

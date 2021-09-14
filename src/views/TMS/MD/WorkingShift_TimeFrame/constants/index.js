@@ -1,35 +1,29 @@
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "api/WorkingShift/Search";
-export const LoadAPIPath = "api/WorkingShift/Load";
-export const LoadNewAPIPath = "api/WorkingShift/LoadNew";
-export const AddAPIPath = "api/WorkingShift/Add";
-export const AddNewAPIPath = "api/WorkingShift/AddNew";
-export const UpdateAPIPath = "api/WorkingShift/Update";
-export const UpdateNewAPIPath = "api/WorkingShift/UpdateNew";
-export const DeleteAPIPath = "api/WorkingShift/Delete";
-export const DeleteNewAPIPath = "api/WorkingShift/DeleteNew";
-export const UpdateOrderAPIPath = "api/WorkingShift/UpdateOrder";
-export const BackLink = "/WorkingShift";
-export const AddLink = "/WorkingShift/Add";
-export const AddLogAPIPath = "api/UserActivity/Add";
+export const SearchAPIPath = "api/WorkingShift_TimeFrame/Search";
+export const LoadAPIPath = "api/WorkingShift_TimeFrame/Load";
+export const AddAPIPath = "api/WorkingShift_TimeFrame/Add";
+export const UpdateAPIPath = "api/WorkingShift_TimeFrame/Update";
+export const DeleteAPIPath = "api/WorkingShift_TimeFrame/Delete";
+export const BackLink = "/WorkingShiftTimeFrame";
+export const AddLink = "/WorkingShiftTimeFrame/Add";
 export const IDSelectColumnName = "chkSelect";
-export const PKColumnName = "WorkingShiftID";
+export const PKColumnName = "WorkingShiftTimeFrameID";
 
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách ca làm việc" }
+    { Link: "", Title: "Danh sách các khung giờ của một ca làm việc" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/WorkingShift", Title: "Danh sách ca làm việc" },
+    { Link: "/WorkingShiftTimeFrame", Title: "Danh sách các khung giờ của một ca làm việc" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/WorkingShift", Title: "Danh sách ca làm việc" },
+    { Link: "/WorkingShiftTimeFrame", Title: "Danh sách các khung giờ của một ca làm việc" },
     { Link: "", Title: "Thêm" }
 ];
 
@@ -64,38 +58,20 @@ export const MLObjectDefinition = [
     {
         Name: "WorkingShiftID",
         DefaultValue: {},
-        BindControlName: "txtWorkingShiftID",
+        BindControlName: "cbWorkingShift",
         DataSourceMember: "WorkingShiftID"
     },
     {
-        Name: "WorkingShiftName",
+        Name: "DeliveryTimeFrameID",
         DefaultValue: {},
-        BindControlName: "txtWorkingShiftName",
-        DataSourceMember: "WorkingShiftName"
+        BindControlName: "cbDeliveryTimeFrame",
+        DataSourceMember: "DeliveryTimeFrameID"
     },
     {
-        Name: "TimeStart",
+        Name: "Note",
         DefaultValue: {},
-        BindControlName: "txtTimeStart",
-        DataSourceMember: "TimeStart"
-    },
-    {
-        Name: "TimeEnd",
-        DefaultValue: {},
-        BindControlName: "txtTimeEnd",
-        DataSourceMember: "TimeEnd"
-    },
-    {
-        Name: "ShiftNumber",
-        DefaultValue: {},
-        BindControlName: "txtShiftNumber",
-        DataSourceMember: "ShiftNumber"
-    },
-    {
-        Name: "Description",
-        DefaultValue: {},
-        BindControlName: "txtDescription",
-        DataSourceMember: "Description"
+        BindControlName: "txtNote",
+        DataSourceMember: "Note"
     },
     {
         Name: "IsActived",
@@ -113,139 +89,50 @@ export const MLObjectDefinition = [
 ]
 
 
-export const AddElementList = [
-    {
-        type: "select",
-        name: "cbShipmentOrderTypeID",
-        label: "loại yêu cầu xuất",
-        value: -1,
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        datasourcemember: "ShipmentOrderTypeID",
-        readonly: false,
-        validatonList: ["Comborequired"],
-        isautoloaditemfromcache: true,
-        loaditemcachekeyid: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
-        valuemember: "ShipmentOrderTypeID",
-        nameMember: "ShipmentOrderTypeName",
-        OrderIndex:1
-    },
-    {
-        type: "select",
-        name: "cbPartnerID",
-        label: "đối tác",
-        value: -1,
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        datasourcemember: "PartnerID",
-        readonly: false,
-        validatonList: ["Comborequired"],
-        isautoloaditemfromcache: true,
-        loaditemcachekeyid: "ERPCOMMONCACHE.PARTNER",
-        valuemember: "PartnerID",
-        nameMember: "PartnerName",
-        OrderIndex:2
-    },
-    {
-        type: "select",
-        name: "cbStoreID",
-        label: "kho điều phối",
-        value: -1,
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        datasourcemember: "StoreID",
-        readonly: false,
-        validatonList: ["Comborequired"],
-        isautoloaditemfromcache: true,
-        loaditemcachekeyid: "ERPCOMMONCACHE.STORE",
-        valuemember: "StoreID",
-        nameMember: "StoreName",
-        filterValue: 10,
-        filterobj: "CompanyID",
-        OrderIndex:3
-    },
-    {
-        type: "select",
-        name: "cbSenderStoreID",
-        label: "kho gửi",
-        value: -1,
-        placeholder: "",
-        icon: "",
-        listoption: [],
-        datasourcemember: "SenderStoreID",
-        readonly: false,
-        validatonList: ["Comborequired"],
-        isautoloaditemfromcache: true,
-        loaditemcachekeyid: "ERPCOMMONCACHE.STORE",
-        valuemember: "StoreID",
-        nameMember: "StoreName",
-        filterValue: 1,
-        filterobj: "CompanyID",
-        OrderIndex:4
-    },
-    {
-        type: "checkbox",
-        name: "chkIsCheckCustomerAddress",
-        datasourcemember:"IsCheckCustomerAddress",
-        label: "kiểm tra địa chỉ khách hàng",
-        value: false,
-        readonly: false,
-        OrderIndex:5
-    }
-
-];
-
-
-export const EditElementList = [
-
-];
 
 export const DataGridColumnList=[
     {
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "WorkingShiftID",
+        DataSourceMember: "WorkingShiftTimeFrameID",
         Width: 60
     },
     {
         Name: "WorkingShiftName",
         Type: "text",
-        Caption: "Tên ca làm việc",
+        Caption: "Ca làm việc",
         DataSourceMember: "WorkingShiftName",
         Width: 250
     },
     {
-        Name: "TimeStart",
+        Name: "DeliveryTimeFrameName",
         Type: "text",
-        Caption: "Giờ bắt đầu",
-        DataSourceMember: "TimeStart",
+        Caption: "khung giờ",
+        DataSourceMember: "DeliveryTimeFrameName",
         Width: 250
     },
     {
-        Name: "TimeEnd",
-        Type: "text",
-        Caption: "Giờ kết thúc",
-        DataSourceMember: "TimeEnd",
+        Name: "UpdatedDate",
+        Type: "date",
+        Caption: "Ngày cập nhật",
+        DataSourceMember: "UpdatedDate",
         Width: 250
     },
     {
-        Name: "ShiftNumber",
+        Name: "UpdatedUserFullName",
         Type: "text",
-        Caption: "Ca làm việc",
-        DataSourceMember: "ShiftNumber",
+        Caption: "Người cập nhập",
+        DataSourceMember: "UpdatedUserFullName",
         Width: 250
     },
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
-        DataSourceMember: "WorkingShiftID",
+        DataSourceMember: "WorkingShiftTimeFrameID",
         Width: 100,
-        Link: "/WorkingShift/Edit/",
+        Link: "/WorkingShiftTimeFrame/Edit/",
         LinkText: "Chỉnh sửa"
     },
 ]

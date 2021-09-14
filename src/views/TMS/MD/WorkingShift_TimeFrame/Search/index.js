@@ -19,10 +19,10 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { WORKINGSHIFT_VIEW, WORKINGSHIFT_DELETE } from "../../../../../constants/functionLists";
+import { WORKINGSHIFT_VIEW, WORKINGSHIFT_DELETE, WORKINGSHIFTTIMEFRAME_VIEW } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-
+import { Base64 } from 'js-base64';
 import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
@@ -86,8 +86,21 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            
+            console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
+                const tempData = apiResult.ResultObject.map((item, index) => {
+                    let tmpID ={
+                        WorkingShiftID: item.WorkingShiftID,
+                        DeliveryTimeFrameID: item.DeliveryTimeFrameID,
+                    };
+                    const myJSON1 = JSON.stringify(tmpID);
+                    console.log("myJSON1", myJSON1,  Base64.encode(myJSON1))
+                    item.WorkingShiftTimeFrameID= Base64.encode(myJSON1)
+                    return item
+                })
+
+                console.log("tempData", tempData)
+
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
@@ -174,8 +187,8 @@ class SearchCom extends React.Component {
                         PKColumnName={PKColumnName}
                         onDeleteClick={this.handleDelete}
                         ref={this.gridref}
-                        RequirePermission={WORKINGSHIFT_VIEW}
-                        DeletePermission={WORKINGSHIFT_DELETE}
+                        // RequirePermission={WORKINGSHIFTTIMEFRAME_VIEW}
+                        // DeletePermission={WORKINGSHIFTTIMEFRAME_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                     />
