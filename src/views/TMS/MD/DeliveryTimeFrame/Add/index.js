@@ -26,7 +26,7 @@ import CoordinatorStoreWard from '../../CoordinatorStoreWard'
 import StoreWard from "../../CoordinatorStoreWard/Component/StoreWard";
 import ReactNotification from "react-notifications-component";
 import DeliverUserList from "../../../ShipmentOrder/Component/DeliverUserList";
-import { ERPCOMMONCACHE_CARRIERTYPE, ERPCOMMONCACHE_WORKINGSHIFT } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_CARRIERTYPE, ERPCOMMONCACHE_WORKINGSHIFT, ERPRELATECACHE_DELIVERYTIMEFRAME } from "../../../../../constants/keyCache";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -94,7 +94,7 @@ class AddCom extends React.Component {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
             if (!apiResult.IsError) {
-                //this.props.callClearLocalCache(ERPCOMMONCACHE_WORKINGSHIFT);
+                this.props.callClearLocalCache(ERPRELATECACHE_DELIVERYTIMEFRAME);
             }
         });
 
