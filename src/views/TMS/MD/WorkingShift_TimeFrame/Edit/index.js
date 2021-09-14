@@ -24,7 +24,7 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { WORKINGSHIFT_UPDATE } from "../../../../../constants/functionLists";
+import { WORKINGSHIFTTIMEFRAME_UPDATE, WORKINGSHIFT_UPDATE } from "../../../../../constants/functionLists";
 import CoordinatorStoreWard from '../../CoordinatorStoreWard'
 import StoreWard from "../../CoordinatorStoreWard/Component/StoreWard";
 import ReactNotification from "react-notifications-component";
@@ -113,7 +113,7 @@ class EditCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
-        const {params} = this.state;
+        const { params } = this.state;
         console.log('aa', formData, MLObject)
         MLObject.OldWorkingShiftID = params.WorkingShiftID;
         MLObject.OldDeliveryTimeFrameID = params.DeliveryTimeFrameID;
@@ -133,15 +133,15 @@ class EditCom extends React.Component {
 
         return (
             <React.Fragment>
-                 <FormContainer
+                <FormContainer
                     FormName="Thêm khung giờ của một ca làm việcc"
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={[]}
                     dataSource={this.state.DataSource}
                     onSubmit={this.handleSubmit}
                     BackLink={BackLink}
-                // onchange={this.handleChange.bind(this)}
-                // RequirePermission={WORKINGSHIFTTIMEFRAME_ADD}
+                    // onchange={this.handleChange.bind(this)}
+                    RequirePermission={WORKINGSHIFTTIMEFRAME_UPDATE}
                 >
 
                     <div className="row">
