@@ -1,43 +1,51 @@
 import React from "react";
+import "react-notifications-component/dist/theme.css";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
-import SearchForm from "../../../../../common/components/Form/SearchForm";
-import DataGrid from "../../../../../common/components/DataGrid";
-import { MessageModal } from "../../../../../common/components/Modal";
+import ReactNotification from "react-notifications-component";
+
 import {
-    SearchElementList,
-    SearchMLObjectDefinition,
-    DataGridColumnList,
     AddLink,
     APIHostName,
-    SearchAPIPath,
+    DataGridColumnList,
     DeleteAPIPath,
     IDSelectColumnName,
-    PKColumnName,
     InitSearchParams,
-    PagePath
+    PagePath,
+    PKColumnName,
+    SearchAPIPath,
+    SearchElementList,
+    SearchMLObjectDefinition,
 } from "../constants";
+
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
-import { updatePagePath } from "../../../../../actions/pageAction";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_MTRETURNREQUESTTYPE, ERPCOMMONCACHE_SHIPMENTFEETYPE } from "../../../../../constants/keyCache";
+import { MessageModal } from "../../../../../common/components/Modal";
+import { MODAL_TYPE_COMMONTMODALS } from '../../../../../constants/actionTypes';
 import { MTRETURNREQUESTTYPE_VIEW, MTRETURNREQUESTTYPE_DELETE, QUALITYASSESSTYPE_VIEW, QUALITYASSESSTYPE_DELETE, DELIVERYABILITY_VIEW, DELIVERYABILITY_DELETE } from "../../../../../constants/functionLists";
+import { showModal } from '../../../../../actions/modal';
+import { updatePagePath } from "../../../../../actions/pageAction";
+import DataGrid from "../../../../../common/components/DataGrid";
+import ExportTempExcelModalCom from '../ExportTempExcelModal';
+import ImportExcelModalCom from '../ImportExcelModal';
+import SearchForm from "../../../../../common/components/Form/SearchForm";
 
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
-        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleExportFileTemplate = this.handleExportFileTemplate.bind(this);
+        this.handleImportFile = this.handleImportFile.bind(this);
+        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.state = {
             CallAPIMessage: "",
+            cssNotification: "",
             gridDataSource: [],
+            iconNotification: "",
             IsCallAPIError: false,
             SearchData: InitSearchParams,
-            cssNotification: "",
-            iconNotification: ""
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -68,6 +76,26 @@ class SearchCom extends React.Component {
                 // this.handleSubmitInsertLog();
             }
         });
+    }
+
+    handleExportFileTemplate() {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Xuất file mẫu',
+            content: {
+                text: <ExportTempExcelModalCom />
+            },
+            maxWidth: '30%'
+        })
+    }
+
+    handleImportFile() {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Import File',
+            content: {
+                text: <ImportExcelModalCom />
+            },
+            maxWidth: '30%'
+        })
     }
 
     handleSearchSubmit(formData, MLObject) {
@@ -155,22 +183,30 @@ class SearchCom extends React.Component {
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
                         FormName="Tìm kiếm danh sách kho lấy tải"
-                        MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
+                        MLObjectDefinition={SearchMLObjectDefinition}
                         onSubmit={this.handleSearchSubmit}
                         ref={this.searchref}
                     />
                     <DataGrid
-                        listColumn={DataGridColumnList}
-                        dataSource={this.state.gridDataSource}
+                        // DataTemplateExport={TemplateExportDAStoreGoodsGroup}
+                        // fileNameTemplate="Danh sách tỷ lệ phân bố tải theo từng kho"
                         AddLink={AddLink}
+                        dataSource={this.state.gridDataSource}
+                        DeletePermission={DELIVERYABILITY_DELETE}
                         IDSelectColumnName={IDSelectColumnName}
-                        PKColumnName={PKColumnName}
+                        IsAutoPaging={true}
+                        isCustomExportFileTemplate={true}
+                        isCustomImportFile={true}
+                        isExportFileTemplate={true}
+                        IsImportFile={true}
+                        listColumn={DataGridColumnList}
                         onDeleteClick={this.handleDelete}
+                        onExportFileTemplate={this.handleExportFileTemplate}
+                        onImportFile={this.handleImportFile}
+                        PKColumnName={PKColumnName}
                         ref={this.gridref}
                         RequirePermission={DELIVERYABILITY_VIEW}
-                        DeletePermission={DELIVERYABILITY_DELETE}
-                        IsAutoPaging={true}
                         RowsPerPage={10}
                     />
                 </React.Fragment>
@@ -207,6 +243,9 @@ const mapDispatchToProps = dispatch => {
         },
         callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
         }
     };
 };

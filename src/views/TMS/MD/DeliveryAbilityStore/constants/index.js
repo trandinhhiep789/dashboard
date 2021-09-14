@@ -1,13 +1,15 @@
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "api/DeliveryAbilityStore/Search";
-export const LoadAPIPath = "api/DeliveryAbilityStore/Load";
 export const AddAPIPath = "api/DeliveryAbilityStore/Add";
-export const UpdateAPIPath = "api/DeliveryAbilityStore/Update";
-export const DeleteAPIPath = "api/DeliveryAbilityStore/Delete";
-export const UpdateOrderAPIPath = "api/DeliveryAbilityStore/UpdateOrder";
-export const BackLink = "/DeliveryAbilityStore";
+export const AddDAStoreGoodsGroup = "api/DAStore_GoodsGroup/Add";
 export const AddLink = "/DeliveryAbilityStore/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";
+export const BackLink = "/DeliveryAbilityStore";
+export const DeleteAPIPath = "api/DeliveryAbilityStore/Delete";
+export const LoadAPIPath = "api/DeliveryAbilityStore/Load";
+export const SearchAPIPath = "api/DeliveryAbilityStore/Search";
+export const UpdateAPIPath = "api/DeliveryAbilityStore/Update";
+export const UpdateOrderAPIPath = "api/DeliveryAbilityStore/UpdateOrder";
+
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "DeliveryAbilityStoreID";
 export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
@@ -381,3 +383,35 @@ export const DataGridColumnList = [
         LinkText: "Chỉnh sửa"
     }
 ];
+
+export const TemplateExportDAStoreGoodsGroup = [
+    {
+        "Mã kho lấy tải": "123456",
+        "Mã nhóm hàng hóa vận chuyển": "123456",
+        "Tỷ lệ phân bố (<= 100%)": 100,
+        "Ghi chú": "Ghi chú"
+    }
+]
+
+export const schemaDAStoreGoodsGroup = {
+    "Mã kho lấy tải": {
+        prop: 'DeliveryAbilityStoreID',
+        type: String,
+        required: true
+    },
+    "Mã nhóm hàng hóa vận chuyển": {
+        prop: 'DeliveryGoodsGroupID',
+        type: String,
+        required: true
+    },
+    "Tỷ lệ phân bố (<= 100%)": {
+        prop: 'ApportionFactor',
+        type: Number,
+        required: true
+    },
+    "Ghi chú": {
+        prop: 'Note',
+        type: String,
+        required: false
+    }
+}
