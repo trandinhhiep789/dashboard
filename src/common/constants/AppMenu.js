@@ -542,11 +542,26 @@ const AppMenu = [
                 SubMenu: []
             },
             {
-                MenuName: 'WorkingShift',
+                MenuName: 'WS',
                 MenuTitle: 'Ca làm việc',
-                LinkTo: '/WorkingShift',
+                LinkTo: '',
                 MenuIcon: '',
-                SubMenu: []
+                SubMenu: [
+                    {
+                        MenuName: 'WorkingShift',
+                        MenuTitle: 'Danh sách Ca làm việc',
+                        LinkTo: '/WorkingShift',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'WorkingShiftTimeFrame',
+                        MenuTitle: 'Danh sách các khung giờ',
+                        LinkTo: '/WorkingShiftTimeFrame',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                ]
             },
             {
                 MenuName: 'Skills',
