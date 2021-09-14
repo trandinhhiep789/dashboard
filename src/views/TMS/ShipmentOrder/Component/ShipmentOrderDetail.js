@@ -345,7 +345,12 @@ class ShipmentOrderDetailCom extends Component {
             dtExpectedDeliveryDate: mod
         })
     }
-
+    ChangeLoadDataTime(modTime)
+    {
+        this.setState({
+            dtExpectedDeliveryDate: modTime
+        })
+    }
 
     showFindStoreDeliveryTime() {
         const { ListSuggestTime, _ExpectedDeliveryDateEdit, ShipmentOrder } = this.state;
@@ -354,6 +359,7 @@ class ShipmentOrderDetailCom extends Component {
             content: {
                 text: <FindStoreDeliveryTime
                     ShipmentOrder={ShipmentOrder}
+                    onhandleChangeTime={this.ChangeLoadDataTime.bind(this)}
                 />
             },
             maxWidth: '800px'
@@ -363,9 +369,6 @@ class ShipmentOrderDetailCom extends Component {
 
     handleUpdateExpectedDelivery() {
         const { ListSuggestTime, _ExpectedDeliveryDateEdit } = this.state;
-        console.log("object", this.props, ListSuggestTime)
-
-
         _ExpectedDeliveryDateEdit.forEach(function (objElement) {
             if (objElement.name == 'cbDeliveryDate') {
                 objElement.listoption = ListSuggestTime;
@@ -416,34 +419,6 @@ class ShipmentOrderDetailCom extends Component {
 
         });
     }
-
-    // handleChangeModal(FormData){
-    //     console.log("FormData", FormData)
-    //     const { ListSuggestTime, _ExpectedDeliveryDateEdit, ListSuggestTimeChildren } = this.state;
-    //     console.log("object", this.props, ListSuggestTime)
-
-    //     if (FormData.cbDeliveryDate.value != "" || FormData.cbDeliveryDate.value > 0) {
-    //         const ListSuggestTimeChildren = ListSuggestTime.find(e => { return e.value == FormData.cbDeliveryDate.value })
-    //         this.setState({
-    //             ListSuggestTimeChildren: ListSuggestTimeChildren.children
-    //         })
-
-    //     }
-
-
-    //     _ExpectedDeliveryDateEdit.forEach(function (objElement) {
-    //         if (objElement.name == 'NewExpectedDeliveryDate') {
-    //             objElement.listoption = ListSuggestTimeChildren.children;
-    //             objElement.value = -1;
-    //         }
-    //     });
-
-
-    //     this.setState({
-    //         _ExpectedDeliveryDateEdit: _ExpectedDeliveryDateEdit
-    //     })
-    // }
-
 
     _CheckTime(dates, id) {
         if (id = 1002) {
@@ -532,8 +507,6 @@ class ShipmentOrderDetailCom extends Component {
         });
     }
 
-
-
     handleShowHistoryTransaction() {
         this.props.callFetchAPI(APIHostName, 'api/PartnerTransaction/GetListByShipmentOrderID', this.state.ShipmentOrder.ShipmentOrderID.Trim()).then((apiResult) => {
             if (!apiResult.IsError) {
@@ -544,8 +517,6 @@ class ShipmentOrderDetailCom extends Component {
         });
     }
     showModalHistoryTransactionLog() {
-
-
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Lịch sử thay đổi vận đơn',
             content: {
@@ -584,8 +555,6 @@ class ShipmentOrderDetailCom extends Component {
             maxWidth: '1000px'
         });
     }
-
-
 
     render() {
         let strShipmentOrderStepName = "";
@@ -628,24 +597,6 @@ class ShipmentOrderDetailCom extends Component {
                             <h4 className="title">
                                 <strong>Thông tin yêu cầu vận chuyển</strong>
                             </h4>
-                            {/* <div className="form-group form-group-dropdown form-group-dropdown-custom">
-                                <div className="input-group input-group-dropdown-custom">
-                                    <div className="input-group-append">
-
-                                        <button className="btn dropdown-toggle" type="button" data-toggle="dropdown">{strShipmentOrderStepName}</button>
-                                        <div className="dropdown dropdown-menu">
-                                            {this.state.ShipmentOrder.ShipmentOrderType_WF_NextList && this.state.ShipmentOrder.ShipmentOrderType_WF_NextList.map(item =>
-                                                <a className={item.NextShipmentOrderStep === this.state.ShipmentOrder.CurrentShipmentOrderStepID ? "dropdown-item active" : "dropdown-item"}
-                                                    key={item.NextShipmentOrderStep} name={item.NextShipmentOrderStep} data-option={item.NextShipmentOrderStep}
-                                                    data-functionid={item.ChooseFunctionID}
-                                                    data-lable={item.NextShipmentOrderStepName} onClick={this.onChangeInput.bind(this)}>
-                                                    {item.NextShipmentOrderStepName}</a>
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> */}
-
                             <div className="form-group form-group-dropdown form-group-dropdown-custom">
                                 <div className="input-group input-group-dropdown-custom">
                                     <Dropdown overlay={dropdownItem} trigger={[triggerDropdown]}>

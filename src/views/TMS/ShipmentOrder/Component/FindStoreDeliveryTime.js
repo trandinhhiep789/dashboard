@@ -170,7 +170,6 @@ class FindStoreDeliveryTimeCom extends Component {
     }
 
     handleSubmit(formData, MLObject) {
-        console.log("submit", formData, MLObject)
         let objDLDateLog =
         {
             ShipmentOrderID: this.props.ShipmentOrder.ShipmentOrderID,
@@ -187,6 +186,8 @@ class FindStoreDeliveryTimeCom extends Component {
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
                 this.props.hideModal();
+                if (this.props.onhandleChangeTime)
+                    this.props.onhandleChangeTime(MLObject.DeliveryValue);
             }
         });
 
@@ -195,7 +196,7 @@ class FindStoreDeliveryTimeCom extends Component {
     handleChangeForm(formData, MLObject) {
         const { ListSuggestTimeChildren, DeliveryTimeAllGroup } = this.state;
 
-        if (formData.cbDeliveryDate.value != "" || formData.cbDeliveryDate.value > 0 ) {
+        if (formData.cbDeliveryDate.value != "" || formData.cbDeliveryDate.value > 0) {
             const ListSuggestTimeChildren = DeliveryTimeAllGroup.find(e => { return e.value == formData.cbDeliveryDate.value })
             this.setState({
                 ListSuggestTimeChildren: ListSuggestTimeChildren.children

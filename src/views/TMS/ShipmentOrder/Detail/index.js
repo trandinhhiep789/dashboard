@@ -65,13 +65,7 @@ class DetailCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(DetailAPIPath);
         this.callLoadData(this.props.match.params.id);
-
-
     }
-
-
-    
-
 
     callLoadData(id) {
 
@@ -82,7 +76,6 @@ class DetailCom extends React.Component {
         //     console.log("apiResult.ResultObject",apiResult)
         // });
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            console.log("id", id, apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -90,17 +83,12 @@ class DetailCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
-                //    console.log("apiResult.ResultObject.ShipmentOrderType_WorkFlowList",apiResult.ResultObject.ShipmentOrderType_WorkFlowList)
-
                 this.setState({
                     DataSource: apiResult.ResultObject,
                     ShipmentOrderType_WorkFlowList: apiResult.ResultObject.ShipmentOrderType_WorkFlowList,
                     CurrentShipmentOrderStepID: apiResult.ResultObject.CurrentShipmentOrderStepID,
                     IsLoadDataComplete: true
                 });
-
-
-
             }
         });
     }
