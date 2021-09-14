@@ -27,7 +27,7 @@ import "react-notifications-component/dist/theme.css";
 import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_CARRIERTYPE } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_CARRIERTYPE, ERPRELATECACHE_DELIVERYTIMEFRAME } from "../../../../../constants/keyCache";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -70,6 +70,7 @@ class SearchCom extends React.Component {
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
+                this.props.callClearLocalCache(ERPRELATECACHE_DELIVERYTIMEFRAME);
             }
         });
     }
