@@ -68,15 +68,15 @@ export const ModalColumnList_Insert = [
     //     validatonList: [],
     //     value: true
     // },
-    {
-        Name: "IsSystem",
-        type: "checkbox",
-        label: "Hệ thống",
-        DataSourceMember: "IsSystem",
-        readonly: false,
-        validatonList: [],
-        value: false
-    }
+    // {
+    //     Name: "IsSystem",
+    //     type: "checkbox",
+    //     label: "Hệ thống",
+    //     DataSourceMember: "IsSystem",
+    //     readonly: false,
+    //     validatonList: [],
+    //     value: false
+    // }
 ];
 
 export const ModalColumnList_Edit = [
@@ -144,15 +144,15 @@ export const ModalColumnList_Edit = [
     //     validatonList: [],
     //     value: ""
     // },
-    {
-        Name: "IsSystem",
-        type: "checkbox",
-        label: "Hệ thống",
-        DataSourceMember: "IsSystem",
-        readonly: false,
-        validatonList: [],
-        value: ""
-    }
+    // {
+    //     Name: "IsSystem",
+    //     type: "checkbox",
+    //     label: "Hệ thống",
+    //     DataSourceMember: "IsSystem",
+    //     readonly: false,
+    //     validatonList: [],
+    //     value: ""
+    // }
 ];
 
 export const DataGridColumnList = [
@@ -184,13 +184,13 @@ export const DataGridColumnList = [
         DataSourceMember: "ProductName",
         //Width: 200
     },
-    {
-        Name: "IsSystem",
-        Type: "checkicon",
-        Caption: "Hệ thống",
-        DataSourceMember: "IsSystem",
-        Width: 80
-    },
+    // {
+    //     Name: "IsSystem",
+    //     Type: "checkicon",
+    //     Caption: "Hệ thống",
+    //     DataSourceMember: "IsSystem",
+    //     Width: 80
+    // },
     {
         Name: "DeliveryGoodsGroupApplyID",
         Type: "edit",

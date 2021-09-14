@@ -11,23 +11,22 @@ import {
     AddLink,
     APIHostName,
     SearchAPIPath,
-    DeleteNewAPIPath,
+    DeleteAPIPath,
     IDSelectColumnName,
     PKColumnName,
     InitSearchParams,
     PagePath,
-    DeleteAPIPath,
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { WORKINGSHIFT_VIEW, WORKINGSHIFT_DELETE, DELIVERYTIMEFRAME_VIEW, DELIVERYTIMEFRAME_DELETE } from "../../../../../constants/functionLists";
+import { WORKINGSHIFT_VIEW, WORKINGSHIFT_DELETE, WORKINGSHIFTTIMEFRAME_VIEW, WORKINGSHIFTTIMEFRAME_DELETE } from "../../../../../constants/functionLists";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-
+import { Base64 } from 'js-base64';
 import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_CARRIERTYPE, ERPRELATECACHE_DELIVERYTIMEFRAME } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_CARRIERTYPE } from "../../../../../constants/keyCache";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -60,7 +59,10 @@ class SearchCom extends React.Component {
         deleteList.map((row, index) => {
             let MLObject = {};
             pkColumnName.map((pkItem, pkIndex) => {
-                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
+                const param = Base64.decode(row.pkColumnName[pkIndex].value);
+                const myParam = JSON.parse(param);
+                MLObject.WorkingShiftID = myParam.WorkingShiftID;
+                MLObject.DeliveryTimeFrameID = myParam.DeliveryTimeFrameID;
             });
             MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
             listMLObject.push(MLObject);
@@ -70,7 +72,6 @@ class SearchCom extends React.Component {
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
-                this.props.callClearLocalCache(ERPRELATECACHE_DELIVERYTIMEFRAME);
             }
         });
     }
@@ -88,29 +89,19 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-
+            console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
-
-                let rest = apiResult.ResultObject.map((item, index) => {
-                    const start = item.FromTime;
-                    const hourStart = Math.floor(start / 60);
-                    const minStart = start % 60;//Math.floor((item.TimeStart - hourStart) / 60);
-                    const timeStart = (("0" + hourStart).slice(-2) + ":" + ("0" + minStart).slice(-2)).toString()
-
-                    const end = item.ToTime;
-                    const hourEnd = Math.floor(end / 60);
-                    const minEnd = end % 60//Math.floor((item.TimeEnd - hourEnd) / 60);
-
-                    const timeEnd = (("0" + hourEnd).slice(-2) + ":" + ("0" + minEnd).slice(-2)).toString()
-
-                    item.FromTime = timeStart;
-                    item.ToTime = timeEnd;
-                    return item;
+                const tempData = apiResult.ResultObject.map((item, index) => {
+                    let tmpID = {
+                        WorkingShiftID: item.WorkingShiftID,
+                        DeliveryTimeFrameID: item.DeliveryTimeFrameID,
+                    };
+                    const myJSON1 = JSON.stringify(tmpID);
+                    item.WorkingShiftTimeFrameID = Base64.encode(myJSON1)
+                    return item
                 })
-
-
                 this.setState({
-                    gridDataSource: rest,
+                    gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
                     IsLoadDataComplete: true,
                 });
@@ -181,7 +172,7 @@ class SearchCom extends React.Component {
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
-                        FormName="Tìm kiếm danh sách khung thời gian vận chuyển"
+                        FormName="Tìm kiếm danh sách định nghĩa kho điều phối giao hàng"
                         MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
@@ -195,8 +186,8 @@ class SearchCom extends React.Component {
                         PKColumnName={PKColumnName}
                         onDeleteClick={this.handleDelete}
                         ref={this.gridref}
-                        RequirePermission={DELIVERYTIMEFRAME_VIEW}
-                        DeletePermission={DELIVERYTIMEFRAME_DELETE}
+                        RequirePermission={WORKINGSHIFTTIMEFRAME_VIEW}
+                        DeletePermission={WORKINGSHIFTTIMEFRAME_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                     />
@@ -207,7 +198,7 @@ class SearchCom extends React.Component {
             return (
                 <React.Fragment>
                     <SearchForm
-                        FormName="Tìm kiếm danh sách khung thời gian vận chuyển"
+                        FormName="Tìm kiếm danh sách định nghĩa kho điều phối giao hàng"
                         MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}

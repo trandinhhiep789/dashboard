@@ -50,6 +50,7 @@ class AddCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
+
         const { dataSourceDeliveryGoodsGroup } = this.state
 
         const tmpDeliveryGoodsGroup = dataSourceDeliveryGoodsGroup.filter(item => {
@@ -80,11 +81,12 @@ class AddCom extends React.Component {
             IsSystem: MLObject.IsSystem,
             DeliveryAbilityDetailList: dataDeliveryAbilityDetail
         }
+        console.log("object", tempMLObject)
 
-        this.props.callFetchAPI(APIHostName, AddAPIPath, tempMLObject).then(apiResult => {
-            this.setState({ IsCallAPIError: apiResult.IsError });
-            this.showMessage(apiResult.Message);
-        });
+        // this.props.callFetchAPI(APIHostName, AddAPIPath, tempMLObject).then(apiResult => {
+        //     this.setState({ IsCallAPIError: apiResult.IsError });
+        //     this.showMessage(apiResult.Message);
+        // });
     }
 
 

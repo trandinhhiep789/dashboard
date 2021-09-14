@@ -542,11 +542,26 @@ const AppMenu = [
                 SubMenu: []
             },
             {
-                MenuName: 'WorkingShift',
+                MenuName: 'WS',
                 MenuTitle: 'Ca làm việc',
-                LinkTo: '/WorkingShift',
+                LinkTo: '',
                 MenuIcon: '',
-                SubMenu: []
+                SubMenu: [
+                    {
+                        MenuName: 'WorkingShift',
+                        MenuTitle: 'Danh sách Ca làm việc',
+                        LinkTo: '/WorkingShift',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'WorkingShiftTimeFrame',
+                        MenuTitle: 'Danh sách các khung giờ',
+                        LinkTo: '/WorkingShiftTimeFrame',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                ]
             },
             {
                 MenuName: 'Skills',
@@ -1173,14 +1188,14 @@ const AppMenu = [
     // },
     {
         MenuName: 'ShipmentOrderNew',
-        MenuTitle: 'Điều phối giao hàng',
+        MenuTitle: 'Điều phối',
         LinkTo: '/ShipmentOrder',
         MenuIcon: '',
         SubMenu: []
     },
     {
         MenuName: 'ShipmentRoute',
-        MenuTitle: 'Phân tuyến giao hàng',
+        MenuTitle: 'Phân tuyến',
         LinkTo: '/ShipmentRoute',
         MenuIcon: '',
         SubMenu: []
@@ -1583,7 +1598,7 @@ const AppMenu = [
     },
     {
         MenuName: 'InvestigationShipmentOrderStatus',
-        MenuTitle: 'Tra cứu vận đơn',
+        MenuTitle: 'Tra cứu VĐ',
         LinkTo: '/InvestigationShipmentOrderStatus',
         MenuIcon: '',
         SubMenu: []

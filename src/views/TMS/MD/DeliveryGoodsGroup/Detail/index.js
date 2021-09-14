@@ -18,6 +18,7 @@ import { callGetCache } from "../../../../../actions/cacheAction";
 import { format } from "date-fns";
 import { formatDate } from "../../../../../common/library/CommonLib";
 import DeliveryGoodsGroup_Apply from "../../DeliveryGoodsGroup_Apply";
+import DeliveryGoodsGroup_SvTime from "../../DeliveryGoodsGroup_SvTime";
 
 
 class DetailCom extends React.Component {
@@ -25,7 +26,7 @@ class DetailCom extends React.Component {
         super(props);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.callLoadData = this.callLoadData.bind(this);
-        this.onDeliveryGoodsGroupApplyChange = this.onDeliveryGoodsGroupApplyChange.bind(this);
+        this.onComponentChange = this.onComponentChange.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -51,7 +52,8 @@ class DetailCom extends React.Component {
             } else {
                 this.setState({
                     DataSource: apiResult.ResultObject,
-                    DeliveryGoodsGroupApply: apiResult.ResultObject.ListDeliveryGoodsGroup_Apply ? apiResult.ResultObject.ListDeliveryGoodsGroup_Apply : []
+                    DeliveryGoodsGroupApply: apiResult.ResultObject.ListDeliveryGoodsGroup_Apply ? apiResult.ResultObject.ListDeliveryGoodsGroup_Apply : [],
+                    DeliveryGoodsGroup_SvTime: apiResult.ResultObject.ListDeliveryGoodsGroup_SvTime ? apiResult.ResultObject.ListDeliveryGoodsGroup_SvTime : []
                 });
             }
             this.setState({
@@ -60,7 +62,7 @@ class DetailCom extends React.Component {
         });
     }
 
-    onDeliveryGoodsGroupApplyChange() {
+    onComponentChange() {
         this.callLoadData();
     }
 
@@ -121,7 +123,7 @@ class DetailCom extends React.Component {
                                         </div>
                                     </div>
                                     <div className="col-md-6">
-                                    <div className="form-group checkbox customCheckbox">
+                                        <div className="form-group checkbox customCheckbox">
                                             <span>Thuộc nhóm khác: </span>
                                             <label>
                                                 <input name="IsOtherGroup" type="checkbox" id="IsOtherGroup" checked={this.state.DataSource.IsOtherGroup} />
@@ -131,8 +133,8 @@ class DetailCom extends React.Component {
                                     </div>
                                 </div>
 
-                                
-                       
+
+
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group checkbox customCheckbox">
@@ -194,7 +196,13 @@ class DetailCom extends React.Component {
                     <DeliveryGoodsGroup_Apply
                         DeliveryGoodsGroupID={this.props.match.params.id}
                         DataSource={this.state.DeliveryGoodsGroupApply}
-                        onDeliveryGoodsGroupApplyChange={this.onDeliveryGoodsGroupApplyChange}
+                        onComponentChange={this.onComponentChange}
+                    />
+
+                    <DeliveryGoodsGroup_SvTime
+                        DeliveryGoodsGroupID={this.props.match.params.id}
+                        DataSource={this.state.DeliveryGoodsGroup_SvTime}
+                        onComponentChange={this.onComponentChange}
                     />
 
                 </React.Fragment >
