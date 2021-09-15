@@ -178,7 +178,7 @@ class AddCom extends React.Component {
                     onSubmit={this.handleSubmit}
                     BackLink={BackLink}
                 // onchange={this.handleChange.bind(this)}
-                RequirePermission={WORKINGSHIFTTIMEFRAME_ADD}
+                // RequirePermission={WORKINGSHIFTTIMEFRAME_ADD}
                 >
 
                     <div className="row">

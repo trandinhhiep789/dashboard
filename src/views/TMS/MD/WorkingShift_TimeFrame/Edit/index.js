@@ -141,7 +141,7 @@ class EditCom extends React.Component {
                     onSubmit={this.handleSubmit}
                     BackLink={BackLink}
                     // onchange={this.handleChange.bind(this)}
-                    RequirePermission={WORKINGSHIFTTIMEFRAME_UPDATE}
+                    // RequirePermission={WORKINGSHIFTTIMEFRAME_UPDATE}
                 >
 
                     <div className="row">

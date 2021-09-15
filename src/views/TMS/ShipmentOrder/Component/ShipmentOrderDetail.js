@@ -44,7 +44,8 @@ class ShipmentOrderDetailCom extends Component {
             HistoryTransactionItemList: [],
             ListSuggestTime: this.props.ListSuggestTime,
             _ExpectedDeliveryDateEdit: ExpectedDeliveryDateEdit,
-            ListSuggestTimeChildren: []
+            ListSuggestTimeChildren: [],
+            IsPermisionCOO: false,
         }
         this.notificationDOMRef = React.createRef();
     }
@@ -345,25 +346,103 @@ class ShipmentOrderDetailCom extends Component {
             dtExpectedDeliveryDate: mod
         })
     }
-    ChangeLoadDataTime(modTime)
-    {
+    ChangeLoadDataTime(modTime) {
         this.setState({
             dtExpectedDeliveryDate: modTime
         })
     }
 
-    showFindStoreDeliveryTime() {
-        const { ListSuggestTime, _ExpectedDeliveryDateEdit, ShipmentOrder } = this.state;
-        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: 'Cập nhật thời gian giao dự kiến',
-            content: {
-                text: <FindStoreDeliveryTime
-                    ShipmentOrder={ShipmentOrder}
-                    onhandleChangeTime={this.ChangeLoadDataTime.bind(this)}
-                />
-            },
-            maxWidth: '800px'
+    checkPermission(permissionKey) {
+        debugger
+        return new Promise((resolve, reject) => {
+            this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
+
+                if (!result.IsError && result.ResultObject.CacheData != null) {
+                    for (let i = 0; i < result.ResultObject.CacheData.length; i++) {
+                        if (result.ResultObject.CacheData[i].FunctionID == permissionKey) {
+                            resolve(true);
+                            return;
+                        }
+                    }
+                    resolve(false)
+                } else {
+                    resolve('error');
+                }
+            });
         });
+    }
+
+
+    showFindStoreDeliveryTime() {
+        // const { ListSuggestTime, _ExpectedDeliveryDateEdit, ShipmentOrder } = this.state;
+        // this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+        //     title: 'Cập nhật thời gian giao dự kiến',
+        //     content: {
+        //         text: <FindStoreDeliveryTime
+        //             ShipmentOrder={ShipmentOrder}
+        //             onhandleChangeTime={this.ChangeLoadDataTime.bind(this)}
+        //         />
+        //     },
+        //     maxWidth: '800px'
+        // });
+
+        const { ListSuggestTime, _ExpectedDeliveryDateEdit, ShipmentOrder } = this.state;
+
+
+        this.checkPermission('SHIPMENTORDER_EXPECTEDDELIVERYDATE').then((result) => {
+            console.log("object", result)
+            this.setState({ IsPermisionCOO: result });
+            if (result) {
+                const dtFromdate = new Date()
+                this.props.showModal(MODAL_TYPE_CONFIRMATIONNEW, {
+                    title: 'Cập nhật thời gian giao dự kiến',
+                    onConfirmNew: (isConfirmed, formData) => {
+                        
+                        let objDLDateLog =
+                        {
+                            ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID,
+                            PartnerSaleOrderID: this.state.ShipmentOrder.PartnerSaleOrderID,
+                            CreatedOrderTime: this.state.ShipmentOrder.CreatedOrderTime,
+                            DeliverydateUpdateTypeID: 2,
+                            DeliverydateUpdateReasonID: formData.DeliverydateUpdateReasonID,
+                            OldExpectedDeliveryDate: this.props.ShipmentOrderDetail.ExpectedDeliveryDate,
+                            NewExpectedDeliveryDate: formData.NewExpectedDeliveryDate,//formData.NewExpectedDeliveryDate,
+                            DeliverydateUpdateReasonNote: formData.DeliverydateUpdateReasonNote,
+                            // NewExpectedDeliveryDateNew: new Date(formData.NewExpectedDeliveryDate),
+                            // NewExpectedDeliveryDateNew: toIsoStringCus(new Date(formData.NewExpectedDeliveryDate).toISOString()),
+                        }
+                        
+                        this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder_DLDateLog/Add', objDLDateLog).then((apiResult) => {
+                            this.addNotification(apiResult.Message, apiResult.IsError);
+                            if (!apiResult.IsError) {
+                                this.props.hideModal();
+                                this.setState({
+                                    dtExpectedDeliveryDate: formData.NewExpectedDeliveryDate
+                                })
+                            }
+                        });
+        
+                    },
+                    modalElementList: ExpectedDeliveryDateEdit,
+                    modalElementOl: MLObjectExpectedDelivery,
+                    dataSource: { OldExpectedDeliveryDate: this.state.dtExpectedDeliveryDate, NewExpectedDeliveryDate: dtFromdate },
+                    isaddComboBox: true
+        
+                });
+            }
+            else {
+                this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+                    title: 'Cập nhật thời gian giao dự kiến',
+                    content: {
+                        text: <FindStoreDeliveryTime
+                            ShipmentOrder={ShipmentOrder}
+                            onhandleChangeTime={this.ChangeLoadDataTime.bind(this)}
+                        />
+                    },
+                    maxWidth: '800px'
+                });
+            }
+        })
     }
 
 
