@@ -50,7 +50,11 @@ class ExportExcelModalCom extends React.Component {
                         "Từ ngày": item.FromDate,
                         "Đến ngày": item.ToDate,
                         "Theo tháng": item.MonthlyAbilityValue,
-                        "Theo ngày": item.DailyAbilityValue
+                        "Theo ngày": item.DailyAbilityValue,
+                        "Người tạo": `${item.CreatedUser} - ${item.CreatedUserFullName}`,
+                        "Ngày tạo": item.CreatedDate,
+                        "Người cập nhật": item.UpdatedUser != "" ? `${item.UpdatedUser} - ${item.UpdatedUserFullName}` : "",
+                        "Ngày cập nhật": item.UpdatedDate,
                     }
                 });
 
@@ -61,6 +65,7 @@ class ExportExcelModalCom extends React.Component {
 
     handleClickFeeAppendix() {
         this.props.callFetchAPI(APIHostName, APIExportServiceAgreementFeeAppendix, this.props.searchParamater).then(apiResult => {
+            console.log('63', apiResult.ResultObject);
             if (apiResult.IsError) {
                 this.addNotification(apiResult.Message, apiResult.IsError);
             }
@@ -74,7 +79,11 @@ class ExportExcelModalCom extends React.Component {
                         "Bảng giá": item.PNServicePriceTableName,
                         "Từ ngày": item.ApplyFromDate,
                         "Đến ngày": item.ApplyToDate,
-                        "Thứ tự ưu tiên": item.PriorityIndex
+                        "Thứ tự ưu tiên": item.PriorityIndex,
+                        "Người tạo": `${item.CreatedUser} - ${item.CreatedUserFullName}`,
+                        "Ngày tạo": item.CreatedDate,
+                        "Người cập nhật": item.UpdatedUser != "" ? `${item.UpdatedUser} - ${item.UpdatedUserFullName}` : "",
+                        "Ngày cập nhật": item.UpdatedDate,
                     }
                 });
 
@@ -89,6 +98,7 @@ class ExportExcelModalCom extends React.Component {
                 this.addNotification(apiResult.Message, apiResult.IsError);
             }
             else {
+                console.log('91', apiResult.ResultObject);
                 const dataExport = apiResult.ResultObject.map((item, index) => {
                     item.ExtendAgreement = item.ExtendedDate ? formatDate(item.ExtendedDate) : 'Chưa gia hạn';
 
@@ -151,6 +161,10 @@ class ExportExcelModalCom extends React.Component {
                         "Ngày ký quỹ": formatDate(item.dePOSitedDate, true),
                         "Ghi chú ký quỹ": item.dePoSitNote,
                         "Mô tả": item.Description,
+                        "Người tạo": `${item.CreatedUser} - ${item.CreatedUserFullName}`,
+                        "Ngày tạo": item.CreatedDate,
+                        "Người cập nhật": item.UpdatedUser != "" ? `${item.UpdatedUser} - ${item.UpdatedUserFullName}` : "",
+                        "Ngày cập nhật": item.UpdatedDate,
                     };
 
                     return element;
@@ -175,7 +189,11 @@ class ExportExcelModalCom extends React.Component {
                         "Tên khu vực": item.AreaName,
                         "Ngày ký": item.SignedDate,
                         "Kích hoạt": item.IsActived ? "Có" : "",
-                        "Hệ thống": item.IsSystem ? "Có" : ""
+                        "Hệ thống": item.IsSystem ? "Có" : "",
+                        "Người tạo": `${item.CreatedUser} - ${item.CreatedUserFullName}`,
+                        "Ngày tạo": item.CreatedDate,
+                        "Người cập nhật": item.UpdatedUser != "" ? `${item.UpdatedUser} - ${item.UpdatedUserFullName}` : "",
+                        "Ngày cập nhật": item.UpdatedDate,
                     }
                 });
 
@@ -198,7 +216,11 @@ class ExportExcelModalCom extends React.Component {
                         "Tên kho": item.StoreName,
                         "Ngày ký": item.SignedDate,
                         "Kích hoạt": item.IsActived ? "Có" : "",
-                        "Hệ thống": item.IsSystem ? "Có" : ""
+                        "Hệ thống": item.IsSystem ? "Có" : "",
+                        "Người tạo": `${item.CreatedUser} - ${item.CreatedUserFullName}`,
+                        "Ngày tạo": item.CreatedDate,
+                        "Người cập nhật": item.UpdatedUser != "" ? `${item.UpdatedUser} - ${item.UpdatedUserFullName}` : "",
+                        "Ngày cập nhật": item.UpdatedDate,
                     }
                 });
 
