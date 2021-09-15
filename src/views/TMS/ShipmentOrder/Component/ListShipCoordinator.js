@@ -156,7 +156,6 @@ class ListShipCoordinatorCom extends Component {
     }
 
     sortDataShipmentOrderItemList(dataa) {
-        debugger
         let data =dataa.filter(n  =>  n.MainGroupID !=704 || n.ProductID.trim() =="7042011000112")
         try {
             if (data.length == 1) {

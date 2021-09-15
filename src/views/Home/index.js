@@ -204,6 +204,7 @@ import PNRCComputeSchedule from "../TMS/MD/PNRCComputeSchedule";
 import PNRCComputeLog from "../TMS/MD/PNRCComputeLog";
 import ConfirmReward from "../TMS/Reward/ConfirmReward"
 import UserDebtLimit from "../TMS/MD/UserDebtLimit";
+import User_DeliveryGoodsGroup from "../TMS/MD/User_DeliveryGoodsGroup";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -495,6 +496,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/PNRCComputeLog" component={PNRCComputeLog} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="/UserDebtLimit" component={UserDebtLimit} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/User_DeliveryGoodsGroup" component={User_DeliveryGoodsGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 

@@ -12,56 +12,46 @@ import {
     EditElementList,
     MLObjectDefinition,
     BackLink,
-    EditPagePath,
+    EditPagePath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { DELIVERYGOODSGROUP_UPDATE, MATERIALGROUP_UPDATE } from "../../../../../constants/functionLists";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_AREATYPE, ERPCOMMONCACHE_MATERIALGROUP, MDMCOMMONCACHE_DELIVERYGOODSGROUP } from "../../../../../constants/keyCache";
-import MaterialGroup_Product from "../../MaterialGroup_Product";
-import MaterialGroup_InstallCond from "../../MaterialGroup_InstallCond";
+import { ERPCOMMONCACHE_QUALITYASSESSGROUP, ERPCOMMONCACHE_SERVICETYPE, ERPCOMMONCACHE_TMSREWARDTYPE } from "../../../../../constants/keyCache";
+import { DELIVERYGOODSGROUP_UPDATE, QUALITYASSESSGROUP_UPDATE, REWARDTYPE_UPDATE, SERVICETYPE_UPDATE } from "../../../../../constants/functionLists";
 
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-        this.onMaterialGroupProductChange = this.onMaterialGroupProductChange.bind(this);
-        this.onMaterialGroup_InstallCondChange = this.onMaterialGroup_InstallCondChange.bind(this);
-        this.callLoadData = this.callLoadData.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
             FormContent: "",
             IsLoadDataComplete: false,
-            IsCloseForm: false,
-            MaterialGroup_InstallCond: [],
-            MaterialGroup_Product: [],
+            IsCloseForm: false
         };
     }
 
-
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
-        this.callLoadData();
-
-    }
-
-    callLoadData() {
         const id = this.props.match.params.id;
-        this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
+        const id2 = this.props.match.params.id2;
+        let data = {
+            "UserName": id,
+            "DeliveryGoodsGroupID": id2
+        }
+
+        this.props.callFetchAPI(APIHostName, LoadAPIPath, data).then(apiResult => {
+            console.log("ewqe",apiResult);
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: apiResult.IsError
                 });
                 this.showMessage(apiResult.Message);
             } else {
-                this.setState({
-                    DataSource: apiResult.ResultObject,
-                    MaterialGroup_Product: apiResult.ResultObject.MaterialGroup_Product ? apiResult.ResultObject.MaterialGroup_Product : [],
-                    MaterialGroup_InstallCond: apiResult.ResultObject.MaterialGroup_InstallCond ? apiResult.ResultObject.MaterialGroup_InstallCond : []
-                });
+                this.setState({ DataSource: apiResult.ResultObject });
             }
             this.setState({
                 IsLoadDataComplete: true
@@ -69,37 +59,18 @@ class EditCom extends React.Component {
         });
     }
 
-
-
     handleSubmit(formData, MLObject) {
-        MLObject.MaterialGroupID = this.props.match.params.id;
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        MLObject.MaterialGroup_Product = this.state.MaterialGroup_Product;
-        MLObject.MaterialGroup_InstallCond = this.state.MaterialGroup_InstallCond;
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
-                this.props.callClearLocalCache(MDMCOMMONCACHE_DELIVERYGOODSGROUP);
+                // this.props.callClearLocalCache(ERPCOMMONCACHE_QUALITYASSESSGROUP);
+                // this.handleSubmitInsertLog(MLObject);
             }
             this.showMessage(apiResult.Message);
         });
     }
-
-    onMaterialGroupProductChange(list) {
-        //this.setState({ MaterialGroup_Product: list });
-        //console.log("MaterialGroup_Product", list);
-        this.callLoadData();
-    }
-
-    onMaterialGroup_InstallCondChange(list) {
-        // debugger;
-        // this.setState({ MaterialGroup_InstallCond: list });
-        // console.log("MaterialGroup_InstallCond", list);
-        this.callLoadData();
-    }
-
-
 
     handleCloseMessage() {
         if (!this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
@@ -123,7 +94,7 @@ class EditCom extends React.Component {
         if (this.state.IsLoadDataComplete) {
             return (
                 <SimpleForm
-                    FormName="Cập nhật nhóm hàng hóa vận chuyển"
+                    FormName="Cập nhật nhóm tiêu chí đánh giá chất lượng"
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={EditElementList}
                     onSubmit={this.handleSubmit}
@@ -133,8 +104,7 @@ class EditCom extends React.Component {
                     BackLink={BackLink}
                     RequirePermission={DELIVERYGOODSGROUP_UPDATE}
                     ref={this.searchref}
-                >       
-                </SimpleForm>
+                />
             );
         }
         return (

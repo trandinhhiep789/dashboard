@@ -23,7 +23,7 @@ import { MATERIALGROUP_VIEW, MATERIALGROUP_DELETE, DELIVERYGOODSGROUP_VIEW, DELI
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_AREATYPE, ERPCOMMONCACHE_MATERIALGROUP } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_AREATYPE, ERPCOMMONCACHE_MATERIALGROUP, MDMCOMMONCACHE_DELIVERYGOODSGROUP } from "../../../../../constants/keyCache";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -64,7 +64,7 @@ class SearchCom extends React.Component {
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
-                this.props.callClearLocalCache(ERPCOMMONCACHE_MATERIALGROUP);
+                this.props.callClearLocalCache(MDMCOMMONCACHE_DELIVERYGOODSGROUP);
             }
         });
     }
