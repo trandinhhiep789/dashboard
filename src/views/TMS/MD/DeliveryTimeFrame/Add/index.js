@@ -218,7 +218,7 @@ class AddCom extends React.Component {
                             />
                         </div>
 
-                        <div className="col-md-6">
+                        {/* <div className="col-md-6">
                             <FormControl.ComboBoxSelect
                                 name="txtCarrierTypeID"
                                 colspan="8"
@@ -238,7 +238,7 @@ class AddCom extends React.Component {
                                 value={""}
                                 listoption={null}
                                 datasourcemember="CarrierTypeID" />
-                        </div>
+                        </div> */}
 
                         <div className="col-md-6">
                             <FormControl.FormControlHour

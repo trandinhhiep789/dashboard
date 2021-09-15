@@ -77,12 +77,12 @@ class EditCom extends React.Component {
             else {
                 const start = apiResult.ResultObject.FromTime;
                 const hourStart = Math.floor(start / 60);
-                const minStart =  start%60;//Math.floor((apiResult.ResultObject.TimeStart - hourStart) / 60);
+                const minStart = start % 60;//Math.floor((apiResult.ResultObject.TimeStart - hourStart) / 60);
                 const timeStart = (hourStart + ":" + minStart).toString()
 
                 const end = apiResult.ResultObject.ToTime;
                 const hourEnd = Math.floor(end / 60);
-                const minEnd = end%60//Math.floor((apiResult.ResultObject.TimeEnd - hourEnd) / 60);
+                const minEnd = end % 60//Math.floor((apiResult.ResultObject.TimeEnd - hourEnd) / 60);
 
                 const timeEnd = (hourEnd + ":" + minEnd).toString()
 
@@ -212,7 +212,7 @@ class EditCom extends React.Component {
                             />
                         </div>
 
-                        <div className="col-md-6">
+                        {/* <div className="col-md-6">
                             <FormControl.ComboBoxSelect
                                 name="txtCarrierTypeID"
                                 colspan="8"
@@ -232,7 +232,7 @@ class EditCom extends React.Component {
                                 value={""}
                                 listoption={null}
                                 datasourcemember="CarrierTypeID" />
-                        </div>
+                        </div> */}
 
                         <div className="col-md-6">
                             <FormControl.FormControlHour
