@@ -353,7 +353,6 @@ class ShipmentOrderDetailCom extends Component {
     }
 
     checkPermission(permissionKey) {
-        debugger
         return new Promise((resolve, reject) => {
             this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
 
@@ -387,11 +386,7 @@ class ShipmentOrderDetailCom extends Component {
         // });
 
         const { ListSuggestTime, _ExpectedDeliveryDateEdit, ShipmentOrder } = this.state;
-
-
         this.checkPermission('SHIPMENTORDER_EXPECTEDDELIVERYDATE').then((result) => {
-            console.log("object", result)
-            this.setState({ IsPermisionCOO: result });
             if (result) {
                 const dtFromdate = new Date()
                 this.props.showModal(MODAL_TYPE_CONFIRMATIONNEW, {
