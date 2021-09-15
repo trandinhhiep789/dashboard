@@ -135,7 +135,7 @@ export const AddElementList = [
         loaditemcachekeyid: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
         valuemember: "ShipmentOrderTypeID",
         nameMember: "ShipmentOrderTypeName",
-        OrderIndex:1
+        OrderIndex: 1
     },
     {
         type: "select",
@@ -152,7 +152,7 @@ export const AddElementList = [
         loaditemcachekeyid: "ERPCOMMONCACHE.PARTNER",
         valuemember: "PartnerID",
         nameMember: "PartnerName",
-        OrderIndex:2
+        OrderIndex: 2
     },
     {
         type: "select",
@@ -171,7 +171,7 @@ export const AddElementList = [
         nameMember: "StoreName",
         filterValue: 10,
         filterobj: "CompanyID",
-        OrderIndex:3
+        OrderIndex: 3
     },
     {
         type: "select",
@@ -190,16 +190,16 @@ export const AddElementList = [
         nameMember: "StoreName",
         filterValue: 1,
         filterobj: "CompanyID",
-        OrderIndex:4
+        OrderIndex: 4
     },
     {
         type: "checkbox",
         name: "chkIsCheckCustomerAddress",
-        datasourcemember:"IsCheckCustomerAddress",
+        datasourcemember: "IsCheckCustomerAddress",
         label: "kiểm tra địa chỉ khách hàng",
         value: false,
         readonly: false,
-        OrderIndex:5
+        OrderIndex: 5
     }
 
 ];
@@ -209,7 +209,7 @@ export const EditElementList = [
 
 ];
 
-export const DataGridColumnList=[
+export const DataGridColumnList = [
     {
         Name: "chkSelect",
         Type: "checkbox",
@@ -238,13 +238,13 @@ export const DataGridColumnList=[
         DataSourceMember: "ToTime",
         Width: 250
     },
-    {
-        Name: "CarrierTypeName",
-        Type: "text",
-        Caption: "Phương tiện vận chuyển",
-        DataSourceMember: "CarrierTypeName",
-        Width: 250
-    },
+    // {
+    //     Name: "CarrierTypeName",
+    //     Type: "text",
+    //     Caption: "Phương tiện vận chuyển",
+    //     DataSourceMember: "CarrierTypeName",
+    //     Width: 250
+    // },
     {
         Name: "Action",
         Type: "link",
