@@ -388,9 +388,8 @@ class ShipmentOrderDetailCom extends Component {
 
         const { ListSuggestTime, _ExpectedDeliveryDateEdit, ShipmentOrder } = this.state;
 
-
         this.checkPermission('SHIPMENTORDER_EXPECTEDDELIVERYDATE').then((result) => {
-            console.log("object", result)
+         
             this.setState({ IsPermisionCOO: result });
             if (result) {
                 const dtFromdate = new Date()
@@ -500,30 +499,32 @@ class ShipmentOrderDetailCom extends Component {
     }
 
     _CheckTime(dates, id) {
-        if (id = 1002) {
-            const date = new Date(Date.parse(dates));
-            let currentDate = new Date();
-            var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
-            var diffMinutes = parseInt((timeDiff / (3600 * 24)));
-            if (diffMinutes < 43200) {
-                return true;
-            }
-            else {
-                return false
-            }
-        }
-        else {
-            const date = new Date(Date.parse(dates));
-            let currentDate = new Date();
-            var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
-            var diffMinutes = parseInt((timeDiff / (3600 * 24)));
-            if (diffMinutes < 1440) {
-                return true;
-            }
-            else {
-                return false
-            }
-        }
+        // if (id = 1002) {
+        //     const date = new Date(Date.parse(dates));
+        //     let currentDate = new Date();
+        //     var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
+        //     var diffMinutes = parseInt((timeDiff / (3600 * 24)));
+        //     if (diffMinutes < 43200) {
+        //         return true;
+        //     }
+        //     else {
+        //         return false
+        //     }
+        // }
+        // else {
+        //     const date = new Date(Date.parse(dates));
+        //     let currentDate = new Date();
+        //     var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
+        //     var diffMinutes = parseInt((timeDiff / (3600 * 24)));
+        //     if (diffMinutes < 1440) {
+        //         return true;
+        //     }
+        //     else {
+        //         return false
+        //     }
+        // }
+        
+        return false
     }
 
     handleShowDataExpectedDelivery() {
