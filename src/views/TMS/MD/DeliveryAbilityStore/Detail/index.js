@@ -1,26 +1,22 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { Modal, ModalManager, Effect } from "react-dynamic-modal";
-import SimpleForm from "../../../../../common/components/Form/SimpleForm";
+import { ModalManager } from "react-dynamic-modal";
 import { MessageModal } from "../../../../../common/components/Modal";
+
 import {
     APIHostName,
-    LoadAPIPath,
     BackLink,
-    EditPagePath,
     DetailPagePath,
-    GetMaterialProductAPIPath
+    LoadAPIPath,
 } from "../constants";
+
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
-import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
-import { format } from "date-fns";
 import { formatDate } from "../../../../../common/library/CommonLib";
+import { updatePagePath } from "../../../../../actions/pageAction";
+import DAStoreGoodsGroupCom from "../../DAStoreGoodsGroup/DataGrid";
 import DeliveryAbilityStore_Store from "../../DeliveryAbilityStore_Store";
-
-
 
 class DetailCom extends React.Component {
     constructor(props) {
@@ -229,6 +225,10 @@ class DetailCom extends React.Component {
                         DataSource={this.state.DataSource.ListDeliveryAbilityStore_Store ? this.state.DataSource.ListDeliveryAbilityStore_Store : []}
                         //MTReturnRequestType_ReviewLevel_User_DataSource={this.state.DataSource.ListMTReturnRequestType_ReviewLevel_User ? this.state.DataSource.ListMTReturnRequestType_ReviewLevel_User : []}
                         onComponentChange={this.onComponentChange}
+                    />
+
+                    <DAStoreGoodsGroupCom
+                        deliveryAbilityStoreID={this.props.match.params.id}
                     />
 
                     {/* <br />
