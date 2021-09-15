@@ -1620,6 +1620,8 @@ export const ExpectedDeliveryDateEdit = [
         validatonList: ["required"],
         timeFormat: false,
         ISdisabledDate: true,
+        isCheckRangeDate: true,
+        dateCheckRange: 30,
         dateFormat: "DD-MM-YYYY HH:mm",//"YYYY-MM-DD HH:mm"
         IsGetTime: true,
         OrderIndex: 4
