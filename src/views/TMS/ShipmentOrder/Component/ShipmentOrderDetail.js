@@ -373,18 +373,6 @@ class ShipmentOrderDetailCom extends Component {
 
 
     showFindStoreDeliveryTime() {
-        // const { ListSuggestTime, _ExpectedDeliveryDateEdit, ShipmentOrder } = this.state;
-        // this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-        //     title: 'Cập nhật thời gian giao dự kiến',
-        //     content: {
-        //         text: <FindStoreDeliveryTime
-        //             ShipmentOrder={ShipmentOrder}
-        //             onhandleChangeTime={this.ChangeLoadDataTime.bind(this)}
-        //         />
-        //     },
-        //     maxWidth: '800px'
-        // });
-
         const { ListSuggestTime, _ExpectedDeliveryDateEdit, ShipmentOrder } = this.state;
 
         this.checkPermission('SHIPMENTORDER_EXPECTEDDELIVERYDATE').then((result) => {

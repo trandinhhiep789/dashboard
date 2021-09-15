@@ -56,7 +56,7 @@ class FindStoreDeliveryTimeCom extends Component {
                 QUANTITY: item.Quantity,
                 ISSETUPPRODUCT: item.IsInstallItem == true ? 1 : 0,
                 MAINGROUPID: item.MainGroupID,
-                SUBGROUPID: 1098,
+                SUBGROUPID: item.SubGroupID,
                 ISONLINEONLY: 0,
                 ISPARTNER: 0,
                 ISNORMAL: 0,
