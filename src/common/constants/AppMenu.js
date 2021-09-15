@@ -1195,14 +1195,14 @@ const AppMenu = [
     // },
     {
         MenuName: 'ShipmentOrderNew',
-        MenuTitle: 'Điều phối giao hàng',
+        MenuTitle: 'Điều phối',
         LinkTo: '/ShipmentOrder',
         MenuIcon: '',
         SubMenu: []
     },
     {
         MenuName: 'ShipmentRoute',
-        MenuTitle: 'Phân tuyến giao hàng',
+        MenuTitle: 'Phân tuyến',
         LinkTo: '/ShipmentRoute',
         MenuIcon: '',
         SubMenu: []
@@ -1605,7 +1605,7 @@ const AppMenu = [
     },
     {
         MenuName: 'InvestigationShipmentOrderStatus',
-        MenuTitle: 'Tra cứu vận đơn',
+        MenuTitle: 'Tra cứu VĐ',
         LinkTo: '/InvestigationShipmentOrderStatus',
         MenuIcon: '',
         SubMenu: []

@@ -1,50 +1,51 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Modal, ModalManager, Effect } from "react-dynamic-modal";
-//import SearchForm from "../../../../../../common/components/Form/SearchForm";
-import SearchForm from "../../../../../../common/components/FormContainer/SearchForm";
-import DataGrid from "../../../../../../common/components/DataGrid";
-import { MessageModal } from "../../../../../../common/components/Modal";
-import {
-    DataGridColumnList, AddNewAPIPath,
-    AddLink,
-    APIHostName,
-    SearchUserLimitAPIPath,
-    DeleteNewAPIPath,
-    IDSelectColumnName,
-    PKColumnName,
-    InitSearchParamsNew,
-    PagePath,
-    SearchMLObjectDefinitionNew,
-    SearchElementListNew,
-    DefaultMaxLimitCoil, DefaultMaxLimitAmount,
-    GetAllUserLimitAPIPath
-} from "../constants";
-import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
-import { updatePagePath } from "../../../../../../actions/pageAction";
-import { LIMITTYPE_VIEW, LIMITTYPE_DELETE } from "../../../../../../constants/functionLists";
-import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
-import { numberDecimalWithComma } from '../../../../../../utils/function';
-import { ERPCOMMONCACHE_LIMITTYPE, ERPCOMMONCACHE_USER_LIMIT } from "../../../../../../constants/keyCache";
-import { formatDate, formatMonthDate } from "../../../../../../common/library/CommonLib.js";
+import { ModalManager } from "react-dynamic-modal";
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
-import readXlsxFile from 'read-excel-file'
+import ReactNotification from "react-notifications-component";
+
+import {
+    AddLink,
+    AddNewAPIPath,
+    APIHostName,
+    DataGridColumnList,
+    DefaultMaxLimitCoil, DefaultMaxLimitAmount,
+    DeleteNewAPIPath,
+    GetAllUserLimitAPIPath,
+    IDSelectColumnName,
+    InitSearchParamsNew,
+    PagePath,
+    PKColumnName,
+    SearchElementListNew,
+    SearchMLObjectDefinitionNew,
+    SearchUserLimitAPIPath,
+} from "../constants";
+
+//import SearchForm from "../../../../../../common/components/Form/SearchForm";
+import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
+import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
+import { ERPCOMMONCACHE_LIMITTYPE, ERPCOMMONCACHE_USER_LIMIT } from "../../../../../../constants/keyCache";
+import { formatDate } from "../../../../../../common/library/CommonLib.js";
+import { MessageModal } from "../../../../../../common/components/Modal";
+import { numberDecimalWithComma } from '../../../../../../utils/function';
+import { updatePagePath } from "../../../../../../actions/pageAction";
+import SearchForm from "../../../../../../common/components/FormContainer/SearchForm";
 
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
-        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
-        this.handleCloseMessage = this.handleCloseMessage.bind(this);
+
         this.callSearchData = this.callSearchData.bind(this);
+        this.getDataForExport = this.getDataForExport.bind(this);
         this.getTableHeader = this.getTableHeader.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.initGridDataSource = this.initGridDataSource.bind(this);
-        this.initArrInputError = this.initArrInputError.bind(this);
+        this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleExportCSV = this.handleExportCSV.bind(this);
-        this.getDataForExport = this.getDataForExport.bind(this);
+        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+        this.initArrInputError = this.initArrInputError.bind(this);
+        this.initGridDataSource = this.initGridDataSource.bind(this);
 
         this.state = {
             gridDataSource: [],
@@ -63,13 +64,12 @@ class SearchCom extends React.Component {
 
 
     componentDidMount() {
-        this.props.updatePagePath(PagePath);
         this.getDataForExport();
+        this.props.updatePagePath(PagePath);
     }
 
     getDataForExport() {
         this.props.callFetchAPI(APIHostName, GetAllUserLimitAPIPath, null).then(apiResult => {
-            //console.log("apiResult", apiResult);
             if (!apiResult.IsError && apiResult.ResultObject != null) {
                 const exelData = apiResult.ResultObject.map((item, index) => {
                     let element = {
@@ -91,8 +91,6 @@ class SearchCom extends React.Component {
             }
         });
     }
-
-
 
     handleExportCSV() {
         const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
@@ -199,8 +197,7 @@ class SearchCom extends React.Component {
     }
 
     initGridDataSource(data) {
-        const groupData = data.reduce((acc, val, ind, arr) => {
-            // console.log("acc", acc, val, ind, arr)
+        const groupData = data.reduce((acc, val) => {
             const tempItemAcc = acc.findIndex(item => item.UserName == val.UserName);
             const objDataLimit = {
                 LimitValue: val.LimitValue,
@@ -275,36 +272,38 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchUserLimitAPIPath, searchData).then(apiResult => {
-            // console.log("data", apiResult, searchData)
-            const groupData = this.initGridDataSource(apiResult.ResultObject);
-            const initInputError = this.initArrInputError(apiResult.ResultObject);
-            const listColumn = this.getTableHeader(groupData);
+            if (apiResult.IsError) {
+                this.addNotification(apiResult.Message, apiResult.IsError);
+            } else {
+                const groupData = this.initGridDataSource(apiResult.ResultObject);
+                const initInputError = this.initArrInputError(apiResult.ResultObject);
+                const listColumn = this.getTableHeader(groupData);
 
 
-            let exelData = [];
-            if (!apiResult.IsError && apiResult.ResultObject != null) {
-                exelData = apiResult.ResultObject.map((item, index) => {
-                    let element = {
-                        "Mã nhân viên": item.UserName,
-                        "Tên nhân viên": item.FullName,
-                        "Mã loại giới hạn": item.LimitTypeID,
-                        "Tên loại giới hạn": item.LimitTypeName,
-                        "Giá trị giới hạn": item.LimitValue,
-                        "Ngày cập nhật": formatDate(item.UpdatedDate),
-                        "Người cập nhật": item.UpdatedUserFullName
-                    };
-                    return element;
+                let exelData = [];
+                if (!apiResult.IsError && apiResult.ResultObject != null) {
+                    exelData = apiResult.ResultObject.map((item, index) => {
+                        let element = {
+                            "Mã nhân viên": item.UserName,
+                            "Tên nhân viên": item.FullName,
+                            "Mã loại giới hạn": item.LimitTypeID,
+                            "Tên loại giới hạn": item.LimitTypeName,
+                            "Giá trị giới hạn": item.LimitValue,
+                            "Ngày cập nhật": formatDate(item.UpdatedDate),
+                            "Người cập nhật": item.UpdatedUserFullName
+                        };
+                        return element;
 
-                })
+                    })
+                }
+
+                this.setState({
+                    listColumn: listColumn,
+                    gridDataSource: groupData,
+                    arrInputError: initInputError,
+                    DataExport: exelData
+                });
             }
-
-            this.setState({
-                listColumn: listColumn,
-                gridDataSource: groupData,
-                arrInputError: initInputError,
-                DataExport: exelData
-            });
-
         });
     }
 
@@ -543,7 +542,6 @@ class SearchCom extends React.Component {
     render() {
         const { listColumn, gridDataSource, arrInputError, isErrorValidate } = this.state;
 
-        // console.log("listColumn", listColumn, gridDataSource)
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -570,76 +568,76 @@ class SearchCom extends React.Component {
                     </div>
                 </div>
 
+                {
+                    (listColumn.length > 0 && gridDataSource.length > 0) && <div className="col-lg-12 user-limt">
+                        <br /><br />
+                        <div className="card">
+                            <div className="card-body">
+                                <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                    <thead className="thead-light">
+                                        <tr>
+                                            {
+                                                listColumn && listColumn.map((item, index) => {
+                                                    return (
+                                                        <th key={index} className="jsgrid-header-cell" style={{ width: item.width }}>
+                                                            {item.name}
+                                                        </th>
+                                                    )
+                                                })
+                                            }
+                                        </tr>
+                                    </thead>
 
-                <div className="col-lg-12 user-limt">
-                    <br /><br />
-                    <div className="card">
-                        <div className="card-body">
-                            <table className="table table-sm table-striped table-bordered table-hover table-condensed">
-                                <thead className="thead-light">
-                                    <tr>
+                                    <tbody>
                                         {
-                                            listColumn && listColumn.map((item, index) => {
-                                                return (
-                                                    <th key={index} className="jsgrid-header-cell" style={{ width: item.width }}>
-                                                        {item.name}
-                                                    </th>
-                                                )
+                                            gridDataSource.length > 0 && gridDataSource.map((item, index) => {
+                                                return <tr key={item.UserName}>
+                                                    {
+                                                        listColumn.map((item1, index1) => {
+
+                                                            switch (item1.type) {
+                                                                case "text":
+                                                                    return <td key={index1}>{item[item1.dataSource]}</td>
+
+                                                                case "input":
+                                                                    return <td key={index1}>
+                                                                        <input type="text"
+                                                                            className="form-control form-control-sm"
+                                                                            value={item1.dataSource == 1
+                                                                                ? numberDecimalWithComma(item[item1.dataSource].LimitValue)
+                                                                                : item[item1.dataSource].LimitValue}
+                                                                            onChange={(e) => this.handleChange(e, index, item1.dataSource, item[item1.dataSource])}
+                                                                        />
+
+                                                                        {
+                                                                            arrInputError[index][item1.dataSource].isError
+                                                                            && <span className="text-danger">{arrInputError[index][item1.dataSource].status}</span>
+                                                                        }
+                                                                    </td>
+
+                                                                default:
+                                                                    return <td key={index1}>{item[item1.dataSource]}</td>
+                                                            }
+                                                        })
+                                                    }
+                                                </tr>
                                             })
                                         }
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        gridDataSource.length > 0 && gridDataSource.map((item, index) => {
-                                            // console.log("object1111", item, index)
-                                            return <tr key={item.UserName}>
-                                                {
-                                                    listColumn.map((item1, index1) => {
-                                                        // console.log("222", item1, index1)
+                                    </tbody>
+                                </table>
 
-                                                        switch (item1.type) {
-                                                            case "text":
-                                                                return <td key={index1}>{item[item1.dataSource]}</td>
+                                <div className="text-right">
+                                    <button type="button" className="btn btn-info" data-provide="tooltip" data-original-title="Cập nhật" onClick={this.handleSubmit.bind(this)} disabled={isErrorValidate}>
+                                        <span className="fa fa-check-square-o"> Cập nhật</span>
+                                    </button>
+                                </div>
 
-                                                            case "input":
-                                                                return <td key={index1}>
-                                                                    <input type="text"
-                                                                        className="form-control form-control-sm"
-                                                                        value={item1.dataSource == 1
-                                                                            ? numberDecimalWithComma(item[item1.dataSource].LimitValue)
-                                                                            : item[item1.dataSource].LimitValue}
-                                                                        onChange={(e) => this.handleChange(e, index, item1.dataSource, item[item1.dataSource])}
-                                                                    />
-
-                                                                    {
-                                                                        arrInputError[index][item1.dataSource].isError
-                                                                        && <span className="text-danger">{arrInputError[index][item1.dataSource].status}</span>
-                                                                    }
-                                                                </td>
-
-                                                            default:
-                                                                return <td key={index1}>{item[item1.dataSource]}</td>
-                                                        }
-                                                    })
-                                                }
-                                            </tr>
-                                        })
-                                    }
-                                </tbody>
-
-                            </table>
-                            <div className="text-right">
-                                <button type="button" className="btn btn-info" data-provide="tooltip" data-original-title="Cập nhật" onClick={this.handleSubmit.bind(this)} disabled={isErrorValidate}>
-                                    <span className="fa fa-check-square-o"> Cập nhật</span>
-                                </button>
                             </div>
+
+
                         </div>
-
-
                     </div>
-                </div>
-
+                }
             </React.Fragment>
         );
     }
