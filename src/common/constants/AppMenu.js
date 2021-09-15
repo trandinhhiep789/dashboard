@@ -128,6 +128,13 @@ const AppMenu = [
                                 SubMenu: []
                             },
                             {
+                                MenuName: 'User_DeliveryGoodsGroup',
+                                MenuTitle: 'Khả năng giao hàng-lắp đặt và tỷ lệ phân bổ tải trên nhóm hàng hóa vận chuyển của một nhân viên',
+                                LinkTo: '/User_DeliveryGoodsGroup',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
+                            {
                                 MenuName: 'DeliveryTimeFrame',
                                 MenuTitle: 'Danh sách khung thời gian vận chuyển',
                                 LinkTo: '/DeliveryTimeFrame',

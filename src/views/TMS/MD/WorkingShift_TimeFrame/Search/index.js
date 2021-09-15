@@ -186,8 +186,8 @@ class SearchCom extends React.Component {
                         PKColumnName={PKColumnName}
                         onDeleteClick={this.handleDelete}
                         ref={this.gridref}
-                        RequirePermission={WORKINGSHIFTTIMEFRAME_VIEW}
-                        DeletePermission={WORKINGSHIFTTIMEFRAME_DELETE}
+                        // RequirePermission={WORKINGSHIFTTIMEFRAME_VIEW}
+                        // DeletePermission={WORKINGSHIFTTIMEFRAME_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                     />
