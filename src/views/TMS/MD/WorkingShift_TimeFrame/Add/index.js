@@ -172,7 +172,7 @@ class AddCom extends React.Component {
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <FormContainer
-                    FormName="Thêm khung giờ của một ca làm việcc"
+                    FormName="Thêm khung giờ của một ca làm việc"
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={[]}
                     onSubmit={this.handleSubmit}

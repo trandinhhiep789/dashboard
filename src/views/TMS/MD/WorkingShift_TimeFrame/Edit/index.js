@@ -134,7 +134,7 @@ class EditCom extends React.Component {
         return (
             <React.Fragment>
                 <FormContainer
-                    FormName="Thêm khung giờ của một ca làm việcc"
+                    FormName="Thêm khung giờ của một ca làm việc"
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={[]}
                     dataSource={this.state.DataSource}
