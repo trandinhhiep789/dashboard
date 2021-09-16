@@ -74,6 +74,10 @@ class SearchCom extends React.Component {
             {
                 SearchKey: "@Keyword",
                 SearchValue: MLObject.Keyword
+            },
+            {
+                SearchKey: "@REWARDCOMPUTETYPEID",
+                SearchValue: MLObject.RewardComputeTypeID
             }
         ];
         this.setState({ SearchData: postData });

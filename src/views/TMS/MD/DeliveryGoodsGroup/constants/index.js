@@ -355,6 +355,13 @@ export const DataGridColumnList = [
         DataSourceMember: "DeliveryGoodsGroupName",
         Width: 250
     },
+    {
+        Name: "DeliveryAbilityFactor",
+        Type: "text",
+        Caption: "Khả năng giao hàng",
+        DataSourceMember: "DeliveryAbilityFactor",
+        Width: 160
+    },
     // {
     //     Name: "Description",
     //     Type: "text",

@@ -29,9 +29,11 @@ import { callGetCache, callClearLocalCache } from "../../../../../../actions/cac
 import { ERPCOMMONCACHE_LIMITTYPE, ERPCOMMONCACHE_USER_LIMIT } from "../../../../../../constants/keyCache";
 import { formatDate } from "../../../../../../common/library/CommonLib.js";
 import { MessageModal } from "../../../../../../common/components/Modal";
-import { numberDecimalWithComma } from '../../../../../../utils/function';
+import { numberDecimalWithComma, toIsoStringCus } from '../../../../../../utils/function';
 import { updatePagePath } from "../../../../../../actions/pageAction";
 import SearchForm from "../../../../../../common/components/FormContainer/SearchForm";
+import { MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from "../../../../../../constants/actionTypes";
+import { showModal, hideModal } from '../../../../../../actions/modal';
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -55,7 +57,8 @@ class SearchCom extends React.Component {
             listColumn: [],
             arrInputError: [],
             isErrorValidate: false,
-            DataExport: []
+            DataExport: [],
+            exportTemplateID: 16
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -149,6 +152,10 @@ class SearchCom extends React.Component {
             {
                 SearchKey: "@STOREID",
                 SearchValue: MLObject.StoreID
+            },
+            {
+                SearchKey: "@DEPARTMENTID",
+                SearchValue: MLObject.DepartmentID
             },
             {
                 SearchKey: "@POSITIONID",
@@ -278,7 +285,6 @@ class SearchCom extends React.Component {
                 const groupData = this.initGridDataSource(apiResult.ResultObject);
                 const initInputError = this.initArrInputError(apiResult.ResultObject);
                 const listColumn = this.getTableHeader(groupData);
-
 
                 let exelData = [];
                 if (!apiResult.IsError && apiResult.ResultObject != null) {
@@ -539,6 +545,80 @@ class SearchCom extends React.Component {
 
     }
 
+    handleHistorySearch() {
+        const { exportTemplateID } = this.state;
+        this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
+            title: "Tải file",
+            maxWidth: '1200px',
+            ParamRequest: { DataExportTemplateID: exportTemplateID }
+        });
+    }
+
+    handleExportFileFormSearch(FormData, MLObject) {
+
+        const { exportTemplateID } = this.state
+
+        let result;
+
+        if (MLObject.UserName != -1 && MLObject.UserName != null) {
+            result = MLObject.UserName.reduce((data, item, index) => {
+                const comma = data.length ? "," : "";
+                return data + comma + item.value;
+            }, '');
+        }
+        else {
+            result = ""
+        }
+
+        const postDataNew = [
+            {
+                SearchKey: "@AREAID",
+                SearchValue: MLObject.AreaID
+
+            },
+            {
+                SearchKey: "@STOREID",
+                SearchValue: MLObject.StoreID
+            },
+            {
+                SearchKey: "@DEPARTMENTID",
+                SearchValue: MLObject.DepartmentID
+            },
+            {
+                SearchKey: "@POSITIONID",
+                SearchValue: MLObject.PositionID
+            },
+            {
+                SearchKey: "@USERNAMELIST",
+                SearchValue: result
+            }
+        ];
+
+       
+
+        const postData = {
+            DataExportTemplateID: exportTemplateID,
+            LoadDataStoreName: 'MDM.SYS_USER_LIMIT_SRHALL',
+            KeyCached: "SHIPMENTORDER_REPORT_EXPORT",
+            SearchParamList: postDataNew,
+            ExportDataParamsDescription: "Tháng " + toIsoStringCus(new Date().toISOString())
+            // ExportDataParamsDescription: "AREAID: " + MLObject.AreaID + " - STOREID: " + MLObject.StoreID + " - DEPARTMENTID: " + MLObject.DepartmentID + " - POSITIONID: " + MLObject.PositionID
+        }
+
+        this.props.callFetchAPI(APIHostName, "api/DataExportQueue/AddQueueExport", postData).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
+                    title: "Tải file",
+                    maxWidth: '1200px',
+                    ParamRequest: { DataExportTemplateID: exportTemplateID }
+                });
+            }
+            else {
+                this.showMessage(apiResult.Message)
+            }
+        });
+    };
+
     render() {
         const { listColumn, gridDataSource, arrInputError, isErrorValidate } = this.state;
 
@@ -552,11 +632,17 @@ class SearchCom extends React.Component {
                     listelement={SearchElementListNew}
                     onSubmit={this.handleSearchSubmit}
                     ref={this.searchref}
-                    className="multiple"
+                    btnGroup='btnUserLimit'
+                    className="multiple multiple-custom multiple-custom-display"
+                    colGroupAction={8}
+                    IsButtonhistory={true}
+                    onHistorySubmit={this.handleHistorySearch.bind(this)}
+                    IsButtonExport={true}
+                    onExportSubmit={this.handleExportFileFormSearch.bind(this)}
                 />
 
                 {/* xuất file exel */}
-                <div className="row">
+                {/* <div className="row">
                     <div className="col-md-12">
                         <div className="btn-toolbar" style={{ position: "absolute", bottom: "-40px", right: "30px", zIndex: "1" }}>
                             <div className="btn-group btn-group-sm">
@@ -566,7 +652,7 @@ class SearchCom extends React.Component {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
 
                 {
                     (listColumn.length > 0 && gridDataSource.length > 0) && <div className="col-lg-12 user-limt">
@@ -663,6 +749,12 @@ const mapDispatchToProps = dispatch => {
         },
         callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
+        },
+        hideModal: (type, props) => {
+            dispatch(hideModal(type, props));
         }
     };
 };
