@@ -86,10 +86,16 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            
             if (!apiResult.IsError) {
+                const uptResultObject = apiResult.ResultObject.map(item => {
+                    return {
+                        ...item,
+                        WorkingShiftIDName: `${item.WorkingShiftID} - ${item.WorkingShiftName}`
+                    }
+                })
+
                 this.setState({
-                    gridDataSource: apiResult.ResultObject,
+                    gridDataSource: uptResultObject,
                     IsCallAPIError: apiResult.IsError,
                     IsLoadDataComplete: true,
                 });
