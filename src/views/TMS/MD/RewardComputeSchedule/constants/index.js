@@ -10,7 +10,11 @@ export const AddLink = "/RewardComputeSchedule/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "RewardComputeScheduleID";
-export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
+export const InitSearchParams = [
+    { SearchKey: "@Keyword", SearchValue: "" },
+    { SearchKey: "@RewardComputeTypeID", SearchValue: -1 }
+]
+    ;
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
@@ -47,7 +51,23 @@ export const SearchElementList = [
         placeholder: "",
         icon: "",
         listoption: {}
-    }
+    },
+    {
+        type: "select",
+        name: "cbRewardComputeTypeID",
+        label: "loại tính thưởng",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: [],
+        DataSourceMember: "RewardComputeTypeID",
+        readonly: false,
+        validatonList: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.REWARDCOMPUTETYPE",
+        ValueMember: "RewardComputeTypeID",
+        NameMember: "RewardComputeTypeName"
+    },
 ];
 
 export const AddElementList = [
@@ -237,6 +257,11 @@ export const SearchMLObjectDefinition = [
         Name: "Keyword",
         DefaultValue: "",
         BindControlName: "txtKeyword"
+    },
+    {
+        Name: "RewardComputeTypeID",
+        DefaultValue: "-1",
+        BindControlName: "cbRewardComputeTypeID"
     }
 ];
 

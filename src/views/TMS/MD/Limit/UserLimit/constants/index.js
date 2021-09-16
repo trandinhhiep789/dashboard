@@ -102,6 +102,11 @@ export const SearchMLObjectDefinitionNew = [
         BindControlName: "cbPosition"
     },
     {
+        Name: "DepartmentID",
+        DefaultValue: "",
+        BindControlName: "cbDepartmentID"
+    },
+    {
         Name: "UserName",
         DefaultValue: "",
         BindControlName: "cbUserName"
@@ -115,6 +120,10 @@ export const InitSearchParamsNew = [
     },
     {
         SearchKey: "@STOREID",
+        SearchValue: ""
+    },
+    {
+        SearchKey: "@DEPARTMENTID",
         SearchValue: ""
     },
     {
@@ -167,7 +176,22 @@ export const SearchElementListNew = [
         filterobj: "AreaID",
 
     },
+    {
+        type: "ComboBox",
+        name: "cbDepartmentID",
+        DataSourceMember: "DepartmentID",
+        label: "Phòng ban:",
+        colspan: 2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "---Vui lòng chọn---",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.BCNBSYSTEM_DEPARTMENT",
+        ValueMember: "DepartmentID",
+        NameMember: "DepartmentName",
 
+    },
     {
         type: "ComboBox",
         name: "cbPosition",
