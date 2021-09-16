@@ -134,14 +134,14 @@ class EditCom extends React.Component {
         return (
             <React.Fragment>
                 <FormContainer
-                    FormName="Thêm khung giờ của một ca làm việcc"
+                    FormName="Thêm khung giờ của một ca làm việc"
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={[]}
                     dataSource={this.state.DataSource}
                     onSubmit={this.handleSubmit}
                     BackLink={BackLink}
                     // onchange={this.handleChange.bind(this)}
-                    RequirePermission={WORKINGSHIFTTIMEFRAME_UPDATE}
+                    // RequirePermission={WORKINGSHIFTTIMEFRAME_UPDATE}
                 >
 
                     <div className="row">

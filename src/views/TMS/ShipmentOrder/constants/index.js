@@ -1610,29 +1610,45 @@ export const ExpectedDeliveryDateEdit = [
     //     IsGetTime: true,
     //     OrderIndex: 4
     // },
-    {
-        name: "cbDeliveryDate",
-        Type: "ComboBoxEdit",
-        Caption: "Ngày hẹn",
-        label: "Ngày hẹn",
-        value: -1,
-        datasourcemember: "DeliveryDate",
-        isautoloaditemfromcache: false,
-        listoption: [],
-        OrderIndex: 4
-    },
+
     {
         name: "NewExpectedDeliveryDate",
-        Type: "ComboBoxEdit",
-        Caption: "Giờ hẹn",
-        label: "Giờ hẹn",
-        value: -1,
+        Type: "Datetime",
+        Caption: "Ngày hẹn giao",
+        label: "Ngày hẹn giao",
         datasourcemember: "NewExpectedDeliveryDate",
-        validatonList: ["Comborequired"],
-        isautoloaditemfromcache: false,
-        listoption: [],
-        OrderIndex: 5
+        validatonList: ["required"],
+        timeFormat: false,
+        ISdisabledDate: true,
+        isCheckRangeDate: true,
+        dateCheckRange: 30,
+        dateFormat: "DD-MM-YYYY HH:mm",//"YYYY-MM-DD HH:mm"
+        IsGetTime: true,
+        OrderIndex: 4
     },
+    // {
+    //     name: "cbDeliveryDate",
+    //     Type: "ComboBoxEdit",
+    //     Caption: "Ngày hẹn",
+    //     label: "Ngày hẹn",
+    //     value: -1,
+    //     datasourcemember: "DeliveryDate",
+    //     isautoloaditemfromcache: false,
+    //     listoption: [],
+    //     OrderIndex: 4
+    // },
+    // {
+    //     name: "NewExpectedDeliveryDate",
+    //     Type: "ComboBoxEdit",
+    //     Caption: "Giờ hẹn",
+    //     label: "Giờ hẹn",
+    //     value: -1,
+    //     datasourcemember: "NewExpectedDeliveryDate",
+    //     validatonList: ["Comborequired"],
+    //     isautoloaditemfromcache: false,
+    //     listoption: [],
+    //     OrderIndex: 5
+    // },
 
     {
         name: "DeliverydateUpdateReasonNote",

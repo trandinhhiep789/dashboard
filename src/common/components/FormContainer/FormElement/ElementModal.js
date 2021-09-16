@@ -639,6 +639,7 @@ class ElementModalDatetimeCom extends Component {
     constructor(props) {
         super(props);
         this.handleValueChange = this.handleValueChange.bind(this);
+        this.disabledDate = this.disabledDate.bind(this)
     }
     handleValueChange(name, moment) {
         let noGetTime = false;
@@ -657,10 +658,24 @@ class ElementModalDatetimeCom extends Component {
     }
     disabledDate(current) {
         // Can not select days before today and today
-        return current && current <= moment().startOf('day');
+        if (this.props.isCheckRangeDate) {
+            const dtFromdate = new Date();
+            const toDate = new Date();
+            const intDateCheckRange =  (this.props.dateCheckRange != undefined || this.props.dateCheckRange > 0) ? this.props.dateCheckRange : 0 ;
+            toDate.setDate(new Date().getDate() + intDateCheckRange);
+            const tooLate = toDate;
+            const tooEarly = dtFromdate;
+            return current < tooEarly || current > toDate;
+        }
+        else {
+            return current && current < moment().endOf('day')
+        }
+
+
     }
 
     render() {
+        console.log("object", this.props)
         let { name, label, timeFormat, dateFormat, colspan, value, validationErrorMessage } = this.props;
         let classNamecolmd = "col-md-6";
         if (this.props.Colmd != null)

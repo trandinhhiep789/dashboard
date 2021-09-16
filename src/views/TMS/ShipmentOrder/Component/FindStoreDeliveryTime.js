@@ -48,8 +48,8 @@ class FindStoreDeliveryTimeCom extends Component {
     componentDidMount() {
         console.log("object", this.props)
         const { ShipmentOrder } = this.props
-
-        const lstProduct = ShipmentOrder.ShipmentOrder_ItemList.map((item, index) => {
+        let lstProductitem = ShipmentOrder.ShipmentOrder_ItemList.filter(n  =>  n.MainGroupID !=704 || n.ProductID.trim() =="7042011000112")
+        const lstProduct = lstProductitem.map((item, index) => {
             return {
 
                 PRODUCTID: item.ProductID,

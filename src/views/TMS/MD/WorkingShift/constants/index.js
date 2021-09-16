@@ -129,7 +129,7 @@ export const AddElementList = [
         loaditemcachekeyid: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
         valuemember: "ShipmentOrderTypeID",
         nameMember: "ShipmentOrderTypeName",
-        OrderIndex:1
+        OrderIndex: 1
     },
     {
         type: "select",
@@ -146,7 +146,7 @@ export const AddElementList = [
         loaditemcachekeyid: "ERPCOMMONCACHE.PARTNER",
         valuemember: "PartnerID",
         nameMember: "PartnerName",
-        OrderIndex:2
+        OrderIndex: 2
     },
     {
         type: "select",
@@ -165,7 +165,7 @@ export const AddElementList = [
         nameMember: "StoreName",
         filterValue: 10,
         filterobj: "CompanyID",
-        OrderIndex:3
+        OrderIndex: 3
     },
     {
         type: "select",
@@ -184,16 +184,16 @@ export const AddElementList = [
         nameMember: "StoreName",
         filterValue: 1,
         filterobj: "CompanyID",
-        OrderIndex:4
+        OrderIndex: 4
     },
     {
         type: "checkbox",
         name: "chkIsCheckCustomerAddress",
-        datasourcemember:"IsCheckCustomerAddress",
+        datasourcemember: "IsCheckCustomerAddress",
         label: "kiểm tra địa chỉ khách hàng",
         value: false,
         readonly: false,
-        OrderIndex:5
+        OrderIndex: 5
     }
 
 ];
@@ -203,7 +203,7 @@ export const EditElementList = [
 
 ];
 
-export const DataGridColumnList=[
+export const DataGridColumnList = [
     {
         Name: "chkSelect",
         Type: "checkbox",
@@ -212,10 +212,10 @@ export const DataGridColumnList=[
         Width: 60
     },
     {
-        Name: "WorkingShiftName",
+        Name: "WorkingShiftIDName",
         Type: "text",
-        Caption: "Tên ca làm việc",
-        DataSourceMember: "WorkingShiftName",
+        Caption: "Ca làm việc",
+        DataSourceMember: "WorkingShiftIDName",
         Width: 250
     },
     {
