@@ -23,7 +23,7 @@ import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_QUALITYASSESSGROUP} from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_QUALITYASSESSGROUP } from "../../../../../constants/keyCache";
 import { QUALITYASSESSGROUP_VIEW, QUALITYASSESSGROUP_DELETE, DELIVERYGOODSGROUP_VIEW, DELIVERYGOODSGROUP_DELETE } from "../../../../../constants/functionLists";
 
 class SearchCom extends React.Component {
@@ -125,6 +125,13 @@ class SearchCom extends React.Component {
             if (!itemObject.UserName && _isError == false) {
                 this.addNotification("Vui lòng chọn người dùng.", true);
                 _isError = true;
+            } else if ((itemObject.DeliveryAbility < 0 || itemObject.ApportionFactor < 0) && _isError == false) {
+                this.addNotification("Vui lòng nhập số dương.", true);
+                _isError = true;
+
+            } else if (itemObject.ApportionFactor > 100 && _isError == false) {
+                this.addNotification("Tỷ lệ phân bổ vượt quá 100.", true);
+                _isError = true;
             } else {
                 data.push(itemObject);
             }
@@ -135,7 +142,7 @@ class SearchCom extends React.Component {
             return;
         }
 
-     
+
 
         this.props.callFetchAPI(APIHostName, AddByFileAPIPath, data).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
