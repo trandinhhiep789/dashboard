@@ -219,17 +219,17 @@ export const DataGridColumnList = [
         Width: 250
     },
     {
-        Name: "TimeStart",
+        Name: "FromTime",
         Type: "text",
         Caption: "Giờ bắt đầu",
-        DataSourceMember: "TimeStart",
+        DataSourceMember: "FromTime",
         Width: 250
     },
     {
-        Name: "TimeEnd",
+        Name: "ToTime",
         Type: "text",
         Caption: "Giờ kết thúc",
-        DataSourceMember: "TimeEnd",
+        DataSourceMember: "ToTime",
         Width: 250
     },
     {

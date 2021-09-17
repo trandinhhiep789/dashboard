@@ -97,7 +97,7 @@ class ImportSelectionModalCom extends React.Component {
                 if (apiResult.IsError) {
                     this.showMessage(apiResult.Message);
                 } else {
-                    this.addNotification(apiResult.Message, true);
+                    this.addNotification(apiResult.Message, false);
                 }
             });
         }
