@@ -18,7 +18,7 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_QUALITYASSESSGROUP, ERPCOMMONCACHE_SERVICETYPE, ERPCOMMONCACHE_TMSREWARDTYPE } from "../../../../../constants/keyCache";
-import { DELIVERYGOODSGROUP_UPDATE, QUALITYASSESSGROUP_UPDATE, REWARDTYPE_UPDATE, SERVICETYPE_UPDATE } from "../../../../../constants/functionLists";
+import { DELIVERYGOODSGROUP_ADD, DELIVERYGOODSGROUP_UPDATE, QUALITYASSESSGROUP_UPDATE, REWARDTYPE_UPDATE, SERVICETYPE_UPDATE } from "../../../../../constants/functionLists";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -60,6 +60,17 @@ class EditCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
+
+        if (MLObject.DeliveryAbility < 0 || MLObject.ApportionFactor < 0) {
+            this.showMessage("Vui lòng nhập số dương");
+            this.setState({ IsCallAPIError: true});
+            return;
+        } else if (MLObject.ApportionFactor > 100) {
+            this.showMessage("Tỷ lệ phân bổ vượt quá 100");
+            this.setState({ IsCallAPIError: true});
+            return;
+        }
+
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
@@ -94,7 +105,7 @@ class EditCom extends React.Component {
         if (this.state.IsLoadDataComplete) {
             return (
                 <SimpleForm
-                    FormName="Cập nhật nhóm tiêu chí đánh giá chất lượng"
+                    FormName="Cập nhật khả năng giao hàng-lắp đặt và tỷ lệ phân bổ tải"
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={EditElementList}
                     onSubmit={this.handleSubmit}
@@ -102,7 +113,7 @@ class EditCom extends React.Component {
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
-                    RequirePermission={DELIVERYGOODSGROUP_UPDATE}
+                    RequirePermission={DELIVERYGOODSGROUP_ADD}
                     ref={this.searchref}
                 />
             );

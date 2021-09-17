@@ -26,7 +26,7 @@ import {
 //import SearchForm from "../../../../../../common/components/Form/SearchForm";
 import { callFetchAPI } from "../../../../../../actions/fetchAPIAction";
 import { callGetCache, callClearLocalCache } from "../../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_LIMITTYPE, ERPCOMMONCACHE_USER_LIMIT } from "../../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_LIMITTYPE, ERPCOMMONCACHE_TMSCONFIG, ERPCOMMONCACHE_USER_LIMIT } from "../../../../../../constants/keyCache";
 import { formatDate } from "../../../../../../common/library/CommonLib.js";
 import { MessageModal } from "../../../../../../common/components/Modal";
 import { numberDecimalWithComma, toIsoStringCus } from '../../../../../../utils/function';
@@ -48,6 +48,7 @@ class SearchCom extends React.Component {
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.initArrInputError = this.initArrInputError.bind(this);
         this.initGridDataSource = this.initGridDataSource.bind(this);
+        this.getCacheMTG = this.getCacheMTG.bind(this);
 
         this.state = {
             gridDataSource: [],
@@ -58,7 +59,7 @@ class SearchCom extends React.Component {
             arrInputError: [],
             isErrorValidate: false,
             DataExport: [],
-            exportTemplateID: 16
+            exportTemplateID: ""
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -69,6 +70,22 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.getDataForExport();
         this.props.updatePagePath(PagePath);
+        this.getCacheMTG();
+    }
+
+    getCacheMTG() {
+        this.props.callGetCache(ERPCOMMONCACHE_TMSCONFIG).then((result) => {
+            if (result && !result.IsError && result.ResultObject) {
+                let _configValue = result.ResultObject.CacheData.filter(x => x.TMSConfigID == "TEMPLATE_EXPORT_USERLIMIT");
+                if (_configValue) {
+                    this.setState({
+                        exportTemplateID: _configValue[0].TMSConfigValue
+                    })
+                }
+
+
+            }
+        });
     }
 
     getDataForExport() {
@@ -557,7 +574,7 @@ class SearchCom extends React.Component {
     handleExportFileFormSearch(FormData, MLObject) {
 
         const { exportTemplateID } = this.state
-
+        
         let result;
 
         if (MLObject.UserName != -1 && MLObject.UserName != null) {

@@ -34,14 +34,25 @@ class AddCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
+
+        if (MLObject.DeliveryAbility < 0 || MLObject.ApportionFactor < 0) {
+            this.showMessage("Vui lòng nhập số dương");
+            this.setState({ IsCallAPIError: true});
+            return;
+        } else if (MLObject.ApportionFactor > 100) {
+            this.showMessage("Tỷ lệ phân bổ vượt quá 100");
+            this.setState({ IsCallAPIError: true});
+            return;
+        }
+
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
-            if(!apiResult.IsError){
+            if (!apiResult.IsError) {
                 // this.props.callClearLocalCache(ERPCOMMONCACHE_QUALITYASSESSGROUP);
                 //this.handleSubmitInsertLog(MLObject);
-            }            
+            }
             this.showMessage(apiResult.Message);
         });
     }
@@ -70,8 +81,8 @@ class AddCom extends React.Component {
         }
         return (
             <SimpleForm
-                FormName="Thêm nhóm tiêu chí đánh giá chất lượng"
-                MLObjectDefinition={MLObjectDefinition} 
+                FormName="Thêm khả năng giao hàng-lắp đặt và tỷ lệ phân bổ tải"
+                MLObjectDefinition={MLObjectDefinition}
                 listelement={AddElementList}
                 onSubmit={this.handleSubmit}
                 FormMessage={this.state.CallAPIMessage}
