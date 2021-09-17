@@ -86,14 +86,26 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            
             if (!apiResult.IsError) {
-                const uptResultObject = apiResult.ResultObject.map(item => {
-                    return {
-                        ...item,
-                        WorkingShiftIDName: `${item.WorkingShiftID} - ${item.WorkingShiftName}`
-                    }
-                })
 
+                let uptResultObject = apiResult.ResultObject.map((item, index) => {
+                    const start = item.TimeStart;
+                    const hourStart = Math.floor(start / 60);
+                    const minStart = start % 60;//Math.floor((item.TimeStart - hourStart) / 60);
+                    const timeStart = (("0" + hourStart).slice(-2) + ":" + ("0" + minStart).slice(-2)).toString()
+
+                    const end = item.TimeEnd;
+                    const hourEnd = Math.floor(end / 60);
+                    const minEnd = end % 60//Math.floor((item.TimeEnd - hourEnd) / 60);
+
+                    const timeEnd = (("0" + hourEnd).slice(-2) + ":" + ("0" + minEnd).slice(-2)).toString()
+
+                    item.FromTime = timeStart;
+                    item.ToTime = timeEnd;
+                    item.WorkingShiftIDName= item.WorkingShiftID + " - "+ item.WorkingShiftName;
+                    return item;
+                })
                 this.setState({
                     gridDataSource: uptResultObject,
                     IsCallAPIError: apiResult.IsError,
