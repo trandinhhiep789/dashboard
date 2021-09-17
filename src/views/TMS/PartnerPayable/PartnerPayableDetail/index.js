@@ -18,6 +18,7 @@ import {
 
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { callGetCache } from "../../../../actions/cacheAction";
+import { toIsoStringCus } from '../../../../utils/function'
 import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../constants/keyCache";
 import { MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from "../../../../constants/actionTypes";
 import { PARTNERPAYABLEDETAIL_VIEW, PARTNERPAYABLEDETAIL_EXPORT } from "../../../../constants/functionLists";
@@ -76,7 +77,7 @@ class PartnerPayableDetailCom extends React.Component {
 
     callData(SearchData) {
         this.props.callFetchAPI(APIHostName, SearchByDateAPIPath, SearchData).then(apiResult => {
-
+            // console.log("apiResult",SearchData, apiResult)
             if (!apiResult.IsError) {
                 if (apiResult.ResultObject.length > 0) {
                     const totalPayableAmount = apiResult.ResultObject.reduce((sum, curValue, curIndex, []) => {
@@ -151,12 +152,12 @@ class PartnerPayableDetailCom extends React.Component {
 
         const postData = [
             {
-                SearchKey: "@FromDate",
-                SearchValue: MLObject.FromDate
+                SearchKey: "@FROMDATE",
+                SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString())//MLObject.FromDate
             },
             {
-                SearchKey: "@ToDate",
-                SearchValue: MLObject.ToDate
+                SearchKey: "@TODATE",
+                SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString()) //MLObject.ToDate
             },
             {
                 SearchKey: "@PARTNERID",
@@ -207,11 +208,26 @@ class PartnerPayableDetailCom extends React.Component {
     // }
 
     handleExportFileFormSearch(FormData, MLObject) {
+
+        const postDataNew = [
+            {
+                SearchKey: "@FROMDATE",
+                SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString())//MLObject.FromDate
+            },
+            {
+                SearchKey: "@TODATE",
+                SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString()) //MLObject.ToDate
+            },
+            {
+                SearchKey: "@PARTNERID",
+                SearchValue: MLObject.PartnerID
+            },
+        ];
         const postData = {
             DataExportTemplateID: this.state.exportTemplateID,
             LoadDataStoreName: 'TMS.TMS_PPD_SRH_BY_DATE',
-            KeyCached: PARTNERPAYABLEDETAIL_EXPORT,
-            SearchParamList: this.state.searchParam,
+            KeyCached: "PARTNERPAYABLEDETAIL_EXPORT",
+            SearchParamList: postDataNew,
             ExportDataParamsDescription: "FROMDATE: " + MLObject.FromDate + " - TODATE: " + MLObject.ToDate + " - REWARDPOSITIONID: " + MLObject.PartnerID
         }
 
