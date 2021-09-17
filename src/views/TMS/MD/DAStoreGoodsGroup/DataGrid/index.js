@@ -72,7 +72,7 @@ class DataGridCom extends React.Component {
                     onSubmit={this.handleSubmitModalAdd}
                 >
                     <div className="row">
-                        <div className="col-md-12">
+                        {/* <div className="col-md-12">
                             <FormControl.FormControlComboBox
                                 // filterrest="DeliveryAbilityStoreID"
                                 colspan="8"
@@ -90,7 +90,7 @@ class DataGridCom extends React.Component {
                                 value={""}
                                 valuemember="DeliveryAbilityStoreID"
                             />
-                        </div>
+                        </div> */}
                         <div className="col-md-12">
                             <FormControl.FormControlComboBox
                                 // filterrest="DeliveryGoodsGroupID"
@@ -177,6 +177,7 @@ class DataGridCom extends React.Component {
         } else {
             const submitData = [{
                 ...MLObject,
+                DeliveryAbilityStoreID: parseInt(this.props.deliveryAbilityStoreID),
                 ApportionFactor: parseFloat(MLObject.ApportionFactor)
             }]
 
