@@ -83,10 +83,10 @@ class AddCom extends React.Component {
         }
         console.log("object", tempMLObject)
 
-        // this.props.callFetchAPI(APIHostName, AddAPIPath, tempMLObject).then(apiResult => {
-        //     this.setState({ IsCallAPIError: apiResult.IsError });
-        //     this.showMessage(apiResult.Message);
-        // });
+        this.props.callFetchAPI(APIHostName, AddAPIPath, tempMLObject).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.showMessage(apiResult.Message);
+        });
     }
 
 

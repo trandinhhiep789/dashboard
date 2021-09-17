@@ -86,7 +86,10 @@ class ImportSelectionModalCom extends React.Component {
     handleSubmitDAStoreGoodsGroup(data) {
         if (data.errors.length != 0) {
             this.addNotification("File lỗi, vui lòng kiểm tra lại", true);
-        } else {
+            return;
+        }
+
+        if (data.rows.length != 0) {
             const submitData = data.rows.map(item => {
                 return {
                     ...item,
@@ -100,6 +103,8 @@ class ImportSelectionModalCom extends React.Component {
                     this.addNotification(apiResult.Message, false);
                 }
             });
+        } else {
+            this.addNotification("Dữ liệu trong file không tồn tại. Không thể nhập file!", true);
         }
     }
 
