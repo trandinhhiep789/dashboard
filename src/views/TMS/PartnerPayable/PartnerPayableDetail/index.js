@@ -21,7 +21,7 @@ import { connect } from "react-redux";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache } from "../../../../actions/cacheAction";
-
+import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../constants/keyCache";
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 
 
@@ -46,6 +46,25 @@ class PartnerPayableDetailCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePathDate);
+        this.getCacheMTG();
+    }
+
+
+    getCacheMTG() {
+        this.props.callGetCache(ERPCOMMONCACHE_TMSCONFIG).then((result) => {
+            if (result && !result.IsError && result.ResultObject) {
+                let _configValue = result.ResultObject.CacheData.find(x => x.TMSConfigID == "TEMPLATE_EXPORT_PARTNERPAYABLE");
+                if (_configValue) {
+                    this.setState({
+                        exportTemplateID: _configValue.TMSConfigValue
+                    })
+                }
+
+
+            }
+
+
+        });
     }
 
     groupBy(data, fields, sumBy = 'Quantity') {
