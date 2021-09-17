@@ -125,14 +125,28 @@ class SearchCom extends React.Component {
             if (!itemObject.UserName && _isError == false) {
                 this.addNotification("Vui lòng chọn người dùng.", true);
                 _isError = true;
-            } else if ((itemObject.DeliveryAbility < 0 || itemObject.ApportionFactor < 0) && _isError == false) {
+            }
+            else if ((isNaN(itemObject.DeliveryAbility)) && _isError == false) {
+                this.addNotification("khả năng giao hàng và lắp đặt => vui lòng nhập số.", true);
+                _isError = true;
+            } 
+            else if ((isNaN(itemObject.ApportionFactor)) && _isError == false) {
+                this.addNotification("Tỷ lệ phân bổ => vui lòng nhập số.", true);
+                _isError = true;
+            }      
+            else if ((itemObject.DeliveryAbility < 0 || itemObject.ApportionFactor < 0) && _isError == false) {
                 this.addNotification("Vui lòng nhập số dương.", true);
                 _isError = true;
 
-            } else if (itemObject.ApportionFactor > 100 && _isError == false) {
+            }else if ((itemObject.DeliveryAbility > 100) && _isError == false) {
+                this.addNotification("khả năng giao hàng và lắp đặt vượt quá 100.", true);
+                _isError = true;
+            } 
+            else if ((itemObject.ApportionFactor > 100) && _isError == false) {
                 this.addNotification("Tỷ lệ phân bổ vượt quá 100.", true);
                 _isError = true;
             } else {
+                itemObject.IsActived = true;
                 data.push(itemObject);
             }
         });

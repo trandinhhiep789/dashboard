@@ -63,11 +63,16 @@ class EditCom extends React.Component {
 
         if (MLObject.DeliveryAbility < 0 || MLObject.ApportionFactor < 0) {
             this.showMessage("Vui lòng nhập số dương");
-            this.setState({ IsCallAPIError: true});
+            this.setState({ IsCallAPIError: true });
             return;
-        } else if (MLObject.ApportionFactor > 100) {
+        } else if (MLObject.DeliveryAbility > 100) {
+            this.showMessage("khả năng giao hàng và lắp đặt vượt quá 100");
+            this.setState({ IsCallAPIError: true });
+            return;
+        }
+        else if (MLObject.ApportionFactor > 100) {
             this.showMessage("Tỷ lệ phân bổ vượt quá 100");
-            this.setState({ IsCallAPIError: true});
+            this.setState({ IsCallAPIError: true });
             return;
         }
 
