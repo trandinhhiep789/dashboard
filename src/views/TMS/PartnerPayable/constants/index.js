@@ -94,12 +94,27 @@ export const SearchElementList = [
         filterobj: "PartnerTypeID",
 
     },
-    
+
 
 ]
 
 const dtFromdate = new Date();
 dtFromdate.setDate(new Date().getDate() - 30);
+
+export const InitSearchPartnerPayableDetail = [
+    {
+        SearchKey: "@FromDate",
+        SearchValue: dtFromdate
+    },
+    {
+        SearchKey: "@ToDate",
+        SearchValue: new Date()
+    },
+    {
+        SearchKey: "@PARTNERID",
+        SearchValue: -1
+    },
+]
 
 export const SearchPartnerPayableDetailElementList = [
 
@@ -108,7 +123,7 @@ export const SearchPartnerPayableDetailElementList = [
         name: "dtFromDate",
         DataSourceMember: "FromDate",
         label: "Từ ngày",
-        value:  dtFromdate,
+        value: dtFromdate,
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
@@ -206,8 +221,8 @@ export const SearchMLObjectDefinition = [
     },
 ]
 
-export const SearchPartnerPayableDetailMLObjectDefinition=[
-    
+export const SearchPartnerPayableDetailMLObjectDefinition = [
+
     {
         Name: "FromDate",
         DefaultValue: "",

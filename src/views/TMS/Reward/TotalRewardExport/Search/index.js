@@ -47,7 +47,7 @@ class SearchCom extends React.Component {
             fromDate: '',
             toDate: '',
             listColumn: [],
-            exportTemplateID:""
+            exportTemplateID: ""
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -350,13 +350,13 @@ class SearchCom extends React.Component {
             }
         ];
 
-        
+
         const postData = {
             DataExportTemplateID: exportTemplateID,
             LoadDataStoreName: 'TMS.TMS_RWD_EXPBYDATE',
             KeyCached: "TMS_TMSREWARD_EXPORT",
             SearchParamList: postDataNew,
-            ExportDataParamsDescription: "FROMDATE: " + MLObject.FromDate + " - TODATE: " + MLObject.ToDate + " - REWARDPOSITIONID: " + MLObject.RewardPositionID + " - REWARDTYPEID: " + MLObject.RewardTypeID 
+            ExportDataParamsDescription: "FROMDATE: " + MLObject.FromDate + " - TODATE: " + MLObject.ToDate + " - REWARDPOSITIONID: " + MLObject.RewardPositionID + " - REWARDTYPEID: " + MLObject.RewardTypeID
         }
 
         this.props.callFetchAPI(APIHostName, "api/DataExportQueue/AddQueueExport", postData).then(apiResult => {
@@ -364,7 +364,7 @@ class SearchCom extends React.Component {
                 this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
                     title: "Tải file",
                     maxWidth: '1200px',
-                    ParamRequest: {  DataExportTemplateID: exportTemplateID}
+                    ParamRequest: { DataExportTemplateID: exportTemplateID }
                 });
             }
             else {
@@ -378,41 +378,42 @@ class SearchCom extends React.Component {
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
+                    className="multiple"
+                    classNamebtnSearch="groupAction"
                     FormName="Tìm kiếm danh sách tổng thương giao hàng"
-                    MLObjectDefinition={SearchMLObjectDefinition}
+                    IsButtonExport={true}
+                    IsButtonhistory={true}
                     listelement={SearchElementList}
+                    MLObjectDefinition={SearchMLObjectDefinition}
+                    onExportSubmit={this.handleExportFileFormSearch.bind(this)}
+                    onHistorySubmit={this.handleHistorySearch.bind(this)}
                     onSubmit={this.handleSearchSubmit}
                     ref={this.searchref}
-                    className="multiple"
-                    IsButtonhistory={true}
-                    onHistorySubmit={this.handleHistorySearch.bind(this)}
-                    IsButtonExport={true}
-                    onExportSubmit={this.handleExportFileFormSearch.bind(this)}
                 />
 
                 <DataGrid
-                    // listColumn={GridColumnList}
-                    listColumn={this.state.listColumn}
-                    dataSource={this.state.gridDataSource}
                     // AddLink=""
+                    // listColumn={GridColumnList}
+                    DataExport={this.state.dataExport}
+                    dataSource={this.state.gridDataSource}
+                    ExportPermission={TMS_TMSREWARD_EXPORT}
+                    fileName="Danh sách tổng xuất thưởng"
                     IDSelectColumnName={'RewardUser'}
-                    PKColumnName={'RewardUser'}
+                    IsAutoPaging={true}
+                    IsExportFile={false}
+                    IsExportFile={false}
                     isHideHeaderToolbar={false}
+                    IsPrint={false}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
                     IsShowButtonPrint={false}
-                    IsPrint={false}
-                    IsExportFile={false}
-                    IsAutoPaging={true}
-                    RowsPerPage={50}
-                    RequirePermission={TMS_TMSREWARD_VIEW}
-                    ExportPermission={TMS_TMSREWARD_EXPORT}
-                    IsExportFile={false}
-                    DataExport={this.state.dataExport}
-                    fileName="Danh sách tổng xuất thưởng"
+                    listColumn={this.state.listColumn}
                     onExportFile={this.handleExportFile.bind(this)}
                     onShowModal={this.onShowModalDetail.bind(this)}
+                    PKColumnName={'RewardUser'}
                     ref={this.gridref}
+                    RequirePermission={TMS_TMSREWARD_VIEW}
+                    RowsPerPage={50}
                 />
 
             </React.Fragment>
