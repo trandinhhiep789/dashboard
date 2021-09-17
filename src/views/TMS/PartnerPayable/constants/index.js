@@ -257,7 +257,13 @@ export const DataGridColumnList = [
 ];
 
 export const DataPartnerPayableDetailGridColumnList = [
-
+    {
+        Name: "PartnerName",
+        Type: "text",
+        Caption: "Đối tác",
+        DataSourceMember: "PartnerName",
+        Width: 100
+    },
     {
         Name: "ShipmentOrderID",
         Type: "text",

@@ -227,7 +227,7 @@ class PartnerPayableDetailCom extends React.Component {
                     ExportPermission={PARTNERPAYABLEDETAIL_EXPORT}
                     ref={this.gridref}
                     totalCurrency={true}
-                    totalCurrencyColSpan={13}
+                    totalCurrencyColSpan={14}
                     totalCurrencyNumber={this.state.totalPayableAmount}
                 />
             </React.Fragment>
