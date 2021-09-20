@@ -201,7 +201,7 @@ class SvCategoryProductModalCom extends React.Component {
                         placeholder="Sản phẩm/dịch vụ"
                         validationErrorMessage={"123"}
                         validatonList={["Comborequired"]}
-                        value={this.state.dataSubmit.Product}
+                        value={this.state.dataSubmit.Product[0].ProductID != "" && this.state.dataSubmit.Product}
                     />
 
                     <FormControl.TextBox
