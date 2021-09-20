@@ -205,6 +205,7 @@ import PNRCComputeLog from "../TMS/MD/PNRCComputeLog";
 import ConfirmReward from "../TMS/Reward/ConfirmReward"
 import UserDebtLimit from "../TMS/MD/UserDebtLimit";
 import User_DeliveryGoodsGroup from "../TMS/MD/User_DeliveryGoodsGroup";
+import MaterialReclaim from "../TMS/MaterialReclaim"
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -423,6 +424,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/UseGuide" component={UseGuide} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="/MTReturnRequest" component={MTReturnRequest} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/MaterialReclaim" component={MaterialReclaim} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="/RewardType" component={RewardType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/RewardPriceType" component={RewardPriceType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />

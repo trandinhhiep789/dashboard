@@ -1112,12 +1112,19 @@ const AppMenu = [
             },
             {
                 MenuName: 'MTReturnRequest',
-                MenuTitle: 'Yêu cầu nhập trả vật tư',
+                MenuTitle: 'Yêu cầu hoàn trả vật tư',
                 LinkTo: '/MTReturnRequest',
                 MenuIcon: '',
                 SubMenu: []
             },
-
+            {
+                MenuName: 'MaterialReclaim',
+                MenuTitle: 'Yêu cầu nhập trả vật tư',
+                LinkTo: '/MaterialReclaim',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            
             {
                 MenuName: 'DeliveryAbility',
                 MenuTitle: 'Khai báo tổng tải',
