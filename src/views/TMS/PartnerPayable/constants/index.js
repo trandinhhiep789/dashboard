@@ -273,20 +273,12 @@ export const DataGridColumnList = [
 
 export const DataPartnerPayableDetailGridColumnList = [
     {
-        Name: "PartnerName",
-        Type: "text",
-        Caption: "Đối tác",
-        DataSourceMember: "PartnerName",
-        Width: 100
-    },
-    {
         Name: "ShipmentOrderID",
         Type: "text",
         Caption: "Mã vận đơn",
         DataSourceMember: "ShipmentOrderID",
         Width: 100
     },
-
     {
         Name: "PartnerSaleOrderID",
         Type: "text",
@@ -324,17 +316,24 @@ export const DataPartnerPayableDetailGridColumnList = [
         Width: 100
     },
     {
-        Name: "SenderFullAddress",
+        Name: "PartnerName",
         Type: "text",
-        Caption: "Kho xuất",
-        DataSourceMember: "SenderFullAddress",
-        Width: 200
+        Caption: "Đối tác",
+        DataSourceMember: "PartnerName",
+        Width: 100
     },
     {
         Name: "StoreName",
         Type: "text",
         Caption: "Kho tạo",
         DataSourceMember: "StoreName",
+        Width: 200
+    },
+    {
+        Name: "SenderFullAddress",
+        Type: "text",
+        Caption: "Kho xuất",
+        DataSourceMember: "SenderFullAddress",
         Width: 200
     },
     {
