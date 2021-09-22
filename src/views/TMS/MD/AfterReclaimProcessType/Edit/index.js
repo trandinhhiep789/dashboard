@@ -95,7 +95,7 @@ class EditCom extends React.Component {
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
-                    RequirePermission={MATERIALRECLAIM_UPDATE}
+                    RequirePermission={QUALITYASSESSGROUP_UPDATE}
                     ref={this.searchref}
                 />
             );

@@ -169,8 +169,8 @@ class SearchCom extends React.Component {
                         PKColumnName={PKColumnName}
                         onDeleteClick={this.handleDelete}
                         ref={this.gridref}
-                        RequirePermission={MATERIALRECLAIM_VIEW}
-                        DeletePermission={MATERIALRECLAIM_DELETE}
+                        RequirePermission={QUALITYASSESSGROUP_VIEW}
+                        DeletePermission={QUALITYASSESSGROUP_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                     />

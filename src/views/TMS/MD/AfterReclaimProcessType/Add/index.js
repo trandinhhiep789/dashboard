@@ -78,7 +78,7 @@ class AddCom extends React.Component {
                 IsErrorMessage={this.state.IsCallAPIError}
                 dataSource={dataSource}
                 BackLink={BackLink}
-                RequirePermission={MATERIALRECLAIM_ADD}
+                RequirePermission={QUALITYASSESSGROUP_ADD}
                 ref={this.searchref}
             />
         );
