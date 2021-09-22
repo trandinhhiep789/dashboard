@@ -912,18 +912,18 @@ class DataGridCom extends Component {
                                                         (!this.props.IsCustomAddLink == true ?
                                                             (<Link to={this.props.AddLink}>
                                                                 <button type="button" className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
-                                                                    <span className="fa fa-plus ff"> Thêm </span>
+                                                                    <span className="fa fa-plus ff"> {this.props.TitleButtonAdd != undefined ? this.props.TitleButtonAdd : "Thêm"} </span>
                                                                 </button>
                                                             </Link>)
                                                             : (
                                                                 <button type="button" onClick={this.handleInsertClick} className="btn btn-info" title="" data-provide="tooltip" data-original-title="Thêm">
-                                                                    <span className="fa fa-plus ff"> Thêm </span>
+                                                                    <span className="fa fa-plus ff"> {this.props.TitleButtonAdd != undefined ? this.props.TitleButtonAdd : "Thêm"} </span>
                                                                 </button>
                                                             )
                                                         )
                                                         : (
                                                             <button type="button" className="btn btn-info" disabled title="Bạn Không có quyền xử lý!" data-provide="tooltip" data-original-title="Thêm">
-                                                                <span className="fa fa-plus ff"> Thêm </span>
+                                                                <span className="fa fa-plus ff"> {this.props.TitleButtonAdd != undefined ? this.props.TitleButtonAdd : "Thêm"} </span>
                                                             </button>
                                                         )
                                                 )
@@ -935,10 +935,10 @@ class DataGridCom extends Component {
                                                 (
                                                     (this.props.IsDelete == true || this.props.IsDelete == undefined) ?
                                                         (<button type="button" className="btn btn-danger btn-delete ml-10" title="" data-provide="tooltip" data-original-title="Xóa" onClick={this.handleDeleteClick}>
-                                                            <span className="fa fa-remove"> Xóa </span>
+                                                            <span className="fa fa-remove"> {this.props.TitleButtonDelete != undefined ? this.props.TitleButtonDelete : "Xóa"} </span>
                                                         </button>)
                                                         : (<button type="button" className="btn btn-danger btn-delete ml-10" disabled title="Bạn Không có quyền xử lý!" data-provide="tooltip" data-original-title="Xóa" >
-                                                            <span className="fa fa-remove"> Xóa </span>
+                                                            <span className="fa fa-remove"> {this.props.TitleButtonDelete != undefined ? this.props.TitleButtonDelete : "Xóa"} </span>
                                                         </button>)
                                                 )
                                                 : ""
@@ -993,7 +993,7 @@ class DataGridCom extends Component {
 
                                             this.props.IsUpdateListItem == true ?
                                                 <button type="button" className="btn btn-info ml-10" title="Cập nhật" data-provide="tooltip" data-original-title="Cập nhật" onClick={this.handleUpdateListItem.bind(this)}>
-                                                    <span className="ti-lock"> {(this.props.TitleUpdateListItem != "" && this.props.TitleUpdateListItem != undefined) ? this.props.TitleUpdateListItem : "Cập nhật"}  </span>
+                                                    <span className={(this.props.IconUpdateListItem != "" && this.props.IconUpdateListItem != undefined) ? this.props.IconUpdateListItem : "ti-lock"} > {(this.props.TitleUpdateListItem != "" && this.props.TitleUpdateListItem != undefined) ? this.props.TitleUpdateListItem : "Cập nhật"}  </span>
                                                 </button>
                                                 : ""
                                         }
@@ -1002,7 +1002,7 @@ class DataGridCom extends Component {
 
                                             this.props.IsUpdateList == true ?
                                                 <button type="button" className="btn btn-info ml-10" title="Cập nhật" data-provide="tooltip" data-original-title="Cập nhật" onClick={this.handleUpdateList.bind(this)}>
-                                                    <span className="ti-plus"> {(this.props.TitleUpdateList != "" && this.props.TitleUpdateList != undefined) ? this.props.TitleUpdateList : "Cập nhật"}  </span>
+                                                    <span className={(this.props.IconUpdateList != "" && this.props.IconUpdateList != undefined) ? this.props.IconUpdateList : "ti-plus"} > {(this.props.TitleUpdateList != "" && this.props.TitleUpdateList != undefined) ? this.props.TitleUpdateList : "Cập nhật"}  </span>
                                                 </button>
                                                 : ""
                                         }

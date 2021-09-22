@@ -66,7 +66,7 @@ class SearchCom extends React.Component {
 
    
     handleInputGridInsert(MLObjectDefinition, modalElementList, dataSource) {
-    
+        console.log("add", MLObjectDefinition, modalElementList, dataSource)
 
     }
 
@@ -161,6 +161,18 @@ class SearchCom extends React.Component {
         });
     }
 
+    handleUpdateListItem(lstID, pkColumnName){
+        console.log("select item", lstID, pkColumnName)
+    }
+
+    handleDelete(listDeleteID, pkColumnName){
+        console.log("delete item", listDeleteID, pkColumnName)
+    }
+
+    handleUpdateList(lstID, pkColumnName){
+        console.log("select item 222", lstID, pkColumnName)
+
+    }
 
     render() {
         return (
@@ -183,11 +195,21 @@ class SearchCom extends React.Component {
                     IDSelectColumnName={IDSelectColumnName}
                     PKColumnName={PKColumnName}
                     onInsertClick={this.handleInputGridInsert.bind(this)}
-                    IsCustomAddLink={true}
-                    IsDelete={true}
+                    IsCustomAddLink={false}
+                    IsShowButtonAdd={false}
+                    IsShowButtonDelete={false}
+                    onDeleteClick={this.handleDelete.bind(this)}
                     IsAutoPaging={true}
                     RowsPerPage={20}
                     IsExportFile={false}
+                    TitleUpdateListItem="Thu hồi vật tư về kho"
+                    IconUpdateListItem="ti-back-left"
+                    IsUpdateListItem={true}
+                    onUpdateListItem={this.handleUpdateListItem.bind(this)}
+                    IsUpdateList={true}
+                    TitleUpdateList="Hủy vật tư"
+                    IconUpdateList="ti-close"
+                    onUpdateList={this.handleUpdateList.bind(this)}
                     // RequirePermission={TMS_MTRETURNREQUEST_VIEW}
                     // DeletePermission={TMS_MTRETURNREQUEST_DELETE}
                     // ExportPermission={TMS_MTRETURNREQUEST_EXPORT}

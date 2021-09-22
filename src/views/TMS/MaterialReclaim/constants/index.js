@@ -1,33 +1,20 @@
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/MaterialReclaim/Search";
+export const LoadAPIPath = "api/MaterialReclaim/Load";
 export const IDSelectColumnName = "chkSelect";
-export const PKColumnName = "MTReturnRequestID";
-export const BackLink = "/MTReturnRequest";
+export const PKColumnName = "MaterialReclaimID";
+export const BackLink = "/MaterialReclaim";
 export const AddLink = "/MTReturnRequest/Add";
 
 export const AddAPIPath = "api/MTReturnRequest/Add";
 export const DeleteNewAPIPath = "api/MTReturnRequest/DeleteNew";
-export const LoadAPIPath = "api/MTReturnRequest/Load";
 export const UpdateAPIPath = "api/MTReturnRequest/Update";
-export const UpdateCurrentReviewLevelAPIPath = "api/MTReturnRequest/UpdateCurrentReviewLevel";
 
-export const UpdateCreateVocherAPIPath = "api/MTReturnRequest/UpdateCreatedInputVoucher";
-
-
-export const LoadAPIByMtreturnRequestTypeIDPath = "api/MTReturnRequest_ReviewList/LoadByMTReturnRequesTypeID";
-export const LoadAPIByRequestTypeIDPath = "api/MTReturnRequestType_Product/GetListByRequestTypeID";
-export const LoadAPIByMTRRequestTypeIDPath = "api/CurrentAdvanceDebt/GetListByMTReturnRequestTypeID";
-
-export const AddAPIComment = "api/MTReturnRequest_Comment/Add";
-
-export const AddAPIAttachment = "api/MTReturnRequest_Attachment/Add";
-export const DeleteAPIAttachment = "api/MTReturnRequest_Attachment/Delete";
-
-export const cacheInventoryStatus = "ERPRELATECACHE.INVENTORYSTATUS";
 
 export const TitleFormSearch = "Tìm kiếm danh sách yêu cầu hoàn trả vật tư";
 export const TitleFormAdd = "Thêm yêu cầu hoàn trả vật tư";
-export const TitleFormEdit = "Cập nhật cầu hoàn trả vật tư";
+export const TitleFormEdit = "Cập nhật yêu cầu hoàn trả vật tư";
+export const TitleFormDetail = "Thông tin yêu cầu thu hồi vật tư";
 
 export const addImportMaterialModalWidth = "95%";
 
@@ -186,7 +173,7 @@ export const SearchElementList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.STORETMS",
         ValueMember: "StoreID",
         NameMember: "StoreName",
-        filterValue: 1,
+        filterValue: 10,
         filterobj:"CompanyID",
         classNameCol: "col-custom"
     },
@@ -244,8 +231,9 @@ export const DataGridColumnList = [
     },
     {
         Name: "ShipmentOrderID",
-        Type: "text",
+        Type: "texttolinkNewBlankValue",
         Caption: "Mã vận đơn",
+        Link: "/ShipmentOrder/Detail/",
         DataSourceMember: "ShipmentOrderID",
         Width: 300
     },
@@ -287,5 +275,43 @@ export const DataGridColumnList = [
         Width: 100,
         Link: "/MTReturnRequest/Detail/",
         LinkText: "Xem"
+    },
+];
+
+export const MaterialReclaimDetailColumnList= [
+    {
+        Name: "InstallProductID",
+        Type: "text",
+        Caption: "Hàng hóa",
+        DataSourceMember: "InstallProductID",
+        Width: 140
+    },
+    {
+        Name: "ProductName",
+        Type: "text",
+        Caption: "Vật tư",
+        DataSourceMember: "ProductName",
+        Width: 140
+    },
+    {
+        Name: "QuantityUnit",
+        Type: "text",
+        Caption: "Đơn vị tính",
+        DataSourceMember: "QuantityUnit",
+        Width: 140
+    },
+    {
+        Name: "ReturnQuantity",
+        Type: "text",
+        Caption: "Số lương thu hồi",
+        DataSourceMember: "ReturnQuantity",
+        Width: 140
+    },
+    {
+        Name: "ReturnRealQuantity",
+        Type: "text",
+        Caption: "Số lương thu hồi thực tế",
+        DataSourceMember: "ReturnRealQuantity",
+        Width: 140
     },
 ];
