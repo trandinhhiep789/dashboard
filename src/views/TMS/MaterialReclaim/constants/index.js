@@ -25,19 +25,19 @@ export const PagePath = [
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/MTReturnRequest", Title: "Danh sách yêu cầu hoàn trả vật tư " },
+    { Link: "/MaterialReclaim", Title: "Danh sách yêu cầu hoàn trả vật tư " },
     { Link: "", Title: "Cập nhật" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/MTReturnRequest", Title: "Danh sách yêu cầu hoàn trả vật tư " },
+    { Link: "/MaterialReclaim", Title: "Danh sách yêu cầu hoàn trả vật tư " },
     { Link: "", Title: "Thêm" }
 ];
 
 export const DetailAPIPath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/MTReturnRequest", Title: "Danh sách yêu cầu hoàn trả vật tư " },
+    { Link: "/MaterialReclaim", Title: "Danh sách yêu cầu hoàn trả vật tư " },
     { Link: "", Title: "Chi tiết" }
 ];
 
