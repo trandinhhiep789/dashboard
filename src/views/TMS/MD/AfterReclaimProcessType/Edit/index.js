@@ -18,7 +18,7 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_QUALITYASSESSGROUP, ERPCOMMONCACHE_SERVICETYPE, ERPCOMMONCACHE_TMSREWARDTYPE, MDMCOMMONCACHE_AFTER_RCPROCESSTYPE } from "../../../../../constants/keyCache";
-import { QUALITYASSESSGROUP_UPDATE, REWARDTYPE_UPDATE, SERVICETYPE_UPDATE } from "../../../../../constants/functionLists";
+import { MATERIALRECLAIM_UPDATE, QUALITYASSESSGROUP_UPDATE, REWARDTYPE_UPDATE, SERVICETYPE_UPDATE } from "../../../../../constants/functionLists";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -87,7 +87,7 @@ class EditCom extends React.Component {
         if (this.state.IsLoadDataComplete) {
             return (
                 <SimpleForm
-                    FormName="Cập nhật nhóm tiêu chí đánh giá chất lượng"
+                    FormName="Cập nhật phương thức xử lý sau thu hồi"
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={EditElementList}
                     onSubmit={this.handleSubmit}
@@ -95,7 +95,7 @@ class EditCom extends React.Component {
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
-                    RequirePermission={QUALITYASSESSGROUP_UPDATE}
+                    RequirePermission={MATERIALRECLAIM_UPDATE}
                     ref={this.searchref}
                 />
             );
