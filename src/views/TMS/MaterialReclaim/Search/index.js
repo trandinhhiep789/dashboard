@@ -210,9 +210,7 @@ class SearchCom extends React.Component {
                     TitleUpdateList="Hủy vật tư"
                     IconUpdateList="ti-close"
                     onUpdateList={this.handleUpdateList.bind(this)}
-                    // RequirePermission={TMS_MTRETURNREQUEST_VIEW}
-                    // DeletePermission={TMS_MTRETURNREQUEST_DELETE}
-                    // ExportPermission={TMS_MTRETURNREQUEST_EXPORT}
+                    RequirePermission={MATERIALRECLAIM_VIEW}
                 />
             </React.Fragment>
         );
