@@ -338,7 +338,14 @@ const AppMenu = [
                         LinkTo: '/InstallBundle',
                         MenuIcon: '',
                         SubMenu: []
-                    }
+                    },
+                    {
+                        MenuName: 'AfterReclaimProcessType',
+                        MenuTitle: 'Phương thức xử lý sau thu hồi',
+                        LinkTo: '/AfterReclaimProcessType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
 
                 ]
             },
