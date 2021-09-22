@@ -23,7 +23,7 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_QUALITYASSESSGROUP, ERPCOMMONCACHE_SERVICETYPE, ERPCOMMONCACHE_TMSREWARDTYPE, MDMCOMMONCACHE_AFTER_RCPROCESSTYPE } from "../../../../../constants/keyCache";
-import { SERVICETYPE_VIEW, SERVICETYPE_DELETE, REWARDTYPE_VIEW, REWARDTYPE_DELETE, QUALITYASSESSGROUP_VIEW, QUALITYASSESSGROUP_DELETE } from "../../../../../constants/functionLists";
+import { SERVICETYPE_VIEW, SERVICETYPE_DELETE, REWARDTYPE_VIEW, REWARDTYPE_DELETE, QUALITYASSESSGROUP_VIEW, QUALITYASSESSGROUP_DELETE, MATERIALRECLAIM_VIEW, MATERIALRECLAIM_DELETE } from "../../../../../constants/functionLists";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -155,7 +155,7 @@ class SearchCom extends React.Component {
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
-                        FormName="Tìm kiếm danh sách nhóm tiêu chí đánh giá chất lượng"
+                        FormName="Tìm kiếm danh sách phương thức xử lý sau thu hồi"
                         MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}

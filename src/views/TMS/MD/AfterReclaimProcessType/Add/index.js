@@ -16,7 +16,7 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_QUALITYASSESSGROUP, ERPCOMMONCACHE_SERVICETYPE, ERPCOMMONCACHE_TMSREWARDTYPE, MDMCOMMONCACHE_AFTER_RCPROCESSTYPE } from "../../../../../constants/keyCache";
-import { QUALITYASSESSGROUP_ADD, REWARDTYPE_ADD, SERVICETYPE_ADD } from "../../../../../constants/functionLists";
+import { MATERIALRECLAIM_ADD, QUALITYASSESSGROUP_ADD, REWARDTYPE_ADD, SERVICETYPE_ADD } from "../../../../../constants/functionLists";
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
@@ -70,7 +70,7 @@ class AddCom extends React.Component {
         }
         return (
             <SimpleForm
-                FormName="Thêm nhóm tiêu chí đánh giá chất lượng"
+                FormName="Thêm phương thức xử lý sau thu hồi"
                 MLObjectDefinition={MLObjectDefinition} 
                 listelement={AddElementList}
                 onSubmit={this.handleSubmit}
