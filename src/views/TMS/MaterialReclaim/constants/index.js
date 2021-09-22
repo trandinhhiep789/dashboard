@@ -1,5 +1,5 @@
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "api/MTReturnRequest/Search";
+export const SearchAPIPath = "api/MaterialReclaim/Search";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "MTReturnRequestID";
 export const BackLink = "/MTReturnRequest";
@@ -58,18 +58,16 @@ const dtFromdate = new Date();
 dtFromdate.setDate(new Date().getDate() - 30);
 
 export const InitSearchParams = [
+
     {
-        SearchKey: "@Keyword",
+        SearchKey: "@KEYWORD",
         SearchValue: ""
     },
     {
-        SearchKey: "@MTRETURNREQUESTTYPEID",
-        SearchValue: "-1"
+        SearchKey: "@TYPE",
+        SearchValue: 1
     },
-    {
-        SearchKey: "@REQUESTSTOREID",
-        SearchValue: "-1"
-    },
+   
     {
         SearchKey: "@FROMDATE",
         SearchValue: dtFromdate
@@ -79,34 +77,30 @@ export const InitSearchParams = [
         SearchValue: new Date()
     },
     {
-        SearchKey: "@ISREVIEWED",
-        SearchValue: "-1"
+        SearchKey: "@RETURNSTOREID",
+        SearchValue: ""
     },
     {
-        SearchKey: "@ISCREATEDINPUTVOUCHERT",
-        SearchValue: "-1"
+        SearchKey: "@AFTERRECLAIMPROCESSTYPEID",
+        SearchValue: ""
     },
     {
-        SearchKey: "@REQUESTUSER",
-        SearchValue: "-1"
-    },
+        SearchKey: "@RETURNUSER",
+        SearchValue: ""
+    }
+
 ];
 
 export const SearchMLObjectDefinition = [
     {
         Name: "Keyword",
         DefaultValue: "",
-        BindControlName: "txtKeyword"
+        BindControlName: "txtKeywordNew"
     },
     {
-        Name: "MTReturnRequestTypeID",
+        Name: "Typename",
         DefaultValue: "",
-        BindControlName: "cbMTReturnRequestTypeID"
-    },
-    {
-        Name: "RequestStoreID",
-        DefaultValue: "",
-        BindControlName: "cbRequestStoreID"
+        BindControlName: "txtTypename"
     },
     {
         Name: "FromDate",
@@ -119,14 +113,14 @@ export const SearchMLObjectDefinition = [
         BindControlName: "dtToDate"
     },
     {
-        Name: "IsreViewed",
+        Name: "StoreID",
         DefaultValue: "",
-        BindControlName: "cbIsreViewed"
+        BindControlName: "cbStoreID"
     },
     {
-        Name: "IsCreatedInputVouchert",
+        Name: "AfterreClaimProcessTypeID",
         DefaultValue: "",
-        BindControlName: "cbIsCreatedInputVouchert"
+        BindControlName: "cbAfterreClaimProcessType"
     },
     {
         Name: "RequestUser",
@@ -137,46 +131,26 @@ export const SearchMLObjectDefinition = [
 
 export const SearchElementList = [
     {
-        type: "text",
-        name: "txtKeyword",
-        DataSourceMember: "Keyword",
+        type: "textdropdownNew",
+        dropdownName: "txtTypename",
+        name: "txtKeywordNew",
+        colspan: 2,
         label: "Từ khóa",
         value: "",
-        colspan: 2,
+        colspan: 3,
         placeholder: "Từ khóa",
-        icon: ""
-    },
-    {
-        type: "ComboBox",
-        name: "cbMTReturnRequestTypeID",
-        DataSourceMember: "MTReturnRequestTypeID",
-        label: "Loại YCNT vật tư",
-        colspan: 2,
-        value: -1,
-        isMultiSelect: false,
-        placeholder: "---Vui lòng chọn---",
-        listoption: [],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.MTRETURNREQUESTTYPE",
-        ValueMember: "MtreturnRequestTypeID",
-        NameMember: "MtreturnRequestTypeName",
+        icon: "",
+        nameOption: "txtTypename",
+        labelOption: "--Vui lòng chọn--",
+        valueOption:  1,
+        // validatonList:["Comborequired"],
+        classNameCol: "col-custom",
+        classNameDropdown: "dropdown-custom",
+        listoption: [
+            { value: 1, label: 'Mã vận đơn' },
+            { value: 2, label: 'Mã yc thu hồi' },
 
-    },
-    {
-        type: "ComboBox",
-        name: "cbRequestStoreID",
-        DataSourceMember: "RequestStoreID",
-        label: "Kho yêu cầu",
-        colspan: 2,
-        value: -1,
-        isMultiSelect: false,
-        placeholder: "---Vui lòng chọn---",
-        listoption: [],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.USER_COOSTORE_BYUSER",
-        ValueMember: "StoreID",
-        NameMember: "StoreName"
-
+        ]
     },
     {
         type: "Datetime",
@@ -199,35 +173,24 @@ export const SearchElementList = [
         colspan: 2,
     },
     {
-        type: "ComboBox",
-        name: "cbIsreViewed",
-        DataSourceMember: "IsreViewed",
-        label: "Trạng thái duyệt",
+        type: "ComboBoxNewChange",
+        name: "cbStoreID",
+        DataSourceMember: "StoreID",
+        label: "Kho",
         colspan: 2,
-        value: -1,
+        value: "",
         isMultiSelect: false,
-        placeholder: "--Tất cả--",
-        listoption: [
-            { value: -1, label: '--Tất cả--' },
-            { value: 0, label: 'Chưa duyệt' },
-            { value: 1, label: 'Đã duyệt' }
-        ]
+        placeholder: "---Kho---",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.STORETMS",
+        ValueMember: "StoreID",
+        NameMember: "StoreName",
+        filterValue: 1,
+        filterobj:"CompanyID",
+        classNameCol: "col-custom"
     },
-    {
-        type: "ComboBox",
-        name: "cbIsCreatedInputVouchert",
-        DataSourceMember: "IsCreatedInputVouchert",
-        label: "Trạng thái nhập trả",
-        colspan: 2,
-        value: -1,
-        isMultiSelect: false,
-        placeholder: "--Tất cả--",
-        listoption: [
-            { value: -1, label: '--Tất cả--' },
-            { value: 0, label: 'Chưa tạo phiếu nhập' },
-            { value: 1, label: 'Đã tạo phiếu nhập' },
-        ],
-    },
+  
     {
         type: "MultiSelectUser",
         name: "cbRequestUser",
@@ -242,7 +205,24 @@ export const SearchElementList = [
         listoption: [],
         IsAutoLoadItemFromCache: false,
         isMultiSelect: false
-    }
+    },
+
+    {
+        type: "ComboBoxNewChange",
+        name: "cbAfterreClaimProcessType",
+        DataSourceMember: "AfterreClaimProcessTypeID",
+        label: "Xử lý thu hồi",
+        colspan: 2,
+        value: "",
+        isMultiSelect: false,
+        placeholder: "---Xử lý thu hồi---",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "MDMCOMMONCACHE.AFTER_RCPROCESSTYPE",
+        ValueMember: "AfterreClaimProcessTypeID",
+        NameMember: "AfterreClaimProcessTypeName",
+        classNameCol: "col-custom"
+    },
 ];
 
 
@@ -251,67 +231,61 @@ export const DataGridColumnList = [
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "MTReturnRequestID",
+        DataSourceMember: "MaterialReclaimID",
         Width: 60
     },
     {
-        Name: "MTReturnRequestID",
+        Name: "MaterialReclaimID",
         Type: "texttolinkNewBlank",
-        Caption: "Mã yêu cầu",
-        DataSourceMember: "MTReturnRequestID",
-        Link: "/MTReturnRequest/Detail/",
+        Caption: "Mã yc thu hồi",
+        DataSourceMember: "MaterialReclaimID",
+        Link: "/MaterialReclaim/Detail/",
         Width: 140
     },
     {
-        Name: "MTReturnRequestTypeName",
+        Name: "ShipmentOrderID",
         Type: "text",
-        Caption: "Loại yêu cầu nhập trả vật tư",
-        DataSourceMember: "MTReturnRequestTypeName",
+        Caption: "Mã vận đơn",
+        DataSourceMember: "ShipmentOrderID",
         Width: 300
     },
     {
-        Name: "StoreName",
+        Name: "ReturnUser",
         Type: "text",
-        Caption: "Kho yêu cầu",
-        DataSourceMember: "StoreName",
+        Caption: "Ngưởi thu hồi",
+        DataSourceMember: "ReturnUser",
         Width: 250
     },
     {
-        Name: "RequestDate",
+        Name: "CreatedDate",
         Type: "datetime",
-        Caption: "Ngày yêu cầu",
-        DataSourceMember: "RequestDate",
+        Caption: "Ngày tạo",
+        DataSourceMember: "CreatedDate",
         Width: 150
     },
 
     {
-        Name: "ApproverName",
+        Name: "ReturnStore",
         Type: "text",
-        Caption: "Người yêu cầu",
-        DataSourceMember: "ApproverName",
+        Caption: "Kho thu hồi",
+        DataSourceMember: "ReturnStore",
         Width: 150
     },
     {
-        Name: "ReviewStatusLable",
+        Name: "AfterReclaimProcessTypeName",
         Type: "text",
-        Caption: "Đã duyệt",
-        DataSourceMember: "ReviewStatusLable",
+        Caption: "Xử lý thu hồi",
+        DataSourceMember: "AfterReclaimProcessTypeName",
         Width: 130
     },
-    {
-        Name: "CreatedInputVoucherStatusLable",
-        Type: "text",
-        Caption: "Phiếu nhập",
-        DataSourceMember: "CreatedInputVoucherStatusLable",
-        Width: 130
-    },
+   
     {
         Name: "Action",
         Type: "link",
-        Caption: "Tác vụ",
-        DataSourceMember: "MTReturnRequestID",
+        Caption: "Xem chi tiết",
+        DataSourceMember: "MaterialReclaimID",
         Width: 100,
-        Link: "/MTReturnRequest/Edit/",
-        LinkText: "Chỉnh sửa"
+        Link: "/MTReturnRequest/Detail/",
+        LinkText: "Xem"
     },
 ];

@@ -73,6 +73,7 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
         const { callFetchAPI } = this.props;
         callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            console.log("object", searchData, apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -90,19 +91,17 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
+        console.log("search", formData, MLObject)
         const DataSearch = [
             {
-                SearchKey: "@Keyword",
+                SearchKey: "@KEYWORD",
                 SearchValue: MLObject.Keyword
             },
             {
-                SearchKey: "@MTRETURNREQUESTTYPEID",
-                SearchValue: MLObject.MTReturnRequestTypeID
+                SearchKey: "@TYPE",
+                SearchValue: MLObject.Typename
             },
-            {
-                SearchKey: "@REQUESTSTOREID",
-                SearchValue: MLObject.RequestStoreID
-            },
+           
             {
                 SearchKey: "@FROMDATE",
                 SearchValue: MLObject.FromDate
@@ -112,15 +111,15 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.ToDate
             },
             {
-                SearchKey: "@ISREVIEWED",
-                SearchValue: MLObject.IsreViewed
+                SearchKey: "@RETURNSTOREID",
+                SearchValue: MLObject.StoreID
             },
             {
-                SearchKey: "@ISCREATEDINPUTVOUCHERT",
-                SearchValue: MLObject.IsCreatedInputVouchert
+                SearchKey: "@AFTERRECLAIMPROCESSTYPEID",
+                SearchValue: MLObject.AfterreClaimProcessTypeID
             },
             {
-                SearchKey: "@REQUESTUSER",
+                SearchKey: "@RETURNUSER",
                 SearchValue: MLObject.RequestUser == -1 ? MLObject.RequestUser : MLObject.RequestUser.value
             }
         ];

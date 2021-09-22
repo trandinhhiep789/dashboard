@@ -7,6 +7,7 @@ import {
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../actions/fetchAPIAction";
 import Search from "./Search";
+import Detail from "./Detail";
 import NotFound from '../../NotFound';
 
 
@@ -17,6 +18,7 @@ class MaterialReclaimCom extends React.Component {
         return (
             <Switch>
                 <Route exact path="/MaterialReclaim" component={Search} />
+                <Route exact path="/MaterialReclaim/Detail/:id" component={Detail} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );
