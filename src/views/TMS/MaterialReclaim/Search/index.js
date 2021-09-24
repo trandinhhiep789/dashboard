@@ -66,13 +66,14 @@ class SearchCom extends React.Component {
 
    
     handleInputGridInsert(MLObjectDefinition, modalElementList, dataSource) {
-    
+        console.log("add", MLObjectDefinition, modalElementList, dataSource)
 
     }
 
     callSearchData(searchData) {
         const { callFetchAPI } = this.props;
         callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            console.log("object", searchData, apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -90,19 +91,17 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
+        console.log("search", formData, MLObject)
         const DataSearch = [
             {
-                SearchKey: "@Keyword",
+                SearchKey: "@KEYWORD",
                 SearchValue: MLObject.Keyword
             },
             {
-                SearchKey: "@MTRETURNREQUESTTYPEID",
-                SearchValue: MLObject.MTReturnRequestTypeID
+                SearchKey: "@TYPE",
+                SearchValue: MLObject.Typename
             },
-            {
-                SearchKey: "@REQUESTSTOREID",
-                SearchValue: MLObject.RequestStoreID
-            },
+           
             {
                 SearchKey: "@FROMDATE",
                 SearchValue: MLObject.FromDate
@@ -112,15 +111,15 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.ToDate
             },
             {
-                SearchKey: "@ISREVIEWED",
-                SearchValue: MLObject.IsreViewed
+                SearchKey: "@RETURNSTOREID",
+                SearchValue: MLObject.StoreID
             },
             {
-                SearchKey: "@ISCREATEDINPUTVOUCHERT",
-                SearchValue: MLObject.IsCreatedInputVouchert
+                SearchKey: "@AFTERRECLAIMPROCESSTYPEID",
+                SearchValue: MLObject.AfterreClaimProcessTypeID
             },
             {
-                SearchKey: "@REQUESTUSER",
+                SearchKey: "@RETURNUSER",
                 SearchValue: MLObject.RequestUser == -1 ? MLObject.RequestUser : MLObject.RequestUser.value
             }
         ];
@@ -162,6 +161,18 @@ class SearchCom extends React.Component {
         });
     }
 
+    handleUpdateListItem(lstID, pkColumnName){
+        console.log("select item", lstID, pkColumnName)
+    }
+
+    handleDelete(listDeleteID, pkColumnName){
+        console.log("delete item", listDeleteID, pkColumnName)
+    }
+
+    handleUpdateList(lstID, pkColumnName){
+        console.log("select item 222", lstID, pkColumnName)
+
+    }
 
     render() {
         return (
@@ -184,14 +195,22 @@ class SearchCom extends React.Component {
                     IDSelectColumnName={IDSelectColumnName}
                     PKColumnName={PKColumnName}
                     onInsertClick={this.handleInputGridInsert.bind(this)}
-                    IsCustomAddLink={true}
-                    IsDelete={true}
+                    IsCustomAddLink={false}
+                    IsShowButtonAdd={false}
+                    IsShowButtonDelete={false}
+                    onDeleteClick={this.handleDelete.bind(this)}
                     IsAutoPaging={true}
                     RowsPerPage={20}
                     IsExportFile={false}
-                    // RequirePermission={TMS_MTRETURNREQUEST_VIEW}
-                    // DeletePermission={TMS_MTRETURNREQUEST_DELETE}
-                    // ExportPermission={TMS_MTRETURNREQUEST_EXPORT}
+                    TitleUpdateListItem="Thu hồi vật tư về kho"
+                    IconUpdateListItem="ti-back-left"
+                    IsUpdateListItem={true}
+                    onUpdateListItem={this.handleUpdateListItem.bind(this)}
+                    IsUpdateList={true}
+                    TitleUpdateList="Hủy vật tư"
+                    IconUpdateList="ti-close"
+                    onUpdateList={this.handleUpdateList.bind(this)}
+                    RequirePermission={MATERIALRECLAIM_VIEW}
                 />
             </React.Fragment>
         );

@@ -155,6 +155,13 @@ const AppMenu = [
                                 MenuIcon: '',
                                 SubMenu: []
                             },
+                            {
+                                MenuName: 'BaseDAComputeSchedule',
+                                MenuTitle: 'Lịch tính và đồng bộ tải chuẩn',
+                                LinkTo: '/BaseDAComputeSchedule',
+                                MenuIcon: '',
+                                SubMenu: []
+                            },
 
                         ]
                     },
@@ -338,7 +345,14 @@ const AppMenu = [
                         LinkTo: '/InstallBundle',
                         MenuIcon: '',
                         SubMenu: []
-                    }
+                    },
+                    {
+                        MenuName: 'AfterReclaimProcessType',
+                        MenuTitle: 'Phương thức xử lý sau thu hồi',
+                        LinkTo: '/AfterReclaimProcessType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
 
                 ]
             },
@@ -1190,7 +1204,13 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-
+            {
+                MenuName: 'BaseDAActionLog',
+                MenuTitle: 'Nhật ký xử lý tải chuẩn',
+                LinkTo: '/BaseDAActionLog',
+                MenuIcon: '',
+                SubMenu: []
+            },
         ]
     },
     // {

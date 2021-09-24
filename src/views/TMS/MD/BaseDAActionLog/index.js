@@ -5,20 +5,20 @@ import {
     Switch
 } from "react-router-dom";
 import { connect } from "react-redux";
-import { callFetchAPI } from "../../../actions/fetchAPIAction";
+import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import Search from "./Search";
-import Detail from "./Detail";
-import NotFound from '../../NotFound';
-
-
-class MaterialReclaimCom extends React.Component {
-
+import Edit from "./Edit";
+import NotFound from '../../../NotFound'
+class PNRCComputeLogCom extends React.Component {
+    constructor(props) {
+        super(props);
+    }
 
     render() {
         return (
             <Switch>
-                <Route exact path="/MaterialReclaim" component={Search} />
-                <Route exact path="/MaterialReclaim/Detail/:id" component={Detail} />
+                <Route exact path="/BaseDAActionLog" component={Search} />
+                <Route exact path="/BaseDAActionLog/Edit/:id" component={Edit} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );
@@ -40,5 +40,8 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const MaterialReclaim = connect(mapStateToProps, mapDispatchToProps)(MaterialReclaimCom);
-export default MaterialReclaim;
+const BaseDAActionLog = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(PNRCComputeLogCom);
+export default BaseDAActionLog;

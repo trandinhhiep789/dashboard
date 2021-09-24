@@ -206,6 +206,9 @@ import ConfirmReward from "../TMS/Reward/ConfirmReward"
 import UserDebtLimit from "../TMS/MD/UserDebtLimit";
 import User_DeliveryGoodsGroup from "../TMS/MD/User_DeliveryGoodsGroup";
 import MaterialReclaim from "../TMS/MaterialReclaim"
+import AfterReclaimProcessType from "../TMS/MD/AfterReclaimProcessType";
+import BaseDAComputeSchedule from "../TMS/MD/BaseDAComputeSchedule";
+import BaseDAActionLog from "../TMS/MD/BaseDAActionLog";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -499,6 +502,9 @@ class HomeCom extends React.Component {
 
                                     <PrivateRoute path="/UserDebtLimit" component={UserDebtLimit} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/User_DeliveryGoodsGroup" component={User_DeliveryGoodsGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/AfterReclaimProcessType" component={AfterReclaimProcessType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/BaseDAComputeSchedule" component={BaseDAComputeSchedule} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/BaseDAActionLog" component={BaseDAActionLog} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
