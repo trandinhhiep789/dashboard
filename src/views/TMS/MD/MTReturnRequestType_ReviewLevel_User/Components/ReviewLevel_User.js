@@ -65,9 +65,10 @@ class ReviewLevel_UserCom extends React.Component {
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.UserName = MLObject.UserName && Array.isArray(MLObject.UserName) ? MLObject.UserName[0] : MLObject.UserName;
         MLObject.ReviewLevelID = this.props.ReviewLevelID;
+
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
-            //this.showMessage(apiResult.Message);
+
             if (this.props.onComplete) {
                 this.props.onComplete(apiResult.Message, apiResult.IsError);
             }
@@ -80,7 +81,7 @@ class ReviewLevel_UserCom extends React.Component {
             }
 
         });
-        //console.log("FormData", MLObject);
+
     }
 
     handleCloseMessage() {
@@ -122,7 +123,7 @@ class ReviewLevel_UserCom extends React.Component {
                 Address: objUser.Address,
                 FullName: objUser.label
             });
-            //console.log("objUser", objUser);
+
             if (objUser.value != "") {
                 const postData = [
                     {
@@ -198,6 +199,18 @@ class ReviewLevel_UserCom extends React.Component {
                         datasourcemember="UserName"
                         labelcolspan={4} colspan={8} rowspan={8}
                         validatonList={["Comborequired"]}
+                    />
+
+                    <FormControl.CheckBox
+                        classNameCustom="customCheckbox"
+                        colspan="8"
+                        controltype="InputControl"
+                        datasourcemember="IsDefault"
+                        label="Là người duyệt mặc định"
+                        labelcolspan="4"
+                        name="IsDefault"
+                        rowspan="8"
+                        value={false}
                     />
 
                     {/* <MultiSelectComboBox

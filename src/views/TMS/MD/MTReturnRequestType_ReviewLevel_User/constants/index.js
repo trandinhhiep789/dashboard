@@ -95,10 +95,13 @@ export const DataGridColumnList = [
         DataSourceMember: "FullName",
         Width: 500
     },
-    
-
-    
-
+    {
+        Name: "IsDefault",
+        Type: "checkicon",
+        Caption: "Là người duyệt mặc định",
+        DataSourceMember: "IsDefault",
+        Width: 200
+    },
 ];
 
 export const MLObjectDefinition = [
@@ -155,5 +158,11 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "CreatedUser",
         DataSourceMember: "CreatedUser"
+    },
+    {
+        Name: "IsDefault",
+        DefaultValue: "",
+        BindControlName: "IsDefault",
+        DataSourceMember: "IsDefault"
     }
 ];
