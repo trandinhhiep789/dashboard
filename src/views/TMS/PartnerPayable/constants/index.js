@@ -273,49 +273,6 @@ export const DataGridColumnList = [
 
 export const DataPartnerPayableDetailGridColumnList = [
     {
-        Name: "ShipmentOrderID",
-        Type: "text",
-        Caption: "Mã vận đơn",
-        DataSourceMember: "ShipmentOrderID",
-        Width: 100
-    },
-    {
-        Name: "PartnerSaleOrderID",
-        Type: "text",
-        Caption: "Mã đơn hàng",
-        DataSourceMember: "PartnerSaleOrderID",
-        Width: 100
-    },
-
-    {
-        Name: "ActualEndDeliveryTime",
-        Type: "date",
-        Caption: "Thời gian giao",
-        DataSourceMember: "ActualEndDeliveryTime",
-        Width: 100
-    },
-    {
-        Name: "ReceiverFullName",
-        Type: "text",
-        Caption: "Khách hàng",
-        DataSourceMember: "ReceiverFullName",
-        Width: 100
-    },
-    {
-        Name: "ProductName",
-        Type: "text",
-        Caption: "Sản phẩm",
-        DataSourceMember: "ProductName",
-        Width: 100
-    },
-    {
-        Name: "SubGroupName",
-        Type: "text",
-        Caption: "Nhóm hàng",
-        DataSourceMember: "SubGroupName",
-        Width: 100
-    },
-    {
         Name: "PartnerName",
         Type: "text",
         Caption: "Đối tác",
@@ -351,6 +308,49 @@ export const DataPartnerPayableDetailGridColumnList = [
         Width: 100
     },
     {
+        Name: "ShipmentOrderID",
+        Type: "text",
+        Caption: "Mã vận đơn",
+        DataSourceMember: "ShipmentOrderID",
+        Width: 100
+    },
+    {
+        Name: "PartnerSaleOrderID",
+        Type: "text",
+        Caption: "Mã đơn hàng",
+        DataSourceMember: "PartnerSaleOrderID",
+        Width: 100
+    },
+
+    {
+        Name: "ActualEndDeliveryTime",
+        Type: "date",
+        Caption: "Thời gian giao",
+        DataSourceMember: "ActualEndDeliveryTime",
+        Width: 100
+    },
+    {
+        Name: "ReceiverFullName",
+        Type: "text",
+        Caption: "Khách hàng",
+        DataSourceMember: "ReceiverFullName",
+        Width: 100
+    },
+    {
+        Name: "SubGroupName",
+        Type: "text",
+        Caption: "Nhóm hàng",
+        DataSourceMember: "SubGroupName",
+        Width: 100
+    },
+    {
+        Name: "ProductName",
+        Type: "text",
+        Caption: "Sản phẩm",
+        DataSourceMember: "ProductName",
+        Width: 100
+    },
+    {
         Name: "Quantity",
         Type: "text",
         Caption: "SL",
@@ -371,7 +371,6 @@ export const DataPartnerPayableDetailGridColumnList = [
         DataSourceMember: "PayableAmount",
         Width: 100
     },
-
 ];
 
 
