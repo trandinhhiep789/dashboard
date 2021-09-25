@@ -20,7 +20,7 @@ export const addImportMaterialModalWidth = "95%";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Yêu cầu hoàn trả vật tư "}
+    { Link: "", Title: "Yêu cầu hoàn trả vật tư " }
 ];
 
 export const EditPagePath = [
@@ -54,7 +54,7 @@ export const InitSearchParams = [
         SearchKey: "@TYPE",
         SearchValue: 1
     },
-   
+
     {
         SearchKey: "@FROMDATE",
         SearchValue: dtFromdate
@@ -129,7 +129,7 @@ export const SearchElementList = [
         icon: "",
         nameOption: "txtTypename",
         labelOption: "--Vui lòng chọn--",
-        valueOption:  1,
+        valueOption: 1,
         // validatonList:["Comborequired"],
         classNameCol: "col-custom",
         classNameDropdown: "dropdown-custom",
@@ -174,10 +174,10 @@ export const SearchElementList = [
         ValueMember: "StoreID",
         NameMember: "StoreName",
         filterValue: 10,
-        filterobj:"CompanyID",
+        filterobj: "CompanyID",
         classNameCol: "col-custom"
     },
-  
+
     {
         type: "MultiSelectUser",
         name: "cbRequestUser",
@@ -214,13 +214,13 @@ export const SearchElementList = [
 
 
 export const DataGridColumnList = [
-    {
-        Name: "chkSelect",
-        Type: "checkbox",
-        Caption: "Chọn",
-        DataSourceMember: "MaterialReclaimID",
-        Width: 60
-    },
+    // {
+    //     Name: "chkSelect",
+    //     Type: "checkbox",
+    //     Caption: "Chọn",
+    //     DataSourceMember: "MaterialReclaimID",
+    //     Width: 60
+    // },
     {
         Name: "MaterialReclaimID",
         Type: "texttolinkNewBlank",
@@ -238,10 +238,10 @@ export const DataGridColumnList = [
         Width: 300
     },
     {
-        Name: "ReturnUser",
+        Name: "ReturnUserFullName",
         Type: "text",
         Caption: "Ngưởi thu hồi",
-        DataSourceMember: "ReturnUser",
+        DataSourceMember: "ReturnUserFullName",
         Width: 250
     },
     {
@@ -266,19 +266,21 @@ export const DataGridColumnList = [
         DataSourceMember: "AfterReclaimProcessTypeName",
         Width: 130
     },
-   
+
     {
         Name: "Action",
-        Type: "link",
-        Caption: "Xem chi tiết",
+        Type: "groupTwoAction",
+        Caption: "Tác vụ",
         DataSourceMember: "MaterialReclaimID",
         Width: 100,
-        Link: "/MTReturnRequest/Detail/",
-        LinkText: "Xem"
+        ButtonTitleFirst: "Thu hồi vật tư về kho",
+        IconFirst: "ti-back-left",
+        ButtonTitleTwo: "Hủy vật tư",
+        IconTwo: "ti-close",
     },
 ];
 
-export const MaterialReclaimDetailColumnList= [
+export const MaterialReclaimDetailColumnList = [
     {
         Name: "InstallProductID",
         Type: "text",

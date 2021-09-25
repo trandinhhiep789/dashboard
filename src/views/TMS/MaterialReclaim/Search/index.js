@@ -25,11 +25,16 @@ import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { callGetCache } from "../../../../actions/cacheAction";
+import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
 
 import {
-    MATERIALRECLAIM_VIEW
+    MATERIALRECLAIM_VIEW,
+    TMS_MATERIALRECLAIM_DESTROY,
+    TMS_MATERIALRECLAIM_RETURN,
+    GET_CACHE_USER_FUNCTION_LIST
 } from "../../../../constants/functionLists";
+
+import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../constants/keyCache";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -40,12 +45,15 @@ class SearchCom extends React.Component {
             gridDataSource: [],
             IsCallAPIError: false,
             SearchData: InitSearchParams,
+            DataKeyConfig: [],
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
         this.notificationDOMRef = React.createRef();
+        this.checkPermission = this.checkPermission.bind(this)
+        this.getCacheKeyConfig = this.getCacheKeyConfig.bind(this)
     }
 
     componentDidMount() {
@@ -63,10 +71,91 @@ class SearchCom extends React.Component {
         );
     }
 
+    getCacheKeyConfig() {
+        this.props.callGetCache(ERPCOMMONCACHE_TMSCONFIG).then(apiResult => {
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.Message)
+            }
+            else {
+                this.setState({
+                    DataKeyConfig: apiResult.ResultObject.CacheData,
+                })
+            }
+        })
+    }
 
-   
-    handleInputGridInsert(MLObjectDefinition, modalElementList, dataSource) {
-        console.log("add", MLObjectDefinition, modalElementList, dataSource)
+
+
+    handleUpdateFirstClick(MLObjectDefinition, modalElementList) {
+        const { gridDataSource, DataKeyConfig } = this.state;
+
+        const confir = confirm("Bạn có chắc muốn thu hồi vật tư về kho?");
+        console.log("confir", confir)
+        if (confir) {
+            this.checkPermission(TMS_MATERIALRECLAIM_RETURN).then((result) => {
+                if (result) {
+                    const MTReturnRequestID = MLObjectDefinition.pkColumnName[0].value;
+                    const tempData = gridDataSource.find(n => n.MaterialReclaimID == MTReturnRequestID);
+                    const MTReturnRequestTypeID = DataKeyConfig.find(n => n.TMSConfigID == "TMS_MATERIALRECLAIM_RETURNRQTYPEID");
+
+                    tempData.MTReturnRequestTypeID = MTReturnRequestTypeID.TMSConfigValue;
+
+                    if (!tempData.IsAfterReclaimProcess) {
+
+                        this.props.callFetchAPI(APIHostName, "api/MaterialReclaim/UpdateMTRequset", tempData).then(apiResult => {
+                            console.log("apiResult", tempData, apiResult)
+                            this.showMessage(apiResult.Message);
+                            this.callSearchData(this.state.SearchData);
+
+                        })
+                    }
+                    else {
+                        this.showMessage("Vật tư đã được cập nhật trạng thái")
+                    }
+                }
+                else {
+                    this.showMessage("Bạn không có quyền thu hồi vật tư về kho")
+                }
+
+            })
+        }
+    }
+
+    handleUpdateTwoClick(MLObjectDefinition, modalElementList) {
+        const { gridDataSource, DataKeyConfig } = this.state;
+
+        const confir = confirm("Bạn có chắc muốn hủy vật tư thu hồi này không?");
+        console.log("confir", confir)
+        if (confir) {
+            this.checkPermission(TMS_MATERIALRECLAIM_DESTROY).then((result) => {
+                if (result) {
+                    const MTReturnRequestID = MLObjectDefinition.pkColumnName[0].value;
+                    const tempData = gridDataSource.find(n => n.MaterialReclaimID == MTReturnRequestID);
+                    const DestroyRequestTypeID = DataKeyConfig.find(n => n.TMSConfigID == "TMS_MATERIALRECLAIM_RETURNDESTROYRQTYPEID");
+
+                    tempData.DestroyRequestTypeID = DestroyRequestTypeID != undefined ?  DestroyRequestTypeID.TMSConfigValue : 0;
+
+                    if (!tempData.IsAfterReclaimProcess) {
+
+                       
+                        this.props.callFetchAPI(APIHostName, "api/MaterialReclaim/UpdateDestroyRequest", tempData).then(apiResult => {
+                            console.log("apiResult", tempData, apiResult)
+                            this.showMessage(apiResult.Message);
+                            this.callSearchData(this.state.SearchData);
+
+                        })
+                    }
+                    else {
+                        this.showMessage("Vật tư đã được cập nhật trạng thái")
+                    }
+                }
+                else {
+                    this.showMessage("Bạn không có quyền thu hồi vật tư về kho")
+                }
+
+            })
+        }
+        
 
     }
 
@@ -83,9 +172,10 @@ class SearchCom extends React.Component {
             else {
 
                 this.setState({
-                    gridDataSource:  apiResult.ResultObject,
+                    gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError
                 });
+                this.getCacheKeyConfig();
             }
         })
     }
@@ -101,7 +191,7 @@ class SearchCom extends React.Component {
                 SearchKey: "@TYPE",
                 SearchValue: MLObject.Typename
             },
-           
+
             {
                 SearchKey: "@FROMDATE",
                 SearchValue: MLObject.FromDate
@@ -161,17 +251,38 @@ class SearchCom extends React.Component {
         });
     }
 
-    handleUpdateListItem(lstID, pkColumnName){
+    handleUpdateListItem(lstID, pkColumnName) {
         console.log("select item", lstID, pkColumnName)
     }
 
-    handleDelete(listDeleteID, pkColumnName){
+    handleDelete(listDeleteID, pkColumnName) {
         console.log("delete item", listDeleteID, pkColumnName)
+
     }
 
-    handleUpdateList(lstID, pkColumnName){
+    handleUpdateList(lstID, pkColumnName) {
         console.log("select item 222", lstID, pkColumnName)
 
+    }
+
+    checkPermission(permissionKey) {
+        return new Promise((resolve, reject) => {
+            this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
+                console.log("checkPermission", result)
+                if (!result.IsError && result.ResultObject.CacheData != null) {
+                    for (let i = 0; i < result.ResultObject.CacheData.length; i++) {
+                        if (result.ResultObject.CacheData[i].FunctionID == permissionKey) {
+                            console.log("object", result.ResultObject.CacheData[i])
+                            resolve(true);
+                            return;
+                        }
+                    }
+                    resolve(false)
+                } else {
+                    resolve('error');
+                }
+            });
+        });
     }
 
     render() {
@@ -194,22 +305,24 @@ class SearchCom extends React.Component {
                     //AddLink={AddLink}
                     IDSelectColumnName={IDSelectColumnName}
                     PKColumnName={PKColumnName}
-                    onInsertClick={this.handleInputGridInsert.bind(this)}
+                    // onInsertClick={this.handleInputGridInsert.bind(this)}
+                    onUpdateFirstClick={this.handleUpdateFirstClick.bind(this)}
+                    onUpdateTwoClick={this.handleUpdateTwoClick.bind(this)}
                     IsCustomAddLink={false}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
                     onDeleteClick={this.handleDelete.bind(this)}
                     IsAutoPaging={true}
                     RowsPerPage={20}
-                    IsExportFile={false}
-                    TitleUpdateListItem="Thu hồi vật tư về kho"
-                    IconUpdateListItem="ti-back-left"
-                    IsUpdateListItem={true}
-                    onUpdateListItem={this.handleUpdateListItem.bind(this)}
-                    IsUpdateList={true}
-                    TitleUpdateList="Hủy vật tư"
-                    IconUpdateList="ti-close"
-                    onUpdateList={this.handleUpdateList.bind(this)}
+                    // IsExportFile={false}
+                    // TitleUpdateListItem="Thu hồi vật tư về kho"
+                    // IconUpdateListItem="ti-back-left"
+                    // IsUpdateListItem={true}
+                    // onUpdateListItem={this.handleUpdateListItem.bind(this)}
+                    // IsUpdateList={true}
+                    // TitleUpdateList="Hủy vật tư"
+                    // IconUpdateList="ti-close"
+                    // onUpdateList={this.handleUpdateList.bind(this)}
                     RequirePermission={MATERIALRECLAIM_VIEW}
                 />
             </React.Fragment>
@@ -241,7 +354,10 @@ const mapDispatchToProps = dispatch => {
         },
         hideModal: (type, props) => {
             dispatch(hideModal(type, props));
-        }
+        },
+        callGetUserCache: (cacheKeyID) => {
+            return dispatch(callGetUserCache(cacheKeyID));
+        },
     };
 };
 

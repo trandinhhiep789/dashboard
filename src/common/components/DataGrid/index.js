@@ -108,6 +108,15 @@ class DataGridCom extends Component {
             this.props.onInsertClickEdit(id, pkColumnName);
     }
 
+    handleUpdateFirstClick(id, pkColumnName) {
+        if (this.props.onUpdateFirstClick != null)
+            this.props.onUpdateFirstClick(id, pkColumnName);
+    }
+    handleUpdateTwoClick(id, pkColumnName) {
+        if (this.props.onUpdateTwoClick != null)
+            this.props.onUpdateTwoClick(id, pkColumnName);
+    }
+
     handleUpdateItemClick(id) {
         if (this.props.onUpdateItem != null)
             this.props.onUpdateItem(id)
@@ -629,6 +638,8 @@ class DataGridCom extends Component {
                                                     onDetailtModalClick={this.handleDetailModalClick.bind(this)}
                                                     onHistoryClick={this.handleHistoryItemClick.bind(this)}
                                                     onInsertClickEdit={this.handleInsertClickEdit}
+                                                    onUpdateFirstClick={this.handleUpdateFirstClick.bind(this)}
+                                                    onUpdateTwoClick={this.handleUpdateTwoClick.bind(this)}
                                                     onModalClick={this.handleShowModalClick.bind(this)}
                                                     onShowImageClick={this.handleShowImageClick.bind(this)}
                                                     onUpdateClick={this.handleUpdateItemClick.bind(this)}
@@ -641,6 +652,10 @@ class DataGridCom extends Component {
                                                     textHyperLink={RelatedVoucherID}
                                                     value={value}
                                                     type={columnItem.Type}
+                                                    buttonTitleFirst={columnItem.ButtonTitleFirst}
+                                                    iconFirst={columnItem.IconFirst}
+                                                    buttonTitleTwo={columnItem.ButtonTitleTwo}
+                                                    iconTwo={columnItem.IconTwo}
                                                 />;
                                                 return (
                                                     <td key={columnItem.Name} style={cellStyle}>{cellData}</td>

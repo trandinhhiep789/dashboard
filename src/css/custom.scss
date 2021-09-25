@@ -52,6 +52,23 @@ body{
     }
 }
 
+.groupTwoAction {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: space-evenly;
+    align-items: center;
+    button{
+        background: #48b0f7;
+        color: #fff;
+        padding: 5px 10px;
+        &.btntwo, &.btnfirst{
+            clear: both;
+        }
+    }
+}
+
 .errorAdvanceRequestDetail{
     color: #f93030;
     display: inline-block;

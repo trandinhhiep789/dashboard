@@ -7,6 +7,7 @@ import { formatMoney, formatNumber, numberDecimalWithComma, formatNumberNew } fr
 import { Base64 } from 'js-base64';
 import { withRouter } from 'react-router-dom';
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
+import ReactTooltip from 'react-tooltip';
 
 class GridCell extends Component {
     constructor(props) {
@@ -56,6 +57,15 @@ class GridCell extends Component {
         //console.log("cellhandleonClickEdit inputname",id)
         this.props.onInsertClickEdit(elementdata, this.props.pkColumnName);
 
+    }
+
+    handleUpdateFirst() {
+        const elementdata = { Name: this.props.name, pkColumnName: this.props.value }
+        this.props.onUpdateFirstClick(elementdata, this.props.pkColumnName);
+    }
+    handleUpdateTwo(e) {
+        const elementdata = { Name: this.props.name, pkColumnName: this.props.value }
+        this.props.onUpdateTwoClick(elementdata, this.props.pkColumnName);
     }
 
     handleonClickDetailt() {
@@ -352,7 +362,21 @@ class GridCell extends Component {
                     title="Edit">
                     <i className="ti-pencil"></i>
                 </a>;
-
+            case "groupTwoAction":
+                return <div className="groupTwoAction">
+                    <button data-tip data-for="TooltipFirst" type="button" className="btn btnfirst" onClick={this.handleUpdateFirst.bind(this)}>
+                        <i className={(this.props.iconFirst != undefined || this.props.iconFirst != "") ? this.props.iconFirst : "ti-plus"}></i>
+                    </button>
+                    <ReactTooltip id="TooltipFirst">
+                        <span>{(this.props.buttonTitleFirst != undefined || this.props.buttonTitleFirst != "") ? this.props.buttonTitleFirst : "Cập nhật"}</span>
+                    </ReactTooltip>
+                    <button data-tip data-for="TooltipTwo" type="button" className="btn btntwo" onClick={this.handleUpdateTwo.bind(this)}>
+                        <i className={(this.props.iconTwo != undefined || this.props.iconTwo != "") ? this.props.iconTwo : "ti-plus"}></i>
+                    </button>
+                    <ReactTooltip id="TooltipTwo">
+                        {(this.props.buttonTitleTwo != undefined || this.props.buttonTitleTwo != "") ? this.props.buttonTitleTwo : "Cập nhật"}
+                    </ReactTooltip>
+                </div>;
 
             case "editnew":
                 return (
