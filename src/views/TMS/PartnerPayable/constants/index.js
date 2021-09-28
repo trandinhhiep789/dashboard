@@ -277,7 +277,7 @@ export const DataPartnerPayableDetailGridColumnList = [
         Type: "text",
         Caption: "Đối tác",
         DataSourceMember: "PartnerName",
-        Width: 100
+        Width: 200
     },
     {
         Name: "StoreName",
@@ -300,13 +300,13 @@ export const DataPartnerPayableDetailGridColumnList = [
         DataSourceMember: "CoordinatorUser",
         Width: 100
     },
-    {
-        Name: "DeliveryUser",
-        Type: "text",
-        Caption: "NV giao",
-        DataSourceMember: "DeliveryUser",
-        Width: 100
-    },
+    // {
+    //     Name: "DeliveryUser",
+    //     Type: "text",
+    //     Caption: "NV giao",
+    //     DataSourceMember: "DeliveryUser",
+    //     Width: 100
+    // },
     {
         Name: "ShipmentOrderID",
         Type: "text",

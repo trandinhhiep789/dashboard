@@ -294,7 +294,7 @@ class PartnerPayableDetailCom extends React.Component {
                     RowsPerPage={10}
                     TitlePrint="Danh sách chi tiết tiền phải trả cho nhà cung cấp dịch vụ"
                     totalCurrency={true}
-                    totalCurrencyColSpan={14}
+                    totalCurrencyColSpan={13}
                     totalCurrencyNumber={this.state.totalPayableAmount}
                 />
             </React.Fragment>
