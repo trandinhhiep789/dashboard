@@ -1126,14 +1126,14 @@ const AppMenu = [
             },
             {
                 MenuName: 'MTReturnRequest',
-                MenuTitle: 'Yêu cầu hoàn trả vật tư',
+                MenuTitle: 'Yêu cầu nhập trả vật tư',
                 LinkTo: '/MTReturnRequest',
                 MenuIcon: '',
                 SubMenu: []
             },
             {
                 MenuName: 'MaterialReclaim',
-                MenuTitle: 'Yêu cầu nhập trả vật tư',
+                MenuTitle: 'Yêu cầu thu hồi vật tư',
                 LinkTo: '/MaterialReclaim',
                 MenuIcon: '',
                 SubMenu: []
