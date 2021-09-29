@@ -50,7 +50,10 @@ class ReviewLevel_UserCom extends React.Component {
                 if (!apiResult.IsError && apiResult.ResultObject) {
                     let listOption = [{ value: -1, label: "--Vui lòng chọn--" }];
                     apiResult.ResultObject.map((item, index) => {
-                        listOption.push({ value: item.UserName, label: item.FullName });
+                        listOption.push({
+                            value: item.UserName,
+                            label: `${item.UserName} - ${item.FullName}`
+                        });
                     });
                     this.setState({ ReviewUser: listOption });
                 }
