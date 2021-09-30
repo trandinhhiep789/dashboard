@@ -3,7 +3,8 @@ import {
     BrowserRouter as Router,
     Route,
     Switch,
-    Link
+    Link,
+    Redirect
 } from "react-router-dom";
 
 import { connect } from "react-redux";
@@ -22,13 +23,15 @@ import {
     DetailAPIPath,
     TitleFormDetail,
     MaterialReclaimDetailColumnList,
-    LoadAPIPath
+    LoadAPIPath,
+    BackLink
 
 } from "../constants";
 import { MaterialReclaimInfo } from "./MaterialReclaimInfo";
 import {
     GET_CACHE_USER_FUNCTION_LIST, TMS_MATERIALRECLAIM_RETURN, TMS_MATERIALRECLAIM_DESTROY
 } from "../../../../constants/functionLists";
+import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../constants/keyCache";
 class DetailCom extends React.Component {
     constructor(props) {
         super(props);
@@ -39,6 +42,8 @@ class DetailCom extends React.Component {
             MaterialReclaimDetail: [],
             IsPermissonMTReturn: false,
             IsPermissonDestroy: false,
+            DataKeyConfig: [],
+            IsCloseForm: false,
 
 
         };
@@ -46,7 +51,8 @@ class DetailCom extends React.Component {
         this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
         this.checkPermission = this.checkPermission.bind(this)
-
+        this.getCacheKeyConfig = this.getCacheKeyConfig.bind(this)
+        this.handleCloseMessage = this.handleCloseMessage.bind(this)
     }
 
     componentDidMount() {
@@ -81,10 +87,29 @@ class DetailCom extends React.Component {
                     MaterialReclaimDetail: apiResult.ResultObject.MaterialReclaimDetailList,
                     IsLoadDataComplete: true
                 })
+                this.getCacheKeyConfig()
+
             }
         });
 
 
+    }
+
+    getCacheKeyConfig() {
+        this.props.callGetCache(ERPCOMMONCACHE_TMSCONFIG).then(apiResult => {
+            console.log("key config", apiResult)
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.Message)
+            }
+            else {
+                this.setState({
+                    DataKeyConfig: apiResult.ResultObject.CacheData,
+                })
+            }
+        })
+    }
+    handleCloseMessage(){
+        this.setState({ IsCloseForm: true })
     }
 
     showMessage(message) {
@@ -92,7 +117,7 @@ class DetailCom extends React.Component {
             <MessageModal
                 title="Thông báo"
                 message={message}
-                onRequestClose={() => true}
+                onCloseModal={this.handleCloseMessage}
             />
         );
     }
@@ -117,12 +142,49 @@ class DetailCom extends React.Component {
     }
 
     handleSubmitMTReturnRequest() {
-        this.showMessage("Tính năng đang phát triển")
+        const { MaterialReclaimItem, DataKeyConfig } = this.state;
+        const confir = confirm("Bạn có chắc muốn thu hồi vật tư về kho?");
+        console.log("confir", confir)
+        if (confir) {
+            const MTReturnRequestTypeID = DataKeyConfig.find(n => n.TMSConfigID == "TMS_MATERIALRECLAIM_RETURNRQTYPEID");
 
+            MaterialReclaimItem.MTReturnRequestTypeID = MTReturnRequestTypeID.TMSConfigValue;
+            if (!MaterialReclaimItem.IsAfterReclaimProcess) {
+
+                this.props.callFetchAPI(APIHostName, "api/MaterialReclaim/UpdateMTRequset", MaterialReclaimItem).then(apiResult => {
+                    console.log("apiResult", MaterialReclaimItem, apiResult)
+                    this.showMessage(apiResult.Message);
+                })
+            }
+            else {
+                this.showMessage("Vật tư đã được cập nhật trạng thái")
+            }
+        }
     }
 
     handleSubmitDestroy() {
-        this.showMessage("Tính năng đang phát triển")
+        const { MaterialReclaimItem, DataKeyConfig } = this.state;
+        if (confir) {
+            if (result) {
+                const DestroyRequestTypeID = DataKeyConfig.find(n => n.TMSConfigID == "TMS_MATERIALRECLAIM_RETURNDESTROYRQTYPEID");
+
+                MaterialReclaimItem.DestroyRequestTypeID = DestroyRequestTypeID != undefined ? DestroyRequestTypeID.TMSConfigValue : 0;
+
+                if (!MaterialReclaimItem.IsAfterReclaimProcess) {
+
+
+                    this.props.callFetchAPI(APIHostName, "api/MaterialReclaim/UpdateDestroyRequest", MaterialReclaimItem).then(apiResult => {
+                        console.log("apiResult", tempData, apiResult)
+                        this.showMessage(apiResult.Message);
+
+                    })
+                }
+                else {
+                    this.showMessage("Vật tư đã được cập nhật trạng thái")
+                }
+            }
+
+        }
     }
 
 
@@ -130,7 +192,9 @@ class DetailCom extends React.Component {
     render() {
 
         const { IsLoadDataComplete, MaterialReclaimItem, MaterialReclaimDetail, IsPermissonMTReturn, IsPermissonDestroy } = this.state;
-
+        if (this.state.IsCloseForm) {
+            return <Redirect to={BackLink} />;
+        }
         return (
             <React.Fragment>
                 {
