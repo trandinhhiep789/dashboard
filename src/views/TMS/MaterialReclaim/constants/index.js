@@ -65,11 +65,11 @@ export const InitSearchParams = [
     },
     {
         SearchKey: "@RETURNSTOREID",
-        SearchValue: ""
+        SearchValue: -1
     },
     {
         SearchKey: "@AFTERRECLAIMPROCESSTYPEID",
-        SearchValue: ""
+        SearchValue: -1
     },
     {
         SearchKey: "@RETURNUSER",
@@ -165,7 +165,7 @@ export const SearchElementList = [
         DataSourceMember: "StoreID",
         label: "Kho",
         colspan: 2,
-        value: "",
+        value: -1,
         isMultiSelect: false,
         placeholder: "---Kho---",
         listoption: [],
@@ -200,7 +200,7 @@ export const SearchElementList = [
         DataSourceMember: "AfterreClaimProcessTypeID",
         label: "Xử lý thu hồi",
         colspan: 2,
-        value: "",
+        value: -1,
         isMultiSelect: false,
         placeholder: "---Xử lý thu hồi---",
         listoption: [],
