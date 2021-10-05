@@ -241,39 +241,6 @@ class AddCom extends React.Component {
                         </div> */}
 
                         <div className="col-md-6">
-                            <FormControl.FormControlHour
-                                name="txtFromTime"
-                                colspan="8"
-                                labelcolspan="4"
-                                readOnly={false}
-                                label="Từ thời gian"
-                                placeholder="Từ thời gian(tính bằng phút từ 0 giờ)"
-                                controltype="InputControl"
-                                formatHour="HH:mm"
-                                value=""
-                                datasourcemember="FromTime"
-                                validatonList={['required']}
-                            />
-                        </div>
-
-
-                        <div className="col-md-6">
-                            <FormControl.FormControlHour
-                                name="txtToTime"
-                                colspan="8"
-                                labelcolspan="4"
-                                readOnly={false}
-                                formatHour="HH:mm"
-                                label="Đến thời gian"
-                                placeholder="Đến thời gian(tính bằng phút từ 0 giờ)"
-                                controltype="InputControl"
-                                value=""
-                                datasourcemember="ToTime"
-                                validatonList={['required']}
-                            />
-                        </div>
-
-                        <div className="col-md-6">
                             <FormControl.TextBox
                                 name="txtOrderIndex"
                                 colspan="8"
@@ -307,6 +274,41 @@ class AddCom extends React.Component {
 
 
                         </div>
+
+                        <div className="col-md-6">
+                            <FormControl.FormControlHour
+                                name="txtFromTime"
+                                colspan="8"
+                                labelcolspan="4"
+                                readOnly={false}
+                                label="Từ thời gian"
+                                placeholder="Từ thời gian(tính bằng phút từ 0 giờ)"
+                                controltype="InputControl"
+                                formatHour="HH:mm"
+                                value=""
+                                datasourcemember="FromTime"
+                                validatonList={['required']}
+                            />
+                        </div>
+
+
+                        <div className="col-md-6">
+                            <FormControl.FormControlHour
+                                name="txtToTime"
+                                colspan="8"
+                                labelcolspan="4"
+                                readOnly={false}
+                                formatHour="HH:mm"
+                                label="Đến thời gian"
+                                placeholder="Đến thời gian(tính bằng phút từ 0 giờ)"
+                                controltype="InputControl"
+                                value=""
+                                datasourcemember="ToTime"
+                                validatonList={['required']}
+                            />
+                        </div>
+
+
 
                     </div>
 
