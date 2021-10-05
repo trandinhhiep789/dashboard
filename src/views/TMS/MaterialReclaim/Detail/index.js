@@ -73,18 +73,24 @@ class DetailCom extends React.Component {
     callLoadData(id) {
         const { callFetchAPI } = this.props;
         callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            console.log("detail", id, apiResult)
+
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
                 });
                 this.showMessage(apiResult.Message);
             } else {
-
+                const uptMaterialReclaimDetailList = apiResult.ResultObject.MaterialReclaimDetailList.map(item => {
+                    return {
+                        ...item,
+                        InstallProductIDName: `${item.InstallProductID} - ${item.InstallProductName}`,
+                        ProductIDName: `${item.ProductID} - ${item.ProductName}`
+                    }
+                })
 
                 this.setState({
                     MaterialReclaimItem: apiResult.ResultObject,
-                    MaterialReclaimDetail: apiResult.ResultObject.MaterialReclaimDetailList,
+                    MaterialReclaimDetail: uptMaterialReclaimDetailList,
                     IsLoadDataComplete: true
                 })
                 this.getCacheKeyConfig()
@@ -97,7 +103,7 @@ class DetailCom extends React.Component {
 
     getCacheKeyConfig() {
         this.props.callGetCache(ERPCOMMONCACHE_TMSCONFIG).then(apiResult => {
-            console.log("key config", apiResult)
+
             if (apiResult.IsError) {
                 this.showMessage(apiResult.Message)
             }
@@ -108,7 +114,7 @@ class DetailCom extends React.Component {
             }
         })
     }
-    handleCloseMessage(){
+    handleCloseMessage() {
         this.setState({ IsCloseForm: true })
     }
 
@@ -128,7 +134,7 @@ class DetailCom extends React.Component {
                 if (!result.IsError && result.ResultObject.CacheData != null) {
                     for (let i = 0; i < result.ResultObject.CacheData.length; i++) {
                         if (result.ResultObject.CacheData[i].FunctionID == permissionKey) {
-                            console.log("object", result.ResultObject.CacheData[i])
+
                             resolve(true);
                             return;
                         }
@@ -144,7 +150,7 @@ class DetailCom extends React.Component {
     handleSubmitMTReturnRequest() {
         const { MaterialReclaimItem, DataKeyConfig } = this.state;
         const confir = confirm("Bạn có chắc muốn thu hồi vật tư về kho?");
-        console.log("confir", confir)
+
         if (confir) {
             const MTReturnRequestTypeID = DataKeyConfig.find(n => n.TMSConfigID == "TMS_MATERIALRECLAIM_RETURNRQTYPEID");
 
@@ -152,7 +158,7 @@ class DetailCom extends React.Component {
             if (!MaterialReclaimItem.IsAfterReclaimProcess) {
 
                 this.props.callFetchAPI(APIHostName, "api/MaterialReclaim/UpdateMTRequset", MaterialReclaimItem).then(apiResult => {
-                    console.log("apiResult", MaterialReclaimItem, apiResult)
+
                     this.showMessage(apiResult.Message);
                 })
             }
@@ -174,7 +180,7 @@ class DetailCom extends React.Component {
 
 
                     this.props.callFetchAPI(APIHostName, "api/MaterialReclaim/UpdateDestroyRequest", MaterialReclaimItem).then(apiResult => {
-                        console.log("apiResult", tempData, apiResult)
+
                         this.showMessage(apiResult.Message);
 
                     })

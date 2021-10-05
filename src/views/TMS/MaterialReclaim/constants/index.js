@@ -282,38 +282,38 @@ export const DataGridColumnList = [
 
 export const MaterialReclaimDetailColumnList = [
     {
-        Name: "InstallProductID",
+        Name: "InstallProductIDName",
         Type: "text",
         Caption: "Hàng hóa",
-        DataSourceMember: "InstallProductID",
-        Width: 140
+        DataSourceMember: "InstallProductIDName",
+        // Width: 140
     },
     {
-        Name: "ProductName",
+        Name: "ProductIDName",
         Type: "text",
         Caption: "Vật tư",
-        DataSourceMember: "ProductName",
-        Width: 140
+        DataSourceMember: "ProductIDName",
+        // Width: 140
     },
     {
         Name: "QuantityUnit",
         Type: "text",
         Caption: "Đơn vị tính",
         DataSourceMember: "QuantityUnit",
-        Width: 140
+        // Width: 140
     },
     {
         Name: "ReturnQuantity",
         Type: "text",
         Caption: "Số lương thu hồi",
         DataSourceMember: "ReturnQuantity",
-        Width: 140
+        // Width: 140
     },
     {
         Name: "ReturnRealQuantity",
         Type: "text",
         Caption: "Số lương thu hồi thực tế",
         DataSourceMember: "ReturnRealQuantity",
-        Width: 140
+        // Width: 140
     },
 ];
