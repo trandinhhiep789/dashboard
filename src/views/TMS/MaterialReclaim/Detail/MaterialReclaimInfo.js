@@ -36,7 +36,70 @@ export class MaterialReclaimInfo extends Component {
                         <label className="col-form-label">
                             {MaterialReclaim.MaterialReclaimID}
                         </label>
-                    </div><div className="form-group col-md-2">
+                    </div>
+
+                    <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Xứ lý sau thu hồi:</label>
+                    </div>
+                    <div className="form-group col-md-4">
+                        <label className="col-form-label">
+                            {MaterialReclaim.AfterReclaimProcessTypeName}
+                        </label>
+                    </div>
+                </div>
+
+                <div className="form-row">
+                    <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Kho thu hồi:</label>
+                    </div>
+                    <div className="form-group col-md-4">
+                        <label className="col-form-label">
+                            {MaterialReclaim.ReturnStore}
+                        </label>
+                    </div>
+
+                    <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Ngưởi xử lý sau khi thu hồi:</label>
+                    </div>
+                    <div className="form-group col-md-4">
+                        <label className="col-form-label">
+                            {MaterialReclaim.AfterReclaimProcessUser} - {MaterialReclaim.AfterReclaimProcessUserName}
+                        </label>
+                    </div>
+
+                </div>
+
+                <div className="form-row">
+                    <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Người thu hồi:</label>
+                    </div>
+                    <div className="form-group col-md-4">
+                        <label className="col-form-label">
+                            {MaterialReclaim.ReturnUser}
+                        </label>
+                    </div>
+
+                    <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Ngày xử lý sau khi thu hồi:</label>
+                    </div>
+                    <div className="form-group col-md-4">
+                        <label className="col-form-label">
+                            {formatDate(MaterialReclaim.AfterReclaimProcessDate, false)}
+                        </label>
+                    </div>
+                </div>
+
+                <div className="form-row">
+                    <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Ngày thu hồi:</label>
+                    </div>
+                    <div className="form-group col-md-4">
+                        <label className="col-form-label">
+                            {formatDate(MaterialReclaim.CreatedDate, false)}
+                        </label>
+                    </div>
+
+                    <div className="form-group col-md-2">
                         <label className="col-form-label bold">Mã yêu cầu nhập trả vật tư:</label>
                     </div>
                     <div className="form-group col-md-4">
@@ -48,31 +111,6 @@ export class MaterialReclaimInfo extends Component {
 
                 <div className="form-row">
                     <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Kho:</label>
-                    </div>
-                    <div className="form-group col-md-4">
-                        <label className="col-form-label">
-                            {MaterialReclaim.ReturnStore}
-                        </label>
-                    </div><div className="form-group col-md-2">
-                        <label className="col-form-label bold">Người thu hồi:</label>
-                    </div>
-                    <div className="form-group col-md-4">
-                        <label className="col-form-label">
-                            {MaterialReclaim.ReturnUser}
-                        </label>
-                    </div>
-                </div>
-
-                <div className="form-row">
-                    <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Xứ lý sau thu hồi:</label>
-                    </div>
-                    <div className="form-group col-md-4">
-                        <label className="col-form-label">
-                            {MaterialReclaim.AfterReclaimProcessTypeName}
-                        </label>
-                    </div><div className="form-group col-md-2">
                         <label className="col-form-label bold">Mã phiếu nhập trả:</label>
                     </div>
                     <div className="form-group col-md-4">
@@ -80,17 +118,8 @@ export class MaterialReclaimInfo extends Component {
                             {MaterialReclaim.InputVoucherID}
                         </label>
                     </div>
-                </div>
 
-                <div className="form-row">
                     <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Ngưởi xử lý thu hồi:</label>
-                    </div>
-                    <div className="form-group col-md-4">
-                        <label className="col-form-label">
-                            {MaterialReclaim.AfterReclaimProcessUser}
-                        </label>
-                    </div><div className="form-group col-md-2">
                         <label className="col-form-label bold">Mã yêu cầu hủy vật tư:</label>
                     </div>
                     <div className="form-group col-md-4">
@@ -102,13 +131,6 @@ export class MaterialReclaimInfo extends Component {
 
                 <div className="form-row">
                     <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Ngày xử lý sau thu hồi:</label>
-                    </div>
-                    <div className="form-group col-md-4">
-                        <label className="col-form-label">
-                            {formatDate(MaterialReclaim.AfterReclaimProcessDate, false)}
-                        </label>
-                    </div><div className="form-group col-md-2">
                         <label className="col-form-label bold">Mã phiếu xuất tạm ứng:</label>
                     </div>
                     <div className="form-group col-md-4">
@@ -116,9 +138,7 @@ export class MaterialReclaimInfo extends Component {
                             {MaterialReclaim.OutputVoucherID}
                         </label>
                     </div>
-                </div>
 
-                <div className="form-row">
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Mô tả:</label>
                     </div>
@@ -126,14 +146,9 @@ export class MaterialReclaimInfo extends Component {
                         <label className="col-form-label">
                             {MaterialReclaim.Description}
                         </label>
-                    </div><div className="form-group col-md-2">
-                        <label className="col-form-label bold">Ngày thu hồi:</label>
                     </div>
-                    <div className="form-group col-md-4">
-                        <label className="col-form-label">
-                        {formatDate(MaterialReclaim.CreatedDate, false)}
-                        </label>
-                    </div>
+
+
                 </div>
 
             </React.Fragment>
