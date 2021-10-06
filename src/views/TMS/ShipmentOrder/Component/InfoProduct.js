@@ -304,8 +304,10 @@ class InfoProductCom extends Component {
         let objgroupByInstallBundleID = [];
 
         if (this.state.ShipmentOrder.ShipmentOrder_Material2List != undefined && this.state.ShipmentOrder.ShipmentOrder_Material2List.length > 0) {
-            objgroupByInstallBundleID = this.groupByNew(this.state.ShipmentOrder.ShipmentOrder_Material2List, ['InstallProductID', 'InstallProductName','InstallBundleID']);
+            objgroupByInstallBundleID = this.groupByNew(this.state.ShipmentOrder.ShipmentOrder_Material2List, ['InstallProductID', 'InstallProductName', 'InstallBundleID', 'InstallSaleOrderDetailID']);
         }
+
+        console.log("objgroupByInstallBundleID", objgroupByInstallBundleID)
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -633,23 +635,27 @@ class InfoProductCom extends Component {
                                         <tbody>
                                             {objgroupByInstallBundleID != null &&
                                                 objgroupByInstallBundleID.map((rowItem, rowIndex) => {
-                                                    let obj = this.state.ShipmentOrder.ShipmentOrder_Material2List.filter(n => n.InstallProductID == [rowItem.InstallProductID] && n.InstallBundleID == [rowItem.InstallBundleID]);
+                                                    let obj = this.state.ShipmentOrder.ShipmentOrder_Material2List.filter(n => n.InstallProductID == [rowItem.InstallProductID] && n.InstallBundleID == [rowItem.InstallBundleID] && n.InstallSaleOrderDetailID == [rowItem.InstallSaleOrderDetailID]);
                                                     return (
                                                         <React.Fragment key={rowIndex}>
                                                             <tr className="totalCurrency" key={"totalCurrency" + rowIndex}>
                                                                 <td colSpan={8}>
                                                                     <div className="groupTotalCurrency">
-                                                                        <span className="item txtTotal">{rowItem.InstallProductID + " - " + rowItem.InstallProductName+" ("+rowItem.InstallBundleID+")"}</span>
+                                                                        <span className="item txtTotal">{rowItem.InstallProductID + " - " + rowItem.InstallProductName + " (" + rowItem.InstallBundleID + ")" + "-" + obj[0].InstallProductSerial}</span>
                                                                     </div>
                                                                 </td>
                                                             </tr>
                                                             {
-                                                                obj.map((item, Index) => {
+                                                                obj.sort((a, b) => (a.IsMaterialReclaimed > b.IsMaterialReclaimed) ? 1 : -1).map((item, Index) => {
                                                                     if (item.ProductID != "" && item.ProductID != null) {
                                                                         if (item.ProductID != item.ConvertAdvanceProductID) {
                                                                             return (
                                                                                 <tr key={rowIndex + Index}>
-                                                                                    <td>{item.ProductID + '-' + item.ProductName}</td>
+                                                                                    {item.IsMaterialReclaimed == false ?
+                                                                                        (<td>{item.ProductID + '-' + item.ProductName}</td>) :
+                                                                                        (<td><span className="text-danger"> {item.ProductID + '-' + item.ProductName}</span></td>)
+                                                                                    }
+
                                                                                     <td>
                                                                                         <span className="text-danger" data-tip data-for={item.AdvanceQuantity + "-" + Index} data-id={item.AdvanceQuantity + "-" + Index} >{item.AdvanceQuantity * item.AdvanceConvertRatio}*</span>
                                                                                         <ReactTooltip id={item.AdvanceQuantity + "-" + Index} type='dark'>
@@ -667,7 +673,10 @@ class InfoProductCom extends Component {
                                                                         }
                                                                         else {
                                                                             return (<tr key={rowIndex + Index}>
-                                                                                <td>{item.ProductID + '-' + item.ProductName}</td>
+                                                                                {item.IsMaterialReclaimed == false ?
+                                                                                    (<td>{item.ProductID + '-' + item.ProductName}</td>) :
+                                                                                    (<td><span className="text-danger"> {item.ProductID + '-' + item.ProductName}</span></td>)
+                                                                                }
                                                                                 <td>{item.AdvanceQuantity * item.AdvanceConvertRatio}</td>
                                                                                 <td>{item.UsageQuantity}</td>
                                                                                 <td>{item.FreeQuantity}</td>
