@@ -6,32 +6,31 @@ import {
     Link,
     Redirect
 } from "react-router-dom";
-
-import { connect } from "react-redux";
-import { callFetchAPI } from "../../../../actions/fetchAPIAction";
-import { updatePagePath } from "../../../../actions/pageAction";
-import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
-import { showModal, hideModal } from '../../../../actions/modal';
-import { MessageModal } from "../../../../common/components/Modal";
-import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import InputGrid from '../../../../common/components/Form/AdvanceForm/FormControl/InputGrid';
+import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
-import {
 
+import {
     APIHostName,
+    BackLink,
     DetailAPIPath,
-    TitleFormDetail,
-    MaterialReclaimDetailColumnList,
     LoadAPIPath,
-    BackLink
-
+    MaterialReclaimDetailColumnList,
+    TitleFormDetail,
 } from "../constants";
-import { MaterialReclaimInfo } from "./MaterialReclaimInfo";
-import {
-    GET_CACHE_USER_FUNCTION_LIST, TMS_MATERIALRECLAIM_RETURN, TMS_MATERIALRECLAIM_DESTROY
-} from "../../../../constants/functionLists";
+
+import { callFetchAPI } from "../../../../actions/fetchAPIAction";
+import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../constants/keyCache";
+import { MaterialReclaimInfo } from "./MaterialReclaimInfo";
+import { MessageModal } from "../../../../common/components/Modal";
+import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
+import { showModal, hideModal } from '../../../../actions/modal';
+import { updatePagePath } from "../../../../actions/pageAction";
+import { GET_CACHE_USER_FUNCTION_LIST, TMS_MATERIALRECLAIM_RETURN, TMS_MATERIALRECLAIM_DESTROY } from "../../../../constants/functionLists";
+import FormContainer from "../../../../common/components/FormContainer";
+import FormControl from "../../../../common/components/FormContainer/FormControl";
+import InputGrid from '../../../../common/components/Form/AdvanceForm/FormControl/InputGrid';
 class DetailCom extends React.Component {
     constructor(props) {
         super(props);
@@ -44,15 +43,18 @@ class DetailCom extends React.Component {
             IsPermissonDestroy: false,
             DataKeyConfig: [],
             IsCloseForm: false,
-
-
         };
-        this.gridref = React.createRef();
-        this.searchref = React.createRef();
-        this.notificationDOMRef = React.createRef();
+
+        this.btnSubmitDestroy = this.btnSubmitDestroy.bind(this);
+        this.btnSubmitMTReturnRequest = this.btnSubmitMTReturnRequest.bind(this);
         this.checkPermission = this.checkPermission.bind(this)
         this.getCacheKeyConfig = this.getCacheKeyConfig.bind(this)
+        this.gridref = React.createRef();
         this.handleCloseMessage = this.handleCloseMessage.bind(this)
+        this.handleSubmitDestroy = this.handleSubmitDestroy.bind(this);
+        this.handleSubmitMTReturnRequest = this.handleSubmitMTReturnRequest.bind(this);
+        this.notificationDOMRef = React.createRef();
+        this.searchref = React.createRef();
     }
 
     componentDidMount() {
@@ -147,57 +149,160 @@ class DetailCom extends React.Component {
         });
     }
 
-    handleSubmitMTReturnRequest() {
-        const { MaterialReclaimItem, DataKeyConfig } = this.state;
-        const confir = confirm("Bạn có chắc muốn thu hồi vật tư về kho?");
-
-        if (confir) {
-            const MTReturnRequestTypeID = DataKeyConfig.find(n => n.TMSConfigID == "TMS_MATERIALRECLAIM_RETURNRQTYPEID");
-
-            MaterialReclaimItem.MTReturnRequestTypeID = MTReturnRequestTypeID.TMSConfigValue;
-            if (!MaterialReclaimItem.IsAfterReclaimProcess) {
-
-                this.props.callFetchAPI(APIHostName, "api/MaterialReclaim/UpdateMTRequset", MaterialReclaimItem).then(apiResult => {
-
-                    this.showMessage(apiResult.Message);
-                })
-            }
-            else {
-                this.showMessage("Vật tư đã được cập nhật trạng thái")
-            }
+    btnSubmitMTReturnRequest() {
+        if (this.state.MaterialReclaimItem.IsAfterReclaimProcess) {
+            return <React.Fragment>
+                <button className="btn btn-primary mr-3" type="button" disabled>Thu hồi về kho</button>
+            </React.Fragment>
+        } else if (this.state.IsPermissonMTReturn) {
+            return <React.Fragment>
+                <button className="btn btn-primary mr-3" type="button" onClick={this.handleShowDescriptionMTReturnRequestModal.bind(this)}>Thu hồi về kho</button>
+            </React.Fragment>
+        } else {
+            return <React.Fragment>
+                <button disabled={true} className="btn btn-primary mr-3" type="button" title="Bạn không có quyền!">Thu hồi về kho</button>
+            </React.Fragment>
         }
     }
 
-    handleSubmitDestroy() {
-        const { MaterialReclaimItem, DataKeyConfig } = this.state;
-        if (confir) {
-            if (result) {
-                const DestroyRequestTypeID = DataKeyConfig.find(n => n.TMSConfigID == "TMS_MATERIALRECLAIM_RETURNDESTROYRQTYPEID");
+    handleShowDescriptionMTReturnRequestModal() {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Mô tả hiện trạng vật tư',
+            content: {
+                text: <FormContainer
+                    dataSource={[]}
+                    IsCloseModal={true}
+                    MLObjectDefinition={[
+                        {
+                            Name: "Description",
+                            DefaultValue: "",
+                            BindControlName: "txtDescription",
+                            DataSourceMember: "Description"
+                        }
+                    ]}
+                    onSubmit={this.handleSubmitMTReturnRequest}
+                >
+                    <div className="row">
+                        <div className="col-md-12">
+                            <FormControl.TextArea
+                                classNameCustom="customcontrol"
+                                colspan="9"
+                                controltype="InputControl"
+                                datasourcemember="Description"
+                                label="mô tả hiện trạng vật tư"
+                                labelcolspan="3"
+                                maxSize={20}
+                                name="txtDescription"
+                                placeholder="Mô tả hiện trạng vật tư"
+                                validatonList={["required"]}
+                                value=""
+                            />
+                        </div>
+                    </div>
+                </FormContainer>
+            },
+            maxWidth: '800px'
+        });
+    }
 
-                MaterialReclaimItem.DestroyRequestTypeID = DestroyRequestTypeID != undefined ? DestroyRequestTypeID.TMSConfigValue : 0;
+    handleSubmitMTReturnRequest(FormData, MLObject) {
+        const MTReturnRequestTypeID = this.state.DataKeyConfig.find(n => n.TMSConfigID == "TMS_MATERIALRECLAIM_RETURNRQTYPEID");
 
-                if (!MaterialReclaimItem.IsAfterReclaimProcess) {
+        let dataSubmit = {
+            ...this.state.MaterialReclaimItem,
+            MTReturnRequestTypeID: MTReturnRequestTypeID.TMSConfigValue,
+            Description: MLObject.Description
+        }
 
+        if (!this.state.MaterialReclaimItem.IsAfterReclaimProcess) {
+            this.props.callFetchAPI(APIHostName, "api/MaterialReclaim/UpdateMTRequset", dataSubmit).then(apiResult => {
+                this.showMessage(apiResult.Message);
+                this.props.hideModal();
+            })
+        }
+        else {
+            this.showMessage("Vật tư đã được cập nhật trạng thái");
+        }
 
-                    this.props.callFetchAPI(APIHostName, "api/MaterialReclaim/UpdateDestroyRequest", MaterialReclaimItem).then(apiResult => {
+    }
 
-                        this.showMessage(apiResult.Message);
-
-                    })
-                }
-                else {
-                    this.showMessage("Vật tư đã được cập nhật trạng thái")
-                }
-            }
-
+    btnSubmitDestroy() {
+        if (this.state.MaterialReclaimItem.IsAfterReclaimProcess) {
+            return <React.Fragment>
+                <button className="btn btn-primary mr-3" type="button" disabled>Hủy vật tư</button>
+            </React.Fragment>
+        } else if (this.state.IsPermissonDestroy) {
+            return <React.Fragment>
+                <button className="btn btn-primary mr-3" type="button" onClick={this.handleShowDescriptionDestroyModal.bind(this)}>Hủy vật tư</button>
+            </React.Fragment>
+        } else {
+            return <React.Fragment>
+                <button disabled={true} className="btn btn-primary mr-3" type="button" title="Bạn không có quyền!">Hủy vật tư</button>
+            </React.Fragment>
         }
     }
 
+    handleShowDescriptionDestroyModal() {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Mô tả hiện trạng vật tư',
+            content: {
+                text: <FormContainer
+                    dataSource={[]}
+                    IsCloseModal={true}
+                    MLObjectDefinition={[
+                        {
+                            Name: "Description",
+                            DefaultValue: "",
+                            BindControlName: "txtDescription",
+                            DataSourceMember: "Description"
+                        }
+                    ]}
+                    onSubmit={this.handleSubmitDestroy}
+                >
+                    <div className="row">
+                        <div className="col-md-12">
+                            <FormControl.TextArea
+                                classNameCustom="customcontrol"
+                                colspan="9"
+                                controltype="InputControl"
+                                datasourcemember="Description"
+                                label="mô tả hiện trạng vật tư"
+                                labelcolspan="3"
+                                maxSize={20}
+                                name="txtDescription"
+                                placeholder="Mô tả hiện trạng vật tư"
+                                validatonList={["required"]}
+                                value=""
+                            />
+                        </div>
+                    </div>
+                </FormContainer>
+            },
+            maxWidth: '800px'
+        });
+    }
 
+    handleSubmitDestroy(FormData, MLObject) {
+        const { MaterialReclaimItem, DataKeyConfig } = this.state;
+
+        const DestroyRequestTypeID = DataKeyConfig.find(n => n.TMSConfigID == "TMS_MATERIALRECLAIM_RETURNDESTROYRQTYPEID");
+
+        MaterialReclaimItem.DestroyRequestTypeID = DestroyRequestTypeID != undefined ? DestroyRequestTypeID.TMSConfigValue : 0;
+        MaterialReclaimItem.Description = MLObject.Description;
+
+        if (!MaterialReclaimItem.IsAfterReclaimProcess) {
+            this.props.callFetchAPI(APIHostName, "api/MaterialReclaim/UpdateDestroyRequest", MaterialReclaimItem).then(apiResult => {
+                this.showMessage(apiResult.Message);
+                this.props.hideModal();
+            })
+        }
+        else {
+            this.showMessage("Vật tư đã được cập nhật trạng thái")
+        }
+    }
 
     render() {
-
-        const { IsLoadDataComplete, MaterialReclaimItem, MaterialReclaimDetail, IsPermissonMTReturn, IsPermissonDestroy } = this.state;
+        const { IsLoadDataComplete, MaterialReclaimItem, MaterialReclaimDetail, IsPermissonDestroy } = this.state;
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
@@ -235,17 +340,12 @@ class DetailCom extends React.Component {
                             </div>
                             <footer className="card-footer text-right ">
                                 {
-                                    IsPermissonMTReturn == true ?
-                                        <button className="btn btn-primary mr-3" type="button" onClick={this.handleSubmitMTReturnRequest.bind(this)}>Thu hồi về kho</button>
-                                        : <button disabled={true} className="btn btn-primary mr-3" type="button" title="Bạn không có quyền!">Thu hồi về kho</button>
+                                    this.btnSubmitMTReturnRequest()
                                 }
 
                                 {
-                                    IsPermissonDestroy == true ?
-                                        <button className="btn btn-primary mr-3" type="button" onClick={this.handleSubmitDestroy.bind(this)}>Hủy vật tư</button>
-                                        : <button disabled={true} className="btn btn-primary mr-3" type="button" title="Bạn không có quyền!">Hủy vật tư</button>
+                                    this.btnSubmitDestroy()
                                 }
-
 
                                 <Link to="/MaterialReclaim">
                                     <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button>
