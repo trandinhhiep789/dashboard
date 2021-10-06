@@ -145,6 +145,9 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
+        MLObject.FromDate.setHours(12, 0, 0, 0);
+        MLObject.ToDate.setHours(12, 0, 0, 0);
+
         const searchParamater = this.state.initSearchParamater.map(item => {
             if (item.SearchKey == "@FROMDATE") {
                 return {

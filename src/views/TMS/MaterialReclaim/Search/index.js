@@ -1,40 +1,41 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Modal, ModalManager, Effect } from "react-dynamic-modal";
-import SearchForm from "../../../../common/components/FormContainer/SearchForm";
-import DataGrid from "../../../../common/components/DataGrid";
-import { MessageModal } from "../../../../common/components/Modal";
-import { showModal, hideModal } from '../../../../actions/modal';
-import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
-import {
-
-    APIHostName,
-    SearchAPIPath,
-    PagePath,
-    DataGridColumnList,
-    IDSelectColumnName,
-    PKColumnName,
-    TitleFormSearch,
-    SearchMLObjectDefinition,
-    SearchElementList,
-    InitSearchParams,
-    DeleteNewAPIPath
-
-} from "../constants";
-import { callFetchAPI } from "../../../../actions/fetchAPIAction";
-import { updatePagePath } from "../../../../actions/pageAction";
-import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
+import { Modal, ModalManager, Effect } from "react-dynamic-modal";
+import ReactNotification from "react-notifications-component";
 
 import {
+    APIHostName,
+    DataGridColumnList,
+    DeleteNewAPIPath,
+    IDSelectColumnName,
+    InitSearchParams,
+    PagePath,
+    PKColumnName,
+    SearchAPIPath,
+    SearchElementList,
+    SearchMLObjectDefinition,
+    TitleFormSearch,
+} from "../constants";
+
+import {
+    GET_CACHE_USER_FUNCTION_LIST,
     MATERIALRECLAIM_VIEW,
     TMS_MATERIALRECLAIM_DESTROY,
     TMS_MATERIALRECLAIM_RETURN,
-    GET_CACHE_USER_FUNCTION_LIST
 } from "../../../../constants/functionLists";
 
+import { callFetchAPI } from "../../../../actions/fetchAPIAction";
+import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../constants/keyCache";
+import { MessageModal } from "../../../../common/components/Modal";
+import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
+import { showModal, hideModal } from '../../../../actions/modal';
+import { updatePagePath } from "../../../../actions/pageAction";
+import DataGrid from "../../../../common/components/DataGrid";
+import FormContainer from "../../../../common/components/FormContainer";
+import FormControl from "../../../../common/components/FormContainer/FormControl";
+import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -47,13 +48,16 @@ class SearchCom extends React.Component {
             SearchData: InitSearchParams,
             DataKeyConfig: [],
         };
-        this.gridref = React.createRef();
-        this.searchref = React.createRef();
-        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+
         this.callSearchData = this.callSearchData.bind(this);
+        this.checkPermission = this.checkPermission.bind(this);
+        this.getCacheKeyConfig = this.getCacheKeyConfig.bind(this);
+        this.gridref = React.createRef();
+        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+        this.handleSubmitFirstClick = this.handleSubmitFirstClick.bind(this);
+        this.handleSubmitTwoClick = this.handleSubmitTwoClick.bind(this);
         this.notificationDOMRef = React.createRef();
-        this.checkPermission = this.checkPermission.bind(this)
-        this.getCacheKeyConfig = this.getCacheKeyConfig.bind(this)
+        this.searchref = React.createRef();
     }
 
     componentDidMount() {
@@ -84,85 +88,147 @@ class SearchCom extends React.Component {
         })
     }
 
-
-
     handleUpdateFirstClick(MLObjectDefinition, modalElementList) {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Mô tả hiện trạng vật tư',
+            content: {
+                text: <FormContainer
+                    dataSource={[]}
+                    IsCloseModal={true}
+                    MLObjectDefinition={[
+                        {
+                            Name: "Description",
+                            DefaultValue: "",
+                            BindControlName: "txtDescription",
+                            DataSourceMember: "Description"
+                        }
+                    ]}
+                    onSubmit={(FormData, MLObject) => this.handleSubmitFirstClick(FormData, MLObject, MLObjectDefinition, modalElementList)}
+                >
+                    <div className="row">
+                        <div className="col-md-12">
+                            <FormControl.TextArea
+                                classNameCustom="customcontrol"
+                                colspan="9"
+                                controltype="InputControl"
+                                datasourcemember="Description"
+                                label="mô tả hiện trạng vật tư"
+                                labelcolspan="3"
+                                maxSize={20}
+                                name="txtDescription"
+                                placeholder="Mô tả hiện trạng vật tư"
+                                validatonList={["required"]}
+                                value=""
+                            />
+                        </div>
+                    </div>
+                </FormContainer>
+            },
+            maxWidth: '800px'
+        });
+    }
+
+    handleSubmitFirstClick(FormData, MLObject, MLObjectDefinition, modalElementList) {
         const { gridDataSource, DataKeyConfig } = this.state;
 
-        const confir = confirm("Bạn có chắc muốn thu hồi vật tư về kho?");
-        console.log("confir", confir)
-        if (confir) {
-            this.checkPermission(TMS_MATERIALRECLAIM_RETURN).then((result) => {
-                if (result) {
-                    const MTReturnRequestID = MLObjectDefinition.pkColumnName[0].value;
-                    const tempData = gridDataSource.find(n => n.MaterialReclaimID == MTReturnRequestID);
-                    const MTReturnRequestTypeID = DataKeyConfig.find(n => n.TMSConfigID == "TMS_MATERIALRECLAIM_RETURNRQTYPEID");
+        this.checkPermission(TMS_MATERIALRECLAIM_RETURN).then((result) => {
+            if (result) {
+                const MTReturnRequestID = MLObjectDefinition.pkColumnName[0].value;
+                const tempData = gridDataSource.find(n => n.MaterialReclaimID == MTReturnRequestID);
+                const MTReturnRequestTypeID = DataKeyConfig.find(n => n.TMSConfigID == "TMS_MATERIALRECLAIM_RETURNRQTYPEID");
 
-                    tempData.MTReturnRequestTypeID = MTReturnRequestTypeID.TMSConfigValue;
+                tempData.MTReturnRequestTypeID = MTReturnRequestTypeID.TMSConfigValue;
+                tempData.Description = MLObject.Description;
 
-                    if (!tempData.IsAfterReclaimProcess) {
-
-                        this.props.callFetchAPI(APIHostName, "api/MaterialReclaim/UpdateMTRequset", tempData).then(apiResult => {
-                            console.log("apiResult", tempData, apiResult)
-                            this.showMessage(apiResult.Message);
-                            this.callSearchData(this.state.SearchData);
-
-                        })
-                    }
-                    else {
-                        this.showMessage("Vật tư đã được cập nhật trạng thái")
-                    }
+                if (!tempData.IsAfterReclaimProcess) {
+                    this.props.callFetchAPI(APIHostName, "api/MaterialReclaim/UpdateMTRequset", tempData).then(apiResult => {
+                        this.showMessage(apiResult.Message);
+                        this.callSearchData(this.state.SearchData);
+                    })
                 }
                 else {
-                    this.showMessage("Bạn không có quyền thu hồi vật tư về kho")
+                    this.showMessage("Vật tư đã được cập nhật trạng thái")
                 }
-
-            })
-        }
+            }
+            else {
+                this.showMessage("Bạn không có quyền thu hồi vật tư về kho")
+            }
+        })
     }
 
     handleUpdateTwoClick(MLObjectDefinition, modalElementList) {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Mô tả hiện trạng vật tư',
+            content: {
+                text: <FormContainer
+                    dataSource={[]}
+                    IsCloseModal={true}
+                    MLObjectDefinition={[
+                        {
+                            Name: "Description",
+                            DefaultValue: "",
+                            BindControlName: "txtDescription",
+                            DataSourceMember: "Description"
+                        }
+                    ]}
+                    onSubmit={(FormData, MLObject) => this.handleSubmitTwoClick(FormData, MLObject, MLObjectDefinition, modalElementList)}
+                >
+                    <div className="row">
+                        <div className="col-md-12">
+                            <FormControl.TextArea
+                                classNameCustom="customcontrol"
+                                colspan="9"
+                                controltype="InputControl"
+                                datasourcemember="Description"
+                                label="mô tả hiện trạng vật tư"
+                                labelcolspan="3"
+                                maxSize={20}
+                                name="txtDescription"
+                                placeholder="Mô tả hiện trạng vật tư"
+                                validatonList={["required"]}
+                                value=""
+                            />
+                        </div>
+                    </div>
+                </FormContainer>
+            },
+            maxWidth: '800px'
+        });
+    }
+
+    handleSubmitTwoClick(FormData, MLObject, MLObjectDefinition, modalElementList) {
         const { gridDataSource, DataKeyConfig } = this.state;
 
-        const confir = confirm("Bạn có chắc muốn hủy vật tư thu hồi này không?");
-        console.log("confir", confir)
-        if (confir) {
-            this.checkPermission(TMS_MATERIALRECLAIM_DESTROY).then((result) => {
-                if (result) {
-                    const MTReturnRequestID = MLObjectDefinition.pkColumnName[0].value;
-                    const tempData = gridDataSource.find(n => n.MaterialReclaimID == MTReturnRequestID);
-                    const DestroyRequestTypeID = DataKeyConfig.find(n => n.TMSConfigID == "TMS_MATERIALRECLAIM_RETURNDESTROYRQTYPEID");
+        this.checkPermission(TMS_MATERIALRECLAIM_DESTROY).then((result) => {
+            if (result) {
+                const MTReturnRequestID = MLObjectDefinition.pkColumnName[0].value;
+                const tempData = gridDataSource.find(n => n.MaterialReclaimID == MTReturnRequestID);
+                const DestroyRequestTypeID = DataKeyConfig.find(n => n.TMSConfigID == "TMS_MATERIALRECLAIM_RETURNDESTROYRQTYPEID");
 
-                    tempData.DestroyRequestTypeID = DestroyRequestTypeID != undefined ?  DestroyRequestTypeID.TMSConfigValue : 0;
+                tempData.DestroyRequestTypeID = DestroyRequestTypeID != undefined ? DestroyRequestTypeID.TMSConfigValue : 0;
+                tempData.Description = MLObject.Description;
 
-                    if (!tempData.IsAfterReclaimProcess) {
-
-                       
-                        this.props.callFetchAPI(APIHostName, "api/MaterialReclaim/UpdateDestroyRequest", tempData).then(apiResult => {
-                            console.log("apiResult", tempData, apiResult)
-                            this.showMessage(apiResult.Message);
-                            this.callSearchData(this.state.SearchData);
-
-                        })
-                    }
-                    else {
-                        this.showMessage("Vật tư đã được cập nhật trạng thái")
-                    }
+                if (!tempData.IsAfterReclaimProcess) {
+                    this.props.callFetchAPI(APIHostName, "api/MaterialReclaim/UpdateDestroyRequest", tempData).then(apiResult => {
+                        this.showMessage(apiResult.Message);
+                        this.callSearchData(this.state.SearchData);
+                    })
                 }
                 else {
-                    this.showMessage("Bạn không có quyền thu hồi vật tư về kho")
+                    this.showMessage("Vật tư đã được cập nhật trạng thái")
                 }
+            }
+            else {
+                this.showMessage("Bạn không có quyền thu hồi vật tư về kho")
+            }
 
-            })
-        }
-        
-
+        })
     }
 
     callSearchData(searchData) {
         const { callFetchAPI } = this.props;
         callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("object", searchData, apiResult)
+
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -170,9 +236,22 @@ class SearchCom extends React.Component {
                 this.showMessage(apiResult.Message);
             }
             else {
+                const gridDataSource = apiResult.ResultObject.map(item => {
+                    if (item.IsAfterReclaimProcess) {
+                        return {
+                            ...item,
+                            AfterReclaimProcessTypeIDName: `${item.AfterReclaimProcessTypeID} - ${item.AfterReclaimProcessTypeName}`
+                        }
+                    } else {
+                        return {
+                            ...item,
+                            AfterReclaimProcessTypeIDName: ""
+                        }
+                    }
+                })
 
                 this.setState({
-                    gridDataSource: apiResult.ResultObject,
+                    gridDataSource,
                     IsCallAPIError: apiResult.IsError
                 });
                 this.getCacheKeyConfig();
@@ -181,7 +260,7 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        console.log("search", formData, MLObject)
+
         const DataSearch = [
             {
                 SearchKey: "@KEYWORD",
@@ -252,27 +331,24 @@ class SearchCom extends React.Component {
     }
 
     handleUpdateListItem(lstID, pkColumnName) {
-        console.log("select item", lstID, pkColumnName)
     }
 
     handleDelete(listDeleteID, pkColumnName) {
-        console.log("delete item", listDeleteID, pkColumnName)
 
     }
 
     handleUpdateList(lstID, pkColumnName) {
-        console.log("select item 222", lstID, pkColumnName)
 
     }
 
     checkPermission(permissionKey) {
         return new Promise((resolve, reject) => {
             this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
-                console.log("checkPermission", result)
+
                 if (!result.IsError && result.ResultObject.CacheData != null) {
                     for (let i = 0; i < result.ResultObject.CacheData.length; i++) {
                         if (result.ResultObject.CacheData[i].FunctionID == permissionKey) {
-                            console.log("object", result.ResultObject.CacheData[i])
+
                             resolve(true);
                             return;
                         }
@@ -290,40 +366,40 @@ class SearchCom extends React.Component {
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
-                    FormName={TitleFormSearch}
-                    MLObjectDefinition={SearchMLObjectDefinition}
-                    listelement={SearchElementList}
-                    onSubmit={this.handleSearchSubmit}
-                    ref={this.searchref}
                     className="multiple multiple-custom multiple-custom-display"
                     classNamebtnSearch="btn-custom-bottom"
+                    FormName={TitleFormSearch}
+                    listelement={SearchElementList}
+                    MLObjectDefinition={SearchMLObjectDefinition}
+                    onSubmit={this.handleSearchSubmit}
+                    ref={this.searchref}
 
                 />
                 <DataGrid
-                    listColumn={DataGridColumnList}
-                    dataSource={this.state.gridDataSource}
-                    //AddLink={AddLink}
-                    IDSelectColumnName={IDSelectColumnName}
-                    PKColumnName={PKColumnName}
+                    // IconUpdateList="ti-close"
+                    // IconUpdateListItem="ti-back-left"
+                    // IsExportFile={false}
+                    // IsUpdateList={true}
+                    // IsUpdateListItem={true}
                     // onInsertClick={this.handleInputGridInsert.bind(this)}
-                    onUpdateFirstClick={this.handleUpdateFirstClick.bind(this)}
-                    onUpdateTwoClick={this.handleUpdateTwoClick.bind(this)}
+                    // onUpdateList={this.handleUpdateList.bind(this)}
+                    // onUpdateListItem={this.handleUpdateListItem.bind(this)}
+                    // TitleUpdateList="Hủy vật tư"
+                    // TitleUpdateListItem="Thu hồi vật tư về kho"
+                    //AddLink={AddLink}
+                    dataSource={this.state.gridDataSource}
+                    IDSelectColumnName={IDSelectColumnName}
+                    IsAutoPaging={true}
                     IsCustomAddLink={false}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
+                    listColumn={DataGridColumnList}
                     onDeleteClick={this.handleDelete.bind(this)}
-                    IsAutoPaging={true}
-                    RowsPerPage={20}
-                    // IsExportFile={false}
-                    // TitleUpdateListItem="Thu hồi vật tư về kho"
-                    // IconUpdateListItem="ti-back-left"
-                    // IsUpdateListItem={true}
-                    // onUpdateListItem={this.handleUpdateListItem.bind(this)}
-                    // IsUpdateList={true}
-                    // TitleUpdateList="Hủy vật tư"
-                    // IconUpdateList="ti-close"
-                    // onUpdateList={this.handleUpdateList.bind(this)}
+                    onUpdateFirstClick={this.handleUpdateFirstClick.bind(this)}
+                    onUpdateTwoClick={this.handleUpdateTwoClick.bind(this)}
+                    PKColumnName={PKColumnName}
                     RequirePermission={MATERIALRECLAIM_VIEW}
+                    RowsPerPage={20}
                 />
             </React.Fragment>
         );

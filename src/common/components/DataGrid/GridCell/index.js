@@ -403,7 +403,7 @@ class GridCell extends Component {
                 );
             case "hyperlink":
                 const { RelatedVoucherID } = rowItem;
-                let destinationHyperlink;
+                let destinationHyperlink = "";
 
                 if (RelatedVoucherID.includes("AR")) {
                     destinationHyperlink = hyperLink.AREdit
@@ -411,6 +411,8 @@ class GridCell extends Component {
                     destinationHyperlink = hyperLink.MTRDetail
                 } else if (RelatedVoucherID.includes("INV")) {
                     destinationHyperlink = hyperLink.INVRequest
+                } else if (RelatedVoucherID.includes("MR")) {
+                    destinationHyperlink = hyperLink.MRDetail
                 } else {
                     destinationHyperlink = hyperLink.SODetail
                 }

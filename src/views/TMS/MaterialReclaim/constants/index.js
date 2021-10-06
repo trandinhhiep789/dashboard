@@ -227,7 +227,7 @@ export const DataGridColumnList = [
         Caption: "Mã yc thu hồi",
         DataSourceMember: "MaterialReclaimID",
         Link: "/MaterialReclaim/Detail/",
-        Width: 140
+        // Width: 140
     },
     {
         Name: "ShipmentOrderID",
@@ -235,38 +235,43 @@ export const DataGridColumnList = [
         Caption: "Mã vận đơn",
         Link: "/ShipmentOrder/Detail/",
         DataSourceMember: "ShipmentOrderID",
-        Width: 300
+        // Width: 300
     },
     {
         Name: "ReturnUserFullName",
         Type: "text",
         Caption: "Ngưởi thu hồi",
         DataSourceMember: "ReturnUserFullName",
-        Width: 250
+        // Width: 250
     },
     {
         Name: "CreatedDate",
         Type: "datetime",
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
-        Width: 150
+        // Width: 150
     },
-
     {
         Name: "ReturnStore",
         Type: "text",
         Caption: "Kho thu hồi",
         DataSourceMember: "ReturnStore",
-        Width: 150
+        // Width: 150
     },
     {
-        Name: "AfterReclaimProcessTypeName",
+        Name: "IsAfterReclaimProcess",
+        Type: "checkicon",
+        Caption: "Đã cập nhật tình trạng xử lý sau thu hồi",
+        DataSourceMember: "IsAfterReclaimProcess",
+        Width: 250
+    },
+    {
+        Name: "AfterReclaimProcessTypeIDName",
         Type: "text",
         Caption: "Xử lý thu hồi",
-        DataSourceMember: "AfterReclaimProcessTypeName",
-        Width: 130
+        DataSourceMember: "AfterReclaimProcessTypeIDName",
+        // Width: 130
     },
-
     {
         Name: "Action",
         Type: "groupTwoAction",
@@ -282,38 +287,38 @@ export const DataGridColumnList = [
 
 export const MaterialReclaimDetailColumnList = [
     {
-        Name: "InstallProductID",
+        Name: "InstallProductIDName",
         Type: "text",
         Caption: "Hàng hóa",
-        DataSourceMember: "InstallProductID",
-        Width: 140
+        DataSourceMember: "InstallProductIDName",
+        // Width: 140
     },
     {
-        Name: "ProductName",
+        Name: "ProductIDName",
         Type: "text",
         Caption: "Vật tư",
-        DataSourceMember: "ProductName",
-        Width: 140
+        DataSourceMember: "ProductIDName",
+        // Width: 140
     },
     {
         Name: "QuantityUnit",
         Type: "text",
         Caption: "Đơn vị tính",
         DataSourceMember: "QuantityUnit",
-        Width: 140
+        // Width: 140
     },
     {
         Name: "ReturnQuantity",
         Type: "text",
         Caption: "Số lương thu hồi",
         DataSourceMember: "ReturnQuantity",
-        Width: 140
+        // Width: 140
     },
     {
         Name: "ReturnRealQuantity",
         Type: "text",
         Caption: "Số lương thu hồi thực tế",
         DataSourceMember: "ReturnRealQuantity",
-        Width: 140
+        // Width: 140
     },
 ];
