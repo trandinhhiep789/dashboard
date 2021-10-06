@@ -1,5 +1,6 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link } from "react-router-dom";
 
 import { formatDate } from '../../../../common/library/CommonLib'
 
@@ -43,7 +44,7 @@ export class MaterialReclaimInfo extends Component {
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">
-                            {MaterialReclaim.AfterReclaimProcessTypeName}
+                            {MaterialReclaim.AfterReclaimProcessTypeID == 0 ? "Chưa xử lý" : `${MaterialReclaim.AfterReclaimProcessTypeID} - ${MaterialReclaim.AfterReclaimProcessTypeName}`}
                         </label>
                     </div>
                 </div>
@@ -63,7 +64,7 @@ export class MaterialReclaimInfo extends Component {
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">
-                            {MaterialReclaim.AfterReclaimProcessUser} - {MaterialReclaim.AfterReclaimProcessUserName}
+                            {MaterialReclaim.AfterReclaimProcessUser != "" ? `${MaterialReclaim.AfterReclaimProcessUser} - ${MaterialReclaim.AfterReclaimProcessUserName}` : ""}
                         </label>
                     </div>
 
@@ -75,7 +76,7 @@ export class MaterialReclaimInfo extends Component {
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">
-                            {MaterialReclaim.ReturnUser}
+                            {MaterialReclaim.ReturnUser != "" ? `${MaterialReclaim.ReturnUser} - ${MaterialReclaim.ReturnUserFullName}` : ""}
                         </label>
                     </div>
 
@@ -104,7 +105,7 @@ export class MaterialReclaimInfo extends Component {
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">
-                            {MaterialReclaim.MTReturnRequestID}
+                            <Link to={`/MTReturnRequest/Detail/${MaterialReclaim.MTReturnRequestID}`} target="_blank">{MaterialReclaim.MTReturnRequestID}</Link>
                         </label>
                     </div>
                 </div>
@@ -124,7 +125,7 @@ export class MaterialReclaimInfo extends Component {
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">
-                            {MaterialReclaim.MTDestroyRequestID}
+                            <Link to={`/DestroyRequest/Detail/${MaterialReclaim.MTDestroyRequestID}`} target="_blank">{MaterialReclaim.MTDestroyRequestID}</Link>
                         </label>
                     </div>
                 </div>
