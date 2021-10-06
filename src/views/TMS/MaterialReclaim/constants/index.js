@@ -262,8 +262,7 @@ export const DataGridColumnList = [
         Name: "IsAfterReclaimProcess",
         Type: "checkicon",
         Caption: "Đã xử lý thu hồi",
-        DataSourceMember: "IsAfterReclaimProcess",
-        Width: 250
+        DataSourceMember: "IsAfterReclaimProcess"
     },
     {
         Name: "AfterReclaimProcessTypeIDName",
