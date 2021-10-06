@@ -142,15 +142,18 @@ class SearchCom extends React.Component {
 
                 if (!tempData.IsAfterReclaimProcess) {
                     this.props.callFetchAPI(APIHostName, "api/MaterialReclaim/UpdateMTRequset", tempData).then(apiResult => {
+                        this.props.hideModal();
                         this.showMessage(apiResult.Message);
                         this.callSearchData(this.state.SearchData);
                     })
                 }
                 else {
+                    this.props.hideModal();
                     this.showMessage("Vật tư đã được cập nhật trạng thái")
                 }
             }
             else {
+                this.props.hideModal();
                 this.showMessage("Bạn không có quyền thu hồi vật tư về kho")
             }
         })
@@ -210,15 +213,18 @@ class SearchCom extends React.Component {
 
                 if (!tempData.IsAfterReclaimProcess) {
                     this.props.callFetchAPI(APIHostName, "api/MaterialReclaim/UpdateDestroyRequest", tempData).then(apiResult => {
+                        this.props.hideModal();
                         this.showMessage(apiResult.Message);
                         this.callSearchData(this.state.SearchData);
                     })
                 }
                 else {
-                    this.showMessage("Vật tư đã được cập nhật trạng thái")
+                    this.props.hideModal();
+                    this.showMessage("Vật tư đã được cập nhật trạng thái");
                 }
             }
             else {
+                this.props.hideModal();
                 this.showMessage("Bạn không có quyền thu hồi vật tư về kho")
             }
 
