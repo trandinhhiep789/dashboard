@@ -626,8 +626,14 @@ class DataGridCom extends Component {
                                                 const { RelatedVoucherID } = rowItem;
 
                                                 const cellData = <GridCell
+                                                    buttonTitleFirst={columnItem.ButtonTitleFirst} // case "groupTwoAction"
+                                                    buttonTitleTwo={columnItem.ButtonTitleTwo} // case "groupTwoAction"
                                                     caption={columnItem.Caption}
+                                                    disabledBtnFirst={rowItem[columnItem.keyDisabledBtnFirst] || columnItem.disabledBtnFirst} //case "groupTwoAction"
+                                                    disabledBtnTwo={rowItem[columnItem.keyDisabledBtnTwo] || columnItem.disabledBtnTwo} // case "groupTwoAction"
                                                     hyperLink={columnItem.Hyperlinks}
+                                                    iconFirst={columnItem.IconFirst} // case "groupTwoAction"
+                                                    iconTwo={columnItem.IconTwo} // case "groupTwoAction"
                                                     index={rowIndex}
                                                     isChecked={isChecked}
                                                     link={columnItem.Link}
@@ -638,11 +644,11 @@ class DataGridCom extends Component {
                                                     onDetailtModalClick={this.handleDetailModalClick.bind(this)}
                                                     onHistoryClick={this.handleHistoryItemClick.bind(this)}
                                                     onInsertClickEdit={this.handleInsertClickEdit}
-                                                    onUpdateFirstClick={this.handleUpdateFirstClick.bind(this)}
-                                                    onUpdateTwoClick={this.handleUpdateTwoClick.bind(this)}
                                                     onModalClick={this.handleShowModalClick.bind(this)}
                                                     onShowImageClick={this.handleShowImageClick.bind(this)}
                                                     onUpdateClick={this.handleUpdateItemClick.bind(this)}
+                                                    onUpdateFirstClick={this.handleUpdateFirstClick.bind(this)}
+                                                    onUpdateTwoClick={this.handleUpdateTwoClick.bind(this)}
                                                     onValueChange={this.onValueChange}
                                                     params={this.props.params}
                                                     pkColumnName={this.state.ListPKColumnName}
@@ -650,12 +656,8 @@ class DataGridCom extends Component {
                                                     rowItem={rowItem}
                                                     text={rowItem[columnItem.DataSourceMember]}
                                                     textHyperLink={RelatedVoucherID}
-                                                    value={value}
                                                     type={columnItem.Type}
-                                                    buttonTitleFirst={columnItem.ButtonTitleFirst}
-                                                    iconFirst={columnItem.IconFirst}
-                                                    buttonTitleTwo={columnItem.ButtonTitleTwo}
-                                                    iconTwo={columnItem.IconTwo}
+                                                    value={value}
                                                 />;
                                                 return (
                                                     <td key={columnItem.Name} style={cellStyle}>{cellData}</td>

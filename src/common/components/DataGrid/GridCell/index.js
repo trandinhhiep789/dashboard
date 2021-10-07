@@ -364,13 +364,14 @@ class GridCell extends Component {
                 </a>;
             case "groupTwoAction":
                 return <div className="groupTwoAction">
-                    <button data-tip data-for="TooltipFirst" type="button" className="btn btnfirst" onClick={this.handleUpdateFirst.bind(this)}>
+                    <button data-tip data-for="TooltipFirst" type="button" className="btn btnfirst" onClick={this.handleUpdateFirst.bind(this)} disabled={this.props.disabledBtnFirst}>
                         <i className={(this.props.iconFirst != undefined || this.props.iconFirst != "") ? this.props.iconFirst : "ti-plus"}></i>
                     </button>
                     <ReactTooltip id="TooltipFirst">
                         <span>{(this.props.buttonTitleFirst != undefined || this.props.buttonTitleFirst != "") ? this.props.buttonTitleFirst : "Cập nhật"}</span>
                     </ReactTooltip>
-                    <button data-tip data-for="TooltipTwo" type="button" className="btn btntwo" onClick={this.handleUpdateTwo.bind(this)}>
+
+                    <button data-tip data-for="TooltipTwo" type="button" className="btn btntwo" onClick={this.handleUpdateTwo.bind(this)} disabled={this.props.disabledBtnTwo}>
                         <i className={(this.props.iconTwo != undefined || this.props.iconTwo != "") ? this.props.iconTwo : "ti-plus"}></i>
                     </button>
                     <ReactTooltip id="TooltipTwo">
@@ -448,6 +449,11 @@ class GridCell extends Component {
 
         return control;
     }
+}
+
+GridCell.defaultProps = {
+    disabledBtnFirst: false,
+    disabledBtnTwo: false
 }
 
 

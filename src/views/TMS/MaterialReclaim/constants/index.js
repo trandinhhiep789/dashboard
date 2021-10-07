@@ -279,8 +279,10 @@ export const DataGridColumnList = [
         Width: 100,
         ButtonTitleFirst: "Thu hồi vật tư về kho",
         IconFirst: "ti-back-left",
+        keyDisabledBtnFirst: "IsAfterReclaimProcess",
         ButtonTitleTwo: "Hủy vật tư",
         IconTwo: "ti-close",
+        keyDisabledBtnTwo: "IsAfterReclaimProcess"
     },
 ];
 
