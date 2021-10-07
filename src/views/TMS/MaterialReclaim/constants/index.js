@@ -311,14 +311,14 @@ export const MaterialReclaimDetailColumnList = [
     {
         Name: "ReturnQuantity",
         Type: "text",
-        Caption: "Số lương thu hồi",
+        Caption: "Số lượng thu hồi",
         DataSourceMember: "ReturnQuantity",
         // Width: 140
     },
     {
         Name: "ReturnRealQuantity",
         Type: "text",
-        Caption: "Số lương thu hồi thực tế",
+        Caption: "Số lượng thu hồi thực tế",
         DataSourceMember: "ReturnRealQuantity",
         // Width: 140
     },

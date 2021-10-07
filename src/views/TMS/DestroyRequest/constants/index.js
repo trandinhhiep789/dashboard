@@ -242,7 +242,7 @@ export const DataGridColumnList = [
     },
     {
         Name: "DestroyRequestID",
-        Type: "texttolink",
+        Type: "texttolinkNewBlank",
         Caption: "Mã yêu cầu",
         DataSourceMember: "DestroyRequestID",
         Link: "/DestroyRequest/Detail/",

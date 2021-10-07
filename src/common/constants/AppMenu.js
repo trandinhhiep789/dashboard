@@ -1104,13 +1104,6 @@ const AppMenu = [
                 ]
             },
             {
-                MenuName: 'DestroyRequest',
-                MenuTitle: 'Danh sách yêu cầu hủy vật tư',
-                LinkTo: '/DestroyRequest',
-                MenuIcon: '',
-                SubMenu: []
-            },
-            {
                 MenuName: 'CurrentAdvanceDebt',
                 MenuTitle: 'Thông kê hạn mức tạm ứng',
                 LinkTo: '/CurrentAdvanceDebt',
@@ -1132,13 +1125,20 @@ const AppMenu = [
                 SubMenu: []
             },
             {
+                MenuName: 'DestroyRequest',
+                MenuTitle: 'Yêu cầu hủy vật tư',
+                LinkTo: '/DestroyRequest',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            {
                 MenuName: 'MaterialReclaim',
                 MenuTitle: 'Yêu cầu thu hồi vật tư',
                 LinkTo: '/MaterialReclaim',
                 MenuIcon: '',
                 SubMenu: []
             },
-            
+
             {
                 MenuName: 'DeliveryAbility',
                 MenuTitle: 'Khai báo tổng tải',
