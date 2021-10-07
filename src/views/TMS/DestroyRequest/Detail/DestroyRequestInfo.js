@@ -43,7 +43,7 @@ class DestroyRequestInfoCom extends Component {
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">
-                            {this.props.DestroyRequest.DestroyRequestTypeName}
+                            {this.props.DestroyRequest.DestroyRequestTypeID} - {this.props.DestroyRequest.DestroyRequestTypeName}
                         </label>
                     </div>
                 </div>
@@ -71,7 +71,7 @@ class DestroyRequestInfoCom extends Component {
                         <label className="col-form-label bold">Kho yêu cầu:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{this.props.DestroyRequest.StoreName}</label>
+                        <label className="col-form-label">{this.props.DestroyRequest.RequestStoreID} - {this.props.DestroyRequest.StoreName}</label>
                     </div>
 
                     <div className="form-group col-md-2">
@@ -104,7 +104,7 @@ class DestroyRequestInfoCom extends Component {
                         <label className="col-form-label bold">Người duyệt:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{DestroyRequest.reViewedUser + " - " + DestroyRequest.ReViewedUserName}</label>
+                        <label className="col-form-label">{DestroyRequest.reViewedUser != "" ? `${DestroyRequest.reViewedUser} - ${DestroyRequest.ReViewedUserName}` : ""}</label>
                     </div>
 
                 </div>
@@ -139,7 +139,7 @@ class DestroyRequestInfoCom extends Component {
                         <label className="col-form-label bold">Người tạo đơn hàng hủy vật tư:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{DestroyRequest.CreatedOrderUser + " - " + DestroyRequest.CreatedOrderUserName}</label>
+                        <label className="col-form-label">{DestroyRequest.CreatedOrderUser != "" ? `${DestroyRequest.CreatedOrderUser} - ${DestroyRequest.CreatedOrderUserName}` : ""}</label>
                     </div>
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Ngày tạo đơn hàng hủy vật tư:</label>
@@ -150,7 +150,7 @@ class DestroyRequestInfoCom extends Component {
                         </div>
 
                     </div>
-                    
+
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Mã đơn hàng hủy vật tư:</label>
                     </div>

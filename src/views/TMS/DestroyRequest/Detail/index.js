@@ -41,27 +41,27 @@ class DetailCom extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            DataSource: {},
             CallAPIMessage: "",
-            IsCallAPIError: false,
-            IsLoadDataComplete: false,
-            IsSystem: false,
-            DestroyRequest: {},
-            DestroyRequestDetail: [],
-            DestroyRequestRL: [],
-            DestroyRequest_AttachmentList: [],
-            DestroyRequest_ComementList: [],
-            DestroyRequestID: '',
-            RequestDate: '',
-            IsOutPut: false,
             CurrentReviewLevelID: '',
             CurrentReviewLevelName: '',
+            DataSource: {},
+            DestroyRequest_AttachmentList: [],
+            DestroyRequest_ComementList: [],
+            DestroyRequest: {},
+            DestroyRequestDetail: [],
+            DestroyRequestID: '',
+            DestroyRequestRL: [],
             isAutoReview: false,
-            lastReviewLevelID: '',
-            isUserNameReviewLevel: false,
+            IsCallAPIError: false,
             isHiddenButtonRV: false,
+            IsLoadDataComplete: false,
+            IsOutPut: false,
             IsStatus: false,
-            IsStatusReject: false
+            IsStatusReject: false,
+            IsSystem: false,
+            isUserNameReviewLevel: false,
+            lastReviewLevelID: '',
+            RequestDate: '',
         }
         this.callLoadData = this.callLoadData.bind(this);
         this.handleSubmitOutputDestroyRequest = this.handleSubmitOutputDestroyRequest.bind(this);
@@ -80,7 +80,6 @@ class DetailCom extends React.Component {
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            console.log('apiResult', apiResult.ResultObject)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -141,13 +140,11 @@ class DetailCom extends React.Component {
                             return item;
                         }
                     })
-                    // console.log("returnStatusDiffer", returnStatusDiffer)
                     const returnStatusReject = lstDestroyRequestReviewLevel.filter((item, index) => {
                         if (item.ReviewStatus == 2) {
                             return item;
                         }
                     })
-                    // console.log("returnStatusReject", returnStatusReject)
                     if (returnStatusReject.length > 0) {
                         this.setState({
                             IsStatusReject: true
@@ -185,25 +182,22 @@ class DetailCom extends React.Component {
                     }
                 }
 
-                // console.log("result", resultDestroyRequestReviewLevel)
                 this.setState({
-                    RequestDate: apiResult.ResultObject.RequestDate,
+                    CurrentReviewLevelID: CurrentReviewLevelID,
+                    CurrentReviewLevelName: ReviewLevelName,
+                    DataSource: apiResult.ResultObject,
+                    DestroyRequest_AttachmentList: apiResult.ResultObject.DestroyRequest_AttachmentList,
+                    DestroyRequest_ComementList: apiResult.ResultObject.DestroyRequest_CommentList,
                     DestroyRequest: apiResult.ResultObject,
                     DestroyRequestDetail: lstDestroyRequestDetail,
                     DestroyRequestRL: resultDestroyRequestReviewLevel,
-                    DataSource: apiResult.ResultObject,
-                    IsLoadDataComplete: true,
-                    isHiddenButtonRV: apiResult.ResultObject.IsreViewed,
-                    IsSystem: IsSystem,
-                    IsOutPut: disabledIsOutPut,
-                    CurrentReviewLevelID: CurrentReviewLevelID,
-                    CurrentReviewLevelName: ReviewLevelName,
                     isAutoReview: IsreViewed,
+                    isHiddenButtonRV: apiResult.ResultObject.IsreViewed,
+                    IsLoadDataComplete: true,
+                    IsOutPut: disabledIsOutPut,
+                    IsSystem: IsSystem,
                     lastReviewLevelID: lstDestroyRequestReviewLevel.length > 0 ? lstDestroyRequestReviewLevel[lstDestroyRequestReviewLevel.length - 1].ReviewLevelID : 0,
-                    DestroyRequest_AttachmentList: apiResult.ResultObject.DestroyRequest_AttachmentList,
-                    DestroyRequest_ComementList: apiResult.ResultObject.DestroyRequest_CommentList,
-
-
+                    RequestDate: apiResult.ResultObject.RequestDate,
                 });
             }
         });
@@ -260,7 +254,6 @@ class DetailCom extends React.Component {
         MLObject.IsCreatedOrder = true;
 
         this.props.callFetchAPI(APIHostName, UpdateCreateSaleOrderAPIPath, MLObject).then((apiResult) => {
-            console.log("MLObject", MLObject, apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -302,9 +295,6 @@ class DetailCom extends React.Component {
         const { DataSource, DestroyRequestRL, CurrentReviewLevelID, DestroyRequestID, lastReviewLevelID } = this.state;
         MLObject.DestroyRequestID = DataSource.DestroyRequestID;
 
-
-
-
         MLObject.IsreViewed = 1;
         MLObject.ReviewStatus = objData.ReviewStatus;
         MLObject.reViewedNote = objData.reViewedNote;//Trạng thái duyệt;(0: Chưa duyệt, 1: Đồng ý, 2: Từ chối)
@@ -337,13 +327,9 @@ class DetailCom extends React.Component {
         }
 
         MLObject.ReviewLevelID = CurrentReviewLevelID;
-
         MLObject.CurrentReviewLevelID = !!isLastList ? CurrentReviewLevelID : nextReviewLevelID[0].ReviewLevelID;
 
-        console.log("aa", MLObject);
-
         this.props.callFetchAPI(APIHostName, UpdateCurrentReviewLevelAPIPath, MLObject).then((apiResult) => {
-            // console.log("id",  apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -407,7 +393,6 @@ class DetailCom extends React.Component {
     }
 
     handleChangeValue(value) {
-        // console.log('value', value)
     }
 
     handleKeyPressSumit(valueCommentContent) {
@@ -451,22 +436,6 @@ class DetailCom extends React.Component {
         else {
             IsAutoReview = false
         }
-
-        let IsDisableButtonOutPut = false;
-        if (IsOutPut == false) {
-            IsDisableButtonOutPut = false
-        }
-        else {
-            if (IsStatus == true || IsStatusReject) {
-                IsDisableButtonOutPut = true
-            }
-            else {
-                IsDisableButtonOutPut = false
-            }
-
-        }
-
-        // console.log('IsStatus', IsStatus, IsOutPut, IsDisableButtonOutPut)
 
         let IsExitBtnReview = false;
         if (isUserNameReviewLevel == true) {

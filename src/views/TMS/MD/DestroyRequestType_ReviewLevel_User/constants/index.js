@@ -79,21 +79,28 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Mức duyệt",
         DataSourceMember: "ReviewLevelName",
-        Width: 500
+        // Width: 500
+    },
+    {
+        Name: "StoreID",
+        Type: "text",
+        Caption: "Mã kho duyệt",
+        DataSourceMember: "StoreID",
+        // Width: 500
     },
     {
         Name: "StoreName",
         Type: "text",
         Caption: "Kho duyệt",
         DataSourceMember: "StoreName",
-        Width: 500
+        // Width: 500
     },
     {
         Name: "FullName",
         Type: "text",
         Caption: "Người duyệt",
         DataSourceMember: "FullName",
-        Width: 500
+        // Width: 500
     },
     {
         Name: "IsDefault",
