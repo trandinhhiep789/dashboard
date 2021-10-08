@@ -50,7 +50,7 @@ class DetailCom extends React.Component {
         this.checkPermission = this.checkPermission.bind(this)
         this.getCacheKeyConfig = this.getCacheKeyConfig.bind(this)
         this.gridref = React.createRef();
-        this.handleCloseMessage = this.handleCloseMessage.bind(this)
+        // this.handleCloseMessage = this.handleCloseMessage.bind(this)
         this.handleSubmitDestroy = this.handleSubmitDestroy.bind(this);
         this.handleSubmitMTReturnRequest = this.handleSubmitMTReturnRequest.bind(this);
         this.notificationDOMRef = React.createRef();
@@ -116,16 +116,16 @@ class DetailCom extends React.Component {
             }
         })
     }
-    handleCloseMessage() {
-        this.setState({ IsCloseForm: true })
-    }
+    // handleCloseMessage() {
+    //     this.setState({ IsCloseForm: true })
+    // }
 
     showMessage(message) {
         ModalManager.open(
             <MessageModal
                 title="Thông báo"
                 message={message}
-                onCloseModal={this.handleCloseMessage}
+            // onCloseModal={this.handleCloseMessage}
             />
         );
     }
@@ -216,8 +216,12 @@ class DetailCom extends React.Component {
 
         if (!this.state.MaterialReclaimItem.IsAfterReclaimProcess) {
             this.props.callFetchAPI(APIHostName, "api/MaterialReclaim/UpdateMTRequset", dataSubmit).then(apiResult => {
-                this.showMessage(apiResult.Message);
-                this.props.hideModal();
+                if (apiResult.IsError) {
+                    this.showMessage(apiResult.Message);
+                } else {
+                    this.showMessage(apiResult.Message);
+                    this.props.hideModal();
+                }
             })
         }
         else {
@@ -292,8 +296,12 @@ class DetailCom extends React.Component {
 
         if (!MaterialReclaimItem.IsAfterReclaimProcess) {
             this.props.callFetchAPI(APIHostName, "api/MaterialReclaim/UpdateDestroyRequest", MaterialReclaimItem).then(apiResult => {
-                this.showMessage(apiResult.Message);
-                this.props.hideModal();
+                if (apiResult.IsError) {
+                    this.showMessage(apiResult.Message);
+                } else {
+                    this.showMessage(apiResult.Message);
+                    this.props.hideModal();
+                }
             })
         }
         else {
@@ -303,9 +311,9 @@ class DetailCom extends React.Component {
 
     render() {
         const { IsLoadDataComplete, MaterialReclaimItem, MaterialReclaimDetail, IsPermissonDestroy } = this.state;
-        if (this.state.IsCloseForm) {
-            return <Redirect to={BackLink} />;
-        }
+        // if (this.state.IsCloseForm) {
+        // return <Redirect to={BackLink} />;
+        // }
         return (
             <React.Fragment>
                 {
