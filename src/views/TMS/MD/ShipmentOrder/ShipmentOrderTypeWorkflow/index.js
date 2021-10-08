@@ -812,6 +812,11 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                         swaplabelModal={true}
                                     />
 
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Có thể tạo yêu cầu nhập trả linh kiện xác" name="IsCreateMTReturnRequest"
+                                        controltype="InputControl" datasourcemember="IsCreateMTReturnRequest"
+                                        swaplabelModal={true}
+                                    />
+
                                 </div>
                             </div>
                         </TabPage>
