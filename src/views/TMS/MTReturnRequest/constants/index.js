@@ -410,13 +410,13 @@ export const InputMTReturnRequestDetailColumnList = [
         DataSourceMember: "QuantityUnit",
         Width: 80
     },
-    {
-        Name: "TotalQuantity",
-        Type: "textNew",
-        Caption: "Số dư tạm ứng",
-        DataSourceMember: "TotalQuantity",
-        Width: 70
-    },
+    // {
+    //     Name: "TotalQuantity",
+    //     Type: "textNew",
+    //     Caption: "Số dư tạm ứng",
+    //     DataSourceMember: "TotalQuantity",
+    //     Width: 70
+    // },
     {
         Name: "Quantity",
         Type: "textNew",

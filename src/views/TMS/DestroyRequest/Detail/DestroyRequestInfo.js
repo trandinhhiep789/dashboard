@@ -78,7 +78,7 @@ class DestroyRequestInfoCom extends Component {
                         <label className="col-form-label bold">Ngày yêu cầu:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{formatDate(this.props.DestroyRequest.RequestDate, true)}</label>
+                        <label className="col-form-label">{formatDate(this.props.DestroyRequest.RequestDate, false)}</label>
                     </div>
 
                 </div>
@@ -115,7 +115,7 @@ class DestroyRequestInfoCom extends Component {
                         <label className="col-form-label bold">Ngày duyệt:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{formatDate(DestroyRequest.reViewedDate, true)}</label>
+                        <label className="col-form-label">{formatDate(DestroyRequest.reViewedDate, false)}</label>
                     </div>
 
 
@@ -146,7 +146,7 @@ class DestroyRequestInfoCom extends Component {
                     </div>
                     <div className="form-group col-md-4">
                         <div className="checkbox customCheckbox">
-                            <label className="col-form-label">{formatDate(DestroyRequest.CreatedOrderDate, true)}</label>
+                            <label className="col-form-label">{formatDate(DestroyRequest.CreatedOrderDate, false)}</label>
                         </div>
 
                     </div>

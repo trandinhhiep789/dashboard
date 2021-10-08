@@ -41,7 +41,7 @@ export class RenfundSuppliesInfo extends Component {
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">
-                            {RenfundSupplies.MTReturnRequestTypeName}
+                            {RenfundSupplies.MTReturnRequestTypeID} - {RenfundSupplies.MTReturnRequestTypeName}
                         </label>
                     </div>
                 </div>
@@ -74,7 +74,7 @@ export class RenfundSuppliesInfo extends Component {
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">
-                            {RenfundSupplies.StoreName}
+                            {RenfundSupplies.RequestStoreID} - {RenfundSupplies.StoreName}
                         </label>
                     </div>
 

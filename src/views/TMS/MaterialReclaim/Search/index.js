@@ -114,7 +114,7 @@ class SearchCom extends React.Component {
                                 datasourcemember="Description"
                                 label="mô tả hiện trạng vật tư"
                                 labelcolspan="3"
-                                maxSize={20}
+                                maxSize={1000}
                                 name="txtDescription"
                                 placeholder="Mô tả hiện trạng vật tư"
                                 validatonList={["required"]}
@@ -185,7 +185,7 @@ class SearchCom extends React.Component {
                                 datasourcemember="Description"
                                 label="mô tả hiện trạng vật tư"
                                 labelcolspan="3"
-                                maxSize={20}
+                                maxSize={1000}
                                 name="txtDescription"
                                 placeholder="Mô tả hiện trạng vật tư"
                                 validatonList={["required"]}
