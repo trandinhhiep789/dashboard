@@ -260,7 +260,7 @@ class EditCom extends React.Component {
             const updateMTReturnRequestDetailNew = MTReturnRequestDetailNew.map(item => {
                 return {
                     ...item,
-                    ConvertQuantity: val.InStockProductID != "" ? item.Quantity * item.InStockConvertRatio : 0
+                    ConvertQuantity: item.InStockProductID != "" ? item.Quantity * item.InStockConvertRatio : 0
                 }
             })
 
@@ -293,11 +293,9 @@ class EditCom extends React.Component {
     }
 
     handleSubmit(MLObject) {
-        console.log(MLObject)
-        return
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
-            this.showMessage(apiResult.MessageDetail);
+            this.showMessage(apiResult.Message);
         });
     }
 

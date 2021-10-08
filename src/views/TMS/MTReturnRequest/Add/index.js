@@ -376,7 +376,7 @@ class AddCom extends React.Component {
     handleSubmit(MLObject) {
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
-            this.showMessage(apiResult.MessageDetail);
+            this.showMessage(apiResult.Message);
         });
 
     }
