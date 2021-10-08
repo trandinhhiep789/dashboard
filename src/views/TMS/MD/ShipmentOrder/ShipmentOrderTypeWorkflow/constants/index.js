@@ -346,6 +346,12 @@ export const MLObjectDefinition = [
         DataSourceMember: "IsShowToCustomer"
     },
     {
+        Name: "IsCreateMTReturnRequest",
+        DefaultValue: "",
+        BindControlName: "IsCreateMTReturnRequest",
+        DataSourceMember: "IsCreateMTReturnRequest"
+    },
+    {
         Name: "WebAppHelpDocumentID",
         DefaultValue: "",
         BindControlName: "WebAppHelpDocumentID",
