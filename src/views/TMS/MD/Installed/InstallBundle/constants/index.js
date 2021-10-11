@@ -371,6 +371,13 @@ export const DataGridColumnList = [
         Width: 140
     },
     {
+        Name: "UpdatedUserFullName",
+        Type: "text",
+        Caption: "Người cập nhật",
+        DataSourceMember: "UpdatedUserFullName",
+        Width: 140
+    },
+    {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
