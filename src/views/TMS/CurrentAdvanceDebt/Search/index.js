@@ -170,8 +170,7 @@ class SearchCom extends React.Component {
 
     getdataHistory(obj) {
 
-        this.props.callFetchAPI(APIHostName, SearchHistoryAPIPath, obj).then(apiResult => {//
-            console.log("obj", obj, apiResult)
+        this.props.callFetchAPI(APIHostName, SearchHistoryAPIPath, obj).then(apiResult => {
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -256,7 +255,7 @@ class SearchCom extends React.Component {
     handleExportSubmit(formData, MLObject) {
         const userName = MLObject.UserName == -1 ? MLObject.UserName : MLObject.UserName.value
         this.props.callFetchAPI(APIHostName, SearchExportAPIPath, userName).then(apiResult => {
-           
+
             if (!apiResult.IsError) {
                 if (apiResult.ResultObject.length > 0) {
                     const exelData = apiResult.ResultObject.map((item, index) => {

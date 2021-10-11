@@ -260,27 +260,10 @@ class EditCom extends React.Component {
             const updateMTReturnRequestDetailNew = MTReturnRequestDetailNew.map(item => {
                 return {
                     ...item,
-                    ConvertQuantity: val.InStockProductID != "" ? item.Quantity * item.InStockConvertRatio : 0
+                    ConvertQuantity: item.InStockProductID != "" ? item.Quantity * item.InStockConvertRatio : 0
                 }
             })
 
-            let itemCheck = []
-            if (!!arrProductDetai) {
-                itemCheck = arrProductDetai.filter((item, index) => {
-                    if (item.InStockProductID != "") return item.ConvertQuantity > item.TotalQuantity;
-                    if (item.Quantity > item.TotalQuantity) return item;
-                })
-            }
-
-            if (itemCheck.length > 0) {
-                this.showMessage('Lỗi vật tư quá số lượng tạm ứng.');
-                this.setState({
-                    IsCallAPIError: true,
-                })
-                return;
-            }
-
-            // MLObject.lstMTReturnRequestDetail = MTReturnRequestDetailNew;
             MLObject.lstMTReturnRequestDetail = updateMTReturnRequestDetailNew;
             MLObject.RequestUser = RequestUser;
 
@@ -293,11 +276,9 @@ class EditCom extends React.Component {
     }
 
     handleSubmit(MLObject) {
-        console.log(MLObject)
-        return
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
-            this.showMessage(apiResult.MessageDetail);
+            this.showMessage(apiResult.Message);
         });
     }
 

@@ -281,7 +281,7 @@ class AddCom extends React.Component {
                     }
                 }
                 else {
-                    this.showMessage('Danh sách duyệt người không tồn tại. Vui lòng kiểm tra lại.');
+                    this.showMessage('Danh sách người duyệt không tồn tại. Vui lòng kiểm tra lại.');
                     this.setState({
                         IsCallAPIError: true,
                     })

@@ -343,24 +343,6 @@ class AddCom extends React.Component {
                 })
                 return;
             }
-            let itemCheck = []
-            if (!!arrProductDetai) {
-                itemCheck = arrProductDetai.filter((item, index) => {
-                    if (item.InStockProductID != "") return item.ConvertQuantity > item.TotalQuantity;
-                    if (item.Quantity > item.TotalQuantity) return item;
-                })
-            }
-
-
-            if (itemCheck.length > 0) {
-                // this.showMessage('Lỗi vật tư quá số lượng tạm ứng');
-                this.showMessage('Số lượng nhập trả vượt quá số lượng tồn của nhân viên');
-                this.setState({
-                    IsCallAPIError: true,
-                })
-                return;
-            }
-
 
             MLObject.IsCreatedInputVoucher = false;
             MLObject.lstMTReturnRequestDetail = MTReturnRequestDetail;
@@ -376,7 +358,7 @@ class AddCom extends React.Component {
     handleSubmit(MLObject) {
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
-            this.showMessage(apiResult.MessageDetail);
+            this.showMessage(apiResult.Message);
         });
 
     }
