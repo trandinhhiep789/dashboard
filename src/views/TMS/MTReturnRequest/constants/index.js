@@ -30,7 +30,7 @@ export const TitleFormAdd = "Thêm yêu cầu nhập trả vật tư";
 export const TitleFormEdit = "Cập nhật nhập trả vật tư";
 export const TitleFormDetail = "Thông tin nhập trả vật tư";
 
-export const addImportMaterialModalWidth = "95%";
+export const addImportMaterialModalWidth = "100%";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
@@ -560,8 +560,13 @@ export const InputMTReturnRequestDetailColumnListNew = [
         DataSourceMember: "IsAllowdUpliCatiOnProduct",
         Width: 60
     },
-
-
+    {
+        Name: "IsCheckCurrentAdvanceDebt",
+        Type: "checkbox",
+        Caption: "Có kiểm tra tồn nhân viên",
+        DataSourceMember: "IsCheckCurrentAdvanceDebt",
+        Width: 70
+    },
     {
         Name: "IsCheckMinMaxQuantity",
         Type: "checkbox",
