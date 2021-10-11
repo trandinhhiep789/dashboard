@@ -174,7 +174,6 @@ class MTReturnRequestType_ProductCom extends React.Component {
         }
 
 
-        //console.log("formdata",formData);
 
         //return 1;
     }
@@ -245,7 +244,6 @@ class MTReturnRequestType_ProductCom extends React.Component {
                             return;
                         }
 
-
                         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
                             if (!apiResult.IsError) {
                                 if (this.props.onComponentChange) {
@@ -254,10 +252,9 @@ class MTReturnRequestType_ProductCom extends React.Component {
                                 this.props.callClearLocalCache(ERPCOMMONCACHE_MTRETURNRQTYPE_PR);
                                 this.props.hideModal();
                             }
-                            //this.showMessage(apiResult.Message);
+
                             this.addNotification(apiResult.Message, apiResult.IsError);
                         });
-                        //console.log("dsadad", MLObject);
                     }
                 }
             },
@@ -293,7 +290,7 @@ class MTReturnRequestType_ProductCom extends React.Component {
             this.displayInputControl(_IsCheckMinMaxQuality);
         }, 100);
 
-        
+
         //load combo sản phẩm tồn kho
         let options = [];
         this.props.MaterialProductDataSource.map((item, index) => {
@@ -383,11 +380,9 @@ class MTReturnRequestType_ProductCom extends React.Component {
                                 this.props.callClearLocalCache(ERPCOMMONCACHE_MTRETURNRQTYPE_PR);
                                 this.props.hideModal();
                             }
-                            //this.showMessage(apiResult.Message);
                             this.addNotification(apiResult.Message, apiResult.IsError);
                         });
                         this.resetCombobox();
-                        //console.log("edit", MLObject);
                     }
                 }
             },
@@ -439,19 +434,20 @@ class MTReturnRequestType_ProductCom extends React.Component {
         return (
             <div className="sub-grid detail">
                 <ReactNotification ref={this.notificationDOMRef} />
-                <DataGrid listColumn={DataGridColumnList}
+                <DataGrid
+                    //RowsPerPage={10}
                     dataSource={this.state.DataSource}
-                    modalElementList={this.state.ModalColumnList_Insert}
-                    MLObjectDefinition={MLObjectDefinition}
+                    headingTitle={"Vật tư được phép trả của một yêu cầu nhập trả vật tư"}
                     IDSelectColumnName={"chkSelectProductID"}
-                    PKColumnName={"ProductID,MaterialGroupID"}
+                    IsAutoPaging={false}
+                    IsCustomAddLink={true}
+                    listColumn={DataGridColumnList}
+                    MLObjectDefinition={MLObjectDefinition}
+                    modalElementList={this.state.ModalColumnList_Insert}
                     onDeleteClick={this.handleDelete}
                     onInsertClick={this.handleInsert}
                     onInsertClickEdit={this.handleEdit}
-                    IsAutoPaging={false}
-                    //RowsPerPage={10}
-                    IsCustomAddLink={true}
-                    headingTitle={"Vật tư được phép trả của một yêu cầu nhập trả vật tư"}
+                    PKColumnName={"ProductID,MaterialGroupID"}
                 />
             </div>
         );

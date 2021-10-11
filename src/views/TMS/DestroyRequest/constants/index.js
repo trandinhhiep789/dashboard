@@ -332,6 +332,13 @@ export const InputDestroyRequestDetailColumnList = [
         Width: 150
     },
     {
+        Name: "IsCheckCurrentAdvanceDebt",
+        Type: "checkicon",
+        Caption: "Kiểm tra tồn kho của nhân viên",
+        DataSourceMember: "IsCheckCurrentAdvanceDebt",
+        Width: 150
+    },
+    {
         Name: "Quantity",
         Type: "textbox",
         // Type: "textboxNewGroup",
@@ -376,6 +383,12 @@ export const GridMLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "TotalQuantity",
         DataSourceMember: "TotalQuantity"
+    },
+    {
+        Name: "IsCheckCurrentAdvanceDebt",
+        DefaultValue: "",
+        BindControlName: "IsCheckCurrentAdvanceDebt",
+        DataSourceMember: "IsCheckCurrentAdvanceDebt"
     },
     {
         Name: "Quantity",

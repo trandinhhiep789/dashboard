@@ -15,7 +15,17 @@ export const ModalColumnList_Insert = [
         DataSourceMember: "ProductID",
         readonly: false,
         validatonList: ["Comborequired"]
-    }
+    },
+    {
+        Name: "IsCheckCurrentAdvanceDebt",
+        type: "checkbox",
+        label: "Có kiểm tra tồn kho của nhân viên",
+        colspan: 12,
+        value: true,
+        DataSourceMember: "IsCheckCurrentAdvanceDebt",
+        readonly: false,
+        validatonList: []
+    },
 ];
 
 export const ModalColumnList_Edit = [
@@ -46,17 +56,20 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Mã sản phẩm vật tư",
         DataSourceMember: "ProductID",
-        Width: 500
     },
     {
         Name: "ProductName",
         Type: "text",
         Caption: "Tên sản phẩm vật tư",
         DataSourceMember: "ProductName",
-        Width: 500
     },
-    
-
+    {
+        Name: "IsCheckCurrentAdvanceDebt",
+        Type: "checkicon",
+        Caption: "Kiểm tra tồn kho của nhân viên",
+        DataSourceMember: "IsCheckCurrentAdvanceDebt",
+        Width: 200
+    },
 ];
 
 export const MLObjectDefinition = [
@@ -83,5 +96,11 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "CreatedUser",
         DataSourceMember: "CreatedUser"
-    }
+    },
+    {
+        Name: "IsCheckCurrentAdvanceDebt",
+        DefaultValue: "",
+        BindControlName: "IsCheckCurrentAdvanceDebt",
+        DataSourceMember: "IsCheckCurrentAdvanceDebt"
+    },
 ];

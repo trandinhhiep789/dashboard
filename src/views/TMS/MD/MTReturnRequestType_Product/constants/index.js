@@ -139,7 +139,16 @@ export const ModalColumnList_Insert = [
         readonly: false,
         validatonList: ["digit"]
     },
-
+    {
+        Name: "IsCheckCurrentAdvanceDebt",
+        type: "checkbox",
+        label: "Có kiểm tra tồn kho của nhân viên",
+        colspan: 12,
+        value: true,
+        DataSourceMember: "IsCheckCurrentAdvanceDebt",
+        readonly: false,
+        validatonList: []
+    },
 ];
 
 export const ModalColumnList_Edit = [
@@ -263,6 +272,16 @@ export const ModalColumnList_Edit = [
         readonly: false,
         validatonList: ["digit"]
     },
+    {
+        Name: "IsCheckCurrentAdvanceDebt",
+        type: "checkbox",
+        label: "Có kiểm tra tồn kho của nhân viên",
+        colspan: 12,
+        value: true,
+        DataSourceMember: "IsCheckCurrentAdvanceDebt",
+        readonly: false,
+        validatonList: []
+    },
 ];
 
 export const DataGridColumnList = [
@@ -334,6 +353,13 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Tỷ lệ quy đổi",
         DataSourceMember: "InstockConvertRatio",
+        Width: 80
+    },
+    {
+        Name: "IsCheckCurrentAdvanceDebt",
+        Type: "checkicon",
+        Caption: "Kiểm tra tồn kho của nhân viên",
+        DataSourceMember: "IsCheckCurrentAdvanceDebt",
         Width: 80
     },
     {
@@ -430,5 +456,11 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "InstockConvertRatio",
         DataSourceMember: "InstockConvertRatio"
+    },
+    {
+        Name: "IsCheckCurrentAdvanceDebt",
+        DefaultValue: "",
+        BindControlName: "IsCheckCurrentAdvanceDebt",
+        DataSourceMember: "IsCheckCurrentAdvanceDebt"
     },
 ];

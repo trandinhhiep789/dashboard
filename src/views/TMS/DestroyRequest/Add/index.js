@@ -1,41 +1,33 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
-import FormContainer from "../../../../common/components/FormContainer";
-// import FormContainer from "../../../../common/components/Form/AdvanceForm/FormContainer";
-import { MessageModal } from "../../../../common/components/Modal";
-import FormControl from "../../../../common/components/FormContainer/FormControl";
-import InputGrid from "../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
+
 import {
-    APIHostName,
     AddAPIPath,
-    AddElementList,
-    MLObjectDefinition,
-    BackLink,
     AddPagePath,
-    TitleFormAdd,
+    APIHostName,
+    BackLink,
     GridMLObjectDefinition,
     InputDestroyRequestDetailColumnList,
-    LoadAPIByRequestTypeIDPath,
     InputDestroyRequestRLColumnList,
-    GridDestroyRequestRLMLObjectDefinition,
-    LoadUserNameAPIByStoreIDPath,
-    LoadAPIByDestroyRequestTypeIDPath
-
+    LoadAPIByDestroyRequestTypeIDPath,
+    LoadAPIByRequestTypeIDPath,
+    MLObjectDefinition,
+    TitleFormAdd,
 } from "../constants";
 
-
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
-import { updatePagePath } from "../../../../actions/pageAction";
-import { CACHE_OBJECT_STORENAME } from "../../../../constants/systemVars.js";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
-import { formatDate, formatDateNew } from "../../../../common/library/CommonLib.js";
-import { showModal, hideModal } from '../../../../actions/modal';
-import { ERPCOMMONCACHE_DES_RVLEVEL } from "../../../../constants/keyCache";
 import { DESTROYREQUEST_ADD } from "../../../../constants/functionLists";
+import { formatDate } from "../../../../common/library/CommonLib.js";
+import { MessageModal } from "../../../../common/components/Modal";
+import { showModal, hideModal } from '../../../../actions/modal';
+import { updatePagePath } from "../../../../actions/pageAction";
 import DestroyRequestRVList from '../Component/DestroyRequestRVList.js';
-import DestroyRequestDetailList from "../Component/DestroyRequestDetailList";
+import FormContainer from "../../../../common/components/FormContainer";
+import FormControl from "../../../../common/components/FormContainer/FormControl";
+import InputGrid from "../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -43,31 +35,30 @@ class AddCom extends React.Component {
         this.prevDataSubmit = this.prevDataSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.GetDataByRequestTypeID = this.GetDataByRequestTypeID.bind(this);
-        // this.GetUserByStoreID = this.GetUserByStoreID.bind(this);
         this.setValueCombobox = this.setValueCombobox.bind(this);
         this.valueChangeInputGrid = this.valueChangeInputGrid.bind(this);
         this.getDataDestroyRequestRLByDestroyRequestType = this.getDataDestroyRequestRLByDestroyRequestType.bind(this);
         this.state = {
+            DataSource: {},
+            DestroyRequestDetail: [],
+            DestroyRequestRL: [],
+            DestroyRequestTypeID: '',
+            gridDestroyRequestRL: {},
+            gridDestroyRequestRLSort: [],
+            InputDestroyRequestRLColumnList: InputDestroyRequestRLColumnList,
+            isAutoOutput: false,
+            isAutoReview: false,
             IsCallAPIError: false,
             IsCloseForm: false,
-            DataSource: {},
+            IsDeposited: false,
+            isError: false,
             IsExtended: false,
             IsLiquidated: false,
-            IsDeposited: false,
-            DestroyRequestDetail: [],
-            DestroyRequestTypeID: '',
-            RequestStoreID: '',
-            DestroyRequestRL: [],
-            ListOption: [],
             IsLoadDataComplete: false,
-            InputDestroyRequestRLColumnList: InputDestroyRequestRLColumnList,
-            isError: false,
-            gridDestroyRequestRL: {},
-            validationErrorMessageSelect: '',
             isValidationSelect: false,
-            isAutoReview: false,
-            isAutoOutput: false,
-            gridDestroyRequestRLSort: [],
+            ListOption: [],
+            RequestStoreID: '',
+            validationErrorMessageSelect: '',
         };
     }
 
@@ -79,7 +70,6 @@ class AddCom extends React.Component {
         this.props.hideModal()
         this.props.updatePagePath(AddPagePath);
         this.GetDataByRequestTypeID(this.props.location.state.DestroyRequestTypeID);
-        // this.GetUserByStoreID(this.props.location.state.RequestStoreID);
 
         const param = [
             {
@@ -96,7 +86,6 @@ class AddCom extends React.Component {
 
     getDestroyRequestAdd(param) {
         this.props.callFetchAPI(APIHostName, getDestroyRequestAdd, param).then(apiResult => {
-            // console.log("aaa", apiResult.ResultObject)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -116,12 +105,10 @@ class AddCom extends React.Component {
 
     getDataDestroyRequestRLByDestroyRequestType(param) {
         this.props.callFetchAPI(APIHostName, LoadAPIByDestroyRequestTypeIDPath, param).then(apiResult => {
-            // console.log("apiResult", apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
                 });
-                //this.showMessage(apiResult.Message);
             }
             else {
                 apiResult.ResultObject.map(e => {
@@ -152,15 +139,9 @@ class AddCom extends React.Component {
                     lstoption[key]["UserName"] = lstoption[key]["DestroyRequest_ReviewLevelList"][0].UserName;
                     lstoption[key]["FullName"] = lstoption[key]["DestroyRequest_ReviewLevelList"][0].FullName;
                     lstoption[key]["ReviewOrderIndex"] = lstoption[key]["DestroyRequest_ReviewLevelList"][0].ReviewOrderIndex
-                    // lstoption[key]["DestroyRequest_ReviewLevelList"].unshift({ value: "-1", name: "-- Vui lòng chọn --", UserName: "-1", FullName: "-- Vui lòng chọn --" })
-
                 })
 
                 let resultSort = Object.values(lstoption).sort((a, b) => a.ReviewOrderIndex - b.ReviewOrderIndex)
-
-
-                // console.log("lstoption", lstoption)
-                // console.log("resultSort", resultSort)
 
                 this.setState({
                     DestroyRequestRL: apiResult.ResultObject,
@@ -174,7 +155,6 @@ class AddCom extends React.Component {
 
     GetDataByRequestTypeID(DestroyRequestTypeID) {
         this.props.callFetchAPI(APIHostName, LoadAPIByRequestTypeIDPath, DestroyRequestTypeID).then(apiResult => {
-            // console.log('111', apiResult)
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: !apiResult.IsError
@@ -199,26 +179,6 @@ class AddCom extends React.Component {
         });
     }
 
-    // GetUserByStoreID(StoreID) {
-    //     this.props.callFetchAPI(APIHostName, LoadUserNameAPIByStoreIDPath, StoreID).then(apiResult => {
-    //          console.log('GetUserByStoreID', apiResult)
-    //         let listOption = []
-    //         if (!apiResult.IsError) {
-    //             if (apiResult.ResultObject.length > 0) {
-    //                 apiResult.ResultObject.map((item, index) => {
-    //                     listOption.push({ value: item.UserName, label: item.FullName })
-    //                 })
-    //             }
-
-    //             this.setState({
-    //                 ListOption: listOption,
-    //             })
-    //             this.setValueCombobox();
-    //         }
-
-    //     });
-    // }
-
     setValueCombobox() {
         let _InputDestroyRequestRLColumnList = this.state.InputDestroyRequestRLColumnList;
         _InputDestroyRequestRLColumnList.forEach(function (objElement) {
@@ -236,7 +196,6 @@ class AddCom extends React.Component {
 
     prevDataSubmit(formData, MLObject) {
         const { isError, gridDestroyRequestRL, isAutoReview, isAutoOutput, gridDestroyRequestRLSort } = this.state;
-
 
         let arrReviewLevel = [];
 
@@ -542,16 +501,7 @@ class AddCom extends React.Component {
 
     }
 
-    handleChange(formData, MLObject) {
-        // console.log("handleChange", formData, MLObject)
-        // if (formData.cboDestroyRequestType.Name == 'cboDestroyRequestType') {
-        //     this.GetDataByRequestTypeID(formData.cboDestroyRequestType.value)
-        // }
-        // if (formData.cboRequestStore.Name == 'cboRequestStore') {
-        //     this.GetUserByStoreID(formData.cboRequestStore.value)
-        // }
-
-    }
+    handleChange(formData, MLObject) { }
 
     handleInputChangeGridRV(objDestroyRequestRL) {
         this.setState({ gridDestroyRequestRLSort: objDestroyRequestRL });
@@ -563,37 +513,7 @@ class AddCom extends React.Component {
         }
         let currentDate = new Date();
 
-        const { DestroyRequestDetail, DestroyRequestRL, InputDestroyRequestRLColumnList, isError, gridDestroyRequestRL, validationErrorMessageSelect, isValidationSelect, isAutoReview, isAutoOutput, gridDestroyRequestRLSort } = this.state;
-
-        const onChange = (aaa, event) => {
-            const value = event.target.value;
-            const name = event.target.name;
-            const DestroyRequestRLID = aaa;
-
-            if (value <= 0) {
-
-                this.setState({
-                    IsCallAPIError: true,
-                    isError: true
-                })
-            }
-            else {
-                this.setState({
-                    IsCallAPIError: false,
-                    isError: false
-
-                })
-            }
-
-            const element = Object.assign({}, gridDestroyRequestRL[DestroyRequestRLID], {
-                "UserName": value,
-                "FullName": name,
-            })
-
-            const parent = Object.assign({}, gridDestroyRequestRL, { [DestroyRequestRLID]: element });
-
-            this.setState({ gridDestroyRequestRL: parent })
-        }
+        const { DestroyRequestDetail, isAutoReview, gridDestroyRequestRLSort } = this.state;
 
         if (this.state.IsLoadDataComplete) {
             return (
@@ -607,23 +527,7 @@ class AddCom extends React.Component {
                         onSubmit={this.prevDataSubmit}
                         onchange={this.handleChange.bind(this)}
                     >
-
                         <div className="row">
-                            {/* <div className="col-md-6">
-                                <FormControl.TextBox
-                                    name="txtDestroyRequestID"
-                                    colspan="8"
-                                    labelcolspan="4"
-                                    readOnly={false}
-                                    label="mã yêu cầu"
-                                    placeholder="Mã yêu cầu"
-                                    controltype="InputControl"
-                                    value=""
-                                    datasourcemember="DestroyRequestID"
-                                    validatonList={['required']}
-                                />
-                            </div> */}
-
                             <div className="col-md-6">
                                 <FormControl.FormControlComboBox
                                     name="cboDestroyRequestType"
@@ -645,7 +549,6 @@ class AddCom extends React.Component {
                             </div>
 
                             <div className="col-md-6">
-
                                 <FormControl.FormControlDatetimeNew
                                     name="dtRequestDate"
                                     colspan="8"
@@ -683,9 +586,7 @@ class AddCom extends React.Component {
                                     datasourcemember="RequestStoreID"
                                     classNameCustom="customcontrol"
                                 />
-
                             </div>
-
 
                             <div className="col-md-12">
                                 <FormControl.TextBox
@@ -719,8 +620,6 @@ class AddCom extends React.Component {
                             </div>
                         </div>
 
-
-
                         <div className="card">
                             <div className="card-title group-card-title">
                                 <h4 className="title">Danh sách vật tư</h4>
@@ -739,17 +638,12 @@ class AddCom extends React.Component {
                             </div>
                         </div>
 
-                        {/* <DestroyRequestDetailList
-                            dataSource={DestroyRequestDetail}
-                        /> */}
-
                         {isAutoReview == false ?
                             <DestroyRequestRVList
                                 dataSource={gridDestroyRequestRLSort}
                                 onValueChangeGridRV={this.handleInputChangeGridRV.bind(this)}
                             />
                             : <div></div>
-
                         }
 
                     </FormContainer>

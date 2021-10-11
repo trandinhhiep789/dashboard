@@ -16,7 +16,7 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../actions/pageAction";
-import { callGetCache, callClearLocalCache,callGetUserCache } from "../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache, callGetUserCache } from "../../../../actions/cacheAction";
 import { GET_CACHE_USER_FUNCTION_LIST, DESTROYREQUESTTYPE_ADD, DESTROYREQUESTTYPE_DELETE } from "../../../../constants/functionLists";
 
 class DestroyRequestType_ProductCom extends React.Component {
@@ -134,7 +134,7 @@ class DestroyRequestType_ProductCom extends React.Component {
     }
 
     handleInsert(MLObjectDefinition, modalElementList, dataSource) {
-        if(!this.state.IsAllowedAdd){
+        if (!this.state.IsAllowedAdd) {
             this.showMessage("Bạn không có quyền");
             return;
         }
@@ -152,6 +152,9 @@ class DestroyRequestType_ProductCom extends React.Component {
                         MLObject.ProductID = MLObject.ProductID[0].ProductID;
                         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+
+                        console.log('155', MLObject); return;
+
                         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
                             if (!apiResult.IsError) {
                                 if (this.props.onComponentChange) {
@@ -159,7 +162,6 @@ class DestroyRequestType_ProductCom extends React.Component {
                                 }
                                 this.props.hideModal();
                             }
-                            //this.showMessage(apiResult.Message);
                             this.addNotification(apiResult.Message, apiResult.IsError);
                         });
                     }
@@ -171,7 +173,7 @@ class DestroyRequestType_ProductCom extends React.Component {
 
 
     handleDelete(deleteList, pkColumnName) {
-        if(!this.state.IsAllowedDelete){
+        if (!this.state.IsAllowedDelete) {
             this.showMessage("Bạn không có quyền");
             return;
         }
@@ -210,18 +212,19 @@ class DestroyRequestType_ProductCom extends React.Component {
         return (
             <div className="sub-grid detail">
                 <ReactNotification ref={this.notificationDOMRef} />
-                <DataGrid listColumn={DataGridColumnList}
+                <DataGrid
+                    //RowsPerPage={10}
                     dataSource={this.state.DestroyRequestType_Product_DataSource}
-                    modalElementList={ModalColumnList_Insert}
-                    MLObjectDefinition={MLObjectDefinition}
+                    headingTitle={"Sản phẩm vật tư"}
                     IDSelectColumnName={"chkSelectProductID"}
-                    PKColumnName={"ProductID"}
+                    IsAutoPaging={false}
+                    IsCustomAddLink={true}
+                    listColumn={DataGridColumnList}
+                    MLObjectDefinition={MLObjectDefinition}
+                    modalElementList={ModalColumnList_Insert}
                     onDeleteClick={this.handleDelete}
                     onInsertClick={this.handleInsert}
-                    IsAutoPaging={false}
-                    //RowsPerPage={10}
-                    IsCustomAddLink={true}
-                    headingTitle={"Sản phẩm vật tư"}
+                    PKColumnName={"ProductID"}
                 />
             </div>
         );

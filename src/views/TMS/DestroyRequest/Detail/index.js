@@ -4,13 +4,10 @@ import {
     Route,
     Switch,
     Link,
-
 } from "react-router-dom";
 import { ModalManager } from "react-dynamic-modal";
 import { connect } from "react-redux";
-import { callFetchAPI } from "../../../../actions/fetchAPIAction";
-import { updatePagePath } from "../../../../actions/pageAction";
-import InputGrid from "../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
+import ReactNotification from "react-notifications-component";
 
 import {
     DetailAPIPath,
@@ -26,17 +23,18 @@ import {
     AddAPIComment
 
 } from "../constants";
-import { MessageModal } from "../../../../common/components/Modal";
 
+import { callFetchAPI } from "../../../../actions/fetchAPIAction";
+import { checkFileExtension } from '../../../../common/library/CommonLib';
+import { MessageModal } from "../../../../common/components/Modal";
+import { MODAL_TYPE_COMMONTMODALS } from "../../../../constants/actionTypes";
 import { showModal, hideModal } from '../../../../actions/modal';
-import ReactNotification from "react-notifications-component";
-import DestroyRequestInfo from './DestroyRequestInfo.js'
+import { updatePagePath } from "../../../../actions/pageAction";
 import Attachment from "../../../../common/components/Attachment";
 import Comment from "../../../../common/components/Comment";
-import { MODAL_TYPE_COMMONTMODALS } from "../../../../constants/actionTypes";
+import DestroyRequestInfo from './DestroyRequestInfo.js'
 import DestroyRequsestNoteRV from "../Component/DestroyRequsestNoteRV";
-import { el } from "date-fns/locale";
-import { checkFileExtension } from '../../../../common/library/CommonLib';
+import InputGrid from "../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
 class DetailCom extends React.Component {
     constructor(props) {
         super(props);
@@ -475,13 +473,12 @@ class DetailCom extends React.Component {
                                 </div>
                                 <div className="card-body">
                                     <InputGrid
-                                        name="lstDestroyRequestDetail"
+                                        colspan="12"
                                         controltype="GridControl"
-                                        listColumn={GirdDestroyRequestDetailColumnList}
                                         dataSource={DestroyRequestDetail}
                                         isHideHeaderToolbar={true}
-                                        //MLObjectDefinition={GridMLObjectDefinition}
-                                        colspan="12"
+                                        listColumn={GirdDestroyRequestDetailColumnList}
+                                        name="lstDestroyRequestDetail"
                                         onValueChangeInputGrid={this.valueChangeInputGrid}
                                     />
                                 </div>
