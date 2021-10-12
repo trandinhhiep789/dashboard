@@ -295,6 +295,13 @@ export const MaterialReclaimDetailColumnList = [
         // Width: 140
     },
     {
+        Name: "MaterialGroupIDName",
+        Type: "text",
+        Caption: "Nhóm vật tư",
+        DataSourceMember: "MaterialGroupIDName",
+        // Width: 140
+    },
+    {
         Name: "ProductIDName",
         Type: "text",
         Caption: "Vật tư",

@@ -50,7 +50,6 @@ class DetailCom extends React.Component {
         this.checkPermission = this.checkPermission.bind(this)
         this.getCacheKeyConfig = this.getCacheKeyConfig.bind(this)
         this.gridref = React.createRef();
-        // this.handleCloseMessage = this.handleCloseMessage.bind(this)
         this.handleSubmitDestroy = this.handleSubmitDestroy.bind(this);
         this.handleSubmitMTReturnRequest = this.handleSubmitMTReturnRequest.bind(this);
         this.notificationDOMRef = React.createRef();
@@ -86,7 +85,8 @@ class DetailCom extends React.Component {
                     return {
                         ...item,
                         InstallProductIDName: `${item.InstallProductID} - ${item.InstallProductName}`,
-                        ProductIDName: `${item.ProductID} - ${item.ProductName}`
+                        ProductIDName: `${item.ProductID} - ${item.ProductName}`,
+                        MaterialGroupIDName: `${item.MaterialGroupID} - ${item.MaterialGroupName}`
                     }
                 })
 
@@ -116,16 +116,12 @@ class DetailCom extends React.Component {
             }
         })
     }
-    // handleCloseMessage() {
-    //     this.setState({ IsCloseForm: true })
-    // }
 
     showMessage(message) {
         ModalManager.open(
             <MessageModal
                 title="Thông báo"
                 message={message}
-            // onCloseModal={this.handleCloseMessage}
             />
         );
     }
@@ -310,10 +306,8 @@ class DetailCom extends React.Component {
     }
 
     render() {
-        const { IsLoadDataComplete, MaterialReclaimItem, MaterialReclaimDetail, IsPermissonDestroy } = this.state;
-        // if (this.state.IsCloseForm) {
-        // return <Redirect to={BackLink} />;
-        // }
+        const { IsLoadDataComplete, MaterialReclaimItem, MaterialReclaimDetail } = this.state;
+
         return (
             <React.Fragment>
                 {
