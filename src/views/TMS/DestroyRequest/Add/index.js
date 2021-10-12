@@ -246,7 +246,6 @@ class AddCom extends React.Component {
                     })
                     return;
                 }
-
             }
             if (isAutoOutput) {
                 MLObject.IsCreatedOrder = isAutoOutput;
@@ -261,11 +260,9 @@ class AddCom extends React.Component {
                 return;
             }
 
-
             MLObject.lstDestroyRequestDetail = DestroyRequestDetail;
 
             this.handleSubmit(MLObject)
-
         }
         else {
             this.showMessage('Thông tin nhập vào bị lỗi. Vui lòng kiểm tra lại.');
@@ -277,9 +274,7 @@ class AddCom extends React.Component {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.MessageDetail);
         });
-
     }
-
 
     handleCloseMessage() {
         if (!this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
@@ -297,11 +292,9 @@ class AddCom extends React.Component {
     }
 
     valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
-
         const { DestroyRequestDetail } = this.state;
         const isAllowDecimal = DestroyRequestDetail[index].IsAllowDecimal;
         let item = elementdata.Name + '_' + index;
-
 
         if (!isAllowDecimal) {
             if (elementdata.Value.toString().length > 1) {
@@ -399,9 +392,7 @@ class AddCom extends React.Component {
                         IsCallAPIError: false,
                     })
                 }
-
             }
-
         }
         else {
             if (elementdata.Value.toString().length > 1) {
@@ -494,11 +485,8 @@ class AddCom extends React.Component {
                         IsCallAPIError: false,
                     })
                 }
-
             }
-
         }
-
     }
 
     handleChange(formData, MLObject) { }
@@ -626,13 +614,13 @@ class AddCom extends React.Component {
                             </div>
                             <div className="card-body">
                                 <InputGrid
-                                    name="lstDestroyRequestDetail"
+                                    colspan="12"
                                     controltype="GridControl"
-                                    listColumn={InputDestroyRequestDetailColumnList}
                                     dataSource={DestroyRequestDetail}
                                     isHideHeaderToolbar={true}
+                                    listColumn={InputDestroyRequestDetailColumnList}
                                     MLObjectDefinition={GridMLObjectDefinition}
-                                    colspan="12"
+                                    name="lstDestroyRequestDetail"
                                     onValueChangeInputGrid={this.valueChangeInputGrid}
                                 />
                             </div>

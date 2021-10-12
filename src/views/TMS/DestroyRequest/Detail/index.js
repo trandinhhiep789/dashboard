@@ -245,7 +245,7 @@ class DetailCom extends React.Component {
     }
 
     handleSubmitOutputDestroyRequest() {
-        const { DestroyRequestID, DestroyRequestDetail } = this.state;
+        const { DestroyRequestID } = this.state;
         let MLObject = {};
         MLObject.DestroyRequestID = DestroyRequestID;
         MLObject.SaleOrderID = "";
@@ -484,25 +484,26 @@ class DetailCom extends React.Component {
                                 </div>
                             </div>
 
-                            {IsAutoReview == false ?
-                                <div className="card">
-                                    <div className="card-title group-card-title">
-                                        <h4 className="title">Danh sách duyệt</h4>
+                            {
+                                IsAutoReview == false ?
+                                    <div className="card">
+                                        <div className="card-title group-card-title">
+                                            <h4 className="title">Danh sách duyệt</h4>
+                                        </div>
+                                        <div className="card-body">
+                                            <InputGrid
+                                                name="lstDestroyRequestReviewLevel"
+                                                controltype="GridControl"
+                                                listColumn={GirdDestroyRequestRLColumnList}
+                                                dataSource={DestroyRequestRL}
+                                                isHideHeaderToolbar={true}
+                                                //MLObjectDefinition={GridDestroyRequestRLMLObjectDefinition}
+                                                colspan="12"
+                                                onValueChangeInputGrid={this.valueChangeInputGrid}
+                                            />
+                                        </div>
                                     </div>
-                                    <div className="card-body">
-                                        <InputGrid
-                                            name="lstDestroyRequestReviewLevel"
-                                            controltype="GridControl"
-                                            listColumn={GirdDestroyRequestRLColumnList}
-                                            dataSource={DestroyRequestRL}
-                                            isHideHeaderToolbar={true}
-                                            //MLObjectDefinition={GridDestroyRequestRLMLObjectDefinition}
-                                            colspan="12"
-                                            onValueChangeInputGrid={this.valueChangeInputGrid}
-                                        />
-                                    </div>
-                                </div>
-                                : <div></div>
+                                    : <div></div>
                             }
 
                             <Attachment
@@ -522,29 +523,31 @@ class DetailCom extends React.Component {
                         </div>
 
                         <footer className="card-footer text-right ">
-                            {IsAutoReview == false ?
-                                IsExitBtnReview == false ?
+                            {
+                                IsAutoReview == false ?
+                                    IsExitBtnReview == false ?
 
-                                    < div className="btn-group btn-group-dropdown mr-3">
-                                        <button disabled={IsExitBtnReview} className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">{CurrentReviewLevelName}</button>
-                                        <div className="dropdown-menu" x-placement="bottom-start" >
-                                            <button className="dropdown-item" type="button" onClick={() => this.handleInsertDRNoteRV(1)}>Đồng ý</button>
-                                            <button className="dropdown-item" type="button" onClick={() => this.handleInsertDRNoteRV(2)}>Từ chối</button>
+                                        < div className="btn-group btn-group-dropdown mr-3">
+                                            <button disabled={IsExitBtnReview} className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">{CurrentReviewLevelName}</button>
+                                            <div className="dropdown-menu" x-placement="bottom-start" >
+                                                <button className="dropdown-item" type="button" onClick={() => this.handleInsertDRNoteRV(1)}>Đồng ý</button>
+                                                <button className="dropdown-item" type="button" onClick={() => this.handleInsertDRNoteRV(2)}>Từ chối</button>
+                                            </div>
                                         </div>
-                                    </div>
-                                    : < div className="btn-group btn-group-dropdown mr-3">
-                                        <button disabled={IsExitBtnReview} className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">{CurrentReviewLevelName}</button>
-                                        <div className="dropdown-menu" x-placement="bottom-start" >
-                                            <button className="dropdown-item" type="button">Đồng ý</button>
-                                            <button className="dropdown-item" type="button">Từ chối</button>
+                                        : < div className="btn-group btn-group-dropdown mr-3">
+                                            <button disabled={IsExitBtnReview} className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">{CurrentReviewLevelName}</button>
+                                            <div className="dropdown-menu" x-placement="bottom-start" >
+                                                <button className="dropdown-item" type="button">Đồng ý</button>
+                                                <button className="dropdown-item" type="button">Từ chối</button>
+                                            </div>
                                         </div>
-                                    </div>
-                                : <div></div>
+                                    : <div></div>
 
                             }
-                            {IsOutPut == false ?
-                                <button className="btn btn-primary mr-3" type="button" onClick={this.handleSubmitOutputDestroyRequest}>Tạo phiếu xuất</button>
-                                : <button disabled={true} className="btn btn-primary mr-3" type="button">Tạo phiếu xuất</button>
+                            {
+                                IsOutPut == false ?
+                                    <button className="btn btn-primary mr-3" type="button" onClick={this.handleSubmitOutputDestroyRequest}>Tạo phiếu xuất</button>
+                                    : <button disabled={true} className="btn btn-primary mr-3" type="button">Tạo phiếu xuất</button>
                             }
 
                             <Link to="/DestroyRequest">

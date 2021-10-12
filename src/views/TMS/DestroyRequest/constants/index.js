@@ -308,47 +308,53 @@ export const InputDestroyRequestDetailColumnList = [
         Type: "text",
         Caption: "Nhóm vật tư",
         DataSourceMember: "MaterialGroupID",
-        Width: 150
+        Width: 60
     },
     {
         Name: "ProductID",
         Type: "text",
         Caption: "Mã sản phẩm",
         DataSourceMember: "ProductID",
-        Width: 150
+        Width: 100
     },
     {
         Name: "ProductName",
         Type: "text",
         Caption: "Tên sản phẩm",
         DataSourceMember: "ProductName",
-        Width: 150
+        Width: 200
     },
     {
         Name: "TotalQuantity",
         Type: "textNew",
         Caption: "Số dư tạm ứng",
         DataSourceMember: "TotalQuantity",
-        Width: 150
+        Width: 100
+    },
+    {
+        Name: "QuantityUnit",
+        Type: "text",
+        Caption: "Đơn vị tính",
+        DataSourceMember: "QuantityUnit",
+        Width: 60
     },
     {
         Name: "IsCheckCurrentAdvanceDebt",
         Type: "checkicon",
         Caption: "Kiểm tra tồn kho của nhân viên",
         DataSourceMember: "IsCheckCurrentAdvanceDebt",
-        Width: 150
+        Width: 120
     },
     {
         Name: "Quantity",
         Type: "textbox",
-        // Type: "textboxNewGroup",
-        Caption: "Số lượng hủy",
-        Value: '',
-        labelError: 'số lượng hủy',
-        DataSourceMember: "Quantity",
-        Width: 200,
         // validatonList: [ "number"],
-        IsNoneZero: false
+        Caption: "Số lượng hủy",
+        DataSourceMember: "Quantity",
+        IsNoneZero: false,
+        labelError: 'số lượng hủy',
+        Value: '',
+        Width: 100,
     },
 
 ];
@@ -395,7 +401,19 @@ export const GridMLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "Quantity",
         DataSourceMember: "Quantity"
-    }
+    },
+    {
+        Name: "QuantityUnitID",
+        DefaultValue: "",
+        BindControlName: "QuantityUnitID",
+        DataSourceMember: "QuantityUnitID"
+    },
+    {
+        Name: "QuantityUnit",
+        DefaultValue: "",
+        BindControlName: "QuantityUnit",
+        DataSourceMember: "QuantityUnit"
+    },
 ];
 
 export const AddElementList = [
@@ -520,14 +538,14 @@ export const GirdDestroyRequestDetailColumnList = [
         Type: "text",
         Caption: "Nhóm vật tư",
         DataSourceMember: "MaterialGroupID",
-        Width: 150
+        Width: 60
     },
     {
         Name: "ProductID",
         Type: "text",
         Caption: "Mã sản phẩm",
         DataSourceMember: "ProductID",
-        Width: 150
+        Width: 100
     },
     {
         Name: "ProductName",
@@ -537,11 +555,18 @@ export const GirdDestroyRequestDetailColumnList = [
         Width: 150
     },
     {
+        Name: "QuantityUnit",
+        Type: "text",
+        Caption: "Đơn vị tính",
+        DataSourceMember: "QuantityUnit",
+        Width: 60
+    },
+    {
         Name: "TotalQuantity",
         Type: "textNew",
         Caption: "Số dư tạm ứng",
         DataSourceMember: "TotalQuantity",
-        Width: 150
+        Width: 100
     },
     {
         Name: "Quantity",
@@ -549,7 +574,7 @@ export const GirdDestroyRequestDetailColumnList = [
         Caption: "Số lượng hủy",
         labelError: 'aaa',
         DataSourceMember: "Quantity",
-        Width: 200,
+        Width: 100,
     },
 ]
 
