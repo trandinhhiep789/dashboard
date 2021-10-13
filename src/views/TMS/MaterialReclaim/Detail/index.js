@@ -217,6 +217,7 @@ class DetailCom extends React.Component {
                 } else {
                     this.showMessage(apiResult.Message);
                     this.props.hideModal();
+                    this.callLoadData(this.props.match.params.id);
                 }
             })
         }
@@ -297,6 +298,7 @@ class DetailCom extends React.Component {
                 } else {
                     this.showMessage(apiResult.Message);
                     this.props.hideModal();
+                    this.callLoadData(this.props.match.params.id);
                 }
             })
         }

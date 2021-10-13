@@ -626,13 +626,13 @@ class DataGridCom extends Component {
                                                 const { RelatedVoucherID } = rowItem;
 
                                                 const cellData = <GridCell
-                                                    buttonTitleFirst={columnItem.ButtonTitleFirst} // case "groupTwoAction"
+                                                    buttonTitleFirst={columnItem.ButtonTitleFirst} // case "groupTwoAction, buttonStyle"
                                                     buttonTitleTwo={columnItem.ButtonTitleTwo} // case "groupTwoAction"
                                                     caption={columnItem.Caption}
-                                                    disabledBtnFirst={rowItem[columnItem.keyDisabledBtnFirst] || columnItem.disabledBtnFirst} //case "groupTwoAction"
+                                                    disabledBtnFirst={rowItem[columnItem.keyDisabledBtnFirst] || columnItem.disabledBtnFirst} //case "groupTwoAction, buttonStyle"
                                                     disabledBtnTwo={rowItem[columnItem.keyDisabledBtnTwo] || columnItem.disabledBtnTwo} // case "groupTwoAction"
                                                     hyperLink={columnItem.Hyperlinks}
-                                                    iconFirst={columnItem.IconFirst} // case "groupTwoAction"
+                                                    iconFirst={columnItem.IconFirst} // case "groupTwoAction, buttonStyle"
                                                     iconTwo={columnItem.IconTwo} // case "groupTwoAction"
                                                     index={rowIndex}
                                                     isChecked={isChecked}

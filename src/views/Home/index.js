@@ -205,7 +205,8 @@ import PNRCComputeLog from "../TMS/MD/PNRCComputeLog";
 import ConfirmReward from "../TMS/Reward/ConfirmReward"
 import UserDebtLimit from "../TMS/MD/UserDebtLimit";
 import User_DeliveryGoodsGroup from "../TMS/MD/User_DeliveryGoodsGroup";
-import MaterialReclaim from "../TMS/MaterialReclaim"
+import MaterialReclaim from "../TMS/MaterialReclaim";
+import MaterialReturn from "../TMS/MaterialReturn";
 import AfterReclaimProcessType from "../TMS/MD/AfterReclaimProcessType";
 import BaseDAComputeSchedule from "../TMS/MD/BaseDAComputeSchedule";
 import BaseDAActionLog from "../TMS/MD/BaseDAActionLog";
@@ -354,7 +355,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/Vehicle" component={Vehicle} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/WorkingShift" component={WorkingShift} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/WorkingShiftTimeFrame" component={WorkingShift_TimeFrame} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
-                                    
+
 
                                     <PrivateRoute path="/RewardPriceTable" component={RewardPriceTable} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/PNServicePriceTable" component={PNServicePriceTable} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
@@ -399,7 +400,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/FuelSubsIDizePeriod" component={FuelSubsIDizePeriod} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/RewardComputeType" component={RewardComputeType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ConfirmReward" component={ConfirmReward} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
-                                    
+
 
                                     <PrivateRoute path="/AreaType" component={AreaType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/Area" component={Area} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
@@ -428,6 +429,7 @@ class HomeCom extends React.Component {
 
                                     <PrivateRoute path="/MTReturnRequest" component={MTReturnRequest} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/MaterialReclaim" component={MaterialReclaim} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/MaterialReturn" component={MaterialReturn} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="/RewardType" component={RewardType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/RewardPriceType" component={RewardPriceType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />

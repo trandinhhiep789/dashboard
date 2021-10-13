@@ -362,6 +362,7 @@ class GridCell extends Component {
                     title="Edit">
                     <i className="ti-pencil"></i>
                 </a>;
+
             case "groupTwoAction":
                 return <div className="groupTwoAction">
                     <button data-tip data-for="TooltipFirst" type="button" className="btn btnfirst" onClick={this.handleUpdateFirst.bind(this)} disabled={this.props.disabledBtnFirst}>
@@ -376,6 +377,16 @@ class GridCell extends Component {
                     </button>
                     <ReactTooltip id="TooltipTwo">
                         {(this.props.buttonTitleTwo != undefined || this.props.buttonTitleTwo != "") ? this.props.buttonTitleTwo : "Cập nhật"}
+                    </ReactTooltip>
+                </div>;
+
+            case "buttonStyle":
+                return <div className="groupTwoAction">
+                    <button data-tip data-for="TooltipFirst" type="button" className="btn btnfirst" onClick={this.handleUpdateFirst.bind(this)} disabled={this.props.disabledBtnFirst}>
+                        <i className={(this.props.iconFirst != undefined || this.props.iconFirst != "") ? this.props.iconFirst : "ti-plus"}></i>
+                    </button>
+                    <ReactTooltip id="TooltipFirst">
+                        <span>{(this.props.buttonTitleFirst != undefined || this.props.buttonTitleFirst != "") ? this.props.buttonTitleFirst : "Cập nhật"}</span>
                     </ReactTooltip>
                 </div>;
 

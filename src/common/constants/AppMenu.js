@@ -1138,7 +1138,13 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-
+            {
+                MenuName: 'MaterialReturn',
+                MenuTitle: 'Yêu cầu nhập trả xác linh kiện',
+                LinkTo: '/MaterialReturn',
+                MenuIcon: '',
+                SubMenu: []
+            },
             {
                 MenuName: 'DeliveryAbility',
                 MenuTitle: 'Khai báo tổng tải',

@@ -44,7 +44,6 @@ class SearchCom extends React.Component {
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
-            IsCallAPIError: false,
             SearchData: InitSearchParams,
             DataKeyConfig: [],
         };
@@ -244,9 +243,6 @@ class SearchCom extends React.Component {
         callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
 
             if (apiResult.IsError) {
-                this.setState({
-                    IsCallAPIError: !apiResult.IsError
-                });
                 this.showMessage(apiResult.Message);
             }
             else {
@@ -266,7 +262,6 @@ class SearchCom extends React.Component {
 
                 this.setState({
                     gridDataSource,
-                    IsCallAPIError: apiResult.IsError
                 });
                 this.getCacheKeyConfig();
             }
