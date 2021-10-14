@@ -14,6 +14,7 @@ import ReactTooltip from 'react-tooltip';
 import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css'
 import ElementInputModal from '../../../../common/components/FormContainer/FormElement/ElementInputModal';
+import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 import { formatMoney, formatNumber } from '../../../../utils/function';
 import {
     APIHostName
@@ -335,11 +336,11 @@ class ListShipCoordinatorCom extends Component {
                             <span>×</span>
                         </div>
                         <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
+                        <p className="notification-message">{ReactHtmlParser(message1)}</p>
                     </div>
                 </div>
             ),
-            dismiss: { duration: 6000 },
+            dismiss: { duration: 10000 },
             dismissable: { click: true }
         });
     }
