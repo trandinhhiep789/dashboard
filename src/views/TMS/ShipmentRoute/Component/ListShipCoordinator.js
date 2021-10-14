@@ -340,7 +340,7 @@ class ListShipCoordinatorCom extends Component {
                     </div>
                 </div>
             ),
-            dismiss: { duration: 10000 },
+            dismiss: { duration: 8000 },
             dismissable: { click: true }
         });
     }
