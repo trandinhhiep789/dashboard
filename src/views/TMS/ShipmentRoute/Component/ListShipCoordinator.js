@@ -239,7 +239,7 @@ class ListShipCoordinatorCom extends Component {
             })
 
             if (listStaffDebtObject) {
-                this.props.callFetchAPI(APIHostName, 'api/StaffDebt/UserIsLockDelivery', listStaffDebtObject).then((apiResult) => {
+                this.props.callFetchAPI(APIHostName, 'api/ShipmentRoute/UserIsLockDelivery', listStaffDebtObject).then((apiResult) => {
                     if (!apiResult.IsError) {
                         ShipmentOrder[rowIndex][rowname] = objDeliverUser;
                         this.setState({ ShipmentOrder: ShipmentOrder });
