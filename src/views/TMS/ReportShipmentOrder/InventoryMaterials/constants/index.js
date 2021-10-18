@@ -75,6 +75,13 @@ export const SearchMLObjectDefinition = [
 
 export const GridColumnList = [
     {
+        Name: "RequestUser",
+        Type: "text",
+        Caption: "Mã nhân viên",
+        DataSourceMember: "RequestUser",
+        Width: 60
+    },
+    {
         Name: "RequestUserName",
         Type: "text",
         Caption: "Nhân viên",
@@ -86,7 +93,7 @@ export const GridColumnList = [
         Type: "text",
         Caption: "Nhóm vật tư",
         DataSourceMember: "MaterialGroupID",
-        Width: 60
+        Width: 50
     },
     {
         Name: "ProductName",
@@ -107,72 +114,79 @@ export const GridColumnList = [
         Type: "text",
         Caption: "Số dư đầu kỳ",
         DataSourceMember: "TotalQuantityBegin",
-        Width: 80
+        Width: 60
     },
     {
         Name: "QuantityHanOverDone",
         Type: "popupNew",
         Caption: "Nhận trong kỳ",
         DataSourceMember: "QuantityHanOverDone",
-        Width: 80
+        Width: 60
     },
     {
         Name: "QuantityHanOverDoing",
         Type: "popupNew",
         Caption: "Chờ bàn giao",
         DataSourceMember: "QuantityHanOverDoing",
-        Width: 80
+        Width: 60
     },
     {
         Name: "QuantityReturn",
         Type: "popupNew",
         Caption: "Nhập trả",
         DataSourceMember: "QuantityReturn",
-        Width: 80
+        Width: 60
     },
     {
         Name: "ChangeTotalQuantity",
         Type: "popupNew",
         Caption: "Sử dụng trong kỳ",
         DataSourceMember: "ChangeTotalQuantity",
-        Width: 80
+        Width: 60
     },
     {
         Name: "QuantityExpend",
         Type: "popupNew",
         Caption: "Tiêu hao khác",
         DataSourceMember: "QuantityExpend",
-        Width: 80
+        Width: 60
     },
     {
         Name: "TotalQuantity",
         Type: "text",
         Caption: "Cuối kỳ",
         DataSourceMember: "TotalQuantity",
-        Width: 80
+        Width: 60
     },
     {
         Name: "SalePrice",
         Type: "textCurrency",
         Caption: "Đơn giá (giá vốn)",
         DataSourceMember: "SalePrice",
-        Width: 80
+        Width: 60
     },
     {
         Name: "TotalSalePrice",
         Type: "textCurrency",
         Caption: "Số tiền quy đổi",
         DataSourceMember: "TotalSalePrice",
-        Width: 80
+        Width: 60
     },
 
 ]
 
 export const GridColumnListPrice = [
     {
-        Name: "RequestUserName",
+        Name: "RequestUser",
         Type: "text",
         Caption: "Mã nhân viên",
+        DataSourceMember: "RequestUser",
+        Width: 60
+    },
+    {
+        Name: "RequestUserName",
+        Type: "text",
+        Caption: "Tên nhân viên",
         DataSourceMember: "RequestUserName",
         Width: 120
     },
@@ -181,7 +195,7 @@ export const GridColumnListPrice = [
         Type: "text",
         Caption: "Nhóm vật tư",
         DataSourceMember: "MaterialGroupID",
-        Width: 60
+        Width: 50
     },
     {
         Name: "ProductName",
@@ -202,63 +216,63 @@ export const GridColumnListPrice = [
         Type: "text",
         Caption: "Số dư đầu kỳ",
         DataSourceMember: "TotalQuantityBegin",
-        Width: 80
+        Width: 60
     },
     {
         Name: "QuantityHanOverDone",
         Type: "popupNew",
         Caption: "Nhận trong kỳ",
         DataSourceMember: "QuantityHanOverDone",
-        Width: 80
+        Width: 60
     },
     {
         Name: "QuantityHanOverDoing",
         Type: "popupNew",
         Caption: "Chờ bàn giao",
         DataSourceMember: "QuantityHanOverDoing",
-        Width: 80
+        Width: 60
     },
     {
         Name: "QuantityReturn",
         Type: "popupNew",
         Caption: "Nhập trả",
         DataSourceMember: "QuantityReturn",
-        Width: 80
+        Width: 60
     },
     {
         Name: "ChangeTotalQuantity",
         Type: "popupNew",
         Caption: "Sử dụng trong kỳ",
         DataSourceMember: "ChangeTotalQuantity",
-        Width: 80
+        Width: 60
     },
     {
         Name: "QuantityExpend",
         Type: "popupNew",
         Caption: "Tiêu hao khác",
         DataSourceMember: "QuantityExpend",
-        Width: 80
+        Width: 60
     },
     {
         Name: "TotalQuantity",
         Type: "text",
         Caption: "Cuối kỳ",
         DataSourceMember: "TotalQuantity",
-        Width: 80
+        Width: 60
     },
     {
         Name: "SalePrice",
         Type: "textCurrency",
         Caption: "Đơn giá (giá vốn)",
         DataSourceMember: "SalePrice",
-        Width: 80
+        Width: 60
     },
     {
         Name: "TotalSalePrice",
         Type: "textCurrency",
         Caption: "Số tiền quy đổi",
         DataSourceMember: "TotalSalePrice",
-        Width: 80
+        Width: 60
     },
 
 
