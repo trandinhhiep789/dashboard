@@ -112,7 +112,6 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        console.log("param", formData, MLObject)
         const objData = {
             UserName: (MLObject.UserName == -1 || MLObject.UserName == null) ? "" : MLObject.UserName.value,
             Month: MLObject.Month,
@@ -136,11 +135,7 @@ class SearchCom extends React.Component {
     }
 
     callSearchData(searchData) {
-
-
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-
-            console.log("apiResult", searchData, apiResult)
             if (apiResult && !apiResult.IsError && apiResult.ResultObject) {
 
                 const tempData = apiResult.ResultObject.filter(a => a.MaterialGroupID.trim() == this.state.ConfigValue);
@@ -281,7 +276,6 @@ class SearchCom extends React.Component {
     }
 
     onShowModal(data, typeDataGrid, userName) {
-        console.log("object", data, userName)
         const { widthPercent, MLObject, Month, ConfigValueMTReturn } = this.state;
         let dataExcel = [];
 
@@ -443,10 +437,8 @@ class SearchCom extends React.Component {
     onShowModalDetail(objValue, name, { ...lstProps }) {
         const { UserName, Month, ConfigValueMTReturn } = this.state;
         const status = this.getStatusDelivery(name);
-        console.log("1111", objValue, name, status, { ...lstProps })
 
         const rowItem = { ...lstProps.rowItem }
-        console.log("rowItem", rowItem)
 
         let objData = {};
         if (status == 1) { //	Nhận trong kỳ
@@ -457,7 +449,6 @@ class SearchCom extends React.Component {
                 IsHandOverMaterial: 1 // v_ISHANDOVERMATERIAL
             }
             this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/LoadByHandOverMaterial", objData).then(apiResult => {
-                console.log("Nhận trong kỳ", objData, apiResult)
                 if (!apiResult.IsError) {
                     this.onShowModal(apiResult.ResultObject, status, rowItem.RequestUser);
                 }
@@ -476,7 +467,7 @@ class SearchCom extends React.Component {
             }
             this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/LoadByHandOverMaterial", objData).then(apiResult => {
                 if (!apiResult.IsError) {
-                    this.onShowModal(apiResult.ResultObject, status,rowItem.RequestUser);
+                    this.onShowModal(apiResult.ResultObject, status, rowItem.RequestUser);
                 }
                 else {
                     this.showMessage(apiResult.MessageDetail)
@@ -494,7 +485,6 @@ class SearchCom extends React.Component {
             }
             //this.showMessage("Tính năng đang phát triển.")
             this.props.callFetchAPI(APIHostName, "api/AdvanceRequest/GetExchangeOrderByUser", objData).then(apiResult => {
-                console.log("Nhập trả", objData, apiResult)
                 if (!apiResult.IsError) {
                     this.onShowModal(apiResult.ResultObject, status, rowItem.RequestUser);
                 }
@@ -518,7 +508,7 @@ class SearchCom extends React.Component {
                 }
             });
         }
-        if (status == 5) { //		Tiêu hao khác
+        if (status == 5) { //Tiêu hao khác
             objData = {
                 Month: Month,
                 UserName: rowItem.RequestUser,
@@ -526,7 +516,6 @@ class SearchCom extends React.Component {
             }
             // this.showMessage("Tính năng đăng phát triển.")
             this.props.callFetchAPI(APIHostName, "api/AdvanceDebtFlow/LoadQuantityExpend", objData).then(apiResult => {
-                console.log("Tiêu hao khác", objData, apiResult)
                 if (!apiResult.IsError) {
                     this.onShowModal(apiResult.ResultObject, status, rowItem.RequestUser);
                 }
@@ -592,7 +581,6 @@ class SearchCom extends React.Component {
 
         this.props.callFetchAPI(APIHostName, "api/DataExportQueue/AddQueueExport", postDataNew).then(apiResult => {
             if (!apiResult.IsError) {
-                // console.log("aa", exportTemplateID, postDataNew, apiResult)
                 this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
                     title: "Tải file",
                     maxWidth: '1200px',
