@@ -49,7 +49,7 @@ class AddCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
-        if(!this.state.DeliveryAbilityStoreName){
+        if (!this.state.DeliveryAbilityStoreName) {
             this.setState({ IsCallAPIError: true });
             this.showMessage("Vui lòng nhập tên kho lấy tải");
         }
@@ -62,14 +62,14 @@ class AddCom extends React.Component {
 
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
-            if(!apiResult.IsError){
+            if (!apiResult.IsError) {
                 //this.props.callClearLocalCache(ERPCOMMONCACHE_MTRETURNREQUESTTYPE);
                 //this.handleSubmitInsertLog(MLObject);
-            }            
+            }
             this.showMessage(apiResult.Message);
         });
 
-      
+
 
     }
 

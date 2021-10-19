@@ -7,12 +7,16 @@ import readXlsxFile from 'read-excel-file';
 import {
     AddDAStoreGoodsGroup,
     APIHostName,
+    schemaDeliveryAbilityStore,
     schemaDAStoreGoodsGroup,
 } from "../constants";
 
 import { MessageModal } from "../../../../../common/components/Modal";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
+import { callGetCache } from "../../../../../actions/cacheAction";
+import { MODAL_TYPE_COMMONTMODALS } from '../../../../../constants/actionTypes';
+import ImpDAStoreExcelModalCom from './ImpDAStoreExcelModal';
 
 class ImportSelectionModalCom extends React.Component {
     constructor(props) {
@@ -23,8 +27,10 @@ class ImportSelectionModalCom extends React.Component {
         };
 
         this.addNotification = this.addNotification.bind(this);
+        this.handleDeliveryAbilityStore = this.handleDeliveryAbilityStore.bind(this);
         this.handleDAStoreGoodsGroup = this.handleDAStoreGoodsGroup.bind(this);
         this.handleReadXlsxFile = this.handleReadXlsxFile.bind(this);
+        this.handleSubmitDeliveryAbilityStore = this.handleSubmitDeliveryAbilityStore.bind(this);
         this.handleSubmitDAStoreGoodsGroup = this.handleSubmitDAStoreGoodsGroup.bind(this);
         this.notificationDOMRef = React.createRef();
         this.showMessage = this.showMessage.bind(this);
@@ -63,6 +69,20 @@ class ImportSelectionModalCom extends React.Component {
         });
     }
 
+    showMessage(message) {
+        ModalManager.open(
+            <MessageModal
+                title="Thông báo"
+                message={message}
+                onRequestClose={() => true}
+            />
+        );
+    }
+
+    handleDeliveryAbilityStore() {
+        this.handleReadXlsxFile(this.handleSubmitDeliveryAbilityStore, schemaDeliveryAbilityStore)
+    }
+
     handleDAStoreGoodsGroup() {
         this.handleReadXlsxFile(this.handleSubmitDAStoreGoodsGroup, schemaDAStoreGoodsGroup);
     }
@@ -83,9 +103,35 @@ class ImportSelectionModalCom extends React.Component {
         }, { once: true })
     }
 
+    handleSubmitDeliveryAbilityStore(data) {
+        if (data.rows.length != 0) {
+            this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+                title: 'Kết quả nhập từ excel',
+                content: {
+                    text: <ImpDAStoreExcelModalCom
+                        importData={data}
+                    />
+                },
+                maxWidth: '1000px'
+            })
+        } else {
+            this.addNotification("Dữ liệu trong file không tồn tại. Không thể nhập file!", true);
+        }
+    }
+
     handleSubmitDAStoreGoodsGroup(data) {
         if (data.errors.length != 0) {
-            this.addNotification("File lỗi, vui lòng kiểm tra lại", true);
+            switch (data.errors[0].error) {
+                case "invalid":
+                    this.showMessage(`Dòng ${data.errors[0].row}, cột ${data.errors[0].column} sai giá trị (vui lòng điền số)`)
+                    break;
+                case "required":
+                    this.showMessage(`Dòng ${data.errors[0].row}, cột ${data.errors[0].column} chưa có giá trị`)
+                    break;
+                default:
+                    this.showMessage(`Dòng ${data.errors[0].row}, cột ${data.errors[0].column} lỗi`)
+                    break;
+            }
             return;
         }
 
@@ -108,22 +154,16 @@ class ImportSelectionModalCom extends React.Component {
         }
     }
 
-    showMessage(message) {
-        ModalManager.open(
-            <MessageModal
-                title="Thông báo"
-                message={message}
-                onRequestClose={() => true}
-            />
-        );
-    }
-
     render() {
         return (
             < React.Fragment >
                 <ReactNotification ref={this.notificationDOMRef} />
 
                 <div className="d-flex flex-column p-4">
+                    <button type="button" className="btn btn-info mb-2" onClick={this.handleDeliveryAbilityStore}>
+                        Danh sách kho lấy tải
+                    </button>
+
                     <button type="button" className="btn btn-info mb-2" onClick={this.handleDAStoreGoodsGroup}>
                         Danh sách tỷ lệ phân bố tải theo từng kho
                     </button>
@@ -152,6 +192,9 @@ const mapDispatchToProps = dispatch => {
         },
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
+        },
+        callGetCache: (cacheKeyID) => {
+            return dispatch(callGetCache(cacheKeyID));
         },
     };
 };
