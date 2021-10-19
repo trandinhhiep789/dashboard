@@ -599,14 +599,16 @@ class SearchCom extends React.Component {
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
+                    className="multiple"
+                    classNamebtnSearch="d-flex align-items-end"
+                    colGroupAction="3"
                     FormName="Tìm kiếm danh sách thống kê vận đơn theo kho điều phối"
-                    MLObjectDefinition={SearchMLObjectDefinition}
+                    IsButtonExport={true}
                     listelement={SearchElementList}
+                    MLObjectDefinition={SearchMLObjectDefinition}
+                    onExportSubmit={this.handleExportFileFormSearch.bind(this)}
                     onSubmit={this.handleSearchSubmit.bind(this)}
                     ref={this.searchref}
-                    className="multiple"
-                    IsButtonExport={true}
-                    onExportSubmit={this.handleExportFileFormSearch.bind(this)}
                 />
 
                 <DataGrid
