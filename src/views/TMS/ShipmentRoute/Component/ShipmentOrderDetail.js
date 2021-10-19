@@ -344,6 +344,7 @@ class ShipmentOrderDetailCom extends Component {
                 let objDLDateLog =
                 {
                     ShipmentOrderID: this.state.ShipmentOrder.ShipmentOrderID,
+                    ShipmentOrderTypeID: this.state.ShipmentOrder.ShipmentOrderTypeID,
                     PartnerSaleOrderID: this.state.ShipmentOrder.PartnerSaleOrderID,
                     CreatedOrderTime: this.state.ShipmentOrder.CreatedOrderTime,
                     DeliverydateUpdateTypeID: 2,

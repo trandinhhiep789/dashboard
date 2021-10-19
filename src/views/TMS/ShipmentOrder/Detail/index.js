@@ -27,6 +27,7 @@ import { toIsoStringCusNew, toIsoStringNew } from "../../../../utils/function";
 import { ExportStringToDate } from "../../../../common/library/ultils";
 import moment from 'moment';
 import { formatDate, formatDateCusNew } from "../../../../common/library/CommonLib";
+import ShipmentOrder_Conversation from "../Component/ShipmentOrder_Conversation";
 
 class DetailCom extends React.Component {
     constructor(props) {
@@ -153,6 +154,11 @@ class DetailCom extends React.Component {
                         ShipmentOrderID={this.props.match.params.id}
                         InfoHistoryWF={this.state.ShipmentOrderType_WorkFlowList}
                         InfoActionLogList={this.state.DataSource.ShipmentOrder_ActionLogList}
+                    />
+
+                    <ShipmentOrder_Conversation
+                        ShipmentOrderID={this.props.match.params.id}
+                        ShipmentOrder_ConversationList={this.state.DataSource.ShipmentOrder_ConversationList? this.state.DataSource.ShipmentOrder_ConversationList : []}
                     />
 
                     <ShipmentOrderAttachment

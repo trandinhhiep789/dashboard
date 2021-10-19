@@ -173,6 +173,7 @@ class FindStoreDeliveryTimeCom extends Component {
         let objDLDateLog =
         {
             ShipmentOrderID: this.props.ShipmentOrder.ShipmentOrderID,
+            ShipmentOrderTypeID: this.state.ShipmentOrder.ShipmentOrderTypeID,
             PartnerSaleOrderID: this.props.ShipmentOrder.PartnerSaleOrderID,
             CreatedOrderTime: this.props.ShipmentOrder.CreatedOrderTime,
             DeliverydateUpdateTypeID: 2,
