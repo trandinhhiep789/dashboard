@@ -277,49 +277,56 @@ export const DataPartnerPayableDetailGridColumnList = [
         Type: "text",
         Caption: "Đối tác",
         DataSourceMember: "PartnerName",
-        Width: 200
+        // Width: 200
     },
     {
         Name: "StoreName",
         Type: "text",
         Caption: "Kho tạo",
         DataSourceMember: "StoreName",
-        Width: 200
+        // Width: 200
     },
     {
         Name: "SenderFullAddress",
         Type: "text",
         Caption: "Kho xuất",
         DataSourceMember: "SenderFullAddress",
-        Width: 200
+        // Width: 200
     },
     {
         Name: "CoordinatorUser",
         Type: "text",
         Caption: "NV điều phối",
         DataSourceMember: "CoordinatorUser",
-        Width: 100
+        // Width: 100
     },
+    // {
+    //     Name: "DeliveryUser",
+    //     Type: "text",
+    //     Caption: "NV giao",
+    //     DataSourceMember: "DeliveryUser",
+    //     Width: 100
+    // },
     {
-        Name: "DeliveryUser",
+        Name: "DeliverUserFullNameList",
         Type: "text",
         Caption: "NV giao",
-        DataSourceMember: "DeliveryUser",
-        Width: 100
+        DataSourceMember: "DeliverUserFullNameList",
+        // Width: 100
     },
     {
         Name: "ShipmentOrderID",
         Type: "text",
         Caption: "Mã vận đơn",
         DataSourceMember: "ShipmentOrderID",
-        Width: 100
+        // Width: 100
     },
     {
         Name: "PartnerSaleOrderID",
         Type: "text",
         Caption: "Mã đơn hàng",
         DataSourceMember: "PartnerSaleOrderID",
-        Width: 100
+        // Width: 100
     },
 
     {
@@ -327,49 +334,49 @@ export const DataPartnerPayableDetailGridColumnList = [
         Type: "date",
         Caption: "Thời gian giao",
         DataSourceMember: "ActualEndDeliveryTime",
-        Width: 100
+        // Width: 100
     },
     {
         Name: "ReceiverFullName",
         Type: "text",
         Caption: "Khách hàng",
         DataSourceMember: "ReceiverFullName",
-        Width: 100
+        // Width: 100
     },
     {
         Name: "SubGroupName",
         Type: "text",
         Caption: "Nhóm hàng",
         DataSourceMember: "SubGroupName",
-        Width: 100
+        // Width: 100
     },
     {
         Name: "ProductName",
         Type: "text",
         Caption: "Sản phẩm",
         DataSourceMember: "ProductName",
-        Width: 100
+        // Width: 100
     },
     {
         Name: "Quantity",
         Type: "text",
         Caption: "SL",
         DataSourceMember: "Quantity",
-        Width: 70
+        // Width: 70
     },
     {
         Name: "ServiceFee",
         Type: "textCurrency",
         Caption: "Đơn giá",
         DataSourceMember: "ServiceFee",
-        Width: 100
+        // Width: 100
     },
     {
         Name: "PayableAmount",
         Type: "textCurrency",
         Caption: "Thành tiền",
         DataSourceMember: "PayableAmount",
-        Width: 100
+        // Width: 100
     },
 ];
 
