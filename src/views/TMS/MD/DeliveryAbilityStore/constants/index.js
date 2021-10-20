@@ -9,6 +9,7 @@ export const LoadAPIPath = "api/DeliveryAbilityStore/Load";
 export const SearchAPIPath = "api/DeliveryAbilityStore/Search";
 export const UpdateAPIPath = "api/DeliveryAbilityStore/Update";
 export const UpdateOrderAPIPath = "api/DeliveryAbilityStore/UpdateOrder";
+export const ImportDeliveryAbilityStorePath = "api/DeliveryAbilityStore/ImportExcelFile";
 
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "DeliveryAbilityStoreID";
@@ -393,6 +394,30 @@ export const TemplateExportDAStoreGoodsGroup = [
     }
 ]
 
+export const TemplateExportDeliveryAbilityStore = [
+    {
+        "Kho Tận Tâm": "123456 (mã kho tận tâm)",
+        "Mô tả": "",
+        "Thứ tự hiển thị": ""
+    }
+]
+
+export const schemaDeliveryAbilityStore = {
+    "Kho Tận Tâm": {
+        prop: 'StoreID',
+        type: Number,
+        required: true
+    },
+    "Mô tả": {
+        prop: 'Description',
+        type: String
+    },
+    "Thứ tự hiển thị": {
+        prop: 'OrderIndex',
+        type: Number
+    }
+}
+
 export const schemaDAStoreGoodsGroup = {
     "Mã kho lấy tải": {
         prop: 'DeliveryAbilityStoreID',
@@ -415,3 +440,41 @@ export const schemaDAStoreGoodsGroup = {
         required: false
     }
 }
+
+export const lstColImportExcelModal = [
+    {
+        Name: "StoreID",
+        Type: "text",
+        Caption: "Kho Tận Tâm",
+        DataSourceMember: "StoreID",
+        Width: 60
+    },
+    {
+        Name: "StoreName",
+        Type: "text",
+        Caption: "Kho Tận Tâm",
+        DataSourceMember: "StoreName",
+        Width: 60
+    },
+    {
+        Name: "Description",
+        Type: "text",
+        Caption: "Mô tả",
+        DataSourceMember: "Description",
+        Width: 100
+    },
+    {
+        Name: "OrderIndex",
+        Type: "text",
+        Caption: "Thứ tự hiển thị",
+        DataSourceMember: "OrderIndex",
+        Width: 60
+    },
+    {
+        Name: "errorContent",
+        Type: "text",
+        Caption: "Lỗi",
+        DataSourceMember: "errorContent",
+        Width: 100
+    },
+]

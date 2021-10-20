@@ -5,7 +5,8 @@ import * as XLSX from 'xlsx';
 import ReactNotification from "react-notifications-component";
 
 import {
-    TemplateExportDAStoreGoodsGroup
+    TemplateExportDAStoreGoodsGroup,
+    TemplateExportDeliveryAbilityStore
 } from "../constants";
 
 class ExportTempExcelModalCom extends React.Component {
@@ -16,6 +17,7 @@ class ExportTempExcelModalCom extends React.Component {
 
         };
 
+        this.handleDeliveryAbilityStore = this.handleDeliveryAbilityStore.bind(this);
         this.handleDAStoreGoodsGroup = this.handleDAStoreGoodsGroup.bind(this);
         this.handleExportFileTemplate = this.handleExportFileTemplate.bind(this);
         this.notificationDOMRef = React.createRef();
@@ -28,6 +30,9 @@ class ExportTempExcelModalCom extends React.Component {
         this.handleExportFileTemplate(TemplateExportDAStoreGoodsGroup, "Danh sách tỷ lệ phân bố tải theo từng kho");
     }
 
+    handleDeliveryAbilityStore() {
+        this.handleExportFileTemplate(TemplateExportDeliveryAbilityStore, "Danh sách kho lấy tải");
+    }
 
     handleExportFileTemplate(dataTemplate, fileName) {
         try {
@@ -87,6 +92,10 @@ class ExportTempExcelModalCom extends React.Component {
                 <ReactNotification ref={this.notificationDOMRef} />
 
                 <div className="d-flex flex-column p-4">
+                    <button type="button" className="btn btn-info mb-2" onClick={this.handleDeliveryAbilityStore}>
+                        Danh sách kho lấy tải
+                    </button>
+
                     <button type="button" className="btn btn-info mb-2" onClick={this.handleDAStoreGoodsGroup}>
                         Danh sách tỷ lệ phân bố tải theo từng kho
                     </button>
