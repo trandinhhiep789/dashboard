@@ -5,17 +5,18 @@ import ReactNotification from "react-notifications-component";
 
 import {
     APIHostName,
-    ImportDeliveryAbilityStorePath,
-    lstColImportExcelModal,
+    ImportDAStore_StorePath,
+    lstColImpDAStore_StoreModal,
 } from '../constants';
 
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
+import { ERPCOMMONCACHE_STORE } from "../../../../../constants/keyCache";
 import { hideModal } from '../../../../../actions/modal';
 import { MessageModal } from "../../../../../common/components/Modal";
 import DataGrid from "../../../../../common/components/DataGrid";
 
-class ImpDAStoreExcelModalCom extends React.Component {
+class ImpDAStore_StoreModal extends React.Component {
     constructor(props) {
         super(props);
 
@@ -27,16 +28,16 @@ class ImpDAStoreExcelModalCom extends React.Component {
             disableBtnSubmit: false
         };
 
-        this.notificationDOMRef = React.createRef();
         this.addNotification = this.addNotification.bind(this);
-        this.showMessage = this.showMessage.bind(this);
-        this.returnHeadingTitle = this.returnHeadingTitle.bind(this);
-        this.handleCheckStoreID = this.handleCheckStoreID.bind(this);
+        this.handleCheckImportData = this.handleCheckImportData.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.notificationDOMRef = React.createRef();
+        this.returnHeadingTitle = this.returnHeadingTitle.bind(this);
+        this.showMessage = this.showMessage.bind(this);
     }
 
     componentDidMount() {
-        this.handleCheckStoreID();
+        this.handleCheckImportData();
     }
 
     addNotification(message, IsError) {
@@ -80,52 +81,95 @@ class ImpDAStoreExcelModalCom extends React.Component {
         );
     }
 
-    handleCheckStoreID() {
-        this.props.callGetCache("ERPCOMMONCACHE.STORE").then((result) => {
+    handleCheckImportData() {
+        //#region tạo promise với Store cache
+        const SenderStorePromise = new Promise((resolve, reject) => {
+            this.props.callGetCache(ERPCOMMONCACHE_STORE).then((result) => {
+                if (!result.IsError && result.ResultObject.CacheData != null) {
+                    const uptCacheData = result.ResultObject.CacheData.filter(x => x.CompanyID == 1 && x.IsActive == true);
+
+                    resolve(uptCacheData);
+                } else {
+                    reject("Lỗi lấy danh sách kho xuất");
+                }
+            })
+        })
+        //#endregion
+
+        //#region tạo promise DeliveryAbilityStore
+        const DeliveryAbilityStorePromise = new Promise((resolve, reject) => {
+            this.props.callGetCache("ERPCOMMONCACHE.DELIVERYABILITYSTORE").then((result) => {
+                if (!result.IsError && result.ResultObject.CacheData != null) {
+                    resolve(result.ResultObject.CacheData);
+                } else {
+                    reject("Lỗi lấy danh sách kho lấy tải");
+                }
+            })
+        })
+        //#endregion
+
+        //#region kiểm tra mã kho nhập vào từ excel
+        Promise.all([SenderStorePromise, DeliveryAbilityStorePromise]).then((values) => {
             let countValid = 0, countInValid = 0, dataSubmit = [];
 
-            if (!result.IsError && result.ResultObject.CacheData != null) {
-
-                //#region kiểm tra có tồn tại kho tận tâm hay không
-                let dataGrid = this.props.importData.rows.map(item => {
-                    const found = result.ResultObject.CacheData.find(element => element.StoreID == item.StoreID);
-
-                    if (!found) {
-                        countInValid++;
-                        return {
-                            ...item,
-                            errorContent: "Không tìm thấy kho Tận Tâm"
-                        }
-                    } else {
-                        countValid++;
-
-                        dataSubmit.push({
-                            ...item,
-                            errorContent: "",
-                            StoreName: found.StoreName
-                        })
-
-                        return {
-                            ...item,
-                            errorContent: "",
-                            StoreName: found.StoreName
-                        }
-                    }
-                });
+            const uptDataGrid = this.props.importData.rows.map(item => {
+                //#region kiểm tra có tồn tại mã kho xuất không
+                const SenderStoreFound = values[0].find(element => element.StoreID == item.SenderStoreID);
                 //#endregion
 
-                this.setState({
-                    dataGrid,
-                    dataSubmit,
-                    countValid,
-                    countInValid,
-                    disableBtnSubmit: countValid == 0 ? true : false
-                })
+                //#region kiểm tra xem có tồn tại mã kho tải không
+                const DeliveryAbilityStoreFound = values[1].find(element => element.DeliveryAbilityStoreID == item.DeliveryAbilityStoreID);
+                //#endregion
 
-            } else {
-                this.addNotification("Lỗi lấy danh sách kho tận tâm");
-            }
-        })
+                if (!SenderStoreFound && !DeliveryAbilityStoreFound) {
+                    countInValid++;
+
+                    return {
+                        ...item,
+                        errorContent: `Không tìm thấy kho lấy tải và kho xuất`
+                    }
+                } else if (!DeliveryAbilityStoreFound) {
+                    countInValid++;
+
+                    return {
+                        ...item,
+                        errorContent: `Không tìm thấy kho lấy tải`,
+                        SenderStoreName: SenderStoreFound.StoreName
+                    }
+                } else if (!SenderStoreFound) {
+                    countInValid++;
+
+                    return {
+                        ...item,
+                        errorContent: `Không tìm thấy kho xuất`,
+                        DeliveryAbilityStoreName: DeliveryAbilityStoreFound.DeliveryAbilityStoreName
+                    }
+                } else {
+                    countValid++;
+
+                    dataSubmit.push({
+                        ...item,
+                        DeliveryAbilityStoreName: DeliveryAbilityStoreFound.DeliveryAbilityStoreName,
+                        SenderStoreName: SenderStoreFound.StoreName
+                    })
+
+                    return {
+                        ...item,
+                        DeliveryAbilityStoreName: DeliveryAbilityStoreFound.DeliveryAbilityStoreName,
+                        SenderStoreName: SenderStoreFound.StoreName
+                    }
+                }
+            });
+
+            this.setState({
+                dataGrid: uptDataGrid,
+                dataSubmit,
+                countValid,
+                countInValid,
+                disableBtnSubmit: countValid == 0 ? true : false
+            })
+        }).catch(error => this.addNotification(error, true));
+        //#endregion
     }
 
     returnHeadingTitle() {
@@ -140,6 +184,7 @@ class ImpDAStoreExcelModalCom extends React.Component {
 
                     <button type="button" className="btn btn-info mr-2" disabled={this.state.disableBtnSubmit} onClick={this.handleSubmit}>Đồng ý</button>
                 </div>
+
             </React.Fragment>
         )
     }
@@ -149,14 +194,11 @@ class ImpDAStoreExcelModalCom extends React.Component {
             return {
                 ...item,
                 CreatedUser: this.props.AppInfo.LoginInfo.Username,
-                IsActived: 1,
-                DeliveryAbilityStoreName: `${item.StoreID} - ${item.StoreName}`,
-                IsSystem: 0,
-                LoginLogID: JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID
+                LoginlogID: JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID
             }
-        })
+        });
 
-        this.props.callFetchAPI(APIHostName, ImportDeliveryAbilityStorePath, uptDataSubmit).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, ImportDAStore_StorePath, uptDataSubmit).then(apiResult => {
             if (apiResult.IsError) {
                 this.showMessage(apiResult.Message);
             } else {
@@ -171,10 +213,10 @@ class ImpDAStoreExcelModalCom extends React.Component {
             <ReactNotification ref={this.notificationDOMRef} />
 
             <DataGrid
-                headingTitle={this.returnHeadingTitle("Danh sách kho lấy tải")}
-                listColumn={lstColImportExcelModal}
+                headingTitle={this.returnHeadingTitle("Danh sách kho xuất của kho lấy tải")}
+                listColumn={lstColImpDAStore_StoreModal}
                 dataSource={this.state.dataGrid}
-                PKColumnName={"StoreID"}
+                PKColumnName={"SenderStoreID"}
                 IsAutoPaging={true}
                 RowsPerPage={10}
                 isHideHeaderToolbar={true}
@@ -183,7 +225,7 @@ class ImpDAStoreExcelModalCom extends React.Component {
     }
 }
 
-ImpDAStoreExcelModalCom.defaultProps = {
+ImpDAStore_StoreModal.defaultProps = {
     importData: {
         rows: [],
         errors: []
@@ -211,4 +253,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ImpDAStoreExcelModalCom);
+export default connect(mapStateToProps, mapDispatchToProps)(ImpDAStore_StoreModal);

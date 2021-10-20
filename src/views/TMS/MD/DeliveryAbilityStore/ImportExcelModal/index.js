@@ -7,8 +7,9 @@ import readXlsxFile from 'read-excel-file';
 import {
     AddDAStoreGoodsGroup,
     APIHostName,
-    schemaDeliveryAbilityStore,
+    schemaDAStore_Store,
     schemaDAStoreGoodsGroup,
+    schemaDeliveryAbilityStore,
 } from "../constants";
 
 import { MessageModal } from "../../../../../common/components/Modal";
@@ -17,6 +18,8 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../../constants/actionTypes';
 import ImpDAStoreExcelModalCom from './ImpDAStoreExcelModal';
+import ImpDAStore_StoreModalCom from './ImpDAStore_StoreModal';
+import ErrorMessageModalCom from './ErrorMessageModal';
 
 class ImportSelectionModalCom extends React.Component {
     constructor(props) {
@@ -27,11 +30,13 @@ class ImportSelectionModalCom extends React.Component {
         };
 
         this.addNotification = this.addNotification.bind(this);
-        this.handleDeliveryAbilityStore = this.handleDeliveryAbilityStore.bind(this);
+        this.handleDAStore_Store = this.handleDAStore_Store.bind(this);
         this.handleDAStoreGoodsGroup = this.handleDAStoreGoodsGroup.bind(this);
+        this.handleDeliveryAbilityStore = this.handleDeliveryAbilityStore.bind(this);
         this.handleReadXlsxFile = this.handleReadXlsxFile.bind(this);
-        this.handleSubmitDeliveryAbilityStore = this.handleSubmitDeliveryAbilityStore.bind(this);
+        this.handleSubmitDAStore_Store = this.handleSubmitDAStore_Store.bind(this);
         this.handleSubmitDAStoreGoodsGroup = this.handleSubmitDAStoreGoodsGroup.bind(this);
+        this.handleSubmitDeliveryAbilityStore = this.handleSubmitDeliveryAbilityStore.bind(this);
         this.notificationDOMRef = React.createRef();
         this.showMessage = this.showMessage.bind(this);
     }
@@ -83,6 +88,10 @@ class ImportSelectionModalCom extends React.Component {
         this.handleReadXlsxFile(this.handleSubmitDeliveryAbilityStore, schemaDeliveryAbilityStore)
     }
 
+    handleDAStore_Store() {
+        this.handleReadXlsxFile(this.handleSubmitDAStore_Store, schemaDAStore_Store);
+    }
+
     handleDAStoreGoodsGroup() {
         this.handleReadXlsxFile(this.handleSubmitDAStoreGoodsGroup, schemaDAStoreGoodsGroup);
     }
@@ -104,18 +113,58 @@ class ImportSelectionModalCom extends React.Component {
     }
 
     handleSubmitDeliveryAbilityStore(data) {
-        if (data.rows.length != 0) {
+        if (data.errors.length != 0) {
             this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-                title: 'Kết quả nhập từ excel',
+                title: 'Thông báo lỗi',
                 content: {
-                    text: <ImpDAStoreExcelModalCom
-                        importData={data}
+                    text: <ErrorMessageModalCom
+                        dataGrid={data}
                     />
                 },
                 maxWidth: '1000px'
             })
         } else {
-            this.addNotification("Dữ liệu trong file không tồn tại. Không thể nhập file!", true);
+            if (data.rows.length != 0) {
+                this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+                    title: 'Kết quả nhập từ excel',
+                    content: {
+                        text: <ImpDAStoreExcelModalCom
+                            importData={data}
+                        />
+                    },
+                    maxWidth: '1000px'
+                })
+            } else {
+                this.addNotification("Dữ liệu trong file không tồn tại. Không thể nhập file!", true);
+            }
+        }
+    }
+
+    handleSubmitDAStore_Store(data) {
+        if (data.errors.length != 0) {
+            this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+                title: 'Thông báo lỗi',
+                content: {
+                    text: <ErrorMessageModalCom
+                        dataGrid={data}
+                    />
+                },
+                maxWidth: '1000px'
+            })
+        } else {
+            if (data.rows.length != 0) {
+                this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+                    title: 'Kết quả nhập từ excel',
+                    content: {
+                        text: <ImpDAStore_StoreModalCom
+                            importData={data}
+                        />
+                    },
+                    maxWidth: '90%'
+                })
+            } else {
+                this.addNotification("Dữ liệu trong file không tồn tại. Không thể nhập file!", true);
+            }
         }
     }
 
@@ -162,6 +211,10 @@ class ImportSelectionModalCom extends React.Component {
                 <div className="d-flex flex-column p-4">
                     <button type="button" className="btn btn-info mb-2" onClick={this.handleDeliveryAbilityStore}>
                         Danh sách kho lấy tải
+                    </button>
+
+                    <button type="button" className="btn btn-info mb-2" onClick={this.handleDAStore_Store}>
+                        Danh sách kho xuất của kho lấy tải
                     </button>
 
                     <button type="button" className="btn btn-info mb-2" onClick={this.handleDAStoreGoodsGroup}>

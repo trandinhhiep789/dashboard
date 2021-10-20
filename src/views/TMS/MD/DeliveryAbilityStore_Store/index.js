@@ -31,17 +31,16 @@ class DeliveryAbilityStore_StoreCom extends React.Component {
         this.onClose = this.onClose.bind(this);
         this.state = {
             CallAPIMessage: "",
+            cssNotification: "",
+            DataSource: this.props.DataSource ? this.props.DataSource : [],
+            DataTemplateExport,
+            DeliveryAbilityStoreID: this.props.DeliveryAbilityStoreID,
+            iconNotification: "",
             IsCallAPIError: false,
             IsCloseForm: false,
-            cssNotification: "",
-            iconNotification: "",
-            DataSource: this.props.DataSource ? this.props.DataSource : [],
-            DataSource: this.props.DataSource ? this.props.DataSource : [],
-            DeliveryAbilityStoreID: this.props.DeliveryAbilityStoreID,
             IsInsert: true,
-            ModalColumnList_Insert: ModalColumnList_Insert,
             ModalColumnList_Edit: ModalColumnList_Edit,
-            DataTemplateExport
+            ModalColumnList_Insert: ModalColumnList_Insert,
         };
         this.notificationDOMRef = React.createRef();
     }
@@ -237,8 +236,6 @@ class DeliveryAbilityStore_StoreCom extends React.Component {
                         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
                         MLObject.DeliveryAbilityStoreID = this.props.DeliveryAbilityStoreID;
                         MLObject.SenderStoreID = MLObject.SenderStoreID && Array.isArray(MLObject.SenderStoreID) ? MLObject.SenderStoreID[0] : MLObject.SenderStoreID;
-
-
 
                         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
                             if (!apiResult.IsError) {

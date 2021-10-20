@@ -10,6 +10,7 @@ export const SearchAPIPath = "api/DeliveryAbilityStore/Search";
 export const UpdateAPIPath = "api/DeliveryAbilityStore/Update";
 export const UpdateOrderAPIPath = "api/DeliveryAbilityStore/UpdateOrder";
 export const ImportDeliveryAbilityStorePath = "api/DeliveryAbilityStore/ImportExcelFile";
+export const ImportDAStore_StorePath = "api/DeliveryAbilityStore_Store/ImportExcelFile";
 
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "DeliveryAbilityStoreID";
@@ -396,14 +397,21 @@ export const TemplateExportDAStoreGoodsGroup = [
 
 export const TemplateExportDeliveryAbilityStore = [
     {
-        "Kho Tận Tâm": "123456 (mã kho tận tâm)",
+        "Mã kho Tận Tâm": "123456",
         "Mô tả": "",
         "Thứ tự hiển thị": ""
     }
 ]
 
+export const TemplateExportDAStore_Store = [
+    {
+        "Mã kho lấy tải": "123456",
+        "Mã kho xuất": "123456"
+    }
+]
+
 export const schemaDeliveryAbilityStore = {
-    "Kho Tận Tâm": {
+    "Mã kho Tận Tâm": {
         prop: 'StoreID',
         type: Number,
         required: true
@@ -415,6 +423,19 @@ export const schemaDeliveryAbilityStore = {
     "Thứ tự hiển thị": {
         prop: 'OrderIndex',
         type: Number
+    }
+}
+
+export const schemaDAStore_Store = {
+    "Mã kho lấy tải": {
+        prop: 'DeliveryAbilityStoreID',
+        type: Number,
+        required: true
+    },
+    "Mã kho xuất": {
+        prop: 'SenderStoreID',
+        type: Number,
+        required: true
     }
 }
 
@@ -477,4 +498,63 @@ export const lstColImportExcelModal = [
         DataSourceMember: "errorContent",
         Width: 100
     },
+]
+
+export const lstColImpDAStore_StoreModal = [
+    {
+        Name: "DeliveryAbilityStoreID",
+        Type: "text",
+        Caption: "Mã kho lấy tải",
+        DataSourceMember: "DeliveryAbilityStoreID",
+        Width: 60
+    },
+    {
+        Name: "DeliveryAbilityStoreName",
+        Type: "text",
+        Caption: "Tên kho lấy tải",
+        DataSourceMember: "DeliveryAbilityStoreName",
+        Width: 150
+    },
+    {
+        Name: "SenderStoreID",
+        Type: "text",
+        Caption: "Mã kho xuât",
+        DataSourceMember: "SenderStoreID",
+        Width: 80
+    },
+    {
+        Name: "SenderStoreName",
+        Type: "text",
+        Caption: "Tên kho xuât",
+        DataSourceMember: "SenderStoreName",
+        Width: 150
+    },
+    {
+        Name: "errorContent",
+        Type: "text",
+        Caption: "Lỗi",
+        DataSourceMember: "errorContent",
+        Width: 100
+    }
+]
+
+export const lstColErrorMessageModal = [
+    {
+        Name: "row",
+        Type: "text",
+        Caption: "Dòng",
+        DataSourceMember: "row",
+    },
+    {
+        Name: "column",
+        Type: "text",
+        Caption: "Cột",
+        DataSourceMember: "column",
+    },
+    {
+        Name: "errorContent",
+        Type: "text",
+        Caption: "Thông tin lỗi",
+        DataSourceMember: "errorContent",
+    }
 ]
