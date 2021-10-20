@@ -123,7 +123,7 @@ class ImpDAStoreExcelModalCom extends React.Component {
                 })
 
             } else {
-                this.addNotification("Lỗi lấy danh sách kho tận tâm");
+                this.addNotification("Lỗi lấy danh sách kho tận tâm", true);
             }
         })
     }

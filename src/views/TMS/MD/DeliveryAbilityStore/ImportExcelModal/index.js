@@ -5,8 +5,6 @@ import ReactNotification from "react-notifications-component";
 import readXlsxFile from 'read-excel-file';
 
 import {
-    AddDAStoreGoodsGroup,
-    APIHostName,
     schemaDAStore_Store,
     schemaDAStoreGoodsGroup,
     schemaDeliveryAbilityStore,
@@ -20,6 +18,7 @@ import { MODAL_TYPE_COMMONTMODALS } from '../../../../../constants/actionTypes';
 import ImpDAStoreExcelModalCom from './ImpDAStoreExcelModal';
 import ImpDAStore_StoreModalCom from './ImpDAStore_StoreModal';
 import ErrorMessageModalCom from './ErrorMessageModal';
+import ImpDAStoreGoodGroupCom from './ImpDAStoreGoodGroup';
 
 class ImportSelectionModalCom extends React.Component {
     constructor(props) {
@@ -132,7 +131,7 @@ class ImportSelectionModalCom extends React.Component {
                             importData={data}
                         />
                     },
-                    maxWidth: '1000px'
+                    maxWidth: '90%'
                 })
             } else {
                 this.addNotification("Dữ liệu trong file không tồn tại. Không thể nhập file!", true);
@@ -170,36 +169,29 @@ class ImportSelectionModalCom extends React.Component {
 
     handleSubmitDAStoreGoodsGroup(data) {
         if (data.errors.length != 0) {
-            switch (data.errors[0].error) {
-                case "invalid":
-                    this.showMessage(`Dòng ${data.errors[0].row}, cột ${data.errors[0].column} sai giá trị (vui lòng điền số)`)
-                    break;
-                case "required":
-                    this.showMessage(`Dòng ${data.errors[0].row}, cột ${data.errors[0].column} chưa có giá trị`)
-                    break;
-                default:
-                    this.showMessage(`Dòng ${data.errors[0].row}, cột ${data.errors[0].column} lỗi`)
-                    break;
-            }
-            return;
-        }
-
-        if (data.rows.length != 0) {
-            const submitData = data.rows.map(item => {
-                return {
-                    ...item,
-                    IsActived: true
-                }
+            this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+                title: 'Thông báo lỗi',
+                content: {
+                    text: <ErrorMessageModalCom
+                        dataGrid={data}
+                    />
+                },
+                maxWidth: '1000px'
             })
-            this.props.callFetchAPI(APIHostName, AddDAStoreGoodsGroup, submitData).then(apiResult => {
-                if (apiResult.IsError) {
-                    this.showMessage(apiResult.Message);
-                } else {
-                    this.addNotification(apiResult.Message, false);
-                }
-            });
         } else {
-            this.addNotification("Dữ liệu trong file không tồn tại. Không thể nhập file!", true);
+            if (data.rows.length != 0) {
+                this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+                    title: 'Kết quả nhập từ excel',
+                    content: {
+                        text: <ImpDAStoreGoodGroupCom
+                            importData={data}
+                        />
+                    },
+                    maxWidth: '90%'
+                })
+            } else {
+                this.addNotification("Dữ liệu trong file không tồn tại. Không thể nhập file!", true);
+            }
         }
     }
 

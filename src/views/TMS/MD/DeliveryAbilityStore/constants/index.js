@@ -442,12 +442,12 @@ export const schemaDAStore_Store = {
 export const schemaDAStoreGoodsGroup = {
     "Mã kho lấy tải": {
         prop: 'DeliveryAbilityStoreID',
-        type: String,
+        type: Number,
         required: true
     },
     "Mã nhóm hàng hóa vận chuyển": {
         prop: 'DeliveryGoodsGroupID',
-        type: String,
+        type: Number,
         required: true
     },
     "Tỷ lệ phân bố (<= 100%)": {
@@ -528,6 +528,58 @@ export const lstColImpDAStore_StoreModal = [
         Caption: "Tên kho xuât",
         DataSourceMember: "SenderStoreName",
         Width: 150
+    },
+    {
+        Name: "errorContent",
+        Type: "text",
+        Caption: "Lỗi",
+        DataSourceMember: "errorContent",
+        Width: 100
+    }
+]
+
+export const lstColImpDAStoreGoodGroup = [
+    {
+        Name: "DeliveryAbilityStoreID",
+        Type: "text",
+        Caption: "Mã kho lấy tải",
+        DataSourceMember: "DeliveryAbilityStoreID",
+        Width: 80
+    },
+    {
+        Name: "DeliveryAbilityStoreName",
+        Type: "text",
+        Caption: "Tên kho lấy tải",
+        DataSourceMember: "DeliveryAbilityStoreName",
+        Width: 100
+    },
+    {
+        Name: "DeliveryGoodsGroupID",
+        Type: "text",
+        Caption: "Mã nhóm sản phẩm lấy tải",
+        DataSourceMember: "DeliveryGoodsGroupID",
+        Width: 130
+    },
+    {
+        Name: "DeliveryGoodsGroupName",
+        Type: "text",
+        Caption: "Tên nhóm sản phẩm lấy tải",
+        DataSourceMember: "DeliveryGoodsGroupName",
+        Width: 150
+    },
+    {
+        Name: "ApportionFactor",
+        Type: "text",
+        Caption: "Tỷ lệ phân bố (<= 100%)",
+        DataSourceMember: "ApportionFactor",
+        Width: 100
+    },
+    {
+        Name: "Note",
+        Type: "text",
+        Caption: "Ghi chú",
+        DataSourceMember: "Note",
+        Width: 100
     },
     {
         Name: "errorContent",
