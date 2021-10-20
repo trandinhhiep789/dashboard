@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import DataGrid from "../../../../common/components/DataGrid";
-import { Modal, ModalManager, Effect } from "react-dynamic-modal";
+import { ModalManager } from "react-dynamic-modal";
 import { MessageModal } from "../../../../common/components/Modal";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
@@ -21,7 +21,7 @@ import { callGetCache } from "../../../../actions/cacheAction";
 import { toIsoStringCus } from '../../../../utils/function'
 import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../constants/keyCache";
 import { MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from "../../../../constants/actionTypes";
-import { PARTNERPAYABLEDETAIL_VIEW, PARTNERPAYABLEDETAIL_EXPORT } from "../../../../constants/functionLists";
+import { PARTNERPAYABLEDETAIL_VIEW } from "../../../../constants/functionLists";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { updatePagePath } from "../../../../actions/pageAction";
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
@@ -31,7 +31,6 @@ class PartnerPayableDetailCom extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            // dataExport: [],
             gridDataSource: [],
             gridDataSourcePrint: [],
             IsLoadDataComplete: false,
@@ -48,6 +47,48 @@ class PartnerPayableDetailCom extends React.Component {
         this.getCacheMTG();
     }
 
+    showMessage(message) {
+        ModalManager.open(
+            <MessageModal
+                title="Thông báo"
+                message={message}
+                onRequestClose={() => true}
+            />
+        );
+    }
+
+    addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
+        if (!IsError) {
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
+
+        } else {
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
+
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
+
     getCacheMTG() {
         this.props.callGetCache(ERPCOMMONCACHE_TMSCONFIG).then((result) => {
             if (result && !result.IsError && result.ResultObject) {
@@ -57,11 +98,7 @@ class PartnerPayableDetailCom extends React.Component {
                         exportTemplateID: _configValue.TMSConfigValue
                     })
                 }
-
-
             }
-
-
         });
     }
 
@@ -77,7 +114,7 @@ class PartnerPayableDetailCom extends React.Component {
 
     callData(SearchData) {
         this.props.callFetchAPI(APIHostName, SearchByDateAPIPath, SearchData).then(apiResult => {
-            // console.log("apiResult",SearchData, apiResult)
+
             if (!apiResult.IsError) {
                 if (apiResult.ResultObject.length > 0) {
                     const totalPayableAmount = apiResult.ResultObject.reduce((sum, curValue, curIndex, []) => {
@@ -138,16 +175,6 @@ class PartnerPayableDetailCom extends React.Component {
         })
     }
 
-    showMessage(message) {
-        ModalManager.open(
-            <MessageModal
-                title="Thông báo"
-                message={message}
-                onRequestClose={() => true}
-            />
-        );
-    }
-
     handleSearchSubmit(formData, MLObject) {
 
         const postData = [
@@ -169,43 +196,6 @@ class PartnerPayableDetailCom extends React.Component {
         })
         this.callData(postData);
     }
-
-
-    addNotification(message1, IsError) {
-        let cssNotification, iconNotification;
-        if (!IsError) {
-            cssNotification = "notification-custom-success";
-            iconNotification = "fa fa-check"
-
-        } else {
-            cssNotification = "notification-danger";
-            iconNotification = "fa fa-exclamation"
-
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close">
-                            <span>×</span>
-                        </div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 6000 },
-            dismissable: { click: true }
-        });
-    }
-
-    // handleExportFile(result) {
-    //     this.addNotification(result.Message, result.IsError);
-    // }
 
     handleExportFileFormSearch(FormData, MLObject) {
 
@@ -259,7 +249,7 @@ class PartnerPayableDetailCom extends React.Component {
                 <ReactNotification ref={this.notificationDOMRef} />
                 <SearchForm
                     className="multiple"
-                    classNamebtnSearch="groupAction"
+                    colGroupAction={4}
                     FormName="Tìm kiếm danh sách tiền phải trả cho nhà cung cấp dịch vụ theo ngày"
                     IsButtonExport={true}
                     IsButtonhistory={true}
@@ -275,7 +265,6 @@ class PartnerPayableDetailCom extends React.Component {
                     // DataExport={this.state.dataExport}
                     // ExportPermission={PARTNERPAYABLEDETAIL_EXPORT}
                     // IsExportFile={true}
-                    // onExportFile={this.handleExportFile.bind(this)}
                     AddLink=""
                     dataPrint={this.state.gridDataSourcePrint}
                     dataSource={this.state.gridDataSource}
@@ -294,7 +283,7 @@ class PartnerPayableDetailCom extends React.Component {
                     RowsPerPage={10}
                     TitlePrint="Danh sách chi tiết tiền phải trả cho nhà cung cấp dịch vụ"
                     totalCurrency={true}
-                    totalCurrencyColSpan={13}
+                    totalCurrencyColSpan={14}
                     totalCurrencyNumber={this.state.totalPayableAmount}
                 />
             </React.Fragment>
