@@ -234,10 +234,13 @@ class InputGridCom extends Component {
 	}
 
 	handleInsertClickEdit(index) {
+
 		let dataSourcenew = this.props.dataSource[index];
 		if (this.props.value != null) {
 			dataSourcenew = this.props.value[index];
 		}
+
+		//console.log("handleInsertClickEdit",dataSourcenew)
 
 		this.props.showModal(MODAL_TYPE_CONFIRMATIONNEW, {
 			title: 'Cập nhật ' + this.props.title,
@@ -247,8 +250,10 @@ class InputGridCom extends Component {
 				if (this.props.value != null) {
 					dataSource = this.props.value;
 				}
+
+				//console.log("dataSource",dataSource)
 				if (this.props.onValueChange != null) {
-					const formDatanew = Object.assign({}, dataSource, { [index]: formData });
+					const formDatanew = Object.assign([], dataSource, { [index]: formData });
 					const mLObjectDefinition = this.props.MLObjectDefinition;
 					const MLObjectList = GetMLObjectDataList(mLObjectDefinition, formDatanew, formDatanew);
 					this.props.onValueChange(this.props.name, MLObjectList, this.props.controltype, undefined);
