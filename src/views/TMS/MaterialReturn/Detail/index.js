@@ -76,18 +76,18 @@ class DetailCom extends React.Component {
             if (apiResult.IsError) {
                 this.showMessage(apiResult.Message);
             } else {
-                if (apiResult.ResultObject.lstMaterialReturnDetail) {
-                    const uptLstMaterialReturnDetail = apiResult.ResultObject.lstMaterialReturnDetail.map(item => {
+                if (apiResult.ResultObject.MaterialReturnDetailList) {
+                    const uptMaterialReturnDetailList = apiResult.ResultObject.MaterialReturnDetailList.map(item => {
                         return {
                             ...item,
-                            mtProductIDName: `${item.mtProductID} - ${item.mtProductName}`
+                            MTProductIDName: `${item.MTProductID} - ${item.MTProductName}`
                         }
                     })
 
                     this.setState({
                         dataSource: {
                             ...apiResult.ResultObject,
-                            lstMaterialReturnDetail: uptLstMaterialReturnDetail
+                            MaterialReturnDetailList: uptMaterialReturnDetailList
                         }
                     })
                 } else {
@@ -237,10 +237,10 @@ class DetailCom extends React.Component {
                                         <InputGrid
                                             colspan="12"
                                             controltype="GridControl"
-                                            dataSource={this.state.dataSource.lstMaterialReturnDetail}
+                                            dataSource={this.state.dataSource.MaterialReturnDetailList}
                                             isHideHeaderToolbar={true}
                                             listColumn={MaterialReturnDetailColumnList}
-                                            name="lstMaterialReturnDetail"
+                                            name="MaterialReturnDetailList"
                                         />
                                     </div>
                                 </div>

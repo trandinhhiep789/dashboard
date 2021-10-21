@@ -185,14 +185,6 @@ export const SearchElementList = [
 
 export const DataGridColumnList = [
     {
-        Name: "MaterialReturnID",
-        Type: "texttolinkNewBlank",
-        Caption: "Mã yêu cầu nhập xác linh kiện ",
-        DataSourceMember: "MaterialReturnID",
-        Link: "/MaterialReturn/Detail/",
-        Width: 200
-    },
-    {
         Name: "ShipmentOrderID",
         Type: "texttolinkNewBlankValue",
         Caption: "Mã vận đơn",
@@ -200,28 +192,36 @@ export const DataGridColumnList = [
         DataSourceMember: "ShipmentOrderID"
     },
     {
-        Name: "IsCreatedInputVoucher",
-        Type: "checkicon",
-        Caption: "Đã tạo phiếu nhập",
-        DataSourceMember: "IsCreatedInputVoucher"
+        Name: "MaterialReturnID",
+        Type: "texttolinkNewBlank",
+        Caption: "Mã yêu cầu nhập xác",
+        DataSourceMember: "MaterialReturnID",
+        Link: "/MaterialReturn/Detail/",
+        Width: 200
     },
     {
         Name: "ReturnDate",
         Type: "datetime",
-        Caption: "Ngày yêu cầu",
+        Caption: "Ngày nhập",
         DataSourceMember: "ReturnDate",
     },
     {
         Name: "ReturnUserIDName",
         Type: "text",
-        Caption: "Nhân viên yêu cầu",
+        Caption: "Người nhập",
         DataSourceMember: "ReturnUserIDName",
     },
     {
         Name: "ReturnStoreIDName",
         Type: "text",
-        Caption: "Tên kho",
+        Caption: "Kho",
         DataSourceMember: "ReturnStoreIDName",
+    },
+    {
+        Name: "IsCreatedInputVoucher",
+        Type: "checkicon",
+        Caption: "Đã tạo phiếu nhập",
+        DataSourceMember: "IsCreatedInputVoucher"
     },
     {
         Name: "Action",
@@ -237,24 +237,31 @@ export const DataGridColumnList = [
 
 export const MaterialReturnDetailColumnList = [
     {
-        Name: "mtProductIDName",
+        Name: "MTProductIDName",
         Type: "text",
         Caption: "Mã vật tư",
-        DataSourceMember: "mtProductIDName",
-        Width: 90
+        DataSourceMember: "MTProductIDName",
+        Width: 200
     },
     {
         Name: "IMEI",
         Type: "text",
         Caption: "IMEI",
         DataSourceMember: "IMEI",
-        Width: 90
+        Width: 100
+    },
+    {
+        Name: "QuantityUnit",
+        Type: "text",
+        Caption: "Đơn vị tính",
+        DataSourceMember: "QuantityUnit",
+        Width: 100
     },
     {
         Name: "ReturnQuantity",
         Type: "text",
         Caption: "Số lượng linh kiện nhập xác",
         DataSourceMember: "ReturnQuantity",
-        Width: 20
+        Width: 100
     },
 ]
