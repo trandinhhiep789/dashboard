@@ -220,6 +220,11 @@ class DetailCom extends React.Component {
                         </div>
                     </div>
 
+                    <DAStoreGoodsGroupCom
+                        deliveryAbilityStoreID={this.props.match.params.id}
+                        deliveryAbilityStoreName={this.state.DataSource.DeliveryAbilityStoreName}
+                    />
+
                     <DeliveryAbilityStore_Store
                         DeliveryAbilityStoreID={this.props.match.params.id}
                         DataSource={this.state.DataSource.ListDeliveryAbilityStore_Store ? this.state.DataSource.ListDeliveryAbilityStore_Store : []}
@@ -227,9 +232,7 @@ class DetailCom extends React.Component {
                         onComponentChange={this.onComponentChange}
                     />
 
-                    <DAStoreGoodsGroupCom
-                        deliveryAbilityStoreID={this.props.match.params.id}
-                    />
+                    
 
                     {/* <br />
                     <MTReturnRequestType_Product

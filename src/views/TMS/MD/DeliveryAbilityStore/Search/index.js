@@ -207,7 +207,7 @@ class SearchCom extends React.Component {
                         PKColumnName={PKColumnName}
                         ref={this.gridref}
                         RequirePermission={DELIVERYABILITY_VIEW}
-                        RowsPerPage={10}
+                        RowsPerPage={20}
                     />
                 </React.Fragment>
             );

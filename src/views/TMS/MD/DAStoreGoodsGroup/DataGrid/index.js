@@ -4,16 +4,12 @@ import ReactNotification from "react-notifications-component";
 import { Modal, ModalManager, Effect } from 'react-dynamic-modal';
 
 import {
-    APIDAStoreGoodsGroupDelete,
     APIDAStoreGoodsGroupLoadList,
     APIHostName,
-    listColumnDAStoreGoodsGroup,
+    InputDAStoreGoodsGroupColumnList,
     MLObjectDefinitionModal,
 } from "../constants";
 
-import {
-    AddDAStoreGoodsGroup
-} from '../../DeliveryAbilityStore/constants';
 
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { MessageModal } from "../../../../../common/components/Modal";
@@ -22,176 +18,28 @@ import { showModal, hideModal } from '../../../../../actions/modal';
 import DataGrid from "../../../../../common/components/DataGrid";
 import FormContainer from "../../../../../common/components/FormContainer";
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
+import InputGrid from "../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid";
+import { AddDAStoreGoodsGroup } from "../../DeliveryAbilityStore/constants";
 
 class DataGridCom extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            dataSource: null
+            DataSource: [],
+            IsError: false
         };
 
         this.addNotification = this.addNotification.bind(this);
         this.callSearchData = this.callSearchData.bind(this);
-        this.handleDeleteClick = this.handleDeleteClick.bind(this);
-        this.handleInsertClick = this.handleInsertClick.bind(this);
-        this.handleSubmitModalAdd = this.handleSubmitModalAdd.bind(this);
         this.notificationDOMRef = React.createRef();
         this.showMessage = this.showMessage.bind(this);
+
     }
 
     componentDidMount() {
         this.callSearchData();
     }
-
-    handleDeleteClick(listDeleteID, ListPKColumnName) {
-        const deleteData = listDeleteID.map(item => {
-            return {
-                DeliveryAbilityStoreID: item.pkColumnName[0].value,
-                DeliveryGoodsGroupID: item.pkColumnName[1].value,
-            }
-        })
-
-        this.props.callFetchAPI(APIHostName, APIDAStoreGoodsGroupDelete, deleteData).then(apiResult => {
-            if (apiResult.IsError) {
-                this.addNotification(apiResult.Message, apiResult.IsError);
-            } else {
-                this.callSearchData();
-            }
-        });
-    }
-
-    handleInsertClick() {
-        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: 'Thêm tỷ lệ phân bổ tải theo từng kho',
-            content: {
-                text: <FormContainer
-                    IsCloseModal={true}
-                    listelement={[]}
-                    MLObjectDefinition={MLObjectDefinitionModal}
-                    onSubmit={this.handleSubmitModalAdd}
-                >
-                    <div className="row">
-                        {/* <div className="col-md-12">
-                            <FormControl.FormControlComboBox
-                                // filterrest="DeliveryAbilityStoreID"
-                                colspan="8"
-                                controltype="InputControl"
-                                datasourcemember="DeliveryAbilityStoreID"
-                                isautoloaditemfromcache={true}
-                                label="Kho lấy tải"
-                                labelcolspan="4"
-                                listoption={null}
-                                loaditemcachekeyid={"ERPCOMMONCACHE.DELIVERYABILITYSTORE"}
-                                name="DeliveryAbilityStoreID"
-                                nameMember="DeliveryAbilityStoreName"
-                                placeholder="-- Vui lòng chọn --"
-                                validatonList={["Comborequired"]}
-                                value={""}
-                                valuemember="DeliveryAbilityStoreID"
-                            />
-                        </div> */}
-                        <div className="col-md-12">
-                            <FormControl.FormControlComboBox
-                                // filterrest="DeliveryGoodsGroupID"
-                                colspan="8"
-                                controltype="InputControl"
-                                datasourcemember="DeliveryGoodsGroupID"
-                                isautoloaditemfromcache={true}
-                                label="Nhóm hàng hóa vận chuyển"
-                                labelcolspan="4"
-                                listoption={null}
-                                loaditemcachekeyid={"MDMCOMMONCACHE.DELIVERYGOODSGROUP"}
-                                name="DeliveryGoodsGroupID"
-                                nameMember="DeliveryGoodsGroupName"
-                                placeholder="-- Vui lòng chọn --"
-                                validatonList={["Comborequired"]}
-                                value={""}
-                                valuemember="DeliveryGoodsGroupID"
-                            />
-                        </div>
-                        <div className="col-md-12">
-                            <FormControl.TextBox
-                                colspan="8"
-                                controltype="InputControl"
-                                datasourcemember="ApportionFactor"
-                                label="Tỷ lệ phân bổ (theo phần trăm)"
-                                labelcolspan="4"
-                                maxSize="7"
-                                name="ApportionFactor"
-                                placeholder={"Số nguyên hoặc thập phân < 100"}
-                                readOnly={false}
-                                validatonList={["required", "numberDecimal"]}
-                                value={""}
-                            />
-                        </div>
-                        <div className="col-md-12">
-                            <FormControl.TextBox
-                                // validatonList={['required']}
-                                colspan="8"
-                                controltype="InputControl"
-                                datasourcemember="Note"
-                                label="ghi chú"
-                                labelcolspan="4"
-                                maxSize={2000}
-                                name="Note"
-                                placeholder="Ghi chú"
-                                readOnly={false}
-                                value=""
-                            />
-                        </div>
-                        <div className="col-md-12">
-                            <FormControl.CheckBox
-                                classNameCustom="customCheckbox"
-                                colspan="8"
-                                controltype="InputControl"
-                                datasourcemember="IsActived"
-                                label="Kích hoạt"
-                                labelcolspan="4"
-                                name="IsActived"
-                                value={true}
-                            />
-                        </div>
-                        <div className="col-md-12">
-                            <FormControl.CheckBox
-                                classNameCustom="customCheckbox"
-                                colspan="8"
-                                controltype="InputControl"
-                                datasourcemember="IsSystem"
-                                label="Hệ thống"
-                                labelcolspan="4"
-                                name="IsSystem"
-                                value={false}
-                            />
-                        </div>
-                    </div>
-                </FormContainer>
-            },
-            maxWidth: '800px'
-        });
-    }
-
-    handleSubmitModalAdd(FormData, MLObject) {
-        if (parseFloat(MLObject.ApportionFactor) > 100) {
-            this.addNotification("Tỷ lệ phân bổ phải nhỏ hơn 100", true);
-        } else {
-            const submitData = [{
-                ...MLObject,
-                DeliveryAbilityStoreID: parseInt(this.props.deliveryAbilityStoreID),
-                ApportionFactor: parseFloat(MLObject.ApportionFactor)
-            }]
-
-            this.props.callFetchAPI(APIHostName, AddDAStoreGoodsGroup, submitData).then(apiResult => {
-                if (apiResult.IsError) {
-                    this.showMessage(apiResult.Message);
-                } else {
-                    this.callSearchData();
-                    this.props.hideModal();
-                }
-            });
-        }
-    }
-
     showMessage(message) {
         ModalManager.open(
             <MessageModal
@@ -241,43 +89,111 @@ class DataGridCom extends React.Component {
                     this.addNotification(apiResult.Message, true);
                 } else {
                     const updateDataSource = apiResult.ResultObject.map(item => {
-                        return {
-                            ...item,
-                            DeliveryAbilityStoreIDName: `${item.DeliveryAbilityStoreID} - ${item.DeliveryAbilityStoreName}`,
-                            DeliveryGoodsGroupIDName: `${item.DeliveryGoodsGroupID} - ${item.DeliveryGoodsGroupName}`,
-                            UpdatedUserIDName: `${item.UpdatedUser} - ${item.UpdatedUserName}`
+                        if (!item.DeliveryAbilityStoreName) {
+                            item.DeliveryAbilityStoreID = this.props.deliveryAbilityStoreID;
+                            item.DeliveryAbilityStoreName = this.props.deliveryAbilityStoreName;
                         }
-                    })
+                        return item;
+                    });
                     this.setState({
-                        dataSource: updateDataSource
+                        DataSource: updateDataSource
                     })
                 }
             });
         }
     }
 
+    prevDataSubmit(formData, MLObject) {
+        console.log("prevDataSubmit", formData, MLObject)
+        if (formData.listDAStoreGoodsGroup.value.length == 0 || this.state.IsError) {
+            return false;
+        }
+
+        let _ApportionFactor = 0;
+        formData.listDAStoreGoodsGroup.value.map((item) => {
+            _ApportionFactor += parseFloat(item.ApportionFactor);
+        });
+
+        if (_ApportionFactor > 100) {
+            this.addNotification("Tỷ lệ phân bổ tải vượt quá 100", true);
+            return false;
+        }
+
+        this.props.callFetchAPI(APIHostName, AddDAStoreGoodsGroup, formData.listDAStoreGoodsGroup.value).then(apiResult => {  
+            if (!apiResult.IsError) {
+                this.callSearchData();
+            } 
+            this.addNotification(apiResult.Message, apiResult.IsError);
+        });
+    }
+
+
+    valueChangeInputGrid(elementdata, index, name, gridFormValidation) {
+        //console.log("valueChangeInputGrid", elementdata, index, name, gridFormValidation)
+        let item = elementdata.Name + '_' + index;
+
+        if (elementdata.Name == "ApportionFactor" && elementdata.Value != "") {
+            if (!(/^[0-9][0-9]*$/.test(elementdata.Value))) {
+                gridFormValidation[item].IsValidationError = true;
+                gridFormValidation[item].ValidationErrorMessage = "Vui lòng nhập số";
+                this.setState({
+                    IsError: true,
+                    IsCallAPIError: true,
+                })
+            } else if (elementdata.Value < 0) {
+                gridFormValidation[item].IsValidationError = true;
+                gridFormValidation[item].ValidationErrorMessage = "Vui lòng nhập số dương";
+                this.setState({
+                    IsError: true,
+                    IsCallAPIError: true,
+                })
+            }
+            else {
+                gridFormValidation[item].IsValidationError = false;
+                gridFormValidation[item].ValidationErrorMessage = "";
+                this.setState({
+                    IsError: false,
+                    IsCallAPIError: false,
+                })
+            }
+        }
+
+    }
+
     render() {
-        if (this.state.dataSource == null) {
+        if (this.state.DataSource == null) {
             return <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
             </React.Fragment>
         } else {
             return (
-                <div className="sub-grid detail">
+                <div className="sub-grid">
                     <ReactNotification ref={this.notificationDOMRef} />
-
-                    <DataGrid
-                        dataSource={this.state.dataSource}
-                        headingTitle="Danh sách tỷ lệ phân bố tải theo từng kho"
-                        IDSelectColumnName={"chkSelect"}
-                        IsAutoPaging={false}
-                        IsCustomAddLink={true}
-                        listColumn={listColumnDAStoreGoodsGroup}
-                        onInsertClick={this.handleInsertClick}
-                        PKColumnName={"DeliveryAbilityStoreID,DeliveryGoodsGroupID"}
-                        onDeleteClick={this.handleDeleteClick}
-                    />
+                    <FormContainer
+                        FormName={""}
+                        MLObjectDefinition={[]}
+                        listelement={[]}
+                        //BackLink={BackLink}
+                        //RequirePermission={DESTROYREQUEST_ADD}
+                        onSubmit={this.prevDataSubmit.bind(this)}
+                    //onchange={this.handleChange.bind(this)}
+                    >
+                        <InputGrid
+                            headingTitle="Danh sách tỷ lệ phân bố tải theo từng kho"
+                            colspan="12"
+                            controltype="GridControl"
+                            dataSource={this.state.DataSource}
+                            isHideHeaderToolbar={true}
+                            listColumn={InputDAStoreGoodsGroupColumnList}
+                            MLObjectDefinition={MLObjectDefinitionModal}
+                            name="listDAStoreGoodsGroup"
+                            onValueChangeInputGrid={this.valueChangeInputGrid.bind(this)}
+                        />
+                    </FormContainer>
                 </div>
+
+
+
             );
         }
     }

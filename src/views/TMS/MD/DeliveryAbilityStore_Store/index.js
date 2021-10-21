@@ -438,8 +438,8 @@ class DeliveryAbilityStore_StoreCom extends React.Component {
                     onDeleteClick={this.handleDelete}
                     onInsertClick={this.handleInsert}
                     onInsertClickEdit={this.handleEdit}
-                    IsAutoPaging={false}
-                    //RowsPerPage={10}
+                    IsAutoPaging={true}
+                    RowsPerPage={20}
                     IsCustomAddLink={true}
                     headingTitle={"Kho xuất của kho lấy tải"}
 
