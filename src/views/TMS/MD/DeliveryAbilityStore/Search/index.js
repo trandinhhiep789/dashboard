@@ -1,7 +1,7 @@
 import React from "react";
 import "react-notifications-component/dist/theme.css";
 import { connect } from "react-redux";
-import { Modal, ModalManager, Effect } from "react-dynamic-modal";
+import { ModalManager } from "react-dynamic-modal";
 import ReactNotification from "react-notifications-component";
 
 import {
@@ -18,12 +18,16 @@ import {
     SearchMLObjectDefinition,
 } from "../constants";
 
+import {
+    DELIVERYABILITY_DELETE,
+    DELIVERYABILITY_VIEW,
+} from "../../../../../constants/functionLists";
+
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_MTRETURNREQUESTTYPE, ERPCOMMONCACHE_SHIPMENTFEETYPE } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_MTRETURNREQUESTTYPE } from "../../../../../constants/keyCache";
 import { MessageModal } from "../../../../../common/components/Modal";
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../../constants/actionTypes';
-import { MTRETURNREQUESTTYPE_VIEW, MTRETURNREQUESTTYPE_DELETE, QUALITYASSESSTYPE_VIEW, QUALITYASSESSTYPE_DELETE, DELIVERYABILITY_VIEW, DELIVERYABILITY_DELETE } from "../../../../../constants/functionLists";
 import { showModal } from '../../../../../actions/modal';
 import { updatePagePath } from "../../../../../actions/pageAction";
 import DataGrid from "../../../../../common/components/DataGrid";
@@ -73,7 +77,6 @@ class SearchCom extends React.Component {
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
                 this.props.callClearLocalCache(ERPCOMMONCACHE_MTRETURNREQUESTTYPE);
-                // this.handleSubmitInsertLog();
             }
         });
     }
@@ -92,9 +95,11 @@ class SearchCom extends React.Component {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Import File',
             content: {
-                text: <ImportExcelModalCom />
+                text: <ImportExcelModalCom
+                />
             },
-            maxWidth: '30%'
+            maxWidth: '30%',
+            afterClose: () => this.callSearchData(this.state.SearchData)
         })
     }
 
@@ -107,12 +112,11 @@ class SearchCom extends React.Component {
         ];
         this.setState({ SearchData: postData });
         this.callSearchData(postData);
-        //this.gridref.current.clearData();
     }
 
     callSearchData(searchData) {
+        console.log(searchData)
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            //this.searchref.current.changeLoadComplete();
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
                 this.setState({
@@ -127,9 +131,6 @@ class SearchCom extends React.Component {
     }
 
     handleCloseMessage() {
-        // if (!this.state.IsCallAPIError) {
-        //     this.callSearchData(this.state.SearchData);
-        // }
     }
 
     showMessage(message) {
