@@ -12,6 +12,7 @@ import { ModalManager } from "react-dynamic-modal";
 
 import {
     APIHostName,
+    CreateInputVoucherAPIPath,
     DetailAPIPath,
     LoadAPIPath,
     MaterialReturnDetailColumnList,
@@ -132,12 +133,6 @@ class DetailCom extends React.Component {
                 <button disabled={true} className="btn btn-primary mr-3" type="button" title="Bạn không có quyền!">Tạo phiếu nhập</button>
             </React.Fragment>
         }
-        //#endregion
-
-        //#region  test
-        // return <React.Fragment>
-        //     <button className="btn btn-primary mr-3" type="button" onClick={this.showDescriptionModal.bind(this)}>Tạo phiếu nhập</button>
-        // </React.Fragment>
         //#endregion
     }
 
