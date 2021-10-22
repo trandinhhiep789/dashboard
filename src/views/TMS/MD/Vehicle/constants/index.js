@@ -35,21 +35,127 @@ export const AddPagePath = [
 
 export const InitSearchParams = [
     {
-        SearchKey: "@Keyword",
+        SearchKey: "@KEYWORD",
         SearchValue: ""
-    }
+    },
+    {
+        SearchKey: "@SRHTYPE",
+        SearchValue: -1
+    },
+    {
+        SearchKey: "@PARTNERID",
+        SearchValue: ""
+    },
+    {
+        SearchKey: "@FROMWEIGHT",
+        SearchValue: 0
+    },
+    {
+        SearchKey: "@TOWEIGHT",
+        SearchValue: 0
+    },
+    {
+        SearchKey: "@FROMVOLUME",
+        SearchValue: 0
+    },
+    {
+        SearchKey: "@TOVOLUME",
+        SearchValue: 0
+    },
+    {
+        SearchKey: "@ACTIVITYSTATUSID",
+        SearchValue: -1
+    },
 ];
 
 export const SearchElementList = [
     {
-        type: "text",
+        type: "textdropdownNew",
+        classNameCol: "col-custom",
+        classNameDropdown: "dropdown-custom",
+        colspan: 2,
+        colspan: 3,
+        dropdownName: "txtSrhType",
+        icon: "",
+        label: "Từ khóa",
+        labelOption: "--Vui lòng chọn--",
         name: "txtKeyword",
-        label: "Từ khóa:",
+        nameOption: "txtSrhType",
+        placeholder: "Từ khóa",
+        value: "",
+        valueOption: 1,
+        listoption: [
+            { value: 1, label: 'Mã xe' },
+            { value: 2, label: 'Tên xe' },
+            { value: 3, label: 'Biển số xe' },
+        ]
+    },
+    {
+        type: "ComboBox",
+        colspan: 2,
+        DataSourceMember: "PartnerID",
+        IsAutoLoadItemFromCache: true,
+        isMultiSelect: false,
+        label: "Đối tác",
+        listoption: [],
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.PARTNER",
+        name: "cbPartnerID",
+        NameMember: "PartnerName",
+        placeholder: "---Đối tác---",
+        value: -1,
+        ValueMember: "PartnerID",
+    },
+    {
+        type: "text",
+        name: "txtFromWeight",
+        label: "Tải trọng từ (kg)",
         value: "",
         placeholder: "",
         icon: "",
-        listoption: {}
-    }
+        listoption: []
+    },
+    {
+        type: "text",
+        name: "txtToWeight",
+        label: "Tải trọng đến (kg)",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: []
+    },
+    {
+        type: "text",
+        name: "txtFromVolume",
+        label: "Thể tích từ (m3)",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: []
+    },
+    {
+        type: "text",
+        name: "txtToVolume",
+        label: "Thể tích đến (m3)",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: []
+    },
+    {
+        type: "ComboBox",
+        name: "cbActivityStatusID",
+        DataSourceMember: "ActivityStatusID",
+        label: "Trạng thái hoạt động",
+        colspan: 2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "---Trạng thái hoạt động---",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "chuaCo",
+        ValueMember: "ActivityStatusID",
+        NameMember: "ActivityStatusName"
+    },
 ];
 
 export const SearchMLObjectDefinition = [
@@ -57,7 +163,42 @@ export const SearchMLObjectDefinition = [
         Name: "Keyword",
         DefaultValue: "",
         BindControlName: "txtKeyword"
-    }
+    },
+    {
+        Name: "srhType",
+        DefaultValue: "",
+        BindControlName: "txtSrhType"
+    },
+    {
+        Name: "PartnerID",
+        DefaultValue: "",
+        BindControlName: "cbPartnerID"
+    },
+    {
+        Name: "FromWeight",
+        DefaultValue: "",
+        BindControlName: "txtFromWeight"
+    },
+    {
+        Name: "ToWeight",
+        DefaultValue: "",
+        BindControlName: "txtToWeight"
+    },
+    {
+        Name: "FromVolume",
+        DefaultValue: "",
+        BindControlName: "txtFromVolume"
+    },
+    {
+        Name: "ToVolume",
+        DefaultValue: "",
+        BindControlName: "txtToVolume"
+    },
+    {
+        Name: "ActivityStatusID",
+        DefaultValue: "",
+        BindControlName: "cbActivityStatusID"
+    },
 ];
 
 export const DataGridColumnList = [
@@ -69,68 +210,88 @@ export const DataGridColumnList = [
         Width: 60
     },
     {
+        Name: "VehicleID",
+        Type: "text",
+        Caption: "Mã xe",
+        DataSourceMember: "VehicleID",
+        // Width: 100
+    },
+    {
         Name: "VehicleName",
         Type: "text",
         Caption: "Tên xe",
         DataSourceMember: "VehicleName",
-        Width: 100
+        // Width: 100
     },
     {
         Name: "LicensePlateNumber",
         Type: "text",
         Caption: "Biển số xe",
         DataSourceMember: "LicensePlateNumber",
-        Width: 150
+        // Width: 150
     },
     {
-        Name: "MainDriverUser",
+        Name: "MainDriverUserIDName",
         Type: "text",
         Caption: "Tài xế",
-        DataSourceMember: "MainDriverUser",
-        Width: 150
+        DataSourceMember: "MainDriverUserIDName",
+        // Width: 150
+    },
+    {
+        Name: "PartnerIDName",
+        Type: "text",
+        Caption: "Tên đối tác",
+        DataSourceMember: "PartnerIDName",
+        // Width: 150
     },
     {
         Name: "MainCoordinatorStoreID",
         Type: "text",
-        Caption: "kho điều phối chính",
+        Caption: "Kho điều phối chính",
         DataSourceMember: "MainCoordinatorStoreID",
-        Width: 150
+        // Width: 150
     },
-    
     {
         Name: "Weight",
         Type: "text",
         Caption: "Tải trọng(kg)",
         DataSourceMember: "Weight",
-        Width: 70
+        // Width: 70
     },
     {
         Name: "Length",
         Type: "text",
         Caption: "Chiều dài(m)",
         DataSourceMember: "Length",
-        Width: 70
+        // Width: 70
     },
     {
         Name: "Width",
         Type: "text",
         Caption: "Chiều rộng(m)",
         DataSourceMember: "Width",
-        Width: 70
+        // Width: 70
     },
     {
         Name: "Height",
         Type: "text",
         Caption: "Chiều cao(m)",
         DataSourceMember: "Height",
-        Width: 70
+        // Width: 70
     },
     {
         Name: "Volume",
         Type: "text",
         Caption: "Thể tích(m3)",
         DataSourceMember: "Volume",
-        Width: 70
+        // Width: 70
+    },
+    {
+        Name: "ActivityStatusIDName",
+        Type: "text",
+        Caption: "Trạng thái hoạt động ",
+        DataSourceMember: "ActivityStatusIDName",
+        // Width: 70
     },
     {
         Name: "Action",
@@ -168,7 +329,7 @@ export const MLObjectDefinitionNew = [
         BindControlName: "cbMainDriverUser",
         DataSourceMember: "MainDriverUser"
     },
-    
+
     {
         Name: "MainCoordinatorStoreID",
         DefaultValue: "",
@@ -199,7 +360,7 @@ export const MLObjectDefinitionNew = [
         BindControlName: "txtWidth",
         DataSourceMember: "Width"
     },
-    
+
     {
         Name: "Height",
         DefaultValue: "",
@@ -265,7 +426,7 @@ export const MLObjectDefinition = [
         BindControlName: "MainDriverUser",
         DataSourceMember: "MainDriverUser"
     },
-    
+
     {
         Name: "MainCoordinatorStoreID",
         DefaultValue: "",
@@ -296,7 +457,7 @@ export const MLObjectDefinition = [
         BindControlName: "txtWidth",
         DataSourceMember: "Width"
     },
-    
+
     {
         Name: "Height",
         DefaultValue: "",
@@ -326,7 +487,7 @@ export const MLObjectDefinition = [
 ]
 
 export const AddElementList = [
-  
+
 
 ];
 

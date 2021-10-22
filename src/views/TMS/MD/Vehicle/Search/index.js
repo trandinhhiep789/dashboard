@@ -1,33 +1,34 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Modal, ModalManager, Effect } from "react-dynamic-modal";
-import SearchForm from "../../../../../common/components/Form/SearchForm";
-import DataGrid from "../../../../../common/components/DataGrid";
-import { MessageModal } from "../../../../../common/components/Modal";
+import "react-notifications-component/dist/theme.css";
+import { ModalManager } from "react-dynamic-modal";
+import ReactNotification from "react-notifications-component";
+
 import {
-    SearchElementList,
-    SearchMLObjectDefinition,
-    DataGridColumnList,
     AddLink,
     APIHostName,
-    SearchAPIPath,
+    DataGridColumnList,
     DeleteNewAPIPath,
     IDSelectColumnName,
-    PKColumnName,
     InitSearchParams,
     PagePath,
+    PKColumnName,
+    SearchAPIPath,
+    SearchElementList,
+    SearchMLObjectDefinition,
     DataGridCoordinatorStoreColumnList
 } from "../constants";
-import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
-import { updatePagePath } from "../../../../../actions/pageAction";
-import { VEHICLE_VIEW, VEHICLE_DELETE } from "../../../../../constants/functionLists";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
 
-import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
+import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_CARRIERTYPE } from "../../../../../constants/keyCache";
+import { MessageModal } from "../../../../../common/components/Modal";
+import { updatePagePath } from "../../../../../actions/pageAction";
+import { VEHICLE_VIEW, VEHICLE_DELETE } from "../../../../../constants/functionLists";
+import DataGrid from "../../../../../common/components/DataGrid";
+import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
+import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -36,13 +37,10 @@ class SearchCom extends React.Component {
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.state = {
-            CallAPIMessage: "",
-            gridDataSource: [],
-            IsCallAPIError: false,
-            SearchData: InitSearchParams,
             cssNotification: "",
+            gridDataSource: [],
             iconNotification: "",
-            IsLoadDataComplete: false,
+            SearchData: InitSearchParams,
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -50,64 +48,8 @@ class SearchCom extends React.Component {
     }
 
     componentDidMount() {
-        this.callSearchData(this.state.SearchData);
+        // this.callSearchData(this.state.SearchData);
         this.props.updatePagePath(PagePath);
-    }
-
-
-    handleDelete(deleteList, pkColumnName) {
-        let listMLObject = [];
-        deleteList.map((row, index) => {
-            let MLObject = {};
-            pkColumnName.map((pkItem, pkIndex) => {
-                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
-            });
-            MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
-            listMLObject.push(MLObject);
-        });
-        this.props.callFetchAPI(APIHostName, DeleteNewAPIPath, listMLObject).then(apiResult => {
-            this.setState({ IsCallAPIError: apiResult.IsError });
-            this.addNotification(apiResult.Message, apiResult.IsError);
-            if (!apiResult.IsError) {
-                this.callSearchData(this.state.SearchData);
-            }
-        });
-    }
-
-    handleSearchSubmit(formData, MLObject) {
-        const postData = [
-            {
-                SearchKey: "@Keyword",
-                SearchValue: MLObject.Keyword
-            }
-        ];
-        this.setState({ SearchData: postData });
-        this.callSearchData(postData);
-    }
-
-    callSearchData(searchData) {
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            // console.log('callSearchData', apiResult)
-            if (!apiResult.IsError) {
-                this.setState({
-                    gridDataSource: apiResult.ResultObject,
-                    IsCallAPIError: apiResult.IsError,
-                    IsLoadDataComplete: true,
-                });
-            }
-            else {
-                this.showMessage(apiResult.Message);
-                this.setState({
-                    IsLoadDataComplete: false,
-                });
-            }
-        });
-    }
-
-    handleCloseMessage() {
-        // if (!this.state.IsCallAPIError) {
-        //     this.callSearchData(this.state.SearchData);
-        // }
     }
 
     showMessage(message) {
@@ -154,48 +96,114 @@ class SearchCom extends React.Component {
         });
     }
 
+    handleDelete(deleteList, pkColumnName) {
+        let listMLObject = [];
+        deleteList.map((row, index) => {
+            let MLObject = {};
+            pkColumnName.map((pkItem, pkIndex) => {
+                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
+            });
+            MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
+            listMLObject.push(MLObject);
+        });
+        this.props.callFetchAPI(APIHostName, DeleteNewAPIPath, listMLObject).then(apiResult => {
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            if (!apiResult.IsError) {
+                this.callSearchData(this.state.SearchData);
+            }
+        });
+    }
+
+    handleSearchSubmit(formData, MLObject) {
+        const SearchData = [
+            {
+                SearchKey: "@KEYWORD",
+                SearchValue: MLObject.Keyword
+            },
+            {
+                SearchKey: "@SRHTYPE",
+                SearchValue: MLObject.srhType
+            },
+            {
+                SearchKey: "@PARTNERID",
+                SearchValue: MLObject.PartnerID
+            },
+            {
+                SearchKey: "@FROMWEIGHT",
+                SearchValue: MLObject.FromWeight
+            },
+            {
+                SearchKey: "@TOWEIGHT",
+                SearchValue: MLObject.ToWeight
+            },
+            {
+                SearchKey: "@FROMVOLUME",
+                SearchValue: MLObject.FromVolume
+            },
+            {
+                SearchKey: "@TOVOLUME",
+                SearchValue: MLObject.ToVolume
+            },
+            {
+                SearchKey: "@ACTIVITYSTATUSID",
+                SearchValue: MLObject.ActivityStatusID
+            },
+        ];
+        this.setState({ SearchData });
+        this.callSearchData(SearchData);
+    }
+
+    callSearchData(searchData) {
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
+            if (!apiResult.IsError) {
+                const uptResultObject = apiResult.ResultObject.map(item => {
+                    return {
+                        ...item,
+                        MainDriverUserIDName: `${item.MainDriverUser} - ${item.MainDriverUserName}`,
+                        PartnerIDName: `${item.PartnerID} - ${item.PartnerName}`,
+                        ActivityStatusIDName: `${item.ActivityStatusID} - ${item.ActivityStatusName}`
+                    }
+                })
+                this.setState({
+                    gridDataSource: uptResultObject
+                });
+            }
+            else {
+                this.showMessage(apiResult.Message);
+            }
+        });
+    }
+
+    handleCloseMessage() { }
+
     render() {
-        if (this.state.IsLoadDataComplete) {
-            return (
-                <React.Fragment>
-                    <ReactNotification ref={this.notificationDOMRef} />
-                    <SearchForm
-                        FormName="Tìm kiếm danh sách xe"
-                        MLObjectDefinition={SearchMLObjectDefinition}
-                        listelement={SearchElementList}
-                        onSubmit={this.handleSearchSubmit}
-                        ref={this.searchref}
-                    />
-                    <DataGrid
-                        listColumn={DataGridColumnList}
-                        dataSource={this.state.gridDataSource}
-                        AddLink={AddLink}
-                        IDSelectColumnName={IDSelectColumnName}
-                        PKColumnName={PKColumnName}
-                        onDeleteClick={this.handleDelete}
-                        ref={this.gridref}
-                        RequirePermission={VEHICLE_VIEW}
-                        DeletePermission={VEHICLE_DELETE}
-                        IsAutoPaging={true}
-                        RowsPerPage={10}
-                    />
-                </React.Fragment>
-            );
-        }
-        else {
-            return (
-                <React.Fragment>
-                    <SearchForm
-                        FormName="Tìm kiếm danh sách xe"
-                        MLObjectDefinition={SearchMLObjectDefinition}
-                        listelement={SearchElementList}
-                        onSubmit={this.handleSearchSubmit}
-                        ref={this.searchref}
-                    />
-                    <label>Đang nạp dữ liệu...</label>
-                </React.Fragment>
-            );
-        }
+        return (
+            <React.Fragment>
+                <ReactNotification ref={this.notificationDOMRef} />
+                <SearchForm
+                    className="multiple multiple-custom multiple-custom-display"
+                    classNamebtnSearch="btn-custom-bottom"
+                    FormName="Tìm kiếm danh sách xe"
+                    listelement={SearchElementList}
+                    MLObjectDefinition={SearchMLObjectDefinition}
+                    onSubmit={this.handleSearchSubmit}
+                    ref={this.searchref}
+                />
+                <DataGrid
+                    AddLink={AddLink}
+                    dataSource={this.state.gridDataSource}
+                    DeletePermission={VEHICLE_DELETE}
+                    IDSelectColumnName={IDSelectColumnName}
+                    IsAutoPaging={true}
+                    listColumn={DataGridColumnList}
+                    onDeleteClick={this.handleDelete}
+                    PKColumnName={PKColumnName}
+                    ref={this.gridref}
+                    RequirePermission={VEHICLE_VIEW}
+                    RowsPerPage={10}
+                />
+            </React.Fragment>
+        );
     }
 }
 
