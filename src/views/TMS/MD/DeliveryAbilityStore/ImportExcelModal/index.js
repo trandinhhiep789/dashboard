@@ -209,9 +209,9 @@ class ImportSelectionModalCom extends React.Component {
                         Danh sách kho xuất của kho lấy tải
                     </button>
 
-                    <button type="button" className="btn btn-info mb-2" onClick={this.handleDAStoreGoodsGroup}>
+                    {/* <button type="button" className="btn btn-info mb-2" onClick={this.handleDAStoreGoodsGroup}>
                         Danh sách tỷ lệ phân bố tải theo từng kho
-                    </button>
+                    </button> */}
                 </div>
 
                 <input type="file" id="inputImportFile" hidden />
