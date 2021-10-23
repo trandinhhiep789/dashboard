@@ -211,6 +211,8 @@ import AfterReclaimProcessType from "../TMS/MD/AfterReclaimProcessType";
 import BaseDAComputeSchedule from "../TMS/MD/BaseDAComputeSchedule";
 import BaseDAActionLog from "../TMS/MD/BaseDAActionLog";
 import VehicleGroup from "../TMS/MD/VehicleGroup";
+import VehicleRentalRequest from "../TMS/VehicleRentalRequest";
+
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -510,6 +512,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/BaseDAActionLog" component={BaseDAActionLog} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="/VehicleGroup" component={VehicleGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/VehicleRentalRequest" component={VehicleRentalRequest} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
