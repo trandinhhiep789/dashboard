@@ -1167,6 +1167,14 @@ const AppMenu = [
                     },
                 ]
             },
+            {
+                MenuName: 'VehicleRentalRequest',
+                MenuTitle: 'Yêu cầu thuê xe',
+                LinkTo: '/VehicleRentalRequest',
+                MenuIcon: '',
+                SubMenu: []
+            },
+            
         ]
     },
     {
