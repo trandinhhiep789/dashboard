@@ -1,3 +1,5 @@
+import { ERPCOMMONCACHE_VEHICLEACTIVITYSTATUS } from '../../../../../constants/keyCache';
+
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/Vehicle/Search";
 export const LoadAPIPath = "api/Vehicle/Load";
@@ -40,7 +42,7 @@ export const InitSearchParams = [
     },
     {
         SearchKey: "@SRHTYPE",
-        SearchValue: -1
+        SearchValue: ""
     },
     {
         SearchKey: "@PARTNERID",
@@ -48,23 +50,23 @@ export const InitSearchParams = [
     },
     {
         SearchKey: "@FROMWEIGHT",
-        SearchValue: 0
+        SearchValue: ""
     },
     {
         SearchKey: "@TOWEIGHT",
-        SearchValue: 0
+        SearchValue: ""
     },
     {
         SearchKey: "@FROMVOLUME",
-        SearchValue: 0
+        SearchValue: ""
     },
     {
         SearchKey: "@TOVOLUME",
-        SearchValue: 0
+        SearchValue: ""
     },
     {
         SearchKey: "@ACTIVITYSTATUSID",
-        SearchValue: -1
+        SearchValue: ""
     },
 ];
 
@@ -152,7 +154,7 @@ export const SearchElementList = [
         placeholder: "---Trạng thái hoạt động---",
         listoption: [],
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "chuaCo",
+        LoadItemCacheKeyID: ERPCOMMONCACHE_VEHICLEACTIVITYSTATUS,
         ValueMember: "ActivityStatusID",
         NameMember: "ActivityStatusName"
     },
@@ -245,7 +247,7 @@ export const DataGridColumnList = [
         // Width: 150
     },
     {
-        Name: "MainCoordinatorStoreID",
+        Name: "MainCoordinatorStoreIDName",
         Type: "text",
         Caption: "Kho điều phối chính",
         DataSourceMember: "MainCoordinatorStoreID",
@@ -312,29 +314,16 @@ export const MLObjectDefinitionNew = [
         DataSourceMember: "VehicleID"
     },
     {
-        Name: "VehicleName",
+        Name: "VehicleTypeID",
         DefaultValue: "",
-        BindControlName: "txtVehicleName",
-        DataSourceMember: "VehicleName"
+        BindControlName: "cbVehicleTypeID",
+        DataSourceMember: "VehicleTypeID"
     },
     {
-        Name: "LicensePlateNumber",
+        Name: "PartnerID",
         DefaultValue: "",
-        BindControlName: "txtLicensePlateNumber",
-        DataSourceMember: "LicensePlateNumber"
-    },
-    {
-        Name: "MainDriverUser",
-        DefaultValue: {},
-        BindControlName: "cbMainDriverUser",
-        DataSourceMember: "MainDriverUser"
-    },
-
-    {
-        Name: "MainCoordinatorStoreID",
-        DefaultValue: "",
-        BindControlName: "cbMainCoordinatorStoreID",
-        DataSourceMember: "MainCoordinatorStoreID"
+        BindControlName: "cbPartnerID",
+        DataSourceMember: "PartnerID"
     },
     {
         Name: "Weight",
@@ -343,10 +332,10 @@ export const MLObjectDefinitionNew = [
         DataSourceMember: "Weight"
     },
     {
-        Name: "Volume",
+        Name: "VehicleName",
         DefaultValue: "",
-        BindControlName: "txtVolume",
-        DataSourceMember: "Volume"
+        BindControlName: "txtVehicleName",
+        DataSourceMember: "VehicleName"
     },
     {
         Name: "Length",
@@ -355,24 +344,46 @@ export const MLObjectDefinitionNew = [
         DataSourceMember: "Length"
     },
     {
+        Name: "LicensePlateNumber",
+        DefaultValue: "",
+        BindControlName: "txtLicensePlateNumber",
+        DataSourceMember: "LicensePlateNumber"
+    },
+    {
         Name: "Width",
         DefaultValue: "",
         BindControlName: "txtWidth",
         DataSourceMember: "Width"
     },
-
+    {
+        Name: "ActivityStatusID",
+        DefaultValue: "",
+        BindControlName: "cbActivityStatusID",
+        DataSourceMember: "ActivityStatusID"
+    },
     {
         Name: "Height",
         DefaultValue: "",
         BindControlName: "txtHeight",
         DataSourceMember: "Height"
     },
-
     {
-        Name: "Description",
+        Name: "MainDriverUser",
         DefaultValue: "",
-        BindControlName: "txtDescription",
-        DataSourceMember: "Description"
+        BindControlName: "cbMainDriverUser",
+        DataSourceMember: "MainDriverUser"
+    },
+    {
+        Name: "Volume",
+        DefaultValue: "",
+        BindControlName: "txtVolume",
+        DataSourceMember: "Volume"
+    },
+    {
+        Name: "MainCoordinatorStoreID",
+        DefaultValue: "",
+        BindControlName: "cbMainCoordinatorStoreID",
+        DataSourceMember: "MainCoordinatorStoreID"
     },
     {
         Name: "IsActived",
@@ -380,12 +391,29 @@ export const MLObjectDefinitionNew = [
         BindControlName: "chkIsActived",
         DataSourceMember: "IsActived"
     },
-
+    {
+        Name: "Description",
+        DefaultValue: true,
+        BindControlName: "txtDescription",
+        DataSourceMember: "Description"
+    },
     {
         Name: "IsSystem",
-        DefaultValue: false,
+        DefaultValue: true,
         BindControlName: "chkIsSystem",
         DataSourceMember: "IsSystem"
+    },
+    {
+        Name: "VehicleModelID",
+        DefaultValue: "",
+        BindControlName: "txtVehicleModelID",
+        DataSourceMember: "VehicleModelID"
+    },
+    {
+        Name: "OrderIndex",
+        DefaultValue: "",
+        BindControlName: "txtOrderIndex",
+        DataSourceMember: "OrderIndex"
     },
 ]
 

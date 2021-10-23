@@ -34,7 +34,6 @@ class SearchCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
-        this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.state = {
             cssNotification: "",
@@ -48,7 +47,7 @@ class SearchCom extends React.Component {
     }
 
     componentDidMount() {
-        // this.callSearchData(this.state.SearchData);
+        this.callSearchData(this.state.SearchData);
         this.props.updatePagePath(PagePath);
     }
 
@@ -58,7 +57,7 @@ class SearchCom extends React.Component {
                 title="Thông báo"
                 message={message}
                 onRequestClose={() => true}
-                onCloseModal={this.handleCloseMessage}
+            // onCloseModal={}
             />
         );
     }
@@ -97,16 +96,14 @@ class SearchCom extends React.Component {
     }
 
     handleDelete(deleteList, pkColumnName) {
-        let listMLObject = [];
-        deleteList.map((row, index) => {
-            let MLObject = {};
-            pkColumnName.map((pkItem, pkIndex) => {
-                MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
-            });
-            MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
-            listMLObject.push(MLObject);
-        });
-        this.props.callFetchAPI(APIHostName, DeleteNewAPIPath, listMLObject).then(apiResult => {
+        const DeleteList = deleteList.map(item => {
+            return {
+                VehicleID: item.pkColumnName[0].value,
+                DeletedUser: this.props.AppInfo.LoginInfo.Username
+            }
+        })
+
+        this.props.callFetchAPI(APIHostName, DeleteNewAPIPath, DeleteList).then(apiResult => {
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
@@ -161,20 +158,18 @@ class SearchCom extends React.Component {
                         ...item,
                         MainDriverUserIDName: `${item.MainDriverUser} - ${item.MainDriverUserName}`,
                         PartnerIDName: `${item.PartnerID} - ${item.PartnerName}`,
-                        ActivityStatusIDName: `${item.ActivityStatusID} - ${item.ActivityStatusName}`
+                        ActivityStatusIDName: `${item.ActivityStatusID} - ${item.ActivityStatusName}`,
+                        MainCoordinatorStoreIDName: `${item.MainCoordinatorStoreID} - ${item.MainCoordinatorStoreName}`,
                     }
                 })
                 this.setState({
                     gridDataSource: uptResultObject
                 });
-            }
-            else {
+            } else {
                 this.showMessage(apiResult.Message);
             }
         });
     }
-
-    handleCloseMessage() { }
 
     render() {
         return (
