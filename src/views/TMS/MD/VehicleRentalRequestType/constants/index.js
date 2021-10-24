@@ -1,28 +1,31 @@
-export const APIHostName = "TMSMDMAPI";
-export const AddAPIPath = "api/VehicleRentalRequestStep/Add";
-export const EditAPIPath = "api/VehicleRentalRequestStep/Edit";
-export const LoadAPIPath = "api/VehicleRentalRequestStep/Load";
+import { ERPCOMMONCACHE_FUNCTION } from '../../../../../constants/keyCache';
 
-export const AddLink = "/VehicleRentalRequestStep/Add";
-export const BackLink = "/VehicleRentalRequestStep";
+export const APIHostName = "TMSMDMAPI";
+export const SearchAPIPath = "api/VehicleRentalRequestType/Search";
+export const AddAPIPath = "api/VehicleRentalRequestType/Add";
+export const EditAPIPath = "api/VehicleRentalRequestType/Edit";
+export const LoadAPIPath = "api/VehicleRentalRequestType/Load";
+
+export const AddLink = "/VehicleRentalRequestType/Add";
+export const BackLink = "/VehicleRentalRequestType";
 
 export const IDSelectColumnName = "chkSelect";
-export const PKColumnName = "VehicleRentalRequestStepID"
+export const PKColumnName = "VehicleRentalRequestTypeID"
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Bước xử lý của yêu cầu thuê xe" }
+    { Link: "", Title: "Loại xử lý của yêu cầu thuê xe" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/VehicleRentalRequestStep", Title: "Bước xử lý của yêu cầu thuê xe" },
+    { Link: "/VehicleRentalRequestType", Title: "Loại xử lý của yêu cầu thuê xe" },
     { Link: "", Title: "Thêm bước xử lý của yêu cầu thuê xe" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/VehicleRentalRequestStep", Title: "Bước xử lý của yêu cầu thuê xe" },
+    { Link: "/VehicleRentalRequestType", Title: "Loại xử lý của yêu cầu thuê xe" },
     { Link: "", Title: "Chỉnh sửa bước xử lý của yêu cầu thuê xe" }
 ];
 
@@ -51,7 +54,7 @@ export const DataGridColumnList = [
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "VehicleRentalRequestStepID",
+        DataSourceMember: "VehicleRentalRequestTypeID",
         Width: 60
     },
     {
@@ -65,6 +68,12 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Tên bước xử lý",
         DataSourceMember: "VehicleRetalRequestStepName",
+    },
+    {
+        Name: "AddFunctionID",
+        Type: "text",
+        Caption: "Quyền thêm",
+        DataSourceMember: "AddFunctionID",
     },
     {
         Name: "Description",
@@ -88,9 +97,9 @@ export const DataGridColumnList = [
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
-        DataSourceMember: "VehicleRentalRequestStepID",
+        DataSourceMember: "VehicleRentalRequestTypeID",
         Width: 80,
-        Link: "/VehicleRentalRequestStep/Edit/",
+        Link: "/VehicleRentalRequestType/Edit/",
         LinkText: "Chỉnh sửa"
     },
 ]
@@ -98,29 +107,45 @@ export const DataGridColumnList = [
 export const AddElementList = [
     {
         type: "text",
-        name: "txtVehicleRentalRequestStepID",
+        name: "txtVehicleRentalRequestTypeID",
         label: "Mã loại bước xử lý của yêu cầu thuê xe",
         value: "",
         maxSize: "10",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "VehicleRentalRequestStepID",
+        DataSourceMember: "VehicleRentalRequestTypeID",
         readonly: false,
         validatonList: ["required", "number"]
     },
     {
         type: "text",
-        name: "txtVehicleRentalRequestStepName",
+        name: "txtVehicleRentalRequestTypeName",
         label: "Tên loại bước xử lý của yêu cầu thuê xe",
         value: "",
         maxSize: "300",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "VehicleRentalRequestStepName",
+        DataSourceMember: "VehicleRentalRequestTypeName",
         readonly: false,
         validatonList: ["required"],
+    },
+    {
+        name: "AddFunctionID",
+        type: "multiselect",
+        label: "Quyền thêm",
+        DataSourceMember: "AddFunctionID",
+        readonly: false,
+        value: -1,
+        validatonList: ["required"],
+        isMulti: false,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: ERPCOMMONCACHE_FUNCTION,
+        ValueMember: "FunctionID",
+        NameMember: "FunctionName",
+        KeyFilter: "FunctionCategoryID",
+        ValueFilter: "1,2"
     },
     {
         type: "text",
@@ -176,29 +201,45 @@ export const AddElementList = [
 export const EditElementList = [
     {
         type: "text",
-        name: "txtVehicleRentalRequestStepID",
+        name: "txtVehicleRentalRequestTypeID",
         label: "Mã loại bước xử lý của yêu cầu thuê xe",
         value: "",
         maxSize: "10",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "VehicleRentalRequestStepID",
+        DataSourceMember: "VehicleRentalRequestTypeID",
         readonly: true,
         validatonList: ["required", "number"]
     },
     {
         type: "text",
-        name: "txtVehicleRentalRequestStepName",
+        name: "txtVehicleRentalRequestTypeName",
         label: "Tên loại bước xử lý của yêu cầu thuê xe",
         value: "",
         maxSize: "300",
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "VehicleRentalRequestStepName",
+        DataSourceMember: "VehicleRentalRequestTypeName",
         readonly: false,
         validatonList: ["required"],
+    },
+    {
+        name: "AddFunctionID",
+        type: "multiselect",
+        label: "Quyền thêm",
+        DataSourceMember: "AddFunctionID",
+        readonly: false,
+        value: -1,
+        validatonList: ["required"],
+        isMulti: false,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.FUNCTION",
+        ValueMember: "FunctionID",
+        NameMember: "FunctionName",
+        KeyFilter: "FunctionCategoryID",
+        ValueFilter: "1,2"
     },
     {
         type: "text",
@@ -253,16 +294,22 @@ export const EditElementList = [
 
 export const MLObjectDefinition = [
     {
-        Name: "VehicleRentalRequestStepID",
+        Name: "VehicleRentalRequestTypeID",
         DefaultValue: "",
-        BindControlName: "txtVehicleRentalRequestStepID",
-        DataSourceMember: "VehicleRentalRequestStepID"
+        BindControlName: "txtVehicleRentalRequestTypeID",
+        DataSourceMember: "VehicleRentalRequestTypeID"
     },
     {
-        Name: "VehicleRentalRequestStepName",
+        Name: "VehicleRentalRequestTypeName",
         DefaultValue: "",
-        BindControlName: "txtVehicleRentalRequestStepName",
-        DataSourceMember: "VehicleRentalRequestStepName"
+        BindControlName: "txtVehicleRentalRequestTypeName",
+        DataSourceMember: "VehicleRentalRequestTypeName"
+    },
+    {
+        Name: "AddFunctionID",
+        DefaultValue: "",
+        BindControlName: "AddFunctionID",
+        DataSourceMember: "AddFunctionID"
     },
     {
         Name: "OrderIndex",
@@ -288,4 +335,4 @@ export const MLObjectDefinition = [
         BindControlName: "chkIsSystem",
         DataSourceMember: "IsSystem"
     }
-]
+];

@@ -62,6 +62,7 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(PagePath);
         this.getCacheKeyConfig();
+        this.callSearchData(InitSearchParams);
     }
 
     addNotification(message1, IsError) {

@@ -185,19 +185,18 @@ export const SearchElementList = [
 
 export const DataGridColumnList = [
     {
-        Name: "ShipmentOrderID",
-        Type: "texttolinkNewBlankValue",
-        Caption: "Mã vận đơn",
-        Link: "/ShipmentOrder/Detail/",
-        DataSourceMember: "ShipmentOrderID"
-    },
-    {
         Name: "MaterialReturnID",
         Type: "texttolinkNewBlank",
         Caption: "Mã yêu cầu nhập xác",
         DataSourceMember: "MaterialReturnID",
         Link: "/MaterialReturn/Detail/",
-        Width: 200
+    },
+    {
+        Name: "ShipmentOrderID",
+        Type: "texttolinkNewBlankValue",
+        Caption: "Mã vận đơn",
+        Link: "/ShipmentOrder/Detail/",
+        DataSourceMember: "ShipmentOrderID"
     },
     {
         Name: "ReturnDate",
