@@ -478,5 +478,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const Edit = connect(mapStateToProps, mapDispatchToProps)(AddCom);
-export default Edit;
+const Add = connect(mapStateToProps, mapDispatchToProps)(AddCom);
+export default Add;

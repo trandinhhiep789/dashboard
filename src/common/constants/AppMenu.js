@@ -557,10 +557,25 @@ const AppMenu = [
             },
             {
                 MenuName: 'Vehicle',
-                MenuTitle: 'Danh sách xe',
-                LinkTo: '/Vehicle',
+                MenuTitle: 'Quản lý xe tải',
+                LinkTo: '',
                 MenuIcon: '',
-                SubMenu: []
+                SubMenu: [
+                    {
+                        MenuName: 'Vehicle',
+                        MenuTitle: 'Danh sách xe',
+                        LinkTo: '/Vehicle',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'VehicleRentalRequestStep',
+                        MenuTitle: 'Bước xử lý của yêu cầu thuê xe',
+                        LinkTo: '/VehicleRentalRequestStep',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                ]
             },
             {
                 MenuName: 'WS',
@@ -1174,7 +1189,7 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: []
             },
-            
+
         ]
     },
     {

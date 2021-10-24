@@ -216,91 +216,79 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Mã xe",
         DataSourceMember: "VehicleID",
-        // Width: 100
     },
     {
         Name: "VehicleName",
         Type: "text",
         Caption: "Tên xe",
         DataSourceMember: "VehicleName",
-        // Width: 100
     },
     {
         Name: "LicensePlateNumber",
         Type: "text",
         Caption: "Biển số xe",
         DataSourceMember: "LicensePlateNumber",
-        // Width: 150
     },
     {
         Name: "MainDriverUserIDName",
         Type: "text",
         Caption: "Tài xế",
         DataSourceMember: "MainDriverUserIDName",
-        // Width: 150
     },
     {
         Name: "PartnerIDName",
         Type: "text",
         Caption: "Tên đối tác",
         DataSourceMember: "PartnerIDName",
-        // Width: 150
     },
     {
         Name: "MainCoordinatorStoreIDName",
         Type: "text",
         Caption: "Kho điều phối chính",
-        DataSourceMember: "MainCoordinatorStoreID",
-        // Width: 150
+        DataSourceMember: "MainCoordinatorStoreIDName",
     },
     {
         Name: "Weight",
         Type: "text",
         Caption: "Tải trọng(kg)",
         DataSourceMember: "Weight",
-        // Width: 70
     },
     {
         Name: "Length",
         Type: "text",
         Caption: "Chiều dài(m)",
         DataSourceMember: "Length",
-        // Width: 70
     },
     {
         Name: "Width",
         Type: "text",
         Caption: "Chiều rộng(m)",
         DataSourceMember: "Width",
-        // Width: 70
     },
     {
         Name: "Height",
         Type: "text",
         Caption: "Chiều cao(m)",
         DataSourceMember: "Height",
-        // Width: 70
     },
     {
         Name: "Volume",
         Type: "text",
         Caption: "Thể tích(m3)",
         DataSourceMember: "Volume",
-        // Width: 70
     },
     {
         Name: "ActivityStatusIDName",
         Type: "text",
         Caption: "Trạng thái hoạt động ",
         DataSourceMember: "ActivityStatusIDName",
-        // Width: 70
     },
     {
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
         DataSourceMember: "VehicleID",
-        Width: 100,
+        Width: 80,
         Link: "/Vehicle/Edit/",
         LinkText: "Chỉnh sửa"
     },
