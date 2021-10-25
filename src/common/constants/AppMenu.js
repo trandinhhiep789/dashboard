@@ -567,6 +567,13 @@ const AppMenu = [
             SubMenu: [],
           },
           {
+            MenuName: "VehicleRentalStatus",
+            MenuTitle: "Khai báo trạng thái yêu cầu thuê của xe",
+            LinkTo: "/VehicleRentalStatus",
+            MenuIcon: "",
+            SubMenu: [],
+          },
+          {
             MenuName: "VehicleRentalRequestStep",
             MenuTitle: "Bước xử lý của yêu cầu thuê xe",
             LinkTo: "/VehicleRentalRequestStep",
@@ -591,6 +598,13 @@ const AppMenu = [
             MenuName: "VehicleModel",
             MenuTitle: "Khai báo model phương tiện",
             LinkTo: "/VehicleModel",
+            MenuIcon: "",
+            SubMenu: [],
+          },
+          {
+            MenuName: "VehicleRentalType",
+            MenuTitle: "Khai báo hình thức thuê xe",
+            LinkTo: "/VehicleRentalType",
             MenuIcon: "",
             SubMenu: [],
           },

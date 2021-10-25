@@ -4,47 +4,70 @@ import { ModalManager } from "react-dynamic-modal";
 import ReactNotification from "react-notifications-component";
 
 import {
-    AddAPIPath,
-    AddElementList,
-    AddPagePath,
+    EditElementList,
     APIHostName,
     BackLink,
+    EditAPIPath,
+    EditPagePath,
     MLObjectDefinition,
+    Edit
 } from "../constants";
 
 import {
 } from "../../../../../constants/keyCache";
 
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
-import { callGetCache } from "../../../../../actions/cacheAction";
 import { MessageModal } from "../../../../../common/components/Modal";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { updatePagePath } from "../../../../../actions/pageAction";
 import SimpleForm from "../../../../../common/components/Form/SimpleForm";
 
-class AddCom extends React.Component {
+class EditCom extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            DataSource: {},
+            dataSource: {
+                VehicleRentalRequestStepID: 0,
+                VehicleRentalRequestStepName: "test",
+                Description: "test",
+                OrderIndex: 1,
+                IsActived: true,
+                IsSystem: false
+            }
         };
 
-        this.searchref = React.createRef();
         this.gridref = React.createRef();
         this.notificationDOMRef = React.createRef();
+        this.searchref = React.createRef();
 
         this.addNotification = this.addNotification.bind(this);
+        this.fetchVehicleRentalRequestStepInfo = this.fetchVehicleRentalRequestStepInfo.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.showMessage = this.showMessage.bind(this);
     }
 
     componentDidMount() {
-        this.props.updatePagePath(AddPagePath);
+        this.props.updatePagePath(EditPagePath);
+        // this.fetchVehicleRentalRequestStepInfo();
+    }
+
+    fetchVehicleRentalRequestStepInfo() {
+        this.props.callFetchAPI(APIHostName, EditAPIPath, this.props.match.param.id).then(apiResult => {
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.Message);
+            } else {
+                this.setState({
+                    dataSource: apiResult.ResultObject
+                })
+            }
+        })
     }
 
     handleSubmit(formData, MLObject) {
-        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+        console.log('47', MLObject); return;
+
+        this.props.callFetchAPI(APIHostName, EditAPIPath, uptMLObject).then(apiResult => {
             this.showMessage(apiResult.Message);
             if (!apiResult.IsError) {
                 this.props.history.push(BackLink);
@@ -102,9 +125,9 @@ class AddCom extends React.Component {
                     BackLink={BackLink}
                     dataSource={this.state.dataSource}
                     FormMessage={""}
-                    FormName="Thêm danh sách xe"
+                    FormName="Chỉnh sửa trạng thái yêu cầu thuê xe"
                     IsErrorMessage={false}
-                    listelement={AddElementList}
+                    listelement={EditElementList}
                     MLObjectDefinition={MLObjectDefinition}
                     onSubmit={this.handleSubmit}
                     ref={this.searchref}
@@ -130,9 +153,6 @@ const mapDispatchToProps = dispatch => {
         callFetchAPI: (hostname, hostURL, postData) => {
             return dispatch(callFetchAPI(hostname, hostURL, postData));
         },
-        callGetCache: (cacheKeyID) => {
-            return dispatch(callGetCache(cacheKeyID));
-        },
         showModal: (type, props) => {
             dispatch(showModal(type, props));
         },
@@ -142,4 +162,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddCom);
+export default connect(mapStateToProps, mapDispatchToProps)(EditCom);

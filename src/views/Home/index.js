@@ -196,8 +196,10 @@ import VehicleGroup from "../TMS/MD/VehicleGroup";
 import VehicleModel from "../TMS/MD/VehicleModel";
 import VehicleRentalRequest from "../TMS/VehicleRentalRequest";
 import VehicleRentalRequestStep from "../../views/TMS/MD/VehicleRentalRequestStep";
+import VehicleRentalStatus from "../../views/TMS/MD/VehicleRentalStatus";
 import VehicleRentalRequestType from "../../views/TMS/MD/VehicleRentalRequestType";
 import VehicleType from "../TMS/MD/VehicleType";
+import VehicleRentalType from '../../views/TMS/MD/VehicleRentalType';
 import WeekDay from "../TMS/MD/WeekDay";
 import WorkingPlan from "../../views/TMS/WorkingPlan";
 import WorkingShift from "../../views/TMS/MD/WorkingShift";
@@ -341,7 +343,9 @@ class HomeCom extends React.Component {
                   <PrivateRoute path="/Vehicle" component={Vehicle} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                   <PrivateRoute path="/VehicleActivityStatus" component={VehicleActivityStatus} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                   <PrivateRoute path="/VehicleRentalRequestStep" component={VehicleRentalRequestStep} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                  <PrivateRoute path="/VehicleRentalStatus" component={VehicleRentalStatus} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                   <PrivateRoute path="/VehicleRentalRequestType" component={VehicleRentalRequestType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                  <PrivateRoute path="/VehicleRentalType" component={VehicleRentalType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                   <PrivateRoute path="/WorkingShift" component={WorkingShift} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                   <PrivateRoute path="/WorkingShiftTimeFrame" component={WorkingShift_TimeFrame} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
