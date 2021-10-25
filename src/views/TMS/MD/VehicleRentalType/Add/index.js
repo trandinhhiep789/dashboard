@@ -111,7 +111,7 @@ class AddCom extends React.Component {
                     MLObjectDefinition={MLObjectDefinition}
                     onSubmit={this.handleSubmit}
                     ref={this.searchref}
-                    RequirePermission={""}
+                    RequirePermission={RENTALTYPE_ADD}
                 />
             </React.Fragment>
         )

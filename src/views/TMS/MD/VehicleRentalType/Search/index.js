@@ -151,14 +151,14 @@ class SearchCom extends React.Component {
                 <DataGrid
                     AddLink={AddLink}
                     dataSource={this.state.gridDataSource}
-                    DeletePermission=""
+                    DeletePermission={RENTALTYPE_DELETE}
                     IDSelectColumnName={IDSelectColumnName}
                     IsAutoPaging={true}
                     listColumn={DataGridColumnList}
                     onDeleteClick={this.handleDelete}
                     PKColumnName={PKColumnName}
                     ref={this.gridref}
-                    RequirePermission=""
+                    RequirePermission={RENTALTYPE_VIEW}
                     RowsPerPage={10}
                 />
             </React.Fragment>

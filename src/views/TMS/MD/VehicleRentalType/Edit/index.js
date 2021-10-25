@@ -105,7 +105,7 @@ class EditCom extends React.Component {
                         MLObjectDefinition={MLObjectDefinition}
                         onSubmit={this.handleSubmit}
                         ref={this.searchref}
-                        RequirePermission={""}
+                        RequirePermission={RENTALTYPE_UPDATE}
                     />
                 </React.Fragment>
             )
