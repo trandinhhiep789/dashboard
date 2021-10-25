@@ -64,7 +64,7 @@ class SearchCom extends React.Component {
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
-                this.props.callClearLocalCache(ERPCOMMONCACHE_QUALITYASSESSGROUP);
+                //this.props.callClearLocalCache(ERPCOMMONCACHE_QUALITYASSESSGROUP);
                 // this.handleSubmitInsertLog();
             }
         });
@@ -155,7 +155,7 @@ class SearchCom extends React.Component {
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
-                        FormName="Tìm kiếm danh sách nhóm phương tiện"
+                        FormName="Tìm kiếm danh sách loại phương tiện"
                         MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}

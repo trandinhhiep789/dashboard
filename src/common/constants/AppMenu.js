@@ -562,6 +562,20 @@ const AppMenu = [
                 MenuIcon: '',
                 SubMenu: [
                     {
+                        MenuName: 'VehicleGroup',
+                        MenuTitle: 'Nhóm phương tiện',
+                        LinkTo: '/VehicleGroup',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'VehicleType',
+                        MenuTitle: 'Loại phương tiện',
+                        LinkTo: '/VehicleType',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
                         MenuName: 'VehicleRentalRequestType',
                         MenuTitle: 'Loại xử lý của yêu cầu thuê xe',
                         LinkTo: '/VehicleRentalRequestType',
@@ -572,6 +586,13 @@ const AppMenu = [
                         MenuName: 'VehicleRentalRequestStep',
                         MenuTitle: 'Bước xử lý của yêu cầu thuê xe',
                         LinkTo: '/VehicleRentalRequestStep',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: 'VehicleActivityStatus',
+                        MenuTitle: 'Danh sách trạng thái hoạt động của phương tiện',
+                        LinkTo: '/VehicleActivityStatus',
                         MenuIcon: '',
                         SubMenu: []
                     },

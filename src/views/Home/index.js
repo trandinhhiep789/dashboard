@@ -191,11 +191,13 @@ import UserRewardStore from "../TMS/MD/RewardStoreUser";
 import UserSkill from "../TMS/User/UserSkill";
 import User_DeliveryGoodsGroup from "../TMS/MD/User_DeliveryGoodsGroup";
 import Vehicle from "../../views/TMS/MD/Vehicle";
+import VehicleActivityStatus from "../TMS/MD/VehicleActivityStatus";
 import VehicleGroup from "../TMS/MD/VehicleGroup";
-import VehicleModel from './../TMS/MD/VehicleModel/index';
+import VehicleModel from "../TMS/MD/VehicleModel";
 import VehicleRentalRequest from "../TMS/VehicleRentalRequest";
 import VehicleRentalRequestStep from "../../views/TMS/MD/VehicleRentalRequestStep";
 import VehicleRentalRequestType from "../../views/TMS/MD/VehicleRentalRequestType";
+import VehicleType from "../TMS/MD/VehicleType";
 import WeekDay from "../TMS/MD/WeekDay";
 import WorkingPlan from "../../views/TMS/WorkingPlan";
 import WorkingShift from "../../views/TMS/MD/WorkingShift";
@@ -337,6 +339,7 @@ class HomeCom extends React.Component {
                   <PrivateRoute path="/UserLimit" component={UserLimit} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                   <PrivateRoute path="/UserLimitTest" component={UserLimitTest} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                   <PrivateRoute path="/Vehicle" component={Vehicle} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                  <PrivateRoute path="/VehicleActivityStatus" component={VehicleActivityStatus} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                   <PrivateRoute path="/VehicleRentalRequestStep" component={VehicleRentalRequestStep} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                   <PrivateRoute path="/VehicleRentalRequestType" component={VehicleRentalRequestType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                   <PrivateRoute path="/WorkingShift" component={WorkingShift} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
@@ -492,9 +495,9 @@ class HomeCom extends React.Component {
                   <PrivateRoute path="/BaseDAActionLog" component={BaseDAActionLog} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                   <PrivateRoute path="/VehicleGroup" component={VehicleGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
-                  <PrivateRoute path="/VehicleRentalRequest" component={VehicleRentalRequest} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
-
+                  <PrivateRoute path="/VehicleType" component={VehicleType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                   <PrivateRoute path="/VehicleModel" component={VehicleModel} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                  <PrivateRoute path="/VehicleRentalRequest" component={VehicleRentalRequest} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                   <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                 </Switch>
