@@ -576,6 +576,13 @@ const AppMenu = [
                         SubMenu: []
                     },
                     {
+                        MenuName: 'VehicleRentalStatus',
+                        MenuTitle: 'Bước xử lý trạng thái yêu cầu thuê xe',
+                        LinkTo: '/VehicleRentalStatus',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
                         MenuName: 'Vehicle',
                         MenuTitle: 'Danh sách xe',
                         LinkTo: '/Vehicle',

@@ -69,6 +69,7 @@ import SkillCategory from "../TMS/MD/SkillCategory";
 import SkillRank from "../TMS/MD/SkillRank";
 import Vehicle from '../../views/TMS/MD/Vehicle';
 import VehicleRentalRequestStep from '../../views/TMS/MD/VehicleRentalRequestStep';
+import VehicleRentalStatus from '../../views/TMS/MD/VehicleRentalStatus';
 import VehicleRentalRequestType from '../../views/TMS/MD/VehicleRentalRequestType';
 import WorkingShift from '../../views/TMS/MD/WorkingShift';
 import Area from "../TMS/MD/Area";
@@ -359,6 +360,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/UserLimitTest" component={UserLimitTest} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/Vehicle" component={Vehicle} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/VehicleRentalRequestStep" component={VehicleRentalRequestStep} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/VehicleRentalStatus" component={VehicleRentalStatus} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/VehicleRentalRequestType" component={VehicleRentalRequestType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/WorkingShift" component={WorkingShift} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/WorkingShiftTimeFrame" component={WorkingShift_TimeFrame} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
