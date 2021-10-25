@@ -590,6 +590,13 @@ const AppMenu = [
                         SubMenu: []
                     },
                     {
+                        MenuName: 'VehicleActivityStatus',
+                        MenuTitle: 'Danh sách trạng thái hoạt động của phương tiện',
+                        LinkTo: '/VehicleActivityStatus',
+                        MenuIcon: '',
+                        SubMenu: []
+                    },
+                    {
                         MenuName: 'Vehicle',
                         MenuTitle: 'Danh sách xe',
                         LinkTo: '/Vehicle',

@@ -215,6 +215,7 @@ import BaseDAActionLog from "../TMS/MD/BaseDAActionLog";
 import VehicleGroup from "../TMS/MD/VehicleGroup";
 import VehicleRentalRequest from "../TMS/VehicleRentalRequest";
 import VehicleType from "../TMS/MD/VehicleType";
+import VehicleActivityStatus from "../TMS/MD/VehicleActivityStatus";
 
 
 class HomeCom extends React.Component {
@@ -359,6 +360,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/UserLimit" component={UserLimit} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/UserLimitTest" component={UserLimitTest} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/Vehicle" component={Vehicle} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/VehicleActivityStatus" component={VehicleActivityStatus} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/VehicleRentalRequestStep" component={VehicleRentalRequestStep} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/VehicleRentalRequestType" component={VehicleRentalRequestType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/WorkingShift" component={WorkingShift} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
