@@ -82,7 +82,7 @@ export const DataGridColumnList = [
     },
     {
         Name: "UpdatedDate",
-        Type: "text",
+        Type: "date",
         Caption: "Ngày cập nhật",
         DataSourceMember: "UpdatedDate",
     },

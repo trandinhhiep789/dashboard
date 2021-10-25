@@ -601,6 +601,13 @@ const AppMenu = [
             MenuIcon: "",
             SubMenu: [],
           },
+          {
+            MenuName: "VehicleRentalType",
+            MenuTitle: "Khai báo hình thức thuê xe",
+            LinkTo: "/VehicleRentalType",
+            MenuIcon: "",
+            SubMenu: [],
+          },
         ],
       },
       {
