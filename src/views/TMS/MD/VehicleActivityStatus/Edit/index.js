@@ -1,10 +1,9 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React, { useState, useEffect, createRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
-import SimpleForm from "../../../../../common/components/Form/SimpleForm";
 import { MessageModal } from "../../../../../common/components/Modal";
+import { updatePagePath } from "../../../../../actions/pageAction";
 import {
     APIHostName,
     LoadAPIPath,
@@ -12,13 +11,16 @@ import {
     EditElementList,
     MLObjectDefinition,
     BackLink,
-    EditPagePath
+    EditPagePath,
 } from "../constants";
+import { connect } from "react-redux";
+import { VEHICLEACITIVITYSTATUS_UPDATE,VEHICLE_ADD,VEHICLE_UPDATE } from "../../../../../constants/functionLists";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
-import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_QUALITYASSESSGROUP, ERPCOMMONCACHE_SERVICETYPE, ERPCOMMONCACHE_TMSREWARDTYPE } from "../../../../../constants/keyCache";
-import { QUALITYASSESSGROUP_UPDATE, REWARDTYPE_UPDATE, SERVICETYPE_UPDATE } from "../../../../../constants/functionLists";
+import FormContainer from "../../../../../common/components/Form/AdvanceForm/FormContainer";
+import SimpleForm from "../../../../../common/components/Form/SimpleForm";
+import {useParams} from 'react-router-dom';
+
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -57,10 +59,6 @@ class EditCom extends React.Component {
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
                 this.setState({ IsCallAPIError: apiResult.IsError });
-                if(!apiResult.IsError){
-                    this.props.callClearLocalCache(ERPCOMMONCACHE_QUALITYASSESSGROUP);
-                    // this.handleSubmitInsertLog(MLObject);
-                }      
                 this.showMessage(apiResult.Message);
             });
     }
@@ -87,7 +85,7 @@ class EditCom extends React.Component {
         if (this.state.IsLoadDataComplete) {
             return (
                 <SimpleForm
-                    FormName="Cập nhật nhóm phương tiện"
+                    FormName="Cập nhật trạng thái hoạt động của phương tiện"
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={EditElementList}
                     onSubmit={this.handleSubmit}
@@ -95,7 +93,7 @@ class EditCom extends React.Component {
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
-                    RequirePermission={QUALITYASSESSGROUP_UPDATE}
+                    RequirePermission={VEHICLEACITIVITYSTATUS_UPDATE}
                     ref={this.searchref}
                 />
             );

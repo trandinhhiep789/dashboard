@@ -159,6 +159,15 @@ export const AddModalColumnList = [
         value: false
     },
     {
+        Name: "IsOnlyCollectionBehalf",
+        type: "checkbox",
+        label: "Là vận đơn chỉ thu hộ(không có thu COD)",
+        DataSourceMember: "IsOnlyCollectionBehalf",
+        readonly: false,
+        validatonList: [],
+        value: false
+    },
+    {
         Name: "MTOuputPayableTypeID",
         type: "select",
         label: "Hình thức thanh toán của yêu cầu xuất dịch vụ",
@@ -353,6 +362,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "IsCheckDuplicateSaleOrderID",
         DataSourceMember: "IsCheckDuplicateSaleOrderID"
+    },
+    {
+        Name: "IsOnlyCollectionBehalf",
+        DefaultValue: "",
+        BindControlName: "IsOnlyCollectionBehalf",
+        DataSourceMember: "IsOnlyCollectionBehalf"
     },
     {
         Name: "MTOuputPayableTypeID",

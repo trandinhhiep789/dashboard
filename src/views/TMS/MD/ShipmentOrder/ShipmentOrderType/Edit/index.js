@@ -710,6 +710,11 @@ class EditCom extends React.Component {
                                 labelcolspan={4} colspan={8} rowspan={8}
                             />
 
+                            <FormControl.CheckBox label="Là vận đơn chỉ thu hộ(không có thu COD)" name="IsOnlyCollectionBehalf"
+                                datasourcemember="IsOnlyCollectionBehalf" controltype="InputControl"
+                                labelcolspan={4} colspan={8} rowspan={8}
+                            />
+
                             <FormControl.CheckBox label="Có chuyển đổi thời gian thực hiện DV sang sản phẩm DV" name="IsConverSvTimeToSvProduct"
                                 datasourcemember="IsConverSvTimeToSvProduct" controltype="InputControl"
                                 labelcolspan={4} colspan={8} rowspan={8}
