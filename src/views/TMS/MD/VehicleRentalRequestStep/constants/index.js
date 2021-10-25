@@ -1,7 +1,9 @@
 export const APIHostName = "TMSMDMAPI";
+export const SearchAPIPath = "api/VehicleRentalRequestStep/Search";
 export const AddAPIPath = "api/VehicleRentalRequestStep/Add";
 export const EditAPIPath = "api/VehicleRentalRequestStep/Edit";
 export const LoadAPIPath = "api/VehicleRentalRequestStep/Load";
+export const DeleteAPIPath = "api/VehicleRentalRequestStep/Delete";
 
 export const AddLink = "/VehicleRentalRequestStep/Add";
 export const BackLink = "/VehicleRentalRequestStep";
@@ -55,16 +57,16 @@ export const DataGridColumnList = [
         Width: 60
     },
     {
-        Name: "VehicleRetalRequestStepID",
+        Name: "VehicleRentalRequestStepID",
         Type: "text",
         Caption: "Mã bước xử lý",
-        DataSourceMember: "VehicleRetalRequestStepID",
+        DataSourceMember: "VehicleRentalRequestStepID",
     },
     {
-        Name: "VehicleRetalRequestStepName",
+        Name: "VehicleRentalRequestStepName",
         Type: "text",
         Caption: "Tên bước xử lý",
-        DataSourceMember: "VehicleRetalRequestStepName",
+        DataSourceMember: "VehicleRentalRequestStepName",
     },
     {
         Name: "Description",
@@ -73,16 +75,16 @@ export const DataGridColumnList = [
         DataSourceMember: "Description",
     },
     {
-        Name: "UpdateUser",
+        Name: "UpdatedUserIDName",
         Type: "text",
         Caption: "Người cập nhật",
-        DataSourceMember: "UpdateUser",
+        DataSourceMember: "UpdatedUserIDName",
     },
     {
-        Name: "UpdateDate",
-        Type: "text",
+        Name: "UpdatedDate",
+        Type: "datetime",
         Caption: "Ngày cập nhật",
-        DataSourceMember: "UpdateDate",
+        DataSourceMember: "UpdatedDate",
     },
     {
         Name: "Action",
@@ -96,19 +98,6 @@ export const DataGridColumnList = [
 ]
 
 export const AddElementList = [
-    {
-        type: "text",
-        name: "txtVehicleRentalRequestStepID",
-        label: "Mã loại bước xử lý của yêu cầu thuê xe",
-        value: "",
-        maxSize: "10",
-        placeholder: "",
-        icon: "",
-        listoption: {},
-        DataSourceMember: "VehicleRentalRequestStepID",
-        readonly: false,
-        validatonList: ["required", "number"]
-    },
     {
         type: "text",
         name: "txtVehicleRentalRequestStepName",
@@ -252,12 +241,6 @@ export const EditElementList = [
 ];
 
 export const MLObjectDefinition = [
-    {
-        Name: "VehicleRentalRequestStepID",
-        DefaultValue: "",
-        BindControlName: "txtVehicleRentalRequestStepID",
-        DataSourceMember: "VehicleRentalRequestStepID"
-    },
     {
         Name: "VehicleRentalRequestStepName",
         DefaultValue: "",
