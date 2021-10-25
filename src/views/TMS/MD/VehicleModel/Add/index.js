@@ -2,7 +2,7 @@ import { APIHostName, AddAPIPath, AddElementList, AddPagePath, BackLink, MLObjec
 import { callClearLocalCache, callGetCache } from "../../../../../actions/cacheAction";
 
 import { ERPCOMMONCACHE_VEHICLETYPE } from "./../../../../../constants/keyCache";
-import FormContainer from "../../../../../common/components/Form/AdvanceForm/FormContainer";
+import FormContainer from "./../../../../../common/components/Form/AdvanceForm/FormContainer/index";
 import { MD_VEHICLEMODEL_ADD } from "./../../../../../constants/functionLists";
 import { MessageModal } from "../../../../../common/components/Modal";
 import { ModalManager } from "react-dynamic-modal";
@@ -33,7 +33,9 @@ class AddCom extends React.Component {
     MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
     MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
 
-    if (MLObject.VehicleTypeID === -1) {
+    console.log(MLObject);
+
+    if (MLObject.VehicleTypeID === "-1") {
       this.showMessage("Loại xe không được bỏ trống");
       this.setState({ IsCallAPIError: true });
       return;
@@ -67,7 +69,7 @@ class AddCom extends React.Component {
     return (
       <SimpleForm
         BackLink={BackLink}
-        dataSource={this.state.dataSource}
+        dataSource={this.state.DataSource}
         FormMessage={this.state.CallAPIMessage}
         FormName={TitleFormAdd}
         IsErrorMessage={false}
