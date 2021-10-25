@@ -20,67 +20,6 @@ import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheA
 import FormContainer from "../../../../../common/components/Form/AdvanceForm/FormContainer";
 import SimpleForm from "../../../../../common/components/Form/SimpleForm";
 
-// export default function Add() {
-//     const [callAPIMessage, setCallAPIMessage] = useState('');
-//     const searchref = createRef();
-//     const [IsCallAPIError, setIsCallAPIError] = useState(false);
-//     const [IsCloseForm, setIsCloseForm] = useState(false);
-//     const LoginInfo = useSelector(state => state.LoginInfo);
-//     const dispatch = useDispatch();
-//     useEffect(() => {
-//         dispatch(pageAction.updatePagePath(AddPagePath));
-//     }, []);
-
-//     const handleSubmit = (formData, MLObject) => {
-//         MLObject.CreatedUser = LoginInfo.Username;
-//         MLObject.LoginLogID = JSON.parse(LoginInfo.TokenString).AuthenLogID;
-//         dispatch(callFetchAPI(APIHostName, AddAPIPath, MLObject)).then(apiResult => {
-            
-//             setIsCallAPIError(apiResult.IsError);
-//             if(!apiResult.IsError){
-                
-//             }            
-//             showMessage(apiResult.Message);
-//         });
-//     }
-
-//     const handleCloseMessage = () => {
-//         if (!IsCallAPIError) setIsCloseForm(true);
-//     }
-
-//     const showMessage = (message) =>{
-//         ModalManager.open(
-//             <MessageModal
-//                 title="Thông báo"
-//                 message={message}
-//                 onRequestClose={() => true}
-//                 onCloseModal={handleCloseMessage}
-//             />
-//         );
-//     }
-//     const dataSource = {
-//         IsActived: true
-//     };
-//     if (IsCloseForm) {
-//         return <Redirect to={BackLink} />;
-//     }
-//     return (
-//         <FormContainer
-//             FormName="Thêm trạng thái hoạt động của phương tiện"
-//             MLObjectDefinition={MLObjectDefinition} 
-//             listelement={AddElementList}
-//             onSubmit={handleSubmit}
-//             FormMessage={callAPIMessage}
-//             IsErrorMessage={IsCallAPIError}
-//             dataSource={dataSource}
-//             BackLink={BackLink}
-//             RequirePermission={VEHICLEACITIVITYSTATUS_ADD}
-//             ref={searchref}
-//         />
-//     )
-// }
-
-
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
