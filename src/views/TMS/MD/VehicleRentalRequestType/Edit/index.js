@@ -4,43 +4,28 @@ import { ModalManager } from "react-dynamic-modal";
 import ReactNotification from "react-notifications-component";
 
 import {
-    EditAPIPath,
     APIHostName,
     BackLink,
+    EditAPIPath,
+    EditElementList,
     EditPagePath,
+    LoadAPIPath,
     MLObjectDefinition,
-    EditElementList
 } from "../constants";
 
-import {
-} from "../../../../../constants/keyCache";
-
-import SimpleForm from "../../../../../common/components/Form/SimpleForm";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { MessageModal } from "../../../../../common/components/Modal";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { VEHICLE_ADD } from "../../../../../constants/functionLists";
-import FormContainer from "../../../../../common/components/FormContainer";
-import FormControl from "../../../../../common/components/FormContainer/FormControl";
-import MultiSelectComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
-import MultiStoreComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiStoreComboBox";
+import SimpleForm from "../../../../../common/components/Form/SimpleForm";
 
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            dataSource: {
-                VehicleRentalRequestTypeID: 0,
-                VehicleRentalRequestTypeName: "test",
-                AddFunctionID: "",
-                Description: "test",
-                OrderIndex: 1,
-                IsActived: true,
-                IsSystem: false
-            }
+            dataSource: null
         };
 
         this.searchref = React.createRef();
@@ -48,37 +33,14 @@ class EditCom extends React.Component {
         this.notificationDOMRef = React.createRef();
 
         this.addNotification = this.addNotification.bind(this);
+        this.fetchVehicleRentalRequestTypeInfo = this.fetchVehicleRentalRequestTypeInfo.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.showMessage = this.showMessage.bind(this);
-        this.fetchVehicleRentalRequestTypeInfo = this.fetchVehicleRentalRequestTypeInfo.bind(this);
     }
 
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
-        // this.fetchVehicleRentalRequestTypeInfo();
-    }
-
-    fetchVehicleRentalRequestTypeInfo() {
-        this.props.callFetchAPI(APIHostName, EditAPIPath, this.props.match.param.id).then(apiResult => {
-            if (apiResult.IsError) {
-                this.showMessage(apiResult.Message);
-            } else {
-                this.setState({
-                    dataSource: apiResult.ResultObject
-                })
-            }
-        })
-    }
-
-    handleSubmit(formData, MLObject) {
-        console.log('47', MLObject); return;
-
-        this.props.callFetchAPI(APIHostName, EditAPIPath, uptMLObject).then(apiResult => {
-            this.showMessage(apiResult.Message);
-            if (!apiResult.IsError) {
-                this.props.history.push(BackLink);
-            }
-        });
+        this.fetchVehicleRentalRequestTypeInfo();
     }
 
     addNotification(message1, IsError) {
@@ -122,25 +84,60 @@ class EditCom extends React.Component {
         );
     }
 
-    render() {
-        return (
-            <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
+    fetchVehicleRentalRequestTypeInfo() {
+        this.props.callFetchAPI(APIHostName, LoadAPIPath, this.props.match.params.id).then(apiResult => {
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.Message);
+            } else {
+                this.setState({
+                    dataSource: apiResult.ResultObject
+                })
+            }
+        })
+    }
 
-                <SimpleForm
-                    BackLink={BackLink}
-                    dataSource={this.state.dataSource}
-                    FormMessage={""}
-                    FormName="Sửa loại xử lý của yêu cầu thuê phương tiện"
-                    IsErrorMessage={false}
-                    listelement={EditElementList}
-                    MLObjectDefinition={MLObjectDefinition}
-                    onSubmit={this.handleSubmit}
-                    ref={this.searchref}
-                    RequirePermission={""}
-                />
-            </React.Fragment>
-        )
+    handleSubmit(formData, MLObject) {
+        const uptMLObject = {
+            ...MLObject,
+            AddFunctionID: MLObject.AddFunctionID.length == 1 ? MLObject.AddFunctionID[0] : MLObject.AddFunctionID
+        }
+
+        this.props.callFetchAPI(APIHostName, EditAPIPath, uptMLObject).then(apiResult => {
+            this.showMessage(apiResult.Message);
+            if (!apiResult.IsError) {
+                this.props.history.push(BackLink);
+            }
+        });
+    }
+
+    render() {
+        if (this.state.dataSource == null) {
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
+                    Đang nạp dữ liệu ...
+                </React.Fragment>
+            )
+        } else {
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
+
+                    <SimpleForm
+                        BackLink={BackLink}
+                        dataSource={this.state.dataSource}
+                        FormMessage={""}
+                        FormName="Sửa loại xử lý của yêu cầu thuê phương tiện"
+                        IsErrorMessage={false}
+                        listelement={EditElementList}
+                        MLObjectDefinition={MLObjectDefinition}
+                        onSubmit={this.handleSubmit}
+                        ref={this.searchref}
+                        RequirePermission={""}
+                    />
+                </React.Fragment>
+            )
+        }
     }
 }
 

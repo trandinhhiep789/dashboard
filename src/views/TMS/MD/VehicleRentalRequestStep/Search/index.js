@@ -27,12 +27,10 @@ import SearchForm from "../../../../../common/components/FormContainer/SearchFor
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
-        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
+
         this.state = {
             cssNotification: "",
             gridDataSource: [],
-            iconNotification: "",
             SearchData: [
                 {
                     SearchKey: "@KEYWORD",
@@ -40,9 +38,13 @@ class SearchCom extends React.Component {
                 }
             ],
         };
+
         this.gridref = React.createRef();
         this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
+
+        this.handleSearchSubmit = this.handleSearchSubmit.bind(this)
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     componentDidMount() {
@@ -62,23 +64,20 @@ class SearchCom extends React.Component {
     }
 
     addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
         if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
         } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={this.state.cssNotification}>
+                <div className={cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
+                        <i className={iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -197,5 +196,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const Search = connect(mapStateToProps, mapDispatchToProps)(SearchCom);
-export default Search;
+export default connect(mapStateToProps, mapDispatchToProps)(SearchCom);
