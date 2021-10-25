@@ -1,6 +1,7 @@
 import { APIHostName, BackLink, EditElementList, EditPagePath, LoadAPIPath, MLObjectDefinition, TitleFormEdit, UpdateAPIPath } from "../constants";
 import { callClearLocalCache, callGetCache } from "../../../../../actions/cacheAction";
 
+import { ERPCOMMONCACHE_VEHICLETYPE } from "./../../../../../constants/keyCache";
 import { MD_VEHICLEMODEL_UPDATE } from "../../../../../constants/functionLists";
 import { MessageModal } from "../../../../../common/components/Modal";
 import { ModalManager } from "react-dynamic-modal";
@@ -54,15 +55,13 @@ class EditCom extends React.Component {
     MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
     MLObject.VehicleModelID = this.state.DataSource.VehicleModelID;
 
-    console.log(MLObject);
-
     this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then((apiResult) => {
       this.setState({ IsCallAPIError: apiResult.IsError });
       this.showMessage(apiResult.Message);
       if (!apiResult.IsError) {
+        this.props.callClearLocalCache(ERPCOMMONCACHE_VEHICLETYPE);
       }
     });
-    //console.log("MLObject",MLObject);
   }
 
   handleCloseMessage() {

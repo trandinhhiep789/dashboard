@@ -2,7 +2,7 @@ import { APIHostName, AddAPIPath, AddElementList, AddPagePath, BackLink, MLObjec
 import { callClearLocalCache, callGetCache } from "../../../../../actions/cacheAction";
 
 import { ERPCOMMONCACHE_VEHICLETYPE } from "./../../../../../constants/keyCache";
-import FormContainer from "./../../../../../common/components/FormContainer/index";
+import FormContainer from "../../../../../common/components/Form/AdvanceForm/FormContainer";
 import { MD_VEHICLEMODEL_ADD } from "./../../../../../constants/functionLists";
 import { MessageModal } from "../../../../../common/components/Modal";
 import { ModalManager } from "react-dynamic-modal";
@@ -33,7 +33,11 @@ class AddCom extends React.Component {
     MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
     MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
 
-    console.log("MLObject", MLObject);
+    if (MLObject.VehicleTypeID === -1) {
+      this.showMessage("Loại xe không được bỏ trống");
+      this.setState({ IsCallAPIError: true });
+      return;
+    }
 
     this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then((apiResult) => {
       this.setState({ IsCallAPIError: apiResult.IsError });
@@ -48,7 +52,7 @@ class AddCom extends React.Component {
     if (!this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
   }
 
-  showMessage(message) {
+  showMessage(message, isError) {
     ModalManager.open(<MessageModal title="Thông báo" message={message} onRequestClose={() => true} onCloseModal={this.handleCloseMessage} />);
   }
 
