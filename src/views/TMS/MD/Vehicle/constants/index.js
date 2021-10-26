@@ -314,22 +314,10 @@ export const MLObjectDefinitionNew = [
         DataSourceMember: "PartnerID"
     },
     {
-        Name: "Weight",
-        DefaultValue: "",
-        BindControlName: "txtWeight",
-        DataSourceMember: "Weight"
-    },
-    {
         Name: "VehicleName",
         DefaultValue: "",
         BindControlName: "txtVehicleName",
         DataSourceMember: "VehicleName"
-    },
-    {
-        Name: "Length",
-        DefaultValue: "",
-        BindControlName: "txtLength",
-        DataSourceMember: "Length"
     },
     {
         Name: "LicensePlateNumber",
@@ -338,34 +326,10 @@ export const MLObjectDefinitionNew = [
         DataSourceMember: "LicensePlateNumber"
     },
     {
-        Name: "Width",
-        DefaultValue: "",
-        BindControlName: "txtWidth",
-        DataSourceMember: "Width"
-    },
-    {
         Name: "ActivityStatusID",
         DefaultValue: "",
         BindControlName: "cbActivityStatusID",
         DataSourceMember: "ActivityStatusID"
-    },
-    {
-        Name: "Height",
-        DefaultValue: "",
-        BindControlName: "txtHeight",
-        DataSourceMember: "Height"
-    },
-    {
-        Name: "MainDriverUser",
-        DefaultValue: "",
-        BindControlName: "cbMainDriverUser",
-        DataSourceMember: "MainDriverUser"
-    },
-    {
-        Name: "Volume",
-        DefaultValue: "",
-        BindControlName: "txtVolume",
-        DataSourceMember: "Volume"
     },
     {
         Name: "MainCoordinatorStoreID",
@@ -397,20 +361,20 @@ export const MLObjectDefinitionNew = [
         BindControlName: "txtVehicleModelID",
         DataSourceMember: "VehicleModelID"
     },
-    {
-        Name: "OrderIndex",
-        DefaultValue: "",
-        BindControlName: "txtOrderIndex",
-        DataSourceMember: "OrderIndex"
-    },
 ]
 
 export const MLObjectDefinition = [
     {
-        Name: "VehicleID",
+        Name: "VehicleTypeID",
         DefaultValue: "",
-        BindControlName: "txtVehicleID",
-        DataSourceMember: "VehicleID"
+        BindControlName: "cbVehicleTypeID",
+        DataSourceMember: "VehicleTypeID"
+    },
+    {
+        Name: "PartnerID",
+        DefaultValue: "",
+        BindControlName: "cbPartnerID",
+        DataSourceMember: "PartnerID"
     },
     {
         Name: "VehicleName",
@@ -425,24 +389,11 @@ export const MLObjectDefinition = [
         DataSourceMember: "LicensePlateNumber"
     },
     {
-        Name: "PartnerID",
+        Name: "ActivityStatusID",
         DefaultValue: "",
-        BindControlName: "txtPartnerID",
-        DataSourceMember: "PartnerID"
+        BindControlName: "cbActivityStatusID",
+        DataSourceMember: "ActivityStatusID"
     },
-    {
-        Name: "ShipmentOrder_DeliverUserList",
-        DefaultValue: {},
-        BindControlName: "ShipmentOrder_DeliverUserList",
-        DataSourceMember: "ShipmentOrder_DeliverUserList"
-    },
-    {
-        Name: "MainDriverUser",
-        DefaultValue: {},
-        BindControlName: "MainDriverUser",
-        DataSourceMember: "MainDriverUser"
-    },
-
     {
         Name: "MainCoordinatorStoreID",
         DefaultValue: "",
@@ -450,69 +401,27 @@ export const MLObjectDefinition = [
         DataSourceMember: "MainCoordinatorStoreID"
     },
     {
-        Name: "Weight",
-        DefaultValue: "",
-        BindControlName: "txtWeight",
-        DataSourceMember: "Weight"
-    },
-    {
-        Name: "Volume",
-        DefaultValue: "",
-        BindControlName: "txtVolume",
-        DataSourceMember: "Volume"
-    },
-    {
-        Name: "Length",
-        DefaultValue: "",
-        BindControlName: "txtLength",
-        DataSourceMember: "Length"
-    },
-    {
-        Name: "Width",
-        DefaultValue: "",
-        BindControlName: "txtWidth",
-        DataSourceMember: "Width"
-    },
-
-    {
-        Name: "Height",
-        DefaultValue: "",
-        BindControlName: "txtHeight",
-        DataSourceMember: "Height"
-    },
-
-    {
-        Name: "Description",
-        DefaultValue: "",
-        BindControlName: "txtDescription",
-        DataSourceMember: "Description"
-    },
-    {
         Name: "IsActived",
         DefaultValue: true,
         BindControlName: "chkIsActived",
         DataSourceMember: "IsActived"
     },
-
+    {
+        Name: "Description",
+        DefaultValue: true,
+        BindControlName: "txtDescription",
+        DataSourceMember: "Description"
+    },
     {
         Name: "IsSystem",
-        DefaultValue: false,
+        DefaultValue: true,
         BindControlName: "chkIsSystem",
         DataSourceMember: "IsSystem"
     },
+    {
+        Name: "VehicleModelID",
+        DefaultValue: "",
+        BindControlName: "txtVehicleModelID",
+        DataSourceMember: "VehicleModelID"
+    },
 ]
-
-export const AddElementList = [
-
-
-];
-
-export const InputCoordinatorStoreWardColumnList = [
-
-];
-
-export const GridMLCoordinatorStoreWardDefinition = []
-
-export const EditElementList = [
-
-];

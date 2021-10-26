@@ -13,7 +13,10 @@ import {
 
 import {
     ERPCOMMONCACHE_VEHICLES,
-    ERPCOMMONCACHE_VEHICLEACTIVITYSTATUS
+    ERPCOMMONCACHE_STORE,
+    ERPCOMMONCACHE_VEHICLEACTIVITYSTATUS,
+    ERPCOMMONCACHE_VEHICLETYPE,
+    ERPCOMMONCACHE_PARTNER
 } from "../../../../../constants/keyCache";
 
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
@@ -33,9 +36,10 @@ class EditCom extends React.Component {
         super(props);
 
         this.state = {
-            DataSource: {},
+            DataSource: null,
+            MainDriverUser: "",
             UserValue: [],
-            MainDriverUser: ""
+            VehicleTypeCache: null
         };
 
         this.searchref = React.createRef();
@@ -43,8 +47,9 @@ class EditCom extends React.Component {
         this.notificationDOMRef = React.createRef();
 
         this.addNotification = this.addNotification.bind(this);
+        this.callGetCacheVehicleType = this.callGetCacheVehicleType.bind(this);
         this.callLoadData = this.callLoadData.bind(this);
-        this.handleChangeVehicleType = this.handleChangeVehicleType.bind(this);
+        this.handleChangeFormContainer = this.handleChangeFormContainer.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onChangeStore = this.onChangeStore.bind(this);
         this.onChangeUser = this.onChangeUser.bind(this);
@@ -55,6 +60,7 @@ class EditCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
         this.callLoadData(this.props.match.params.id);
+        this.callGetCacheVehicleType();
     }
 
     addNotification(message1, IsError) {
@@ -98,6 +104,18 @@ class EditCom extends React.Component {
         );
     }
 
+    callGetCacheVehicleType() {
+        this.props.callGetCache(ERPCOMMONCACHE_VEHICLETYPE).then(result => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                this.setState({
+                    VehicleTypeCache: result.ResultObject.CacheData
+                })
+            } else {
+                this.addNotificatadd("Lỗi load thông tin loại xe");
+            }
+        })
+    }
+
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
             if (apiResult.IsError) {
@@ -105,15 +123,17 @@ class EditCom extends React.Component {
             } else {
                 let UserValue = [
                     {
-                        value: apiResult.ResultObject.MainDriverUser,
+                        FullName: apiResult.ResultObject.MainDriverUserName,
                         label: apiResult.ResultObject.MainDriverUser + " - " + apiResult.ResultObject.MainDriverUserName,
-                        name: apiResult.ResultObject.MainDriverUserName
+                        name: apiResult.ResultObject.MainDriverUserName,
+                        value: apiResult.ResultObject.MainDriverUser,
                     }
                 ];
 
                 const uptResultObject = {
                     ...apiResult.ResultObject,
-                    VehicleTypeID: apiResult.ResultObject.VehicleTypeID == 0 ? -1 : apiResult.ResultObject.VehicleTypeID
+                    VehicleTypeID: apiResult.ResultObject.VehicleTypeID == 0 ? -1 : apiResult.ResultObject.VehicleTypeID,
+                    ActivityStatusID: apiResult.ResultObject.ActivityStatusID == 0 ? -1 : apiResult.ResultObject.ActivityStatusID
                 };
 
                 this.setState({
@@ -137,24 +157,9 @@ class EditCom extends React.Component {
         })
     }
 
-    handleChangeVehicleType(name, comboValues) {
-        console.log(name, comboValues);
-
-        // oke đợi cache anh Học
-        this.props.callGetCache(ERPCOMMONCACHE_VEHICLES).then(result => {
-            console.log(result);
-            this.setState({
-                DataSource: {
-                    ...this.state.dataSource,
-                    Weight: 100
-                }
-            })
-        })
-    }
-
     handleSubmit(formData, MLObject) {
         const uptMLObject = {
-            ...MLObject,
+            ...this.state.DataSource,
             MainDriverUser: this.state.MainDriverUser
         }
 
@@ -165,313 +170,359 @@ class EditCom extends React.Component {
             }
         });
     }
+
+    handleChangeFormContainer(FormData, MLObjectDefinition) {
+        const newDataSource = MLObjectDefinition.reduce((acc, val, index) => {
+            console.log(val.BindControlName, FormData[val.BindControlName])
+            return {
+                ...acc,
+                [val.Name]: FormData[val.BindControlName].value
+            }
+        }, {});
+
+        if (newDataSource.VehicleTypeID == this.state.DataSource.VehicleTypeID) {
+            this.setState({
+                DataSource: {
+                    ...this.state.DataSource,
+                    ...newDataSource
+                }
+            })
+        } else {
+            const foundVehicleTypeInfo = this.state.VehicleTypeCache.find(item => item.VehicleTypeID == newDataSource.VehicleTypeID);
+
+            this.setState({
+                DataSource: {
+                    ...this.state.DataSource,
+                    ...newDataSource,
+                    Weight: foundVehicleTypeInfo.Weight,
+                    Length: foundVehicleTypeInfo.Length,
+                    Width: foundVehicleTypeInfo.Width,
+                    Height: foundVehicleTypeInfo.Height,
+                    Volume: foundVehicleTypeInfo.Volume
+                }
+            })
+        }
+    }
+
     render() {
-        return (
-            <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
-                <FormContainer
-                    BackLink={BackLink}
-                    dataSource={this.state.DataSource}
-                    FormName="Cập nhật danh sách xe"
-                    listelement={[]}
-                    MLObjectDefinition={MLObjectDefinitionNew}
-                    onSubmit={this.handleSubmit}
-                    RequirePermission={VEHICLE_UPDATE}
-                >
+        if (this.state.DataSource == null || this.state.VehicleTypeCache == null) {
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
+                    Đang nạp dữ liệu ...
+                </React.Fragment>
+            );
+        } else {
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
+                    <FormContainer
+                        BackLink={BackLink}
+                        dataSource={this.state.DataSource}
+                        FormName="Cập nhật danh sách xe"
+                        listelement={[]}
+                        MLObjectDefinition={MLObjectDefinitionNew}
+                        onchange={this.handleChangeFormContainer}
+                        onSubmit={this.handleSubmit}
+                        RequirePermission={VEHICLE_UPDATE}
+                    >
 
-                    <div className="row">
-                        <div className="col-md-6">
-                            <FormControl.TextBox
-                                colspan="8"
-                                controltype="InputControl"
-                                datasourcemember="VehicleID"
-                                label="mã xe"
-                                labelcolspan="4"
-                                maxSize={9}
-                                name="txtVehicleID"
-                                placeholder="Mã xe"
-                                readOnly={true}
-                                validatonList={['required', 'number']}
-                                value={""}
-                            />
-                        </div>
+                        <div className="row">
+                            <div className="col-md-6">
+                                <FormControl.TextBox
+                                    colspan="8"
+                                    controltype="InputControl"
+                                    datasourcemember="VehicleID"
+                                    label="mã xe"
+                                    labelcolspan="4"
+                                    maxSize={9}
+                                    name="txtVehicleID"
+                                    placeholder="Mã xe"
+                                    readOnly={true}
+                                    validatonList={['required', 'number']}
+                                    value={""}
+                                />
+                            </div>
 
-                        <div className="col-md-6">
-                            <FormControl.ComboBoxSelect
-                                colspan="8"
-                                controltype="InputControl"
-                                datasourcemember="VehicleTypeID"
-                                disabled={this.state.IsSystem}
-                                isautoloaditemfromcache={true}
-                                label="loại xe"
-                                labelcolspan="4"
-                                listoption={null}
-                                loaditemcachekeyid={ERPCOMMONCACHE_VEHICLES}
-                                name="cbVehicleTypeID"
-                                nameMember="VehicleTypeName"
-                                onValueChangeCustom={this.handleChangeVehicleType}
-                                placeholder="-- Vui lòng chọn --"
-                                readOnly={this.state.IsSystem}
-                                validatonList={["Comborequired"]}
-                                value={""}
-                                valuemember="VehicleTypeID"
-                            />
-                        </div>
+                            <div className="col-md-6">
+                                <FormControl.ComboBoxSelect
+                                    colspan="8"
+                                    controltype="InputControl"
+                                    datasourcemember="VehicleTypeID"
+                                    disabled={this.state.DataSource.IsSystem}
+                                    isautoloaditemfromcache={true}
+                                    label="loại xe"
+                                    labelcolspan="4"
+                                    listoption={[]}
+                                    loaditemcachekeyid={ERPCOMMONCACHE_VEHICLETYPE}
+                                    name="cbVehicleTypeID"
+                                    nameMember="VehicleTypeName"
+                                    placeholder="-- Vui lòng chọn --"
+                                    readOnly={this.state.IsSystem}
+                                    validatonList={["Comborequired"]}
+                                    value={""}
+                                    valuemember="VehicleTypeID"
+                                />
+                            </div>
 
-                        <div className="col-md-6">
-                            <FormControl.FormControlComboBox
-                                colspan="8"
-                                controltype="InputControl"
-                                datasourcemember="PartnerID"
-                                disabled={this.state.DataSource.IsSystem}
-                                isautoloaditemfromcache={true}
-                                label="đối tác"
-                                labelcolspan="4"
-                                listoption={null}
-                                loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
-                                name="cbPartnerID"
-                                nameMember="PartnerName"
-                                placeholder="---Vui lòng chọn---"
-                                validatonList={["Comborequired"]}
-                                value={""}
-                                valuemember="PartnerID"
-                            />
-                        </div>
+                            <div className="col-md-6">
+                                <FormControl.ComboBoxSelect
+                                    colspan="8"
+                                    controltype="InputControl"
+                                    datasourcemember="PartnerID"
+                                    disabled={this.state.DataSource.IsSystem}
+                                    isautoloaditemfromcache={true}
+                                    label="đối tác"
+                                    labelcolspan="4"
+                                    listoption={[]}
+                                    loaditemcachekeyid={ERPCOMMONCACHE_PARTNER}
+                                    name="cbPartnerID"
+                                    nameMember="PartnerName"
+                                    placeholder="-- Vui lòng chọn --"
+                                    readOnly={this.state.IsSystem}
+                                    validatonList={["Comborequired"]}
+                                    value={""}
+                                    valuemember="PartnerID"
+                                />
+                            </div>
 
-                        <div className="col-md-6">
-                            <FormControl.TextBox
-                                colspan="8"
-                                controltype="InputControl"
-                                datasourcemember="Weight"
-                                label="tải trọng(kg)"
-                                labelcolspan="4"
-                                maxSize={9}
-                                name="txtWeight"
-                                placeholder="Tải trọng(kg)"
-                                readOnly={true}
-                                value={""}
-                            />
-                        </div>
+                            <div className="col-md-6">
+                                <FormControl.TextBox
+                                    colspan="8"
+                                    controltype="InputControl"
+                                    datasourcemember="Weight"
+                                    label="tải trọng(kg)"
+                                    labelcolspan="4"
+                                    maxSize={9}
+                                    name="txtWeight"
+                                    placeholder="Tải trọng(kg)"
+                                    readOnly={true}
+                                    value={""}
+                                />
+                            </div>
 
-                        <div className="col-md-6">
-                            <FormControl.TextBox
-                                colspan="8"
-                                controltype="InputControl"
-                                datasourcemember="VehicleName"
-                                disabled={this.state.DataSource.IsSystem}
-                                label="tên xe"
-                                labelcolspan="4"
-                                maxSize={200}
-                                name="txtVehicleName"
-                                placeholder="Tên xe"
-                                validatonList={['required']}
-                                value={""}
-                            />
-                        </div>
+                            <div className="col-md-6">
+                                <FormControl.FormControlTextBox
+                                    colspan="8"
+                                    controltype="InputControl"
+                                    datasourcemember="VehicleName"
+                                    disabled={this.state.DataSource.IsSystem}
+                                    label="tên xe"
+                                    labelcolspan="4"
+                                    maxSize={200}
+                                    name="txtVehicleName"
+                                    placeholder="Tên xe"
+                                    readOnly={this.state.DataSource.IsSystem}
+                                    validatonList={['required']}
+                                    value={""}
+                                />
+                            </div>
 
-                        <div className="col-md-6">
-                            <FormControl.TextBox
-                                colspan="8"
-                                controltype="InputControl"
-                                datasourcemember="Length"
-                                label="chiều dài(cm)"
-                                labelcolspan="4"
-                                maxSize={9}
-                                name="txtLength"
-                                placeholder="Chiều dài(cm)"
-                                readOnly={true}
-                                value={""}
-                            />
-                        </div>
+                            <div className="col-md-6">
+                                <FormControl.TextBox
+                                    colspan="8"
+                                    controltype="InputControl"
+                                    datasourcemember="Length"
+                                    label="chiều dài(cm)"
+                                    labelcolspan="4"
+                                    maxSize={9}
+                                    name="txtLength"
+                                    placeholder="Chiều dài(cm)"
+                                    readOnly={true}
+                                    value={""}
+                                />
+                            </div>
 
-                        <div className="col-md-6">
-                            <FormControl.TextBox
-                                colspan="8"
-                                controltype="InputControl"
-                                datasourcemember="LicensePlateNumber"
-                                disabled={this.state.DataSource.IsSystem}
-                                label="biển số xe"
-                                labelcolspan="4"
-                                maxSize={50}
-                                name="txtLicensePlateNumber"
-                                placeholder="Biển số xe"
-                                readOnly={this.state.DataSource.IsSystem}
-                                validatonList={['required']}
-                                value={""}
-                            />
-                        </div>
+                            <div className="col-md-6">
+                                <FormControl.TextBox
+                                    colspan="8"
+                                    controltype="InputControl"
+                                    datasourcemember="LicensePlateNumber"
+                                    disabled={this.state.DataSource.IsSystem}
+                                    label="biển số xe"
+                                    labelcolspan="4"
+                                    maxSize={50}
+                                    name="txtLicensePlateNumber"
+                                    placeholder="Biển số xe"
+                                    readOnly={this.state.DataSource.IsSystem}
+                                    validatonList={['required']}
+                                    value={""}
+                                />
+                            </div>
 
-                        <div className="col-md-6">
-                            <FormControl.TextBox
-                                colspan="8"
-                                controltype="InputControl"
-                                datasourcemember="Width"
-                                label="chiều rộng(cm)"
-                                labelcolspan="4"
-                                maxSize={9}
-                                name="txtWidth"
-                                placeholder="Chiều rộng(cm)"
-                                readOnly={true}
-                                value={""}
-                            />
-                        </div>
+                            <div className="col-md-6">
+                                <FormControl.TextBox
+                                    colspan="8"
+                                    controltype="InputControl"
+                                    datasourcemember="Width"
+                                    label="chiều rộng(cm)"
+                                    labelcolspan="4"
+                                    maxSize={9}
+                                    name="txtWidth"
+                                    placeholder="Chiều rộng(cm)"
+                                    readOnly={true}
+                                    value={""}
+                                />
+                            </div>
 
-                        <div className="col-md-6">
-                            <FormControl.TextBox
-                                colspan="8"
-                                controltype="InputControl"
-                                datasourcemember="VehicleModelID"
-                                label="Model xe"
-                                labelcolspan="4"
-                                maxSize={10}
-                                name="txtVehicleModelID"
-                                placeholder="Model xe"
-                                readOnly={this.state.DataSource.IsSystem}
-                                validatonList={["number"]}
-                                value={""}
-                            />
-                        </div>
+                            <div className="col-md-6">
+                                <FormControl.TextBox
+                                    colspan="8"
+                                    controltype="InputControl"
+                                    datasourcemember="VehicleModelID"
+                                    label="Model xe"
+                                    labelcolspan="4"
+                                    maxSize={10}
+                                    name="txtVehicleModelID"
+                                    placeholder="Model xe"
+                                    readOnly={this.state.DataSource.IsSystem}
+                                    validatonList={["number"]}
+                                    value={""}
+                                />
+                            </div>
 
-                        <div className="col-md-6">
-                            <FormControl.TextBox
-                                colspan="8"
-                                controltype="InputControl"
-                                datasourcemember="Height"
-                                label="chiều cao(cm)"
-                                labelcolspan="4"
-                                maxSize={9}
-                                name="txtHeight"
-                                placeholder="Chiều cao(cm)"
-                                readOnly={true}
-                                value=""
-                            />
-                        </div>
+                            <div className="col-md-6">
+                                <FormControl.TextBox
+                                    colspan="8"
+                                    controltype="InputControl"
+                                    datasourcemember="Height"
+                                    label="chiều cao(cm)"
+                                    labelcolspan="4"
+                                    maxSize={9}
+                                    name="txtHeight"
+                                    placeholder="Chiều cao(cm)"
+                                    readOnly={true}
+                                    value=""
+                                />
+                            </div>
 
-                        <div className="col-md-6">
-                            <FormControl.ComboBoxSelect
-                                colspan="8"
-                                controltype="InputControl"
-                                datasourcemember="ActivityStatusID"
-                                disabled={this.state.IsSystem}
-                                isautoloaditemfromcache={true}
-                                label="Trạng thái hoạt động"
-                                labelcolspan="4"
-                                listoption={null}
-                                loaditemcachekeyid={ERPCOMMONCACHE_VEHICLEACTIVITYSTATUS}
-                                name="cbActivityStatusID"
-                                nameMember="ActivityStatusName"
-                                placeholder="-- Vui lòng chọn --"
-                                validatonList={["Comborequired"]}
-                                value={""}
-                                valuemember="ActivityStatusID"
-                            />
-                        </div>
+                            <div className="col-md-6">
+                                <FormControl.ComboBoxSelect
+                                    colspan="8"
+                                    controltype="InputControl"
+                                    datasourcemember="ActivityStatusID"
+                                    disabled={this.state.DataSource.IsSystem}
+                                    isautoloaditemfromcache={true}
+                                    label="Trạng thái hoạt động"
+                                    labelcolspan="4"
+                                    listoption={[]}
+                                    loaditemcachekeyid={ERPCOMMONCACHE_VEHICLEACTIVITYSTATUS}
+                                    name="cbActivityStatusID"
+                                    nameMember="ActivityStatusName"
+                                    placeholder="-- Vui lòng chọn --"
+                                    readOnly={this.state.DataSource.IsSystem}
+                                    validatonList={["Comborequired"]}
+                                    value={""}
+                                    valuemember="ActivityStatusID"
+                                />
+                            </div>
 
-                        <div className="col-md-6">
-                            <FormControl.TextBox
-                                colspan="8"
-                                controltype="InputControl"
-                                datasourcemember="Volume"
-                                label="thể tích(cm3)"
-                                labelcolspan="4"
-                                maxSize={9}
-                                name="txtVolume"
-                                placeholder="Thể tích(cm3)"
-                                readOnly={true}
-                                value=""
-                            />
-                        </div>
+                            <div className="col-md-6">
+                                <FormControl.TextBox
+                                    colspan="8"
+                                    controltype="InputControl"
+                                    datasourcemember="Volume"
+                                    label="thể tích(cm3)"
+                                    labelcolspan="4"
+                                    maxSize={9}
+                                    name="txtVolume"
+                                    placeholder="Thể tích(cm3)"
+                                    readOnly={true}
+                                    value=""
+                                />
+                            </div>
 
-                        <div className="col-md-6">
-                            <MultiSelectComboBox
-                                colspan="8"
-                                datasourcemember="MainDriverUser"
-                                disabled={this.state.DataSource.IsSystem}
-                                isautoloaditemfromcache={false}
-                                IsLabelDiv={true}
-                                isMultiSelect={false}
-                                label="nhân viên tài xế chính"
-                                labelcolspan="4"
-                                listoption={this.state.UserValue}
-                                name="cbMainDriverUser"
-                                onChange={this.onChangeUser}
-                                validatonList={["Comborequired"]}
-                                value={this.state.UserValue}
-                            />
-                        </div>
+                            <div className="col-md-6">
+                                <MultiSelectComboBox
+                                    colspan="8"
+                                    datasourcemember="MainDriverUser"
+                                    disabled={this.state.DataSource.IsSystem}
+                                    isautoloaditemfromcache={false}
+                                    IsLabelDiv={true}
+                                    isMultiSelect={false}
+                                    label="nhân viên tài xế chính"
+                                    labelcolspan="4"
+                                    listoption={this.state.UserValue}
+                                    name="cbMainDriverUser"
+                                    onChange={this.onChangeUser}
+                                    validatonList={["Comborequired"]}
+                                    value={this.state.UserValue}
+                                />
+                            </div>
 
-                        <div className="col-md-6">
-                            <FormControl.CheckBox
-                                classNameCustom="customCheckbox"
-                                colspan="8"
-                                controltype="InputControl"
-                                datasourcemember="IsActived"
-                                disabled={this.state.DataSource.IsSystem}
-                                label="kích hoạt"
-                                labelcolspan="4"
-                                name="chkIsActived"
-                                readOnly={this.state.DataSource.IsSystem}
-                                value={true}
-                            />
-                        </div>
+                            <div className="col-md-6">
+                                <FormControl.CheckBox
+                                    classNameCustom="customCheckbox"
+                                    colspan="8"
+                                    controltype="InputControl"
+                                    datasourcemember="IsActived"
+                                    disabled={this.state.DataSource.IsSystem}
+                                    label="kích hoạt"
+                                    labelcolspan="4"
+                                    name="chkIsActived"
+                                    readOnly={this.state.DataSource.IsSystem}
+                                    value={true}
+                                />
+                            </div>
 
-                        <div className="col-md-6">
-                            <FormControl.FormControlComboBox
-                                colspan="8"
-                                controltype="InputControl"
-                                datasourcemember="MainCoordinatorStoreID"
-                                disabled={this.state.IsSystem}
-                                filterobj="CompanyID"
-                                filterValue={10}
-                                isautoloaditemfromcache={true}
-                                label="kho điều phối chính"
-                                labelcolspan="4"
-                                listoption={null}
-                                loaditemcachekeyid="ERPCOMMONCACHE.STORE"
-                                name="cbMainCoordinatorStoreID"
-                                nameMember="StoreName"
-                                placeholder="-- Vui lòng chọn --"
-                                readOnly={this.state.IsSystem}
-                                validatonList={["Comborequired"]}
-                                value={""}
-                                valuemember="StoreID"
-                            />
-                        </div>
+                            <div className="col-md-6">
+                                <FormControl.FormControlComboBox
+                                    colspan="8"
+                                    controltype="InputControl"
+                                    datasourcemember="MainCoordinatorStoreID"
+                                    disabled={this.state.DataSource.IsSystem}
+                                    filterobj="CompanyID"
+                                    filterValue={10}
+                                    isautoloaditemfromcache={true}
+                                    label="kho điều phối chính"
+                                    labelcolspan="4"
+                                    listoption={null}
+                                    loaditemcachekeyid={ERPCOMMONCACHE_STORE}
+                                    name="cbMainCoordinatorStoreID"
+                                    nameMember="StoreName"
+                                    placeholder="-- Vui lòng chọn --"
+                                    readOnly={this.state.IsSystem}
+                                    validatonList={["Comborequired"]}
+                                    value={""}
+                                    valuemember="StoreID"
+                                />
+                            </div>
 
-                        <div className="col-md-6">
-                            <FormControl.CheckBox
-                                classNameCustom="customCheckbox"
-                                colspan="8"
-                                controltype="InputControl"
-                                datasourcemember="IsSystem"
-                                label="hệ thống"
-                                labelcolspan="4"
-                                name="chkIsSystem"
-                                readOnly={false}
-                                value=""
-                            />
-                        </div>
+                            <div className="col-md-6">
+                                <FormControl.CheckBox
+                                    classNameCustom="customCheckbox"
+                                    colspan="8"
+                                    controltype="InputControl"
+                                    datasourcemember="IsSystem"
+                                    label="hệ thống"
+                                    labelcolspan="4"
+                                    name="chkIsSystem"
+                                    readOnly={false}
+                                    value=""
+                                />
+                            </div>
 
-                        <div className="col-md-6">
-                            <FormControl.TextArea
-                                classNameCustom="customcontrol"
-                                colspan={8}
-                                controltype="InputControl"
-                                datasourcemember="Description"
-                                disabled={this.state.DataSource.IsSystem}
-                                label="Mô tả"
-                                labelcolspan={4}
-                                maxSize={500}
-                                name="txtDescription"
-                                placeholder="Mô tả"
-                                readOnly={this.state.DataSource.IsSystem}
-                                rows={4}
-                            />
+                            <div className="col-md-6">
+                                <FormControl.TextArea
+                                    classNameCustom="customcontrol"
+                                    colspan={8}
+                                    controltype="InputControl"
+                                    datasourcemember="Description"
+                                    disabled={this.state.DataSource.IsSystem}
+                                    label="Mô tả"
+                                    labelcolspan={4}
+                                    maxSize={500}
+                                    name="txtDescription"
+                                    placeholder="Mô tả"
+                                    readOnly={this.state.DataSource.IsSystem}
+                                    rows={4}
+                                />
+                            </div>
                         </div>
-                    </div>
-                </FormContainer>
-            </React.Fragment>
-        );
+                    </FormContainer>
+                </React.Fragment>
+            );
+        }
     }
 }
 
