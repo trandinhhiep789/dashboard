@@ -1,7 +1,9 @@
 import { APIHostName, BackLink, EditElementList, EditPagePath, LoadAPIPath, MLObjectDefinition, TitleFormEdit, UpdateAPIPath } from "../constants";
+import { ERPCOMMONCACHE_VEHICLEMODEL, ERPCOMMONCACHE_VEHICLETYPE } from "./../../../../../constants/keyCache";
 import { callClearLocalCache, callGetCache } from "../../../../../actions/cacheAction";
 
-import { ERPCOMMONCACHE_VEHICLETYPE } from "./../../../../../constants/keyCache";
+import FormContainer from "./../../../../../common/components/FormContainer/index";
+import FormControl from "../../../../../common/components/FormContainer/FormControl";
 import { MD_VEHICLEMODEL_UPDATE } from "../../../../../constants/functionLists";
 import { MessageModal } from "../../../../../common/components/Modal";
 import { ModalManager } from "react-dynamic-modal";
@@ -33,7 +35,6 @@ class EditCom extends React.Component {
     const id = this.props.match.params.id;
 
     this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-      console.log(apiResult);
       if (apiResult.IsError) {
         this.setState({
           IsCallAPIError: apiResult.IsError,
@@ -59,7 +60,7 @@ class EditCom extends React.Component {
       this.setState({ IsCallAPIError: apiResult.IsError });
       this.showMessage(apiResult.Message);
       if (!apiResult.IsError) {
-        this.props.callClearLocalCache(ERPCOMMONCACHE_VEHICLETYPE);
+        this.props.callClearLocalCache(ERPCOMMONCACHE_VEHICLEMODEL);
       }
     });
   }
@@ -79,7 +80,7 @@ class EditCom extends React.Component {
     if (this.state.IsLoadDataComplete) {
       return (
         <React.Fragment>
-          <SimpleForm
+          {/* <SimpleForm
             BackLink={BackLink}
             dataSource={this.state.DataSource}
             FormMessage={this.state.CallAPIMessage}
@@ -90,7 +91,77 @@ class EditCom extends React.Component {
             onSubmit={this.handleSubmit}
             ref={this.searchref}
             RequirePermission={MD_VEHICLEMODEL_UPDATE}
-          />
+          /> */}
+          <FormContainer
+            FormName={TitleFormEdit}
+            MLObjectDefinition={MLObjectDefinition}
+            listelement={[]}
+            dataSource={this.state.DataSource}
+            onSubmit={this.handleSubmit}
+            BackLink={BackLink}
+            RequirePermission={MD_VEHICLEMODEL_UPDATE}
+            IsDisabledSubmitForm={this.state.DataSource.IsSystem}
+          >
+            <div className="row">
+              <div className="col-md-12">
+                <FormControl.TextBox
+                  name="txtVehicleModelID"
+                  colspan="10"
+                  labelcolspan="2"
+                  readOnly={true}
+                  label="Tên model xe"
+                  placeholder="Tên model xe"
+                  controltype="InputControl"
+                  value=""
+                  maxSize={10}
+                  datasourcemember="VehicleModelID"
+                  validatonList={["required", "number"]}
+                />
+              </div>
+              <div className="col-md-12">
+                <FormControl.TextBox
+                  name="txtVehicleModelName"
+                  colspan="10"
+                  labelcolspan="2"
+                  readOnly={false}
+                  label="Tên model xe"
+                  placeholder="Tên model xe"
+                  controltype="InputControl"
+                  value=""
+                  maxSize={200}
+                  datasourcemember="VehicleModelName"
+                  validatonList={["required"]}
+                />
+              </div>
+              <div className="col-md-12">
+                <FormControl.CheckBox
+                  name="chkIsActived"
+                  colspan="10"
+                  labelcolspan="2"
+                  readOnly={false}
+                  label="Kích hoạt"
+                  controltype="InputControl"
+                  value={true}
+                  datasourcemember="IsActived"
+                  classNameCustom="customCheckbox"
+                />
+              </div>
+
+              <div className="col-md-12">
+                <FormControl.CheckBox
+                  name="chkIsSystem"
+                  colspan="10"
+                  labelcolspan="2"
+                  readOnly={false}
+                  label="Hệ thống"
+                  controltype="InputControl"
+                  value=""
+                  datasourcemember="IsSystem"
+                  classNameCustom="customCheckbox"
+                />
+              </div>
+            </div>
+          </FormContainer>
         </React.Fragment>
       );
     }

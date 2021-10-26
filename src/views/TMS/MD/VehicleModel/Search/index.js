@@ -16,7 +16,7 @@ import {
 import { callClearLocalCache, callGetCache } from "../../../../../actions/cacheAction";
 
 import DataGrid from "../../../../../common/components/DataGrid";
-import { ERPCOMMONCACHE_VEHICLETYPE } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_VEHICLEMODEL } from "../../../../../constants/keyCache";
 import { MD_VEHICLEMODEL_DELETE } from "./../../../../../constants/functionLists";
 import { MD_VEHICLEMODEL_VIEW } from "../../../../../constants/functionLists";
 import { MessageModal } from "../../../../../common/components/Modal";
@@ -67,7 +67,7 @@ class SearchCom extends React.Component {
       this.addNotification(apiResult.Message, apiResult.IsError);
       if (!apiResult.IsError) {
         this.callSearchData(this.state.SearchData);
-        this.props.callClearLocalCache(ERPCOMMONCACHE_VEHICLETYPE);
+        this.props.callClearLocalCache(ERPCOMMONCACHE_VEHICLEMODEL);
         // this.handleSubmitInsertLog();
       }
     });
