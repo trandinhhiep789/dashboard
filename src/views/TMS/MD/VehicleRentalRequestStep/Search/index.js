@@ -5,12 +5,10 @@ import { ModalManager } from "react-dynamic-modal";
 import ReactNotification from "react-notifications-component";
 
 import {
-    // DataGridCoordinatorStoreColumnList
-    // DeleteNewAPIPath,
-    // InitSearchParams,
     AddLink,
     APIHostName,
     DataGridColumnList,
+    DeleteAPIPath,
     IDSelectColumnName,
     PagePath,
     PKColumnName,
@@ -19,26 +17,20 @@ import {
     SearchMLObjectDefinition,
 } from "../constants";
 
-import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_CARRIERTYPE } from "../../../../../constants/keyCache";
 import { MessageModal } from "../../../../../common/components/Modal";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { VEHICLE_VIEW, VEHICLE_DELETE } from "../../../../../constants/functionLists";
 import DataGrid from "../../../../../common/components/DataGrid";
-import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
 import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
 
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
-        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
+
         this.state = {
             cssNotification: "",
             gridDataSource: [],
-            iconNotification: "",
             SearchData: [
                 {
                     SearchKey: "@KEYWORD",
@@ -46,9 +38,13 @@ class SearchCom extends React.Component {
                 }
             ],
         };
+
         this.gridref = React.createRef();
         this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
+
+        this.handleSearchSubmit = this.handleSearchSubmit.bind(this)
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     componentDidMount() {
@@ -68,23 +64,20 @@ class SearchCom extends React.Component {
     }
 
     addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
         if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
         } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={this.state.cssNotification}>
+                <div className={cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
+                        <i className={iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -101,19 +94,21 @@ class SearchCom extends React.Component {
     }
 
     handleDelete(deleteList, pkColumnName) {
-        // const DeleteList = deleteList.map(item => {
-        //     return {
-        //         VehicleID: item.pkColumnName[0].value,
-        //         DeletedUser: this.props.AppInfo.LoginInfo.Username
-        //     }
-        // })
+        const DeleteList = deleteList.map(item => {
+            return {
+                VehicleRentalRequestStepID: item.pkColumnName[0].value,
+                DeletedUser: this.props.AppInfo.LoginInfo.Username
+            }
+        })
 
-        // this.props.callFetchAPI(APIHostName, DeleteNewAPIPath, DeleteList).then(apiResult => {
-        //     this.addNotification(apiResult.Message, apiResult.IsError);
-        //     if (!apiResult.IsError) {
-        //         this.callSearchData(this.state.SearchData);
-        //     }
-        // });
+        console.log(DeleteList)
+
+        this.props.callFetchAPI(APIHostName, DeleteAPIPath, DeleteList).then(apiResult => {
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            if (!apiResult.IsError) {
+                this.callSearchData(this.state.SearchData);
+            }
+        });
     }
 
     handleSearchSubmit(formData, MLObject) {
@@ -130,8 +125,14 @@ class SearchCom extends React.Component {
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             if (!apiResult.IsError) {
+                const uptResultObject = apiResult.ResultObject.map(item => {
+                    return {
+                        ...item,
+                        UpdatedUserIDName: `${item.UpdatedUser} - ${item.UpdatedUserFullName}`
+                    }
+                })
                 this.setState({
-                    gridDataSource: apiResult.ResultObject
+                    gridDataSource: uptResultObject
                 });
             } else {
                 this.showMessage(apiResult.Message);
@@ -195,5 +196,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const Search = connect(mapStateToProps, mapDispatchToProps)(SearchCom);
-export default Search;
+export default connect(mapStateToProps, mapDispatchToProps)(SearchCom);

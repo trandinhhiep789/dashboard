@@ -5,22 +5,27 @@ import ReactNotification from "react-notifications-component";
 
 import {
     AddAPIPath,
-    AddElementList,
-    AddPagePath,
     APIHostName,
     BackLink,
+    AddPagePath,
     MLObjectDefinition,
+    AddElementList
 } from "../constants";
 
 import {
 } from "../../../../../constants/keyCache";
 
+import SimpleForm from "../../../../../common/components/Form/SimpleForm";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { MessageModal } from "../../../../../common/components/Modal";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { updatePagePath } from "../../../../../actions/pageAction";
-import SimpleForm from "../../../../../common/components/Form/SimpleForm";
+import { VEHICLE_ADD } from "../../../../../constants/functionLists";
+import FormContainer from "../../../../../common/components/FormContainer";
+import FormControl from "../../../../../common/components/FormContainer/FormControl";
+import MultiSelectComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
+import MultiStoreComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiStoreComboBox";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -44,7 +49,9 @@ class AddCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
-        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+        console.log('47', MLObject); return;
+
+        this.props.callFetchAPI(APIHostName, AddAPIPath, uptMLObject).then(apiResult => {
             this.showMessage(apiResult.Message);
             if (!apiResult.IsError) {
                 this.props.history.push(BackLink);
@@ -102,7 +109,7 @@ class AddCom extends React.Component {
                     BackLink={BackLink}
                     dataSource={this.state.dataSource}
                     FormMessage={""}
-                    FormName="Thêm danh sách xe"
+                    FormName="Thêm trạng thái yêu cầu thuê xe"
                     IsErrorMessage={false}
                     listelement={AddElementList}
                     MLObjectDefinition={MLObjectDefinition}

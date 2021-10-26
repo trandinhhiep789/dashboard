@@ -5,27 +5,19 @@ import ReactNotification from "react-notifications-component";
 
 import {
     AddAPIPath,
+    AddElementList,
+    AddPagePath,
     APIHostName,
     BackLink,
-    AddPagePath,
     MLObjectDefinition,
-    AddElementList
 } from "../constants";
 
-import {
-} from "../../../../../constants/keyCache";
-
-import SimpleForm from "../../../../../common/components/Form/SimpleForm";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { MessageModal } from "../../../../../common/components/Modal";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { VEHICLE_ADD } from "../../../../../constants/functionLists";
-import FormContainer from "../../../../../common/components/FormContainer";
-import FormControl from "../../../../../common/components/FormContainer/FormControl";
-import MultiSelectComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
-import MultiStoreComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiStoreComboBox";
+import SimpleForm from "../../../../../common/components/Form/SimpleForm";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -49,7 +41,10 @@ class AddCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
-        console.log('47', MLObject); return;
+        const uptMLObject = {
+            ...MLObject,
+            AddFunctionID: MLObject.AddFunctionID.length == 1 ? MLObject.AddFunctionID[0] : MLObject.AddFunctionID
+        }
 
         this.props.callFetchAPI(APIHostName, AddAPIPath, uptMLObject).then(apiResult => {
             this.showMessage(apiResult.Message);

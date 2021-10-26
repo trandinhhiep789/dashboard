@@ -9,6 +9,7 @@ import {
     BackLink,
     EditAPIPath,
     EditPagePath,
+    LoadAPIPath,
     MLObjectDefinition,
     Edit
 } from "../constants";
@@ -27,14 +28,7 @@ class EditCom extends React.Component {
         super(props);
 
         this.state = {
-            dataSource: {
-                VehicleRentalRequestStepID: 0,
-                VehicleRentalRequestStepName: "test",
-                Description: "test",
-                OrderIndex: 1,
-                IsActived: true,
-                IsSystem: false
-            }
+            dataSource: null
         };
 
         this.gridref = React.createRef();
@@ -49,11 +43,11 @@ class EditCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
-        // this.fetchVehicleRentalRequestStepInfo();
+        this.fetchVehicleRentalRequestStepInfo();
     }
 
     fetchVehicleRentalRequestStepInfo() {
-        this.props.callFetchAPI(APIHostName, EditAPIPath, this.props.match.param.id).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, LoadAPIPath, this.props.match.params.id).then(apiResult => {
             if (apiResult.IsError) {
                 this.showMessage(apiResult.Message);
             } else {
@@ -65,7 +59,10 @@ class EditCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
-        console.log('47', MLObject); return;
+        const uptMLObject = {
+            ...MLObject,
+            VehicleRentalRequestStepID: this.props.match.params.id
+        };
 
         this.props.callFetchAPI(APIHostName, EditAPIPath, uptMLObject).then(apiResult => {
             this.showMessage(apiResult.Message);
@@ -117,24 +114,33 @@ class EditCom extends React.Component {
     }
 
     render() {
-        return (
-            <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
+        if (this.state.dataSource == null) {
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
+                    Đang tải dữ liệu ...
+                </React.Fragment>
+            )
+        } else {
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
 
-                <SimpleForm
-                    BackLink={BackLink}
-                    dataSource={this.state.dataSource}
-                    FormMessage={""}
-                    FormName="Chỉnh sửa bước xử lý của yêu cầu thuê xe"
-                    IsErrorMessage={false}
-                    listelement={EditElementList}
-                    MLObjectDefinition={MLObjectDefinition}
-                    onSubmit={this.handleSubmit}
-                    ref={this.searchref}
-                    RequirePermission={""}
-                />
-            </React.Fragment>
-        )
+                    <SimpleForm
+                        BackLink={BackLink}
+                        dataSource={this.state.dataSource}
+                        FormMessage={""}
+                        FormName="Chỉnh sửa bước xử lý của yêu cầu thuê xe"
+                        IsErrorMessage={false}
+                        listelement={EditElementList}
+                        MLObjectDefinition={MLObjectDefinition}
+                        onSubmit={this.handleSubmit}
+                        ref={this.searchref}
+                        RequirePermission={""}
+                    />
+                </React.Fragment>
+            )
+        }
     }
 }
 
