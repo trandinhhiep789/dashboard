@@ -4,17 +4,14 @@ import { ModalManager } from "react-dynamic-modal";
 import ReactNotification from "react-notifications-component";
 
 import {
-    EditElementList,
     APIHostName,
     BackLink,
     EditAPIPath,
+    EditElementList,
     EditPagePath,
+    LoadAPIPath,
     MLObjectDefinition,
-    Edit
 } from "../constants";
-
-import {
-} from "../../../../../constants/keyCache";
 
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { MessageModal } from "../../../../../common/components/Modal";
@@ -27,14 +24,7 @@ class EditCom extends React.Component {
         super(props);
 
         this.state = {
-            dataSource: {
-                VehicleRentalRequestStepID: 0,
-                VehicleRentalRequestStepName: "test",
-                Description: "test",
-                OrderIndex: 1,
-                IsActived: true,
-                IsSystem: false
-            }
+            dataSource: null
         };
 
         this.gridref = React.createRef();
@@ -49,11 +39,11 @@ class EditCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
-        // this.fetchVehicleRentalRequestStepInfo();
+        this.fetchVehicleRentalRequestStepInfo();
     }
 
     fetchVehicleRentalRequestStepInfo() {
-        this.props.callFetchAPI(APIHostName, EditAPIPath, this.props.match.param.id).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, LoadAPIPath, this.props.match.params.id).then(apiResult => {
             if (apiResult.IsError) {
                 this.showMessage(apiResult.Message);
             } else {
@@ -65,9 +55,7 @@ class EditCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
-        console.log('47', MLObject); return;
-
-        this.props.callFetchAPI(APIHostName, EditAPIPath, uptMLObject).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, EditAPIPath, MLObject).then(apiResult => {
             this.showMessage(apiResult.Message);
             if (!apiResult.IsError) {
                 this.props.history.push(BackLink);
@@ -117,24 +105,33 @@ class EditCom extends React.Component {
     }
 
     render() {
-        return (
-            <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
+        if (this.state.dataSource == null) {
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
+                    Đang nạp dữ liệu ...
+                </React.Fragment>
+            )
+        } else {
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
 
-                <SimpleForm
-                    BackLink={BackLink}
-                    dataSource={this.state.dataSource}
-                    FormMessage={""}
-                    FormName="Chỉnh sửa trạng thái yêu cầu thuê xe"
-                    IsErrorMessage={false}
-                    listelement={EditElementList}
-                    MLObjectDefinition={MLObjectDefinition}
-                    onSubmit={this.handleSubmit}
-                    ref={this.searchref}
-                    RequirePermission={""}
-                />
-            </React.Fragment>
-        )
+                    <SimpleForm
+                        BackLink={BackLink}
+                        dataSource={this.state.dataSource}
+                        FormMessage={""}
+                        FormName="Chỉnh sửa trạng thái yêu cầu thuê xe"
+                        IsErrorMessage={false}
+                        listelement={EditElementList}
+                        MLObjectDefinition={MLObjectDefinition}
+                        onSubmit={this.handleSubmit}
+                        ref={this.searchref}
+                        RequirePermission={""}
+                    />
+                </React.Fragment>
+            )
+        }
     }
 }
 
