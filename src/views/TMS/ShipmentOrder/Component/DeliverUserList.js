@@ -167,7 +167,7 @@ class DeliverUserListCom extends React.Component {
                         name="ShipmentOrder_DeliverUserList"
                         colspan={this.props.colspan}
                         labelcolspan={this.props.labelcolspan}
-                        label="Nhân viên giao"
+                        label={this.props.label != "" ? this.props.label : "Nhân viên giao"}
                         disabled={this.props.disabled}
                         readOnly={this.props.readOnly}
                         IsLabelDiv={true}
@@ -186,7 +186,7 @@ class DeliverUserListCom extends React.Component {
                         name="ShipmentOrder_DeliverUserList"
                         colspan={this.props.colspan}
                         labelcolspan={this.props.labelcolspan}
-                        label="Nhân viên giao"
+                        label={this.props.label != "" ? this.props.label : "Nhân viên giao"}
                         validatonList={["Comborequired"]}
                         disabled={this.props.disabled}
                         readOnly={this.props.readOnly}
