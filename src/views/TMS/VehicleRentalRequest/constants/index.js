@@ -321,18 +321,18 @@ export const MLObjectDefinition = [
         BindControlName: "dtEndTime",
         DataSourceMember: "EndTime"
     },
-    {
-        Name: "IsActived",
-        DefaultValue: true,
-        BindControlName: "chkIsActived",
-        DataSourceMember: "IsActived"
-    },
+    // {
+    //     Name: "IsActived",
+    //     DefaultValue: true,
+    //     BindControlName: "chkIsActived",
+    //     DataSourceMember: "IsActived"
+    // },
 
-    {
-        Name: "IsSystem",
-        DefaultValue: false,
-        BindControlName: "chkIsSystem",
-        DataSourceMember: "IsSystem"
-    },
+    // {
+    //     Name: "IsSystem",
+    //     DefaultValue: false,
+    //     BindControlName: "chkIsSystem",
+    //     DataSourceMember: "IsSystem"
+    // },
    
 ]

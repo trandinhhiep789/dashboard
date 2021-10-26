@@ -341,7 +341,7 @@ class AddCom extends React.Component {
                         </div> */}
 
 
-                        <div className="col-md-6">
+                        {/* <div className="col-md-6">
                             <FormControl.CheckBox
                                 label="kích hoạt"
                                 name="chkIsActived"
@@ -364,7 +364,7 @@ class AddCom extends React.Component {
                                 labelcolspan={4}
                                 classNameCustom="customCheckbox"
                             />
-                        </div>
+                        </div> */}
                         <div className="col-md-6">
 
                             <FileAttachment
