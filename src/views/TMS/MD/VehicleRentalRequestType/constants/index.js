@@ -1,10 +1,11 @@
 import { ERPCOMMONCACHE_FUNCTION } from '../../../../../constants/keyCache';
 
 export const APIHostName = "TMSMDMAPI";
-export const SearchAPIPath = "api/VehicleRentalRequestType/Search";
 export const AddAPIPath = "api/VehicleRentalRequestType/Add";
+export const DeleteAPIPath = "api/VehicleRentalRequestType/Delete";
 export const EditAPIPath = "api/VehicleRentalRequestType/Edit";
 export const LoadAPIPath = "api/VehicleRentalRequestType/Load";
+export const SearchAPIPath = "api/VehicleRentalRequestType/Search";
 
 export const AddLink = "/VehicleRentalRequestType/Add";
 export const BackLink = "/VehicleRentalRequestType";
@@ -20,13 +21,13 @@ export const PagePath = [
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/VehicleRentalRequestType", Title: "Loại xử lý của yêu cầu thuê xe" },
-    { Link: "", Title: "Thêm bước xử lý của yêu cầu thuê xe" }
+    { Link: "", Title: "Thêm loại xử lý của yêu cầu thuê xe" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "/VehicleRentalRequestType", Title: "Loại xử lý của yêu cầu thuê xe" },
-    { Link: "", Title: "Chỉnh sửa bước xử lý của yêu cầu thuê xe" }
+    { Link: "", Title: "Chỉnh sửa loại xử lý của yêu cầu thuê xe" }
 ];
 
 export const SearchElementList = [
@@ -58,16 +59,16 @@ export const DataGridColumnList = [
         Width: 60
     },
     {
-        Name: "VehicleRetalRequestStepID",
+        Name: "VehicleRentalRequestTypeID",
         Type: "text",
         Caption: "Mã bước xử lý",
-        DataSourceMember: "VehicleRetalRequestStepID",
+        DataSourceMember: "VehicleRentalRequestTypeID",
     },
     {
-        Name: "VehicleRetalRequestStepName",
+        Name: "VehicleRentalRequestTypeName",
         Type: "text",
         Caption: "Tên bước xử lý",
-        DataSourceMember: "VehicleRetalRequestStepName",
+        DataSourceMember: "VehicleRentalRequestTypeName",
     },
     {
         Name: "AddFunctionID",
@@ -82,16 +83,16 @@ export const DataGridColumnList = [
         DataSourceMember: "Description",
     },
     {
-        Name: "UpdateUser",
+        Name: "UpdatedUserIDName",
         Type: "text",
         Caption: "Người cập nhật",
-        DataSourceMember: "UpdateUser",
+        DataSourceMember: "UpdatedUserIDName",
     },
     {
-        Name: "UpdateDate",
-        Type: "text",
+        Name: "UpdatedDate",
+        Type: "datetime",
         Caption: "Ngày cập nhật",
-        DataSourceMember: "UpdateDate",
+        DataSourceMember: "UpdatedDate",
     },
     {
         Name: "Action",
@@ -105,19 +106,6 @@ export const DataGridColumnList = [
 ]
 
 export const AddElementList = [
-    {
-        type: "text",
-        name: "txtVehicleRentalRequestTypeID",
-        label: "Mã loại bước xử lý của yêu cầu thuê xe",
-        value: "",
-        maxSize: "10",
-        placeholder: "",
-        icon: "",
-        listoption: {},
-        DataSourceMember: "VehicleRentalRequestTypeID",
-        readonly: false,
-        validatonList: ["required", "number"]
-    },
     {
         type: "text",
         name: "txtVehicleRentalRequestTypeName",
