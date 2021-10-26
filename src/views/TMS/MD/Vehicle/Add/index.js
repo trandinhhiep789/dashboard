@@ -1,20 +1,21 @@
 import React from "react";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
+import ReactNotification from "react-notifications-component";
 
 import {
+    AddAPIPath,
     APIHostName,
     BackLink,
-    EditPagePath,
+    AddPagePath,
     MLObjectDefinition,
-    AddAPIPath,
 } from "../constants";
 
 import {
+    ERPCOMMONCACHE_PARTNER,
     ERPCOMMONCACHE_STORE,
     ERPCOMMONCACHE_VEHICLEACTIVITYSTATUS,
     ERPCOMMONCACHE_VEHICLETYPE,
-    ERPCOMMONCACHE_PARTNER
 } from "../../../../../constants/keyCache";
 
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
@@ -26,8 +27,6 @@ import { VEHICLE_UPDATE } from "../../../../../constants/functionLists";
 import FormContainer from "../../../../../common/components/FormContainer";
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
 import MultiSelectComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
-import MultiStoreComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiStoreComboBox";
-import ReactNotification from "react-notifications-component";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -69,7 +68,7 @@ class EditCom extends React.Component {
 
 
     componentDidMount() {
-        this.props.updatePagePath(EditPagePath);
+        this.props.updatePagePath(AddPagePath);
         this.callGetCacheVehicleType();
     }
 
