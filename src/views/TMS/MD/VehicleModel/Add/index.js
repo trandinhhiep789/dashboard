@@ -34,20 +34,19 @@ class AddCom extends React.Component {
     MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
     MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
 
-    console.log(formData.cbVehicleTypeID);
-    if (MLObject.VehicleTypeID === "-1") {
+    if (MLObject.VehicleTypeID == -1) {
       formData.cbVehicleTypeID.ErrorLst.IsValidatonError = true;
       formData.cbVehicleTypeID.ErrorLst.ValidatonErrorMessage = "Loại xe không được bỏ trống";
       return;
     }
 
-    // this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then((apiResult) => {
-    //   this.setState({ IsCallAPIError: apiResult.IsError });
-    //   if (!apiResult.IsError) {
-    //     this.props.callClearLocalCache(ERPCOMMONCACHE_VEHICLETYPE);
-    //   }
-    //   this.showMessage(apiResult.Message);
-    // });
+    this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then((apiResult) => {
+      this.setState({ IsCallAPIError: apiResult.IsError });
+      this.showMessage(apiResult.Message);
+      if (!apiResult.IsError) {
+        this.props.callClearLocalCache(ERPCOMMONCACHE_VEHICLEMODEL);
+      }
+    });
   }
 
   handleCloseMessage() {
@@ -111,7 +110,7 @@ class AddCom extends React.Component {
               placeholder="Tên model xe"
               controltype="InputControl"
               value=""
-              maxSize={9}
+              maxSize={200}
               datasourcemember="VehicleModelName"
               validatonList={["required"]}
             />
