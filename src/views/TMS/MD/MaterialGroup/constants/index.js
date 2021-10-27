@@ -88,6 +88,31 @@ export const AddElementList = [
         readonly: false,
         validatonList: []
     },
+    {
+        type: "checkbox",
+        name: "chkIsMustReturnNotUseMaterial",
+        label: "bắt buộc phải nhập trả nếu không sử dụng",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "IsMustReturnNotUseMaterial",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "text",
+        name: "txtMustReturnNumHour",
+        label: "thời gian phải nhập trả",
+        value: "",
+        maxSize: "10",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "MustReturnNumHour",
+        readonly: false,
+        validatonList: ["number"],
+    },
     // {
     //     type: "text",
     //     name: "txtOrderIndex",
@@ -105,7 +130,7 @@ export const AddElementList = [
     //     type: "checkbox",
     //     name: "chkIsActived",
     //     label: "Kích hoạt:",
-    //     value: false,
+    //     value: true,
     //     placeholder: "",
     //     icon: "",
     //     listoption: {},
@@ -165,6 +190,31 @@ export const EditElementList = [
         DataSourceMember: "Description",
         readonly: false,
         validatonList: []
+    },
+    {
+        type: "checkbox",
+        name: "chkIsMustReturnNotUseMaterial",
+        label: "bắt buộc phải nhập trả nếu không sử dụng",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "IsMustReturnNotUseMaterial",
+        readonly: false,
+        validatonList: []
+    },
+    {
+        type: "text",
+        name: "txtMustReturnNumHour",
+        label: "thời gian phải nhập trả",
+        value: "",
+        maxSize: "10",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "MustReturnNumHour",
+        readonly: false,
+        validatonList: ["number"],
     },
     // {
     //     type: "text",
@@ -231,6 +281,18 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "txtDescription",
         DataSourceMember: "Description"
+    },
+    {
+        Name: "IsMustReturnNotUseMaterial",
+        DefaultValue: "",
+        BindControlName: "chkIsMustReturnNotUseMaterial",
+        DataSourceMember: "IsMustReturnNotUseMaterial"
+    },
+    {
+        Name: "MustReturnNumHour",
+        DefaultValue: "",
+        BindControlName: "txtMustReturnNumHour",
+        DataSourceMember: "MustReturnNumHour"
     },
     {
         Name: "OrderIndex",
