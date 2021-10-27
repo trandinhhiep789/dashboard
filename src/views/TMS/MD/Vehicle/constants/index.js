@@ -358,7 +358,7 @@ export const MLObjectDefinitionNew = [
     {
         Name: "VehicleModelID",
         DefaultValue: "",
-        BindControlName: "txtVehicleModelID",
+        BindControlName: "cbVehicleModelID",
         DataSourceMember: "VehicleModelID"
     },
 ]
@@ -421,7 +421,7 @@ export const MLObjectDefinition = [
     {
         Name: "VehicleModelID",
         DefaultValue: "",
-        BindControlName: "txtVehicleModelID",
+        BindControlName: "cbVehicleModelID",
         DataSourceMember: "VehicleModelID"
     },
 ]

@@ -15,6 +15,7 @@ import {
     ERPCOMMONCACHE_PARTNER,
     ERPCOMMONCACHE_STORE,
     ERPCOMMONCACHE_VEHICLEACTIVITYSTATUS,
+    ERPCOMMONCACHE_VEHICLEMODEL,
     ERPCOMMONCACHE_VEHICLETYPE,
 } from "../../../../../constants/keyCache";
 
@@ -329,7 +330,7 @@ class EditCom extends React.Component {
                             </div>
 
                             <div className="col-md-6">
-                                <FormControl.TextBox
+                                {/* <FormControl.TextBox
                                     colspan="8"
                                     controltype="InputControl"
                                     datasourcemember="VehicleModelID"
@@ -341,6 +342,25 @@ class EditCom extends React.Component {
                                     readOnly={this.state.DataSource.IsSystem}
                                     validatonList={["number"]}
                                     value={""}
+                                /> */}
+
+                                <FormControl.ComboBoxSelect
+                                    colspan="8"
+                                    controltype="InputControl"
+                                    datasourcemember="VehicleModelID"
+                                    disabled={this.state.DataSource.IsSystem}
+                                    isautoloaditemfromcache={true}
+                                    label="Model xe"
+                                    labelcolspan="4"
+                                    listoption={[]}
+                                    loaditemcachekeyid={ERPCOMMONCACHE_VEHICLEMODEL}
+                                    name="cbVehicleModelID"
+                                    nameMember="VehicleModelName"
+                                    placeholder="-- Vui lòng chọn --"
+                                    readOnly={this.state.IsSystem}
+                                    validatonList={["Comborequired"]}
+                                    value={""}
+                                    valuemember="VehicleModelID"
                                 />
                             </div>
 
