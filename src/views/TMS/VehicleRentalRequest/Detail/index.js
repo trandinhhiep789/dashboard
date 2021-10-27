@@ -41,16 +41,16 @@ class DetailCom extends React.Component {
         this.callLoadData(this.props.match.params.id);
     }
 
-    callLoadData(id){
+    callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            console.log("data",id, apiResult)
-            if(apiResult.IsError){
+            console.log("data", id, apiResult)
+            if (apiResult.IsError) {
                 this.showMessage(apiResult.Message)
                 this.setState({
                     IsCallAPIError: apiResult.IsError
                 })
             }
-            else{
+            else {
                 this.setState({
                     VehicleRentalRequest: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError
@@ -102,12 +102,12 @@ class DetailCom extends React.Component {
 
     render() {
         const { VehicleRentalRequest, IsCallAPIError } = this.state;
-        if(!IsCallAPIError){
+        if (!IsCallAPIError) {
             return (
                 <React.Fragment>
                     <div className="col-lg-12">
                         <ReactNotification ref={this.notificationDOMRef} />
-    
+
                         <div className="card">
                             <h4 className="card-title">
                                 <strong>{TitleFormDetail}</strong>
@@ -117,27 +117,41 @@ class DetailCom extends React.Component {
                                     VehicleRentalRequest={VehicleRentalRequest}
                                 />
                             </div>
-    
-    
+
+
                             <footer className="card-footer text-right">
+                                < div className="btn-group btn-group-dropdown mr-3">
+                                    <button className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">chuyển bước</button>
+                                    <div className="dropdown-menu" x-placement="bottom-start" >
+                                        <button className="dropdown-item" type="button">Đồng ý</button>
+                                        <button className="dropdown-item" type="button">Từ chối</button>
+                                    </div>
+                                </div>
+                                < div className="btn-group btn-group-dropdown mr-3">
+                                    <button  className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">0%</button>
+                                    <div className="dropdown-menu" x-placement="bottom-start" >
+                                        <button className="dropdown-item" type="button">Đồng ý</button>
+                                        <button className="dropdown-item" type="button">Từ chối</button>
+                                    </div>
+                                </div>
                                 <Link to="/VehicleRentalRequest">
                                     <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button>
                                 </Link>
                             </footer>
-    
+
                         </div>
                     </div>
                 </React.Fragment>
             );
         }
-        else{
+        else {
             return (
                 <React.Fragment>
                     <div>Đang tải dữ liệu...</div>
                 </React.Fragment>
             )
         }
-        
+
     }
 }
 

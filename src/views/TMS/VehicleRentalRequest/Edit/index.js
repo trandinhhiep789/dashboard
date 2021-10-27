@@ -12,6 +12,7 @@ import {
     EditPagePath,
     LoadAPIPath,
     MLObjectDefinition,
+    UpdateAPIPath,
 
 } from "../constants";
 import { updatePagePath } from "../../../../actions/pageAction";
@@ -21,7 +22,7 @@ import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
 import { formatDate, formatDateNew } from "../../../../common/library/CommonLib.js";
 import { showModal, hideModal } from '../../../../actions/modal';
-import MultiSelectComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
+import MultiSelectComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiSelectUserComboBoxNew";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -94,9 +95,11 @@ class EditCom extends React.Component {
     }
 
     prevDataSubmit(formData, MLObject) {
-        const { AttachmentList, fileSize } = this.state;
-        console.log("add", formData, MLObject, AttachmentList, fileSize)
-        MLObject.RequestUser = MLObject.RequestUser[0].UserName;
+        const { AttachmentListData, AttachmentList, fileSize } = this.state;
+        MLObject.RequestUser = MLObject.RequestUser.value != undefined ?MLObject.RequestUser.value : MLObject.RequestUser ;
+
+        console.log("add", formData, MLObject)
+
         MLObject.CurrentVehicleRentalRequestStepID = 1;
         MLObject.CurrentVehicleRentalStatusID = 1;
         let data = new FormData();
@@ -104,12 +107,12 @@ class EditCom extends React.Component {
         data.append("vehicleRentalRequestObj", JSON.stringify(MLObject));
 
         console.log("data", data, MLObject)
-        this.handleSubmit(data)
+        // this.handleSubmit(data)
 
     }
 
     handleSubmit(MLObject) {
-        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             console.log("submit", MLObject, apiResult)
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
@@ -118,7 +121,6 @@ class EditCom extends React.Component {
     }
 
     handleSelectFile(file, nameValue) {
-        console.log("file", file[0], file, nameValue)
         const filelist = { [nameValue]: file[0] };
         this.setState({
             AttachmentList: filelist,
@@ -164,8 +166,7 @@ class EditCom extends React.Component {
 
     render() {
         let currentDate = new Date();
-        const { AttachmentListData } = this.state;
-
+        const { AttachmentListData, AttachmentList, fileSize,UserValue } = this.state;
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>
@@ -176,7 +177,7 @@ class EditCom extends React.Component {
                         listelement={[]}
                         BackLink={BackLink}
                         // RequirePermission={this.props.location.state.AddFunctionID}
-                        onSubmit={this.prevDataSubmit}
+                        onSubmit={this.prevDataSubmit.bind(this)}
                         onchange={this.handleChange.bind(this)}
                     >
 
@@ -259,10 +260,13 @@ class EditCom extends React.Component {
                                     labelcolspan="4"
                                     listoption={this.state.UserValue}
                                     name="cboRequestUser"
+                                    controltype="InputMultiControl"
                                     // onChange={this.onChangeUser}
                                     validatonList={["Comborequired"]}
                                     value={this.state.UserValue}
                                 />
+
+
 
 
                             </div>
