@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
+import ReactNotification from "react-notifications-component";
 
 import {
     APIHostName,
@@ -12,11 +13,11 @@ import {
 } from "../constants";
 
 import {
-    ERPCOMMONCACHE_VEHICLES,
+    ERPCOMMONCACHE_PARTNER,
     ERPCOMMONCACHE_STORE,
     ERPCOMMONCACHE_VEHICLEACTIVITYSTATUS,
+    ERPCOMMONCACHE_VEHICLEMODEL,
     ERPCOMMONCACHE_VEHICLETYPE,
-    ERPCOMMONCACHE_PARTNER
 } from "../../../../../constants/keyCache";
 
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
@@ -28,8 +29,6 @@ import { VEHICLE_UPDATE } from "../../../../../constants/functionLists";
 import FormContainer from "../../../../../common/components/FormContainer";
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
 import MultiSelectComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
-import MultiStoreComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiStoreComboBox";
-import ReactNotification from "react-notifications-component";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -366,18 +365,23 @@ class EditCom extends React.Component {
                             </div>
 
                             <div className="col-md-6">
-                                <FormControl.TextBox
+                                <FormControl.ComboBoxSelect
                                     colspan="8"
                                     controltype="InputControl"
                                     datasourcemember="VehicleModelID"
+                                    disabled={this.state.DataSource.IsSystem}
+                                    isautoloaditemfromcache={true}
                                     label="Model xe"
                                     labelcolspan="4"
-                                    maxSize={10}
-                                    name="txtVehicleModelID"
-                                    placeholder="Model xe"
-                                    readOnly={this.state.DataSource.IsSystem}
-                                    validatonList={["number"]}
+                                    listoption={[]}
+                                    loaditemcachekeyid={ERPCOMMONCACHE_VEHICLEMODEL}
+                                    name="cbVehicleModelID"
+                                    nameMember="VehicleModelName"
+                                    placeholder="-- Vui lòng chọn --"
+                                    readOnly={this.state.IsSystem}
+                                    validatonList={["Comborequired"]}
                                     value={""}
+                                    valuemember="VehicleModelID"
                                 />
                             </div>
 
