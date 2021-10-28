@@ -220,6 +220,7 @@ export const DataGridColumnList = [
         Name: "VehicleRentalRequestID",
         Type: "texttolink",
         Caption: "Mã yc thuê xe",
+        Link: "/VehicleRentalRequest/Detail/",
         DataSourceMember: "VehicleRentalRequestID",
         Width: 100
     },

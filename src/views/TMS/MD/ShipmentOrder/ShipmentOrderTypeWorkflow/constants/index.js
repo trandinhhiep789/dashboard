@@ -352,6 +352,12 @@ export const MLObjectDefinition = [
         DataSourceMember: "IsCreateMTReturnRequest"
     },
     {
+        Name: "IsCreateMaterialReturnStep",
+        DefaultValue: "",
+        BindControlName: "IsCreateMaterialReturnStep",
+        DataSourceMember: "IsCreateMaterialReturnStep"
+    },
+    {
         Name: "WebAppHelpDocumentID",
         DefaultValue: "",
         BindControlName: "WebAppHelpDocumentID",
