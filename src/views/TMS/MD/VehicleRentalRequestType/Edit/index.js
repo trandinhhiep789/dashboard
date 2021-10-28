@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
 import ReactNotification from "react-notifications-component";
+import { Prompt } from 'react-router';
 
 import {
     APIHostName,
@@ -9,23 +10,45 @@ import {
     EditAPIPath,
     EditElementList,
     EditPagePath,
+    IDSelectColumnName,
+    listColumnRentalRequestType_WF,
     LoadAPIPath,
-    MLObjectDefinition,
+    EditMLObjectDefinition,
+    MLObjectDefinitionVehicleRentalRequestType,
+    MLObjectDefinitionVehicleRentalRequestType_WF,
+    MLObjectDefinitionFormContainerVehicleRentalRequestType_WF,
+    RentalRequestType_WFMLObjectDefinition,
+    RentalRequestType_WFListColumn,
+    DelAPIPath_RentalRequestType_WF
 } from "../constants";
 
+import { ERPCOMMONCACHE_FUNCTION } from '../../../../../constants/keyCache';
+
+import { MODAL_TYPE_COMMONTMODALS } from '../../../../../constants/actionTypes';
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { MessageModal } from "../../../../../common/components/Modal";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { updatePagePath } from "../../../../../actions/pageAction";
 import SimpleForm from "../../../../../common/components/Form/SimpleForm";
+import TabContainer from "../../../../../common/components/Tabs/TabContainer";
+import TabPage from "../../../../../common/components/Tabs/TabPage";
+import FormContainer from '../../../../../common/components/Form/AdvanceForm/FormContainer';
+import FormControl from '../../../../../common/components/Form/AdvanceForm/FormControl';
+import DataGrid from "../../../../../common/components/DataGrid";
+import VehicleRentalRequestType_WF from './VehicleRentalRequestType_WF';
+import InputGrid from '../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid';
+
 
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            dataSource: null
+            DataSource_VehicleRentalRequestType: null,
+            isPrompt: false,
+            isEdited: false
+
         };
 
         this.searchref = React.createRef();
@@ -34,6 +57,10 @@ class EditCom extends React.Component {
 
         this.addNotification = this.addNotification.bind(this);
         this.fetchVehicleRentalRequestTypeInfo = this.fetchVehicleRentalRequestTypeInfo.bind(this);
+        this.handleDeleteRentalRequestType_WF = this.handleDeleteRentalRequestType_WF.bind(this);
+        this.handleEditRentalRequestType_WF = this.handleEditRentalRequestType_WF.bind(this);
+        this.handleInputChangeList = this.handleInputChangeList.bind(this);
+        this.handleInsertRentalRequestType_WF = this.handleInsertRentalRequestType_WF.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.showMessage = this.showMessage.bind(this);
     }
@@ -79,7 +106,6 @@ class EditCom extends React.Component {
                 title="Thông báo"
                 message={message}
                 onRequestClose={() => true}
-            // onCloseModal={() => { }}
             />
         );
     }
@@ -89,29 +115,97 @@ class EditCom extends React.Component {
             if (apiResult.IsError) {
                 this.showMessage(apiResult.Message);
             } else {
+                const uptRentalRequestType_WFList = apiResult.ResultObject.RentalRequestType_WFList.map(item => {
+                    return {
+                        ...item,
+                        VehicleRentalRequestStepIDName: `${item.VehicleRentalRequestStepID} - ${item.VehicleRentalRequestStepName}`,
+                        AutoChangetoStatusIDName: `${item.AutoChangetoStatusID} - ${item.AutoChangetoStatusName}`,
+                        AutoChangetoStepIDName: `${item.AutoChangetoStepID} - ${item.AutoChangetoStepName}`,
+                        AutoChangeStepTypeName: item.AutoChangeStepType ? "Chuyển bước không điều kiện" : "Không tự động"
+                    }
+                })
                 this.setState({
-                    dataSource: apiResult.ResultObject
+                    DataSource_VehicleRentalRequestType: {
+                        ...apiResult.ResultObject,
+                        RentalRequestType_WFList: uptRentalRequestType_WFList
+                    }
                 })
             }
         })
     }
 
+    handleDeleteRentalRequestType_WF(deleteList, dataSource, pkColumnName) {
+        // console.log(deleteList)
+        const uptDeteteList = deleteList.map(item => {
+            return {
+                VehicleRentalRequestTypeID: parseInt(this.props.match.params.id),
+                VehicleRentalRequestStepID: item[0].value
+            }
+        })
+
+        console.log(uptDeteteList)
+
+        this.props.callFetchAPI(APIHostName, DelAPIPath_RentalRequestType_WF, uptDeteteList).then(apiResult => {
+            this.showMessage(apiResult.Message);
+            if (!apiResult.IsError) {
+                this.fetchVehicleRentalRequestTypeInfo();
+            }
+        });
+    }
+
+    handleEditRentalRequestType_WF(index) {
+        console.log(index)
+    }
+
+    handleInputChangeList() {
+        if (this.state.isEdited) {
+            this.setState({
+                isPrompt: true
+            })
+        }
+
+        this.setState({
+            isEdited: true
+        })
+    }
+
+    handleInsertRentalRequestType_WF(MLObjectDefinition, modalElementList, dataSource) {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Thêm mới bước yêu cầu thuê phương tiện',
+            content: {
+                text: <VehicleRentalRequestType_WF
+                    VehicleRentalRequestTypeID={this.props.match.params.id}
+                    fetchVehicleRentalRequestTypeInfo={() => this.fetchVehicleRentalRequestTypeInfo()}
+                />
+            },
+            // afterClose: () => { alert("Bạn có chắc chắc muốn thoát") },
+            maxWidth: '90%'
+        });
+
+    }
+
     handleSubmit(formData, MLObject) {
         const uptMLObject = {
-            ...MLObject,
-            AddFunctionID: MLObject.AddFunctionID.length == 1 ? MLObject.AddFunctionID[0] : MLObject.AddFunctionID
+            ...MLObject.VehicleRentalRequestType,
+            AddFunctionID: MLObject.VehicleRentalRequestType.AddFunctionID.length == 1 ? MLObject.VehicleRentalRequestType.AddFunctionID[0] : MLObject.VehicleRentalRequestType.AddFunctionID
         }
+
+        console.log('112', uptMLObject);
 
         this.props.callFetchAPI(APIHostName, EditAPIPath, uptMLObject).then(apiResult => {
             this.showMessage(apiResult.Message);
             if (!apiResult.IsError) {
+                this.setState({
+                    isPrompt: false,
+                    isEdited: false
+                })
                 this.props.history.push(BackLink);
             }
         });
     }
 
     render() {
-        if (this.state.dataSource == null) {
+        if (this.state.DataSource_VehicleRentalRequestType == null) {
             return (
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
@@ -123,18 +217,115 @@ class EditCom extends React.Component {
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
 
-                    <SimpleForm
-                        BackLink={BackLink}
-                        dataSource={this.state.dataSource}
-                        FormMessage={""}
-                        FormName="Sửa loại xử lý của yêu cầu thuê phương tiện"
-                        IsErrorMessage={false}
-                        listelement={EditElementList}
-                        MLObjectDefinition={MLObjectDefinition}
-                        onSubmit={this.handleSubmit}
-                        ref={this.searchref}
-                        RequirePermission={""}
+                    <Prompt
+                        when={this.state.isPrompt}
+                        message='Bạn có chắc chắn muốn rời trang?'
                     />
+
+                    <FormContainer
+                        BackLink={BackLink}
+                        IsAutoLayout={true}
+                        listelement={[]}
+                        MLObjectDefinition={EditMLObjectDefinition}
+                        onSubmit={this.handleSubmit}
+                        onInputChangeList={this.handleInputChangeList}
+                    >
+                        <TabContainer
+                            controltype="TabContainer"
+                            defaultActiveTabIndex={0}
+                            IsAutoLayout={true}
+                            IsAutoLoadDataGrid={true}
+                        >
+                            <TabPage
+                                datasource={this.state.DataSource_VehicleRentalRequestType}
+                                MLObjectDefinition={MLObjectDefinitionVehicleRentalRequestType}
+                                name="VehicleRentalRequestType"
+                                title="Loại yêu cầu thuê phương tiện"
+                            >
+                                <FormControl.TextBox
+                                    controltype="InputControl"
+                                    datasourcemember="VehicleRentalRequestTypeID"
+                                    label="Mã loại yêu cầu thuê phương tiện"
+                                    name="VehicleRentalRequestTypeID"
+                                    readonly={true}
+                                    value=""
+                                />
+
+                                <FormControl.TextBox
+                                    controltype="InputControl"
+                                    datasourcemember="VehicleRentalRequestTypeName"
+                                    label="Tên loại yêu cầu thuê phương tiện"
+                                    name="VehicleRentalRequestTypeName"
+                                    value=""
+                                    isRequired={true}
+                                />
+
+                                <FormControl.MultiSelectComboBox
+                                    controltype="InputControl"
+                                    datasourcemember="AddFunctionID"
+                                    isautoloaditemfromcache={true}
+                                    IsLabelDiv={true}
+                                    isMulti={false}
+                                    KeyFilter="FunctionCategoryID"
+                                    label="Quyền thêm"
+                                    listoption={[]}
+                                    loaditemcachekeyid={ERPCOMMONCACHE_FUNCTION}
+                                    name="AddFunctionID"
+                                    nameMember="FunctionName"
+                                    value={""}
+                                    ValueFilter="1,2"
+                                    valuemember="FunctionID"
+                                    validatonList={["Comborequired"]}
+                                    IsSystem={this.state.DataSource_VehicleRentalRequestType.IsSystem}
+                                />
+
+                                <FormControl.TextBox
+                                    controltype="InputControl"
+                                    datasourcemember="OrderIndex"
+                                    label="Thứ Tự Hiển Thị"
+                                    name="OrderIndex"
+                                    value=""
+                                />
+
+                                <FormControl.TextArea
+                                    controltype="InputControl"
+                                    datasourcemember="Description"
+                                    label="Mô tả"
+                                    name="Description"
+                                />
+
+                                <FormControl.CheckBox
+                                    datasourcemember="IsActived"
+                                    label="Kích hoạt"
+                                    name="IsActived"
+                                    controltype="InputControl"
+                                />
+
+                                <FormControl.CheckBox
+                                    controltype="InputControl"
+                                    datasourcemember="IsSystem"
+                                    label="Hệ thống"
+                                    name="IsSystem"
+                                />
+                            </TabPage>
+
+                            <TabPage title="Quy trình" name="RentalRequestType_WF">
+                                <InputGrid
+                                    controltype="GridControl"
+                                    dataSource={this.state.DataSource_VehicleRentalRequestType.RentalRequestType_WFList}
+                                    IDSelectColumnName={IDSelectColumnName}
+                                    isUseValueInputControl={true}
+                                    listColumn={RentalRequestType_WFListColumn}
+                                    MLObjectDefinition={RentalRequestType_WFMLObjectDefinition}
+                                    name="RentalRequestType_WF"
+                                    onDeleteClick_Customize={this.handleDeleteRentalRequestType_WF}
+                                    onInsertClick={this.handleInsertRentalRequestType_WF}
+                                    onInsertClickEdit={this.handleEditRentalRequestType_WF}
+                                    PKColumnName="VehicleRentalRequestStepID"
+                                />
+                            </TabPage>
+                        </TabContainer>
+                    </FormContainer>
                 </React.Fragment>
             )
         }

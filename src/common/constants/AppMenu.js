@@ -575,14 +575,14 @@ const AppMenu = [
                     },
                     {
                         MenuName: "VehicleRentalRequestType",
-                        MenuTitle: "Loại xử lý yêu cầu thuê phương tiện",
+                        MenuTitle: "Loại yêu cầu thuê phương tiện",
                         LinkTo: "/VehicleRentalRequestType",
                         MenuIcon: "",
                         SubMenu: [],
                     },
                     {
                         MenuName: "VehicleRentalRequestStep",
-                        MenuTitle: "Bước xử lý yêu cầu thuê phương tiện",
+                        MenuTitle: "Bước yêu cầu thuê phương tiện",
                         LinkTo: "/VehicleRentalRequestStep",
                         MenuIcon: "",
                         SubMenu: [],
