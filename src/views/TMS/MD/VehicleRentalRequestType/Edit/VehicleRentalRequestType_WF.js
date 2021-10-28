@@ -50,13 +50,11 @@ class VehicleRentalRequestType_WFCom extends React.Component {
         this.state = {
             VehicleRentalRequestStepCache: [],
             FunctionCache: [],
-            RentalRequestType_WF_Next: {
-                VehicleRentalRequestStepID: -1,
-                VehicleRentalRequestStepName: null,
-                ChooseFuntionID: -1,
-                ChooseFunctionName: null,
-                RentalRequestType_WF_NextGrid: this.props.RentalRequestType_WF_NextGrid
-            }
+            NextVehicleRentalRequestTypeStep: -1,
+            NextVehicleRentalRequestTypeStepName: null,
+            ChooseFuntionID: -1,
+            ChooseFuntionName: null,
+            lstRentalRequestType_WF_Next: this.props.lstRentalRequestType_WF_Next
         };
 
         this.searchref = React.createRef();
@@ -70,7 +68,6 @@ class VehicleRentalRequestType_WFCom extends React.Component {
         this.handleChangeChooseFuntionID = this.handleChangeChooseFuntionID.bind(this)
         this.handleChangeVehicleRentalRequestStepID = this.handleChangeVehicleRentalRequestStepID.bind(this);
         this.handleDeleteRentalRequestType_WF_Next = this.handleDeleteRentalRequestType_WF_Next.bind(this);
-        // this.handleEditRentalRequestType_WF_Next = this.handleEditRentalRequestType_WF_Next.bind(this);
         this.handleInputChangeList = this.handleInputChangeList.bind(this);
         this.handleInsertRentalRequestType_WF_Next = this.handleInsertRentalRequestType_WF_Next.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -152,23 +149,16 @@ class VehicleRentalRequestType_WFCom extends React.Component {
     handleChangeChooseFuntionID(name, value) {
         const found = this.state.FunctionCache.find(item => item.FunctionID == value);
         this.setState({
-            RentalRequestType_WF_Next: {
-                ...this.state.RentalRequestType_WF_Next,
-                ChooseFuntionID: found.FunctionID,
-                ChooseFunctionName: found.FunctionName
-            }
+            ChooseFuntionID: found.FunctionID,
+            ChooseFuntionName: found.FunctionName
         })
     }
 
     handleChangeVehicleRentalRequestStepID(name, value) {
-        console.log(name, value)
         const found = this.state.VehicleRentalRequestStepCache.find(item => item.VehicleRentalRequestStepID == value);
         this.setState({
-            RentalRequestType_WF_Next: {
-                ...this.state.RentalRequestType_WF_Next,
-                VehicleRentalRequestStepID: found.VehicleRentalRequestStepID,
-                VehicleRentalRequestStepName: found.VehicleRentalRequestStepName
-            }
+            NextVehicleRentalRequestTypeStep: found.VehicleRentalRequestStepID,
+            NextVehicleRentalRequestTypeStepName: found.VehicleRentalRequestStepName
         })
     }
 
@@ -179,8 +169,8 @@ class VehicleRentalRequestType_WFCom extends React.Component {
             }
         })
 
-        const uptRentalRequestType_WF_NextGrid = this.state.RentalRequestType_WF_Next.RentalRequestType_WF_NextGrid.reduce((acc, val) => {
-            const indexFind = DeleteList.findIndex(item => item.VehicleRentalRequestStepID == val.VehicleRentalRequestStepID);
+        const uptLstRentalRequestType_WF_Next = this.state.lstRentalRequestType_WF_Next.reduce((acc, val) => {
+            const indexFind = DeleteList.findIndex(item => item.NextVehicleRentalRequestTypeStep == val.NextVehicleRentalRequestTypeStep);
 
             if (indexFind == -1) {
                 return [...acc, val];
@@ -190,28 +180,21 @@ class VehicleRentalRequestType_WFCom extends React.Component {
         }, []);
 
         this.setState({
-            RentalRequestType_WF_Next: {
-                ...this.state.RentalRequestType_WF_Next,
-                RentalRequestType_WF_NextGrid: uptRentalRequestType_WF_NextGrid
-            }
+            lstRentalRequestType_WF_Next: uptLstRentalRequestType_WF_Next
         })
     }
-
-    // handleEditRentalRequestType_WF_Next(index) {
-    //     console.log(index)
-    // }
 
     handleInputChangeList() {
 
     }
 
     handleInsertRentalRequestType_WF_Next() {
-        if (this.state.RentalRequestType_WF_Next.VehicleRentalRequestStepID == -1) {
+        if (this.state.NextVehicleRentalRequestTypeStep == -1) {
             this.addNotification("Vui lòng chọn Mã Bước Yêu Cầu Thuê Phương Tiện", true);
             return;
         } else {
-            if (this.state.RentalRequestType_WF_Next.RentalRequestType_WF_NextGrid.length != 0) {
-                const indexFind = this.state.RentalRequestType_WF_Next.RentalRequestType_WF_NextGrid.findIndex(item => item.VehicleRentalRequestStepID == this.state.RentalRequestType_WF_Next.VehicleRentalRequestStepID);
+            if (this.state.lstRentalRequestType_WF_Next.length != 0) {
+                const indexFind = this.state.lstRentalRequestType_WF_Next.findIndex(item => item.NextVehicleRentalRequestTypeStep == this.state.NextVehicleRentalRequestTypeStep);
 
                 if (indexFind != -1) {
                     this.addNotification("Dữ liệu đã tồn tại", true);
@@ -220,37 +203,30 @@ class VehicleRentalRequestType_WFCom extends React.Component {
             }
         }
 
-        if (this.state.RentalRequestType_WF_Next.ChooseFuntionID == -1) {
+        if (this.state.ChooseFuntionID == -1) {
             this.addNotification("Vui lòng chọn Quyền Thêm", true);
             return;
         }
 
-        const uptRentalRequestType_WF_NextGrid = [
-            ...this.state.RentalRequestType_WF_Next.RentalRequestType_WF_NextGrid,
+        const uptLstRentalRequestType_WF_Next = [
+            ...this.state.lstRentalRequestType_WF_Next,
             {
-                VehicleRentalRequestStepID: this.state.RentalRequestType_WF_Next.VehicleRentalRequestStepID,
-                VehicleRentalRequestStepName: this.state.RentalRequestType_WF_Next.VehicleRentalRequestStepName,
-                ChooseFuntionID: this.state.RentalRequestType_WF_Next.ChooseFuntionID,
-                ChooseFunctionName: this.state.RentalRequestType_WF_Next.ChooseFunctionName
+                NextVehicleRentalRequestTypeStep: this.state.NextVehicleRentalRequestTypeStep,
+                NextVehicleRentalRequestTypeStepName: this.state.NextVehicleRentalRequestTypeStepName,
+                ChooseFuntionID: this.state.ChooseFuntionID,
+                ChooseFuntionName: this.state.ChooseFuntionName
             }
         ]
 
         this.setState({
-            RentalRequestType_WF_Next: {
-                ...this.state.RentalRequestType_WF_Next,
-                // ChooseFuntionID: -1,
-                // ChooseFunctionName: null,
-                // VehicleRentalRequestStepID: -1,
-                // VehicleRentalRequestStepName: null,
-                RentalRequestType_WF_NextGrid: uptRentalRequestType_WF_NextGrid
-            }
+            lstRentalRequestType_WF_Next: uptLstRentalRequestType_WF_Next
         })
     }
 
     handleSubmit(formData, MLObject) {
-        const RentalRequestType_WF_NextList = this.state.RentalRequestType_WF_Next.RentalRequestType_WF_NextGrid.map(item => {
+        const RentalRequestType_WF_NextList = this.state.lstRentalRequestType_WF_Next.map(item => {
             return {
-                NextVehicleRentalRequestTypeStep: item.VehicleRentalRequestStepID,
+                NextVehicleRentalRequestTypeStep: item.NextVehicleRentalRequestTypeStep,
                 VehicleRentalRequestTypeID: this.props.VehicleRentalRequestTypeID,
                 VehicleRentalRequestStepID: MLObject.RentalRequestType_WF.VehicleRentalRequestStepID,
                 ChooseFuntionID: item.ChooseFuntionID,
@@ -268,10 +244,6 @@ class VehicleRentalRequestType_WFCom extends React.Component {
         this.props.callFetchAPI(APIHostName, AddAPIPath_RentalRequestType_WF, uptMLObject).then(apiResult => {
             this.showMessage(apiResult.Message);
             if (!apiResult.IsError) {
-                // this.setState({
-                //     isPrompt: false,
-                //     isEdited: false
-                // })
                 this.props.fetchVehicleRentalRequestTypeInfo()
                 this.props.hideModal();
             }
@@ -300,7 +272,7 @@ class VehicleRentalRequestType_WFCom extends React.Component {
                             MLObjectDefinition={MLObjectDefinitionVehicleRentalRequestType_WF}
                             name="RentalRequestType_WF"
                             title="Thông tin chung"
-                            datasource={this.props.dataSourceVehicleRentalRequestType_WF}
+                            datasource={this.props.objRentalRequestType_WF}
                         >
                             <FormControl.ComboBox
                                 controltype="InputControl"
@@ -411,23 +383,7 @@ class VehicleRentalRequestType_WFCom extends React.Component {
                         <TabPage
                             name="RentalRequestType_WF_Next"
                             title="Bước xử lý kế tiếp"
-                            // datasource={this.props.dataSourceVehicleRentalRequestType_WF_Next}
-                            datasource={this.state.RentalRequestType_WF_Next}
                             MLObjectDefinition={[
-                                // {
-                                //     BindControlName: "VehicleRentalRequestStepID",
-                                //     DataSourceMember: "VehicleRentalRequestStepID",
-                                //     DefaultValue: "",
-                                //     Label: "mã bước yêu cầu thuê phương tiện",
-                                //     Name: "VehicleRentalRequestStepID",
-                                // },
-                                // {
-                                //     BindControlName: "ChooseFuntionID",
-                                //     DataSourceMember: "ChooseFuntionID",
-                                //     DefaultValue: "",
-                                //     Label: "quyền thêm",
-                                //     Name: "ChooseFuntionID",
-                                // },
                                 {
                                     BindControlName: "RentalRequestType_WF_Next",
                                     DataSourceMember: "RentalRequestType_WF_Next",
@@ -482,7 +438,7 @@ class VehicleRentalRequestType_WFCom extends React.Component {
 
                             <InputGrid
                                 controltype="GridControl"
-                                dataSource={this.state.RentalRequestType_WF_Next.RentalRequestType_WF_NextGrid}
+                                dataSource={this.state.lstRentalRequestType_WF_Next}
                                 IDSelectColumnName={IDSelectColumnName}
                                 isUseValueInputControl={true}
                                 listColumn={RentalRequestType_WF_NextListColumn}
@@ -490,8 +446,7 @@ class VehicleRentalRequestType_WFCom extends React.Component {
                                 name="RentalRequestType_WF_Next"
                                 onDeleteClick_Customize={this.handleDeleteRentalRequestType_WF_Next}
                                 onInsertClick={this.handleInsertRentalRequestType_WF_Next}
-                                // onInsertClickEdit={this.handleEditRentalRequestType_WF_Next}
-                                PKColumnName="VehicleRentalRequestStepID"
+                                PKColumnName="NextVehicleRentalRequestTypeStep"
                             />
 
                         </TabPage>
@@ -504,15 +459,8 @@ class VehicleRentalRequestType_WFCom extends React.Component {
 }
 
 VehicleRentalRequestType_WFCom.defaultProps = {
-    RentalRequestType_WF_NextGrid: [
-        // {
-        //     VehicleRentalRequestStepID: 10,
-        //     VehicleRentalRequestStepName: "VehicleRentalRequestStep 110",
-        //     ChooseFuntionID: "DatabaseConfig_Edit",
-        //     ChooseFunctionName: "Cấu hình cơ sở dữ liệu - Sửa"
-        // }
-    ],
-    dataSourceVehicleRentalRequestType_WF: {
+    lstRentalRequestType_WF_Next: [],
+    objRentalRequestType_WF: {
         IsActived: true
     },
     VehicleRentalRequestTypeID: 0

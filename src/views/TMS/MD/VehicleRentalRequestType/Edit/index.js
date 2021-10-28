@@ -37,6 +37,7 @@ import FormContainer from '../../../../../common/components/Form/AdvanceForm/For
 import FormControl from '../../../../../common/components/Form/AdvanceForm/FormControl';
 import DataGrid from "../../../../../common/components/DataGrid";
 import VehicleRentalRequestType_WF from './VehicleRentalRequestType_WF';
+import VehicleRentalRequestType_WFEdit from './VehicleRentalRequestType_WFEdit';
 import InputGrid from '../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid';
 
 
@@ -45,7 +46,7 @@ class EditCom extends React.Component {
         super(props);
 
         this.state = {
-            DataSource_VehicleRentalRequestType: null,
+            objVehicleRentalRequestType: null,
             isPrompt: false,
             isEdited: false
 
@@ -125,7 +126,7 @@ class EditCom extends React.Component {
                     }
                 })
                 this.setState({
-                    DataSource_VehicleRentalRequestType: {
+                    objVehicleRentalRequestType: {
                         ...apiResult.ResultObject,
                         RentalRequestType_WFList: uptRentalRequestType_WFList
                     }
@@ -134,16 +135,13 @@ class EditCom extends React.Component {
         })
     }
 
-    handleDeleteRentalRequestType_WF(deleteList, dataSource, pkColumnName) {
-        // console.log(deleteList)
+    handleDeleteRentalRequestType_WF(deleteList) {
         const uptDeteteList = deleteList.map(item => {
             return {
                 VehicleRentalRequestTypeID: parseInt(this.props.match.params.id),
                 VehicleRentalRequestStepID: item[0].value
             }
         })
-
-        console.log(uptDeteteList)
 
         this.props.callFetchAPI(APIHostName, DelAPIPath_RentalRequestType_WF, uptDeteteList).then(apiResult => {
             this.showMessage(apiResult.Message);
@@ -154,7 +152,17 @@ class EditCom extends React.Component {
     }
 
     handleEditRentalRequestType_WF(index) {
-        console.log(index)
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Chỉnh sửa bước yêu cầu thuê phương tiện',
+            content: {
+                text: <VehicleRentalRequestType_WFEdit
+                    VehicleRentalRequestTypeID={this.props.match.params.id}
+                    objRentalRequestType_WF={this.state.objVehicleRentalRequestType.RentalRequestType_WFList[index]}
+                    fetchVehicleRentalRequestTypeInfo={() => this.fetchVehicleRentalRequestTypeInfo()}
+                />
+            },
+            maxWidth: '90%'
+        });
     }
 
     handleInputChangeList() {
@@ -169,7 +177,7 @@ class EditCom extends React.Component {
         })
     }
 
-    handleInsertRentalRequestType_WF(MLObjectDefinition, modalElementList, dataSource) {
+    handleInsertRentalRequestType_WF() {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Thêm mới bước yêu cầu thuê phương tiện',
             content: {
@@ -178,7 +186,6 @@ class EditCom extends React.Component {
                     fetchVehicleRentalRequestTypeInfo={() => this.fetchVehicleRentalRequestTypeInfo()}
                 />
             },
-            // afterClose: () => { alert("Bạn có chắc chắc muốn thoát") },
             maxWidth: '90%'
         });
 
@@ -205,7 +212,7 @@ class EditCom extends React.Component {
     }
 
     render() {
-        if (this.state.DataSource_VehicleRentalRequestType == null) {
+        if (this.state.objVehicleRentalRequestType == null) {
             return (
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
@@ -237,7 +244,7 @@ class EditCom extends React.Component {
                             IsAutoLoadDataGrid={true}
                         >
                             <TabPage
-                                datasource={this.state.DataSource_VehicleRentalRequestType}
+                                datasource={this.state.objVehicleRentalRequestType}
                                 MLObjectDefinition={MLObjectDefinitionVehicleRentalRequestType}
                                 name="VehicleRentalRequestType"
                                 title="Loại yêu cầu thuê phương tiện"
@@ -276,7 +283,7 @@ class EditCom extends React.Component {
                                     ValueFilter="1,2"
                                     valuemember="FunctionID"
                                     validatonList={["Comborequired"]}
-                                    IsSystem={this.state.DataSource_VehicleRentalRequestType.IsSystem}
+                                    IsSystem={this.state.objVehicleRentalRequestType.IsSystem}
                                 />
 
                                 <FormControl.TextBox
@@ -312,7 +319,7 @@ class EditCom extends React.Component {
                             <TabPage title="Quy trình" name="RentalRequestType_WF">
                                 <InputGrid
                                     controltype="GridControl"
-                                    dataSource={this.state.DataSource_VehicleRentalRequestType.RentalRequestType_WFList}
+                                    dataSource={this.state.objVehicleRentalRequestType.RentalRequestType_WFList}
                                     IDSelectColumnName={IDSelectColumnName}
                                     isUseValueInputControl={true}
                                     listColumn={RentalRequestType_WFListColumn}

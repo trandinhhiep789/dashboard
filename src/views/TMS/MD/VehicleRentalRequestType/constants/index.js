@@ -4,6 +4,8 @@ export const APIHostName = "TMSMDMAPI";
 export const AddAPIPath = "api/VehicleRentalRequestType/Add";
 export const AddAPIPath_RentalRequestType_WF = "api/RentalRequestType_WF/Add";
 export const DelAPIPath_RentalRequestType_WF = "api/RentalRequestType_WF/Delete";
+export const UptAPIPath_RentalRequestType_WF = "api/RentalRequestType_WF/Update";
+export const DelAPIPath_RentalRequestType_WF_Next = "api/RentalRequestType_WF_Next/Load";
 export const DeleteAPIPath = "api/VehicleRentalRequestType/Delete";
 export const EditAPIPath = "api/VehicleRentalRequestType/Edit";
 export const LoadAPIPath = "api/VehicleRentalRequestType/Load";
@@ -703,26 +705,26 @@ export const RentalRequestType_WF_NextListColumn = [
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "",
-        DataSourceMember: "VehicleRentalRequestStepID",
+        DataSourceMember: "NextVehicleRentalRequestTypeStep",
         Width: 60
     },
     {
-        Name: "VehicleRentalRequestStepID",
+        Name: "NextVehicleRentalRequestTypeStep",
         Type: "text",
         Caption: "Mã bước kế tiếp",
-        DataSourceMember: "VehicleRentalRequestStepID",
+        DataSourceMember: "NextVehicleRentalRequestTypeStep",
     },
     {
-        Name: "VehicleRentalRequestStepName",
+        Name: "NextVehicleRentalRequestTypeStepName",
         Type: "text",
         Caption: "Tên bước kế tiếp",
-        DataSourceMember: "VehicleRentalRequestStepName",
+        DataSourceMember: "NextVehicleRentalRequestTypeStepName",
     },
     {
-        Name: "ChooseFunctionName",
+        Name: "ChooseFuntionName",
         Type: "text",
         Caption: "Quyền thêm",
-        DataSourceMember: "ChooseFunctionName",
+        DataSourceMember: "ChooseFuntionName",
     },
 ]
 
