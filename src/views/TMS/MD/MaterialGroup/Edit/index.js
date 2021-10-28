@@ -72,6 +72,20 @@ class EditCom extends React.Component {
 
 
     handleSubmit(formData, MLObject) {
+        //validation
+        if(MLObject.IsMustReturnNotUseMaterial == true){
+            if(MLObject.MustReturnNumHour == 0){
+                this.showMessage("Vui lòng nhập thời gian phải nhập trả");
+                this.setState({IsCallAPIError:true});
+                return;
+            }
+            else if(MLObject.MustReturnNumHour <0){
+                this.showMessage("Vui lòng nhập số dương");
+                this.setState({IsCallAPIError:true});
+                return;
+            }
+        }
+        
         MLObject.MaterialGroupID = this.props.match.params.id;
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
