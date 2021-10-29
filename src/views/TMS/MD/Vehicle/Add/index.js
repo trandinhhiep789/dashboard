@@ -415,7 +415,7 @@ class EditCom extends React.Component {
                                 />
                             </div>
 
-                            <div className="col-md-6">
+                            {/* <div className="col-md-6">
                                 <MultiSelectComboBox
                                     colspan="8"
                                     datasourcemember="MainDriverUser"
@@ -431,7 +431,7 @@ class EditCom extends React.Component {
                                     validatonList={["Comborequired"]}
                                     value={this.state.UserValue}
                                 />
-                            </div>
+                            </div> */}
 
                             <div className="col-md-6">
                                 <FormControl.CheckBox
@@ -448,7 +448,7 @@ class EditCom extends React.Component {
                                 />
                             </div>
 
-                            <div className="col-md-6">
+                            {/* <div className="col-md-6">
                                 <FormControl.FormControlComboBox
                                     colspan="8"
                                     controltype="InputControl"
@@ -469,7 +469,7 @@ class EditCom extends React.Component {
                                     value={""}
                                     valuemember="StoreID"
                                 />
-                            </div>
+                            </div> */}
 
                             <div className="col-md-6">
                                 <FormControl.CheckBox
@@ -485,7 +485,7 @@ class EditCom extends React.Component {
                                 />
                             </div>
 
-                            <div className="col-md-6">
+                            {/* <div className="col-md-6">
                                 <FormControl.TextArea
                                     classNameCustom="customcontrol"
                                     colspan={8}
@@ -500,7 +500,7 @@ class EditCom extends React.Component {
                                     readOnly={this.state.DataSource.IsSystem}
                                     rows={4}
                                 />
-                            </div>
+                            </div> */}
                         </div>
                     </FormContainer>
                 </React.Fragment>
