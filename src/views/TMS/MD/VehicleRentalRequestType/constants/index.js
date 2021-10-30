@@ -501,15 +501,15 @@ export const MLObjectDefinitionVehicleRentalRequestType_WF = [
         DefaultValue: "",
         Label: "tự động chuyển sang bước",
         Name: "AutoChangetoStepID",
-        ValidationList: ["Comborequired"]
+        // ValidationList: ["Comborequired"]
     },
     {
         BindControlName: "AutoChangeStepType",
         DataSourceMember: "AutoChangeStepType",
         DefaultValue: "",
-        Label: "loại tự động chuyển bước",
+        Label: "tự động chuyển bước",
         Name: "AutoChangeStepType",
-        ValidationList: ["Comborequired"]
+        // ValidationList: ["Comborequired"]
     },
     {
         BindControlName: "IsInitStep",

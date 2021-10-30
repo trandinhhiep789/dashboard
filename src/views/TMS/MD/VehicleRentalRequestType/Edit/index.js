@@ -121,8 +121,8 @@ class EditCom extends React.Component {
                         ...item,
                         VehicleRentalRequestStepIDName: `${item.VehicleRentalRequestStepID} - ${item.VehicleRentalRequestStepName}`,
                         AutoChangetoStatusIDName: `${item.AutoChangetoStatusID} - ${item.AutoChangetoStatusName}`,
-                        AutoChangetoStepIDName: `${item.AutoChangetoStepID} - ${item.AutoChangetoStepName}`,
-                        AutoChangeStepTypeName: item.AutoChangeStepType ? "Chuyển bước không điều kiện" : "Không tự động"
+                        AutoChangetoStepIDName: item.AutoChangetoStepID > 0 ? `${item.AutoChangetoStepID} - ${item.AutoChangetoStepName}` : "",
+                        AutoChangeStepTypeName: item.AutoChangeStepType ? "Chuyển bước không điều kiện" : "Không tự động",
                     }
                 })
                 this.setState({

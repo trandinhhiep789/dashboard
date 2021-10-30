@@ -35,13 +35,14 @@ class VehicleRentalRequestType_WFCom extends React.Component {
         super(props);
 
         this.state = {
-            VehicleRentalRequestStepCache: null,
-            FunctionCache: null,
-            NextVehicleRentalRequestTypeStep: -1,
-            NextVehicleRentalRequestTypeStepName: null,
             ChooseFuntionID: -1,
             ChooseFuntionName: null,
-            lstRentalRequestType_WF_Next: this.props.lstRentalRequestType_WF_Next
+            FunctionCache: null,
+            IsDisableAutoChangeStepTypeID: true,
+            lstRentalRequestType_WF_Next: this.props.lstRentalRequestType_WF_Next,
+            NextVehicleRentalRequestTypeStep: -1,
+            NextVehicleRentalRequestTypeStepName: null,
+            VehicleRentalRequestStepCache: null,
         };
 
         this.searchref = React.createRef();
@@ -171,8 +172,16 @@ class VehicleRentalRequestType_WFCom extends React.Component {
         })
     }
 
-    handleInputChangeList() {
-
+    handleInputChangeList(formDataTemp) {
+        if (formDataTemp.RentalRequestType_WF.AutoChangeStepType) {
+            this.setState({
+                IsDisableAutoChangeStepTypeID: false
+            })
+        } else {
+            this.setState({
+                IsDisableAutoChangeStepTypeID: true
+            })
+        }
     }
 
     handleInsertRentalRequestType_WF_Next() {
@@ -222,6 +231,7 @@ class VehicleRentalRequestType_WFCom extends React.Component {
         })
         const uptMLObject = {
             ...MLObject.RentalRequestType_WF,
+            AutoChangetoStepID: this.state.IsDisableAutoChangeStepTypeID == true ? -1 : MLObject.RentalRequestType_WF.AutoChangetoStepID,
             VehicleRentalRequestTypeID: this.props.VehicleRentalRequestTypeID,
             RentalRequestType_WF_NextList
         }
@@ -294,27 +304,12 @@ class VehicleRentalRequestType_WFCom extends React.Component {
                                     type="select"
                                 />
 
-                                <FormControl.ComboBox
-                                    controltype="InputControl"
-                                    datasourcemember="AutoChangetoStepID"
-                                    disable={false}
-                                    isautoloaditemfromcache={true}
-                                    isRequired={true}
-                                    isSystem={false}
-                                    label="Tự động chuyển sang bước"
-                                    listoption={[]}
-                                    loaditemcachekeyid={ERPCOMMONCACHE_VEHICLERENTALREQSTEP}
-                                    name="AutoChangetoStepID"
-                                    nameMember="VehicleRentalRequestStepName"
-                                    valuemember="VehicleRentalRequestStepID"
-                                />
-
-                                <FormControl.ComboBox
+                                {/* <FormControl.ComboBox
                                     controltype="InputControl"
                                     datasourcemember="AutoChangeStepType"
                                     isautoloaditemfromcache={false}
                                     isRequired={true}
-                                    label="Loại tự động chuyển bước"
+                                    label="Tự động chuyển bước"
                                     name="AutoChangeStepType"
                                     listoption={
                                         [
@@ -323,6 +318,28 @@ class VehicleRentalRequestType_WFCom extends React.Component {
                                             { value: "1", label: "Tự động chuyển bước không điều kiện" },
                                         ]
                                     }
+                                /> */}
+
+                                <FormControl.CheckBox
+                                    controltype="InputControl"
+                                    datasourcemember="AutoChangeStepType"
+                                    label="Tự động chuyển bước"
+                                    name="AutoChangeStepType"
+                                />
+
+                                <FormControl.ComboBox
+                                    controltype="InputControl"
+                                    datasourcemember="AutoChangetoStepID"
+                                    disabled={this.state.IsDisableAutoChangeStepTypeID}
+                                    isautoloaditemfromcache={true}
+                                    // isRequired={true}
+                                    isSystem={false}
+                                    label="Tự động chuyển sang bước"
+                                    listoption={[]}
+                                    loaditemcachekeyid={ERPCOMMONCACHE_VEHICLERENTALREQSTEP}
+                                    name="AutoChangetoStepID"
+                                    nameMember="VehicleRentalRequestStepName"
+                                    valuemember="VehicleRentalRequestStepID"
                                 />
 
                                 <FormControl.CheckBox
