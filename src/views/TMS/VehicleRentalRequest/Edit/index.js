@@ -96,7 +96,7 @@ class EditCom extends React.Component {
 
     prevDataSubmit(formData, MLObject) {
         const { AttachmentListData, AttachmentList, fileSize } = this.state;
-        MLObject.RequestUser = MLObject.RequestUser.value != undefined ?MLObject.RequestUser.value : MLObject.RequestUser ;
+        MLObject.RequestUser = MLObject.RequestUser.value != undefined ? MLObject.RequestUser.value : MLObject.RequestUser;
 
         console.log("add", formData, MLObject)
 
@@ -166,7 +166,7 @@ class EditCom extends React.Component {
 
     render() {
         let currentDate = new Date();
-        const { AttachmentListData, AttachmentList, fileSize,UserValue } = this.state;
+        const { AttachmentListData, AttachmentList, fileSize, UserValue } = this.state;
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>
@@ -182,6 +182,24 @@ class EditCom extends React.Component {
                     >
 
                         <div className="row">
+
+
+                            <div className="col-md-6">
+                                <FormControl.TextBox
+                                    name="txtVehicleRentalRequestID"
+                                    labelcolspan={4}
+                                    colspan={8}
+                                    readOnly={true}
+                                    label="Mã yêu cầu"
+                                    placeholder="Mã yêu cầu"
+                                    controltype="InputControl"
+                                    value=""
+                                    datasourcemember="VehicleRentalRequestID"
+                                    validatonList={['required']}
+                                //classNameCustom="customcontrol"
+                                />
+                            </div>
+
 
                             <div className="col-md-6">
                                 <FormControl.FormControlComboBox

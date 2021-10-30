@@ -65,7 +65,6 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            console.log("data", apiResult)
             if (apiResult.IsError) {
 
                 this.showMessage(apiResult.Message);
@@ -141,7 +140,6 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        console.log("abb", formData, MLObject)
         const DataSearch = [
             {
                 SearchKey: "@KEYWORD",

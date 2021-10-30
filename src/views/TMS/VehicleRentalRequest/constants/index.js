@@ -275,6 +275,12 @@ export const DataGridColumnList = [
 
 export const MLObjectDefinition = [
     {
+        Name: "VehicleRentalRequestID",
+        DefaultValue: "",
+        BindControlName: "txtVehicleRentalRequestID",
+        DataSourceMember: "VehicleRentalRequestID"
+    },
+    {
         Name: "VehicleRentalRequestTypeID",
         DefaultValue: "",
         BindControlName: "cboVehicleRentalRequestType",
