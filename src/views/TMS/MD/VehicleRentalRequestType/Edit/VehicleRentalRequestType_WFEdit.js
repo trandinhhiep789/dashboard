@@ -2,23 +2,13 @@ import React from "react";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
 import ReactNotification from "react-notifications-component";
-import { Prompt } from 'react-router';
 
 import {
-    AddAPIPath_RentalRequestType_WF,
     APIHostName,
-    BackLink,
     DelAPIPath_RentalRequestType_WF_Next,
-    EditAPIPath,
-    EditElementList,
-    EditMLObjectDefinition,
-    EditPagePath,
     IDSelectColumnName,
-    listColumnRentalRequestType_WF,
-    LoadAPIPath,
     MLObjectDefinitionFormContainerVehicleRentalRequestType_WF,
     MLObjectDefinitionVehicleRentalRequestType_WF,
-    MLObjectDefinitionVehicleRentalRequestType,
     RentalRequestType_WF_NextListColumn,
     RentalRequestType_WF_NextMLObjectDefinition,
     UptAPIPath_RentalRequestType_WF,
@@ -28,37 +18,32 @@ import {
     ERPCOMMONCACHE_FUNCTION,
     ERPCOMMONCACHE_VEHICLERENTALREQSTEP,
     ERPCOMMONCACHE_VEHICLERENTALSTATUS,
-    ERPCOMMONCACHE_SHIPMENTORDERSTEP
 } from '../../../../../constants/keyCache';
 
-import { MODAL_TYPE_COMMONTMODALS } from '../../../../../constants/actionTypes';
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { MessageModal } from "../../../../../common/components/Modal";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { updatePagePath } from "../../../../../actions/pageAction";
-import SimpleForm from "../../../../../common/components/Form/SimpleForm";
-import TabContainer from "../../../../../common/components/Tabs/TabContainer";
-import TabPage from "../../../../../common/components/Tabs/TabPage";
 import FormContainer from '../../../../../common/components/Form/AdvanceForm/FormContainer';
 import FormControl from '../../../../../common/components/Form/AdvanceForm/FormControl';
-import DataGrid from "../../../../../common/components/DataGrid";
 import InputGrid from '../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid';
+import TabContainer from "../../../../../common/components/Tabs/TabContainer";
+import TabPage from "../../../../../common/components/Tabs/TabPage";
 
 class VehicleRentalRequestType_WFEditCom extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            VehicleRentalRequestStepCache: [],
-            FunctionCache: [],
+            VehicleRentalRequestStepCache: null,
+            FunctionCache: null,
             NextVehicleRentalRequestTypeStep: -1,
             NextVehicleRentalRequestTypeStepName: null,
             ChooseFuntionID: -1,
             ChooseFuntionName: null,
             lstRentalRequestType_WF_Next: null,
             lstDeleteRentalRequestType_WF_Next: [],
-            // lstInsertRentalRequestType_WF_Next: [],
         };
 
         this.searchref = React.createRef();
@@ -169,7 +154,7 @@ class VehicleRentalRequestType_WFEditCom extends React.Component {
                 VehicleRentalRequestStepCache: values[0],
                 FunctionCache: values[1]
             })
-        }).catch(err => this.showMessage("Lỗi tải dữ liệu"));
+        }).catch(err => this.showMessage("Lỗi tải data cache"));
     }
 
     handleChangeChooseFuntionID(name, value) {
@@ -279,8 +264,6 @@ class VehicleRentalRequestType_WFEditCom extends React.Component {
             RentalRequestType_WF_NextList: lstRentalRequestType_WF_Next
         }
 
-        console.log(uptMLObject);
-
         this.props.callFetchAPI(APIHostName, UptAPIPath_RentalRequestType_WF, uptMLObject).then(apiResult => {
             this.showMessage(apiResult.Message);
             if (!apiResult.IsError) {
@@ -291,7 +274,7 @@ class VehicleRentalRequestType_WFEditCom extends React.Component {
     }
 
     render() {
-        if (this.state.lstRentalRequestType_WF_Next == null) {
+        if (this.state.lstRentalRequestType_WF_Next == null || this.state.VehicleRentalRequestStepCache == null || this.state.FunctionCache == null) {
             return <React.Fragment>Đang tải dữ liệu...</React.Fragment>
         } else {
             return (
@@ -399,6 +382,7 @@ class VehicleRentalRequestType_WFEditCom extends React.Component {
                                     controltype="InputControl"
                                     datasourcemember="Description"
                                     label="Mô tả"
+                                    maxSize="300"
                                     name="Description"
                                 />
 

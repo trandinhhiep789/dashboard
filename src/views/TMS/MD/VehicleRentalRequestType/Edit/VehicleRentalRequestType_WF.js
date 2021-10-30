@@ -2,54 +2,41 @@ import React from "react";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
 import ReactNotification from "react-notifications-component";
-import { Prompt } from 'react-router';
 
 import {
+    AddAPIPath_RentalRequestType_WF,
     APIHostName,
-    BackLink,
-    EditAPIPath,
-    EditElementList,
-    EditPagePath,
-    LoadAPIPath,
-    EditMLObjectDefinition,
-    MLObjectDefinitionVehicleRentalRequestType,
     IDSelectColumnName,
-    listColumnRentalRequestType_WF,
     MLObjectDefinitionFormContainerVehicleRentalRequestType_WF,
     MLObjectDefinitionVehicleRentalRequestType_WF,
     RentalRequestType_WF_NextListColumn,
     RentalRequestType_WF_NextMLObjectDefinition,
-    AddAPIPath_RentalRequestType_WF,
 } from "../constants";
 
 import {
     ERPCOMMONCACHE_FUNCTION,
     ERPCOMMONCACHE_VEHICLERENTALREQSTEP,
     ERPCOMMONCACHE_VEHICLERENTALSTATUS,
-    ERPCOMMONCACHE_SHIPMENTORDERSTEP
 } from '../../../../../constants/keyCache';
 
-import { MODAL_TYPE_COMMONTMODALS } from '../../../../../constants/actionTypes';
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { MessageModal } from "../../../../../common/components/Modal";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { updatePagePath } from "../../../../../actions/pageAction";
-import SimpleForm from "../../../../../common/components/Form/SimpleForm";
-import TabContainer from "../../../../../common/components/Tabs/TabContainer";
-import TabPage from "../../../../../common/components/Tabs/TabPage";
 import FormContainer from '../../../../../common/components/Form/AdvanceForm/FormContainer';
 import FormControl from '../../../../../common/components/Form/AdvanceForm/FormControl';
-import DataGrid from "../../../../../common/components/DataGrid";
 import InputGrid from '../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid';
+import TabContainer from "../../../../../common/components/Tabs/TabContainer";
+import TabPage from "../../../../../common/components/Tabs/TabPage";
 
 class VehicleRentalRequestType_WFCom extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            VehicleRentalRequestStepCache: [],
-            FunctionCache: [],
+            VehicleRentalRequestStepCache: null,
+            FunctionCache: null,
             NextVehicleRentalRequestTypeStep: -1,
             NextVehicleRentalRequestTypeStepName: null,
             ChooseFuntionID: -1,
@@ -239,8 +226,6 @@ class VehicleRentalRequestType_WFCom extends React.Component {
             RentalRequestType_WF_NextList
         }
 
-        console.log(uptMLObject);
-
         this.props.callFetchAPI(APIHostName, AddAPIPath_RentalRequestType_WF, uptMLObject).then(apiResult => {
             this.showMessage(apiResult.Message);
             if (!apiResult.IsError) {
@@ -251,210 +236,215 @@ class VehicleRentalRequestType_WFCom extends React.Component {
     }
 
     render() {
-        return (
-            <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
+        if (this.state.VehicleRentalRequestStepCache == null || this.state.FunctionCache == null) {
+            return <React.Fragment>Đang tải dữ liệu...</React.Fragment>
+        } else {
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
 
-                <FormContainer
-                    IsAutoLayout={true}
-                    listelement={[]}
-                    MLObjectDefinition={MLObjectDefinitionFormContainerVehicleRentalRequestType_WF}
-                    onInputChangeList={this.handleInputChangeList}
-                    onSubmit={this.handleSubmit}
-                >
-                    <TabContainer
-                        controltype="TabContainer"
-                        defaultActiveTabIndex={0}
+                    <FormContainer
                         IsAutoLayout={true}
-                        IsAutoLoadDataGrid={true}
+                        listelement={[]}
+                        MLObjectDefinition={MLObjectDefinitionFormContainerVehicleRentalRequestType_WF}
+                        onInputChangeList={this.handleInputChangeList}
+                        onSubmit={this.handleSubmit}
                     >
-                        <TabPage
-                            MLObjectDefinition={MLObjectDefinitionVehicleRentalRequestType_WF}
-                            name="RentalRequestType_WF"
-                            title="Thông tin chung"
-                            datasource={this.props.objRentalRequestType_WF}
+                        <TabContainer
+                            controltype="TabContainer"
+                            defaultActiveTabIndex={0}
+                            IsAutoLayout={true}
+                            IsAutoLoadDataGrid={true}
                         >
-                            <FormControl.ComboBox
-                                controltype="InputControl"
-                                datasourcemember="VehicleRentalRequestStepID"
-                                disable={false}
-                                isautoloaditemfromcache={true}
-                                isRequired={true}
-                                isSystem={false}
-                                label="Mã bước yêu cầu thuê phương tiện"
-                                listoption={[]}
-                                loaditemcachekeyid={ERPCOMMONCACHE_VEHICLERENTALREQSTEP}
-                                name="VehicleRentalRequestStepID"
-                                nameMember="VehicleRentalRequestStepName"
-                                valuemember="VehicleRentalRequestStepID"
-                                type="select"
-                            />
-
-                            <FormControl.ComboBox
-                                controltype="InputControl"
-                                datasourcemember="AutoChangetoStatusID"
-                                disable={false}
-                                isautoloaditemfromcache={true}
-                                isRequired={true}
-                                isSystem={false}
-                                label="Tự động chuyển sang trạng thái"
-                                listoption={[]}
-                                loaditemcachekeyid={ERPCOMMONCACHE_VEHICLERENTALSTATUS}
-                                name="AutoChangetoStatusID"
-                                nameMember="VehicleRentalStatusName"
-                                valuemember="VehicleRentalStatusID"
-                                type="select"
-                            />
-
-                            <FormControl.ComboBox
-                                controltype="InputControl"
-                                datasourcemember="AutoChangetoStepID"
-                                disable={false}
-                                isautoloaditemfromcache={true}
-                                isRequired={true}
-                                isSystem={false}
-                                label="Tự động chuyển sang bước"
-                                listoption={[]}
-                                loaditemcachekeyid={ERPCOMMONCACHE_VEHICLERENTALREQSTEP}
-                                name="AutoChangetoStepID"
-                                nameMember="VehicleRentalRequestStepName"
-                                valuemember="VehicleRentalRequestStepID"
-                            />
-
-                            <FormControl.ComboBox
-                                controltype="InputControl"
-                                datasourcemember="AutoChangeStepType"
-                                isautoloaditemfromcache={false}
-                                isRequired={true}
-                                label="Loại tự động chuyển bước"
-                                name="AutoChangeStepType"
-                                listoption={
-                                    [
-                                        { value: "-1", label: "--Vui lòng chọn--" },
-                                        { value: "0", label: "Không tự động" },
-                                        { value: "1", label: "Tự động chuyển bước không điều kiện" },
-                                    ]
-                                }
-                            />
-
-                            <FormControl.CheckBox
-                                controltype="InputControl"
-                                datasourcemember="IsInitStep"
-                                name="IsInitStep"
-                                label="Là bước khởi tạo"
-                            />
-
-                            <FormControl.CheckBox
-                                controltype="InputControl"
-                                datasourcemember="IsFinishStep"
-                                name="IsFinishStep"
-                                label="Là bước kết thúc"
-                            />
-
-                            <FormControl.TextArea
-                                controltype="InputControl"
-                                datasourcemember="Description"
-                                label="Mô tả"
-                                name="Description"
-                            />
-
-                            <FormControl.CheckBox
-                                controltype="InputControl"
-                                datasourcemember="IsAddToWorkingPlan"
-                                name="IsAddToWorkingPlan"
-                                label="Tự động thêm dữ liệu vào lịch làm việc"
-                            />
-
-                            <FormControl.CheckBox
-                                controltype="InputControl"
-                                datasourcemember="IsActived"
-                                name="IsActived"
-                                label="Kích hoạt"
-                            />
-
-                            <FormControl.CheckBox
-                                controltype="InputControl"
-                                datasourcemember="IsSystem"
-                                name="IsSystem"
-                                label="Hệ thống"
-                            />
-                        </TabPage>
-
-                        <TabPage
-                            name="RentalRequestType_WF_Next"
-                            title="Bước xử lý kế tiếp"
-                            MLObjectDefinition={[
-                                {
-                                    BindControlName: "RentalRequestType_WF_Next",
-                                    DataSourceMember: "RentalRequestType_WF_Next",
-                                    DefaultValue: "",
-                                    Label: "danh sách bước xử lý kế tiếp",
-                                    Name: "RentalRequestType_WF_Next",
-                                }
-                            ]}
-                        >
-                            <div className="form-row">
+                            <TabPage
+                                MLObjectDefinition={MLObjectDefinitionVehicleRentalRequestType_WF}
+                                name="RentalRequestType_WF"
+                                title="Thông tin chung"
+                                datasource={this.props.objRentalRequestType_WF}
+                            >
                                 <FormControl.ComboBox
-                                    // isRequired={true}
-                                    colspan={9}
                                     controltype="InputControl"
                                     datasourcemember="VehicleRentalRequestStepID"
                                     disable={false}
                                     isautoloaditemfromcache={true}
+                                    isRequired={true}
                                     isSystem={false}
                                     label="Mã bước yêu cầu thuê phương tiện"
-                                    labelcolspan={3}
                                     listoption={[]}
                                     loaditemcachekeyid={ERPCOMMONCACHE_VEHICLERENTALREQSTEP}
                                     name="VehicleRentalRequestStepID"
                                     nameMember="VehicleRentalRequestStepName"
-                                    onValueChangeCus={this.handleChangeVehicleRentalRequestStepID}
-                                    rowspan={6}
+                                    valuemember="VehicleRentalRequestStepID"
                                     type="select"
+                                />
+
+                                <FormControl.ComboBox
+                                    controltype="InputControl"
+                                    datasourcemember="AutoChangetoStatusID"
+                                    disable={false}
+                                    isautoloaditemfromcache={true}
+                                    isRequired={true}
+                                    isSystem={false}
+                                    label="Tự động chuyển sang trạng thái"
+                                    listoption={[]}
+                                    loaditemcachekeyid={ERPCOMMONCACHE_VEHICLERENTALSTATUS}
+                                    name="AutoChangetoStatusID"
+                                    nameMember="VehicleRentalStatusName"
+                                    valuemember="VehicleRentalStatusID"
+                                    type="select"
+                                />
+
+                                <FormControl.ComboBox
+                                    controltype="InputControl"
+                                    datasourcemember="AutoChangetoStepID"
+                                    disable={false}
+                                    isautoloaditemfromcache={true}
+                                    isRequired={true}
+                                    isSystem={false}
+                                    label="Tự động chuyển sang bước"
+                                    listoption={[]}
+                                    loaditemcachekeyid={ERPCOMMONCACHE_VEHICLERENTALREQSTEP}
+                                    name="AutoChangetoStepID"
+                                    nameMember="VehicleRentalRequestStepName"
                                     valuemember="VehicleRentalRequestStepID"
                                 />
 
-                                <FormControl.MultiSelectComboBox
-                                    // validatonList={["Comborequired"]}
-                                    colspan={9}
+                                <FormControl.ComboBox
                                     controltype="InputControl"
-                                    datasourcemember="ChooseFuntionID"
-                                    isautoloaditemfromcache={true}
-                                    IsLabelDiv={true}
-                                    isMulti={false}
-                                    KeyFilter="FunctionCategoryID"
-                                    label="Quyền thêm"
-                                    labelcolspan={3}
-                                    listoption={[]}
-                                    loaditemcachekeyid={ERPCOMMONCACHE_FUNCTION}
-                                    name="ChooseFuntionID"
-                                    nameMember="FunctionName"
-                                    onValueChangeCus={this.handleChangeChooseFuntionID}
-                                    rowspan={6}
-                                    ValueFilter="1,2"
-                                    valuemember="FunctionID"
+                                    datasourcemember="AutoChangeStepType"
+                                    isautoloaditemfromcache={false}
+                                    isRequired={true}
+                                    label="Loại tự động chuyển bước"
+                                    name="AutoChangeStepType"
+                                    listoption={
+                                        [
+                                            { value: "-1", label: "--Vui lòng chọn--" },
+                                            { value: "0", label: "Không tự động" },
+                                            { value: "1", label: "Tự động chuyển bước không điều kiện" },
+                                        ]
+                                    }
                                 />
-                            </div>
 
-                            <InputGrid
-                                controltype="GridControl"
-                                dataSource={this.state.lstRentalRequestType_WF_Next}
-                                IDSelectColumnName={IDSelectColumnName}
-                                isUseValueInputControl={true}
-                                listColumn={RentalRequestType_WF_NextListColumn}
-                                MLObjectDefinition={RentalRequestType_WF_NextMLObjectDefinition}
+                                <FormControl.CheckBox
+                                    controltype="InputControl"
+                                    datasourcemember="IsInitStep"
+                                    name="IsInitStep"
+                                    label="Là bước khởi tạo"
+                                />
+
+                                <FormControl.CheckBox
+                                    controltype="InputControl"
+                                    datasourcemember="IsFinishStep"
+                                    name="IsFinishStep"
+                                    label="Là bước kết thúc"
+                                />
+
+                                <FormControl.TextArea
+                                    controltype="InputControl"
+                                    datasourcemember="Description"
+                                    label="Mô tả"
+                                    maxSize="300"
+                                    name="Description"
+                                />
+
+                                <FormControl.CheckBox
+                                    controltype="InputControl"
+                                    datasourcemember="IsAddToWorkingPlan"
+                                    name="IsAddToWorkingPlan"
+                                    label="Tự động thêm dữ liệu vào lịch làm việc"
+                                />
+
+                                <FormControl.CheckBox
+                                    controltype="InputControl"
+                                    datasourcemember="IsActived"
+                                    name="IsActived"
+                                    label="Kích hoạt"
+                                />
+
+                                <FormControl.CheckBox
+                                    controltype="InputControl"
+                                    datasourcemember="IsSystem"
+                                    name="IsSystem"
+                                    label="Hệ thống"
+                                />
+                            </TabPage>
+
+                            <TabPage
                                 name="RentalRequestType_WF_Next"
-                                onDeleteClick_Customize={this.handleDeleteRentalRequestType_WF_Next}
-                                onInsertClick={this.handleInsertRentalRequestType_WF_Next}
-                                PKColumnName="NextVehicleRentalRequestTypeStep"
-                            />
+                                title="Bước xử lý kế tiếp"
+                                MLObjectDefinition={[
+                                    {
+                                        BindControlName: "RentalRequestType_WF_Next",
+                                        DataSourceMember: "RentalRequestType_WF_Next",
+                                        DefaultValue: "",
+                                        Label: "danh sách bước xử lý kế tiếp",
+                                        Name: "RentalRequestType_WF_Next",
+                                    }
+                                ]}
+                            >
+                                <div className="form-row">
+                                    <FormControl.ComboBox
+                                        // isRequired={true}
+                                        colspan={9}
+                                        controltype="InputControl"
+                                        datasourcemember="VehicleRentalRequestStepID"
+                                        disable={false}
+                                        isautoloaditemfromcache={true}
+                                        isSystem={false}
+                                        label="Mã bước yêu cầu thuê phương tiện"
+                                        labelcolspan={3}
+                                        listoption={[]}
+                                        loaditemcachekeyid={ERPCOMMONCACHE_VEHICLERENTALREQSTEP}
+                                        name="VehicleRentalRequestStepID"
+                                        nameMember="VehicleRentalRequestStepName"
+                                        onValueChangeCus={this.handleChangeVehicleRentalRequestStepID}
+                                        rowspan={6}
+                                        type="select"
+                                        valuemember="VehicleRentalRequestStepID"
+                                    />
 
-                        </TabPage>
+                                    <FormControl.MultiSelectComboBox
+                                        // validatonList={["Comborequired"]}
+                                        colspan={9}
+                                        controltype="InputControl"
+                                        datasourcemember="ChooseFuntionID"
+                                        isautoloaditemfromcache={true}
+                                        IsLabelDiv={true}
+                                        isMulti={false}
+                                        KeyFilter="FunctionCategoryID"
+                                        label="Quyền thêm"
+                                        labelcolspan={3}
+                                        listoption={[]}
+                                        loaditemcachekeyid={ERPCOMMONCACHE_FUNCTION}
+                                        name="ChooseFuntionID"
+                                        nameMember="FunctionName"
+                                        onValueChangeCus={this.handleChangeChooseFuntionID}
+                                        rowspan={6}
+                                        ValueFilter="1,2"
+                                        valuemember="FunctionID"
+                                    />
+                                </div>
 
-                    </TabContainer>
-                </FormContainer>
-            </React.Fragment>
-        )
+                                <InputGrid
+                                    controltype="GridControl"
+                                    dataSource={this.state.lstRentalRequestType_WF_Next}
+                                    IDSelectColumnName={IDSelectColumnName}
+                                    isUseValueInputControl={true}
+                                    listColumn={RentalRequestType_WF_NextListColumn}
+                                    MLObjectDefinition={RentalRequestType_WF_NextMLObjectDefinition}
+                                    name="RentalRequestType_WF_Next"
+                                    onDeleteClick_Customize={this.handleDeleteRentalRequestType_WF_Next}
+                                    onInsertClick={this.handleInsertRentalRequestType_WF_Next}
+                                    PKColumnName="NextVehicleRentalRequestTypeStep"
+                                />
+
+                            </TabPage>
+
+                        </TabContainer>
+                    </FormContainer>
+                </React.Fragment>
+            )
+        }
     }
 }
 

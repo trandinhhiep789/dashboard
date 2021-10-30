@@ -589,7 +589,7 @@ const AppMenu = [
                     },
                     {
                         MenuName: "VehicleRentalStatus",
-                        MenuTitle: "Trạng thái yêu cầu thuê của phương tiện",
+                        MenuTitle: "Trạng thái thuê của phương tiện",
                         LinkTo: "/VehicleRentalStatus",
                         MenuIcon: "",
                         SubMenu: [],

@@ -197,8 +197,6 @@ class EditCom extends React.Component {
             AddFunctionID: MLObject.VehicleRentalRequestType.AddFunctionID.length == 1 ? MLObject.VehicleRentalRequestType.AddFunctionID[0] : MLObject.VehicleRentalRequestType.AddFunctionID
         }
 
-        console.log('112', uptMLObject);
-
         this.props.callFetchAPI(APIHostName, EditAPIPath, uptMLObject).then(apiResult => {
             this.showMessage(apiResult.Message);
             if (!apiResult.IsError) {
