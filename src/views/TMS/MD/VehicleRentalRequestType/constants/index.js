@@ -76,18 +76,18 @@ export const listColumnVehicleRentalRequestType = [
         Caption: "Tên loại thuê phương tiện",
         DataSourceMember: "VehicleRentalRequestTypeName",
     },
-    {
-        Name: "AddFunctionID",
-        Type: "text",
-        Caption: "Quyền thêm",
-        DataSourceMember: "AddFunctionID",
-    },
-    {
-        Name: "Description",
-        Type: "text",
-        Caption: "Mô tả",
-        DataSourceMember: "Description",
-    },
+    // {
+    //     Name: "AddFunctionID",
+    //     Type: "text",
+    //     Caption: "Quyền thêm",
+    //     DataSourceMember: "AddFunctionID",
+    // },
+    // {
+    //     Name: "Description",
+    //     Type: "text",
+    //     Caption: "Mô tả",
+    //     DataSourceMember: "Description",
+    // },
     {
         Name: "IsActived",
         Type: "checkicon",
@@ -95,16 +95,16 @@ export const listColumnVehicleRentalRequestType = [
         DataSourceMember: "IsActived",
     },
     {
-        Name: "UpdatedUserIDName",
-        Type: "text",
-        Caption: "Người cập nhật",
-        DataSourceMember: "UpdatedUserIDName",
-    },
-    {
         Name: "UpdatedDate",
         Type: "datetime",
         Caption: "Ngày cập nhật",
         DataSourceMember: "UpdatedDate",
+    },
+    {
+        Name: "UpdatedUserIDName",
+        Type: "text",
+        Caption: "Người cập nhật",
+        DataSourceMember: "UpdatedUserIDName",
     },
     {
         Name: "Action",
