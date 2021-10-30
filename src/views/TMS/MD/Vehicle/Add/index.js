@@ -273,7 +273,7 @@ class EditCom extends React.Component {
                                     disabled={this.state.DataSource.IsSystem}
                                     label="tên xe"
                                     labelcolspan="4"
-                                    maxSize={200}
+                                    maxSize={15}
                                     name="txtVehicleName"
                                     placeholder="Tên xe"
                                     readOnly={this.state.DataSource.IsSystem}

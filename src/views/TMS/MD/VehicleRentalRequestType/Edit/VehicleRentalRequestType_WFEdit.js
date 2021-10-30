@@ -382,6 +382,7 @@ class VehicleRentalRequestType_WFEditCom extends React.Component {
                                     controltype="InputControl"
                                     datasourcemember="Description"
                                     label="Mô tả"
+                                    maxSize="300"
                                     name="Description"
                                 />
 
