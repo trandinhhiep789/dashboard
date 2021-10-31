@@ -229,10 +229,10 @@ class VehicleRentalRequestType_WFEditCom extends React.Component {
             }
         }
 
-        // if (this.state.ChooseFuntionID == -1) {
-        //     this.addNotification("Vui lòng chọn Quyền Thêm", true);
-        //     return;
-        // }
+        if (this.state.ChooseFuntionID == -1) {
+            this.addNotification("Vui lòng chọn Quyền Thêm", true);
+            return;
+        }
 
         const uptLstRentalRequestType_WF_Next = [
             ...this.state.lstRentalRequestType_WF_Next,
@@ -254,6 +254,11 @@ class VehicleRentalRequestType_WFEditCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
+        if (MLObject.RentalRequestType_WF.AutoChangeStepType && MLObject.RentalRequestType_WF.AutoChangetoStepID <= 0) {
+            this.addNotification("Vui lòng chọn Mã Bước Tự Động Chuyển", true);
+            return;
+        }
+
         const lstRentalRequestType_WF_Next = this.state.lstRentalRequestType_WF_Next.reduce((acc, val) => {
             return [
                 ...acc,
@@ -460,7 +465,7 @@ class VehicleRentalRequestType_WFEditCom extends React.Component {
                                     />
 
                                     <FormControl.MultiSelectComboBox
-                                        // validatonList={["Comborequired"]}
+                                        validatonList={["Comborequired"]}
                                         colspan={9}
                                         controltype="InputControl"
                                         datasourcemember="ChooseFuntionID"

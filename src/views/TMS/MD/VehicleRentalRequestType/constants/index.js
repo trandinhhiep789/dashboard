@@ -211,8 +211,8 @@ export const AddElementList = [
         DataSourceMember: "AddFunctionID",
         readonly: false,
         value: -1,
-        // validatonList: ["Comborequired"],
-        validatonList: [],
+        validatonList: ["Comborequired"],
+        // validatonList: [],
         isMulti: false,
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: ERPCOMMONCACHE_FUNCTION,
@@ -433,8 +433,8 @@ export const MLObjectDefinitionVehicleRentalRequestType = [
         DefaultValue: "",
         BindControlName: "AddFunctionID",
         DataSourceMember: "AddFunctionID",
-        // ValidationList: ["required"],
-        ValidationList: [],
+        ValidationList: ["required"],
+        // ValidationList: [],
         Label: "quyền thêm"
     },
     {
@@ -572,7 +572,7 @@ export const RentalRequestType_WFListColumn = [
     //     DataSourceMember: "VehicleRentalRequestStepIDName",
     // },
     {
-        Name: "VehicleRentalRequestStepID",
+        Name: "txtVehicleRentalRequestStepID",
         Type: "text",
         Caption: "Mã bước",
         DataSourceMember: "VehicleRentalRequestStepID",
@@ -644,7 +644,7 @@ export const RentalRequestType_WFListColumn = [
     //     DataSourceMember: "IsSystem",
     // },
     {
-        Name: "VehicleRentalRequestStepID",
+        Name: "editVehicleRentalRequestStepID",
         Type: "edit",
         Caption: "Sửa",
         DataSourceMember: "VehicleRentalRequestStepID",
@@ -715,7 +715,7 @@ export const RentalRequestType_WFMLObjectDefinition = [
     {
         Name: "VehicleRentalRequestStepID",
         DefaultValue: "",
-        BindControlName: "VehicleRentalRequestStepID",
+        BindControlName: "txtVehicleRentalRequestStepID",
         DataSourceMember: "VehicleRentalRequestStepID"
     },
 ];

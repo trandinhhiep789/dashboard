@@ -275,8 +275,8 @@ class EditCom extends React.Component {
                                     value={""}
                                     ValueFilter="1,2"
                                     valuemember="FunctionID"
-                                    // validatonList={["Comborequired"]}
-                                    validatonList={[]}
+                                    validatonList={["Comborequired"]}
+                                    // validatonList={[]}
                                     IsSystem={this.state.objVehicleRentalRequestType.IsSystem}
                                 />
 
