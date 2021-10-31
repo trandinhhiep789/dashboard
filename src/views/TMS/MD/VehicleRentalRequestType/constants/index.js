@@ -5,7 +5,7 @@ export const AddAPIPath = "api/VehicleRentalRequestType/Add";
 export const AddAPIPath_RentalRequestType_WF = "api/RentalRequestType_WF/Add";
 export const DelAPIPath_RentalRequestType_WF = "api/RentalRequestType_WF/Delete";
 export const UptAPIPath_RentalRequestType_WF = "api/RentalRequestType_WF/Update";
-export const DelAPIPath_RentalRequestType_WF_Next = "api/RentalRequestType_WF_Next/Load";
+export const LoadAPIPath_RentalRequestType_WF_Next = "api/RentalRequestType_WF_Next/Load";
 export const DeleteAPIPath = "api/VehicleRentalRequestType/Delete";
 export const EditAPIPath = "api/VehicleRentalRequestType/Edit";
 export const LoadAPIPath = "api/VehicleRentalRequestType/Load";
@@ -211,7 +211,8 @@ export const AddElementList = [
         DataSourceMember: "AddFunctionID",
         readonly: false,
         value: -1,
-        validatonList: ["Comborequired"],
+        // validatonList: ["Comborequired"],
+        validatonList: [],
         isMulti: false,
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: ERPCOMMONCACHE_FUNCTION,
@@ -432,7 +433,8 @@ export const MLObjectDefinitionVehicleRentalRequestType = [
         DefaultValue: "",
         BindControlName: "AddFunctionID",
         DataSourceMember: "AddFunctionID",
-        ValidationList: ["required"],
+        // ValidationList: ["required"],
+        ValidationList: [],
         Label: "quyền thêm"
     },
     {

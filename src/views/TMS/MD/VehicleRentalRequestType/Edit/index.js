@@ -188,7 +188,8 @@ class EditCom extends React.Component {
     handleSubmit(formData, MLObject) {
         const uptMLObject = {
             ...MLObject.VehicleRentalRequestType,
-            AddFunctionID: MLObject.VehicleRentalRequestType.AddFunctionID.length == 1 ? MLObject.VehicleRentalRequestType.AddFunctionID[0] : MLObject.VehicleRentalRequestType.AddFunctionID
+            // AddFunctionID: MLObject.VehicleRentalRequestType.AddFunctionID.length == 1 ? MLObject.VehicleRentalRequestType.AddFunctionID[0] : MLObject.VehicleRentalRequestType.AddFunctionID,
+            AddFunctionID: MLObject.VehicleRentalRequestType.AddFunctionID.length == 1 ? MLObject.VehicleRentalRequestType.AddFunctionID[0] : (MLObject.VehicleRentalRequestType.AddFunctionID.length == 0 ? -1 : MLObject.VehicleRentalRequestType.AddFunctionID)
         }
 
         this.props.callFetchAPI(APIHostName, EditAPIPath, uptMLObject).then(apiResult => {
@@ -274,7 +275,8 @@ class EditCom extends React.Component {
                                     value={""}
                                     ValueFilter="1,2"
                                     valuemember="FunctionID"
-                                    validatonList={["Comborequired"]}
+                                    // validatonList={["Comborequired"]}
+                                    validatonList={[]}
                                     IsSystem={this.state.objVehicleRentalRequestType.IsSystem}
                                 />
 

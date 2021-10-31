@@ -5,7 +5,7 @@ import ReactNotification from "react-notifications-component";
 
 import {
     APIHostName,
-    DelAPIPath_RentalRequestType_WF_Next,
+    LoadAPIPath_RentalRequestType_WF_Next,
     IDSelectColumnName,
     MLObjectDefinitionFormContainerVehicleRentalRequestType_WF,
     MLObjectDefinitionVehicleRentalRequestType_WF,
@@ -69,7 +69,7 @@ class VehicleRentalRequestType_WFEditCom extends React.Component {
     }
 
     fetchLstRentalRequestType_WF_Next() {
-        this.props.callFetchAPI(APIHostName, DelAPIPath_RentalRequestType_WF_Next, this.props.objRentalRequestType_WF).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, LoadAPIPath_RentalRequestType_WF_Next, this.props.objRentalRequestType_WF).then(apiResult => {
             if (apiResult.IsError) {
                 this.showMessage(apiResult.Message);
             } else {

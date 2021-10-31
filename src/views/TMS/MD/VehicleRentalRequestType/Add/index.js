@@ -44,7 +44,7 @@ class AddCom extends React.Component {
     handleSubmit(formData, MLObject) {
         const uptMLObject = {
             ...MLObject,
-            AddFunctionID: MLObject.AddFunctionID.length == 1 ? MLObject.AddFunctionID[0] : MLObject.AddFunctionID
+            AddFunctionID: MLObject.AddFunctionID.length == 1 ? MLObject.AddFunctionID[0] : (MLObject.AddFunctionID.length == 0 ? -1 : MLObject.AddFunctionID)
         }
 
         this.props.callFetchAPI(APIHostName, AddAPIPath, uptMLObject).then(apiResult => {
