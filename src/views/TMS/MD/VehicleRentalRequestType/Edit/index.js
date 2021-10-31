@@ -8,15 +8,11 @@ import {
     APIHostName,
     BackLink,
     EditAPIPath,
-    EditElementList,
     EditPagePath,
     IDSelectColumnName,
-    listColumnRentalRequestType_WF,
     LoadAPIPath,
     EditMLObjectDefinition,
     MLObjectDefinitionVehicleRentalRequestType,
-    MLObjectDefinitionVehicleRentalRequestType_WF,
-    MLObjectDefinitionFormContainerVehicleRentalRequestType_WF,
     RentalRequestType_WFMLObjectDefinition,
     RentalRequestType_WFListColumn,
     DelAPIPath_RentalRequestType_WF
@@ -30,16 +26,13 @@ import { callGetCache } from "../../../../../actions/cacheAction";
 import { MessageModal } from "../../../../../common/components/Modal";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { updatePagePath } from "../../../../../actions/pageAction";
-import SimpleForm from "../../../../../common/components/Form/SimpleForm";
 import TabContainer from "../../../../../common/components/Tabs/TabContainer";
 import TabPage from "../../../../../common/components/Tabs/TabPage";
 import FormContainer from '../../../../../common/components/Form/AdvanceForm/FormContainer';
 import FormControl from '../../../../../common/components/Form/AdvanceForm/FormControl';
-import DataGrid from "../../../../../common/components/DataGrid";
-import VehicleRentalRequestType_WF from './VehicleRentalRequestType_WF';
+import VehicleRentalRequestType_WFAdd from './VehicleRentalRequestType_WFAdd';
 import VehicleRentalRequestType_WFEdit from './VehicleRentalRequestType_WFEdit';
 import InputGrid from '../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid';
-
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -116,20 +109,21 @@ class EditCom extends React.Component {
             if (apiResult.IsError) {
                 this.showMessage(apiResult.Message);
             } else {
-                const uptRentalRequestType_WFList = apiResult.ResultObject.RentalRequestType_WFList.map(item => {
-                    return {
-                        ...item,
-                        VehicleRentalRequestStepIDName: `${item.VehicleRentalRequestStepID} - ${item.VehicleRentalRequestStepName}`,
-                        AutoChangetoStatusIDName: `${item.AutoChangetoStatusID} - ${item.AutoChangetoStatusName}`,
-                        AutoChangetoStepIDName: item.AutoChangetoStepID > 0 ? `${item.AutoChangetoStepID} - ${item.AutoChangetoStepName}` : "",
-                        AutoChangeStepTypeName: item.AutoChangeStepType ? "Chuyển bước không điều kiện" : "Không tự động",
-                    }
-                })
+                // const uptRentalRequestType_WFList = apiResult.ResultObject.RentalRequestType_WFList.map(item => {
+                //     return {
+                //         ...item,
+                //         VehicleRentalRequestStepIDName: `${item.VehicleRentalRequestStepID} - ${item.VehicleRentalRequestStepName}`,
+                //         AutoChangetoStatusIDName: `${item.AutoChangetoStatusID} - ${item.AutoChangetoStatusName}`,
+                //         AutoChangetoStepIDName: item.AutoChangetoStepID > 0 ? `${item.AutoChangetoStepID} - ${item.AutoChangetoStepName}` : "",
+                //         AutoChangeStepTypeName: item.AutoChangeStepType ? "Chuyển bước không điều kiện" : "Không tự động",
+                //     }
+                // })
                 this.setState({
-                    objVehicleRentalRequestType: {
-                        ...apiResult.ResultObject,
-                        RentalRequestType_WFList: uptRentalRequestType_WFList
-                    }
+                    // objVehicleRentalRequestType: {
+                    //     ...apiResult.ResultObject,
+                    //     RentalRequestType_WFList: uptRentalRequestType_WFList
+                    // }
+                    objVehicleRentalRequestType: apiResult.ResultObject
                 })
             }
         })
@@ -181,7 +175,7 @@ class EditCom extends React.Component {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Thêm mới bước yêu cầu thuê phương tiện',
             content: {
-                text: <VehicleRentalRequestType_WF
+                text: <VehicleRentalRequestType_WFAdd
                     VehicleRentalRequestTypeID={this.props.match.params.id}
                     fetchVehicleRentalRequestTypeInfo={() => this.fetchVehicleRentalRequestTypeInfo()}
                 />

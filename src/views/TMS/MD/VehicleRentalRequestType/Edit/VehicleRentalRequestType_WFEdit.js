@@ -223,16 +223,16 @@ class VehicleRentalRequestType_WFEditCom extends React.Component {
                 const indexFind = this.state.lstRentalRequestType_WF_Next.findIndex(item => item.NextVehicleRentalRequestTypeStep == this.state.NextVehicleRentalRequestTypeStep);
 
                 if (indexFind != -1) {
-                    this.addNotification("Dữ liệu đã tồn tại", true);
+                    this.addNotification("Bước kế tiếp đã tồn tại", true);
                     return;
                 }
             }
         }
 
-        if (this.state.ChooseFuntionID == -1) {
-            this.addNotification("Vui lòng chọn Quyền Thêm", true);
-            return;
-        }
+        // if (this.state.ChooseFuntionID == -1) {
+        //     this.addNotification("Vui lòng chọn Quyền Thêm", true);
+        //     return;
+        // }
 
         const uptLstRentalRequestType_WF_Next = [
             ...this.state.lstRentalRequestType_WF_Next,
@@ -317,7 +317,7 @@ class VehicleRentalRequestType_WFEditCom extends React.Component {
                                     isautoloaditemfromcache={true}
                                     isRequired={true}
                                     isSystem={false}
-                                    label="Mã bước yêu cầu thuê phương tiện"
+                                    label="Bước xử lý"
                                     listoption={[]}
                                     loaditemcachekeyid={ERPCOMMONCACHE_VEHICLERENTALREQSTEP}
                                     name="VehicleRentalRequestStepID"
@@ -373,7 +373,7 @@ class VehicleRentalRequestType_WFEditCom extends React.Component {
                                     isautoloaditemfromcache={true}
                                     // isRequired={true}
                                     isSystem={false}
-                                    label="Tự động chuyển sang bước"
+                                    label="Mã bước tự động chuyển"
                                     listoption={[]}
                                     loaditemcachekeyid={ERPCOMMONCACHE_VEHICLERENTALREQSTEP}
                                     name="AutoChangetoStepID"
@@ -407,7 +407,7 @@ class VehicleRentalRequestType_WFEditCom extends React.Component {
                                     controltype="InputControl"
                                     datasourcemember="IsAddToWorkingPlan"
                                     name="IsAddToWorkingPlan"
-                                    label="Tự động thêm dữ liệu vào lịch làm việc"
+                                    label="Là bước tự động thêm vào lịch làm việc"
                                 />
 
                                 <FormControl.CheckBox
@@ -417,12 +417,12 @@ class VehicleRentalRequestType_WFEditCom extends React.Component {
                                     label="Kích hoạt"
                                 />
 
-                                <FormControl.CheckBox
+                                {/* <FormControl.CheckBox
                                     controltype="InputControl"
                                     datasourcemember="IsSystem"
                                     name="IsSystem"
                                     label="Hệ thống"
-                                />
+                                /> */}
                             </TabPage>
 
                             <TabPage

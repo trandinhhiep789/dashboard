@@ -30,7 +30,7 @@ import InputGrid from '../../../../../common/components/Form/AdvanceForm/FormCon
 import TabContainer from "../../../../../common/components/Tabs/TabContainer";
 import TabPage from "../../../../../common/components/Tabs/TabPage";
 
-class VehicleRentalRequestType_WFCom extends React.Component {
+class VehicleRentalRequestType_WFAddCom extends React.Component {
     constructor(props) {
         super(props);
 
@@ -193,16 +193,16 @@ class VehicleRentalRequestType_WFCom extends React.Component {
                 const indexFind = this.state.lstRentalRequestType_WF_Next.findIndex(item => item.NextVehicleRentalRequestTypeStep == this.state.NextVehicleRentalRequestTypeStep);
 
                 if (indexFind != -1) {
-                    this.addNotification("Dữ liệu đã tồn tại", true);
+                    this.addNotification("Bước kế tiếp đã tồn tại", true);
                     return;
                 }
             }
         }
 
-        if (this.state.ChooseFuntionID == -1) {
-            this.addNotification("Vui lòng chọn Quyền Thêm", true);
-            return;
-        }
+        // if (this.state.ChooseFuntionID == -1) {
+        //     this.addNotification("Vui lòng chọn Quyền Thêm", true);
+        //     return;
+        // }
 
         const uptLstRentalRequestType_WF_Next = [
             ...this.state.lstRentalRequestType_WF_Next,
@@ -272,6 +272,7 @@ class VehicleRentalRequestType_WFCom extends React.Component {
                                 title="Thông tin chung"
                                 datasource={this.props.objRentalRequestType_WF}
                             >
+
                                 <FormControl.ComboBox
                                     controltype="InputControl"
                                     datasourcemember="VehicleRentalRequestStepID"
@@ -279,7 +280,7 @@ class VehicleRentalRequestType_WFCom extends React.Component {
                                     isautoloaditemfromcache={true}
                                     isRequired={true}
                                     isSystem={false}
-                                    label="Mã bước yêu cầu thuê phương tiện"
+                                    label="Bước xử lý"
                                     listoption={[]}
                                     loaditemcachekeyid={ERPCOMMONCACHE_VEHICLERENTALREQSTEP}
                                     name="VehicleRentalRequestStepID"
@@ -334,7 +335,7 @@ class VehicleRentalRequestType_WFCom extends React.Component {
                                     isautoloaditemfromcache={true}
                                     // isRequired={true}
                                     isSystem={false}
-                                    label="Tự động chuyển sang bước"
+                                    label="Mã bước tự động chuyển"
                                     listoption={[]}
                                     loaditemcachekeyid={ERPCOMMONCACHE_VEHICLERENTALREQSTEP}
                                     name="AutoChangetoStepID"
@@ -356,19 +357,19 @@ class VehicleRentalRequestType_WFCom extends React.Component {
                                     label="Là bước kết thúc"
                                 />
 
-                                <FormControl.TextArea
+                                {/* <FormControl.TextArea
                                     controltype="InputControl"
                                     datasourcemember="Description"
                                     label="Mô tả"
                                     maxSize="300"
                                     name="Description"
-                                />
+                                /> */}
 
                                 <FormControl.CheckBox
                                     controltype="InputControl"
                                     datasourcemember="IsAddToWorkingPlan"
                                     name="IsAddToWorkingPlan"
-                                    label="Tự động thêm dữ liệu vào lịch làm việc"
+                                    label="Là bước tự động thêm vào lịch làm việc"
                                 />
 
                                 <FormControl.CheckBox
@@ -378,12 +379,12 @@ class VehicleRentalRequestType_WFCom extends React.Component {
                                     label="Kích hoạt"
                                 />
 
-                                <FormControl.CheckBox
+                                {/* <FormControl.CheckBox
                                     controltype="InputControl"
                                     datasourcemember="IsSystem"
                                     name="IsSystem"
                                     label="Hệ thống"
-                                />
+                                /> */}
                             </TabPage>
 
                             <TabPage
@@ -465,7 +466,7 @@ class VehicleRentalRequestType_WFCom extends React.Component {
     }
 }
 
-VehicleRentalRequestType_WFCom.defaultProps = {
+VehicleRentalRequestType_WFAddCom.defaultProps = {
     lstRentalRequestType_WF_Next: [],
     objRentalRequestType_WF: {
         IsActived: true
@@ -500,4 +501,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(VehicleRentalRequestType_WFCom);
+export default connect(mapStateToProps, mapDispatchToProps)(VehicleRentalRequestType_WFAddCom);
