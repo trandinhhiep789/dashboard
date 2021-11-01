@@ -23,7 +23,7 @@ import { MessageModal } from "../../../../../common/components/Modal";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import DataGrid from "../../../../../common/components/DataGrid";
 import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
-import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
+import SearchForm from "../../../../../common/components/Form/SearchForm";
 import {VEHICLE_VIEW,VEHICLE_DELETE, VEHICLEACITIVITYSTATUS_VIEW, VEHICLEACITIVITYSTATUS_DELETE } from "../../../../../constants/functionLists";
 
 
@@ -94,9 +94,14 @@ class SearchCom extends React.Component {
             //this.searchref.current.changeLoadComplete();
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
-
+                const uptResultObject = apiResult.ResultObject.map(item => {
+                    return {
+                        ...item,
+                        UpdatedUserIDName: `${item.UpdatedUser} - ${item.UpdatedUserFullName}`
+                    }
+                });
                 this.setState({
-                    gridDataSource: apiResult.ResultObject,
+                    gridDataSource: uptResultObject,
                     IsShowForm: true,
                     IsCallAPIError: false,
                 });
