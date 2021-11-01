@@ -17,7 +17,7 @@ export const API_HOST_LIST = {
     },
     TMSMDMAPI: {
         HostName: "TMSMDMAPI",
-        HostBaseURL: 'http://tmsmdmapi.tterpbeta.vn/'
+        HostBaseURL: 'http://tmsmdmapi.dichvutantam.vn/'
         //HostBaseURL: "https://devtmsmdmapi.tterpbeta.vn/",
     },
     CacheAPI: {

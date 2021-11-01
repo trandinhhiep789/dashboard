@@ -5,7 +5,7 @@ export const AddAPIPath = "api/VehicleRentalRequestType/Add";
 export const AddAPIPath_RentalRequestType_WF = "api/RentalRequestType_WF/Add";
 export const DelAPIPath_RentalRequestType_WF = "api/RentalRequestType_WF/Delete";
 export const UptAPIPath_RentalRequestType_WF = "api/RentalRequestType_WF/Update";
-export const DelAPIPath_RentalRequestType_WF_Next = "api/RentalRequestType_WF_Next/Load";
+export const LoadAPIPath_RentalRequestType_WF_Next = "api/RentalRequestType_WF_Next/Load";
 export const DeleteAPIPath = "api/VehicleRentalRequestType/Delete";
 export const EditAPIPath = "api/VehicleRentalRequestType/Edit";
 export const LoadAPIPath = "api/VehicleRentalRequestType/Load";
@@ -67,13 +67,13 @@ export const listColumnVehicleRentalRequestType = [
     {
         Name: "VehicleRentalRequestTypeID",
         Type: "text",
-        Caption: "Mã loại thuê phương tiện",
+        Caption: "Mã loại yêu cầu",
         DataSourceMember: "VehicleRentalRequestTypeID",
     },
     {
         Name: "VehicleRentalRequestTypeName",
         Type: "text",
-        Caption: "Tên loại thuê phương tiện",
+        Caption: "Tên loại yêu cầu",
         DataSourceMember: "VehicleRentalRequestTypeName",
     },
     // {
@@ -194,7 +194,7 @@ export const AddElementList = [
     {
         type: "text",
         name: "VehicleRentalRequestTypeName",
-        label: "tên loại bước xử lý của yêu cầu thuê phương tiện",
+        label: "tên loại yêu cầu thuê phương tiện",
         value: "",
         maxSize: "100",
         placeholder: "",
@@ -212,6 +212,7 @@ export const AddElementList = [
         readonly: false,
         value: -1,
         validatonList: ["Comborequired"],
+        // validatonList: [],
         isMulti: false,
         IsAutoLoadItemFromCache: true,
         LoadItemCacheKeyID: ERPCOMMONCACHE_FUNCTION,
@@ -433,6 +434,7 @@ export const MLObjectDefinitionVehicleRentalRequestType = [
         BindControlName: "AddFunctionID",
         DataSourceMember: "AddFunctionID",
         ValidationList: ["required"],
+        // ValidationList: [],
         Label: "quyền thêm"
     },
     {
@@ -501,15 +503,15 @@ export const MLObjectDefinitionVehicleRentalRequestType_WF = [
         DefaultValue: "",
         Label: "tự động chuyển sang bước",
         Name: "AutoChangetoStepID",
-        ValidationList: ["Comborequired"]
+        // ValidationList: ["Comborequired"]
     },
     {
         BindControlName: "AutoChangeStepType",
         DataSourceMember: "AutoChangeStepType",
         DefaultValue: "",
-        Label: "loại tự động chuyển bước",
+        Label: "tự động chuyển bước",
         Name: "AutoChangeStepType",
-        ValidationList: ["Comborequired"]
+        // ValidationList: ["Comborequired"]
     },
     {
         BindControlName: "IsInitStep",
@@ -563,30 +565,42 @@ export const RentalRequestType_WFListColumn = [
         DataSourceMember: "VehicleRentalRequestStepID",
         Width: 60
     },
+    // {
+    //     Name: "VehicleRentalRequestStepIDName",
+    //     Type: "text",
+    //     Caption: "Mã bước",
+    //     DataSourceMember: "VehicleRentalRequestStepIDName",
+    // },
     {
-        Name: "VehicleRentalRequestStepIDName",
+        Name: "txtVehicleRentalRequestStepID",
         Type: "text",
-        Caption: "Bước xử lý",
-        DataSourceMember: "VehicleRentalRequestStepIDName",
+        Caption: "Mã bước",
+        DataSourceMember: "VehicleRentalRequestStepID",
     },
     {
-        Name: "AutoChangetoStatusIDName",
+        Name: "VehicleRentalRequestStepName",
         Type: "text",
-        Caption: "Tự động chuyển trạng thái",
-        DataSourceMember: "AutoChangetoStatusIDName",
+        Caption: "Tên bước",
+        DataSourceMember: "VehicleRentalRequestStepName",
     },
-    {
-        Name: "AutoChangetoStepIDName",
-        Type: "text",
-        Caption: "Bước tự động chuyển",
-        DataSourceMember: "AutoChangetoStepIDName",
-    },
-    {
-        Name: "AutoChangeStepTypeName",
-        Type: "text",
-        Caption: "Loại tự động chuyển bước",
-        DataSourceMember: "AutoChangeStepTypeName",
-    },
+    // {
+    //     Name: "AutoChangetoStatusIDName",
+    //     Type: "text",
+    //     Caption: "Tự động chuyển trạng thái",
+    //     DataSourceMember: "AutoChangetoStatusIDName",
+    // },
+    // {
+    //     Name: "AutoChangetoStepIDName",
+    //     Type: "text",
+    //     Caption: "Bước tự động chuyển",
+    //     DataSourceMember: "AutoChangetoStepIDName",
+    // },
+    // {
+    //     Name: "AutoChangeStepTypeName",
+    //     Type: "text",
+    //     Caption: "Loại tự động chuyển bước",
+    //     DataSourceMember: "AutoChangeStepTypeName",
+    // },
     {
         Name: "IsInitStep",
         Type: "checkicon",
@@ -596,19 +610,25 @@ export const RentalRequestType_WFListColumn = [
     {
         Name: "IsFinishStep",
         Type: "checkicon",
-        Caption: "Là bước hoàn tất",
+        Caption: "Là bước kết thúc",
         DataSourceMember: "IsFinishStep",
     },
     {
-        Name: "Description",
-        Type: "text",
-        Caption: "Mô tả",
-        DataSourceMember: "Description",
+        Name: "AutoChangeStepType",
+        Type: "checkicon",
+        Caption: "Tự động chuyển bước",
+        DataSourceMember: "AutoChangeStepType",
     },
+    // {
+    //     Name: "Description",
+    //     Type: "text",
+    //     Caption: "Mô tả",
+    //     DataSourceMember: "Description",
+    // },
     {
         Name: "IsAddToWorkingPlan",
         Type: "checkicon",
-        Caption: "Tự động thêm dữ liệu vào lịch làm việc",
+        Caption: "Tự động thêm vào lịch làm việc",
         DataSourceMember: "IsAddToWorkingPlan",
     },
     {
@@ -617,14 +637,14 @@ export const RentalRequestType_WFListColumn = [
         Caption: "Kích hoạt",
         DataSourceMember: "IsActived",
     },
+    // {
+    //     Name: "IsSystem",
+    //     Type: "checkicon",
+    //     Caption: "Hệ thống",
+    //     DataSourceMember: "IsSystem",
+    // },
     {
-        Name: "IsSystem",
-        Type: "checkicon",
-        Caption: "Hệ thống",
-        DataSourceMember: "IsSystem",
-    },
-    {
-        Name: "VehicleRentalRequestStepID",
+        Name: "editVehicleRentalRequestStepID",
         Type: "edit",
         Caption: "Sửa",
         DataSourceMember: "VehicleRentalRequestStepID",
@@ -695,7 +715,7 @@ export const RentalRequestType_WFMLObjectDefinition = [
     {
         Name: "VehicleRentalRequestStepID",
         DefaultValue: "",
-        BindControlName: "VehicleRentalRequestStepID",
+        BindControlName: "txtVehicleRentalRequestStepID",
         DataSourceMember: "VehicleRentalRequestStepID"
     },
 ];

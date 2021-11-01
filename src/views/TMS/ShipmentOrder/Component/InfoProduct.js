@@ -623,6 +623,7 @@ class InfoProductCom extends Component {
                                     <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                                         <thead className="thead-light">
                                             <tr>
+                                                <th className="jsgrid-header-cell">Nhóm vật tư</th>
                                                 <th className="jsgrid-header-cell">Sản phẩm</th>
                                                 <th className="jsgrid-header-cell">Số lượng tạm ứng</th>
                                                 <th className="jsgrid-header-cell">Số lượng sử dụng</th>
@@ -651,6 +652,9 @@ class InfoProductCom extends Component {
                                                                         if (item.ProductID != item.ConvertAdvanceProductID) {
                                                                             return (
                                                                                 <tr key={rowIndex + Index}>
+
+                                                                                    <td>{!item.MaterialGroupID ? "" : `${item.MaterialGroupID} - ${item.MaterialGroupName}`}</td>
+
                                                                                     {item.IsMaterialReclaimed == false ?
                                                                                         (<td>{item.ProductID + '-' + item.ProductName}</td>) :
                                                                                         (<td><span className="text-danger"> {item.ProductID + '-' + item.ProductName}</span></td>)
@@ -673,6 +677,8 @@ class InfoProductCom extends Component {
                                                                         }
                                                                         else {
                                                                             return (<tr key={rowIndex + Index}>
+                                                                                <td>{!item.MaterialGroupID ? "" : `${item.MaterialGroupID} - ${item.MaterialGroupName}`}</td>
+
                                                                                 {item.IsMaterialReclaimed == false ?
                                                                                     (<td>{item.ProductID + '-' + item.ProductName}</td>) :
                                                                                     (<td><span className="text-danger"> {item.ProductID + '-' + item.ProductName}</span></td>)
@@ -694,7 +700,7 @@ class InfoProductCom extends Component {
                                                     );
                                                 })}
                                             <tr className="totalCurrency">
-                                                <td colSpan={7 - 1}>
+                                                <td colSpan={7}>
                                                     <div className="groupTotalCurrency">
                                                         <span className="item txtTotal">Tổng</span>
                                                     </div>
