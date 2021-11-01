@@ -66,7 +66,7 @@ class AddCom extends React.Component {
         console.log("prop", this.props)
         this.props.hideModal();
         this.props.updatePagePath(AddPagePath);
-        this.getCacheKey();
+
     }
 
     
@@ -90,7 +90,7 @@ class AddCom extends React.Component {
         const { AttachmentList, VehicleRentalReqType } = this.state;
         const VehicleRentalReqTypeItem = VehicleRentalReqType.find(n => n.VehicleRentalReqTypeID == this.props.location.state.VehicleRentalReqTypeID);
         MLObject.RequestUser = MLObject.RequestUser.value;
-        MLObject.AddFunctionID =VehicleRentalReqTypeItem.AddFunctionID;
+        MLObject.AddFunctionID = this.props.location.state.AddFunctionID;
         let data = new FormData();
         data.append("vehicleRentalRequestATTObj", AttachmentList.FileURL);
         data.append("vehicleRentalRequestObj", JSON.stringify(MLObject));
