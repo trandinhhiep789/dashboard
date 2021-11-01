@@ -17,10 +17,10 @@ class VehicleRentalTypeCom extends React.Component {
     render() {
         return (
             <Switch>
-                <Route exact path="/VehicleRentalType" component={Search} />
-                <Route exact path="/VehicleRentalType/Add/" component={Add} />
-                <Route exact path="/VehicleRentalType/Edit/:id" component={Edit} />
-                <Route path="*" component={VehicleRentalType} />
+                <Route exact path="/RentalType" component={Search} />
+                <Route exact path="/RentalType/Add/" component={Add} />
+                <Route exact path="/RentalType/Edit/:id" component={Edit} />
+                <Route path="*" component={RentalType} />
             </Switch>
         );
     }
@@ -41,5 +41,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const VehicleRentalType = connect(mapStateToProps, mapDispatchToProps)(VehicleRentalTypeCom);
-export default VehicleRentalType;
+const RentalType = connect(mapStateToProps, mapDispatchToProps)(VehicleRentalTypeCom);
+export default RentalType;
