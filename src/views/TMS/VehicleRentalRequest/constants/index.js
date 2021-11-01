@@ -55,12 +55,11 @@ export const SearchElementList = [
         icon: "",
         nameOption: "txtTypename",
         labelOption: "--Vui lòng chọn--",
-        valueOption:  -1,
+        valueOption:  1,
         // validatonList:["Comborequired"],
         classNameCol: "col-custom",
         classNameDropdown: "dropdown-custom",
         listoption: [
-            { value: -1, label: '--Vui lòng chọn--' },
             { value: 1, label: 'Mã yêu cầu thuê xe' },
             { value: 2, label: 'Biển số  xe' },
 

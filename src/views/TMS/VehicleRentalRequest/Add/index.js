@@ -44,6 +44,7 @@ class AddCom extends React.Component {
         super(props);
         this.prevDataSubmit = this.prevDataSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
+        this.getCacheKey = this.getCacheKey.bind(this)
 
 
         this.state = {
@@ -55,7 +56,9 @@ class AddCom extends React.Component {
             AttachmentList: [],
             fileSize: 0,
             UserValue: [],
-            RequestUser: ""
+            RequestUser: "",
+            VehicleRentalReqType: []
+
         };
     }
 
@@ -66,20 +69,33 @@ class AddCom extends React.Component {
 
     }
 
+    
+    getCacheKey() {
+        this.props.callGetCache("ERPCOMMONCACHE.VEHICLERENTALREQTYPE").then(apiResult => {
+            console.log("cache", apiResult)
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.Message)
+            }
+            else {
+
+                this.setState({
+                    VehicleRentalReqType: apiResult.ResultObject.CacheData
+                })
+            }
+        })
+    }
 
 
     prevDataSubmit(formData, MLObject) {
-        const { AttachmentList, fileSize } = this.state;
-        console.log("add", formData, MLObject, AttachmentList, fileSize)
+        const { AttachmentList, VehicleRentalReqType } = this.state;
+        const VehicleRentalReqTypeItem = VehicleRentalReqType.find(n => n.VehicleRentalReqTypeID == this.props.location.state.VehicleRentalReqTypeID);
         MLObject.RequestUser = MLObject.RequestUser.value;
-        MLObject.CurrentVehicleRentalRequestStepID = 1;
-        MLObject.CurrentVehicleRentalStatusID = 1;
+        MLObject.AddFunctionID = this.props.location.state.AddFunctionID;
         let data = new FormData();
         data.append("vehicleRentalRequestATTObj", AttachmentList.FileURL);
         data.append("vehicleRentalRequestObj", JSON.stringify(MLObject));
-
         console.log("data", data, MLObject)
-       this.handleSubmit(data)
+      this.handleSubmit(data)
 
     }
 

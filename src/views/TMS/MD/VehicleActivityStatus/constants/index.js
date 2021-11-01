@@ -42,29 +42,12 @@ export const SearchElementList = [
 ];
 
 export const AddElementList = [
-    // {
-    //     type: "text",
-    //     name: "txtAcitivityStatusId",
-    //     label: "Mã trạng thái hoạt động của phương tiện",
-    //     value: "",
-    //     maxsize: "10",
-    //     placeholder: "",
-    //     icon: "",
-    //     listoption: {},
-    //     datasourcemember: "AcitivityStatusId",
-    //     readonly: false,
-    //     Colmd : "12",
-    //     labelcolspan : "2",
-    //     colspan : "4",
-    //     OrderIndex : "1",
-    //     validatonList: ["required", "number"]
-    // },
     {
         type: "text",
         name: "txtActivityStatusName",
         label: "Tên trạng thái hoạt động của phương tiện",
         value: "",
-        maxsize: "100",
+        maxSize: "100",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -81,7 +64,7 @@ export const AddElementList = [
         name: "txtDescription",
         label: "Mô tả:",
         value: "",
-        maxsize: "330",
+        maxSize: "330",
         placeholder: "",
         icon: "",
         rows: "6",
@@ -134,7 +117,7 @@ export const EditElementList = [
         name: "txtAcitivityStatusId",
         label: "Mã trạng thái hoạt động của phương tiện",
         value: "",
-        maxsize: "10",
+        maxSize: "10",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -151,7 +134,7 @@ export const EditElementList = [
         name: "txtActivityStatusName",
         label: "Tên trạng thái hoạt động của phương tiện",
         value: "",
-        maxsize: "100",
+        maxSize: "100",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -168,7 +151,7 @@ export const EditElementList = [
         name: "txtDescription",
         label: "Mô tả:",
         value: "",
-        maxsize: "330",
+        maxSize: "330",
         placeholder: "",
         icon: "",
         rows: "6",
@@ -312,17 +295,17 @@ export const DataGridColumnList = [
     },
     {
         Name: "UpdatedDate",
-        Type: "date",
+        Type: "datetime",
         Caption: "Ngày cập nhật",
         DataSourceMember: "UpdatedDate",
         Width: 140
     },
     {
-        Name: "UpdatedUserFullName",
+        Name: "UpdatedUserIDName",
         Type: "text",
         Caption: "Người cập nhật",
-        DataSourceMember: "UpdatedUserFullName",
-        Width: 140
+        DataSourceMember: "UpdatedUserIDName",
+        Width: 200
     },
     {
         Name: "Action",
