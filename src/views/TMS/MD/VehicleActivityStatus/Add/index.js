@@ -4,6 +4,7 @@ import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { updatePagePath } from "../../../../../actions/pageAction";
+import ReactNotification from "react-notifications-component";
 
 import {
     APIHostName,
@@ -14,7 +15,7 @@ import {
     AddPagePath,
 } from "../constants";
 import { MessageModal } from "../../../../../common/components/Modal";
-import { VEHICLEACITIVITYSTATUS_ADD,VEHICLE_ADD } from "../../../../../constants/functionLists";
+import { VEHICLEACITIVITYSTATUS_ADD, VEHICLE_ADD } from "../../../../../constants/functionLists";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import FormContainer from "../../../../../common/components/Form/AdvanceForm/FormContainer";
@@ -30,6 +31,11 @@ class AddCom extends React.Component {
             IsCallAPIError: false,
             IsCloseForm: false
         };
+        this.searchref = React.createRef();
+        this.gridref = React.createRef();
+        this.notificationDOMRef = React.createRef();
+        this.showMessage = this.showMessage.bind(this);
+        this.addNotification = this.addNotification.bind(this);
     }
 
     componentDidMount() {
@@ -41,7 +47,7 @@ class AddCom extends React.Component {
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
-                   
+
             this.showMessage(apiResult.Message);
         });
     }
@@ -49,7 +55,35 @@ class AddCom extends React.Component {
     handleCloseMessage() {
         if (!this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
     }
-
+    addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
+        if (!IsError) {
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
+        } else {
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
+        }
+        this.notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 6000 },
+            dismissable: { click: true }
+        });
+    }
     showMessage(message) {
         ModalManager.open(
             <MessageModal
@@ -63,24 +97,29 @@ class AddCom extends React.Component {
 
     render() {
         const dataSource = {
-            IsActived: true
+
         };
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
         return (
-            <SimpleForm
-                FormName="Thêm trạng thái hoạt động của phương tiện"
-                MLObjectDefinition={MLObjectDefinition} 
-                listelement={AddElementList}
-                onSubmit={this.handleSubmit}
-                FormMessage={this.state.CallAPIMessage}
-                IsErrorMessage={this.state.IsCallAPIError}
-                dataSource={dataSource}
-                BackLink={BackLink}
-                RequirePermission={VEHICLEACITIVITYSTATUS_ADD}
-                ref={this.searchref}
-            />
+            <React.Fragment>
+                <ReactNotification ref={this.notificationDOMRef} />
+
+                <SimpleForm
+                    FormName="Thêm trạng thái hoạt động của phương tiện"
+                    MLObjectDefinition={MLObjectDefinition}
+                    listelement={AddElementList}
+                    onSubmit={this.handleSubmit}
+                    FormMessage={this.state.CallAPIMessage}
+                    IsErrorMessage={this.state.IsCallAPIError}
+                    dataSource={dataSource}
+                    BackLink={BackLink}
+                    RequirePermission={VEHICLEACITIVITYSTATUS_ADD}
+                    ref={this.searchref}
+                />
+            </React.Fragment>
+
         );
     }
 }

@@ -400,13 +400,13 @@ class VehicleRentalRequestType_WFEditCom extends React.Component {
                                     label="Là bước kết thúc"
                                 />
 
-                                <FormControl.TextArea
+                                {/* <FormControl.TextArea
                                     controltype="InputControl"
                                     datasourcemember="Description"
                                     label="Mô tả"
-                                    maxSize="300"
+                                    maxSize="330"
                                     name="Description"
-                                />
+                                /> */}
 
                                 <FormControl.CheckBox
                                     controltype="InputControl"
