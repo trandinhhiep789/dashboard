@@ -10,6 +10,7 @@ import { APIHostName } from "../constants";
 import ElementInputModal from "../../../../common/components/FormContainer/FormElement/ElementInputModal";
 import FormControl from "../../../../common/components/FormContainer/FormControl";
 import { Link } from "react-router-dom";
+import ListShipCoordinatorNewDetail from "./ListShipCoordinatorNewDetail";
 import { MessageModal } from "../../../../common/components/Modal";
 import { ModalManager } from "react-dynamic-modal";
 import MultiSelectComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
@@ -20,7 +21,7 @@ import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { callGetCache } from "../../../../actions/cacheAction";
 import { connect } from "react-redux";
 
-class ListShipCoordinatorCom extends Component {
+class ListShipCoordinatorNewCom extends Component {
   constructor(props) {
     super(props);
     this.handleValueChange1 = this.handleValueChange1.bind(this);
@@ -735,165 +736,17 @@ class ListShipCoordinatorCom extends Component {
                             }
 
                             return (
-                              <tr key={index} className="jsgrid-row">
-                                <td className="jsgrid-cell high-priority" style={{ width: "1%" }}></td>
-                                <td className="jsgrid-cell group-products" style={{ width: "50%" }}>
-                                  <ul>
-                                    <li className="item infoOder">
-                                      <span className="nameOrder">
-                                        <Link className="linktext blank" target="_blank" to={{ pathname: "/ShipmentOrder/Detail/" + item.ShipmentOrderID }}>
-                                          {item.ShipmentOrderID}{" "}
-                                        </Link>
-                                      </span>
-                                      {item.ActualDeliveryDate == null ? (
-                                        <span className="badge badge-warning time">
-                                          <i className="ti ti-timer"></i> {item.ExpectedDeliveryDate != null ? this._genCommentTime(item.ExpectedDeliveryDate) : ""}
-                                        </span>
-                                      ) : (
-                                        <span className="badge badge-warning time">
-                                          <i className="ti ti-timer"></i> {item.ShipmentOrderStatusName}
-                                        </span>
-                                      )}
-                                    </li>
-                                    <li className="item infoProduict">
-                                      <span data-tip data-for={item.ShipmentOrderID} data-id={item.ShipmentOrderID}>
-                                        {item.PrimaryShipItemName}
-                                      </span>
-                                      <ReactTooltip id={item.ShipmentOrderID} type="warning">
-                                        <span>{item.ShipItemNameList}</span>
-                                      </ReactTooltip>
-                                    </li>
-                                    <li className="item delivery-status">
-                                      <div className="item group-status">
-                                        {isPermission == false ? (
-                                          <span className={CarrierTypeCss} onClick={this.handleChangeCourse(1, index)}>
-                                            <i className="fa fa-motorcycle"></i> Xe máy
-                                          </span>
-                                        ) : (
-                                          <span className={CarrierTypeCss}>
-                                            <i className="fa fa-motorcycle fffff"></i> Xe máy
-                                          </span>
-                                        )}
-                                        {isPermission == false ? (
-                                          <span className={CarrierTypeTruncCss} onClick={this.handleChangeCourse(2, index)}>
-                                            <i className="fa fa-truck"></i> Xe tải
-                                          </span>
-                                        ) : (
-                                          <span className={CarrierTypeTruncCss}>
-                                            <i className="fa fa-truck fff"></i> Xe tải
-                                          </span>
-                                        )}
-                                      </div>
-                                      <div className="item group-cod">
-                                        <span className="badge badge-secondary badge-active">
-                                          <i className="fa fa-dollar"></i> {formatMoney(item.TotalCOD, 0)}đ
-                                        </span>
-                                      </div>
-                                    </li>
-                                  </ul>
-                                </td>
-                                <td className="jsgrid-cell group-controll" style={{ width: "44%" }}>
-                                  <div className="form-row">
-                                    <div className="form-group col-md-12">
-                                      <ElementInputModal.ElementModalComboBox
-                                        name="CarrierPartnerID"
-                                        type="ComboBox"
-                                        caption="Đối tác"
-                                        onValueChange={this.handleonValueChange.bind(this)}
-                                        dataSourcemember="CarrierPartnerID"
-                                        isautoloaditemfromcache={true}
-                                        loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
-                                        valuemember="PartnerID"
-                                        nameMember="PartnerName"
-                                        rowIndex={index}
-                                        value={item.CarrierPartnerID}
-                                        listoption={null}
-                                        filterValue="2"
-                                        filterobj="PartnerTypeID"
-                                        placeholder="---Chọn đối tác---"
-                                        isMultiSelect={false}
-                                        disabled={isPermission}
-                                      />
-                                    </div>
-                                  </div>
-
-                                  <div className="form-row">
-                                    <div className="form-group col-md-12">
-                                      {item.CarrierPartnerID > 0 ? (
-                                        <ElementInputModal.ElementModalComboBox
-                                          name="ShipmentOrder_DeliverUserList"
-                                          type="ComboUserBox"
-                                          caption="Nhân viên giao nhận"
-                                          dataSourcemember="ShipmentOrder_DeliverUserList"
-                                          isautoloaditemfromcache={true}
-                                          loaditemcachekeyid="ERPCOMMONCACHE.PARTNERUSER"
-                                          valuemember="UserName"
-                                          nameMember="FullName"
-                                          isselectedOp={true}
-                                          value={objDeliverUser}
-                                          rowIndex={index}
-                                          listoption={null}
-                                          onValueChange={this.handleonValueChange.bind(this)}
-                                          placeholder="---Nhân viên giao nhận---"
-                                          isMultiSelect={true}
-                                          disabled={isPermission}
-                                          isPartner={true}
-                                          filterValue={item.CarrierPartnerID}
-                                          filterobj="PartnerID"
-                                          filterrest="CarrierPartnerID"
-                                        />
-                                      ) : (
-                                        <ElementInputModal.MultiUserComboBox
-                                          name="ShipmentOrder_DeliverUserList"
-                                          type="ComboUserBox"
-                                          caption="Nhân viên giao nhận"
-                                          dataSourcemember="ShipmentOrder_DeliverUserList"
-                                          isautoloaditemfromcache={false}
-                                          loaditemcachekeyid="ERPCOMMONCACHE.PARTNERUSER"
-                                          valuemember="UserName"
-                                          nameMember="FullName"
-                                          rowIndex={index}
-                                          listoption={listOption}
-                                          value={listOption}
-                                          onValueChange={this.handleonValueChange.bind(this)}
-                                          placeholder="---Nhân viên giao nhận---"
-                                          isMultiSelect={true}
-                                          disabled={isPermission}
-                                          isPartner={true}
-                                          filterValue="-1"
-                                          filterobj="PartnerID"
-                                          filterrest="CarrierPartnerID"
-                                        />
-                                      )}
-                                    </div>
-                                  </div>
-                                </td>
-                                <td className="jsgrid-cell " style={{ width: "5%" }}>
-                                  <div className="group-action">
-                                    {ShipmentOrder.length > 1 ? (
-                                      <a onClick={this.handleChangeOder(index, -1)} className="table-action hover-danger item-action">
-                                        <i className="ti-angle-up"></i>
-                                      </a>
-                                    ) : (
-                                      ""
-                                    )}
-                                    {isPermission == false ? (
-                                      <a titel="Bạn không có quyền thao tác" onClick={this.handleDeleteID(item.ShipmentOrderID)} className="table-action hover-danger item-action">
-                                        <i className="ti-trash"></i>
-                                      </a>
-                                    ) : (
-                                      ""
-                                    )}
-                                    {ShipmentOrder.length > 1 ? (
-                                      <a onClick={this.handleChangeOder(index, 1)} className="table-action hover-danger item-action">
-                                        <i className="ti-angle-down"></i>
-                                      </a>
-                                    ) : (
-                                      ""
-                                    )}
-                                  </div>
-                                </td>
-                              </tr>
+                              <ListShipCoordinatorNewDetail
+                                index={index}
+                                item={item}
+                                listOption={listOption}
+                                isPermission={isPermission}
+                                shipmentOrder={ShipmentOrder}
+                                handleChangeOder={this.handleChangeOder}
+                                handleOnValueChange={this.handleonValueChange}
+                                handleDeleteID={this.handleDeleteID}
+                                handleChangeCourse={this.handleChangeCourse}
+                              />
                             );
                           })}
                       </tbody>
@@ -1129,5 +982,5 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-const ListShipCoordinator = connect(mapStateToProps, mapDispatchToProps)(ListShipCoordinatorCom);
-export default ListShipCoordinator;
+const ListShipCoordinatorNew = connect(mapStateToProps, mapDispatchToProps)(ListShipCoordinatorNewCom);
+export default ListShipCoordinatorNew;
