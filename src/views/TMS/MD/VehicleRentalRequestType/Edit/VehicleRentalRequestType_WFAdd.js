@@ -369,7 +369,7 @@ class VehicleRentalRequestType_WFAddCom extends React.Component {
                                     controltype="InputControl"
                                     datasourcemember="Description"
                                     label="Mô tả"
-                                    maxSize="300"
+                                    maxSize="330"
                                     name="Description"
                                 /> */}
 
