@@ -208,6 +208,7 @@ import { callFetchAPI } from "../../actions/fetchAPIAction";
 import { connect } from "react-redux";
 import { getCookie } from "../../common/library/CommonLib.js";
 import { updatePagePath } from "../../actions/pageAction";
+import BaseDeliveryAbility from "../TMS/MD/BaseDeliveryAbility";
 
 class HomeCom extends React.Component {
   constructor(props) {
@@ -497,6 +498,7 @@ class HomeCom extends React.Component {
                   <PrivateRoute path="/AfterReclaimProcessType" component={AfterReclaimProcessType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                   <PrivateRoute path="/BaseDAComputeSchedule" component={BaseDAComputeSchedule} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                   <PrivateRoute path="/BaseDAActionLog" component={BaseDAActionLog} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                  <PrivateRoute path="/BaseDeliveryAbility" component={BaseDeliveryAbility} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                   <PrivateRoute path="/VehicleGroup" component={VehicleGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                   <PrivateRoute path="/VehicleType" component={VehicleType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />

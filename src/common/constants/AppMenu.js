@@ -159,6 +159,13 @@ const AppMenu = [
                                 MenuIcon: "",
                                 SubMenu: [],
                             },
+                            {
+                                MenuName: "BaseDeliveryAbility",
+                                MenuTitle: "Tính tải chuẩn theo ngày",
+                                LinkTo: "/BaseDeliveryAbility",
+                                MenuIcon: "",
+                                SubMenu: [],
+                            },
                         ],
                     },
                 ],

@@ -40,7 +40,25 @@ class SearchCom extends React.Component {
         this.props.updatePagePath(PagePath);
     }
 
+    treatAsUTC(date) {
+        var result = new Date(date);
+        result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
+        return result;
+    }
+    
+    daysBetween(startDate, endDate) {
+        var millisecondsPerDay = 24 * 60 * 60 * 1000;
+        return (this.treatAsUTC(endDate) - this.treatAsUTC(startDate)) / millisecondsPerDay;
+    }
+
     handleSearchSubmit(formData, MLObject) {
+        //không cho xuất quá 15 ngày
+        let days = this.daysBetween(MLObject.FromDate, MLObject.ToDate);
+        if(days > 15){
+            this.addNotification("Vượt quá giới hạn 15 ngày, không thể xuất file.", true);
+            return false;
+        }
+
         const postDataNew = [
             {
                 SearchKey: "@FROMDATE",
@@ -86,23 +104,20 @@ class SearchCom extends React.Component {
     }
 
     addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
         if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
         } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={this.state.cssNotification}>
+                <div className={cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
+                        <i className={iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -117,6 +132,7 @@ class SearchCom extends React.Component {
             dismissable: { click: true }
         });
     }
+
 
     handleExportCSV(dataExport) {
         const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
