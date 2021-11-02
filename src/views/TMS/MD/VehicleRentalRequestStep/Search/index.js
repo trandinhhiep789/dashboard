@@ -146,7 +146,7 @@ class SearchCom extends React.Component {
                 <ReactNotification ref={this.notificationDOMRef} />
 
                 <SearchForm
-                    FormName="Bước xử lý của yêu cầu thuê xe"
+                    FormName="Bước yêu cầu thuê phương tiện"
                     MLObjectDefinition={SearchMLObjectDefinition}
                     listelement={SearchElementList}
                     onSubmit={this.handleSearchSubmit}
