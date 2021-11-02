@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import { connect } from "react-redux";
 import { formatDate } from "../../../../common/library/CommonLib.js";
-
+import Select, { components } from 'react-select';
 
 
 class VehicleRentalRequestInfoCom extends React.Component {
@@ -15,6 +15,7 @@ class VehicleRentalRequestInfoCom extends React.Component {
 
         this.state = {
             VehicleRentalRequest: this.props.VehicleRentalRequest,
+            AbilityID: { value: this.props.AbilityID, label: this.props.AbilityID + '%' },
             IsCallAPIError: false,
         };
     }
@@ -33,9 +34,26 @@ class VehicleRentalRequestInfoCom extends React.Component {
 
     }
 
+    handleValueChange(selectedOption) {
+        console.log("ability", selectedOption)
+        this.setState({
+            AbilityID: { value: selectedOption.value, label: selectedOption.value + '%' }
+        });
+        this.props.onChangeAbility(selectedOption.value);
+    }
+
     render() {
-        const { VehicleRentalRequest } = this.state;
-        console.log("data", VehicleRentalRequest)
+        const { VehicleRentalRequest, AbilityID } = this.state;
+        const listOption = [
+            { value: 0, label: '0%' },
+            { value: 50, label: '50%' },
+            { value: 60, label: '60%' },
+            { value: 70, label: '70%' },
+            { value: 80, label: '80%' },
+            { value: 90, label: '90%' },
+            { value: 100, label: '100%' },
+        ]
+        console.log("data", VehicleRentalRequest, listOption, AbilityID)
         return (
             <React.Fragment>
 
@@ -91,7 +109,7 @@ class VehicleRentalRequestInfoCom extends React.Component {
                         <label className="col-form-label bold">Thời gian bắt đầu:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{formatDate(VehicleRentalRequest.StartTime, true) }</label>
+                        <label className="col-form-label">{formatDate(VehicleRentalRequest.StartTime, true)}</label>
                     </div>
                 </div>
 
@@ -99,13 +117,20 @@ class VehicleRentalRequestInfoCom extends React.Component {
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Năng lực xe:</label>
                     </div>
-                    <div className="form-group col-md-4">
-                        <label className="col-form-label">{VehicleRentalRequest.Ability}</label>
-                    </div><div className="form-group col-md-2">
+                    <div className="form-group col-md-2">
+                        <Select
+                            value={AbilityID}
+                            onChange={this.handleValueChange.bind(this)}
+                            options={listOption}
+                            placeholder={"--Vui lòng chọn--"}
+                        />
+                    </div>
+                    <div className="form-group col-md-2"></div>
+                    <div className="form-group col-md-2">
                         <label className="col-form-label bold">Ngày kết thúc:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{formatDate(VehicleRentalRequest.EndTime, true) }</label>
+                        <label className="col-form-label">{formatDate(VehicleRentalRequest.EndTime, true)}</label>
                     </div>
                 </div>
             </React.Fragment>

@@ -15,7 +15,8 @@ import {
     BackLink,
     TitleFormDetail,
     DetailAPIPath,
-    LoadAPIPath
+    LoadAPIPath,
+    UpdateAbilityAPIPath
 } from "../constants";
 import VehicleRentalRequestInfo from "../Component/VehicleRentalRequestInfo";
 import ReactNotification from "react-notifications-component";
@@ -30,20 +31,20 @@ class DetailCom extends React.Component {
         this.state = {
             VehicleRentalRequest: {},
             IsCallAPIError: true,
+            AbilityID: 0
         };
         this.notificationDOMRef = React.createRef();
         this.callLoadData = this.callLoadData.bind(this)
     }
 
     componentDidMount() {
-        console.log("prop", this.props)
         this.props.updatePagePath(DetailAPIPath);
         this.callLoadData(this.props.match.params.id);
     }
 
     callLoadData(id) {
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            console.log("data", id, apiResult)
+            console.log("1111", id, apiResult)
             if (apiResult.IsError) {
                 this.showMessage(apiResult.Message)
                 this.setState({
@@ -53,7 +54,8 @@ class DetailCom extends React.Component {
             else {
                 this.setState({
                     VehicleRentalRequest: apiResult.ResultObject,
-                    IsCallAPIError: apiResult.IsError
+                    IsCallAPIError: apiResult.IsError,
+                    AbilityID: apiResult.ResultObject.Ability
                 })
             }
         })
@@ -100,8 +102,28 @@ class DetailCom extends React.Component {
         });
     }
 
+    handleChangeAbility(value) {
+        this.setState({
+            AbilityID: value
+        })
+    }
+    handleSubmitAbility(){
+        const {AbilityID, VehicleRentalRequest}= this.state;
+
+        let MLObject ={}
+        MLObject.Ability = AbilityID,
+        MLObject.VehicleRentalRequestID = VehicleRentalRequest.VehicleRentalRequestID,
+        //
+        this.props.callFetchAPI(APIHostName, UpdateAbilityAPIPath, MLObject).then(apiResult => {
+            console.log("submit", MLObject, apiResult)
+             this.setState({ IsCallAPIError: apiResult.IsError });
+             this.addNotification(apiResult.Message,  apiResult.IsError);
+             this.callLoadData(VehicleRentalRequest.VehicleRentalRequestID)
+        });
+    }
+
     render() {
-        const { VehicleRentalRequest, IsCallAPIError } = this.state;
+        const { VehicleRentalRequest, IsCallAPIError, AbilityID } = this.state;
         if (!IsCallAPIError) {
             return (
                 <React.Fragment>
@@ -115,6 +137,8 @@ class DetailCom extends React.Component {
                             <div className="card-body">
                                 <VehicleRentalRequestInfo
                                     VehicleRentalRequest={VehicleRentalRequest}
+                                    AbilityID={AbilityID}
+                                    onChangeAbility={this.handleChangeAbility.bind(this)}
                                 />
                             </div>
 
@@ -128,11 +152,7 @@ class DetailCom extends React.Component {
                                     </div>
                                 </div>
                                 < div className="btn-group btn-group-dropdown mr-3">
-                                    <button  className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">0%</button>
-                                    <div className="dropdown-menu" x-placement="bottom-start" >
-                                        <button className="dropdown-item" type="button">Đồng ý</button>
-                                        <button className="dropdown-item" type="button">Từ chối</button>
-                                    </div>
+                                    <button className="btn btn-primary" type="button" onClick={this.handleSubmitAbility.bind(this)}>Cập nhật năng lực xe</button>
                                 </div>
                                 <Link to="/VehicleRentalRequest">
                                     <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button>
