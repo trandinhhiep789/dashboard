@@ -90,23 +90,38 @@ class SearchCom extends React.Component {
     }
 
     handleDelete(deleteList, pkColumnName) {
+        const { gridDataSource } = this.state;
+
         let listMLObject = [];
         deleteList.map((row, index) => {
             let MLObject = {};
             pkColumnName.map((pkItem, pkIndex) => {
                 MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
             });
-            MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
+             MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
             listMLObject.push(MLObject);
         });
 
-        this.props.callFetchAPI(APIHostName, DeleteNewAPIPath, listMLObject).then(apiResult => {
+
+
+        const tempData =gridDataSource.filter((x) => listMLObject.some((y) => y.VehicleRentalRequestID === x.VehicleRentalRequestID && (x.CurrentVehicleRentalStatusID !=1 && x.CurrentVehicleRentalStatusID !=3)));
+
+      if(tempData.length > 0){
+        console.log("del", gridDataSource, listMLObject, tempData)
+        this.showMessage("Danh sách chọn không thể xóa. Vui lòng chọn lại dữ liệu cần xóa.")
+      } 
+      else{
+        const tempData1 =gridDataSource.filter((x) => listMLObject.some((y) => y.VehicleRentalRequestID === x.VehicleRentalRequestID && (x.CurrentVehicleRentalStatusID ==1 || x.CurrentVehicleRentalStatusID ==3)));
+        console.log("del", gridDataSource, listMLObject, tempData1)
+        this.props.callFetchAPI(APIHostName, DeleteAPIPath, tempData1).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
             }
         });
+      }
+      
     }
 
     addNotification(message1, IsError) {
@@ -227,7 +242,7 @@ class SearchCom extends React.Component {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'yêu cầu thuê xe',
             content: {
-                text: <VehicleRentalRequestType/>
+                text: <VehicleRentalRequestType />
             },
             maxWidth: '800px'
         });
@@ -255,7 +270,7 @@ class SearchCom extends React.Component {
                     onDeleteClick={this.handleDelete.bind(this)}
                     onInsertClick={this.handleInputGridInsert.bind(this)}
                     IsCustomAddLink={true}
-                   // AddLink={AddLink}
+                    // AddLink={AddLink}
                     dataSource={gridDataSource}
                     isCustomExportFile={false}
                     isCustomExportFileTemplate={false}
