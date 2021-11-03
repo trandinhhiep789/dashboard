@@ -609,9 +609,9 @@ const AppMenu = [
                         SubMenu: [],
                     },
                     {
-                        MenuName: "VehicleRentalType",
+                        MenuName: "RentalType",
                         MenuTitle: "Hình thức thuê phương tiện",
-                        LinkTo: "/VehicleRentalType",
+                        LinkTo: "/RentalType",
                         MenuIcon: "",
                         SubMenu: [],
                     },
