@@ -141,7 +141,64 @@ export const SearchElementListNew = [
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
-    }
+    },
+    {
+        type: "ComboBox",
+        name: "cbAreaID",
+        DataSourceMember: "AreaID",
+        label: "Khu vực",
+        colspan: 2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "Khu vực",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.AREATT",
+        ValueMember: "AreaID",
+        NameMember: "AreaName",
+        classNameCol: "col-custom",
+        // filterName: "cbStoreID",
+        // filterValue: "",
+        // filterobj: "AreaID"
+    },
+    {
+        type: "ComboBox",
+        name: "cbStoreID",
+        DataSourceMember: "StoreID",
+        label: "Kho điều phối",
+        colspan: 2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "Kho điều phối",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
+        ValueMember: "StoreID",
+        NameMember: "StoreName",
+        classNameCol: "col-custom",
+        filterName: "cbAreaID",
+        filterValue: "",
+        filterobj: "AreaID"
+    },
+    {
+        type: "ComboBox",
+        name: "cbShipmentOrderTypeID",
+        DataSourceMember: "ShipmentOrderTypeID",
+        label: "Loại yêu cầu vận chuyển",
+        colspan: 2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "Loại yêu cầu vận chuyển",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.SHIPMENTORDERTYPE",
+        ValueMember: "ShipmentOrderTypeID",
+        NameMember: "ShipmentOrderTypeName",
+        classNameCol: "col-custom",
+        // filterName: "cbMainGroupID",
+        // filterValue: "",
+        // filterobj: "MainGroupID"
+    },
 ]
 
 export const SearchMLObjectDefinitionNew = [
@@ -154,6 +211,21 @@ export const SearchMLObjectDefinitionNew = [
         Name: "ToDate",
         DefaultValue: "",
         BindControlName: "dtToDate"
+    },
+    {
+        Name: "AreaID",
+        DefaultValue: "",
+        BindControlName: "cbAreaID"
+    },
+    {
+        Name: "StoreID",
+        DefaultValue: "",
+        BindControlName: "cbStoreID"
+    },
+    {
+        Name: "ShipmentOrderTypeID",
+        DefaultValue: "",
+        BindControlName: "cbShipmentOrderTypeID"
     }
 ]
 

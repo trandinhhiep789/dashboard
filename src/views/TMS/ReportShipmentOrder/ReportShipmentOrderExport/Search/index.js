@@ -45,7 +45,7 @@ class SearchCom extends React.Component {
         result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
         return result;
     }
-    
+
     daysBetween(startDate, endDate) {
         var millisecondsPerDay = 24 * 60 * 60 * 1000;
         return (this.treatAsUTC(endDate) - this.treatAsUTC(startDate)) / millisecondsPerDay;
@@ -54,7 +54,7 @@ class SearchCom extends React.Component {
     handleSearchSubmit(formData, MLObject) {
         //không cho xuất quá 15 ngày
         let days = this.daysBetween(MLObject.FromDate, MLObject.ToDate);
-        if(days > 15){
+        if (days > 15) {
             this.addNotification("Vượt quá giới hạn 15 ngày, không thể xuất file.", true);
             return false;
         }
@@ -68,23 +68,35 @@ class SearchCom extends React.Component {
                 SearchKey: "@TODATE",
                 SearchValue: MLObject.ToDate
             },
+            {
+                SearchKey: "@AREAID",
+                SearchValue: MLObject.AreaID
+            },
+            {
+                SearchKey: "@STOREID",
+                SearchValue: MLObject.StoreID
+            },
+            {
+                SearchKey: "@SHIPMENTORDERTYPEID",
+                SearchValue: MLObject.ShipmentOrderTypeID
+            }
 
 
         ];
 
-        const postData={
-            DataExportTemplateID:3,
-            LoadDataStoreName:'TMS.TMS_SHIPMENT_ITEM_REPORT',
-            KeyCached:"SHIPMENTORDER_REPORT_EXPORT",
-            SearchParamList:postDataNew,
-            ExportDataParamsDescription:"FROMDATE: " + formatDate(MLObject.FromDate) +" - TODATE: "+ formatDate(MLObject.ToDate)
+        const postData = {
+            DataExportTemplateID: 3,
+            LoadDataStoreName: 'TMS.TMS_SHIPMENT_ITEM_REPORT',
+            KeyCached: "SHIPMENTORDER_REPORT_EXPORT",
+            SearchParamList: postDataNew,
+            ExportDataParamsDescription: "FROMDATE: " + formatDate(MLObject.FromDate) + " - TODATE: " + formatDate(MLObject.ToDate)
         }
         this.props.callFetchAPI(APIHostName, "api/DataExportQueue/AddQueueExport", postData).then(apiResult => {
             if (!apiResult.IsError) {
                 this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
                     title: "Tải file",
                     maxWidth: '1200px',
-                    ParamRequest: {DataExportTemplateID:3}
+                    ParamRequest: { DataExportTemplateID: 3 }
                 });
             }
             else {
@@ -94,12 +106,11 @@ class SearchCom extends React.Component {
 
     }
 
-    handleHistorySearch()
-    {
+    handleHistorySearch() {
         this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
             title: "Tải file",
             maxWidth: '1200px',
-            ParamRequest:{DataExportTemplateID:3}
+            ParamRequest: { DataExportTemplateID: 3 }
         });
     }
 
@@ -183,15 +194,16 @@ class SearchCom extends React.Component {
                     MLObjectDefinition={SearchMLObjectDefinitionNew}
                     listelement={SearchElementListNew}
                     TitleButton="Xuất dữ liệu"
-                    IsShowButtonSearch ={false}
+                    IsShowButtonSearch={false}
                     IsButtonExport={true}
                     IsButtonhistory={true}
                     onHistorySubmit={this.handleHistorySearch.bind(this)}
                     onSubmit={this.handleSearchSubmit.bind(this)}
                     onExportSubmit={this.handleSearchSubmit.bind(this)}
                     ref={this.searchref}
-                    colGroupAction={8}
+                    //colGroupAction={8}
                     className="multiple"
+                    classNamebtnSearch="groupAction"
                 />
             </React.Fragment>
         );
