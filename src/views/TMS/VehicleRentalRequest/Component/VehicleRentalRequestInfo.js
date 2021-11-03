@@ -21,7 +21,6 @@ class VehicleRentalRequestInfoCom extends React.Component {
     }
 
     componentDidMount() {
-        console.log("info", this.props)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -35,7 +34,6 @@ class VehicleRentalRequestInfoCom extends React.Component {
     }
 
     handleValueChange(selectedOption) {
-        console.log("ability", selectedOption)
         this.setState({
             AbilityID: { value: selectedOption.value, label: selectedOption.value + '%' }
         });
@@ -53,7 +51,6 @@ class VehicleRentalRequestInfoCom extends React.Component {
             { value: 90, label: '90%' },
             { value: 100, label: '100%' },
         ]
-        console.log("data", VehicleRentalRequest, listOption, AbilityID)
         return (
             <React.Fragment>
 
