@@ -13,18 +13,18 @@ export const PKColumnName = "VehicleRentalRequestStepID"
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Bước xử lý của yêu cầu thuê xe" }
+    { Link: "", Title: "Bước yêu cầu thuê phương tiện" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/VehicleRentalRequestStep", Title: "Bước xử lý của yêu cầu thuê xe" },
+    { Link: "/VehicleRentalRequestStep", Title: "Bước yêu cầu thuê phương tiện" },
     { Link: "", Title: "Thêm bước xử lý của yêu cầu thuê xe" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/VehicleRentalRequestStep", Title: "Bước xử lý của yêu cầu thuê xe" },
+    { Link: "/VehicleRentalRequestStep", Title: "Bước yêu cầu thuê phương tiện" },
     { Link: "", Title: "Chỉnh sửa bước xử lý của yêu cầu thuê xe" }
 ];
 

@@ -16,11 +16,15 @@ import {
     TitleFormDetail,
     DetailAPIPath,
     LoadAPIPath,
-    UpdateAbilityAPIPath
+    UpdateAbilityAPIPath,
+    PKColumnNameWF,
+    TitleFromWF,
+    DataGridColumnItemListWF
 } from "../constants";
 import VehicleRentalRequestInfo from "../Component/VehicleRentalRequestInfo";
 import ReactNotification from "react-notifications-component";
 import { updatePagePath } from "../../../../actions/pageAction";
+import InputGridControl from "../../../../common/components/FormContainer/FormControl/InputGrid/InputGridControl.js";
 
 
 class DetailCom extends React.Component {
@@ -35,6 +39,8 @@ class DetailCom extends React.Component {
         };
         this.notificationDOMRef = React.createRef();
         this.callLoadData = this.callLoadData.bind(this)
+        this.gridref = React.createRef();
+
     }
 
     componentDidMount() {
@@ -107,19 +113,19 @@ class DetailCom extends React.Component {
             AbilityID: value
         })
     }
-    handleSubmitAbility(){
-        const {AbilityID, VehicleRentalRequest}= this.state;
+    handleSubmitAbility() {
+        const { AbilityID, VehicleRentalRequest } = this.state;
 
-        let MLObject ={}
+        let MLObject = {}
         MLObject.Ability = AbilityID,
-        MLObject.VehicleRentalRequestID = VehicleRentalRequest.VehicleRentalRequestID,
-        //
-        this.props.callFetchAPI(APIHostName, UpdateAbilityAPIPath, MLObject).then(apiResult => {
-            console.log("submit", MLObject, apiResult)
-             this.setState({ IsCallAPIError: apiResult.IsError });
-             this.addNotification(apiResult.Message,  apiResult.IsError);
-             this.callLoadData(VehicleRentalRequest.VehicleRentalRequestID)
-        });
+            MLObject.VehicleRentalRequestID = VehicleRentalRequest.VehicleRentalRequestID,
+            //
+            this.props.callFetchAPI(APIHostName, UpdateAbilityAPIPath, MLObject).then(apiResult => {
+                console.log("submit", MLObject, apiResult)
+                this.setState({ IsCallAPIError: apiResult.IsError });
+                this.addNotification(apiResult.Message, apiResult.IsError);
+                this.callLoadData(VehicleRentalRequest.VehicleRentalRequestID)
+            });
     }
 
     render() {
@@ -140,7 +146,26 @@ class DetailCom extends React.Component {
                                     AbilityID={AbilityID}
                                     onChangeAbility={this.handleChangeAbility.bind(this)}
                                 />
+
+                                <InputGridControl
+                                    controltype="InputGridControl"
+                                    dataSource={VehicleRentalRequest.VehicleRentalRequest_WFList}
+                                    IDSelectColumnName={"VehicleRentalreqWorkFlowID"}
+                                    isCustomImportFile={false}
+                                    IsExportFile={false}
+                                    isExportFileTemplate={false}
+                                    isImportFile={false}
+                                    isHiddenButtonAdd={true}
+                                    listColumn={DataGridColumnItemListWF}
+                                    name="VehicleRentalRequest_WFList"
+                                    PKColumnName={PKColumnNameWF}
+                                    ref={this.gridref}
+                                    title={TitleFromWF}
+                                />
+
                             </div>
+
+
 
 
                             <footer className="card-footer text-right">

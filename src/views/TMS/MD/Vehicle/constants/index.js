@@ -20,18 +20,18 @@ export const PKColumnName = "VehicleID";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách đăng kí xe" }
+    { Link: "", Title: "Danh sách phương tiện" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/Vehicle", Title: "Danh sách đăng kí xe" },
+    { Link: "/Vehicle", Title: "Danh sách phương tiện" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/Vehicle", Title: "Danh sách đăng kí xe" },
+    { Link: "/Vehicle", Title: "Danh sách phương tiện" },
     { Link: "", Title: "Thêm" }
 ];
 

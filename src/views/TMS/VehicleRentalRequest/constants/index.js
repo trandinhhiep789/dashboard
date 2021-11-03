@@ -13,11 +13,17 @@ export const BackLink = "/VehicleRentalRequest";
 
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "VehicleRentalRequestID";
+export const PKColumnNameWF = "VehicleRentalreqWorkFlowID";
+
+
 
 export const TitleFormSearch = "Tìm kiếm danh sách yêu cầu thuê xe";
 export const TitleFormAdd = "Thêm yêu cầu thuê xe";
 export const TitleFormEdit = "Cập nhật yêu cầu thuê xe";
 export const TitleFormDetail = "Thông tin yêu cầu thuê xe";
+
+export const TitleFromWF = "Lịch sử xử lý";
+
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
@@ -342,4 +348,26 @@ export const MLObjectDefinition = [
     //     DataSourceMember: "IsSystem"
     // },
    
+]
+
+export const DataGridColumnItemListWF=[
+    {
+        Name: "ProcessDate",
+        Type: "date",
+        Caption: "Thời gian xử lý",
+        DataSourceMember: "ProcessDate",
+        Width: 130
+    },
+    {
+        Name: "VehicleRentalRequestStepName",
+        Type: "text",
+        Caption: "Tên bước xử lý",
+        DataSourceMember: "VehicleRentalRequestStepName",
+    },
+    {
+        Name: "ProcessFullName",
+        Type: "text",
+        Caption: "Người xử lý",
+        DataSourceMember: "ProcessFullName",
+    },
 ]

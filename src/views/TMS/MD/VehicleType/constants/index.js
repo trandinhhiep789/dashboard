@@ -112,7 +112,7 @@ export const AddElementList = [
         listoption: {},
         DataSourceMember: "Length",
         readonly: false,
-        validatonList: ["digit"],
+        validatonList: ["required", "digit"],
     },
     {
         type: "text",
@@ -125,7 +125,7 @@ export const AddElementList = [
         listoption: {},
         DataSourceMember: "Width",
         readonly: false,
-        validatonList: ["digit"],
+        validatonList: ["required", "digit"],
     },
     {
         type: "text",
@@ -138,7 +138,7 @@ export const AddElementList = [
         listoption: {},
         DataSourceMember: "Height",
         readonly: false,
-        validatonList: ["digit"],
+        validatonList: ["required", "digit"],
     },
     {
         type: "text",
@@ -151,7 +151,7 @@ export const AddElementList = [
         listoption: {},
         DataSourceMember: "Weight",
         readonly: false,
-        validatonList: ["digit"],
+        validatonList: ["required", "digit"],
     },
     {
         type: "text",
@@ -164,7 +164,7 @@ export const AddElementList = [
         listoption: {},
         DataSourceMember: "Volume",
         readonly: false,
-        validatonList: ["digit"],
+        validatonList: ["required", "digit"],
     },
     {
         type: "checkbox",
@@ -259,7 +259,7 @@ export const EditElementList = [
         listoption: {},
         DataSourceMember: "Length",
         readonly: false,
-        validatonList: ["digit"],
+        validatonList: ["required", "digit"],
     },
     {
         type: "text",
@@ -272,7 +272,7 @@ export const EditElementList = [
         listoption: {},
         DataSourceMember: "Width",
         readonly: false,
-        validatonList: ["digit"],
+        validatonList: ["required", "digit"],
     },
     {
         type: "text",
@@ -285,7 +285,7 @@ export const EditElementList = [
         listoption: {},
         DataSourceMember: "Height",
         readonly: false,
-        validatonList: ["digit"],
+        validatonList: ["required", "digit"],
     },
     {
         type: "text",
@@ -298,7 +298,7 @@ export const EditElementList = [
         listoption: {},
         DataSourceMember: "Weight",
         readonly: false,
-        validatonList: ["digit"],
+        validatonList: ["required", "digit"],
     },
     {
         type: "text",
@@ -311,7 +311,7 @@ export const EditElementList = [
         listoption: {},
         DataSourceMember: "Volume",
         readonly: false,
-        validatonList: ["digit"],
+        validatonList: ["required", "digit"],
     },
     {
         type: "checkbox",
