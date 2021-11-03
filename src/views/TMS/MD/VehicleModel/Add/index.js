@@ -97,7 +97,7 @@ class AddCom extends React.Component {
               datasourcemember="VehicleTypeID"
               placeholder="---Vui lòng chọn---"
               isMultiSelect={false}
-              validatonList={["required"]}
+              validatonList={["Comborequired"]}
             />
           </div>
           <div className="col-md-12">
