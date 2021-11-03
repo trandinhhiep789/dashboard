@@ -40,7 +40,25 @@ class SearchCom extends React.Component {
         this.props.updatePagePath(PagePath);
     }
 
+    treatAsUTC(date) {
+        var result = new Date(date);
+        result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
+        return result;
+    }
+
+    daysBetween(startDate, endDate) {
+        var millisecondsPerDay = 24 * 60 * 60 * 1000;
+        return (this.treatAsUTC(endDate) - this.treatAsUTC(startDate)) / millisecondsPerDay;
+    }
+
     handleSearchSubmit(formData, MLObject) {
+        //không cho xuất quá 15 ngày
+        let days = this.daysBetween(MLObject.FromDate, MLObject.ToDate);
+        if (days > 15) {
+            this.addNotification("Vượt quá giới hạn 15 ngày, không thể xuất file.", true);
+            return false;
+        }
+
         const postDataNew = [
             {
                 SearchKey: "@FROMDATE",
@@ -50,23 +68,35 @@ class SearchCom extends React.Component {
                 SearchKey: "@TODATE",
                 SearchValue: MLObject.ToDate
             },
+            {
+                SearchKey: "@AREAID",
+                SearchValue: MLObject.AreaID
+            },
+            {
+                SearchKey: "@STOREID",
+                SearchValue: MLObject.StoreID
+            },
+            {
+                SearchKey: "@SHIPMENTORDERTYPEID",
+                SearchValue: MLObject.ShipmentOrderTypeID
+            }
 
 
         ];
 
-        const postData={
-            DataExportTemplateID:3,
-            LoadDataStoreName:'TMS.TMS_SHIPMENT_ITEM_REPORT',
-            KeyCached:"SHIPMENTORDER_REPORT_EXPORT",
-            SearchParamList:postDataNew,
-            ExportDataParamsDescription:"FROMDATE: " + formatDate(MLObject.FromDate) +" - TODATE: "+ formatDate(MLObject.ToDate)
+        const postData = {
+            DataExportTemplateID: 3,
+            LoadDataStoreName: 'TMS.TMS_SHIPMENT_ITEM_REPORT',
+            KeyCached: "SHIPMENTORDER_REPORT_EXPORT",
+            SearchParamList: postDataNew,
+            ExportDataParamsDescription: "FROMDATE: " + formatDate(MLObject.FromDate) + " - TODATE: " + formatDate(MLObject.ToDate)
         }
         this.props.callFetchAPI(APIHostName, "api/DataExportQueue/AddQueueExport", postData).then(apiResult => {
             if (!apiResult.IsError) {
                 this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
                     title: "Tải file",
                     maxWidth: '1200px',
-                    ParamRequest: {DataExportTemplateID:3}
+                    ParamRequest: { DataExportTemplateID: 3 }
                 });
             }
             else {
@@ -76,33 +106,29 @@ class SearchCom extends React.Component {
 
     }
 
-    handleHistorySearch()
-    {
+    handleHistorySearch() {
         this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
             title: "Tải file",
             maxWidth: '1200px',
-            ParamRequest:{DataExportTemplateID:3}
+            ParamRequest: { DataExportTemplateID: 3 }
         });
     }
 
     addNotification(message1, IsError) {
+        let cssNotification, iconNotification;
         if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
+            cssNotification = "notification-custom-success";
+            iconNotification = "fa fa-check"
         } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
+            cssNotification = "notification-danger";
+            iconNotification = "fa fa-exclamation"
         }
         this.notificationDOMRef.current.addNotification({
             container: "bottom-right",
             content: (
-                <div className={this.state.cssNotification}>
+                <div className={cssNotification}>
                     <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
+                        <i className={iconNotification} />
                     </div>
                     <div className="notification-custom-content">
                         <div className="notification-close">
@@ -117,6 +143,7 @@ class SearchCom extends React.Component {
             dismissable: { click: true }
         });
     }
+
 
     handleExportCSV(dataExport) {
         const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
@@ -167,15 +194,16 @@ class SearchCom extends React.Component {
                     MLObjectDefinition={SearchMLObjectDefinitionNew}
                     listelement={SearchElementListNew}
                     TitleButton="Xuất dữ liệu"
-                    IsShowButtonSearch ={false}
+                    IsShowButtonSearch={false}
                     IsButtonExport={true}
                     IsButtonhistory={true}
                     onHistorySubmit={this.handleHistorySearch.bind(this)}
                     onSubmit={this.handleSearchSubmit.bind(this)}
                     onExportSubmit={this.handleSearchSubmit.bind(this)}
                     ref={this.searchref}
-                    colGroupAction={8}
+                    //colGroupAction={8}
                     className="multiple"
+                    classNamebtnSearch="groupAction"
                 />
             </React.Fragment>
         );

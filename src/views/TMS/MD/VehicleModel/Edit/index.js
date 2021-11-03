@@ -104,12 +104,32 @@ class EditCom extends React.Component {
           >
             <div className="row">
               <div className="col-md-12">
+                <FormControl.ComboBoxSelect
+                  name="cbVehicleTypeID"
+                  colspan="10"
+                  labelcolspan="2"
+                  label="Loại xe"
+                  isautoloaditemfromcache={true}
+                  loaditemcachekeyid="ERPCOMMONCACHE.VEHICLETYPE"
+                  valuemember="VehicleTypeID"
+                  nameMember="VehicleTypeName"
+                  controltype="InputControl"
+                  value="-1"
+                  disabled={true}
+                  listoption={null}
+                  datasourcemember="VehicleTypeID"
+                  placeholder="---Vui lòng chọn---"
+                  isMultiSelect={false}
+                  validatonList={["Comborequired"]}
+                />
+              </div>
+              <div className="col-md-12">
                 <FormControl.TextBox
                   name="txtVehicleModelID"
                   colspan="10"
                   labelcolspan="2"
                   readOnly={true}
-                  label="Tên model xe"
+                  label="Mã model xe"
                   placeholder="Tên model xe"
                   controltype="InputControl"
                   value=""

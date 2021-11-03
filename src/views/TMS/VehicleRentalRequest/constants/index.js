@@ -5,6 +5,7 @@ export const DeleteAPIPath = "api/VehicleRentalRequest/Delete";
 export const LoadAPIPath = "api/VehicleRentalRequest/Load";
 export const SearchAPIPath = "api/VehicleRentalRequest/Search";
 export const UpdateAPIPath = "api/VehicleRentalRequest/Update";
+export const UpdateAbilityAPIPath = "api/VehicleRentalRequest/UpdateAbilyti";
 
 export const AddLink = "/VehicleRentalRequest/Add";
 export const BackLink = "/VehicleRentalRequest";
@@ -12,11 +13,17 @@ export const BackLink = "/VehicleRentalRequest";
 
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "VehicleRentalRequestID";
+export const PKColumnNameWF = "VehicleRentalreqWorkFlowID";
+
+
 
 export const TitleFormSearch = "Tìm kiếm danh sách yêu cầu thuê xe";
 export const TitleFormAdd = "Thêm yêu cầu thuê xe";
 export const TitleFormEdit = "Cập nhật yêu cầu thuê xe";
 export const TitleFormDetail = "Thông tin yêu cầu thuê xe";
+
+export const TitleFromWF = "Lịch sử xử lý";
+
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
@@ -55,12 +62,11 @@ export const SearchElementList = [
         icon: "",
         nameOption: "txtTypename",
         labelOption: "--Vui lòng chọn--",
-        valueOption:  -1,
+        valueOption:  1,
         // validatonList:["Comborequired"],
         classNameCol: "col-custom",
         classNameDropdown: "dropdown-custom",
         listoption: [
-            { value: -1, label: '--Vui lòng chọn--' },
             { value: 1, label: 'Mã yêu cầu thuê xe' },
             { value: 2, label: 'Biển số  xe' },
 
@@ -220,6 +226,7 @@ export const DataGridColumnList = [
         Name: "VehicleRentalRequestID",
         Type: "texttolink",
         Caption: "Mã yc thuê xe",
+        Link: "/VehicleRentalRequest/Detail/",
         DataSourceMember: "VehicleRentalRequestID",
         Width: 100
     },
@@ -273,6 +280,12 @@ export const DataGridColumnList = [
 ]
 
 export const MLObjectDefinition = [
+    {
+        Name: "VehicleRentalRequestID",
+        DefaultValue: "",
+        BindControlName: "txtVehicleRentalRequestID",
+        DataSourceMember: "VehicleRentalRequestID"
+    },
     {
         Name: "VehicleRentalRequestTypeID",
         DefaultValue: "",
@@ -335,4 +348,26 @@ export const MLObjectDefinition = [
     //     DataSourceMember: "IsSystem"
     // },
    
+]
+
+export const DataGridColumnItemListWF=[
+    {
+        Name: "ProcessDate",
+        Type: "date",
+        Caption: "Thời gian xử lý",
+        DataSourceMember: "ProcessDate",
+        Width: 130
+    },
+    {
+        Name: "VehicleRentalRequestStepName",
+        Type: "text",
+        Caption: "Tên bước xử lý",
+        DataSourceMember: "VehicleRentalRequestStepName",
+    },
+    {
+        Name: "ProcessFullName",
+        Type: "text",
+        Caption: "Người xử lý",
+        DataSourceMember: "ProcessFullName",
+    },
 ]

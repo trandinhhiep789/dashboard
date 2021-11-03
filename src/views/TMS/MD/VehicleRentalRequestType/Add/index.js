@@ -9,7 +9,8 @@ import {
     AddPagePath,
     APIHostName,
     BackLink,
-    MLObjectDefinition,
+    MLObjectDefinitionVehicleRentalRequestType,
+    AddMLObjectDefinition
 } from "../constants";
 
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
@@ -43,7 +44,7 @@ class AddCom extends React.Component {
     handleSubmit(formData, MLObject) {
         const uptMLObject = {
             ...MLObject,
-            AddFunctionID: MLObject.AddFunctionID.length == 1 ? MLObject.AddFunctionID[0] : MLObject.AddFunctionID
+            AddFunctionID: MLObject.AddFunctionID.length == 1 ? MLObject.AddFunctionID[0] : (MLObject.AddFunctionID.length == 0 ? -1 : MLObject.AddFunctionID)
         }
 
         this.props.callFetchAPI(APIHostName, AddAPIPath, uptMLObject).then(apiResult => {
@@ -90,7 +91,6 @@ class AddCom extends React.Component {
                 title="Thông báo"
                 message={message}
                 onRequestClose={() => true}
-            // onCloseModal={() => { }}
             />
         );
     }
@@ -104,10 +104,10 @@ class AddCom extends React.Component {
                     BackLink={BackLink}
                     dataSource={this.state.dataSource}
                     FormMessage={""}
-                    FormName="Thêm loại xử lý của yêu cầu thuê phương tiện"
+                    FormName="Thêm loại yêu cầu thuê phương tiện"
                     IsErrorMessage={false}
                     listelement={AddElementList}
-                    MLObjectDefinition={MLObjectDefinition}
+                    MLObjectDefinition={AddMLObjectDefinition}
                     onSubmit={this.handleSubmit}
                     ref={this.searchref}
                     RequirePermission={""}

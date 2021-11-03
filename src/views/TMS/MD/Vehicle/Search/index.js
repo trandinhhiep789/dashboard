@@ -16,18 +16,14 @@ import {
     SearchAPIPath,
     SearchElementList,
     SearchMLObjectDefinition,
-    DataGridCoordinatorStoreColumnList
 } from "../constants";
 
-import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_CARRIERTYPE } from "../../../../../constants/keyCache";
 import { MessageModal } from "../../../../../common/components/Modal";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { VEHICLE_VIEW, VEHICLE_DELETE } from "../../../../../constants/functionLists";
 import DataGrid from "../../../../../common/components/DataGrid";
-import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
 import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
 
 class SearchCom extends React.Component {
@@ -156,10 +152,10 @@ class SearchCom extends React.Component {
                 const uptResultObject = apiResult.ResultObject.map(item => {
                     return {
                         ...item,
-                        MainDriverUserIDName: `${item.MainDriverUser} - ${item.MainDriverUserName}`,
+                        // MainDriverUserIDName: `${item.MainDriverUser} - ${item.MainDriverUserName}`,
                         PartnerIDName: `${item.PartnerID} - ${item.PartnerName}`,
                         ActivityStatusIDName: `${item.ActivityStatusID} - ${item.ActivityStatusName}`,
-                        MainCoordinatorStoreIDName: `${item.MainCoordinatorStoreID} - ${item.MainCoordinatorStoreName}`,
+                        // MainCoordinatorStoreIDName: `${item.MainCoordinatorStoreID} - ${item.MainCoordinatorStoreName}`,
                     }
                 })
                 this.setState({

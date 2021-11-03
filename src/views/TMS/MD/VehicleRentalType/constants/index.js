@@ -5,8 +5,8 @@ export const EditAPIPath = "api/RentalType/Update";
 export const LoadAPIPath = "api/RentalType/Load";
 export const DeleteAPIPath = "api/RentalType/Delete";
 
-export const AddLink = "/VehicleRentalType/Add";
-export const BackLink = "/VehicleRentalType";
+export const AddLink = "/RentalType/Add";
+export const BackLink = "/RentalType";
 
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "RentalTypeId"
@@ -18,13 +18,13 @@ export const PagePath = [
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/VehicleRentalType", Title: "Hình thức thuê xe" },
+    { Link: "/RentalType", Title: "Hình thức thuê xe" },
     { Link: "", Title: "Thêm sửa hình thức thuê xe" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/VehicleRentalType", Title: "Hình thức thuê xe" },
+    { Link: "/RentalType", Title: "Hình thức thuê xe" },
     { Link: "", Title: "Chỉnh sửa hình thức thuê xe" }
 ];
 
@@ -75,16 +75,16 @@ export const DataGridColumnList = [
         DataSourceMember: "Description",
     },
     {
-        Name: "UpdatedUserFullName",
-        Type: "text",
-        Caption: "Người cập nhật",
-        DataSourceMember: "UpdatedUserFullName",
-    },
-    {
         Name: "UpdatedDate",
-        Type: "date",
+        Type: "datetime",
         Caption: "Ngày cập nhật",
         DataSourceMember: "UpdatedDate",
+    },
+    {
+        Name: "UpdatedUserIDName",
+        Type: "text",
+        Caption: "Người cập nhật",
+        DataSourceMember: "UpdatedUserIDName",
     },
     {
         Name: "Action",
@@ -92,7 +92,7 @@ export const DataGridColumnList = [
         Caption: "Tác vụ",
         DataSourceMember: "RentalTypeId",
         Width: 80,
-        Link: "/VehicleRentalType/Edit/",
+        Link: "/RentalType/Edit/",
         LinkText: "Chỉnh sửa"
     },
 ]
@@ -103,7 +103,7 @@ export const AddElementList = [
         name: "txtRentalTypeName",
         label: "Tên hình thức thuê",
         value: "",
-        maxSize: "300",
+        maxSize: "100",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -116,7 +116,7 @@ export const AddElementList = [
         name: "txtDescription",
         label: "Mô tả",
         value: "",
-        maxSize: "1000",
+        maxSize: "300",
         placeholder: "",
         icon: "",
         rows: "6",
@@ -167,7 +167,7 @@ export const EditElementList = [
         name: "txtRentalTypeName",
         label: " Tên hình thức thuê xe",
         value: "",
-        maxSize: "300",
+        maxSize: "100",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -180,7 +180,7 @@ export const EditElementList = [
         name: "txtDescription",
         label: "Mô tả",
         value: "",
-        maxSize: "1000",
+        maxSize: "300",
         placeholder: "",
         icon: "",
         rows: "6",

@@ -24,6 +24,7 @@ class VehicleRentalRequestTypeCom extends Component {
         super(props);
         this.handleOnValueChange = this.handleOnValueChange.bind(this);
         this.getCacheKey = this.getCacheKey.bind(this)
+        this.handleCloseMessage = this.handleCloseMessage.bind(this)
         this.state = {
             IsCallAPIError: false,
             IsCloseForm: false,

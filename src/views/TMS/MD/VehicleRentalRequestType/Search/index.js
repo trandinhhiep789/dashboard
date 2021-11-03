@@ -7,11 +7,10 @@ import ReactNotification from "react-notifications-component";
 import {
     AddLink,
     APIHostName,
-    DataGridColumnList,
+    listColumnVehicleRentalRequestType,
     DeleteAPIPath,
     IDSelectColumnName,
     PagePath,
-    PKColumnName,
     SearchAPIPath,
     SearchElementList,
     SearchMLObjectDefinition,
@@ -142,7 +141,7 @@ class SearchCom extends React.Component {
                 <ReactNotification ref={this.notificationDOMRef} />
 
                 <SearchForm
-                    FormName="Loại xử lý của yêu cầu thuê xe"
+                    FormName="Loại yêu cầu thuê phương tiện"
                     listelement={SearchElementList}
                     MLObjectDefinition={SearchMLObjectDefinition}
                     onSubmit={this.handleSearchSubmit}
@@ -155,9 +154,9 @@ class SearchCom extends React.Component {
                     DeletePermission={""}
                     IDSelectColumnName={IDSelectColumnName}
                     IsAutoPaging={true}
-                    listColumn={DataGridColumnList}
+                    listColumn={listColumnVehicleRentalRequestType}
                     onDeleteClick={this.handleDelete}
-                    PKColumnName={PKColumnName}
+                    PKColumnName={"VehicleRentalRequestTypeID"}
                     ref={this.gridref}
                     RequirePermission={""}
                     RowsPerPage={10}

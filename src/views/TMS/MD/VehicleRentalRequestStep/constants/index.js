@@ -13,18 +13,18 @@ export const PKColumnName = "VehicleRentalRequestStepID"
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Bước xử lý của yêu cầu thuê xe" }
+    { Link: "", Title: "Bước yêu cầu thuê phương tiện" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/VehicleRentalRequestStep", Title: "Bước xử lý của yêu cầu thuê xe" },
+    { Link: "/VehicleRentalRequestStep", Title: "Bước yêu cầu thuê phương tiện" },
     { Link: "", Title: "Thêm bước xử lý của yêu cầu thuê xe" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/VehicleRentalRequestStep", Title: "Bước xử lý của yêu cầu thuê xe" },
+    { Link: "/VehicleRentalRequestStep", Title: "Bước yêu cầu thuê phương tiện" },
     { Link: "", Title: "Chỉnh sửa bước xử lý của yêu cầu thuê xe" }
 ];
 
@@ -103,7 +103,7 @@ export const AddElementList = [
         name: "txtVehicleRentalRequestStepName",
         label: "Tên loại bước xử lý của yêu cầu thuê xe",
         value: "",
-        maxSize: "300",
+        maxSize: "100",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -116,7 +116,7 @@ export const AddElementList = [
         name: "txtOrderIndex",
         label: "Thứ tự hiển thị",
         value: "",
-        maxSize: "10",
+        maxSize: "9",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -129,7 +129,7 @@ export const AddElementList = [
         name: "txtDescription",
         label: "Mô tả",
         value: "",
-        maxSize: "1000",
+        maxSize: "330",
         placeholder: "",
         icon: "",
         rows: "6",
@@ -181,7 +181,7 @@ export const EditElementList = [
         name: "txtVehicleRentalRequestStepName",
         label: "Tên loại bước xử lý của yêu cầu thuê xe",
         value: "",
-        maxSize: "300",
+        maxSize: "100",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -194,7 +194,7 @@ export const EditElementList = [
         name: "txtOrderIndex",
         label: "Thứ tự hiển thị",
         value: "",
-        maxSize: "10",
+        maxSize: "9",
         placeholder: "",
         icon: "",
         listoption: {},
@@ -207,7 +207,7 @@ export const EditElementList = [
         name: "txtDescription",
         label: "Mô tả",
         value: "",
-        maxSize: "1000",
+        maxSize: "330",
         placeholder: "",
         icon: "",
         rows: "6",

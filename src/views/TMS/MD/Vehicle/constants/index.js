@@ -20,18 +20,18 @@ export const PKColumnName = "VehicleID";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách đăng kí xe" }
+    { Link: "", Title: "Danh sách phương tiện" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/Vehicle", Title: "Danh sách đăng kí xe" },
+    { Link: "/Vehicle", Title: "Danh sách phương tiện" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/Vehicle", Title: "Danh sách đăng kí xe" },
+    { Link: "/Vehicle", Title: "Danh sách phương tiện" },
     { Link: "", Title: "Thêm" }
 ];
 
@@ -229,24 +229,24 @@ export const DataGridColumnList = [
         Caption: "Biển số xe",
         DataSourceMember: "LicensePlateNumber",
     },
-    {
-        Name: "MainDriverUserIDName",
-        Type: "text",
-        Caption: "Tài xế",
-        DataSourceMember: "MainDriverUserIDName",
-    },
+    // {
+    //     Name: "MainDriverUserIDName",
+    //     Type: "text",
+    //     Caption: "Tài xế",
+    //     DataSourceMember: "MainDriverUserIDName",
+    // },
     {
         Name: "PartnerIDName",
         Type: "text",
         Caption: "Tên đối tác",
         DataSourceMember: "PartnerIDName",
     },
-    {
-        Name: "MainCoordinatorStoreIDName",
-        Type: "text",
-        Caption: "Kho điều phối chính",
-        DataSourceMember: "MainCoordinatorStoreIDName",
-    },
+    // {
+    //     Name: "MainCoordinatorStoreIDName",
+    //     Type: "text",
+    //     Caption: "Kho điều phối chính",
+    //     DataSourceMember: "MainCoordinatorStoreIDName",
+    // },
     {
         Name: "Weight",
         Type: "text",
@@ -331,24 +331,24 @@ export const MLObjectDefinitionNew = [
         BindControlName: "cbActivityStatusID",
         DataSourceMember: "ActivityStatusID"
     },
-    {
-        Name: "MainCoordinatorStoreID",
-        DefaultValue: "",
-        BindControlName: "cbMainCoordinatorStoreID",
-        DataSourceMember: "MainCoordinatorStoreID"
-    },
+    // {
+    //     Name: "MainCoordinatorStoreID",
+    //     DefaultValue: "",
+    //     BindControlName: "cbMainCoordinatorStoreID",
+    //     DataSourceMember: "MainCoordinatorStoreID"
+    // },
     {
         Name: "IsActived",
         DefaultValue: true,
         BindControlName: "chkIsActived",
         DataSourceMember: "IsActived"
     },
-    {
-        Name: "Description",
-        DefaultValue: true,
-        BindControlName: "txtDescription",
-        DataSourceMember: "Description"
-    },
+    // {
+    //     Name: "Description",
+    //     DefaultValue: true,
+    //     BindControlName: "txtDescription",
+    //     DataSourceMember: "Description"
+    // },
     {
         Name: "IsSystem",
         DefaultValue: true,
@@ -394,24 +394,24 @@ export const MLObjectDefinition = [
         BindControlName: "cbActivityStatusID",
         DataSourceMember: "ActivityStatusID"
     },
-    {
-        Name: "MainCoordinatorStoreID",
-        DefaultValue: "",
-        BindControlName: "cbMainCoordinatorStoreID",
-        DataSourceMember: "MainCoordinatorStoreID"
-    },
+    // {
+    //     Name: "MainCoordinatorStoreID",
+    //     DefaultValue: "",
+    //     BindControlName: "cbMainCoordinatorStoreID",
+    //     DataSourceMember: "MainCoordinatorStoreID"
+    // },
     {
         Name: "IsActived",
         DefaultValue: true,
         BindControlName: "chkIsActived",
         DataSourceMember: "IsActived"
     },
-    {
-        Name: "Description",
-        DefaultValue: true,
-        BindControlName: "txtDescription",
-        DataSourceMember: "Description"
-    },
+    // {
+    //     Name: "Description",
+    //     DefaultValue: true,
+    //     BindControlName: "txtDescription",
+    //     DataSourceMember: "Description"
+    // },
     {
         Name: "IsSystem",
         DefaultValue: true,

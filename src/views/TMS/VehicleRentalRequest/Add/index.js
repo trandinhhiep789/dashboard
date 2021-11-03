@@ -36,11 +36,15 @@ import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
 import { Base64 } from 'js-base64';
 import DeliverUserList from "../../ShipmentOrder/Component/DeliverUserList";
 import FileAttachment from "../../../../common/components/Form/FileAttachment";
+import MultiSelectComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
+
+
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
         this.prevDataSubmit = this.prevDataSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
+        this.getCacheKey = this.getCacheKey.bind(this)
 
 
         this.state = {
@@ -51,6 +55,10 @@ class AddCom extends React.Component {
             AttachmentListData: [],
             AttachmentList: [],
             fileSize: 0,
+            UserValue: [],
+            RequestUser: "",
+            VehicleRentalReqType: []
+
         };
     }
 
@@ -61,20 +69,33 @@ class AddCom extends React.Component {
 
     }
 
+    
+    getCacheKey() {
+        this.props.callGetCache("ERPCOMMONCACHE.VEHICLERENTALREQTYPE").then(apiResult => {
+            console.log("cache", apiResult)
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.Message)
+            }
+            else {
+
+                this.setState({
+                    VehicleRentalReqType: apiResult.ResultObject.CacheData
+                })
+            }
+        })
+    }
 
 
     prevDataSubmit(formData, MLObject) {
-        const { AttachmentList, fileSize } = this.state;
-        console.log("add", formData, MLObject, AttachmentList, fileSize)
-        MLObject.RequestUser = MLObject.RequestUser[0].UserName;
-        MLObject.CurrentVehicleRentalRequestStepID= 1;
-        MLObject.CurrentVehicleRentalStatusID =1;
+        const { AttachmentList, VehicleRentalReqType } = this.state;
+        const VehicleRentalReqTypeItem = VehicleRentalReqType.find(n => n.VehicleRentalReqTypeID == this.props.location.state.VehicleRentalReqTypeID);
+        MLObject.RequestUser = MLObject.RequestUser.value;
+        MLObject.AddFunctionID = this.props.location.state.AddFunctionID;
         let data = new FormData();
         data.append("vehicleRentalRequestATTObj", AttachmentList.FileURL);
         data.append("vehicleRentalRequestObj", JSON.stringify(MLObject));
-
         console.log("data", data, MLObject)
-        this.handleSubmit(data)
+      this.handleSubmit(data)
 
     }
 
@@ -141,6 +162,13 @@ class AddCom extends React.Component {
         }
     }
 
+    onChangeUser(name, objUser) {
+        this.setState({
+            RequestUser: objUser.value
+        })
+    }
+
+
     render() {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
@@ -156,7 +184,7 @@ class AddCom extends React.Component {
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={[]}
                     BackLink={BackLink}
-                     RequirePermission={this.props.location.state.AddFunctionID}
+                    RequirePermission={this.props.location.state.AddFunctionID}
                     onSubmit={this.prevDataSubmit}
                     onchange={this.handleChange.bind(this)}
                 >
@@ -228,8 +256,8 @@ class AddCom extends React.Component {
                         </div>
 
                         <div className="col-md-6">
-
-                            <DeliverUserList
+                            
+                            {/* <DeliverUserList
                                 name="cboRequestUser"
                                 colspan="8"
                                 labelcolspan="4"
@@ -239,7 +267,25 @@ class AddCom extends React.Component {
                                 controltype="InputMultiControl"
                                 datasourcemember="RequestUser"
                                 isMultiSelect={false}
+                            /> */}
+
+                            <MultiSelectComboBox
+                                colspan="8"
+                                datasourcemember="RequestUser"
+                                disabled={false}
+                                isautoloaditemfromcache={false}
+                                IsLabelDiv={true}
+                                isMultiSelect={false}
+                                label="Người yêu cầu"
+                                labelcolspan="4"
+                                listoption={this.state.UserValue}
+                                name="cboRequestUser"
+                                controltype="InputMultiControl"
+                                // onChange={this.onChangeUser}
+                                validatonList={["Comborequired"]}
+                                value={this.state.UserValue}
                             />
+
 
                         </div>
 
