@@ -120,6 +120,7 @@ class VehicleRentalRequestInfoCom extends React.Component {
                             onChange={this.handleValueChange.bind(this)}
                             options={listOption}
                             placeholder={"--Vui lòng chọn--"}
+                            isDisabled ={this.props.IsUpdateAbility == true ? false : true}
                         />
                     </div>
                     <div className="form-group col-md-2"></div>

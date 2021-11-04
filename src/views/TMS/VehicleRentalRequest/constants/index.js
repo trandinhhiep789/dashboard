@@ -6,6 +6,7 @@ export const LoadAPIPath = "api/VehicleRentalRequest/Load";
 export const SearchAPIPath = "api/VehicleRentalRequest/Search";
 export const UpdateAPIPath = "api/VehicleRentalRequest/Update";
 export const UpdateAbilityAPIPath = "api/VehicleRentalRequest/UpdateAbilyti";
+export const UpdateProcessAPIPath= "api/VehicleRentalRequest/UpdateProcess";
 
 export const AddLink = "/VehicleRentalRequest/Add";
 export const BackLink = "/VehicleRentalRequest";

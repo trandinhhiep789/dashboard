@@ -20,14 +20,16 @@ import {
     UpdateAbilityAPIPath,
     PKColumnNameWF,
     TitleFromWF,
-    DataGridColumnItemListWF
+    DataGridColumnItemListWF,
+    UpdateProcessAPIPath
 } from "../constants";
 import VehicleRentalRequestInfo from "../Component/VehicleRentalRequestInfo";
 import ReactNotification from "react-notifications-component";
 import { updatePagePath } from "../../../../actions/pageAction";
 import InputGridControl from "../../../../common/components/FormContainer/FormControl/InputGrid/InputGridControl.js";
 import { DatePicker, Menu, Dropdown, Button } from 'antd';
-import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../constants/functionLists";
+import { GET_CACHE_USER_FUNCTION_LIST, TMS_VEHICLERENTALREQUEST_ADDABILITY } from "../../../../constants/functionLists";
+import ReactTooltip from 'react-tooltip';
 
 class DetailCom extends React.Component {
 
@@ -37,7 +39,9 @@ class DetailCom extends React.Component {
         this.state = {
             VehicleRentalRequest: {},
             IsCallAPIError: true,
-            AbilityID: 0
+            AbilityID: 0,
+            isUpdateAbility: true,
+            isUpdateProcess: true
         };
         this.notificationDOMRef = React.createRef();
         this.callLoadData = this.callLoadData.bind(this)
@@ -48,6 +52,13 @@ class DetailCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(DetailAPIPath);
         this.callLoadData(this.props.match.params.id);
+        this.checkPermission(TMS_VEHICLERENTALREQUEST_ADDABILITY).then(result => {
+            console.log("ability", result)
+            this.setState({
+                isUpdateAbility: result
+            })
+        });
+
     }
 
     callLoadData(id) {
@@ -60,6 +71,19 @@ class DetailCom extends React.Component {
                 })
             }
             else {
+
+
+                if (apiResult.ResultObject.RentalRequestType_WF_NextList.length > 0) {
+                    this.checkPermission(apiResult.ResultObject.RentalRequestType_WF_NextList[0].ChooseFuntionID).then(result => {
+                        console.log("process", result)
+                        this.setState({
+                            isUpdateProcess: result
+                        })
+                    })
+                }
+
+
+
                 this.setState({
                     VehicleRentalRequest: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
@@ -115,6 +139,7 @@ class DetailCom extends React.Component {
             AbilityID: value
         })
     }
+
     handleSubmitAbility() {
         const { AbilityID, VehicleRentalRequest } = this.state;
 
@@ -152,27 +177,42 @@ class DetailCom extends React.Component {
         e.preventDefault();
         let value = e.currentTarget.dataset.option;
         let lable = e.currentTarget.dataset.lable;
-        console.log("change",  value, lable)
         let ChooseFunctionID = e.currentTarget.dataset.functionid;
         let { VehicleRentalRequest } = this.state;
         if (ChooseFunctionID != "") {
             this.checkPermission(ChooseFunctionID).then(result => {
-               console.log("checkPermission:", result)
-                if(result){
+                if (result) {
+                    let MLObject = {}
+                    MLObject.VehicleRentalRequestID = VehicleRentalRequest.VehicleRentalRequestID;
+                    MLObject.VehicleRentalRequestTypeID = VehicleRentalRequest.VehicleRentalRequestTypeID;
+                    MLObject.RequestDate = VehicleRentalRequest.RequestDate;
+                    MLObject.NextVehicleRentalRequestStepID = value;
+                    MLObject.VehicleID = VehicleRentalRequest.VehicleID;
+                    MLObject.StartTime = VehicleRentalRequest.StartTime;
+                    MLObject.EndTime = VehicleRentalRequest.EndTime;
+                    MLObject.StoreID = VehicleRentalRequest.StoreID;
+                    MLObject.ChooseFunctionID = ChooseFunctionID;
+
+                    console.log("checkPermission:", result, MLObject)
+                    this.props.callFetchAPI(APIHostName, UpdateProcessAPIPath, MLObject).then(apiResult => {
+                        console.log("submit", MLObject, apiResult)
+                        this.addNotification(apiResult.Message, apiResult.IsError);
+                        this.callLoadData(VehicleRentalRequest.VehicleRentalRequestID)
+                    });
 
                 }
-                else{
+                else {
                     this.showMessage("Bạn không có quyền chuyển bước.")
                 }
             })
         }
-        else{
+        else {
             this.showMessage("Bạn không có quyền chuyển bước.")
         }
     }
 
     render() {
-        const { VehicleRentalRequest, IsCallAPIError, AbilityID } = this.state;
+        const { VehicleRentalRequest, IsCallAPIError, AbilityID, isUpdateAbility, isUpdateProcess } = this.state;
 
         const dropdownItem = () => {
             return <Menu>
@@ -193,8 +233,13 @@ class DetailCom extends React.Component {
         }
         if (!IsCallAPIError) {
             let strCurrentVehicleRentalRequestStepName = "";
-            if (VehicleRentalRequest.RentalRequestType_WF_NextList.filter(a => a.CurrentVehicleRentalRequestStepID === VehicleRentalRequest.CurrentVehicleRentalRequestStepID).length > 0) {
-                strCurrentVehicleRentalRequestStepName = VehicleRentalRequest.RentalRequestType_WF_NextList.filter(a => a.CurrentVehicleRentalRequestStepID === VehicleRentalRequest.CurrentVehicleRentalRequestStepID)[0].CurrentVehicleRentalRequestStepName
+            if (VehicleRentalRequest.RentalRequestType_WF_NextList.length > 0) {
+                if (VehicleRentalRequest.RentalRequestType_WF_NextList.filter(a => a.CurrentVehicleRentalRequestStepID === VehicleRentalRequest.CurrentVehicleRentalRequestStepID).length > 0) {
+                    strCurrentVehicleRentalRequestStepName = VehicleRentalRequest.RentalRequestType_WF_NextList.filter(a => a.CurrentVehicleRentalRequestStepID === VehicleRentalRequest.CurrentVehicleRentalRequestStepID)[0].CurrentVehicleRentalRequestStepName
+                }
+            }
+            else {
+                strCurrentVehicleRentalRequestStepName = VehicleRentalRequest.VehicleRentalRequestStepName
             }
             return (
                 <React.Fragment>
@@ -210,6 +255,7 @@ class DetailCom extends React.Component {
                                     VehicleRentalRequest={VehicleRentalRequest}
                                     AbilityID={AbilityID}
                                     onChangeAbility={this.handleChangeAbility.bind(this)}
+                                    IsUpdateAbility={isUpdateAbility}
                                 />
 
                                 <InputGridControl
@@ -231,18 +277,37 @@ class DetailCom extends React.Component {
                             </div>
 
                             <footer className="card-footer text-right">
-                               
+
                                 <div className="btn-group btn-group-dropdown mr-3">
-                                <div className="input-group input-group-dropdown-custom">
-                                        <Dropdown overlay={dropdownItem} >
-                                            <div className="btn dropdown-toggle">
-                                                {strCurrentVehicleRentalRequestStepName}
-                                            </div>
-                                        </Dropdown>
+                                    <div className="input-group input-group-dropdown-custom">
+                                        {
+                                            isUpdateProcess == true ? <Dropdown overlay={dropdownItem} >
+                                                <div className="btn dropdown-toggle">
+                                                    {strCurrentVehicleRentalRequestStepName}
+                                                </div>
+                                            </Dropdown>
+                                                :
+                                                <Dropdown data-tip data-for="btnUpdateProcess" data-id="btnUpdateProcess" overlay={dropdownItem} disabled>
+                                                    <div className="btn dropdown-toggle">
+                                                        {strCurrentVehicleRentalRequestStepName}
+                                                    </div>
+                                                </Dropdown>
+                                        }
+
                                     </div>
                                 </div>
                                 <div className="btn-group btn-group-dropdown mr-3">
-                                    <button className="btn btn-primary" type="button" onClick={this.handleSubmitAbility.bind(this)}>Cập nhật năng lực xe</button>
+                                    {isUpdateAbility == true ?
+                                        <button className="btn btn-primary" type="button" onClick={this.handleSubmitAbility.bind(this)} >Cập nhật năng lực xe</button>
+                                        :
+                                        <React.Fragment>
+                                            <button data-tip data-for="btnUpdateAbility" data-id="btnUpdateAbility" className="btn btn-primary" type="button">Cập nhật năng lực xe</button>
+                                            <ReactTooltip id="btnUpdateAbility" type='warning'>
+                                                <span>Bạn không có quyền cập nhật năng lực xe</span>
+                                            </ReactTooltip>
+                                        </React.Fragment>
+
+                                    }
                                 </div>
                                 <Link to="/VehicleRentalRequest">
                                     <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button>
