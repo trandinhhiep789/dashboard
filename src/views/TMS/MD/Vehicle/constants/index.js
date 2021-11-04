@@ -5,12 +5,9 @@ export const SearchAPIPath = "api/Vehicle/Search";
 export const LoadAPIPath = "api/Vehicle/Load";
 export const LoadNewAPIPath = "api/Vehicle/LoadNew";
 export const AddAPIPath = "api/Vehicle/Add";
-export const AddNewAPIPath = "api/Vehicle/AddNew";
 export const UpdateAPIPath = "api/Vehicle/Update";
-export const UpdateNewAPIPath = "api/Vehicle/UpdateNew";
 export const DeleteAPIPath = "api/Vehicle/Delete";
 export const DeleteNewAPIPath = "api/Vehicle/DeleteNew";
-export const UpdateOrderAPIPath = "api/Vehicle/UpdateOrder";
 export const BackLink = "/Vehicle";
 export const AddLink = "/Vehicle/Add";
 export const AddLogAPIPath = "api/Vehicle/Add";
@@ -294,7 +291,7 @@ export const DataGridColumnList = [
     },
 ]
 
-export const MLObjectDefinitionNew = [
+export const MLObjectDefinition = [
     {
         Name: "VehicleID",
         DefaultValue: "",
@@ -361,67 +358,34 @@ export const MLObjectDefinitionNew = [
         BindControlName: "cbVehicleModelID",
         DataSourceMember: "VehicleModelID"
     },
-]
-
-export const MLObjectDefinition = [
     {
-        Name: "VehicleTypeID",
+        Name: "Weight",
         DefaultValue: "",
-        BindControlName: "cbVehicleTypeID",
-        DataSourceMember: "VehicleTypeID"
+        BindControlName: "txtWeight",
+        DataSourceMember: "Weight"
     },
     {
-        Name: "PartnerID",
+        Name: "Length",
         DefaultValue: "",
-        BindControlName: "cbPartnerID",
-        DataSourceMember: "PartnerID"
+        BindControlName: "txtLength",
+        DataSourceMember: "Length"
     },
     {
-        Name: "VehicleName",
+        Name: "Width",
         DefaultValue: "",
-        BindControlName: "txtVehicleName",
-        DataSourceMember: "VehicleName"
+        BindControlName: "txtWidth",
+        DataSourceMember: "Width"
     },
     {
-        Name: "LicensePlateNumber",
+        Name: "Height",
         DefaultValue: "",
-        BindControlName: "txtLicensePlateNumber",
-        DataSourceMember: "LicensePlateNumber"
+        BindControlName: "txtHeight",
+        DataSourceMember: "Height"
     },
     {
-        Name: "ActivityStatusID",
+        Name: "Volume",
         DefaultValue: "",
-        BindControlName: "cbActivityStatusID",
-        DataSourceMember: "ActivityStatusID"
-    },
-    // {
-    //     Name: "MainCoordinatorStoreID",
-    //     DefaultValue: "",
-    //     BindControlName: "cbMainCoordinatorStoreID",
-    //     DataSourceMember: "MainCoordinatorStoreID"
-    // },
-    {
-        Name: "IsActived",
-        DefaultValue: true,
-        BindControlName: "chkIsActived",
-        DataSourceMember: "IsActived"
-    },
-    // {
-    //     Name: "Description",
-    //     DefaultValue: true,
-    //     BindControlName: "txtDescription",
-    //     DataSourceMember: "Description"
-    // },
-    {
-        Name: "IsSystem",
-        DefaultValue: true,
-        BindControlName: "chkIsSystem",
-        DataSourceMember: "IsSystem"
-    },
-    {
-        Name: "VehicleModelID",
-        DefaultValue: "",
-        BindControlName: "cbVehicleModelID",
-        DataSourceMember: "VehicleModelID"
+        BindControlName: "txtVolume",
+        DataSourceMember: "Volume"
     },
 ]
