@@ -20,6 +20,15 @@ import {
     APIHostName
 } from "../constants";
 
+// react-boostrap
+// react bootstrap
+import * as RBT from "react-bootstrap";
+
+// formik, yup form validation  
+import { Formik, Form, ErrorMessage, FastField } from "formik";
+import * as Yup from "yup";
+import { ConnectedFocusError } from "focus-formik-error";
+
 class ListShipCoordinatorCom extends Component {
     constructor(props) {
         super(props);
@@ -45,7 +54,8 @@ class ListShipCoordinatorCom extends Component {
             Via_Distances: "",
             ShipmentRouteSameLst: [],
             Distances_RouteLst: [],
-            girdSlide: false
+            girdSlide: false,
+            showModalAddInfor: false,
 
         }
         this.notificationDOMRef = React.createRef();
@@ -647,12 +657,32 @@ class ListShipCoordinatorCom extends Component {
 
     };
 
+    handleShowModelAddInfor = () => {
+        this.setState({showModalAddInfor : true})
+    };
+    handleCloseModalAddInfor = () => {
+        this.setState({showModalAddInfor : false})
+    };
+
 
     render() {
         let { ShipmentOrder, ShipmentRouteID, ShipmentOrderSameLst, ShipmentRouteLst, ShipmentRouteSameLst, Distances_RouteLst, Via_Distances, Via_Durations, girdSlide } = this.state;
         let resultShipmentRoute = ShipmentRouteLst.filter(n => n.ShipmentRouteID != ShipmentRouteID);
         let resultShipmentRouteSame = ShipmentRouteSameLst.filter(n => n.ShipmentRouteID != ShipmentRouteID);
         console.log("ShipmentOrderSameLst", ShipmentOrderSameLst)
+
+        const initialValues = {
+            noiDung1: "",
+            noiDung2: "",
+            noiDung3: "",
+        };
+    
+        const validationSchema = Yup.object().shape({
+            noiDung1: Yup.string().required("Vui lòng không bỏ trống"),
+            noiDung2: Yup.string().required("Vui lòng không bỏ trống"),
+            noiDung3: Yup.string().required("Vui lòng không bỏ trống")
+        })
+
         return (
             <React.Fragment>
                 <div className="card">
@@ -765,6 +795,7 @@ class ListShipCoordinatorCom extends Component {
                                                             CarrierTypeCss = "badge badge-secondary  mr-10 badge-active";
                                                             CarrierTypeTruncCss = "badge badge-secondary";
                                                         }
+                                                        let AddInforTypeCss = "badge badge-secondary mx-10";
 
                                                         return (
                                                             <tr key={index} className="jsgrid-row">
@@ -813,6 +844,68 @@ class ListShipCoordinatorCom extends Component {
                                                                                         <span className={CarrierTypeTruncCss} ><i className="fa fa-truck fff"></i> Xe tải</span>
                                                                                     )
                                                                                 }
+                                                                                <span onClick={this.handleShowModelAddInfor} data-bs-toggle="modal" data-bs-target="#staticBackdrop" className={AddInforTypeCss}><i className="fa fa-plus-circle fffff"></i> Thêm thông tin</span>
+                                                                                
+                                                                                <RBT.Modal
+                                                                                    show={this.state.showModalAddInfor}
+                                                                                    onHide={this.handleCloseModalAddInfor}
+                                                                                    backdrop="static"
+                                                                                    keyboard={false}
+                                                                                    style={{zIndex:10001}}
+                                                                                >
+                                                                                    <div style={{border: "1px solid #a18b8b"}}>
+                                                                                        <RBT.Modal.Header >
+                                                                                        <RBT.Modal.Title><mark><em>Thêm thông tin lưu ý</em></mark></RBT.Modal.Title>
+                                                                                        <RBT.Button variant="secondary" onClick={this.handleCloseModalAddInfor}>
+                                                                                            X
+                                                                                        </RBT.Button>
+                                                                                        </RBT.Modal.Header>
+                                                                                        <RBT.Modal.Body>
+                                                                                        <Formik
+                                                                                            initialValues={initialValues}
+                                                                                            validationSchema={validationSchema}
+                                                                                            onSubmit={(values, { resetForm }) => {
+                                                                                                console.log(values);
+                                                                                                resetForm();
+                                                                                            }}
+                                                                                        >
+                                                                                            {(formikProps) => {
+                                                                                                return (
+                                                                                                    <div>
+                                                                                                        <Form>
+                                                                                                            <ConnectedFocusError />
+                                                                                                            <div>
+                                                                                                                <span>Nội dung 1 </span>
+                                                                                                                <FastField autoFocus autoComplete="off" aria-describedby="noiDung1" onChange={formikProps.handleChange} name="noiDung1" className="form-control"  type="text"/>
+                                                                                                                <span style={{ color: 'red' }}><ErrorMessage name="noiDung1" /></span>
+                                                                                                            </div>
+                                                                                                            <br/>
+                                                                                                            <div>
+                                                                                                                <span>Nội dung 2 </span>
+                                                                                                                <FastField autoComplete="off" aria-describedby="noiDung2" onChange={formikProps.handleChange} name="noiDung2" className="form-control"  type="text"/>
+                                                                                                                <span style={{ color: 'red' }}><ErrorMessage name="noiDung2" /></span>
+                                                                                                            </div>
+                                                                                                            <br/>
+                                                                                                            <div>
+                                                                                                                <span>Nội dung 3 </span>
+                                                                                                                <FastField autoComplete="off" aria-describedby="noiDung3" onChange={formikProps.handleChange} name="noiDung3" className="form-control"  type="text"/>
+                                                                                                                <span style={{ color: 'red' }}><ErrorMessage name="noiDung3" /></span>
+                                                                                                            </div>
+                                                                                                            <RBT.Button className="mt-4" style={{display: 'flex', flexDirection: 'flex-end'}} type="submit" variant="primary">Thêm</RBT.Button>
+                                                                                                        </Form>
+                                                                                                        
+                                                                                                    </div>
+                                                                                                )
+                                                                                                
+                                                                                            }}
+                                                                                            
+                                                                                        </Formik>
+                                                                                        </RBT.Modal.Body>
+                                                                                        {/* <RBT.Modal.Footer>
+                                                                                            <RBT.Button type="submit" variant="primary">Thêm</RBT.Button>
+                                                                                        </RBT.Modal.Footer> */}
+                                                                                    </div>
+                                                                                </RBT.Modal>
                                                                             </div>
                                                                             <div className="item group-cod">
                                                                                 <span className="badge badge-secondary badge-active"><i className="fa fa-dollar"></i> {formatMoney(item.TotalCOD, 0)}đ</span>
