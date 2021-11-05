@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export const APIHostName = "TMSAPI";
 export const APISearch = "api/AirConditionerMTOrderReport/Search";
 
@@ -9,12 +11,12 @@ export const PagePath = [
 export const MLObjectDefinitionSearch = [
     {
         Name: "FromDate",
-        DefaultValue: new Date(),
+        DefaultValue: moment(),
         BindControlName: "FromDate"
     },
     {
         Name: "ToDate",
-        DefaultValue: new Date(),
+        DefaultValue: moment(),
         BindControlName: "ToDate"
     }
 ];
@@ -30,7 +32,7 @@ export const listelementSearch = [
         placeholder: "Từ ngày",
         timeFormat: false,
         type: "Datetime",
-        value: new Date()
+        value: moment()
     },
     {
         classNameCol: "col-custom",
@@ -42,7 +44,7 @@ export const listelementSearch = [
         placeholder: "Đến ngày",
         timeFormat: false,
         type: "Datetime",
-        value: new Date()
+        value: moment()
     }
 ];
 
@@ -88,10 +90,10 @@ export const listColumnSearch = [
 export const initSearchParamater = [
     {
         SearchKey: "@FROMDATE",
-        SearchValue: new Date()
+        SearchValue: moment()
     },
     {
         SearchKey: "@TODATE",
-        SearchValue: new Date()
+        SearchValue: moment()
     }
 ]

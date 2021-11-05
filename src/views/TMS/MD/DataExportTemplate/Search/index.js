@@ -87,8 +87,14 @@ class SearchCom extends React.Component {
             //this.searchref.current.changeLoadComplete();
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
+                const uptResultObject = apiResult.ResultObject.map(item => {
+                    return {
+                        ...item,
+                        UpdatedUserIDName: `${item.UpdatedUser} - ${item.UpdatedUserFullName}`
+                    }
+                })
                 this.setState({
-                    gridDataSource: apiResult.ResultObject,
+                    gridDataSource: uptResultObject,
                     IsShowForm: true
                 });
             } else {

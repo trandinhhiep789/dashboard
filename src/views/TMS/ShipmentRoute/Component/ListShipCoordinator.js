@@ -647,12 +647,12 @@ class ListShipCoordinatorCom extends Component {
 
     };
 
-
     render() {
         let { ShipmentOrder, ShipmentRouteID, ShipmentOrderSameLst, ShipmentRouteLst, ShipmentRouteSameLst, Distances_RouteLst, Via_Distances, Via_Durations, girdSlide } = this.state;
         let resultShipmentRoute = ShipmentRouteLst.filter(n => n.ShipmentRouteID != ShipmentRouteID);
         let resultShipmentRouteSame = ShipmentRouteSameLst.filter(n => n.ShipmentRouteID != ShipmentRouteID);
         console.log("ShipmentOrderSameLst", ShipmentOrderSameLst)
+
         return (
             <React.Fragment>
                 <div className="card">
