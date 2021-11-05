@@ -129,6 +129,7 @@ class EditCom extends React.Component {
                   colspan="10"
                   labelcolspan="2"
                   readOnly={true}
+                  disabled={this.state.DataSource.IsSystem}
                   label="Mã model xe"
                   placeholder="Tên model xe"
                   controltype="InputControl"
@@ -143,7 +144,7 @@ class EditCom extends React.Component {
                   name="txtVehicleModelName"
                   colspan="10"
                   labelcolspan="2"
-                  readOnly={false}
+                  readOnly={this.state.DataSource.IsSystem}
                   label="Tên model xe"
                   placeholder="Tên model xe"
                   controltype="InputControl"
@@ -159,6 +160,7 @@ class EditCom extends React.Component {
                   colspan="10"
                   labelcolspan="2"
                   readOnly={false}
+                  disabled={this.state.DataSource.IsSystem}
                   label="Kích hoạt"
                   controltype="InputControl"
                   value={true}
@@ -173,6 +175,7 @@ class EditCom extends React.Component {
                   colspan="10"
                   labelcolspan="2"
                   readOnly={false}
+                  disabled={this.state.DataSource.IsSystem}
                   label="Hệ thống"
                   controltype="InputControl"
                   value=""
