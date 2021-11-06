@@ -244,6 +244,8 @@ class VehicleRentalRequestType_WFAddCom extends React.Component {
             RentalRequestType_WF_NextList
         }
 
+        console.log(uptMLObject)
+
         this.props.callFetchAPI(APIHostName, AddAPIPath_RentalRequestType_WF, uptMLObject).then(apiResult => {
             this.showMessage(apiResult.Message);
             if (!apiResult.IsError) {
@@ -382,6 +384,13 @@ class VehicleRentalRequestType_WFAddCom extends React.Component {
 
                                 <FormControl.CheckBox
                                     controltype="InputControl"
+                                    datasourcemember="IsCanDelete"
+                                    name="IsCanDelete"
+                                    label="Là bước có thể xóa yêu cầu"
+                                />
+
+                                <FormControl.CheckBox
+                                    controltype="InputControl"
                                     datasourcemember="IsActived"
                                     name="IsActived"
                                     label="Kích hoạt"
@@ -477,7 +486,8 @@ class VehicleRentalRequestType_WFAddCom extends React.Component {
 VehicleRentalRequestType_WFAddCom.defaultProps = {
     lstRentalRequestType_WF_Next: [],
     objRentalRequestType_WF: {
-        IsActived: true
+        IsActived: true,
+        IsCanDelete: false
     },
     VehicleRentalRequestTypeID: 0
 }

@@ -224,6 +224,7 @@ export const EditElementList = [
         placeholder: "",
         icon: "",
         listoption: {},
+        DataSourceMember: "IsActived",
         readonly: false,
         validatonList: []
     },
@@ -235,6 +236,7 @@ export const EditElementList = [
         placeholder: "",
         icon: "",
         listoption: {},
+        DataSourceMember: "IsSystem",
         readonly: false,
         validatonList: []
     }

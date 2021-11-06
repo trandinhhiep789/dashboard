@@ -417,6 +417,13 @@ class VehicleRentalRequestType_WFEditCom extends React.Component {
 
                                 <FormControl.CheckBox
                                     controltype="InputControl"
+                                    datasourcemember="IsCanDelete"
+                                    name="IsCanDelete"
+                                    label="Là bước có thể xóa yêu cầu"
+                                />
+
+                                <FormControl.CheckBox
+                                    controltype="InputControl"
                                     datasourcemember="IsActived"
                                     name="IsActived"
                                     label="Kích hoạt"

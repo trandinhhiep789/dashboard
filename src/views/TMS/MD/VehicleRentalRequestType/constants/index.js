@@ -554,7 +554,14 @@ export const MLObjectDefinitionVehicleRentalRequestType_WF = [
         DefaultValue: "",
         Label: "Hệ thống",
         Name: "IsSystem"
-    }
+    },
+    {
+        BindControlName: "IsCanDelete",
+        DataSourceMember: "IsCanDelete",
+        DefaultValue: "",
+        Label: "Hệ thống",
+        Name: "IsCanDelete"
+    },
 ]
 
 export const RentalRequestType_WFListColumn = [
@@ -630,6 +637,12 @@ export const RentalRequestType_WFListColumn = [
         Type: "checkicon",
         Caption: "Tự động thêm vào lịch làm việc",
         DataSourceMember: "IsAddToWorkingPlan",
+    },
+    {
+        Name: "IsCanDelete",
+        Type: "checkicon",
+        Caption: "Là bước có thể xóa yêu cầu",
+        DataSourceMember: "IsCanDelete",
     },
     {
         Name: "IsActived",
