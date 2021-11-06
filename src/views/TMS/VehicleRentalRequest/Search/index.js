@@ -98,28 +98,29 @@ class SearchCom extends React.Component {
             pkColumnName.map((pkItem, pkIndex) => {
                 MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
             });
-             MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
+            MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
             listMLObject.push(MLObject);
         });
 
 
 
-        const tempData =gridDataSource.filter((x) => listMLObject.some((y) => y.VehicleRentalRequestID === x.VehicleRentalRequestID && (x.CurrentVehicleRentalStatusID !=1 && x.CurrentVehicleRentalStatusID !=3)));
+        const tempData = gridDataSource.filter((x) => listMLObject.some((y) => y.VehicleRentalRequestID == x.VehicleRentalRequestID && x.IsCanDelete == false));
+        console.log("del", gridDataSource, tempData, listMLObject)
+        if (tempData.length > 0) {
+            this.showMessage("Danh sách chọn không thể xóa. Vui lòng chọn lại dữ liệu cần xóa.")
+        }
+        else {
+            const tempData1 = gridDataSource.filter((x) => listMLObject.some((y) => y.VehicleRentalRequestID === x.VehicleRentalRequestID && x.IsCanDelete == true));
+            console.log("del111", gridDataSource, tempData1, listMLObject)
 
-      if(tempData.length > 0){
-        this.showMessage("Danh sách chọn không thể xóa. Vui lòng chọn lại dữ liệu cần xóa.")
-      } 
-      else{
-        const tempData1 =gridDataSource.filter((x) => listMLObject.some((y) => y.VehicleRentalRequestID === x.VehicleRentalRequestID && (x.CurrentVehicleRentalStatusID ==1 || x.CurrentVehicleRentalStatusID ==3)));
-        this.props.callFetchAPI(APIHostName, DeleteAPIPath, tempData1).then(apiResult => {
-            this.setState({ IsCallAPIError: apiResult.IsError });
-            this.addNotification(apiResult.Message, apiResult.IsError);
-            if (!apiResult.IsError) {
-                this.callSearchData(this.state.SearchData);
-            }
-        });
-      }
-      
+            this.props.callFetchAPI(APIHostName, DeleteAPIPath, tempData1).then(apiResult => {
+                this.setState({ IsCallAPIError: apiResult.IsError });
+                this.addNotification(apiResult.Message, apiResult.IsError);
+                if (!apiResult.IsError) {
+                    this.callSearchData(this.state.SearchData);
+                }
+            });
+        }
     }
 
     addNotification(message1, IsError) {
