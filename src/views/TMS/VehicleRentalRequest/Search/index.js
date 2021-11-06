@@ -281,8 +281,8 @@ class SearchCom extends React.Component {
                     listColumn={DataGridColumnList}
                     PKColumnName={PKColumnName}
                     IDSelectColumnName={IDSelectColumnName}
-                    // RequirePermission={TMS_VEHICLERENTALREQUEST_VIEW}
-                    // DeletePermission={TMS_VEHICLERENTALREQUEST_DELETE}
+                    RequirePermission={TMS_VEHICLERENTALREQUEST_VIEW}
+                    DeletePermission={TMS_VEHICLERENTALREQUEST_DELETE}
                     RowsPerPage={10}
                     IsAutoPaging={true}
 
