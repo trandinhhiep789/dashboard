@@ -281,7 +281,7 @@ class DetailCom extends React.Component {
                                 <div className="btn-group btn-group-dropdown mr-3">
                                     <div className="input-group input-group-dropdown-custom">
                                         {
-                                            isUpdateProcess == true ? <Dropdown overlay={dropdownItem} >
+                                            isUpdateProcess == true ? <Dropdown overlay={dropdownItem}>
                                                 <div className="btn dropdown-toggle">
                                                     {strCurrentVehicleRentalRequestStepName}
                                                 </div>
