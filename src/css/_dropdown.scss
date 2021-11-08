@@ -1,4 +1,12 @@
 .btn-group-dropdown {
+    .input-group-dropdown-custom{
+        clear: both;
+        .ant-dropdown-trigger{
+            &:not(:disabled):not(.disabled){
+                background-color: #f2f2f2;
+            }
+        }
+    }
     .dropdown-toggle-disabled {
         background: #b5b4b4 !important;
         border-radius: 4px !important;

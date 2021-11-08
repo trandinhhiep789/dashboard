@@ -172,7 +172,7 @@ export const SearchElementListNew = [
         placeholder: "Kho điều phối",
         listoption: [],
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE",
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.STORE_AREA",
         ValueMember: "StoreID",
         NameMember: "StoreName",
         classNameCol: "col-custom",

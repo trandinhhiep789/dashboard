@@ -84,7 +84,7 @@ class AddCom extends React.Component {
           <div className="col-md-12">
             <FormControl.ComboBoxSelect
               name="cbVehicleTypeID"
-              colspan="10"
+              colspan="4"
               labelcolspan="2"
               label="Loại xe"
               isautoloaditemfromcache={true}
@@ -103,7 +103,7 @@ class AddCom extends React.Component {
           <div className="col-md-12">
             <FormControl.TextBox
               name="txtVehicleModelName"
-              colspan="10"
+              colspan="4"
               labelcolspan="2"
               readOnly={false}
               label="Tên model xe"
@@ -118,7 +118,7 @@ class AddCom extends React.Component {
           <div className="col-md-12">
             <FormControl.CheckBox
               name="chkIsActived"
-              colspan="10"
+              colspan="4"
               labelcolspan="2"
               readOnly={false}
               label="Kích hoạt"
@@ -132,7 +132,7 @@ class AddCom extends React.Component {
           <div className="col-md-12">
             <FormControl.CheckBox
               name="chkIsSystem"
-              colspan="10"
+              colspan="4"
               labelcolspan="2"
               readOnly={false}
               label="Hệ thống"

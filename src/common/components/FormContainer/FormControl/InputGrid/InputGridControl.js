@@ -414,12 +414,14 @@ class InputGridControlCom extends Component {
                     </tr>
                 </thead>
                 <tbody>
+
                     {dataSource != null &&
                         dataSource.map((rowItem, rowIndex) => {
                             let rowClass = "jsgrid-row";
                             if (index % 2 != 0) {
                                 rowClass = "jsgrid-alt-row";
                             }
+                           
                             return (<tr key={rowIndex}>
                                 {
                                     listColumnNew.map((columnItem, index) => {

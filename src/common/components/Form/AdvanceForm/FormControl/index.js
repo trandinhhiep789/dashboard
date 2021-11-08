@@ -446,7 +446,8 @@ class ComboBoxCom extends Component {
                         }
 
                         cacheData.map((cacheItem) => {
-                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember] });
+                            //listOption.push({ value: cacheItem[valueMember], label: cacheItem[nameMember] });
+                            listOption.push({ value: cacheItem[valueMember], label: cacheItem[valueMember] + "-" + cacheItem[nameMember] });
                         }
                         );
                         this.setState({ Listoption: listOption });

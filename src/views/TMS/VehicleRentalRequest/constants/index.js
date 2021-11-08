@@ -6,6 +6,7 @@ export const LoadAPIPath = "api/VehicleRentalRequest/Load";
 export const SearchAPIPath = "api/VehicleRentalRequest/Search";
 export const UpdateAPIPath = "api/VehicleRentalRequest/Update";
 export const UpdateAbilityAPIPath = "api/VehicleRentalRequest/UpdateAbilyti";
+export const UpdateProcessAPIPath= "api/VehicleRentalRequest/UpdateProcess";
 
 export const AddLink = "/VehicleRentalRequest/Add";
 export const BackLink = "/VehicleRentalRequest";
@@ -229,6 +230,18 @@ export const DataGridColumnList = [
         Link: "/VehicleRentalRequest/Detail/",
         DataSourceMember: "VehicleRentalRequestID",
         Width: 100
+    },
+    {
+        Name: "LicensePlateNumber",
+        Type: "text",
+        Caption: "Biển số xe",
+        DataSourceMember: "LicensePlateNumber",
+    },
+    {
+        Name: "RentalTypeName",
+        Type: "text",
+        Caption: "Hình thức thuê xe",
+        DataSourceMember: "RentalTypeName",
     },
     {
         Name: "StartTime",
