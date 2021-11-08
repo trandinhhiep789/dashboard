@@ -72,6 +72,13 @@ class AddCom extends React.Component {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.Volume = this.state.thetich;
+
+        if (parseFloat(MLObject.Length) <= 0 || parseFloat(MLObject.Width) <= 0 || parseFloat(MLObject.Height) <= 0 || parseFloat(MLObject.Weight) <= 0) {
+            this.setState({ IsCallAPIError: true });
+            this.showMessage("Vui lòng nhập số > 0");
+            return;
+        }
+
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
