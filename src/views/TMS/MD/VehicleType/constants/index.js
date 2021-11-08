@@ -163,8 +163,8 @@ export const AddElementList = [
         icon: "",
         listoption: {},
         DataSourceMember: "Volume",
-        readonly: false,
-        validatonList: ["required", "digit"],
+        readonly: true,
+        validatonList: ["digit"],
     },
     {
         type: "checkbox",
@@ -310,8 +310,8 @@ export const EditElementList = [
         icon: "",
         listoption: {},
         DataSourceMember: "Volume",
-        readonly: false,
-        validatonList: ["required", "digit"],
+        readonly: true,
+        validatonList: ["digit"],
     },
     {
         type: "checkbox",

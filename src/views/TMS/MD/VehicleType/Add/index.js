@@ -21,11 +21,16 @@ class AddCom extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.onValueChange = this.onValueChange.bind(this);
+        this.computeVolumn = this.computeVolumn.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
-            IsCloseForm: false
+            IsCloseForm: false,
+            dai: 0,
+            rong: 0,
+            cao: 0
         };
     }
 
@@ -33,15 +38,46 @@ class AddCom extends React.Component {
         this.props.updatePagePath(AddPagePath);
     }
 
+    computeVolumn() {
+        let thetich = parseFloat(this.state.dai) * parseFloat(this.state.rong) * parseFloat(this.state.cao);
+        if (isNaN(thetich)) {
+            thetich = 0;
+        }
+        this.setState({ thetich })
+        document.getElementsByName("txtVolume")[0].value = thetich;
+    }
+
+
+    onValueChange(elementname, elementvalue, formData) {
+        if (elementname == "txtLength") {
+            this.setState({ dai: elementvalue });
+            setTimeout(() => {
+                this.computeVolumn();
+            }, 100)
+
+        } else if (elementname == "txtWidth") {
+            this.setState({ rong: elementvalue });
+            setTimeout(() => {
+                this.computeVolumn();
+            }, 100)
+        } else if (elementname == "txtHeight") {
+            this.setState({ cao: elementvalue });
+            setTimeout(() => {
+                this.computeVolumn();
+            }, 100)
+        }
+    }
+
     handleSubmit(formData, MLObject) {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+        MLObject.Volume = this.state.thetich;
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
-            if(!apiResult.IsError){
+            if (!apiResult.IsError) {
                 this.props.callClearLocalCache(ERPCOMMONCACHE_VEHICLETYPE);
                 //this.handleSubmitInsertLog(MLObject);
-            }            
+            }
             this.showMessage(apiResult.Message);
         });
     }
@@ -71,9 +107,10 @@ class AddCom extends React.Component {
         return (
             <SimpleForm
                 FormName="Thêm loại phương tiện"
-                MLObjectDefinition={MLObjectDefinition} 
+                MLObjectDefinition={MLObjectDefinition}
                 listelement={AddElementList}
                 onSubmit={this.handleSubmit}
+                onValueChange={this.onValueChange}
                 FormMessage={this.state.CallAPIMessage}
                 IsErrorMessage={this.state.IsCallAPIError}
                 dataSource={dataSource}
