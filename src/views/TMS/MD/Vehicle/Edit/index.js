@@ -28,7 +28,7 @@ import { updatePagePath } from "../../../../../actions/pageAction";
 import { VEHICLE_UPDATE } from "../../../../../constants/functionLists";
 import FormContainer from "../../../../../common/components/FormContainer";
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
-import MultiSelectComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
+import MultiSelectUserComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -38,7 +38,7 @@ class EditCom extends React.Component {
             DataSource: null,
             listOptionVehicleModel: [],
             VehicleModelCache: null,
-            VehicleTypeCache: null,
+            VehicleTypeCache: null
         };
 
         this.searchref = React.createRef();
@@ -135,7 +135,11 @@ class EditCom extends React.Component {
             const uptResultObject = {
                 ...values[0],
                 VehicleTypeID: values[0].VehicleTypeID == 0 ? -1 : values[0].VehicleTypeID,
-                ActivityStatusID: values[0].ActivityStatusID == 0 ? -1 : values[0].ActivityStatusID
+                ActivityStatusID: values[0].ActivityStatusID == 0 ? -1 : values[0].ActivityStatusID,
+                MainDriverUser: {
+                    label: `${values[0].MainDriverUser} - ${values[0].MainDriverUserName}`,
+                    value: values[0].MainDriverUser,
+                }
             };
 
             const listOptionVehicleModel = values[1].reduce((acc, val) => {
@@ -198,13 +202,19 @@ class EditCom extends React.Component {
                 PartnerID: FormData.cbPartnerID.value,
                 VehicleModelID: FormData.cbVehicleModelID.value,
                 VehicleName: FormData.txtVehicleName.value,
+                MainDriverUser: FormData.cbMainDriverUser.value
             }
         })
         //#endregion
     }
 
     handleSubmit(formData, MLObject) {
-        this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
+        const uptMLObject = {
+            ...MLObject,
+            MainDriverUser: MLObject.MainDriverUser.value
+        }
+
+        this.props.callFetchAPI(APIHostName, UpdateAPIPath, uptMLObject).then(apiResult => {
             this.showMessage(apiResult.Message);
             if (!apiResult.IsError) {
                 this.props.history.push("/Vehicle");
@@ -443,6 +453,24 @@ class EditCom extends React.Component {
                                     name="txtVolume"
                                     placeholder="Thể tích(cm3)"
                                     readOnly={true}
+                                />
+                            </div>
+
+                            <div className="col-md-6">
+                                <MultiSelectUserComboBox
+                                    // value={}
+                                    controltype="InputControl"
+                                    colspan="8"
+                                    datasourcemember="MainDriverUser"
+                                    disabled={this.state.DataSource.IsSystem}
+                                    isautoloaditemfromcache={false}
+                                    IsLabelDiv={true}
+                                    isMultiSelect={false}
+                                    label="nhân viên tài xế chính"
+                                    labelcolspan="4"
+                                    listoption={[]}
+                                    name="cbMainDriverUser"
+                                    validatonList={["Comborequired"]}
                                 />
                             </div>
 

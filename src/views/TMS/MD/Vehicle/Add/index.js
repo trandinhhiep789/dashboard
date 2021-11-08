@@ -26,6 +26,8 @@ import { updatePagePath } from "../../../../../actions/pageAction";
 import { VEHICLE_UPDATE } from "../../../../../constants/functionLists";
 import FormContainer from "../../../../../common/components/FormContainer";
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
+import MultiSelectUserComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
+
 class AddCom extends React.Component {
     constructor(props) {
         super(props);
@@ -179,13 +181,19 @@ class AddCom extends React.Component {
                 PartnerID: FormData.cbPartnerID.value,
                 VehicleModelID: FormData.cbVehicleModelID.value,
                 VehicleName: FormData.txtVehicleName.value,
+                MainDriverUser: FormData.cbMainDriverUser.value
             }
         })
         //#endregion
     }
 
     handleSubmit(formData, MLObject) {
-        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+        const uptMLObject = {
+            ...MLObject,
+            MainDriverUser: MLObject.MainDriverUser.value
+        }
+
+        this.props.callFetchAPI(APIHostName, AddAPIPath, uptMLObject).then(apiResult => {
             this.showMessage(apiResult.Message);
             if (!apiResult.IsError) {
                 this.props.history.push("/Vehicle");
@@ -408,6 +416,24 @@ class AddCom extends React.Component {
                                     name="txtVolume"
                                     placeholder="Thể tích(cm3)"
                                     readOnly={true}
+                                />
+                            </div>
+
+                            <div className="col-md-6">
+                                <MultiSelectUserComboBox
+                                    // value={}
+                                    controltype="InputControl"
+                                    colspan="8"
+                                    datasourcemember="MainDriverUser"
+                                    disabled={this.state.DataSource.IsSystem}
+                                    isautoloaditemfromcache={false}
+                                    IsLabelDiv={true}
+                                    isMultiSelect={false}
+                                    label="nhân viên tài xế chính"
+                                    labelcolspan="4"
+                                    listoption={[]}
+                                    name="cbMainDriverUser"
+                                    validatonList={["Comborequired"]}
                                 />
                             </div>
 
