@@ -232,6 +232,18 @@ export const DataGridColumnList = [
         Width: 100
     },
     {
+        Name: "LicensePlateNumber",
+        Type: "text",
+        Caption: "Biển số xe",
+        DataSourceMember: "LicensePlateNumber",
+    },
+    {
+        Name: "RentalTypeName",
+        Type: "text",
+        Caption: "Hình thức thuê xe",
+        DataSourceMember: "RentalTypeName",
+    },
+    {
         Name: "StartTime",
         Type: "date",
         Caption: "Thời gian bắt đầu",

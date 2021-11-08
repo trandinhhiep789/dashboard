@@ -107,7 +107,7 @@ class EditCom extends React.Component {
         data.append("vehicleRentalRequestObj", JSON.stringify(MLObject));
 
         console.log("data", data, MLObject)
-        // this.handleSubmit(data)
+         this.handleSubmit(data)
 
     }
 
@@ -253,7 +253,7 @@ class EditCom extends React.Component {
                                     validatonList={["Comborequired"]}
                                     placeholder="-- Vui lòng chọn --"
                                     isautoloaditemfromcache={true}
-                                    loaditemcachekeyid="ERPCOMMONCACHE.VEHICLES"
+                                    loaditemcachekeyid="ERPCOMMONCACHE.VEHICLE"
                                     valuemember="VehicleID"
                                     nameMember="VehicleName"
                                     controltype="InputControl"
