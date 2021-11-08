@@ -306,11 +306,11 @@ class AddCom extends React.Component {
                                     colspan="8"
                                     controltype="InputControl"
                                     datasourcemember="Length"
-                                    label="chiều dài(cm)"
+                                    label="chiều dài(m)"
                                     labelcolspan="4"
                                     maxSize={9}
                                     name="txtLength"
-                                    placeholder="Chiều dài(cm)"
+                                    placeholder="Chiều dài(m)"
                                     readOnly={true}
                                 />
                             </div>
@@ -338,11 +338,11 @@ class AddCom extends React.Component {
                                     colspan="8"
                                     controltype="InputControl"
                                     datasourcemember="Width"
-                                    label="chiều rộng(cm)"
+                                    label="chiều rộng(m)"
                                     labelcolspan="4"
                                     maxSize={9}
                                     name="txtWidth"
-                                    placeholder="Chiều rộng(cm)"
+                                    placeholder="Chiều rộng(m)"
                                     readOnly={true}
                                 />
                             </div>
@@ -374,11 +374,11 @@ class AddCom extends React.Component {
                                     colspan="8"
                                     controltype="InputControl"
                                     datasourcemember="Height"
-                                    label="chiều cao(cm)"
+                                    label="chiều cao(m)"
                                     labelcolspan="4"
                                     maxSize={9}
                                     name="txtHeight"
-                                    placeholder="Chiều cao(cm)"
+                                    placeholder="Chiều cao(m)"
                                     readOnly={true}
                                 />
                             </div>
@@ -410,11 +410,11 @@ class AddCom extends React.Component {
                                     colspan="8"
                                     controltype="InputControl"
                                     datasourcemember="Volume"
-                                    label="thể tích(cm3)"
+                                    label="thể tích(m3)"
                                     labelcolspan="4"
                                     maxSize={9}
                                     name="txtVolume"
-                                    placeholder="Thể tích(cm3)"
+                                    placeholder="Thể tích(m3)"
                                     readOnly={true}
                                 />
                             </div>
