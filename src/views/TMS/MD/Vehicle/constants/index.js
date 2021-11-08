@@ -335,6 +335,12 @@ export const MLObjectDefinition = [
     //     DataSourceMember: "MainCoordinatorStoreID"
     // },
     {
+        Name: "MainDriverUser",
+        DefaultValue: "",
+        BindControlName: "cbMainDriverUser",
+        DataSourceMember: "MainDriverUser"
+    },
+    {
         Name: "IsActived",
         DefaultValue: true,
         BindControlName: "chkIsActived",
