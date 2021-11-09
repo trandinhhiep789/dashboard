@@ -20,6 +20,7 @@ import { Slide } from "react-slideshow-image";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { callGetCache } from "../../../../actions/cacheAction";
 import { connect } from "react-redux";
+import ListShipCoordinatorNew_1 from "./ListShipCoordinatorNew_1";
 
 class ListShipCoordinatorNewCom extends Component {
   constructor(props) {
@@ -620,14 +621,16 @@ class ListShipCoordinatorNewCom extends Component {
     let { ShipmentOrder, ShipmentRouteID, ShipmentOrderSameLst, ShipmentRouteLst, ShipmentRouteSameLst, Distances_RouteLst, Via_Distances, Via_Durations, girdSlide } = this.state;
     let resultShipmentRoute = ShipmentRouteLst.filter((n) => n.ShipmentRouteID != ShipmentRouteID);
     let resultShipmentRouteSame = ShipmentRouteSameLst.filter((n) => n.ShipmentRouteID != ShipmentRouteID);
+    let CarrierTypeCss = "badge badge-secondary mr-10";
+    let CarrierTypeTruncCss = "badge badge-secondary badge-active";
     console.log("ShipmentOrderSameLst", ShipmentOrderSameLst);
     return (
       <React.Fragment>
         <div className="card">
           <ReactNotification ref={this.notificationDOMRef} />
           <div className="card-body">
-            <div className="form-row">
-              <div className="col-md-6">
+            {/* <div className="form-row"> */}
+            {/* <div className="col-md-6">
                 <FormControl.ComboBoxPartner
                   name="CarrierPartnerID"
                   colspan="8"
@@ -647,19 +650,28 @@ class ListShipCoordinatorNewCom extends Component {
                   disabled={!this.props.IsCoordinator}
                 />
               </div>
-              <div className="col-md-6">
+              <div className="col-md-3">
                 <FormControl.CheckBox
                   name="IsRoute"
-                  colspan="8"
-                  labelcolspan="4"
+                  colspan="6"
+                  labelcolspan="6"
                   label="Cùng tuyến"
                   disabled={this.state.ShipmentRouteID != "" ? true : false}
                   value={this.state.objCoordinator.IsRoute}
                   onValueChange={this.handleOnValueChange}
                 />
               </div>
-            </div>
-            {this.state.objCoordinator.CarrierPartnerID == -1 || this.state.objCoordinator.CarrierPartnerID == 0 ? (
+              <div className="col-md-3">
+                <span className={CarrierTypeCss}>
+                  <i className="fa fa-motorcycle fa-2x"></i> Xe máy
+                </span>
+                <span className={CarrierTypeTruncCss}>
+                  <i className="fa fa-truck fa-2x"></i> Xe tải
+                </span>
+              </div> */}
+            <ListShipCoordinatorNew_1 CarrierPartnerID={this.state.objCoordinator.CarrierPartnerID} />
+            {/* </div> */}
+            {/* {this.state.objCoordinator.CarrierPartnerID == -1 || this.state.objCoordinator.CarrierPartnerID == 0 ? (
               <MultiSelectComboBox
                 name="ShipmentOrder_DeliverUserList"
                 colspan="10"
@@ -699,7 +711,7 @@ class ListShipCoordinatorNewCom extends Component {
                 filterobj="PartnerID"
                 disabled={!this.props.IsCoordinator}
               />
-            )}
+            )} */}
 
             <div className="row  mt-10 lstProductSelect">
               <div className="col-12 group-shipingorder">
@@ -728,8 +740,8 @@ class ListShipCoordinatorNewCom extends Component {
                                 });
                             }
 
-                            let CarrierTypeCss = "badge badge-secondary mr-10";
-                            let CarrierTypeTruncCss = "badge badge-secondary badge-active";
+                            // let CarrierTypeCss = "badge badge-secondary mr-10";
+                            // let CarrierTypeTruncCss = "badge badge-secondary badge-active";
                             if (item.CarrierTypeID == 1) {
                               CarrierTypeCss = "badge badge-secondary  mr-10 badge-active";
                               CarrierTypeTruncCss = "badge badge-secondary";
