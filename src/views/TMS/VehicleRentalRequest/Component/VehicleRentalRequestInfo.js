@@ -73,7 +73,7 @@ class VehicleRentalRequestInfoCom extends React.Component {
                         <label className="col-form-label bold">Mã phương tiện:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{VehicleRentalRequest.LicensePlateNumber}</label>
+                        <label className="col-form-label">{VehicleRentalRequest.VehicleName}</label>
                     </div><div className="form-group col-md-2">
                         <label className="col-form-label bold">Kho thuê:</label>
                     </div>

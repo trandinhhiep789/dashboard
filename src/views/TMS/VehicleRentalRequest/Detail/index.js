@@ -287,7 +287,7 @@ class DetailCom extends React.Component {
                                                 </div>
                                             </Dropdown>
                                                 :
-                                                <Dropdown data-tip data-for="btnUpdateProcess" data-id="btnUpdateProcess" overlay={dropdownItem} disabled>
+                                                <Dropdown data-tip data-for="btnUpdateProcess" data-id="btnUpdateProcess" overlay={dropdownItem} className="disabled" disabled>
                                                     <div className="btn dropdown-toggle">
                                                         {strCurrentVehicleRentalRequestStepName}
                                                     </div>
