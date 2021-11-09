@@ -360,23 +360,7 @@ class EditCom extends React.Component {
                                 />
                             </div>
 
-                            <div className="col-md-6">
-                                <FormControl.FormControlDatetimeNew
-                                    name="dtEndTime"
-                                    colspan="8"
-                                    labelcolspan="4"
-                                    readOnly={true}
-                                    showTime={false}
-                                    timeFormat={false}
-                                    dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
-                                    label="thời gian kết thúc"
-                                    placeholder={formatDate(currentDate, true)}
-                                    controltype="InputControl"
-                                    value=""
-                                    validatonList={["required"]}
-                                    datasourcemember="EndTime"
-                                />
-                            </div>
+                           
 
                             <div className="col-md-6">
 
@@ -393,6 +377,24 @@ class EditCom extends React.Component {
                                     IsAttachment={true}
                                 />
 
+                            </div>
+
+                            <div className="col-md-6">
+                                <FormControl.FormControlDatetimeNew
+                                    name="dtEndTime"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    readOnly={true}
+                                    showTime={false}
+                                    timeFormat={false}
+                                    dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
+                                    label="thời gian kết thúc"
+                                    placeholder={formatDate(currentDate, true)}
+                                    controltype="InputControl"
+                                    value=""
+                                    validatonList={["required"]}
+                                    datasourcemember="EndTime"
+                                />
                             </div>
                         </div>
 
