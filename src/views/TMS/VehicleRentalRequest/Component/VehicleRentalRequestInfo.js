@@ -7,7 +7,7 @@ import {
 import { connect } from "react-redux";
 import { formatDate } from "../../../../common/library/CommonLib.js";
 import Select, { components } from 'react-select';
-
+import { formatMoney } from '../../../../utils/function';
 
 class VehicleRentalRequestInfoCom extends React.Component {
     constructor(props) {
@@ -64,7 +64,7 @@ class VehicleRentalRequestInfoCom extends React.Component {
                         <label className="col-form-label bold">Chi phí thuê xe:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{VehicleRentalRequest.Cost}</label>
+                        <label className="col-form-label">{formatMoney(VehicleRentalRequest.Cost, 0)}</label>
                     </div>
                 </div>
 

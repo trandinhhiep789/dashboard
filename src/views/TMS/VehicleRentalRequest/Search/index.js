@@ -5,7 +5,7 @@ import { ModalManager } from "react-dynamic-modal";
 import ReactNotification from "react-notifications-component";
 
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
-import { callGetCache } from "../../../../actions/cacheAction";
+import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
 import { formatDate } from "../../../../common/library/CommonLib.js";
 import { MessageModal } from "../../../../common/components/Modal";
 import { MODAL_TYPE_COMMONTMODALS } from '../../../../constants/actionTypes';
@@ -13,9 +13,8 @@ import { showModal } from '../../../../actions/modal';
 import { updatePagePath } from "../../../../actions/pageAction";
 import DataGrid from "../../../../common/components/DataGrid";
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
-
 import {
-    TMS_VEHICLERENTALREQUEST_VIEW, TMS_VEHICLERENTALREQUEST_DELETE
+    TMS_VEHICLERENTALREQUEST_VIEW, TMS_VEHICLERENTALREQUEST_DELETE, TMS_VEHICLERENTALREQUEST_ADDFEE, GET_CACHE_USER_FUNCTION_LIST
 } from "../../../../constants/functionLists";
 
 import {
@@ -30,9 +29,11 @@ import {
     SearchAPIPath,
     SearchElementList,
     SearchMLObjectDefinition,
-    TitleFormSearch
+    TitleFormSearch,
+    UpdateCostAPIPath
 } from "../constants";
 import VehicleRentalRequestType from "../Component/VehicleRentalRequestType";
+import VehicleRentalRequestFee from '../Component/VehicleRentalRequestFee'
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -249,6 +250,72 @@ class SearchCom extends React.Component {
 
     }
 
+    handleSelectItem(deleteList, pkColumnName) {
+        this.checkPermission(TMS_VEHICLERENTALREQUEST_ADDFEE).then(result => {
+            if (result == true) {
+                let listMLObject = [];
+                deleteList.map((row, index) => {
+                    let MLObject = {};
+                    pkColumnName.map((pkItem, pkIndex) => {
+                        MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
+                    });
+                    MLObject.UpdateUser = this.props.AppInfo.LoginInfo.Username;
+                    listMLObject.push(MLObject);
+                });
+
+                if(listMLObject.length > 1){
+                    this.showMessage("Bạn đã vượt quá số lượng yêu cầu thuê xe cần cập nhật chi phí (1). Vui lòng chọn lại (1 yêu cầu)")
+                }
+                else{
+                    this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+                        title: 'Cập nhật chi phí thuê xe',
+                        content: {
+                            text: <VehicleRentalRequestFee
+                                MLObject={listMLObject}
+                                onSelect={this.handleSelectUpdateCost.bind(this)}
+                            />
+                        },
+                        maxWidth: '800px'
+                    });
+                }
+               
+            } else {
+                this.showMessage("Bạn không có quyền cập nhật chi phí thuê xe!")
+            }
+        })
+
+    }
+
+    handleSelectUpdateCost(mlObject){
+        this.props.callFetchAPI(APIHostName, UpdateCostAPIPath, mlObject).then(apiResult => {
+            console.log("mlObject", mlObject, apiResult)
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            this.addNotification(apiResult.Message, apiResult.IsError);
+            if (!apiResult.IsError) {
+                this.callSearchData(this.state.SearchData);
+            }
+        });
+
+    }
+
+    checkPermission(permissionKey) {
+        return new Promise((resolve, reject) => {
+            this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
+                if (!result.IsError && result.ResultObject.CacheData != null) {
+                    for (let i = 0; i < result.ResultObject.CacheData.length; i++) {
+                        if (result.ResultObject.CacheData[i].FunctionID == permissionKey) {
+                            resolve(true);
+                            return;
+                        }
+                    }
+                    resolve(false)
+                } else {
+                    resolve('error');
+                }
+            });
+        });
+    }
+
     render() {
         const { gridDataSource } = this.state;
         return (
@@ -270,6 +337,10 @@ class SearchCom extends React.Component {
                     onInsertClick={this.handleInputGridInsert.bind(this)}
                     IsCustomAddLink={true}
                     // AddLink={AddLink}
+                    IsSelectItem={true}
+                    IconSelectItem="fa fa-dollar"
+                    TitleSelectItem="Cập nhật chi phí thuê xe"
+                    onSeleteItem={this.handleSelectItem.bind(this)}
                     dataSource={gridDataSource}
                     isCustomExportFile={false}
                     isCustomExportFileTemplate={false}
@@ -313,7 +384,10 @@ const mapDispatchToProps = dispatch => {
         },
         showModal: (type, props) => {
             dispatch(showModal(type, props));
-        }
+        },
+        callGetUserCache: (cacheKeyID) => {
+            return dispatch(callGetUserCache(cacheKeyID));
+        },
     };
 };
 
