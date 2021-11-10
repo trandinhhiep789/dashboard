@@ -32,14 +32,18 @@ class EditCom extends React.Component {
             DataSource: {},
             IsCallAPIError: false,
             IsLoadDataComplete: false,
+            IsCloseForm: false,
             AttachmentListData: [],
             AttachmentList: [],
             fileSize: 0,
             UserValue: [],
-            RequestUser: ""
+            RequestUser: "",
+            AttachmentID: ""
+
         };
         this.notificationDOMRef = React.createRef();
-        this.callLoadData = this.callLoadData.bind(this)
+        this.callLoadData = this.callLoadData.bind(this);
+        this.handleCloseMessage = this.handleCloseMessage.bind(this);
     }
 
     componentDidMount() {
@@ -77,12 +81,16 @@ class EditCom extends React.Component {
                     DataSource: apiResult.ResultObject,
                     IsLoadDataComplete: true,
                     UserValue: UserValue,
-                    AttachmentListData
+                    AttachmentListData,
+                    AttachmentID: apiResult.ResultObject.objVehicleRentalRequest_ATT.AttachmentID
                 })
             }
         })
     }
 
+    handleCloseMessage() {
+        if (!this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
+    }
 
     showMessage(message) {
         ModalManager.open(
@@ -90,14 +98,16 @@ class EditCom extends React.Component {
                 title="Thông báo"
                 message={message}
                 onRequestClose={() => true}
+                onCloseModal={this.handleCloseMessage}
+
             />
         );
     }
 
     prevDataSubmit(formData, MLObject) {
-        const { AttachmentListData, AttachmentList, fileSize } = this.state;
+        const { AttachmentListData, AttachmentList, fileSize, AttachmentID } = this.state;
         MLObject.RequestUser = MLObject.RequestUser.value != undefined ? MLObject.RequestUser.value : MLObject.RequestUser;
-
+        MLObject.AttachmentID = AttachmentID;
         console.log("add", formData, MLObject)
 
         MLObject.CurrentVehicleRentalRequestStepID = 1;
@@ -165,8 +175,12 @@ class EditCom extends React.Component {
 
 
     render() {
+        const { AttachmentListData, AttachmentList, fileSize, UserValue, IsCloseForm } = this.state;
+
+        if (IsCloseForm) {
+            return <Redirect to={BackLink} />;
+        }
         let currentDate = new Date();
-        const { AttachmentListData, AttachmentList, fileSize, UserValue } = this.state;
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>
@@ -346,23 +360,7 @@ class EditCom extends React.Component {
                                 />
                             </div>
 
-                            <div className="col-md-6">
-                                <FormControl.FormControlDatetimeNew
-                                    name="dtEndTime"
-                                    colspan="8"
-                                    labelcolspan="4"
-                                    readOnly={true}
-                                    showTime={false}
-                                    timeFormat={false}
-                                    dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
-                                    label="thời gian kết thúc"
-                                    placeholder={formatDate(currentDate, true)}
-                                    controltype="InputControl"
-                                    value=""
-                                    validatonList={["required"]}
-                                    datasourcemember="EndTime"
-                                />
-                            </div>
+                           
 
                             <div className="col-md-6">
 
@@ -379,6 +377,24 @@ class EditCom extends React.Component {
                                     IsAttachment={true}
                                 />
 
+                            </div>
+
+                            <div className="col-md-6">
+                                <FormControl.FormControlDatetimeNew
+                                    name="dtEndTime"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    readOnly={true}
+                                    showTime={false}
+                                    timeFormat={false}
+                                    dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
+                                    label="thời gian kết thúc"
+                                    placeholder={formatDate(currentDate, true)}
+                                    controltype="InputControl"
+                                    value=""
+                                    validatonList={["required"]}
+                                    datasourcemember="EndTime"
+                                />
                             </div>
                         </div>
 

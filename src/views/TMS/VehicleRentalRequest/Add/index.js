@@ -323,6 +323,7 @@ class AddCom extends React.Component {
                                 value=""
                                 datasourcemember="ContractID"
                                 validatonList={['required']}
+                                maxSize="15"
                             //classNameCustom="customcontrol"
                             />
                         </div>

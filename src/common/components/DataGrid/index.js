@@ -321,6 +321,25 @@ class DataGridCom extends Component {
 
     }
 
+    handleSelectItem() {
+        const idSelectColumnName = this.props.IDSelectColumnName;
+        let listID = [];
+        const idDeleteListObject = this.state.GridData[idSelectColumnName];
+        idDeleteListObject.map((item, index) => {
+            if (item.IsChecked) {
+                listID.push(item);
+            }
+        });
+        if (listID.length == 0) {
+            this.showMessage("Vui lòng chọn dữ liệu cần cập nhật!");
+            return;
+        }
+        this.props.onSeleteItem(listID, this.state.ListPKColumnName);
+        this.setState({
+            IsCheckAll: false
+        });
+    }
+
     handleUpdateListItem() {
 
         const idSelectColumnName = this.props.IDSelectColumnName;
@@ -921,6 +940,14 @@ class DataGridCom extends Component {
                                 {searchTextbox}
                                 <div className="btn-toolbar">
                                     <div className="btn-group btn-group-sm">
+                                        {
+                                            this.props.IsSelectItem == true ?
+                                                <button type="button" className="btn btn-info mr-10" title="Chọn" data-provide="tooltip" data-original-title="Chọn" onClick={this.handleSelectItem.bind(this)}>
+                                                    <span className={(this.props.IconSelectItem != "" && this.props.IconSelectItem != undefined) ? this.props.IconSelectItem : "ti-plus"} > {(this.props.TitleSelectItem != "" && this.props.TitleSelectItem != undefined) ? this.props.TitleSelectItem : "Chọn"}  </span>
+                                                </button>
+                                                : ""
+                                        }
+
                                         {
                                             //hiển thị nút thêm
                                             isShowButtonAdd ?
