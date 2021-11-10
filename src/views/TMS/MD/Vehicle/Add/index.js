@@ -39,7 +39,7 @@ class AddCom extends React.Component {
                 VehicleName: "",
                 LicensePlateNumber: "",
                 PartnerID: -1,
-                ActivityStatusID: -1,
+                ActivityStatusID: 1,
                 Weight: 0,
                 Width: 0,
                 Volume: 0,
@@ -389,7 +389,8 @@ class AddCom extends React.Component {
                                     colspan="8"
                                     controltype="InputControl"
                                     datasourcemember="ActivityStatusID"
-                                    disabled={this.state.DataSource.IsSystem}
+                                    // disabled={this.state.DataSource.IsSystem}
+                                    disabled={true}
                                     isautoloaditemfromcache={true}
                                     label="Trạng thái hoạt động"
                                     labelcolspan="4"
@@ -398,7 +399,8 @@ class AddCom extends React.Component {
                                     name="cbActivityStatusID"
                                     nameMember="ActivityStatusName"
                                     placeholder="-- Vui lòng chọn --"
-                                    readOnly={this.state.DataSource.IsSystem}
+                                    // readOnly={this.state.DataSource.IsSystem}
+                                    readOnly={true}
                                     validatonList={["Comborequired"]}
                                     valuemember="ActivityStatusID"
                                 />
