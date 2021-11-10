@@ -106,7 +106,7 @@ class VehicleRentalRequestInfoCom extends React.Component {
                         <label className="col-form-label bold">Thời gian bắt đầu:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{formatDate(VehicleRentalRequest.StartTime, true)}</label>
+                        <label className="col-form-label">{formatDate(VehicleRentalRequest.StartTime, false)}</label>
                     </div>
                 </div>
 
@@ -128,7 +128,7 @@ class VehicleRentalRequestInfoCom extends React.Component {
                         <label className="col-form-label bold">Ngày kết thúc:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{formatDate(VehicleRentalRequest.EndTime, true)}</label>
+                        <label className="col-form-label">{formatDate(VehicleRentalRequest.EndTime, false)}</label>
                     </div>
                 </div>
             </React.Fragment>

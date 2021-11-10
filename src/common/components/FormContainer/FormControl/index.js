@@ -4,6 +4,9 @@ import Datetime from 'react-datetime';
 import Select, { components } from 'react-select';
 import draftToHtml from 'draftjs-to-html';
 import moment from 'moment';
+import locale from 'antd/es/date-picker/locale/vi_VN';
+
+
 import { Base64 } from 'js-base64';
 import { Editor } from 'react-draft-wysiwyg';
 import { ModalManager } from "react-dynamic-modal";
@@ -922,21 +925,28 @@ class FormControlDatetimeCom extends Component {
 const FormControlDatetime = connect(null, null)(FormControlDatetimeCom);
 
 
-
 class FormControlDatetimeNewCom extends Component {
     constructor(props) {
         super(props);
         this.handleValueChange = this.handleValueChange.bind(this);
     }
     handleValueChange(name, moment) {
-
-        const momentNew = ExportStringToDate(moment)
-        console.log("moment", moment, momentNew)
+        
+        let momentNew =""
+        if (!this.props.IsGetTime) {
+            momentNew= ExportStringToDate(moment)
+        }
+        else {
+            momentNew = ExportStringDate(moment, this.props.IsGetTime)
+        }
         if (this.props.onValueChange != null)
             this.props.onValueChange(this.props.name, momentNew);
     }
 
+    disabledDate(current) {
+        return (current && current < moment().startOf('day'));
 
+    }
 
     render() {
         let { name, label, timeFormat, dateFormat, colspan, value, validationErrorMessage } = this.props;
@@ -982,8 +992,9 @@ class FormControlDatetimeNewCom extends Component {
                 <div className={formGroupClassName}>
                     <DatePicker
                         showTime={isShowTime}
+                        // showTime={{ format: 'HH:mm' }}
                         //value={(value != '' && value != null) ?  moment(value, dateFormat): ''}// 'YYYY-MM-DD'
-                        defaultValue={(value != '' && value != null) ? moment(value, 'YYYY-MM-DD') : ''}
+                        defaultValue={(value != '' && value != null) ? moment(value, dateFormat) : ''}
                         format={dateFormat}
                         className={className}
                         dropdownClassName="tree-select-custom"
@@ -991,6 +1002,8 @@ class FormControlDatetimeNewCom extends Component {
                         placeholder={this.props.placeholder}
                         onChange={this.handleValueChange}
                         disabled={this.props.disabled}
+                        disabledDate={this.props.disabledDate == true ? this.disabledDate : false}
+                        locale={locale}
                     />
                     <div className="invalid-feedback">
                         <ul className="list-unstyled">

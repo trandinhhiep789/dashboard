@@ -245,15 +245,22 @@ export const DataGridColumnList = [
         DataSourceMember: "RentalTypeName",
     },
     {
+        Name: "Ability",
+        Type: "text",
+        Caption: "Năng lực (%)",
+        DataSourceMember: "Ability",
+        Width: 100
+    },
+    {
         Name: "StartTime",
-        Type: "date",
+        Type: "datetime",
         Caption: "Thời gian bắt đầu",
         DataSourceMember: "StartTime",
         Width: 130
     },
     {
         Name: "EndTime",
-        Type: "date",
+        Type: "datetime",
         Caption: "Thời gian kết thúc",
         DataSourceMember: "EndTime",
         Width: 130
