@@ -104,26 +104,6 @@ class EditCom extends React.Component {
           >
             <div className="row">
               <div className="col-md-12">
-                <FormControl.ComboBoxSelect
-                  name="cbVehicleTypeID"
-                  colspan="4"
-                  labelcolspan="2"
-                  label="Loại xe"
-                  isautoloaditemfromcache={true}
-                  loaditemcachekeyid="ERPCOMMONCACHE.VEHICLETYPE"
-                  valuemember="VehicleTypeID"
-                  nameMember="VehicleTypeName"
-                  controltype="InputControl"
-                  value="-1"
-                  disabled={true}
-                  listoption={null}
-                  datasourcemember="VehicleTypeID"
-                  placeholder="---Vui lòng chọn---"
-                  isMultiSelect={false}
-                  validatonList={["Comborequired"]}
-                />
-              </div>
-              <div className="col-md-12">
                 <FormControl.TextBox
                   name="txtVehicleModelID"
                   colspan="4"
@@ -152,6 +132,26 @@ class EditCom extends React.Component {
                   maxSize={200}
                   datasourcemember="VehicleModelName"
                   validatonList={["required"]}
+                />
+              </div>
+              <div className="col-md-12">
+                <FormControl.ComboBoxSelect
+                  name="cbVehicleTypeID"
+                  colspan="4"
+                  labelcolspan="2"
+                  label="Loại xe"
+                  isautoloaditemfromcache={true}
+                  loaditemcachekeyid="ERPCOMMONCACHE.VEHICLETYPE"
+                  valuemember="VehicleTypeID"
+                  nameMember="VehicleTypeName"
+                  controltype="InputControl"
+                  value="-1"
+                  disabled={true}
+                  listoption={null}
+                  datasourcemember="VehicleTypeID"
+                  placeholder="---Vui lòng chọn---"
+                  isMultiSelect={false}
+                  validatonList={["Comborequired"]}
                 />
               </div>
               <div className="col-md-12">
