@@ -495,7 +495,7 @@ export const MLObjectDefinitionVehicleRentalRequestType_WF = [
         DefaultValue: "",
         Label: "tự động chuyển sang trạng thái",
         Name: "AutoChangetoStatusID",
-        ValidationList: ["Comborequired"]
+        // ValidationList: ["Comborequired"]
     },
     {
         BindControlName: "AutoChangetoStepID",
@@ -559,8 +559,15 @@ export const MLObjectDefinitionVehicleRentalRequestType_WF = [
         BindControlName: "IsCanDelete",
         DataSourceMember: "IsCanDelete",
         DefaultValue: "",
-        Label: "Hệ thống",
+        Label: "Là bước có thể xóa yêu cầu",
         Name: "IsCanDelete"
+    },
+    {
+        BindControlName: "IsCheckAbility",
+        DataSourceMember: "IsCheckAbility",
+        DefaultValue: "",
+        Label: "Là bước có thể xóa yêu cầu",
+        Name: "IsCheckAbility"
     },
 ]
 
@@ -643,6 +650,12 @@ export const RentalRequestType_WFListColumn = [
         Type: "checkicon",
         Caption: "Là bước có thể xóa yêu cầu",
         DataSourceMember: "IsCanDelete",
+    },
+    {
+        Name: "IsCheckAbility",
+        Type: "checkicon",
+        Caption: "Là bước kiểm tra năng lực xe",
+        DataSourceMember: "IsCheckAbility",
     },
     {
         Name: "IsActived",
