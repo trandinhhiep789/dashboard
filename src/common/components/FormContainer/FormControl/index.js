@@ -763,12 +763,14 @@ class FormControlComboBoxUserCom extends Component {
     const listOption = this.state.Listoption;
     return (
       <div className={formRowClassName}>
-        <div className={labelDivClassName}>
-          <label className="col-form-label 6">
-            {label}
-            <span className="text-danger"> {star}</span>
-          </label>
-        </div>
+        {this.props.label && (
+          <div className={labelDivClassName}>
+            <label className="col-form-label 6">
+              {label}
+              <span className="text-danger"> {star}</span>
+            </label>
+          </div>
+        )}
         <div className={formGroupClassName}>
           <Select
             value={selectedOption}
@@ -846,12 +848,14 @@ class FormControlDatetimeCom extends Component {
     }
     return (
       <div className={formRowClassName}>
-        <div className={labelDivClassName}>
-          <label className="col-form-label 6">
-            {this.props.label}
-            <span className="text-danger"> {star}</span>
-          </label>
-        </div>
+        {this.props.label && (
+          <div className={labelDivClassName}>
+            <label className="col-form-label 6">
+              {this.props.label}
+              <span className="text-danger"> {star}</span>
+            </label>
+          </div>
+        )}
 
         <div className={formGroupClassName}>
           <DatePicker

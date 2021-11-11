@@ -1,11 +1,10 @@
-import { Button, Input, Modal, Space } from "antd";
-import React, { useState } from "react";
+import React, { Component, useState } from "react";
 
 import ElementInputModal from "../../../../common/components/FormContainer/FormElement/ElementInputModal";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import ReactTooltip from "react-tooltip";
-import { formatMoney } from "../../../../utils/function";
+import { Button, Checkbox, Input, Space } from "antd";
 
 //#region PropTypes
 
@@ -60,10 +59,12 @@ export default function ListShipCoordinatorNewDetail(props) {
     <div>
       <div>
         <tr key={index} className="jsgrid-row">
-          <td className="jsgrid-cell high-priority" style={{ width: "1%" }}></td>
+          <td className="jsgrid-cell high-priority" style={{ width: "3%", verticalAlign: "middle" }}>
+            {props.objCoordinator.IsRoute === false && <Checkbox checked />}
+          </td>
           <td
             className="jsgrid-cell group-products"
-            style={{ width: "50%" }}
+            style={{ width: props.objCoordinator.IsRoute === false ? "48%" : "92%" }}
             onClick={() => {
               setIsShowDescription(!isShowDescription);
             }}
@@ -93,7 +94,7 @@ export default function ListShipCoordinatorNewDetail(props) {
                   <span>{item.ShipItemNameList}</span>
                 </ReactTooltip>
               </li>
-              <li className="item delivery-status">
+              {/* <li className="item delivery-status">
                 <div className="item group-status">
                   {isPermission == false ? (
                     <span className={carrierTypeCss} onClick={handleChangeCourse(1, index)}>
@@ -119,85 +120,88 @@ export default function ListShipCoordinatorNewDetail(props) {
                     <i className="fa fa-dollar"></i> {formatMoney(item.TotalCOD, 0)}đ
                   </span>
                 </div>
-              </li>
+              </li> */}
             </ul>
           </td>
-          <td className="jsgrid-cell group-controll" style={{ width: "44%" }}>
-            <div className="form-row">
-              <div className="form-group col-md-12">
-                <ElementInputModal.ElementModalComboBox
-                  name="CarrierPartnerID"
-                  type="ComboBox"
-                  caption="Đối tác"
-                  onValueChange={handleOnValueChange}
-                  dataSourcemember="CarrierPartnerID"
-                  isautoloaditemfromcache={true}
-                  loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
-                  valuemember="PartnerID"
-                  nameMember="PartnerName"
-                  rowIndex={index}
-                  value={item.CarrierPartnerID}
-                  listoption={null}
-                  filterValue="2"
-                  filterobj="PartnerTypeID"
-                  placeholder="---Chọn đối tác---"
-                  isMultiSelect={false}
-                  disabled={isPermission}
-                />
-              </div>
-            </div>
-
-            <div className="form-row">
-              <div className="form-group col-md-12">
-                {item.CarrierPartnerID > 0 ? (
+          {props.objCoordinator.IsRoute === false ? (
+            <td className="jsgrid-cell group-controll" style={{ width: "44%" }}>
+              <div className="form-row">
+                <div className="form-group col-md-12">
                   <ElementInputModal.ElementModalComboBox
-                    name="ShipmentOrder_DeliverUserList"
-                    type="ComboUserBox"
-                    caption="Nhân viên giao nhận"
-                    dataSourcemember="ShipmentOrder_DeliverUserList"
+                    name="CarrierPartnerID"
+                    type="ComboBox"
+                    caption="Đối tác"
+                    onValueChange={handleOnValueChange}
+                    dataSourcemember="CarrierPartnerID"
                     isautoloaditemfromcache={true}
-                    loaditemcachekeyid="ERPCOMMONCACHE.PARTNERUSER"
-                    valuemember="UserName"
-                    nameMember="FullName"
-                    isselectedOp={true}
-                    value={objDeliverUser}
+                    loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
+                    valuemember="PartnerID"
+                    nameMember="PartnerName"
                     rowIndex={index}
+                    value={item.CarrierPartnerID}
                     listoption={null}
-                    onValueChange={handleOnValueChange}
-                    placeholder="---Nhân viên giao nhận---"
-                    isMultiSelect={true}
+                    filterValue="2"
+                    filterobj="PartnerTypeID"
+                    placeholder="---Chọn đối tác---"
+                    isMultiSelect={false}
                     disabled={isPermission}
-                    isPartner={true}
-                    filterValue={item.CarrierPartnerID}
-                    filterobj="PartnerID"
-                    filterrest="CarrierPartnerID"
                   />
-                ) : (
-                  <ElementInputModal.MultiUserComboBox
-                    name="ShipmentOrder_DeliverUserList"
-                    type="ComboUserBox"
-                    caption="Nhân viên giao nhận"
-                    dataSourcemember="ShipmentOrder_DeliverUserList"
-                    isautoloaditemfromcache={false}
-                    loaditemcachekeyid="ERPCOMMONCACHE.PARTNERUSER"
-                    valuemember="UserName"
-                    nameMember="FullName"
-                    rowIndex={index}
-                    listoption={listOption}
-                    value={listOption}
-                    onValueChange={handleOnValueChange}
-                    placeholder="---Nhân viên giao nhận---"
-                    isMultiSelect={true}
-                    disabled={isPermission}
-                    isPartner={true}
-                    filterValue="-1"
-                    filterobj="PartnerID"
-                    filterrest="CarrierPartnerID"
-                  />
-                )}
+                </div>
               </div>
-            </div>
-          </td>
+              <div className="form-row">
+                <div className="form-group col-md-12">
+                  {item.CarrierPartnerID > 0 ? (
+                    <ElementInputModal.ElementModalComboBox
+                      name="ShipmentOrder_DeliverUserList"
+                      type="ComboUserBox"
+                      caption="Nhân viên giao nhận"
+                      dataSourcemember="ShipmentOrder_DeliverUserList"
+                      isautoloaditemfromcache={true}
+                      loaditemcachekeyid="ERPCOMMONCACHE.PARTNERUSER"
+                      valuemember="UserName"
+                      nameMember="FullName"
+                      isselectedOp={true}
+                      value={objDeliverUser}
+                      rowIndex={index}
+                      listoption={null}
+                      onValueChange={handleOnValueChange}
+                      placeholder="---Nhân viên giao nhận---"
+                      isMultiSelect={true}
+                      disabled={isPermission}
+                      isPartner={true}
+                      filterValue={item.CarrierPartnerID}
+                      filterobj="PartnerID"
+                      filterrest="CarrierPartnerID"
+                    />
+                  ) : (
+                    <ElementInputModal.MultiUserComboBox
+                      name="ShipmentOrder_DeliverUserList"
+                      type="ComboUserBox"
+                      caption="Nhân viên giao nhận"
+                      dataSourcemember="ShipmentOrder_DeliverUserList"
+                      isautoloaditemfromcache={false}
+                      loaditemcachekeyid="ERPCOMMONCACHE.PARTNERUSER"
+                      valuemember="UserName"
+                      nameMember="FullName"
+                      rowIndex={index}
+                      listoption={listOption}
+                      value={listOption}
+                      onValueChange={handleOnValueChange}
+                      placeholder="---Nhân viên giao nhận---"
+                      isMultiSelect={true}
+                      disabled={isPermission}
+                      isPartner={true}
+                      filterValue="-1"
+                      filterobj="PartnerID"
+                      filterrest="CarrierPartnerID"
+                    />
+                  )}
+                </div>
+              </div>
+            </td>
+          ) : (
+            <div></div>
+          )}
           <td className="jsgrid-cell " style={{ width: "5%" }}>
             <div className="group-action">
               {shipmentOrder.length > 1 ? (

@@ -30,6 +30,7 @@ class ListShipCoordinatorNewCom extends Component {
     this.handleOnValueChangeDeliverUser = this.handleOnValueChangeDeliverUser.bind(this);
     this.handleCloseMessage = this.handleCloseMessage.bind(this);
     this.HandleChangeGird = this.HandleChangeGird.bind(this);
+    this.handleRouteChange = this.handleRouteChange.bind(this);
     this.state = {
       ShipmentOrder: this.props.InfoCoordinator,
       objCoordinator: { CarrierPartnerID: -1, CarrierTypeID: 1, IsRoute: true },
@@ -302,6 +303,7 @@ class ListShipCoordinatorNewCom extends Component {
   handleCloseModal() {
     this.props.hideModal();
   }
+
   addNotification(message1, IsError) {
     let cssNotification, iconNotification;
     if (!IsError) {
@@ -331,6 +333,7 @@ class ListShipCoordinatorNewCom extends Component {
       dismissable: { click: true },
     });
   }
+
   handleClose() {
     if (this.props.onChangeClose != null) {
       this.props.onChangeClose();
@@ -438,6 +441,7 @@ class ListShipCoordinatorNewCom extends Component {
       });
     }
   };
+
   handleChangeOder = (rowIndex, OrderID) => (e) => {
     let { ShipmentOrder } = this.state;
     let totalcout = ShipmentOrder.length - 1;
@@ -497,6 +501,7 @@ class ListShipCoordinatorNewCom extends Component {
     if (resultdd == undefined) ShipmentOrder.push(resultShipmentOrderSame);
     this.setState({ ShipmentOrder: ShipmentOrder });
   };
+
   handleDistances = () => {
     let { ShipmentOrder, ShipmentOrderSameLst } = this.state;
     let Points = [];
@@ -617,6 +622,11 @@ class ListShipCoordinatorNewCom extends Component {
     });
   };
 
+  handleRouteChange = (name, value) => {
+    console.log({ name, value });
+    this.setState({ objCoordinator: { IsRoute: value === 1 ? true : false } });
+  };
+
   render() {
     let { ShipmentOrder, ShipmentRouteID, ShipmentOrderSameLst, ShipmentRouteLst, ShipmentRouteSameLst, Distances_RouteLst, Via_Distances, Via_Durations, girdSlide } = this.state;
     let resultShipmentRoute = ShipmentRouteLst.filter((n) => n.ShipmentRouteID != ShipmentRouteID);
@@ -669,7 +679,17 @@ class ListShipCoordinatorNewCom extends Component {
                   <i className="fa fa-truck fa-2x"></i> Xe tải
                 </span>
               </div> */}
-            <ListShipCoordinatorNew_1 CarrierPartnerID={this.state.objCoordinator.CarrierPartnerID} />
+            <ListShipCoordinatorNew_1
+              onRouteChange={this.handleRouteChange}
+              routeValue={this.state.objCoordinator.IsRoute}
+              carrierPartnerID={this.state.objCoordinator.CarrierPartnerID}
+              isCoordinator={this.props.IsCoordinator}
+              shipmentOrder={this.state.ShipmentOrder}
+              objCoordinator={this.state.objCoordinator}
+              objDeliverUser={this.state.objDeliverUser}
+              addNotification={this.addNotification}
+              isUserCoordinator={this.props.IsUserCoordinator}
+            />
             {/* </div> */}
             {/* {this.state.objCoordinator.CarrierPartnerID == -1 || this.state.objCoordinator.CarrierPartnerID == 0 ? (
               <MultiSelectComboBox
@@ -751,6 +771,7 @@ class ListShipCoordinatorNewCom extends Component {
                               <ListShipCoordinatorNewDetail
                                 index={index}
                                 item={item}
+                                objCoordinator={this.state.objCoordinator}
                                 listOption={listOption}
                                 isPermission={isPermission}
                                 shipmentOrder={ShipmentOrder}
