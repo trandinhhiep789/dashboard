@@ -110,14 +110,11 @@ class SearchCom extends React.Component {
 
 
         const tempData = gridDataSource.filter((x) => listMLObject.some((y) => y.VehicleRentalRequestID == x.VehicleRentalRequestID && x.IsCanDelete == false));
-        console.log("del", gridDataSource, tempData, listMLObject)
         if (tempData.length > 0) {
-            this.showMessage("Danh sách chọn không thể xóa. Vui lòng chọn lại dữ liệu cần xóa.")
+            this.showMessage("Bạn không thể xóa yêu cầu tại bước xử lý này.")
         }
         else {
             const tempData1 = gridDataSource.filter((x) => listMLObject.some((y) => y.VehicleRentalRequestID === x.VehicleRentalRequestID && x.IsCanDelete == true));
-            console.log("del111", gridDataSource, tempData1, listMLObject)
-
             this.props.callFetchAPI(APIHostName, DeleteAPIPath, tempData1).then(apiResult => {
                 this.setState({ IsCallAPIError: apiResult.IsError });
                 this.addNotification(apiResult.Message, apiResult.IsError);

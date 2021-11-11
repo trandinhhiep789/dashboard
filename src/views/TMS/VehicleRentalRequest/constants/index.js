@@ -267,8 +267,8 @@ export const DataGridColumnList = [
     },
     {
         Name: "Cost",
-        Type: "text",
-        Caption: "Chí phí thuê",
+        Type: "textCurrency",
+        Caption: "Chi phí thuê",
         DataSourceMember: "Cost",
     },
     {
