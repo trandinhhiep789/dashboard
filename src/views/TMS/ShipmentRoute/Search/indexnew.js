@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 import DataGridShipmentOderNew from "../Component/DataGridShipmentOderNew";
+// import DataGridShipmentOderNewCopy from "../Component/DataGridShipmentOderNewCopy";
 import { MessageModal } from "../../../../common/components/Modal";
 import {
     SearchElementList,
@@ -514,55 +515,10 @@ class SearchCom extends React.Component {
     }
 
     render() {
-        if (this.state.IsLoadDataComplete) {
-            return (
-                <React.Fragment>
-                    <ReactNotification ref={this.notificationDOMRef} />
-                    <div className="col-lg-12 SearchFormCustom" id="SearchFormCustom">
-                        <SearchForm
-                            FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
-                            MLObjectDefinition={SearchMLObjectDefinition}
-                            listelement={this.state.SearchElementList}
-                            onSubmit={this.handleSearchSubmit}
-                            ref={this.searchref}
-                            btnGroup='btnSearch btncustom btnGroup'
-                            IsSetting={true}
-                            className="multiple multiple-custom multiple-custom-display"
-                        />
-                    </div>
-                    <DataGridShipmentOderNew
-                        listColumn={DataGridColumnList}
-                        dataSource={this.state.gridDataSource}
-                        IsLoadData={this.state.IsLoadData}
-                        AddLink={AddLink}
-                        IDSelectColumnName={IDSelectColumnName}
-                        PKColumnName={PKColumnName}
-                        onDeleteClick={this.handleDelete}
-                        onChangePage={this.handleonChangePage}
-                        onChangeView={this.handleonChangeView.bind(this)}
-                        onSearchEvent={this.handleonSearchEvent.bind(this)}
-                        onChangePageLoad={this.onChangePageLoad.bind(this)}
-                        onPrint={this.handlePrint.bind(this)}
-                        IsDelete={false}
-                        ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
-                        IsAdd={false}
-                        PageNumber={this.state.PageNumber}
-                        DeletePermission={"SHIPMENTORDER_DELETE"}
-                        EditPermission={"SHIPMENTORDER_UPDATE"}
-                        IsAutoPaging={true}
-                        RowsPerPage={1000}
-                    />
-                    <div style={{ display: 'none' }}>
-                        <SOPrintTemplate ref={el => (this.componentRef = el)} data={this.state.dataPrint} DataID={this.state.PrintID} />
-                    </div>
-
-                </React.Fragment>
-            );
-        }
-        else {
-            return (
-                <React.Fragment>
-                    <ReactNotification ref={this.notificationDOMRef} />
+        return (
+            <React.Fragment>
+                <ReactNotification ref={this.notificationDOMRef} />
+                <div className="col-lg-12 SearchFormCustom" id="SearchFormCustom">
                     <SearchForm
                         FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
                         MLObjectDefinition={SearchMLObjectDefinition}
@@ -573,10 +529,40 @@ class SearchCom extends React.Component {
                         IsSetting={true}
                         className="multiple multiple-custom multiple-custom-display"
                     />
-                    <label>Đang nạp dữ liệu...</label>
-                </React.Fragment>
-            );
-        }
+                </div>
+                {
+                    this.state.IsLoadDataComplete && 
+                    <div>
+                        <DataGridShipmentOderNew
+                            listColumn={DataGridColumnList}
+                            dataSource={this.state.gridDataSource}
+                            IsLoadData={this.state.IsLoadData}
+                            AddLink={AddLink}
+                            IDSelectColumnName={IDSelectColumnName}
+                            PKColumnName={PKColumnName}
+                            onDeleteClick={this.handleDelete}
+                            onChangePage={this.handleonChangePage}
+                            onChangeView={this.handleonChangeView.bind(this)}
+                            onSearchEvent={this.handleonSearchEvent.bind(this)}
+                            onChangePageLoad={this.onChangePageLoad.bind(this)}
+                            onPrint={this.handlePrint.bind(this)}
+                            IsDelete={false}
+                            ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
+                            IsAdd={false}
+                            PageNumber={this.state.PageNumber}
+                            DeletePermission={"SHIPMENTORDER_DELETE"}
+                            EditPermission={"SHIPMENTORDER_UPDATE"}
+                            IsAutoPaging={true}
+                            RowsPerPage={1000}
+                        />
+                        <div style={{ display: 'none' }}>
+                            <SOPrintTemplate ref={el => (this.componentRef = el)} data={this.state.dataPrint} DataID={this.state.PrintID} />
+                        </div>
+                </div>
+                }
+            </React.Fragment>
+        );
+
     }
 }
 
