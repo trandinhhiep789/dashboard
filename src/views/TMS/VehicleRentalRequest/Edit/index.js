@@ -48,7 +48,7 @@ class EditCom extends React.Component {
     }
 
     componentDidMount() {
-        console.log("prop", this.props)
+        // console.log("prop", this.props)
         this.props.updatePagePath(EditPagePath);
         this.callLoadData(this.props.match.params.id);
     }
@@ -56,7 +56,7 @@ class EditCom extends React.Component {
     callLoadData(id) {
         const { AttachmentListData } = this.state
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            console.log("data", id, apiResult)
+            // console.log("data", id, apiResult)
             if (apiResult.IsError) {
                 this.showMessage(apiResult.Message)
             }
@@ -77,14 +77,19 @@ class EditCom extends React.Component {
                     AttachmentListData.push(File);
                 }
 
+                const DataSource = {
+                    ...apiResult.ResultObject,
+                    StartTime: new Date(apiResult.ResultObject.StartTime),
+                    EndTime: new Date(apiResult.ResultObject.EndTime)
+                }
 
                 this.setState({
-                    DataSource: apiResult.ResultObject,
+                    DataSource,
                     IsLoadDataComplete: true,
                     UserValue: UserValue,
                     AttachmentListData,
                     AttachmentID: apiResult.ResultObject.objVehicleRentalRequest_ATT.AttachmentID,
-                    IsInitStep:  apiResult.ResultObject.IsInitStep
+                    IsInitStep: apiResult.ResultObject.IsInitStep
                 })
             }
         })
@@ -110,7 +115,7 @@ class EditCom extends React.Component {
         const { AttachmentListData, AttachmentList, fileSize, AttachmentID } = this.state;
         MLObject.RequestUser = MLObject.RequestUser.value != undefined ? MLObject.RequestUser.value : MLObject.RequestUser;
         MLObject.AttachmentID = AttachmentID;
-        console.log("add", formData, MLObject)
+        // console.log("add", formData, MLObject)
 
         MLObject.CurrentVehicleRentalRequestStepID = 1;
         MLObject.CurrentVehicleRentalStatusID = 1;
@@ -119,25 +124,25 @@ class EditCom extends React.Component {
         let StartTime = new Date(MLObject.StartTime);
         let EndTime = new Date(MLObject.EndTime);
 
-        if ( StartTime > EndTime) {
-         
+        if (StartTime > EndTime) {
+
             formData.dtEndTime.ErrorLst.IsValidatonError = true;
             formData.dtEndTime.ErrorLst.ValidatonErrorMessage = "Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu thuê xe";
         }
-        else{
+        else {
             data.append("vehicleRentalRequestATTObj", AttachmentList.FileURL);
             data.append("vehicleRentalRequestObj", JSON.stringify(MLObject));
-            console.log("data", data,formData, MLObject)
+            // console.log("data", data, formData, MLObject)
             this.handleSubmit(data)
-    
+
         }
 
-     
+
     }
 
     handleSubmit(MLObject) {
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
-            console.log("submit", MLObject, apiResult)
+            // console.log("submit", MLObject, apiResult)
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
         });
@@ -195,7 +200,7 @@ class EditCom extends React.Component {
             return <Redirect to={BackLink} />;
         }
         let currentDate = new Date();
-        console.log("IsInitStep", IsInitStep)
+        // console.log("IsInitStep", IsInitStep)
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>
