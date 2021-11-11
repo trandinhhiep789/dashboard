@@ -38,7 +38,8 @@ class EditCom extends React.Component {
             fileSize: 0,
             UserValue: [],
             RequestUser: "",
-            AttachmentID: ""
+            AttachmentID: "",
+            IsInitStep: false
 
         };
         this.notificationDOMRef = React.createRef();
@@ -82,7 +83,8 @@ class EditCom extends React.Component {
                     IsLoadDataComplete: true,
                     UserValue: UserValue,
                     AttachmentListData,
-                    AttachmentID: apiResult.ResultObject.objVehicleRentalRequest_ATT.AttachmentID
+                    AttachmentID: apiResult.ResultObject.objVehicleRentalRequest_ATT.AttachmentID,
+                    IsInitStep:  apiResult.ResultObject.IsInitStep
                 })
             }
         })
@@ -113,12 +115,24 @@ class EditCom extends React.Component {
         MLObject.CurrentVehicleRentalRequestStepID = 1;
         MLObject.CurrentVehicleRentalStatusID = 1;
         let data = new FormData();
-        data.append("vehicleRentalRequestATTObj", AttachmentList.FileURL);
-        data.append("vehicleRentalRequestObj", JSON.stringify(MLObject));
 
-        console.log("data", data, MLObject)
-         this.handleSubmit(data)
+        let StartTime = new Date(MLObject.StartTime);
+        let EndTime = new Date(MLObject.EndTime);
 
+        if ( StartTime > EndTime) {
+         
+            formData.dtEndTime.ErrorLst.IsValidatonError = true;
+            formData.dtEndTime.ErrorLst.ValidatonErrorMessage = "Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu thuê xe";
+        }
+        else{
+            data.append("vehicleRentalRequestATTObj", AttachmentList.FileURL);
+            data.append("vehicleRentalRequestObj", JSON.stringify(MLObject));
+            console.log("data", data,formData, MLObject)
+            this.handleSubmit(data)
+    
+        }
+
+     
     }
 
     handleSubmit(MLObject) {
@@ -175,12 +189,13 @@ class EditCom extends React.Component {
 
 
     render() {
-        const { AttachmentListData, AttachmentList, fileSize, UserValue, IsCloseForm } = this.state;
+        const { AttachmentListData, AttachmentList, fileSize, UserValue, IsCloseForm, IsInitStep } = this.state;
 
         if (IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
         let currentDate = new Date();
+        console.log("IsInitStep", IsInitStep)
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>
@@ -193,6 +208,7 @@ class EditCom extends React.Component {
                         // RequirePermission={this.props.location.state.AddFunctionID}
                         onSubmit={this.prevDataSubmit.bind(this)}
                         onchange={this.handleChange.bind(this)}
+                        IsDisabledSubmitForm={IsInitStep == true ? false : true}
                     >
 
                         <div className="row">
@@ -348,9 +364,11 @@ class EditCom extends React.Component {
                                     colspan="8"
                                     labelcolspan="4"
                                     readOnly={true}
-                                    showTime={false}
+                                    showTime={true}
                                     timeFormat={false}
-                                    dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
+                                    disabledDate={true}
+                                    IsGetTime={true}
+                                    dateFormat="DD-MM-YYYY HH:mm"//"YYYY-MM-DD"
                                     label="thời gian bắt đầu"
                                     placeholder={formatDate(currentDate, true)}
                                     controltype="InputControl"
@@ -358,9 +376,8 @@ class EditCom extends React.Component {
                                     validatonList={["required"]}
                                     datasourcemember="StartTime"
                                 />
-                            </div>
 
-                           
+                            </div>
 
                             <div className="col-md-6">
 
@@ -385,9 +402,11 @@ class EditCom extends React.Component {
                                     colspan="8"
                                     labelcolspan="4"
                                     readOnly={true}
-                                    showTime={false}
+                                    showTime={true}
                                     timeFormat={false}
-                                    dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
+                                    disabledDate={true}
+                                    IsGetTime={true}
+                                    dateFormat="DD-MM-YYYY HH:mm"//"YYYY-MM-DD"
                                     label="thời gian kết thúc"
                                     placeholder={formatDate(currentDate, true)}
                                     controltype="InputControl"
@@ -396,6 +415,7 @@ class EditCom extends React.Component {
                                     datasourcemember="EndTime"
                                 />
                             </div>
+
                         </div>
 
 

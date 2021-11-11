@@ -654,7 +654,6 @@ class FormContainerCom extends Component {
         if (this.props.IsDisabledSubmitForm) {
             isDisabledButtonSubmit = true
         }
-        // console.log("this.props.isSubmitForm ", this.props.isSubmitFrom )
         return (
             <div className="col-lg-12">
                 <form className="card" action="" onSubmit={this.handleSubmit}>

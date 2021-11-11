@@ -92,10 +92,21 @@ class AddCom extends React.Component {
         MLObject.RequestUser = MLObject.RequestUser.value;
         MLObject.AddFunctionID = this.props.location.state.AddFunctionID;
         let data = new FormData();
-        data.append("vehicleRentalRequestATTObj", AttachmentList.FileURL);
-        data.append("vehicleRentalRequestObj", JSON.stringify(MLObject));
-        console.log("submit", data, MLObject)
-       this.handleSubmit(data)
+        let StartTime = new Date(MLObject.StartTime);
+        let EndTime = new Date(MLObject.EndTime);
+
+        if ( StartTime > EndTime) {
+         
+            formData.dtEndTime.ErrorLst.IsValidatonError = true;
+            formData.dtEndTime.ErrorLst.ValidatonErrorMessage = "Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu thuê xe";
+        }
+        else{
+            data.append("vehicleRentalRequestATTObj", AttachmentList.FileURL);
+            data.append("vehicleRentalRequestObj", JSON.stringify(MLObject));
+            console.log("submit", data, formData, MLObject)
+            this.handleSubmit(data)
+        }
+
 
     }
 
