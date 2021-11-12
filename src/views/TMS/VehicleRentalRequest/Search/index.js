@@ -239,7 +239,6 @@ class SearchCom extends React.Component {
     }
 
     handleInputGridInsert(MLObjectDefinition, modalElementList, dataSource) {
-        console.log("adđ", MLObjectDefinition, modalElementList, dataSource)
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'yêu cầu thuê xe',
             content: {
@@ -289,7 +288,6 @@ class SearchCom extends React.Component {
 
     handleSelectUpdateCost(mlObject){
         this.props.callFetchAPI(APIHostName, UpdateCostAPIPath, mlObject).then(apiResult => {
-            console.log("mlObject", mlObject, apiResult)
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {

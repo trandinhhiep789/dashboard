@@ -19,10 +19,11 @@ import { updatePagePath } from "../../../../actions/pageAction";
 import DeliverUserList from "../../ShipmentOrder/Component/DeliverUserList";
 import FileAttachment from "../../../../common/components/Form/FileAttachment";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
-import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache, callGetUserCache  } from "../../../../actions/cacheAction";
 import { formatDate, formatDateNew } from "../../../../common/library/CommonLib.js";
 import { showModal, hideModal } from '../../../../actions/modal';
 import MultiSelectComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiSelectUserComboBoxNew";
+import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../constants/functionLists";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -39,24 +40,29 @@ class EditCom extends React.Component {
             UserValue: [],
             RequestUser: "",
             AttachmentID: "",
-            IsInitStep: false
+            IsInitStep: false,
+            VehicleRentalReqType: []
 
         };
         this.notificationDOMRef = React.createRef();
         this.callLoadData = this.callLoadData.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
+        this.getCacheKey = this.getCacheKey.bind(this)
+
     }
 
     componentDidMount() {
         // console.log("prop", this.props)
         this.props.updatePagePath(EditPagePath);
         this.callLoadData(this.props.match.params.id);
+        this.getCacheKey();
     }
 
     callLoadData(id) {
         const { AttachmentListData } = this.state
+
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
-            // console.log("data", id, apiResult)
+            console.log("data", id, apiResult)
             if (apiResult.IsError) {
                 this.showMessage(apiResult.Message)
             }
@@ -95,6 +101,21 @@ class EditCom extends React.Component {
         })
     }
 
+    getCacheKey() {
+        this.props.callGetCache("ERPCOMMONCACHE.VEHICLERENTALREQTYPE").then(apiResult => {
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.Message)
+            }
+            else {
+
+                this.setState({
+                    VehicleRentalReqType: apiResult.ResultObject.CacheData
+                })
+            }
+        })
+    }
+
+
     handleCloseMessage() {
         if (!this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
     }
@@ -111,8 +132,27 @@ class EditCom extends React.Component {
         );
     }
 
+    checkPermission(permissionKey) {
+        return new Promise((resolve, reject) => {
+            this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
+                if (!result.IsError && result.ResultObject.CacheData != null) {
+                    for (let i = 0; i < result.ResultObject.CacheData.length; i++) {
+                        if (result.ResultObject.CacheData[i].FunctionID == permissionKey) {
+                            resolve(true);
+                            return;
+                        }
+                    }
+                    resolve(false)
+                } else {
+                    resolve('error');
+                }
+            });
+        });
+    }
+
+
     prevDataSubmit(formData, MLObject) {
-        const { AttachmentListData, AttachmentList, fileSize, AttachmentID } = this.state;
+        const { AttachmentListData, AttachmentList, fileSize, AttachmentID, VehicleRentalReqType } = this.state;
         MLObject.RequestUser = MLObject.RequestUser.value != undefined ? MLObject.RequestUser.value : MLObject.RequestUser;
         MLObject.AttachmentID = AttachmentID;
         // console.log("add", formData, MLObject)
@@ -130,14 +170,18 @@ class EditCom extends React.Component {
             formData.dtEndTime.ErrorLst.ValidatonErrorMessage = "Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu thuê xe";
         }
         else {
-            data.append("vehicleRentalRequestATTObj", AttachmentList.FileURL);
-            data.append("vehicleRentalRequestObj", JSON.stringify(MLObject));
-            // console.log("data", data, formData, MLObject)
-            this.handleSubmit(data)
-
+            const VehicleRentalReqTypeItem = VehicleRentalReqType.find(n => n.VehicleRentalReqTypeID == MLObject.VehicleRentalRequestTypeID);
+            MLObject.AddFunctionID = VehicleRentalReqTypeItem.AddFunctionID;
+            this.checkPermission(VehicleRentalReqTypeItem.AddFunctionID).then(result => {
+                if (result == true) {
+                    data.append("vehicleRentalRequestATTObj", AttachmentList.FileURL);
+                    data.append("vehicleRentalRequestObj", JSON.stringify(MLObject));
+                    this.handleSubmit(data);
+                } else {
+                    this.showMessage("Bạn không có quyền cập nhật yêu cầu!")
+                }
+            })
         }
-
-
     }
 
     handleSubmit(MLObject) {
@@ -170,6 +214,7 @@ class EditCom extends React.Component {
 
 
     handleChange(formData, MLObject) {
+        console.log("change", formData, MLObject)
         if (formData.dtEndTime.value.length > 0) {
             let StartTime = new Date(formData.dtStartTime.value);
             let EndTime = new Date(formData.dtEndTime.value);
@@ -461,7 +506,10 @@ const mapDispatchToProps = dispatch => {
         },
         hideModal: (type, props) => {
             dispatch(hideModal(type, props));
-        }
+        },
+        callGetUserCache: (cacheKeyID) => {
+            return dispatch(callGetUserCache(cacheKeyID));
+        },
     };
 };
 
