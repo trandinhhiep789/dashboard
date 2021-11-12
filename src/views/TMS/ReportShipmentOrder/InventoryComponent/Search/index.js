@@ -1,11 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
-import ReactNotification from "react-notifications-component";
 import { ModalManager } from 'react-dynamic-modal';
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+import ReactNotification from "react-notifications-component";
 
 import {
+    APIExportPath,
     APIHostName,
-    listColumn,
     listelement,
     MLObjectDefinition,
     PagePath,
@@ -13,7 +15,6 @@ import {
 
 import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
 import { MessageModal } from "../../../../../common/components/Modal";
-import DataGrid from "../../../../../common/components/DataGrid";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
@@ -24,25 +25,23 @@ class SearchCom extends React.Component {
         super(props);
 
         this.state = {
-            dataSource: null
+            exportData: null
         };
 
         this.gridref = React.createRef();
         this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
 
-        // this.callSearchData = this.callSearchData.bind(this);
-        // this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.addNotification = this.addNotification.bind(this);
         this.handleExportSubmit = this.handleExportSubmit.bind(this);
         this.handleHistorySubmit = this.handleHistorySubmit.bind(this);
+        this.handleSetMLObjectData = this.handleSetMLObjectData.bind(this);
+        this.handleSetMLObjectProductID = this.handleSetMLObjectProductID.bind(this);
         this.showMessage = this.showMessage.bind(this);
     }
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
-
-        // this.props.callGetCache("ERPCOMMONCACHE.BRAND").then(a => console.log(a))
     }
 
     showMessage(message) {
@@ -85,22 +84,64 @@ class SearchCom extends React.Component {
         });
     }
 
-    // callSearchData(searchData) {
-    //     this.props.callFetchAPI(APIHostName, "", searchData).then(apiResult => {
-    //         if (!apiResult.IsError) {
+    handleExportFile(excelData) {
+        if (excelData.length == 0) {
+            this.addNotification("Dữ liệu không tồn tại. Không thể xuất file!")
+        } else {
+            const ws = XLSX.utils.json_to_sheet(excelData);
+            const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+            const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+            const data = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
 
-    //         } else {
-    //             this.showMessage(apiResult.Message);
-    //         }
-    //     });
-    // }
+            FileSaver.saveAs(data, "Danh sách định nghĩa kho điều phối giao hàng.xlsx");
 
-    // handleSearchSubmit(formData, MLObject) {
-    //     console.log(MLObject)
-    // }
+            this.addNotification("Xuất file thành công!")
+        }
+    }
+
+    handleSetMLObjectData(parameter) {
+        if (parameter == -1 || parameter == "") {
+            return "";
+        } else {
+            const filtered = parameter.filter((item) => item != -1);
+            let result = filtered.toString();
+            return result;
+        }
+    }
+
+    handleSetMLObjectProductID(parameter) {
+        if (parameter == -1 || parameter == "") {
+            return "";
+        } else {
+            const uptParameter = parameter.map(item => item.ProductID);
+            let result = uptParameter.toString();
+            return result;
+        }
+    }
 
     handleExportSubmit(formData, MLObject) {
-        console.log(MLObject)
+        const uptMLObject = {
+            StoreIDList: this.handleSetMLObjectData(MLObject.StoreID),
+            ProductIDList: this.handleSetMLObjectProductID(MLObject.ProductID),
+            InventoryStatusIDList: this.handleSetMLObjectData(MLObject.InventoryStatusID),
+        }
+
+        this.props.callFetchAPI(APIHostName, APIExportPath, uptMLObject).then(apiResult => {
+            if (!apiResult.IsError) {
+                const updResultObject = apiResult.ResultObject.map(item => {
+                    return {
+                        "Mã kho": item.STOREID,
+                        "Sản phẩm": item.PRODUCTID,
+                        "Trạng thái": item.INVENTORYSTATUSID,
+                        "Số lượng tồn": item.QUANTITY
+                    }
+                });
+
+                this.handleExportFile(updResultObject)
+            } else {
+                this.showMessage(apiResult.Message);
+            }
+        });
     }
 
     handleHistorySubmit() {
@@ -114,7 +155,6 @@ class SearchCom extends React.Component {
 
                 <SearchForm
                     className="multiple"
-                    classNamebtnSearch="groupAction"
                     FormName="Báo cáo tồn kho linh kiện"
                     IsButtonExport={true}
                     IsButtonhistory={false}
@@ -127,7 +167,6 @@ class SearchCom extends React.Component {
                     ref={this.searchref}
                     TitleButtonExport="Xuất dữ liệu"
                 />
-
             </React.Fragment>
         );
     }

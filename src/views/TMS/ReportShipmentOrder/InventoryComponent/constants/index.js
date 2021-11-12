@@ -1,13 +1,15 @@
 import {
-    ERPCOMMONCACHE_AREA,
+    ERPCOMMONCACHE_AREATT,
     ERPCOMMONCACHE_BRAND,
     ERPCOMMONCACHE_MAINGROUP,
-    ERPCOMMONCACHE_SUBGROUP,
     ERPCOMMONCACHE_PROVINCE,
-    ERPCOMMONCACHE_AREATT,
+    ERPCOMMONCACHE_STORE,
+    ERPCOMMONCACHE_SUBGROUP,
+    ERPRELATECACHE_INVENTORYSTATUS,
 } from '../../../../../constants/keyCache';
 
 export const APIHostName = "TMSAPI";
+export const APIExportPath = "api/InventoryComponent/GetCurrentInStockByPrdIDList";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
@@ -17,8 +19,8 @@ export const PagePath = [
 export const listelement = [
     {
         type: "ComboBox",
-        name: "cbArea",
-        classNameCol: "col-custom",
+        name: "cbAreaID",
+        // classNameCol: "col-custom",
         colspan: 2,
         DataSourceMember: "AreaID",
         IsAutoLoadItemFromCache: true,
@@ -31,29 +33,46 @@ export const listelement = [
         value: -1,
         ValueMember: "AreaID",
     },
-    // {
-    //     type: "ComboBox",
-    //     name: "cbSubGroupID",
-    //     classNameCol: "col-custom",
-    //     colspan: 2,
-    //     DataSourceMember: "SubGroupID",
-    //     filterName: "cbMainGroupID",
-    //     filterobj: "MainGroupID",
-    //     filterValue: "",
-    //     IsAutoLoadItemFromCache: true,
-    //     isMultiSelect: false,
-    //     label: "Nhóm hàng",
-    //     listoption: [],
-    //     LoadItemCacheKeyID: ERPCOMMONCACHE_SUBGROUP,
-    //     NameMember: "SubGroupName",
-    //     placeholder: "Nhóm hàng",
-    //     value: -1,
-    //     ValueMember: "SubGroupID",
-    // },
+    {
+        type: "ComboBox",
+        name: "cbProvinceID",
+        // classNameCol: "col-custom",
+        colspan: 2,
+        DataSourceMember: "ReceiverProvinceID",
+        filterName: "cbAreaID",
+        IsAutoLoadItemFromCache: true,
+        isMultiSelect: false,
+        label: "Tỉnh",
+        listoption: [],
+        LoadItemCacheKeyID: ERPCOMMONCACHE_PROVINCE,
+        NameMember: "ProvinceName",
+        placeholder: "Tỉnh",
+        value: -1,
+        ValueMember: "ProvinceID",
+    },
+    {
+        type: "ComboBoxNewChange",
+        name: "cbStoreID",
+        // classNameCol: "col-custom",
+        colspan: 4,
+        DataSourceMember: "StoreID",
+        filterName: "cbAreaID",
+        filterobj: "CompanyID",
+        filterValue: 10,
+        IsAutoLoadItemFromCache: true,
+        isMultiSelect: true,
+        label: "Mã kho",
+        listoption: [],
+        LoadItemCacheKeyID: ERPCOMMONCACHE_STORE,
+        NameMember: "StoreName",
+        placeholder: "Mã kho",
+        value: -1,
+        ValueMember: "StoreID",
+    },
     {
         type: "ComboBox",
         name: "cbMainGroupID",
-        classNameCol: "col-custom",
+        // classNameCol: "col-custom",
         colspan: 2,
         DataSourceMember: "MainGroupID",
         IsAutoLoadItemFromCache: true,
@@ -69,7 +88,7 @@ export const listelement = [
     {
         type: "ComboBox",
         name: "cbSubGroupID",
-        classNameCol: "col-custom",
+        // classNameCol: "col-custom",
         colspan: 2,
         DataSourceMember: "SubGroupID",
         filterName: "cbMainGroupID",
@@ -88,7 +107,7 @@ export const listelement = [
     {
         type: "ComboBox",
         name: "cbBrandID",
-        classNameCol: "col-custom",
+        // classNameCol: "col-custom",
         colspan: 2,
         DataSourceMember: "BrandID",
         filterName: "cbMainGroupID",
@@ -109,48 +128,49 @@ export const listelement = [
         name: "cbProductID",
         colspan: 12,
         DataSourceMember: "ProductID",
+        filterName: "cbMainGroupID",
         IsAutoLoadItemFromCache: false,
         IsLabelDiv: true,
-        isMulti: false,
-        isMultiSelect: false,
+        isMulti: true,
         label: "Sản phẩm",
         labelcolspan: 12,
         listoption: [],
-        placeholder: "---Vui lòng chọn---",
-        rowspan: 2,
+        placeholder: "Sản phẩm",
+        rowspan: 4,
         value: "",
+    },
+    {
+        type: "ComboBoxNewChange",
+        name: "cbInventoryStatusID",
+        // classNameCol: "col-custom",
+        colspan: 4,
+        DataSourceMember: "InventoryStatusID",
+        IsAutoLoadItemFromCache: true,
+        isMultiSelect: true,
+        label: "Trạng thái",
+        listoption: [],
+        LoadItemCacheKeyID: ERPRELATECACHE_INVENTORYSTATUS,
+        NameMember: "InventoryStatusName",
+        placeholder: "Trạng thái",
+        value: -1,
+        ValueMember: "InventoryStatusID",
     },
 ];
 
 export const MLObjectDefinition = [
     {
-        Name: "MainGroupID",
+        Name: "StoreID",
         DefaultValue: "",
-        BindControlName: "cbMainGroupID"
-    },
-    {
-        Name: "SubGroupID",
-        DefaultValue: "",
-        BindControlName: "cbSubGroupID"
-    },
-    {
-        Name: "BrandID",
-        DefaultValue: "",
-        BindControlName: "cbBrandID"
+        BindControlName: "cbStoreID"
     },
     {
         Name: "ProductID",
         DefaultValue: "",
         BindControlName: "cbProductID"
     },
-];
-
-export const listColumn = [
     {
-        Name: "",
-        Type: "text",
-        Caption: "Column",
-        DataSourceMember: "",
-        Width: 200
-    }
-]
+        Name: "InventoryStatusID",
+        DefaultValue: "",
+        BindControlName: "cbInventoryStatusID"
+    },
+];
