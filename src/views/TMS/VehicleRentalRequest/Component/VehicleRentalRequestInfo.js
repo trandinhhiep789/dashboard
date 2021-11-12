@@ -114,16 +114,9 @@ class VehicleRentalRequestInfoCom extends React.Component {
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Năng lực xe:</label>
                     </div>
-                    <div className="form-group col-md-2">
-                        <Select
-                            value={AbilityID}
-                            onChange={this.handleValueChange.bind(this)}
-                            options={listOption}
-                            placeholder={"--Vui lòng chọn--"}
-                            isDisabled ={this.props.IsUpdateAbility == true ? false : true}
-                        />
+                    <div className="form-group col-md-4">
+                        <label className="col-form-label">{VehicleRentalRequest.Ability + "%"}</label>
                     </div>
-                    <div className="form-group col-md-2"></div>
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Ngày kết thúc:</label>
                     </div>
