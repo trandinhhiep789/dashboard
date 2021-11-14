@@ -2,8 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
-//import DataGridShipmentOderNew from "../Component/DataGridShipmentOderNew";
-import DataGridShipmentOderNew from "../Component/DataGridShipmentOderNewCopy";
+import DataGridShipmentOderNew from "../Component/DataGridShipmentOderNew";
+//import DataGridShipmentOderNew from "../Component/DataGridShipmentOderNewCopy";
 import { MessageModal } from "../../../../common/components/Modal";
 import {
     SearchElementList,
