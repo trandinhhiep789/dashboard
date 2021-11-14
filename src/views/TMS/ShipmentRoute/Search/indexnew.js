@@ -2,8 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
-import DataGridShipmentOderNew from "../Component/DataGridShipmentOderNew";
-// import DataGridShipmentOderNewCopy from "../Component/DataGridShipmentOderNewCopy";
+//import DataGridShipmentOderNew from "../Component/DataGridShipmentOderNew";
+import DataGridShipmentOderNew from "../Component/DataGridShipmentOderNewCopy";
 import { MessageModal } from "../../../../common/components/Modal";
 import {
     SearchElementList,
@@ -531,8 +531,8 @@ class SearchCom extends React.Component {
                     />
                 </div>
                 {
-                    this.state.IsLoadDataComplete && 
-                    <div>
+                    this.state.IsLoadDataComplete &&
+                    <React.Fragment>
                         <DataGridShipmentOderNew
                             listColumn={DataGridColumnList}
                             dataSource={this.state.gridDataSource}
@@ -558,7 +558,7 @@ class SearchCom extends React.Component {
                         <div style={{ display: 'none' }}>
                             <SOPrintTemplate ref={el => (this.componentRef = el)} data={this.state.dataPrint} DataID={this.state.PrintID} />
                         </div>
-                </div>
+                    </React.Fragment>
                 }
             </React.Fragment>
         );
