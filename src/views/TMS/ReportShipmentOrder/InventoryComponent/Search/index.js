@@ -127,6 +127,7 @@ class SearchCom extends React.Component {
         }
 
         this.props.callFetchAPI(APIHostName, APIExportPath, uptMLObject).then(apiResult => {
+            console.log(uptMLObject, apiResult)
             if (!apiResult.IsError) {
                 const updResultObject = apiResult.ResultObject.map(item => {
                     return {
