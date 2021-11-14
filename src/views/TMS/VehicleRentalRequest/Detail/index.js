@@ -30,6 +30,9 @@ import InputGridControl from "../../../../common/components/FormContainer/FormCo
 import { DatePicker, Menu, Dropdown, Button } from 'antd';
 import { GET_CACHE_USER_FUNCTION_LIST, TMS_VEHICLERENTALREQUEST_ADDABILITY } from "../../../../constants/functionLists";
 import ReactTooltip from 'react-tooltip';
+import { MODAL_TYPE_COMMONTMODALS } from "../../../../constants/actionTypes";
+import VehicleRentalRequestAbility from "../Component/VehicleRentalRequestAbility";
+import { showModal } from '../../../../actions/modal';
 
 class DetailCom extends React.Component {
 
@@ -173,41 +176,73 @@ class DetailCom extends React.Component {
         });
     }
 
+    handleUpdateAbility(result) {
+        let { VehicleRentalRequest } = this.state;
+        console.log("result", result)
+        this.addNotification(result.Message, result.IsError);
+        this.callLoadData(VehicleRentalRequest.VehicleRentalRequestID)
+    }
+
     onChangeInput(e) {
         e.preventDefault();
         let value = e.currentTarget.dataset.option;
-        let lable = e.currentTarget.dataset.lable;
         let ChooseFunctionID = e.currentTarget.dataset.functionid;
+        let IsCheckAbility = e.currentTarget.dataset.ischeckability;
         let { VehicleRentalRequest } = this.state;
-        if (ChooseFunctionID != "") {
-            this.checkPermission(ChooseFunctionID).then(result => {
-                if (result) {
-                    let MLObject = {}
-                    MLObject.VehicleRentalRequestID = VehicleRentalRequest.VehicleRentalRequestID;
-                    MLObject.VehicleRentalRequestTypeID = VehicleRentalRequest.VehicleRentalRequestTypeID;
-                    MLObject.RequestDate = VehicleRentalRequest.RequestDate;
-                    MLObject.NextVehicleRentalRequestStepID = value;
-                    MLObject.VehicleID = VehicleRentalRequest.VehicleID;
-                    MLObject.StartTime = VehicleRentalRequest.StartTime;
-                    MLObject.EndTime = VehicleRentalRequest.EndTime;
-                    MLObject.StoreID = VehicleRentalRequest.StoreID;
-                    MLObject.ChooseFunctionID = ChooseFunctionID;
 
-                    console.log("checkPermission:", result, MLObject)
-                    this.props.callFetchAPI(APIHostName, UpdateProcessAPIPath, MLObject).then(apiResult => {
-                        console.log("submit", MLObject, apiResult)
-                        this.addNotification(apiResult.Message, apiResult.IsError);
-                        this.callLoadData(VehicleRentalRequest.VehicleRentalRequestID)
-                    });
+        let optionItem = {};
+        optionItem.ChooseFunctionID = ChooseFunctionID;
+        optionItem.valueNextStep = value;
 
-                }
-                else {
-                    this.showMessage("Bạn không có quyền chuyển bước.")
-                }
-            })
+        console.log("aa", e.currentTarget.dataset, IsCheckAbility, optionItem)
+
+        if (parseInt(IsCheckAbility) == 1) {
+            this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+                title: 'Cập nhật năng lực thuê xe',
+                content: {
+                    text: <VehicleRentalRequestAbility
+                        optionItem={optionItem}
+                        VehicleRentalRequestItem={VehicleRentalRequest}
+                        onUpdateAbility={this.handleUpdateAbility.bind(this)}
+                    />
+                },
+                maxWidth: '500px'
+            });
         }
         else {
-            this.showMessage("Bạn không có quyền chuyển bước.")
+            if (ChooseFunctionID != "") {
+                this.checkPermission(ChooseFunctionID).then(result => {
+                    if (result) {
+                        let MLObject = {}
+                        MLObject.VehicleRentalRequestID = VehicleRentalRequest.VehicleRentalRequestID;
+                        MLObject.VehicleRentalRequestTypeID = VehicleRentalRequest.VehicleRentalRequestTypeID;
+                        MLObject.RequestDate = VehicleRentalRequest.RequestDate;
+                        MLObject.NextVehicleRentalRequestStepID = value;
+                        MLObject.VehicleID = VehicleRentalRequest.VehicleID;
+                        MLObject.StartTime = VehicleRentalRequest.StartTime;
+                        MLObject.EndTime = VehicleRentalRequest.EndTime;
+                        MLObject.StoreID = VehicleRentalRequest.StoreID;
+                        MLObject.ChooseFunctionID = ChooseFunctionID;
+                        MLObject.Ability = 0;
+                        MLObject.CurrentVehicleRentalRequestStepID = VehicleRentalRequest.CurrentVehicleRentalRequestStepID
+                        MLObject.CurrentVehicleRentalStatusID = VehicleRentalRequest.CurrentVehicleRentalStatusID
+
+                        console.log("checkPermission:", result, MLObject)
+                        this.props.callFetchAPI(APIHostName, UpdateProcessAPIPath, MLObject).then(apiResult => {
+                            console.log("submit", MLObject, apiResult)
+                            this.addNotification(apiResult.Message, apiResult.IsError);
+                            this.callLoadData(VehicleRentalRequest.VehicleRentalRequestID)
+                        });
+
+                    }
+                    else {
+                        this.showMessage("Bạn không có quyền chuyển bước.")
+                    }
+                })
+            }
+            else {
+                this.showMessage("Bạn không có quyền chuyển bước.")
+            }
         }
     }
 
@@ -224,6 +259,7 @@ class DetailCom extends React.Component {
                         data-option={optionItem.NextVehicleRentalReqTypeStep}
                         data-functionid={optionItem.ChooseFuntionID}
                         data-lable={optionItem.NextVehicleRentalRequestTypeStepName}
+                        data-isCheckAbility={optionItem.NextStepCheckAbility == true ? 1 : 0}
                         onClick={this.onChangeInput.bind(this)}
                     >
                         {optionItem.NextVehicleRentalRequestTypeStepName}
@@ -287,7 +323,7 @@ class DetailCom extends React.Component {
                                                 </div>
                                             </Dropdown>
                                                 :
-                                                <Dropdown data-tip data-for="btnUpdateProcess" data-id="btnUpdateProcess" overlay={dropdownItem} disabled>
+                                                <Dropdown data-tip data-for="btnUpdateProcess" data-id="btnUpdateProcess" overlay={dropdownItem} className="disabled" disabled>
                                                     <div className="btn dropdown-toggle">
                                                         {strCurrentVehicleRentalRequestStepName}
                                                     </div>
@@ -296,7 +332,7 @@ class DetailCom extends React.Component {
 
                                     </div>
                                 </div>
-                                <div className="btn-group btn-group-dropdown mr-3">
+                                {/* <div className="btn-group btn-group-dropdown mr-3">
                                     {isUpdateAbility == true ?
                                         <button className="btn btn-primary" type="button" onClick={this.handleSubmitAbility.bind(this)} >Cập nhật năng lực xe</button>
                                         :
@@ -308,7 +344,7 @@ class DetailCom extends React.Component {
                                         </React.Fragment>
 
                                     }
-                                </div>
+                                </div> */}
                                 <Link to="/VehicleRentalRequest">
                                     <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button>
                                 </Link>
@@ -347,6 +383,9 @@ const mapDispatchToProps = dispatch => {
         },
         callGetUserCache: (cacheKeyID) => {
             return dispatch(callGetUserCache(cacheKeyID));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
         },
     };
 };

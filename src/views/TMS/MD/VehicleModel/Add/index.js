@@ -82,9 +82,24 @@ class AddCom extends React.Component {
       <FormContainer FormName={TitleFormAdd} MLObjectDefinition={MLObjectDefinition} listelement={[]} onSubmit={this.handleSubmit} BackLink={BackLink} RequirePermission={MD_VEHICLEMODEL_ADD}>
         <div className="row">
           <div className="col-md-12">
+            <FormControl.TextBox
+              name="txtVehicleModelName"
+              colspan="4"
+              labelcolspan="2"
+              readOnly={false}
+              label="Tên model xe"
+              placeholder="Tên model xe"
+              controltype="InputControl"
+              value=""
+              maxSize={200}
+              datasourcemember="VehicleModelName"
+              validatonList={["required"]}
+            />
+          </div>
+          <div className="col-md-12">
             <FormControl.ComboBoxSelect
               name="cbVehicleTypeID"
-              colspan="10"
+              colspan="4"
               labelcolspan="2"
               label="Loại xe"
               isautoloaditemfromcache={true}
@@ -101,24 +116,9 @@ class AddCom extends React.Component {
             />
           </div>
           <div className="col-md-12">
-            <FormControl.TextBox
-              name="txtVehicleModelName"
-              colspan="10"
-              labelcolspan="2"
-              readOnly={false}
-              label="Tên model xe"
-              placeholder="Tên model xe"
-              controltype="InputControl"
-              value=""
-              maxSize={200}
-              datasourcemember="VehicleModelName"
-              validatonList={["required"]}
-            />
-          </div>
-          <div className="col-md-12">
             <FormControl.CheckBox
               name="chkIsActived"
-              colspan="10"
+              colspan="4"
               labelcolspan="2"
               readOnly={false}
               label="Kích hoạt"
@@ -128,11 +128,10 @@ class AddCom extends React.Component {
               classNameCustom="customCheckbox"
             />
           </div>
-
           <div className="col-md-12">
             <FormControl.CheckBox
               name="chkIsSystem"
-              colspan="10"
+              colspan="4"
               labelcolspan="2"
               readOnly={false}
               label="Hệ thống"

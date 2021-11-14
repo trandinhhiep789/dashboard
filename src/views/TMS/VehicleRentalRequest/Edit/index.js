@@ -19,10 +19,11 @@ import { updatePagePath } from "../../../../actions/pageAction";
 import DeliverUserList from "../../ShipmentOrder/Component/DeliverUserList";
 import FileAttachment from "../../../../common/components/Form/FileAttachment";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
-import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache, callGetUserCache  } from "../../../../actions/cacheAction";
 import { formatDate, formatDateNew } from "../../../../common/library/CommonLib.js";
 import { showModal, hideModal } from '../../../../actions/modal';
 import MultiSelectComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiSelectUserComboBoxNew";
+import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../constants/functionLists";
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -32,24 +33,34 @@ class EditCom extends React.Component {
             DataSource: {},
             IsCallAPIError: false,
             IsLoadDataComplete: false,
+            IsCloseForm: false,
             AttachmentListData: [],
             AttachmentList: [],
             fileSize: 0,
             UserValue: [],
-            RequestUser: ""
+            RequestUser: "",
+            AttachmentID: "",
+            IsInitStep: false,
+            VehicleRentalReqType: []
+
         };
         this.notificationDOMRef = React.createRef();
-        this.callLoadData = this.callLoadData.bind(this)
+        this.callLoadData = this.callLoadData.bind(this);
+        this.handleCloseMessage = this.handleCloseMessage.bind(this);
+        this.getCacheKey = this.getCacheKey.bind(this)
+
     }
 
     componentDidMount() {
-        console.log("prop", this.props)
+        // console.log("prop", this.props)
         this.props.updatePagePath(EditPagePath);
         this.callLoadData(this.props.match.params.id);
+        this.getCacheKey();
     }
 
     callLoadData(id) {
         const { AttachmentListData } = this.state
+
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then((apiResult) => {
             console.log("data", id, apiResult)
             if (apiResult.IsError) {
@@ -72,17 +83,42 @@ class EditCom extends React.Component {
                     AttachmentListData.push(File);
                 }
 
+                const DataSource = {
+                    ...apiResult.ResultObject,
+                    StartTime: new Date(apiResult.ResultObject.StartTime),
+                    EndTime: new Date(apiResult.ResultObject.EndTime)
+                }
 
                 this.setState({
-                    DataSource: apiResult.ResultObject,
+                    DataSource,
                     IsLoadDataComplete: true,
                     UserValue: UserValue,
-                    AttachmentListData
+                    AttachmentListData,
+                    AttachmentID: apiResult.ResultObject.objVehicleRentalRequest_ATT.AttachmentID,
+                    IsInitStep: apiResult.ResultObject.IsInitStep
                 })
             }
         })
     }
 
+    getCacheKey() {
+        this.props.callGetCache("ERPCOMMONCACHE.VEHICLERENTALREQTYPE").then(apiResult => {
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.Message)
+            }
+            else {
+
+                this.setState({
+                    VehicleRentalReqType: apiResult.ResultObject.CacheData
+                })
+            }
+        })
+    }
+
+
+    handleCloseMessage() {
+        if (!this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
+    }
 
     showMessage(message) {
         ModalManager.open(
@@ -90,30 +126,67 @@ class EditCom extends React.Component {
                 title="Thông báo"
                 message={message}
                 onRequestClose={() => true}
+                onCloseModal={this.handleCloseMessage}
+
             />
         );
     }
 
-    prevDataSubmit(formData, MLObject) {
-        const { AttachmentListData, AttachmentList, fileSize } = this.state;
-        MLObject.RequestUser = MLObject.RequestUser.value != undefined ? MLObject.RequestUser.value : MLObject.RequestUser;
+    checkPermission(permissionKey) {
+        return new Promise((resolve, reject) => {
+            this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
+                if (!result.IsError && result.ResultObject.CacheData != null) {
+                    for (let i = 0; i < result.ResultObject.CacheData.length; i++) {
+                        if (result.ResultObject.CacheData[i].FunctionID == permissionKey) {
+                            resolve(true);
+                            return;
+                        }
+                    }
+                    resolve(false)
+                } else {
+                    resolve('error');
+                }
+            });
+        });
+    }
 
-        console.log("add", formData, MLObject)
+
+    prevDataSubmit(formData, MLObject) {
+        const { AttachmentListData, AttachmentList, fileSize, AttachmentID, VehicleRentalReqType } = this.state;
+        MLObject.RequestUser = MLObject.RequestUser.value != undefined ? MLObject.RequestUser.value : MLObject.RequestUser;
+        MLObject.AttachmentID = AttachmentID;
+        // console.log("add", formData, MLObject)
 
         MLObject.CurrentVehicleRentalRequestStepID = 1;
         MLObject.CurrentVehicleRentalStatusID = 1;
         let data = new FormData();
-        data.append("vehicleRentalRequestATTObj", AttachmentList.FileURL);
-        data.append("vehicleRentalRequestObj", JSON.stringify(MLObject));
 
-        console.log("data", data, MLObject)
-         this.handleSubmit(data)
+        let StartTime = new Date(MLObject.StartTime);
+        let EndTime = new Date(MLObject.EndTime);
 
+        if (StartTime > EndTime) {
+
+            formData.dtEndTime.ErrorLst.IsValidatonError = true;
+            formData.dtEndTime.ErrorLst.ValidatonErrorMessage = "Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu thuê xe";
+        }
+        else {
+            const VehicleRentalReqTypeItem = VehicleRentalReqType.find(n => n.VehicleRentalReqTypeID == MLObject.VehicleRentalRequestTypeID);
+            MLObject.AddFunctionID = VehicleRentalReqTypeItem.AddFunctionID;
+            this.checkPermission(VehicleRentalReqTypeItem.AddFunctionID).then(result => {
+                if (result == true) {
+                    data.append("vehicleRentalRequestATTObj", AttachmentList.FileURL);
+                    data.append("vehicleRentalRequestObj", JSON.stringify(MLObject));
+                    this.handleSubmit(data);
+                } else {
+                    this.showMessage("Bạn không có quyền cập nhật yêu cầu!")
+                }
+            })
+        }
     }
 
     handleSubmit(MLObject) {
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
-            console.log("submit", MLObject, apiResult)
+            // console.log("submit", MLObject, apiResult)
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
         });
@@ -141,6 +214,7 @@ class EditCom extends React.Component {
 
 
     handleChange(formData, MLObject) {
+        console.log("change", formData, MLObject)
         if (formData.dtEndTime.value.length > 0) {
             let StartTime = new Date(formData.dtStartTime.value);
             let EndTime = new Date(formData.dtEndTime.value);
@@ -165,8 +239,13 @@ class EditCom extends React.Component {
 
 
     render() {
+        const { AttachmentListData, AttachmentList, fileSize, UserValue, IsCloseForm, IsInitStep } = this.state;
+
+        if (IsCloseForm) {
+            return <Redirect to={BackLink} />;
+        }
         let currentDate = new Date();
-        const { AttachmentListData, AttachmentList, fileSize, UserValue } = this.state;
+        // console.log("IsInitStep", IsInitStep)
         if (this.state.IsLoadDataComplete) {
             return (
                 <React.Fragment>
@@ -179,6 +258,7 @@ class EditCom extends React.Component {
                         // RequirePermission={this.props.location.state.AddFunctionID}
                         onSubmit={this.prevDataSubmit.bind(this)}
                         onchange={this.handleChange.bind(this)}
+                        IsDisabledSubmitForm={IsInitStep == true ? false : true}
                     >
 
                         <div className="row">
@@ -334,9 +414,11 @@ class EditCom extends React.Component {
                                     colspan="8"
                                     labelcolspan="4"
                                     readOnly={true}
-                                    showTime={false}
+                                    showTime={true}
                                     timeFormat={false}
-                                    dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
+                                    disabledDate={true}
+                                    IsGetTime={true}
+                                    dateFormat="DD-MM-YYYY HH:mm"//"YYYY-MM-DD"
                                     label="thời gian bắt đầu"
                                     placeholder={formatDate(currentDate, true)}
                                     controltype="InputControl"
@@ -344,24 +426,7 @@ class EditCom extends React.Component {
                                     validatonList={["required"]}
                                     datasourcemember="StartTime"
                                 />
-                            </div>
 
-                            <div className="col-md-6">
-                                <FormControl.FormControlDatetimeNew
-                                    name="dtEndTime"
-                                    colspan="8"
-                                    labelcolspan="4"
-                                    readOnly={true}
-                                    showTime={false}
-                                    timeFormat={false}
-                                    dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
-                                    label="thời gian kết thúc"
-                                    placeholder={formatDate(currentDate, true)}
-                                    controltype="InputControl"
-                                    value=""
-                                    validatonList={["required"]}
-                                    datasourcemember="EndTime"
-                                />
                             </div>
 
                             <div className="col-md-6">
@@ -380,6 +445,27 @@ class EditCom extends React.Component {
                                 />
 
                             </div>
+
+                            <div className="col-md-6">
+                                <FormControl.FormControlDatetimeNew
+                                    name="dtEndTime"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    readOnly={true}
+                                    showTime={true}
+                                    timeFormat={false}
+                                    disabledDate={true}
+                                    IsGetTime={true}
+                                    dateFormat="DD-MM-YYYY HH:mm"//"YYYY-MM-DD"
+                                    label="thời gian kết thúc"
+                                    placeholder={formatDate(currentDate, true)}
+                                    controltype="InputControl"
+                                    value=""
+                                    validatonList={["required"]}
+                                    datasourcemember="EndTime"
+                                />
+                            </div>
+
                         </div>
 
 
@@ -420,7 +506,10 @@ const mapDispatchToProps = dispatch => {
         },
         hideModal: (type, props) => {
             dispatch(hideModal(type, props));
-        }
+        },
+        callGetUserCache: (cacheKeyID) => {
+            return dispatch(callGetUserCache(cacheKeyID));
+        },
     };
 };
 

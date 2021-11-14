@@ -304,7 +304,7 @@ class VehicleRentalRequestType_WFAddCom extends React.Component {
                                     datasourcemember="AutoChangetoStatusID"
                                     disable={false}
                                     isautoloaditemfromcache={true}
-                                    isRequired={true}
+                                    isRequired={false}
                                     isSystem={false}
                                     label="Tự động chuyển sang trạng thái"
                                     listoption={[]}
@@ -387,6 +387,13 @@ class VehicleRentalRequestType_WFAddCom extends React.Component {
                                     datasourcemember="IsCanDelete"
                                     name="IsCanDelete"
                                     label="Là bước có thể xóa yêu cầu"
+                                />
+
+                                <FormControl.CheckBox
+                                    controltype="InputControl"
+                                    datasourcemember="IsCheckAbility"
+                                    name="IsCheckAbility"
+                                    label="Là bước kiểm tra năng lực xe"
                                 />
 
                                 <FormControl.CheckBox
@@ -487,7 +494,8 @@ VehicleRentalRequestType_WFAddCom.defaultProps = {
     lstRentalRequestType_WF_Next: [],
     objRentalRequestType_WF: {
         IsActived: true,
-        IsCanDelete: false
+        IsCanDelete: false,
+        IsCheckAbility: false
     },
     VehicleRentalRequestTypeID: 0
 }

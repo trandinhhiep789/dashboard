@@ -263,28 +263,6 @@ class EditCom extends React.Component {
                             </div>
 
                             <div className="col-md-6">
-                                <FormControl.ComboBoxSelect
-                                    // value={}
-                                    colspan="8"
-                                    controltype="InputControl"
-                                    datasourcemember="VehicleTypeID"
-                                    disabled={this.state.DataSource.IsSystem}
-                                    isautoloaditemfromcache={true}
-                                    label="loại xe"
-                                    labelcolspan="4"
-                                    listoption={[]}
-                                    loaditemcachekeyid={ERPCOMMONCACHE_VEHICLETYPE}
-                                    name="cbVehicleTypeID"
-                                    nameMember="VehicleTypeName"
-                                    onValueChangeCustom={this.onChangeVehicleType}
-                                    placeholder="-- Vui lòng chọn --"
-                                    readOnly={this.state.IsSystem}
-                                    validatonList={["Comborequired"]}
-                                    valuemember="VehicleTypeID"
-                                />
-                            </div>
-
-                            <div className="col-md-6">
                                 <FormControl.FormControlComboBox
                                     // loaditemcachekeyid={ERPCOMMONCACHE_VEHICLEMODEL}
                                     // value={}
@@ -306,17 +284,24 @@ class EditCom extends React.Component {
                             </div>
 
                             <div className="col-md-6">
-                                <FormControl.TextBox
+                                <FormControl.ComboBoxSelect
                                     // value={}
                                     colspan="8"
                                     controltype="InputControl"
-                                    datasourcemember="Weight"
-                                    label="tải trọng(kg)"
+                                    datasourcemember="VehicleTypeID"
+                                    disabled={this.state.DataSource.IsSystem}
+                                    isautoloaditemfromcache={true}
+                                    label="loại xe"
                                     labelcolspan="4"
-                                    maxSize={9}
-                                    name="txtWeight"
-                                    placeholder="Tải trọng(kg)"
-                                    readOnly={true}
+                                    listoption={[]}
+                                    loaditemcachekeyid={ERPCOMMONCACHE_VEHICLETYPE}
+                                    name="cbVehicleTypeID"
+                                    nameMember="VehicleTypeName"
+                                    onValueChangeCustom={this.onChangeVehicleType}
+                                    placeholder="-- Vui lòng chọn --"
+                                    readOnly={this.state.IsSystem}
+                                    validatonList={["Comborequired"]}
+                                    valuemember="VehicleTypeID"
                                 />
                             </div>
 
@@ -342,12 +327,12 @@ class EditCom extends React.Component {
                                     // value={}
                                     colspan="8"
                                     controltype="InputControl"
-                                    datasourcemember="Length"
-                                    label="chiều dài(cm)"
+                                    datasourcemember="Weight"
+                                    label="tải trọng(kg)"
                                     labelcolspan="4"
                                     maxSize={9}
-                                    name="txtLength"
-                                    placeholder="Chiều dài(cm)"
+                                    name="txtWeight"
+                                    placeholder="Tải trọng(kg)"
                                     readOnly={true}
                                 />
                             </div>
@@ -374,12 +359,12 @@ class EditCom extends React.Component {
                                     // value={}
                                     colspan="8"
                                     controltype="InputControl"
-                                    datasourcemember="Width"
-                                    label="chiều rộng(cm)"
+                                    datasourcemember="Length"
+                                    label="chiều dài(m)"
                                     labelcolspan="4"
                                     maxSize={9}
-                                    name="txtWidth"
-                                    placeholder="Chiều rộng(cm)"
+                                    name="txtLength"
+                                    placeholder="Chiều dài(m)"
                                     readOnly={true}
                                 />
                             </div>
@@ -407,15 +392,15 @@ class EditCom extends React.Component {
 
                             <div className="col-md-6">
                                 <FormControl.TextBox
-                                    // value=""
+                                    // value={}
                                     colspan="8"
                                     controltype="InputControl"
-                                    datasourcemember="Height"
-                                    label="chiều cao(cm)"
+                                    datasourcemember="Width"
+                                    label="chiều rộng(m)"
                                     labelcolspan="4"
                                     maxSize={9}
-                                    name="txtHeight"
-                                    placeholder="Chiều cao(cm)"
+                                    name="txtWidth"
+                                    placeholder="Chiều rộng(m)"
                                     readOnly={true}
                                 />
                             </div>
@@ -426,7 +411,8 @@ class EditCom extends React.Component {
                                     colspan="8"
                                     controltype="InputControl"
                                     datasourcemember="ActivityStatusID"
-                                    disabled={this.state.DataSource.IsSystem}
+                                    // disabled={this.state.DataSource.IsSystem}
+                                    disabled={true}
                                     isautoloaditemfromcache={true}
                                     label="Trạng thái hoạt động"
                                     labelcolspan="4"
@@ -435,7 +421,8 @@ class EditCom extends React.Component {
                                     name="cbActivityStatusID"
                                     nameMember="ActivityStatusName"
                                     placeholder="-- Vui lòng chọn --"
-                                    readOnly={this.state.DataSource.IsSystem}
+                                    // readOnly={this.state.DataSource.IsSystem}
+                                    readOnly={true}
                                     validatonList={["Comborequired"]}
                                     valuemember="ActivityStatusID"
                                 />
@@ -446,12 +433,12 @@ class EditCom extends React.Component {
                                     // value=""
                                     colspan="8"
                                     controltype="InputControl"
-                                    datasourcemember="Volume"
-                                    label="thể tích(cm3)"
+                                    datasourcemember="Height"
+                                    label="chiều cao(m)"
                                     labelcolspan="4"
                                     maxSize={9}
-                                    name="txtVolume"
-                                    placeholder="Thể tích(cm3)"
+                                    name="txtHeight"
+                                    placeholder="Chiều cao(m)"
                                     readOnly={true}
                                 />
                             </div>
@@ -471,6 +458,21 @@ class EditCom extends React.Component {
                                     listoption={[]}
                                     name="cbMainDriverUser"
                                     validatonList={["Comborequired"]}
+                                />
+                            </div>
+
+                            <div className="col-md-6">
+                                <FormControl.TextBox
+                                    // value=""
+                                    colspan="8"
+                                    controltype="InputControl"
+                                    datasourcemember="Volume"
+                                    label="thể tích(m3)"
+                                    labelcolspan="4"
+                                    maxSize={9}
+                                    name="txtVolume"
+                                    placeholder="Thể tích(m3)"
+                                    readOnly={true}
                                 />
                             </div>
 

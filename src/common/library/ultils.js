@@ -59,10 +59,9 @@ export const createListTree = (resultRoot, rootID, rootKey, childrenKey, childre
 
 
 export const ExportStringToDate = (dateString) => {
-
     if (dateString) {
         try {
-            const dataMoment = dateString.split('-');
+            const dataMoment = dateString.split(' ');
             let dateConvertMoment = dataMoment[2] + "-" + dataMoment[1] + "-" + dataMoment[0]
             return dateConvertMoment;
         } catch (error) {

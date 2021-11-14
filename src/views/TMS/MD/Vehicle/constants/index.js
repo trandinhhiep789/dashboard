@@ -107,11 +107,12 @@ export const SearchElementList = [
     {
         type: "text",
         name: "txtFromWeight",
-        label: "Tải trọng từ (kg)",
+        label: `Tải trọng từ (kg)`,
         value: "",
         placeholder: "",
         icon: "",
-        listoption: []
+        listoption: [],
+        validatonList: ["numberDecimal"]
     },
     {
         type: "text",
@@ -120,7 +121,8 @@ export const SearchElementList = [
         value: "",
         placeholder: "",
         icon: "",
-        listoption: []
+        listoption: [],
+        validatonList: ["numberDecimal"]
     },
     {
         type: "text",
@@ -129,7 +131,8 @@ export const SearchElementList = [
         value: "",
         placeholder: "",
         icon: "",
-        listoption: []
+        listoption: [],
+        validatonList: ["numberDecimal"]
     },
     {
         type: "text",
@@ -138,7 +141,8 @@ export const SearchElementList = [
         value: "",
         placeholder: "",
         icon: "",
-        listoption: []
+        listoption: [],
+        validatonList: ["numberDecimal"]
     },
     {
         type: "ComboBox",
