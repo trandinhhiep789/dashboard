@@ -51,6 +51,8 @@ export default function ListShipCoordinatorNewDetail(props) {
     return timeDisplay;
   };
 
+  const handleSubmit = (key) => {};
+
   //#endregion
 
   //#region Render
@@ -62,13 +64,7 @@ export default function ListShipCoordinatorNewDetail(props) {
           <td className="jsgrid-cell high-priority" style={{ width: "3%", verticalAlign: "middle" }}>
             {props.objCoordinator.IsRoute === false && <Checkbox checked />}
           </td>
-          <td
-            className="jsgrid-cell group-products"
-            style={{ width: props.objCoordinator.IsRoute === false ? "48%" : "92%" }}
-            onClick={() => {
-              setIsShowDescription(!isShowDescription);
-            }}
-          >
+          <td className="jsgrid-cell group-products" style={{ width: props.objCoordinator.IsRoute === false ? "48%" : "92%" }} onClick={() => {}}>
             <ul>
               <li className="item infoOder">
                 <span className="nameOrder">
@@ -229,28 +225,12 @@ export default function ListShipCoordinatorNewDetail(props) {
           </td>
         </tr>
       </div>
+
       {isShowDescription && (
         <div style={{ marginBottom: "10px" }}>
           <tr className="jsgrid-row" style={{ width: "100%", border: "none" }}>
             <td className="jsgrid-cell" style={{ border: "none" }}>
               <Input.TextArea rows={5} />
-            </td>
-          </tr>
-          <tr className="jsgrid-row" style={{ border: "none" }}>
-            <td className="jsgrid-cell" style={{ width: "20%", border: "none" }}>
-              <Space>
-                <Button type="primary" style={{ width: "200px" }}>
-                  Hoàn thành
-                </Button>
-                <Button
-                  style={{ width: "200px" }}
-                  onClick={() => {
-                    setIsShowDescription(false);
-                  }}
-                >
-                  Hủy
-                </Button>
-              </Space>
             </td>
           </tr>
         </div>
