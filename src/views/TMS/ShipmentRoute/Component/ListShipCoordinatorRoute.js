@@ -63,7 +63,9 @@ class ListShipCoordinatorRouteCom extends Component {
             let objRouteVehicleRequset =
             {
                 VehicleID: 1,
-                CoordinatorStoreIDLst: "7370"
+                ExpectedDeliveryDate: this.props.InfoCoordinator[0].ExpectedDeliveryDate,
+                CoordinatorStoreIDLst: this.props.InfoCoordinator.map(e => e.CoordinatorStoreID).join(","),
+                ShipmentOrderIDLst: this.props.InfoCoordinator.map(e => e.ShipmentOrderID).join(","),
             }
             this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetVehicleWorkingPlan", objRouteVehicleRequset).then(apiResult => {
                 if (!apiResult.IsError) {
