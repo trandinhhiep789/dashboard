@@ -68,7 +68,11 @@ class ListShipCoordinatorRouteCom extends Component {
             this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetVehicleWorkingPlan", objRouteVehicleRequset).then(apiResult => {
                 if (!apiResult.IsError) {
                     apiResult.ResultObject.map((item) => {
-                        let objVehicle = { value: item.VehicleID, label: item.VehicleID + "-" + item.LicenSeplateNumber +" ("+item.TotalVolume+")", MainDriverUser: item.MainDriverUser, MainDriverUserFullName: item.MainDriverUserFullName };
+                        let objVehicle = {
+                            value: item.VehicleID, label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + item.TotalVolume + ")",
+                             MainDriverUser: item.MainDriverUser, MainDriverUserFullName: item.MainDriverUserFullName,
+                            TotalVolume: item.TotalShipmentVolume, TotalShipmentVolume: item.TotalShipmentVolume, TotalAbilityVolume: item.TotalAbilityVolume
+                             };
                         objVehicleLst.push(objVehicle);
                     });
                 }
@@ -151,6 +155,11 @@ class ListShipCoordinatorRouteCom extends Component {
 
     handleOnValueChangeselectedOp(name, selectedOption) {
         let { objCoordinator, ShipmentOrder } = this.state;
+  
+        if(selectedOption.TotalVolume>=(selectedOption.TotalShipmentVolume+selectedOption.TotalAbilityVolume))
+        {
+            this.addNotification("Tổng thể tích tối thiểu cần cho xe tải là "+selectedOption.TotalVolume +"Hiện tại chỉ có "+(selectedOption.TotalShipmentVolume+selectedOption.TotalAbilityVolume), true);
+        }
         objCoordinator[name] = selectedOption.value;
         if (selectedOption.MainDriverUser != "") {
             objCoordinator["VehicleDriverUser"] = { value: selectedOption.MainDriverUser, label: selectedOption.MainDriverUser + "-" + selectedOption.MainDriverUserFullName };
@@ -508,14 +517,18 @@ class ListShipCoordinatorRouteCom extends Component {
             let objRouteVehicleRequset =
             {
                 VehicleID: 1,
-                ExpectedDeliveryDate:ShipmentOrder[0].ExpectedDeliveryDate,
-                CoordinatorStoreIDLst:ShipmentOrder.map(e => e.CoordinatorStoreID).join(","),
-                ShipmentOrderIDLst:ShipmentOrder.map(e => e.ShipmentOrderID).join(","),
+                ExpectedDeliveryDate: ShipmentOrder[0].ExpectedDeliveryDate,
+                CoordinatorStoreIDLst: ShipmentOrder.map(e => e.CoordinatorStoreID).join(","),
+                ShipmentOrderIDLst: ShipmentOrder.map(e => e.ShipmentOrderID).join(","),
             }
             this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetVehicleWorkingPlan", objRouteVehicleRequset).then(apiResult => {
                 if (!apiResult.IsError) {
                     apiResult.ResultObject.map((item) => {
-                        let objVehicle = { value: item.VehicleID, label: item.VehicleID + "-" + item.LicenSeplateNumber+" ("+item.TotalVolume+"m3)", MainDriverUser: item.MainDriverUser, MainDriverUserFullName: item.MainDriverUserFullName };
+                        let objVehicle = {
+                            value: item.VehicleID, label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + item.TotalVolume + "m3)",
+                            MainDriverUser: item.MainDriverUser, MainDriverUserFullName: item.MainDriverUserFullName,
+                            TotalVolume: item.TotalShipmentVolume, TotalShipmentVolume: item.TotalShipmentVolume, TotalAbilityVolume: item.TotalAbilityVolume
+                        };
                         objVehicleLst.push(objVehicle);
                     });
                 }
@@ -747,7 +760,7 @@ class ListShipCoordinatorRouteCom extends Component {
             Distances_RouteLst, Via_Distances, Via_Durations, girdSlide, VehicleLst } = this.state;
         let resultShipmentRoute = ShipmentRouteLst.filter(n => n.ShipmentRouteID != ShipmentRouteID);
         let resultShipmentRouteSame = ShipmentRouteSameLst.filter(n => n.ShipmentRouteID != ShipmentRouteID);
-    
+
         const isBelowThreshold = (currentValue) => currentValue.CarrierTypeID == 2;
         let isShow = ShipmentOrder.every(isBelowThreshold);
 
