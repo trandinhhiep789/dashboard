@@ -219,7 +219,7 @@ class EditCom extends React.Component {
             let StartTime = new Date(formData.dtStartTime.value);
             let EndTime = new Date(formData.dtEndTime.value);
 
-            if (EndTime >= StartTime) {
+            if (EndTime > StartTime) {
 
                 formData.dtEndTime.ErrorLst.IsValidatonError = false;
                 formData.dtEndTime.ErrorLst.ValidatonErrorMessage = "";
@@ -417,6 +417,7 @@ class EditCom extends React.Component {
                                     showTime={true}
                                     timeFormat={false}
                                     disabledDate={true}
+                                    disabledTime={true}
                                     IsGetTime={true}
                                     dateFormat="DD-MM-YYYY HH:mm"//"YYYY-MM-DD"
                                     label="thời gian bắt đầu"
@@ -455,6 +456,7 @@ class EditCom extends React.Component {
                                     showTime={true}
                                     timeFormat={false}
                                     disabledDate={true}
+                                    disabledTime={true}
                                     IsGetTime={true}
                                     dateFormat="DD-MM-YYYY HH:mm"//"YYYY-MM-DD"
                                     label="thời gian kết thúc"
