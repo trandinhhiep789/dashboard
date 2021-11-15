@@ -28,9 +28,10 @@ class ListShipCoordinatorRouteCom extends Component {
     this.handleCloseMessage = this.handleCloseMessage.bind(this);
     this.HandleChangeGird = this.HandleChangeGird.bind(this);
     this.handleMapObjectDescription = this.handleMapObjectDescription.bind(this);
+    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.state = {
       ShipmentOrder: this.props.InfoCoordinator,
-      objCoordinator: { CarrierPartnerID: -1, CarrierTypeID: 1, IsRoute: true, VehicleID: -1, VehicleDriverUser: {} },
+      objCoordinator: { CarrierPartnerID: -1, CarrierTypeID: 1, IsRoute: true, VehicleID: 56, VehicleDriverUser: {} },
       VehicleLst: [],
       selectedOption: [],
       objDeliverUser: [],
@@ -53,7 +54,6 @@ class ListShipCoordinatorRouteCom extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.InfoCoordinator);
     this.handleMapObjectDescription();
     const isBelowThreshold = (currentValue) => currentValue.CarrierTypeID == 2;
     let isShow = this.props.InfoCoordinator.every(isBelowThreshold);
@@ -132,9 +132,16 @@ class ListShipCoordinatorRouteCom extends Component {
 
   handleMapObjectDescription = () => {
     const objectDescription = this.props.InfoCoordinator.reduce((a, v) => {
-      return { ...a, [v.ShipmentOrderID]: false };
+      return {
+        ...a,
+        [v.ShipmentOrderID]: {
+          isShow: false,
+          content: "",
+        },
+      };
     }, {});
     this.setState({ objectDescription: objectDescription });
+    console.log({ objectDescription });
   };
 
   handleOnValueChange(name, value) {
@@ -746,11 +753,19 @@ class ListShipCoordinatorRouteCom extends Component {
 
   handleDescriptionSubmit = (item) => {
     let varObjectDescription = this.state.objectDescription;
-    let isClosed = varObjectDescription[item.ShipmentOrderID];
-    let varObjectChange = { ...varObjectDescription, [item.ShipmentOrderID]: !varObjectDescription[item.ShipmentOrderID] };
-    this.setState({ objectDescription: varObjectChange });
+    let isShow = varObjectDescription[item.ShipmentOrderID]["isShow"];
+    console.log(varObjectDescription[item.ShipmentOrderID]["content"]);
+    let varObjectChange = { ...varObjectDescription, [item.ShipmentOrderID]: { isShow: !isShow, content: varObjectDescription[item.ShipmentOrderID]["content"] } };
 
-    console.log(isClosed, item.ShipmentOrderID);
+    this.setState({ objectDescription: varObjectChange });
+    console.log(isShow, item.ShipmentOrderID, varObjectDescription);
+  };
+
+  handleDescriptionChange = (item, event) => {
+    const { value } = event.target;
+    let varObjectDescription = this.state.objectDescription;
+    let varObjectChange = { ...varObjectDescription, [item.ShipmentOrderID]: { isShow: varObjectDescription[item.ShipmentOrderID]["isShow"], content: value } };
+    this.setState({ objectDescription: varObjectChange });
   };
 
   render() {
@@ -846,8 +861,8 @@ class ListShipCoordinatorRouteCom extends Component {
                     isautoloaditemfromcache={false}
                     isselectedOp={true}
                     controltype="InputControl"
-                    onValueChange={this.handleOnValueChangeselectedOp.bind(this)}
                     value={this.state.objCoordinator.VehicleID}
+                    onValueChange={this.handleOnValueChangeselectedOp.bind(this)}
                     listoption={VehicleLst}
                     datasourcemember="VehicleID"
                     placeholder="---Vui lòng chọn---"
@@ -874,7 +889,6 @@ class ListShipCoordinatorRouteCom extends Component {
             ) : (
               ""
             )}
-
             <div className="row  mt-10 lstProductSelect">
               <div className="col-12 group-shipingorder">
                 <div className="jsgrid">
@@ -910,7 +924,7 @@ class ListShipCoordinatorRouteCom extends Component {
                             }
 
                             return (
-                              <div>
+                              <React.Fragment>
                                 <tr key={index} className="jsgrid-row">
                                   <td className="jsgrid-cell high-priority" style={{ width: "1%" }} onClick={() => this.handleDescriptionSubmit(item)}></td>
                                   <td className="jsgrid-cell group-products" style={{ width: "50%" }}>
@@ -994,16 +1008,23 @@ class ListShipCoordinatorRouteCom extends Component {
                                     </div>
                                   </td>
                                 </tr>
-                                {this.state.objectDescription[item.ShipmentOrderID] === true && (
+                                {this.state.objectDescription[item.ShipmentOrderID] && this.state.objectDescription[item.ShipmentOrderID]["isShow"] === true && (
                                   <tr className="jsgrid-row">
                                     <td style={{ width: "1%" }}></td>
                                     <td style={{ width: "50%" }}>
-                                      <Input.TextArea rows={3} />
+                                      <Input.TextArea
+                                        name={item.ShipmentOrderID}
+                                        rows={3}
+                                        onChange={(event) => {
+                                          this.handleDescriptionChange(item, event);
+                                        }}
+                                        value={this.state.objectDescription[item.ShipmentOrderID]["content"]}
+                                      />
                                     </td>
                                     <td style={{ width: "5%", verticalAlign: "middle" }}></td>
                                   </tr>
                                 )}
-                              </div>
+                              </React.Fragment>
                             );
                           })}
                       </tbody>
@@ -1012,7 +1033,6 @@ class ListShipCoordinatorRouteCom extends Component {
                 </div>
               </div>
             </div>
-
             <div className="row  mt-10 lstProduct">
               <div className="col-12 ">
                 <div className="pull-left group-info-Route">
