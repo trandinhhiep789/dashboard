@@ -148,8 +148,11 @@ class SearchCom extends React.Component {
                 const updResultObject = apiResult.ResultObject.map(item => {
                     return {
                         "Mã kho": item.STOREID,
-                        "Sản phẩm": item.PRODUCTID,
-                        "Trạng thái": item.INVENTORYSTATUSID,
+                        "Tên kho": item.STORENAME,
+                        "Mã sản phẩm": item.PRODUCTID,
+                        "Tên sản phẩm": item.PRODUCTNAME,
+                        "Mã trạng thái": item.INVENTORYSTATUSID,
+                        "Tên trạng thái": item.INVENTORYSTATUSNAME,
                         "Số lượng tồn": item.QUANTITY
                     }
                 });
