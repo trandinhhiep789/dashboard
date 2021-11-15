@@ -932,6 +932,9 @@ class FormControlDatetimeNewCom extends Component {
     constructor(props) {
         super(props);
         this.handleValueChange = this.handleValueChange.bind(this);
+        this.rangeCheck = this.rangeCheck.bind(this);
+        this.disabledDateTime = this.disabledDateTime.bind(this);
+
     }
     handleValueChange(name, moment) {
 
@@ -946,10 +949,34 @@ class FormControlDatetimeNewCom extends Component {
             this.props.onValueChange(this.props.name, momentNew);
     }
 
+    rangeCheck(start, end) {
+        const result = [];
+        for (let i = start; i < end; i++) {
+            result.push(i);
+        }
+        return result;
+    }
+
+
     disabledDate(current) {
         return (current && current < moment().startOf('day'));
 
     }
+
+    disabledDateTime(current) {
+        let currentDate = new Date();
+        const pad = function (num) {
+            var norm = Math.floor(Math.abs(num));
+            return (norm < 10 ? '0' : '') + norm;
+        };
+        return {
+            disabledHours: () => this.rangeCheck(0, 24).splice(0, pad(currentDate.getHours())),
+            disabledMinutes: () => this.rangeCheck(0, pad(currentDate.getMinutes())),
+            disabledSeconds: () => [55, 56],
+        };
+    }
+
+
 
     render() {
         let { name, label, timeFormat, dateFormat, colspan, value, validationErrorMessage } = this.props;
@@ -1006,6 +1033,7 @@ class FormControlDatetimeNewCom extends Component {
                         onChange={this.handleValueChange}
                         disabled={this.props.disabled}
                         disabledDate={this.props.disabledDate == true ? this.disabledDate : false}
+                        disabledTime={this.props.disabledTime == true ? this.disabledDateTime : false}
                         locale={locale}
                     />
                     <div className="invalid-feedback">
@@ -3144,32 +3172,32 @@ class FormControlComboBoxNoCachedCom extends Component {
 
     componentDidMount() {
         let listOption = this.props.listoption;
-        console.log("componentDidMount.listoption",this.props.name,this.props.listoption)
+        console.log("componentDidMount.listoption", this.props.name, this.props.listoption)
         const strSelectedOption = this.bindcombox(this.props.value, listOption);
-        console.log("componentDidMount.strSelectedOption",strSelectedOption)
-        this.setState({  Listoption: listOption,SelectedOption: strSelectedOption });
+        console.log("componentDidMount.strSelectedOption", strSelectedOption)
+        this.setState({ Listoption: listOption, SelectedOption: strSelectedOption });
 
     }
     componentWillReceiveProps(nextProps) {
-    
+
         if (JSON.stringify(this.props.listoption) !== JSON.stringify(nextProps.listoption)) // Check if it's a new user, you can also use some unique property, like the ID
         {
             this.setState({ Listoption: nextProps.listoption });
         }
-        else{
+        else {
             const aa = this.bindcombox(this.props.value, this.props.listoption);
-            this.setState({Listoption:this.props.listoption, SelectedOption: aa });
+            this.setState({ Listoption: this.props.listoption, SelectedOption: aa });
         }
 
         if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) {
             const aa = this.bindcombox(nextProps.value, this.state.Listoption);
             this.setState({ SelectedOption: aa });
         }
-        else{
+        else {
             const aa = this.bindcombox(this.props.value, this.props.listoption);
-            this.setState({Listoption:this.props.listoption, SelectedOption: aa });
+            this.setState({ Listoption: this.props.listoption, SelectedOption: aa });
         }
-     
+
     }
 
     render() {
