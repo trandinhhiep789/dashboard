@@ -31,7 +31,7 @@ class ListShipCoordinatorRouteCom extends Component {
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.state = {
       ShipmentOrder: this.props.InfoCoordinator,
-      objCoordinator: { CarrierPartnerID: -1, CarrierTypeID: 1, IsRoute: true, VehicleID: 56, VehicleDriverUser: {} },
+      objCoordinator: { CarrierPartnerID: -1, CarrierTypeID: 1, IsRoute: true, VehicleID: -1, VehicleDriverUser: {} },
       VehicleLst: [],
       selectedOption: [],
       objDeliverUser: [],
