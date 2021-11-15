@@ -82,6 +82,7 @@ class ListShipCoordinatorRouteCom extends Component {
             };
             objVehicleLst.push(objVehicle);
           });
+          this.setState({VehicleLst: objVehicleLst});
         }
       });
     }
