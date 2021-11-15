@@ -14,7 +14,8 @@ import { formatDate, formatMonthDate } from "../../../../common/library/CommonLi
 import { formatMoney, formatNumber } from '../../../../utils/function';
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_VIEW } from '../../../../constants/actionTypes';
-import ListShipCoordinator from '../Component/ListShipCoordinator.js';
+//import ListShipCoordinator from '../Component/ListShipCoordinator.js';
+import ListShipCoordinator from '../Component/ListShipCoordinatorRoute.js';
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import ReactNotification from "react-notifications-component";
@@ -635,7 +636,14 @@ class DataGridShipmentOderNewCom extends Component {
                 this.setState({ changeGird: true });
                 let resultdd = this.state.GridDataShip.find(n => n.ShipmentOrderID == ShipmentOrderID)
                 if (resultdd == undefined)
+                {
+                    if(this.state.GridDataShip.length>0&& apiResult.ResultObject.ShipmentOrderDeliver.IsPermission==true&&apiResult.ResultObject.ShipmentOrderDeliver.ShipmentOrder_DeliverUserList.length==0)
+                    {
+                        apiResult.ResultObject.ShipmentOrderDeliver["ShipmentOrder_DeliverUserList"]= this.state.GridDataShip[0].ShipmentOrder_DeliverUserList
+                    }
                     this.state.GridDataShip.push(apiResult.ResultObject.ShipmentOrderDeliver);
+                }
+                    
                 this.props.showModal(MODAL_TYPE_VIEW, {
                     title: 'Phân tuyến điều phối vận đơn ',
                     isShowOverlay: false,
