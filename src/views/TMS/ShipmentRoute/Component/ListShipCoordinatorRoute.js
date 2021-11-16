@@ -124,7 +124,7 @@ class ListShipCoordinatorRouteCom extends Component {
           //Volume -(TotalVolume+TotalShipmentVolume)
           let objVehicle = {
             value: item.VehicleID,
-            label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + item.TotalVolume + "m3)",
+            label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + (item.Volume - (item.TotalVolume + item.TotalShipmentVolume)) + "m3)",
             MainDriverUser: item.MainDriverUser,
             MainDriverUserFullName: item.MainDriverUserFullName,
             TotalVolume: item.TotalShipmentVolume,
@@ -585,7 +585,7 @@ class ListShipCoordinatorRouteCom extends Component {
           apiResult.ResultObject.map((item) => {
             let objVehicle = {
               value: item.VehicleID,
-              label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + item.TotalVolume + "m3)",
+              label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + (item.Volume - (item.TotalVolume + item.TotalShipmentVolume)) + "m3)",
               MainDriverUser: item.MainDriverUser,
               MainDriverUserFullName: item.MainDriverUserFullName,
               TotalVolume: item.TotalShipmentVolume,
@@ -628,7 +628,7 @@ class ListShipCoordinatorRouteCom extends Component {
           apiResult.ResultObject.map((item) => {
             let objVehicle = {
               value: item.VehicleID,
-              label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + item.TotalVolume + "m3)",
+              label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + (item.Volume - (item.TotalVolume + item.TotalShipmentVolume)) + "m3)",
               MainDriverUser: item.MainDriverUser,
               MainDriverUserFullName: item.MainDriverUserFullName,
               TotalVolume: item.TotalShipmentVolume,
@@ -935,11 +935,11 @@ class ListShipCoordinatorRouteCom extends Component {
               </div>
               <div className="col-md-6">
                 <div className="item group-status">
-                  <span className="badge badge-secondary mr-20 badge-active motobike-menu" onClick={this.handleChangeCourseALL(1)} style={{ fontSize: "15px" }}>
+                  <span className="badge badge-secondary mr-20 badge-active motobike-menu" onClick={this.handleChangeCourseALL(1)} style={{ cursor: "pointer", fontSize: "15px" }}>
                     <i className="fa fa-motorcycle"></i>
                     Xe máy
                   </span>
-                  <span className="badge badge-secondary badge-active car-menu" onClick={this.handleChangeCourseALL(2)} style={{ fontSize: "15px" }}>
+                  <span className="badge badge-secondary badge-active car-menu" onClick={this.handleChangeCourseALL(2)} style={{cursor: "pointer", fontSize: "15px"}}>
                     <i className="fa fa-truck fff"></i>
                     Xe tải
                   </span>
