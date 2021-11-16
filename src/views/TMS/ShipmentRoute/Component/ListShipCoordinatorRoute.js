@@ -123,7 +123,7 @@ class ListShipCoordinatorRouteCom extends Component {
           //Volume -(TotalVolume+TotalShipmentVolume)
           let objVehicle = {
             value: item.VehicleID,
-            label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + item.TotalVolume + "m3)",
+            label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + (item.Volume - (item.TotalVolume + item.TotalShipmentVolume)) + "m3)",
             MainDriverUser: item.MainDriverUser,
             MainDriverUserFullName: item.MainDriverUserFullName,
             TotalVolume: item.TotalShipmentVolume,
@@ -567,7 +567,7 @@ class ListShipCoordinatorRouteCom extends Component {
           apiResult.ResultObject.map((item) => {
             let objVehicle = {
               value: item.VehicleID,
-              label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + item.TotalVolume + "m3)",
+              label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + (item.Volume - (item.TotalVolume + item.TotalShipmentVolume)) + "m3)",
               MainDriverUser: item.MainDriverUser,
               MainDriverUserFullName: item.MainDriverUserFullName,
               TotalVolume: item.TotalShipmentVolume,
@@ -609,7 +609,7 @@ class ListShipCoordinatorRouteCom extends Component {
           apiResult.ResultObject.map((item) => {
             let objVehicle = {
               value: item.VehicleID,
-              label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + item.TotalVolume + "m3)",
+              label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + (item.Volume - (item.TotalVolume + item.TotalShipmentVolume)) + "m3)",
               MainDriverUser: item.MainDriverUser,
               MainDriverUserFullName: item.MainDriverUserFullName,
               TotalVolume: item.TotalShipmentVolume,
