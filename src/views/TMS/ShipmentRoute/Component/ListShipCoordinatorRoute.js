@@ -134,12 +134,11 @@ class ListShipCoordinatorRouteCom extends Component {
 
   handleMapObjectDescription = () => {
     const objectDescription = this.props.InfoCoordinator.reduce((a, v) => {
-      console.log({ v });
       return {
         ...a,
         [v.ShipmentOrderID]: {
           isShow: false,
-          content: v.CoordinatorNote,
+          content: "",
         },
       };
     }, {});
@@ -268,8 +267,7 @@ class ListShipCoordinatorRouteCom extends Component {
       this.setState({ objDeliverUser: value, ShipmentRouteLst: [] });
     }
   }
-
-  handleOnValueChangeVehicleDriverUser(name, value, selectedOption) {}
+  handleOnValueChangeVehicleDriverUser(name, value, selectedOption) { }
 
   //thông báo
   handleCloseMessage() {
@@ -277,15 +275,12 @@ class ListShipCoordinatorRouteCom extends Component {
       if (this.props.onChangeValue != null) this.props.onChangeValue();
     }
   }
-
   showMessage(message) {
     ModalManager.open(<MessageModal title="Thông báo" message={message} onRequestClose={() => true} onCloseModal={this.handleCloseMessage} />);
   }
-
   handleCloseModal() {
     this.props.hideModal();
   }
-
   addNotification(message1, IsError) {
     let cssNotification, iconNotification;
     if (!IsError) {
@@ -315,7 +310,6 @@ class ListShipCoordinatorRouteCom extends Component {
       dismissable: { click: true },
     });
   }
-
   handleClose() {
     if (this.props.onChangeClose != null) {
       this.props.onChangeClose();
@@ -451,9 +445,7 @@ class ListShipCoordinatorRouteCom extends Component {
     let element = [];
     let elementDeliverUserList = [];
     let elementDeliverUserFullList = [];
-
     this.state.ShipmentOrder.map((row, indexRow) => {
-      console.log({ row });
       if (this.state.objCoordinator.IsRoute == true && row.CarrierTypeID != this.state.ShipmentOrder[0].CarrierTypeID) {
         //  this.addNotification("không cùng phương tiện giao hàng", true);
         const validationObject = { IsValidatonError: true, ValidationErrorMessage: "Vui lòng chọn lại, bắt buộc cùng loại phương tiện trong một tuyến." };
@@ -495,7 +487,6 @@ class ListShipCoordinatorRouteCom extends Component {
       this.state.ShipmentOrder[indexRow].DeliverUserFullNameList = elementDeliverUserFullList.join();
       this.state.ShipmentOrder[indexRow].DriverUser = this.state.objCoordinator.VehicleDriverUser.value;
       this.state.ShipmentOrder[indexRow].VehicleID = this.state.objCoordinator.VehicleID;
-      this.state.ShipmentOrder[indexRow].CoordinatorNote = this.state.objectDescription[row.ShipmentOrderID]["content"];
     });
 
     this.state.ShipmentOrder[0].DeliverUserTotalCODList = this.groupByNew(element, ["UserName", "CarrierTypeID"]);
@@ -518,7 +509,57 @@ class ListShipCoordinatorRouteCom extends Component {
       });
     }
   }
+  handleChangeCourseALL = (CarrierTypeID) => (e) => {
+    let { ShipmentOrder } = this.state;
+    let ShipmentOrderOld = ShipmentOrder;
+    if (CarrierTypeID == 1) {
+      ShipmentOrder.map((item, index) => {
+        ShipmentOrder[index]["DriverUser"] = "";
+        ShipmentOrder[index]["DriverUserFull"] = "";
+        ShipmentOrder[index].VehicleID = -1;
+        ShipmentOrder[index]["CarrierTypeID"] = CarrierTypeID;
+      });
+      this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: [] });
+    } else {
+      ShipmentOrder.map((item, index) => {
+        if (item.CarrierTypeID == 1) {
+          ShipmentOrder[index]["DriverUser"] = "";
+          ShipmentOrder[index]["DriverUserFull"] = "";
+          ShipmentOrder[index].VehicleID = -1;
+          ShipmentOrder[index]["CarrierTypeID"] = CarrierTypeID;
+        }
+      });
+      let objVehicleLst = [];
+      let objRouteVehicleRequset = {
+        VehicleID: 1,
+        ExpectedDeliveryDate: ShipmentOrder[0].ExpectedDeliveryDate,
+        CoordinatorStoreIDLst: ShipmentOrder.map((e) => e.CoordinatorStoreID).join(","),
+        ShipmentOrderIDLst: ShipmentOrder.map((e) => e.ShipmentOrderID).join(","),
+      };
+      this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetVehicleWorkingPlan", objRouteVehicleRequset).then((apiResult) => {
+        if (!apiResult.IsError) {
+          apiResult.ResultObject.map((item) => {
+            let objVehicle = {
+              value: item.VehicleID,
+              label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + item.TotalVolume + "m3)",
+              MainDriverUser: item.MainDriverUser,
+              MainDriverUserFullName: item.MainDriverUserFullName,
+              TotalVolume: item.TotalShipmentVolume,
+              TotalShipmentVolume: item.TotalShipmentVolume,
+              TotalAbilityVolume: item.TotalAbilityVolume,
+            };
+            objVehicleLst.push(objVehicle);
+          });
+          this.setState({ VehicleLst: objVehicleLst });
 
+        }
+      });
+      this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: objVehicleLst });
+
+
+    }
+
+  }
   handleChangeCourse = (CarrierTypeID, rowIndex) => (e) => {
     let { ShipmentOrder } = this.state;
     ShipmentOrder[rowIndex]["DriverUser"] = "";
@@ -551,6 +592,8 @@ class ListShipCoordinatorRouteCom extends Component {
             };
             objVehicleLst.push(objVehicle);
           });
+          this.setState({ VehicleLst: objVehicleLst });
+
         }
       });
       this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: objVehicleLst });
@@ -583,7 +626,6 @@ class ListShipCoordinatorRouteCom extends Component {
       });
     }
   };
-
   handleChangeOder = (rowIndex, OrderID) => (e) => {
     let { ShipmentOrder } = this.state;
     let totalcout = ShipmentOrder.length - 1;
@@ -643,7 +685,6 @@ class ListShipCoordinatorRouteCom extends Component {
     if (resultdd == undefined) ShipmentOrder.push(resultShipmentOrderSame);
     this.setState({ ShipmentOrder: ShipmentOrder });
   };
-
   handleDistances = () => {
     let { ShipmentOrder, ShipmentOrderSameLst } = this.state;
     let Points = [];
@@ -785,7 +826,9 @@ class ListShipCoordinatorRouteCom extends Component {
     let { ShipmentOrder, ShipmentRouteID, ShipmentOrderSameLst, ShipmentRouteLst, ShipmentRouteSameLst, Distances_RouteLst, Via_Distances, Via_Durations, girdSlide, VehicleLst } = this.state;
     let resultShipmentRoute = ShipmentRouteLst.filter((n) => n.ShipmentRouteID != ShipmentRouteID);
     let resultShipmentRouteSame = ShipmentRouteSameLst.filter((n) => n.ShipmentRouteID != ShipmentRouteID);
-
+    console.log('VehicleLst: ' + JSON.stringify(VehicleLst));
+    console.log('VehicleID: ' + this.state.objCoordinator.VehicleID);
+    let length_row = ShipmentOrder.length - 1;
     const isBelowThreshold = (currentValue) => currentValue.CarrierTypeID == 2;
     let isShow = ShipmentOrder.every(isBelowThreshold);
 
@@ -817,12 +860,13 @@ class ListShipCoordinatorRouteCom extends Component {
               </div>
               <div className="col-md-6">
                 <div className="item group-status">
-                  <span className="badge badge-secondary mr-10 badge-active">
-                    <i className="fa fa-motorcycle"></i> Xe máy
+                  <span className="badge badge-secondary mr-20 badge-active" onClick={this.handleChangeCourseALL(1)} style={{ fontSize: "15px" }} >
+                    <i className="fa fa-motorcycle"></i>
+                    Xe máy
                   </span>
-                  <span className="badge badge-secondary badge-active">
-                    <i className="fa fa-truck fff"></i> Xe tải
-                  </span>
+                  <span className="badge badge-secondary badge-active" onClick={this.handleChangeCourseALL(2)} style={{ fontSize: "15px" }}>
+                    <i className="fa fa-truck fff"></i>
+                    Xe tải</span>
                 </div>
               </div>
             </div>
@@ -943,7 +987,7 @@ class ListShipCoordinatorRouteCom extends Component {
                             return (
                               <React.Fragment>
                                 <tr key={index} className="jsgrid-row">
-                                  <td className="jsgrid-cell high-priority" style={{ width: "1%" }}></td>
+                                  <td className="jsgrid-cell high-priority" style={{ width: "1%" }} onClick={() => this.handleDescriptionSubmit(item)}></td>
                                   <td className="jsgrid-cell group-products" style={{ width: "50%" }}>
                                     <ul>
                                       <li className="item infoOder">
@@ -990,10 +1034,6 @@ class ListShipCoordinatorRouteCom extends Component {
                                               <i className="fa fa-truck fff"></i> Xe tải
                                             </span>
                                           )}
-
-                                          <span className="badge badge-primary ml-10" onClick={() => this.handleDescriptionSubmit(item)}>
-                                            <i class="fa fa-edit"></i> Ghi chú
-                                          </span>
                                         </div>
                                         <div className="item group-cod">
                                           <span className="badge badge-secondary badge-active">
