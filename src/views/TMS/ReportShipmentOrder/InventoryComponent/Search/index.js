@@ -35,7 +35,8 @@ class SearchCom extends React.Component {
         this.addNotification = this.addNotification.bind(this);
         this.handleExportSubmit = this.handleExportSubmit.bind(this);
         this.handleHistorySubmit = this.handleHistorySubmit.bind(this);
-        this.handleSetMLObjectData = this.handleSetMLObjectData.bind(this);
+        this.handleSetMLObjectStoreID = this.handleSetMLObjectStoreID.bind(this);
+        this.handleSetInventoryStatusID = this.handleSetInventoryStatusID.bind(this);
         this.handleSetMLObjectProductID = this.handleSetMLObjectProductID.bind(this);
         this.showMessage = this.showMessage.bind(this);
     }
@@ -99,12 +100,17 @@ class SearchCom extends React.Component {
         }
     }
 
-    handleSetMLObjectData(parameter) {
+    handleSetMLObjectStoreID(parameter) {
         if (parameter == -1 || parameter == "") {
             return "";
         } else {
-            const filtered = parameter.filter((item) => item != -1);
-            let result = filtered.toString();
+            const result = parameter.reduce((acc, val) => {
+                if (val == -1) {
+                    return acc;
+                } else {
+                    return `<${val}>${acc}`
+                }
+            }, "");
             return result;
         }
     }
@@ -119,20 +125,34 @@ class SearchCom extends React.Component {
         }
     }
 
+    handleSetInventoryStatusID(parameter) {
+        if (parameter == -1 || parameter == "") {
+            return "";
+        } else {
+            const filtered = parameter.filter((item) => item != -1);
+            let result = filtered.toString();
+            return result;
+        }
+    }
+
     handleExportSubmit(formData, MLObject) {
         const uptMLObject = {
-            StoreIDList: this.handleSetMLObjectData(MLObject.StoreID),
+            StoreIDList: this.handleSetMLObjectStoreID(MLObject.StoreID),
             ProductIDList: this.handleSetMLObjectProductID(MLObject.ProductID),
-            InventoryStatusIDList: this.handleSetMLObjectData(MLObject.InventoryStatusID),
+            InventoryStatusIDList: this.handleSetInventoryStatusID(MLObject.InventoryStatusID),
         }
 
         this.props.callFetchAPI(APIHostName, APIExportPath, uptMLObject).then(apiResult => {
+            console.log(uptMLObject, apiResult)
             if (!apiResult.IsError) {
                 const updResultObject = apiResult.ResultObject.map(item => {
                     return {
                         "Mã kho": item.STOREID,
-                        "Sản phẩm": item.PRODUCTID,
-                        "Trạng thái": item.INVENTORYSTATUSID,
+                        "Tên kho": item.STORENAME,
+                        "Mã sản phẩm": item.PRODUCTID,
+                        "Tên sản phẩm": item.PRODUCTNAME,
+                        "Mã trạng thái": item.INVENTORYSTATUSID,
+                        "Tên trạng thái": item.INVENTORYSTATUSNAME,
                         "Số lượng tồn": item.QUANTITY
                     }
                 });

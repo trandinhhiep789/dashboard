@@ -555,15 +555,17 @@ class FormControlComboBoxCom extends Component {
             const aa = this.bindcombox(nextProps.value, this.state.Listoption);
             this.setState({ SelectedOption: aa });
         }
-
+        //  console.log("props.listoption",this.props.name,this.props.listoption)
         if (JSON.stringify(this.props.listoption) !== JSON.stringify(nextProps.listoption)) // Check if it's a new user, you can also use some unique property, like the ID
         {
+            // console.log("nextProps.listoption",this.props.name,nextProps.listoption)
             this.setState({ Listoption: nextProps.listoption });
         }
     }
 
     render() {
-        let { name, label, rowspan, colspan, labelcolspan, validatonList, isMultiSelect, disabled, validationErrorMessage, placeholder, listoption, isCloseMenuOnSelect } = this.props;
+        let { name, label, rowspan, colspan, labelcolspan, validatonList, isMultiSelect,
+            disabled, validationErrorMessage, placeholder, listoption, isCloseMenuOnSelect } = this.props;
         let formRowClassName = "form-row";
         if (rowspan != null) {
             formRowClassName = "form-row col-md-" + rowspan;
@@ -587,7 +589,8 @@ class FormControlComboBoxCom extends Component {
         }
         const closeMenuOnSelect = isCloseMenuOnSelect == false ? isCloseMenuOnSelect : true
         const selectedOption = this.state.SelectedOption;
-        const listOption = this.state.Listoption;
+        let listOption = this.state.Listoption;
+        // console.log(this.props.name,listOption)
         return (
             <div className={formRowClassName} >
                 {(this.props.isShowLable == false || this.props.isShowLable == undefined) && <div className={labelDivClassName}>
@@ -929,12 +932,15 @@ class FormControlDatetimeNewCom extends Component {
     constructor(props) {
         super(props);
         this.handleValueChange = this.handleValueChange.bind(this);
+        this.rangeCheck = this.rangeCheck.bind(this);
+        this.disabledDateTime = this.disabledDateTime.bind(this);
+
     }
     handleValueChange(name, moment) {
-        
-        let momentNew =""
+
+        let momentNew = ""
         if (!this.props.IsGetTime) {
-            momentNew= ExportStringToDate(moment)
+            momentNew = ExportStringToDate(moment)
         }
         else {
             momentNew = ExportStringDate(moment, this.props.IsGetTime)
@@ -943,10 +949,34 @@ class FormControlDatetimeNewCom extends Component {
             this.props.onValueChange(this.props.name, momentNew);
     }
 
+    rangeCheck(start, end) {
+        const result = [];
+        for (let i = start; i < end; i++) {
+            result.push(i);
+        }
+        return result;
+    }
+
+
     disabledDate(current) {
         return (current && current < moment().startOf('day'));
 
     }
+
+    disabledDateTime(current) {
+        let currentDate = new Date();
+        const pad = function (num) {
+            var norm = Math.floor(Math.abs(num));
+            return (norm < 10 ? '0' : '') + norm;
+        };
+        return {
+            disabledHours: () => this.rangeCheck(0, 24).splice(0, pad(currentDate.getHours())),
+            disabledMinutes: () => this.rangeCheck(0, pad(currentDate.getMinutes())),
+            disabledSeconds: () => [55, 56],
+        };
+    }
+
+
 
     render() {
         let { name, label, timeFormat, dateFormat, colspan, value, validationErrorMessage } = this.props;
@@ -1003,6 +1033,7 @@ class FormControlDatetimeNewCom extends Component {
                         onChange={this.handleValueChange}
                         disabled={this.props.disabled}
                         disabledDate={this.props.disabledDate == true ? this.disabledDate : false}
+                        disabledTime={this.props.disabledTime == true ? this.disabledDateTime : false}
                         locale={locale}
                     />
                     <div className="invalid-feedback">
@@ -2213,7 +2244,7 @@ class FormControlComboBoxNewCom extends Component {
             const aa = this.bindcombox(nextProps.value, this.state.Listoption);
             this.setState({ SelectedOption: aa });
         }
-
+        debugger;
         if (JSON.stringify(this.props.listoption) !== JSON.stringify(nextProps.listoption)) // Check if it's a new user, you can also use some unique property, like the ID
         {
             this.setState({ Listoption: nextProps.listoption });
@@ -3080,6 +3111,154 @@ const PartialSelect = connect(mapStateToProps, mapDispatchToProps)(PartialSelect
 
 //#endregion load big data from cache
 
+
+class FormControlComboBoxNoCachedCom extends Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+        this.state = { Listoption: [], SelectedOption: [] }
+    }
+    handleValueChange(selectedOption) {
+        const comboValues = this.getComboValue(selectedOption);
+        if (this.props.isselectedOp) {
+            if (this.props.onValueChange != null)
+                this.props.onValueChange(this.props.name, selectedOption, this.props.namelabel, selectedOption != null ? selectedOption.name : "", this.props.filterrest);
+        }
+        else {
+            if (this.props.onValueChange != null)
+                this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption != null ? selectedOption.name : "", this.props.filterrest);
+        }
+
+    }
+
+    bindcombox(value, listOption) {
+        let values = value;
+        let selectedOption = [];
+        if ((values == null || values === -1) && !this.props.isMultiSelect)
+            return { value: -1, label: "--Vui lòng chọn--" };
+
+        if (!!values) {
+            if (typeof values.toString() == "string")
+                values = values.toString().split(",");
+
+
+            for (let i = 0; i < values.length; i++) {
+                for (let j = 0; j < listOption.length; j++) {
+                    if (values[i] == listOption[j].value) {
+                        selectedOption.push({ value: listOption[j].value, label: listOption[j].label, name: listOption[j].name });
+                    }
+                }
+            }
+        }
+
+
+        return selectedOption;
+    }
+    getComboValue(selectedOption) {
+        let values = [];
+        if (selectedOption == null)
+            return -1;
+        if (this.props.isMultiSelect) {
+            for (let i = 0; i < selectedOption.length; i++) {
+                values.push(selectedOption[i].value);
+            }
+        } else {
+            return selectedOption.value;
+        }
+
+        return values;
+    }
+    //#endregion tree category
+
+    componentDidMount() {
+        let listOption = this.props.listoption;
+        console.log("componentDidMount.listoption", this.props.name, this.props.listoption)
+        const strSelectedOption = this.bindcombox(this.props.value, listOption);
+        console.log("componentDidMount.strSelectedOption", strSelectedOption)
+        this.setState({ Listoption: listOption, SelectedOption: strSelectedOption });
+
+    }
+    componentWillReceiveProps(nextProps) {
+
+        if (JSON.stringify(this.props.listoption) !== JSON.stringify(nextProps.listoption)) // Check if it's a new user, you can also use some unique property, like the ID
+        {
+            this.setState({ Listoption: nextProps.listoption });
+        }
+        else {
+            const aa = this.bindcombox(this.props.value, this.props.listoption);
+            this.setState({ Listoption: this.props.listoption, SelectedOption: aa });
+        }
+
+        if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) {
+            const aa = this.bindcombox(nextProps.value, this.state.Listoption);
+            this.setState({ SelectedOption: aa });
+        }
+        else {
+            const aa = this.bindcombox(this.props.value, this.props.listoption);
+            this.setState({ Listoption: this.props.listoption, SelectedOption: aa });
+        }
+
+    }
+
+    render() {
+        let { name, label, rowspan, colspan, labelcolspan, validatonList, isMultiSelect,
+            disabled, validationErrorMessage, placeholder, listoption, isCloseMenuOnSelect } = this.props;
+        let formRowClassName = "form-row";
+        if (rowspan != null) {
+            formRowClassName = "form-row col-md-" + rowspan;
+        }
+
+        let formGroupClassName = "form-group col-md-4";
+        if (colspan != null) {
+            formGroupClassName = "form-group col-md-" + colspan;
+        }
+        let labelDivClassName = "form-group col-md-2";
+        if (labelcolspan != null) {
+            labelDivClassName = "form-group col-md-" + labelcolspan;
+        }
+        let star;
+        if (validatonList != undefined && validatonList.includes("Comborequired") == true) {
+            star = '*'
+        }
+        let className = "react-select";
+        if (validationErrorMessage != undefined && validationErrorMessage != "") {
+            className += " is-invalid";
+        }
+        const closeMenuOnSelect = isCloseMenuOnSelect == false ? isCloseMenuOnSelect : true
+        const selectedOption = this.state.SelectedOption;
+        let listOption = this.state.Listoption;
+        // console.log(this.props.name,listOption)
+        return (
+            <div className={formRowClassName} >
+                {(this.props.isShowLable == false || this.props.isShowLable == undefined) && <div className={labelDivClassName}>
+                    <label className="col-form-label 6">
+                        {label}<span className="text-danger"> {star}</span>
+                    </label>
+                </div>
+                }
+
+                <div className={formGroupClassName}>
+                    <Select
+                        value={selectedOption}
+                        name={name}
+                        ref={this.props.inputRef}
+                        onChange={this.handleValueChange}
+                        options={listOption}
+                        isDisabled={disabled}
+                        isMulti={isMultiSelect}
+                        isSearchable={true}
+                        placeholder={placeholder}
+                        className={className}
+                        closeMenuOnSelect={closeMenuOnSelect}
+                    />
+                    <div className="invalid-feedback"><ul className="list-unstyled"><li>{validationErrorMessage}</li></ul></div>
+                </div>
+            </div>
+        );
+    }
+}
+export const FormControlComboBoxNoCached = connect(mapStateToProps, mapDispatchToProps)(FormControlComboBoxNoCachedCom);
+
 export default {
     CheckBox,
     ComboBox,
@@ -3089,6 +3268,7 @@ export default {
     ComboBoxTreeSelect,
     ComboboxQTQHPX,
     ElementDatetime,
+    FormControlComboBoxNoCached,
     FormControlComboBox,
     FormControlComboBoxNew,
     FormControlComboBoxUser,
