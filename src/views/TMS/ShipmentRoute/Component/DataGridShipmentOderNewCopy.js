@@ -1,4 +1,4 @@
-import React, { Component, PropTypes, useMemo, useState, useEffect,useCallback } from 'react';
+import React, { Component, PropTypes, useMemo, useState, useEffect,useRef } from 'react';
 import { Link } from "react-router-dom";
 import { Modal, ModalManager, Effect } from 'react-dynamic-modal';
 import Media from "react-media";
@@ -37,7 +37,8 @@ const dataGridShipmentOderNewCom = (props) => {
     const [gridData, setGridData] = useState({});
     const [pageNumber, setPageNumber] = useState(props.PageNumber);
     const [listPKColumnName, setListPKColumnName] = useState(listPKColumn);
-    const notificationDOMRef = React.createRef();
+    const [dataSource, setDataSource] = useState(props.dataSource);
+    const notificationDOMRef = useRef();
 
     useEffect(() => {
         updateWindowDimensions();
@@ -50,7 +51,7 @@ const dataGridShipmentOderNewCom = (props) => {
     },[])
 
     useEffect(() => {
-        if (dataSource) {
+        if (dataSourceMemo) {
             const gridData = getCheckList(dataSource);
             const localIsserverInfo = localStorage.getItem('IsserverInfo');
             if (localIsserverInfo != null) {
@@ -62,8 +63,7 @@ const dataGridShipmentOderNewCom = (props) => {
                 setGridData(gridData);
             }
         }
-    }, [dataSource]);
-
+    }, [dataSourceMemo]);
     const getCheckList = (dataSource) => {
         const idSelectColumnName = props.IDSelectColumnName;
         const pkColumnName = listPKColumnName;
@@ -120,9 +120,82 @@ const dataGridShipmentOderNewCom = (props) => {
     const handleSearchShip = () => {
         handleonSearchEvent(keywordId);
     }
-    
+
+    const handleonSearchEvent = (Keywordid) =>  {
+        if (changeIsserver) {
+            let resultShipment = dataSource.filter(n => n.ShipmentOrderID.toLowerCase().includes(Keywordid.toLowerCase())
+                || n.ReceiverFullName.toLowerCase().includes(Keywordid.toLowerCase())
+                || n.ReceiverPhoneNumber.toLowerCase().includes(Keywordid.toLowerCase())
+                || n.PartnerSaleOrderID.toLowerCase().includes(Keywordid.toLowerCase())
+                || n.PrimaryShipItemName.toLowerCase().includes(Keywordid.toLowerCase())
+                || n.ReceiverFullAddress.toLowerCase().includes(Keywordid.toLowerCase())
+                || n.ShipItemNameList.toLowerCase().includes(Keywordid.toLowerCase())
+            );
+            setDataSource(resultShipment);
+        }
+        else {
+            if (Keywordid != "") {
+                let apiPath = "";
+                switch (Keywordid.trim().length) {
+                    case 15:
+                        apiPath = "api/ShipmentOrder/SearchByKeyword";
+                        break;
+                    case 10:
+                        apiPath = "api/ShipmentOrder/SearchByPhoneNember";
+                        break;
+                    default:
+                        apiPath = "api/ShipmentOrder/SearchByPartnerSaleOrderID";
+                        break;
+                }
+
+                props.callFetchAPI(APIHostName, apiPath, String(Keywordid).trim()).then(apiResult => {
+                    if (!apiResult.IsError) {
+                        setDataSource(apiResult.ResultObject);
+                    }
+                });
+            }
+        }
+    }
+
     const handleUserCoordinator = () => {
-        console.log("");
+        props.hideModal();
+        if (gridDataShip.length > 0) {
+            gridDataShip[0].ShipmentOrderTypelst = props.ShipmentOrderTypelst;
+            const widthModal = (window.innerWidth * 55) / 100;
+            props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderNewLst", gridDataShip).then(apiResult => {
+                if (!apiResult.IsError) {
+                    setGridData(apiResult.ResultObject.ShipmentOrderDeliverList);
+                    setChangeGird(true);
+                    props.showModal(MODAL_TYPE_VIEW, {
+                        title: 'Phân tuyến điều phối vận đơn',
+                        isShowOverlay: false,
+                        onhideModal: handleClose,
+                        content: {
+                            text: <ListShipCoordinator
+                                ShipmentOrderID={0}
+                                ShipmentRouteID
+                                ShipmentRouteID={shipmentRouteID}
+                                InfoCoordinator={gridDataShip}
+                                ShipmentOrderSame={apiResult.ResultObject.ShipmentOrderDeliverSameList}
+                                IsUserCoordinator={true}
+                                IsCoordinator={true}
+                                IsCancelDelivery={true}
+                                onChangeValue={handleShipmentOrder}
+                                onChangeClose={handleCloseModal}
+
+                            />
+                        },
+                        maxWidth: widthModal + 'px'
+                    });
+                }
+                else {
+                    showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!")
+                }
+            });
+        }
+        else {
+            showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!")
+        }
     }
 
     const handleChangeIsserver = (Isserver) => {
@@ -131,6 +204,7 @@ const dataGridShipmentOderNewCom = (props) => {
         var MLObjectInfo = JSON.stringify(MLObject);
         localStorage.setItem('IsserverInfo', MLObjectInfo)
     }
+    
     const handleCheckShip = e => {
         const strShipmentOrdervalue = e.target.value;
         const name = e.target.name;
@@ -150,12 +224,13 @@ const dataGridShipmentOderNewCom = (props) => {
             gridDataShip.splice(gridDataShip.findIndex(n => n[name] == strShipmentOrdervalue), 1);
         }
         setGridData(gridDataShip);
+        setDataSource(JSON.parse(JSON.stringify(dataSource)));
+
     }
 
     const handleClickShip = (ShipmentOrderID) => e => {
         props.hideModal();
         const widthModal = (window.innerWidth * 55) / 100;
-        console.log("widpercent", widthPercent);
         props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderDeliver", ShipmentOrderID).then(apiResult => {
             if (!apiResult.IsError) {
                 setChangeGird(true);
@@ -219,6 +294,7 @@ const dataGridShipmentOderNewCom = (props) => {
             );
         }
     }
+
     const _CheckTime = (dates) => {
         const date = new Date(Date.parse(dates));
         let currentDate = new Date();
@@ -254,6 +330,35 @@ const dataGridShipmentOderNewCom = (props) => {
             if (props.onChangePageLoad)
                 props.onChangePageLoad();
         }
+    }
+
+    const addNotification = (message1, IsError) => {
+        let cssNotification = "notification-danger";
+        let iconNotification = "fa fa-exclamation"
+        if (!IsError) {
+            cssNotification = "notification-custom-success";
+            iconNotification =  "fa fa-check";
+        }
+
+        notificationDOMRef.current.addNotification({
+            container: "bottom-right",
+            content: (
+                <div className={cssNotification}>
+                    <div className="notification-custom-icon">
+                        <i className={iconNotification} />
+                    </div>
+                    <div className="notification-custom-content">
+                        <div className="notification-close">
+                            <span>×</span>
+                        </div>
+                        <h4 className="notification-title">Thông Báo</h4>
+                        <p className="notification-message">{message1}</p>
+                    </div>
+                </div>
+            ),
+            dismiss: { duration: 100000000 },
+            dismissable: { click: true }
+        });
     }
 
     const handleCloseModal = () => {
@@ -296,10 +401,8 @@ const dataGridShipmentOderNewCom = (props) => {
         });
     };
 
-    const dataSource = useMemo(() => props.dataSource, [props.dataSource]);
-    
+    const dataSourceMemo = useMemo(() => dataSource, [dataSource]);
     function renderDataGrid() {
-        console.log("renderDataGrid", dataSource);
         if (changeGird) {
             return (
                 <React.Fragment>
@@ -313,8 +416,8 @@ const dataGridShipmentOderNewCom = (props) => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {dataSource != null &&
-                                        dataSource.map((rowItem, rowIndex) => {
+                                    {dataSourceMemo != null &&
+                                        dataSourceMemo.map((rowItem, rowIndex) => {
                                             let rowtrClass = "jsgrid-row unread";
                                             if (rowItem.SelectedUser != "" || rowItem.IsView == true) {
                                                 rowtrClass = "jsgrid-row unread";
@@ -332,7 +435,7 @@ const dataGridShipmentOderNewCom = (props) => {
                                                     rowUndelivery = "jsgrid-cell action waitingDelivery";
                                                 }
                                             }
-                                            console.log("check",rowItem.ShipmentOrderID,gridDataShip,gridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
+                                            // console.log("check",rowItem.ShipmentOrderID,gridDataShip,gridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
                                             return (<tr key={rowIndex} className={rowtrClass}>
                                                 <td className={rowUndelivery} style={{ width: '5%' }}>
                                                     <ul>
@@ -480,12 +583,8 @@ const dataGridShipmentOderNewCom = (props) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {dataSource != null &&
-                                dataSource.map((rowItem, rowIndex) => {
-                                    let rowClass = "jsgrid-row";
-                                    if (index % 2 != 0) {
-                                        rowClass = "jsgrid-alt-row";
-                                    }
+                            {dataSourceMemo != null &&
+                                dataSourceMemo.map((rowItem, rowIndex) => {
                                     let rowtrClass = "unReadingItem";
                                     if (rowItem.SelectedUser != "" || rowItem.IsView == true) {
                                         rowtrClass = "noReadingItem readingItem";
@@ -709,14 +808,13 @@ const dataGridShipmentOderNewCom = (props) => {
     }
     
     function renderDataGridSmallSize() {
-        const pageCount = getPageCount(dataSource[0]);
-        console.log("renderDataGridSmallSize");
+        const pageCount = getPageCount(dataSourceMemo[0]);
         return (
             <div className="card card-shipment-order-mobile-view">
                 <ReactNotification ref={notificationDOMRef} />
                 <div className="card-title">
                     <div className="total-orders">
-                        Tổng đơn: {dataSource.length > 0 ? formatNumber(dataSource[0].TotaLRows) : ''}
+                        Tổng đơn: {dataSourceMemo.length > 0 ? formatNumber(dataSourceMemo[0].TotaLRows) : ''}
                     </div>
 
                     <div className="input-group input-group-select">
@@ -730,7 +828,7 @@ const dataGridShipmentOderNewCom = (props) => {
                 <table className="card-body">
                     <tbody>
                         {
-                            dataSource != null && dataSource.map((rowItem, rowIndex) => {
+                            dataSourceMemo != null && dataSourceMemo.map((rowItem, rowIndex) => {
                                 let rowtrClass = "un-reading-item";
                                 if (SelectedUser != "") {
                                     rowtrClass = "un-reading-item reading-item";
@@ -874,13 +972,13 @@ const dataGridShipmentOderNewCom = (props) => {
     }
 
     const handleSelected = () => {
+        debugger;
         if (gridDataShip.length > 0) {
             props.callFetchAPI(APIHostName, "api/ShipmentOrder/UpdateSelected", gridDataShip).then(apiResult => {
                 addNotification(apiResult.Message, apiResult.IsError);
                 if (!apiResult.IsError) {
                     setGridData([]);
                 }
-
             });
         }
         else {
@@ -889,7 +987,7 @@ const dataGridShipmentOderNewCom = (props) => {
     }
 
     const handleSelectedView = () => {
-        if (rops.onChangeView != null)
+        if (props.onChangeView != null)
             props.onChangeView();
     }
 
@@ -965,7 +1063,7 @@ const dataGridShipmentOderNewCom = (props) => {
                                                         <ul>
                                                             <li>
                                                                 <span className="count-name">Tổng đơn:</span>
-                                                                <span className="count-number">{dataSource.length > 0 ? formatNumber(dataSource[0].TotaLRows) : ''}</span>
+                                                                <span className="count-number">{dataSourceMemo.length > 0 ? formatNumber(dataSourceMemo[0].TotaLRows) : ''}</span>
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -1011,7 +1109,7 @@ const dataGridShipmentOderNewCom = (props) => {
                                                         <ul>
                                                             <li>
                                                                 <span className="count-name">Tổng đơn:</span>
-                                                                <span className="count-number">{dataSource.length > 0 ? formatNumber(dataSource[0].TotaLRows) : ''}</span>
+                                                                <span className="count-number">{dataSourceMemo.length > 0 ? formatNumber(dataSourceMemo[0].TotaLRows) : ''}</span>
                                                             </li>
                                                         </ul>
                                                     </div>
