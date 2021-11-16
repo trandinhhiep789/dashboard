@@ -19,8 +19,8 @@ import "./css/app.min.css";
 import ErrorBoundary from './actions/ErrorBoundary'
 import { ConfigProvider } from 'antd';
 import moment from 'moment';
-import 'moment/locale/vi';
-import locale from 'antd/lib/locale/vi_VN';
+// import 'moment/locale/vi';
+// import locale from 'antd/lib/locale/vi_VN';
 
 const customMiddleWare = store => next => action => {
 
