@@ -55,6 +55,7 @@ class ListShipCoordinatorRouteCom extends Component {
 
   componentDidMount() {
     this.handleMapObjectDescription();
+
     const isBelowThreshold = (currentValue) => currentValue.CarrierTypeID == 2;
     let isShow = this.props.InfoCoordinator.every(isBelowThreshold);
     let objVehicleLst = [];
@@ -68,24 +69,17 @@ class ListShipCoordinatorRouteCom extends Component {
         CoordinatorStoreIDLst: this.props.InfoCoordinator.map((e) => e.CoordinatorStoreID).join(","),
         ShipmentOrderIDLst: this.props.InfoCoordinator.map((e) => e.ShipmentOrderID).join(","),
       };
-      this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetVehicleWorkingPlan", objRouteVehicleRequset).then((apiResult) => {
-        if (!apiResult.IsError) {
-          apiResult.ResultObject.map((item) => {
-            //Volume -(TotalVolume+TotalShipmentVolume)
-            let objVehicle = {
-              value: item.VehicleID,
-              label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + item.TotalVolume + "m3)",
-              MainDriverUser: item.MainDriverUser,
-              MainDriverUserFullName: item.MainDriverUserFullName,
-              TotalVolume: item.TotalShipmentVolume,
-              TotalShipmentVolume: item.TotalShipmentVolume,
-              TotalAbilityVolume: item.TotalAbilityVolume,
-            };
-            objVehicleLst.push(objVehicle);
-          });
-          this.setState({ VehicleLst: objVehicleLst });
-        }
-      });
+      objVehicleLst = this.getinitVehicellst(objRouteVehicleRequset);
+
+      document.getElementsByClassName('car-menu')[0].style.background = '#15c377';
+      document.getElementsByClassName('car-menu')[0].style.color = '#fff';
+      document.getElementsByClassName('motobike-menu')[0].style.background = '#e4e7ea';
+      document.getElementsByClassName('motobike-menu')[0].style.color = '#616a78';
+    } else{
+      document.getElementsByClassName('motobike-menu')[0].style.background = '#15c377';
+      document.getElementsByClassName('motobike-menu')[0].style.color = '#fff';
+      document.getElementsByClassName('car-menu')[0].style.background = '#e4e7ea';
+      document.getElementsByClassName('car-menu')[0].style.color = '#616a78';
     }
     let objRoute = this.props.InfoCoordinator.find((n) => n.ShipmentRouteID == this.props.ShipmentRouteID);
     if (objRoute != undefined) {
@@ -121,6 +115,29 @@ class ListShipCoordinatorRouteCom extends Component {
     });
   }
 
+  getinitVehicellst(objRouteVehicleRequset){
+    let objVehicleLst = [];
+    this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetVehicleWorkingPlan", objRouteVehicleRequset).then((apiResult) => {
+      if (!apiResult.IsError) {
+        apiResult.ResultObject.map((item) => {
+          //Volume -(TotalVolume+TotalShipmentVolume)
+          let objVehicle = {
+            value: item.VehicleID,
+            label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + item.TotalVolume + "m3)",
+            MainDriverUser: item.MainDriverUser,
+            MainDriverUserFullName: item.MainDriverUserFullName,
+            TotalVolume: item.TotalShipmentVolume,
+            TotalShipmentVolume: item.TotalShipmentVolume,
+            TotalAbilityVolume: item.TotalAbilityVolume,
+          };
+          objVehicleLst.push(objVehicle);
+        });
+        this.setState({ VehicleLst: objVehicleLst });
+      }
+    });
+    return objVehicleLst;
+  }
+
   componentWillReceiveProps(nextProps) {
     if (JSON.stringify(this.props.InfoCoordinator) !== JSON.stringify(nextProps.InfoCoordinator)) {
       this.setState({
@@ -138,7 +155,7 @@ class ListShipCoordinatorRouteCom extends Component {
         ...a,
         [v.ShipmentOrderID]: {
           isShow: false,
-          content: "",
+          content: v.CoordinatorNote,
         },
       };
     }, {});
@@ -267,7 +284,7 @@ class ListShipCoordinatorRouteCom extends Component {
       this.setState({ objDeliverUser: value, ShipmentRouteLst: [] });
     }
   }
-  handleOnValueChangeVehicleDriverUser(name, value, selectedOption) { }
+  handleOnValueChangeVehicleDriverUser(name, value, selectedOption) {}
 
   //thông báo
   handleCloseMessage() {
@@ -487,6 +504,7 @@ class ListShipCoordinatorRouteCom extends Component {
       this.state.ShipmentOrder[indexRow].DeliverUserFullNameList = elementDeliverUserFullList.join();
       this.state.ShipmentOrder[indexRow].DriverUser = this.state.objCoordinator.VehicleDriverUser.value;
       this.state.ShipmentOrder[indexRow].VehicleID = this.state.objCoordinator.VehicleID;
+      this.state.ShipmentOrder[indexRow].CoordinatorNote = this.state.objectDescription[row.ShipmentOrderID]["content"];
     });
 
     this.state.ShipmentOrder[0].DeliverUserTotalCODList = this.groupByNew(element, ["UserName", "CarrierTypeID"]);
@@ -513,6 +531,10 @@ class ListShipCoordinatorRouteCom extends Component {
     let { ShipmentOrder } = this.state;
     let ShipmentOrderOld = ShipmentOrder;
     if (CarrierTypeID == 1) {
+      document.getElementsByClassName('motobike-menu')[0].style.background = '#15c377';
+      document.getElementsByClassName('motobike-menu')[0].style.color = '#fff';
+      document.getElementsByClassName('car-menu')[0].style.background = '#e4e7ea';
+      document.getElementsByClassName('car-menu')[0].style.color = '#616a78';
       ShipmentOrder.map((item, index) => {
         ShipmentOrder[index]["DriverUser"] = "";
         ShipmentOrder[index]["DriverUserFull"] = "";
@@ -521,6 +543,10 @@ class ListShipCoordinatorRouteCom extends Component {
       });
       this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: [] });
     } else {
+      document.getElementsByClassName('car-menu')[0].style.background = '#15c377';
+      document.getElementsByClassName('car-menu')[0].style.color = '#fff';
+      document.getElementsByClassName('motobike-menu')[0].style.background = '#e4e7ea';
+      document.getElementsByClassName('motobike-menu')[0].style.color = '#616a78';
       ShipmentOrder.map((item, index) => {
         if (item.CarrierTypeID == 1) {
           ShipmentOrder[index]["DriverUser"] = "";
@@ -551,15 +577,11 @@ class ListShipCoordinatorRouteCom extends Component {
             objVehicleLst.push(objVehicle);
           });
           this.setState({ VehicleLst: objVehicleLst });
-
         }
       });
       this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: objVehicleLst });
-
-
     }
-
-  }
+  }; 
   handleChangeCourse = (CarrierTypeID, rowIndex) => (e) => {
     let { ShipmentOrder } = this.state;
     ShipmentOrder[rowIndex]["DriverUser"] = "";
@@ -593,7 +615,6 @@ class ListShipCoordinatorRouteCom extends Component {
             objVehicleLst.push(objVehicle);
           });
           this.setState({ VehicleLst: objVehicleLst });
-
         }
       });
       this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: objVehicleLst });
@@ -826,8 +847,8 @@ class ListShipCoordinatorRouteCom extends Component {
     let { ShipmentOrder, ShipmentRouteID, ShipmentOrderSameLst, ShipmentRouteLst, ShipmentRouteSameLst, Distances_RouteLst, Via_Distances, Via_Durations, girdSlide, VehicleLst } = this.state;
     let resultShipmentRoute = ShipmentRouteLst.filter((n) => n.ShipmentRouteID != ShipmentRouteID);
     let resultShipmentRouteSame = ShipmentRouteSameLst.filter((n) => n.ShipmentRouteID != ShipmentRouteID);
-    console.log('VehicleLst: ' + JSON.stringify(VehicleLst));
-    console.log('VehicleID: ' + this.state.objCoordinator.VehicleID);
+    console.log("VehicleLst: " + JSON.stringify(VehicleLst));
+    console.log("VehicleID: " + this.state.objCoordinator.VehicleID);
     let length_row = ShipmentOrder.length - 1;
     const isBelowThreshold = (currentValue) => currentValue.CarrierTypeID == 2;
     let isShow = ShipmentOrder.every(isBelowThreshold);
@@ -860,13 +881,14 @@ class ListShipCoordinatorRouteCom extends Component {
               </div>
               <div className="col-md-6">
                 <div className="item group-status">
-                  <span className="badge badge-secondary mr-20 badge-active" onClick={this.handleChangeCourseALL(1)} style={{ fontSize: "15px" }} >
+                  <span className="badge badge-secondary mr-20 badge-active motobike-menu" onClick={this.handleChangeCourseALL(1)} style={{ fontSize: "15px" }}>
                     <i className="fa fa-motorcycle"></i>
                     Xe máy
                   </span>
-                  <span className="badge badge-secondary badge-active" onClick={this.handleChangeCourseALL(2)} style={{ fontSize: "15px" }}>
+                  <span className="badge badge-secondary badge-active car-menu" onClick={this.handleChangeCourseALL(2)} style={{ fontSize: "15px" }}>
                     <i className="fa fa-truck fff"></i>
-                    Xe tải</span>
+                    Xe tải
+                  </span>
                 </div>
               </div>
             </div>
@@ -1034,6 +1056,10 @@ class ListShipCoordinatorRouteCom extends Component {
                                               <i className="fa fa-truck fff"></i> Xe tải
                                             </span>
                                           )}
+
+                                          <span className="badge badge-primary ml-10" onClick={() => this.handleDescriptionSubmit(item)}>
+                                            <i class="fa fa-edit"></i> Ghi chú
+                                          </span>
                                         </div>
                                         <div className="item group-cod">
                                           <span className="badge badge-secondary badge-active">
