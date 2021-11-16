@@ -83,7 +83,7 @@ class ListShipCoordinatorRouteCom extends Component {
             };
             objVehicleLst.push(objVehicle);
           });
-          this.setState({VehicleLst: objVehicleLst});
+          this.setState({ VehicleLst: objVehicleLst });
         }
       });
     }
@@ -134,11 +134,12 @@ class ListShipCoordinatorRouteCom extends Component {
 
   handleMapObjectDescription = () => {
     const objectDescription = this.props.InfoCoordinator.reduce((a, v) => {
+      console.log({ v });
       return {
         ...a,
         [v.ShipmentOrderID]: {
           isShow: false,
-          content: "",
+          content: v.CoordinatorNote,
         },
       };
     }, {});
@@ -267,6 +268,7 @@ class ListShipCoordinatorRouteCom extends Component {
       this.setState({ objDeliverUser: value, ShipmentRouteLst: [] });
     }
   }
+
   handleOnValueChangeVehicleDriverUser(name, value, selectedOption) {}
 
   //thông báo
@@ -275,12 +277,15 @@ class ListShipCoordinatorRouteCom extends Component {
       if (this.props.onChangeValue != null) this.props.onChangeValue();
     }
   }
+
   showMessage(message) {
     ModalManager.open(<MessageModal title="Thông báo" message={message} onRequestClose={() => true} onCloseModal={this.handleCloseMessage} />);
   }
+
   handleCloseModal() {
     this.props.hideModal();
   }
+
   addNotification(message1, IsError) {
     let cssNotification, iconNotification;
     if (!IsError) {
@@ -310,6 +315,7 @@ class ListShipCoordinatorRouteCom extends Component {
       dismissable: { click: true },
     });
   }
+
   handleClose() {
     if (this.props.onChangeClose != null) {
       this.props.onChangeClose();
@@ -445,7 +451,9 @@ class ListShipCoordinatorRouteCom extends Component {
     let element = [];
     let elementDeliverUserList = [];
     let elementDeliverUserFullList = [];
+
     this.state.ShipmentOrder.map((row, indexRow) => {
+      console.log({ row });
       if (this.state.objCoordinator.IsRoute == true && row.CarrierTypeID != this.state.ShipmentOrder[0].CarrierTypeID) {
         //  this.addNotification("không cùng phương tiện giao hàng", true);
         const validationObject = { IsValidatonError: true, ValidationErrorMessage: "Vui lòng chọn lại, bắt buộc cùng loại phương tiện trong một tuyến." };
@@ -487,6 +495,7 @@ class ListShipCoordinatorRouteCom extends Component {
       this.state.ShipmentOrder[indexRow].DeliverUserFullNameList = elementDeliverUserFullList.join();
       this.state.ShipmentOrder[indexRow].DriverUser = this.state.objCoordinator.VehicleDriverUser.value;
       this.state.ShipmentOrder[indexRow].VehicleID = this.state.objCoordinator.VehicleID;
+      this.state.ShipmentOrder[indexRow].CoordinatorNote = this.state.objectDescription[row.ShipmentOrderID]["content"];
     });
 
     this.state.ShipmentOrder[0].DeliverUserTotalCODList = this.groupByNew(element, ["UserName", "CarrierTypeID"]);
@@ -574,6 +583,7 @@ class ListShipCoordinatorRouteCom extends Component {
       });
     }
   };
+
   handleChangeOder = (rowIndex, OrderID) => (e) => {
     let { ShipmentOrder } = this.state;
     let totalcout = ShipmentOrder.length - 1;
@@ -633,6 +643,7 @@ class ListShipCoordinatorRouteCom extends Component {
     if (resultdd == undefined) ShipmentOrder.push(resultShipmentOrderSame);
     this.setState({ ShipmentOrder: ShipmentOrder });
   };
+
   handleDistances = () => {
     let { ShipmentOrder, ShipmentOrderSameLst } = this.state;
     let Points = [];
@@ -806,9 +817,13 @@ class ListShipCoordinatorRouteCom extends Component {
               </div>
               <div className="col-md-6">
                 <div className="item group-status">
-                                    <span className="badge badge-secondary mr-10 badge-active" ><i className="fa fa-motorcycle"></i> Xe máy</span>
-                                    <span className="badge badge-secondary badge-active" ><i className="fa fa-truck fff"></i> Xe tải</span>
-                                </div>
+                  <span className="badge badge-secondary mr-10 badge-active">
+                    <i className="fa fa-motorcycle"></i> Xe máy
+                  </span>
+                  <span className="badge badge-secondary badge-active">
+                    <i className="fa fa-truck fff"></i> Xe tải
+                  </span>
+                </div>
               </div>
             </div>
             {this.state.objCoordinator.CarrierPartnerID == -1 || this.state.objCoordinator.CarrierPartnerID == 0 ? (
@@ -928,7 +943,7 @@ class ListShipCoordinatorRouteCom extends Component {
                             return (
                               <React.Fragment>
                                 <tr key={index} className="jsgrid-row">
-                                  <td className="jsgrid-cell high-priority" style={{ width: "1%" }} onClick={() => this.handleDescriptionSubmit(item)}></td>
+                                  <td className="jsgrid-cell high-priority" style={{ width: "1%" }}></td>
                                   <td className="jsgrid-cell group-products" style={{ width: "50%" }}>
                                     <ul>
                                       <li className="item infoOder">
@@ -975,6 +990,10 @@ class ListShipCoordinatorRouteCom extends Component {
                                               <i className="fa fa-truck fff"></i> Xe tải
                                             </span>
                                           )}
+
+                                          <span className="badge badge-primary ml-10" onClick={() => this.handleDescriptionSubmit(item)}>
+                                            <i class="fa fa-edit"></i> Ghi chú
+                                          </span>
                                         </div>
                                         <div className="item group-cod">
                                           <span className="badge badge-secondary badge-active">
