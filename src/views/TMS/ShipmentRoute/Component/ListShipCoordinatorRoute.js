@@ -71,9 +71,10 @@ class ListShipCoordinatorRouteCom extends Component {
       this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetVehicleWorkingPlan", objRouteVehicleRequset).then((apiResult) => {
         if (!apiResult.IsError) {
           apiResult.ResultObject.map((item) => {
+            //Volume -(TotalVolume+TotalShipmentVolume)
             let objVehicle = {
               value: item.VehicleID,
-              label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + item.TotalVolume + ")",
+              label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + item.TotalVolume + "m3)",
               MainDriverUser: item.MainDriverUser,
               MainDriverUserFullName: item.MainDriverUserFullName,
               TotalVolume: item.TotalShipmentVolume,
@@ -179,9 +180,9 @@ class ListShipCoordinatorRouteCom extends Component {
   handleOnValueChangeselectedOp(name, selectedOption) {
     let { objCoordinator, ShipmentOrder } = this.state;
 
-    if (selectedOption.TotalVolume >= selectedOption.TotalShipmentVolume + selectedOption.TotalAbilityVolume) {
+    if (selectedOption.TotalAbilityVolume >= selectedOption.TotalShipmentVolume + selectedOption.TotalVolume) {
       this.addNotification(
-        "Tổng thể tích tối thiểu cần cho xe tải là " + selectedOption.TotalVolume + "Hiện tại chỉ có " + (selectedOption.TotalShipmentVolume + selectedOption.TotalAbilityVolume),
+        "Tổng thể tích tối thiểu cần cho xe tải là " + selectedOption.TotalAbilityVolume + "Hiện tại chỉ có " + (selectedOption.TotalShipmentVolume + selectedOption.TotalAbilityVolume),
         true
       );
     }
@@ -804,10 +805,10 @@ class ListShipCoordinatorRouteCom extends Component {
                 />
               </div>
               <div className="col-md-6">
-                {/* <div className="item group-status">
+                <div className="item group-status">
                                     <span className="badge badge-secondary mr-10 badge-active" ><i className="fa fa-motorcycle"></i> Xe máy</span>
                                     <span className="badge badge-secondary badge-active" ><i className="fa fa-truck fff"></i> Xe tải</span>
-                                </div> */}
+                                </div>
               </div>
             </div>
             {this.state.objCoordinator.CarrierPartnerID == -1 || this.state.objCoordinator.CarrierPartnerID == 0 ? (
