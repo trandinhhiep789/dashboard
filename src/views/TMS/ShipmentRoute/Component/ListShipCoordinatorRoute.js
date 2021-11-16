@@ -593,6 +593,10 @@ class ListShipCoordinatorRouteCom extends Component {
     let isShow = ShipmentOrder.every(isBelowThreshold);
 
     if (isShow == true) {
+      document.getElementsByClassName('car-menu')[0].style.background = '#15c377';
+      document.getElementsByClassName('car-menu')[0].style.color = '#fff';
+      document.getElementsByClassName('motobike-menu')[0].style.background = '#e4e7ea';
+      document.getElementsByClassName('motobike-menu')[0].style.color = '#616a78';
       let objVehicleLst = [];
       let objRouteVehicleRequset = {
         VehicleID: 1,
@@ -620,6 +624,10 @@ class ListShipCoordinatorRouteCom extends Component {
       this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: objVehicleLst });
     } else {
       this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: [] });
+      document.getElementsByClassName('motobike-menu')[0].style.background = '#15c377';
+      document.getElementsByClassName('motobike-menu')[0].style.color = '#fff';
+      document.getElementsByClassName('car-menu')[0].style.background = '#e4e7ea';
+      document.getElementsByClassName('car-menu')[0].style.color = '#616a78';
     }
   };
 
