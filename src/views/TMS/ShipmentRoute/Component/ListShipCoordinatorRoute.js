@@ -83,7 +83,7 @@ class ListShipCoordinatorRouteCom extends Component {
             };
             objVehicleLst.push(objVehicle);
           });
-          this.setState({VehicleLst: objVehicleLst});
+          this.setState({ VehicleLst: objVehicleLst });
         }
       });
     }
@@ -267,7 +267,7 @@ class ListShipCoordinatorRouteCom extends Component {
       this.setState({ objDeliverUser: value, ShipmentRouteLst: [] });
     }
   }
-  handleOnValueChangeVehicleDriverUser(name, value, selectedOption) {}
+  handleOnValueChangeVehicleDriverUser(name, value, selectedOption) { }
 
   //thông báo
   handleCloseMessage() {
@@ -509,7 +509,57 @@ class ListShipCoordinatorRouteCom extends Component {
       });
     }
   }
+  handleChangeCourseALL = (CarrierTypeID) => (e) => {
+    let { ShipmentOrder } = this.state;
+    let ShipmentOrderOld = ShipmentOrder;
+    if (CarrierTypeID == 1) {
+      ShipmentOrder.map((item, index) => {
+        ShipmentOrder[index]["DriverUser"] = "";
+        ShipmentOrder[index]["DriverUserFull"] = "";
+        ShipmentOrder[index].VehicleID = -1;
+        ShipmentOrder[index]["CarrierTypeID"] = CarrierTypeID;
+      });
+      this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: [] });
+    } else {
+      ShipmentOrder.map((item, index) => {
+        if (item.CarrierTypeID == 1) {
+          ShipmentOrder[index]["DriverUser"] = "";
+          ShipmentOrder[index]["DriverUserFull"] = "";
+          ShipmentOrder[index].VehicleID = -1;
+          ShipmentOrder[index]["CarrierTypeID"] = CarrierTypeID;
+        }
+      });
+      let objVehicleLst = [];
+      let objRouteVehicleRequset = {
+        VehicleID: 1,
+        ExpectedDeliveryDate: ShipmentOrder[0].ExpectedDeliveryDate,
+        CoordinatorStoreIDLst: ShipmentOrder.map((e) => e.CoordinatorStoreID).join(","),
+        ShipmentOrderIDLst: ShipmentOrder.map((e) => e.ShipmentOrderID).join(","),
+      };
+      this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetVehicleWorkingPlan", objRouteVehicleRequset).then((apiResult) => {
+        if (!apiResult.IsError) {
+          apiResult.ResultObject.map((item) => {
+            let objVehicle = {
+              value: item.VehicleID,
+              label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + item.TotalVolume + "m3)",
+              MainDriverUser: item.MainDriverUser,
+              MainDriverUserFullName: item.MainDriverUserFullName,
+              TotalVolume: item.TotalShipmentVolume,
+              TotalShipmentVolume: item.TotalShipmentVolume,
+              TotalAbilityVolume: item.TotalAbilityVolume,
+            };
+            objVehicleLst.push(objVehicle);
+          });
+          this.setState({ VehicleLst: objVehicleLst });
 
+        }
+      });
+      this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: objVehicleLst });
+
+
+    }
+
+  }
   handleChangeCourse = (CarrierTypeID, rowIndex) => (e) => {
     let { ShipmentOrder } = this.state;
     ShipmentOrder[rowIndex]["DriverUser"] = "";
@@ -542,6 +592,8 @@ class ListShipCoordinatorRouteCom extends Component {
             };
             objVehicleLst.push(objVehicle);
           });
+          this.setState({ VehicleLst: objVehicleLst });
+
         }
       });
       this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: objVehicleLst });
@@ -774,7 +826,9 @@ class ListShipCoordinatorRouteCom extends Component {
     let { ShipmentOrder, ShipmentRouteID, ShipmentOrderSameLst, ShipmentRouteLst, ShipmentRouteSameLst, Distances_RouteLst, Via_Distances, Via_Durations, girdSlide, VehicleLst } = this.state;
     let resultShipmentRoute = ShipmentRouteLst.filter((n) => n.ShipmentRouteID != ShipmentRouteID);
     let resultShipmentRouteSame = ShipmentRouteSameLst.filter((n) => n.ShipmentRouteID != ShipmentRouteID);
-
+    console.log('VehicleLst: ' + JSON.stringify(VehicleLst));
+    console.log('VehicleID: ' + this.state.objCoordinator.VehicleID);
+    let length_row = ShipmentOrder.length - 1;
     const isBelowThreshold = (currentValue) => currentValue.CarrierTypeID == 2;
     let isShow = ShipmentOrder.every(isBelowThreshold);
 
@@ -806,9 +860,14 @@ class ListShipCoordinatorRouteCom extends Component {
               </div>
               <div className="col-md-6">
                 <div className="item group-status">
-                                    <span className="badge badge-secondary mr-10 badge-active" ><i className="fa fa-motorcycle"></i> Xe máy</span>
-                                    <span className="badge badge-secondary badge-active" ><i className="fa fa-truck fff"></i> Xe tải</span>
-                                </div>
+                  <span className="badge badge-secondary mr-20 badge-active" onClick={this.handleChangeCourseALL(1)} style={{ fontSize: "15px" }} >
+                    <i className="fa fa-motorcycle"></i>
+                    Xe máy
+                  </span>
+                  <span className="badge badge-secondary badge-active" onClick={this.handleChangeCourseALL(2)} style={{ fontSize: "15px" }}>
+                    <i className="fa fa-truck fff"></i>
+                    Xe tải</span>
+                </div>
               </div>
             </div>
             {this.state.objCoordinator.CarrierPartnerID == -1 || this.state.objCoordinator.CarrierPartnerID == 0 ? (
