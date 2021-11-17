@@ -126,16 +126,20 @@ class ListShipCoordinatorRouteCom extends Component {
         apiResult.ResultObject.map((item) => {
           var m3 = (item.Volume - (item.TotalVolume + item.TotalShipmentVolume));
           console.log("m3m3", m3, m3.toFixed(3));
-          let objVehicle = {
-            value: item.VehicleID,
-            label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + m3.toFixed(3) + "m3)",
-            MainDriverUser: item.MainDriverUser,
-            MainDriverUserFullName: item.MainDriverUserFullName,
-            TotalVolume: item.TotalShipmentVolume,
-            TotalShipmentVolume: item.TotalShipmentVolume,
-            TotalAbilityVolume: item.TotalAbilityVolume,
-          };
-          objVehicleLst.push(objVehicle);
+          if( item.Volume > (item.TotalVolume + item.TotalShipmentVolume)||item.VehicleID == this.state.objCoordinator.VehicleID){
+            let objVehicle = {
+              value: item.VehicleID,
+              label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + m3.toFixed(3) + "m3)",
+              MainDriverUser: item.MainDriverUser,
+              MainDriverUserFullName: item.MainDriverUserFullName,
+              TotalVolume: item.TotalShipmentVolume,
+              TotalShipmentVolume: item.TotalShipmentVolume,
+              TotalAbilityVolume: item.TotalAbilityVolume,
+            };
+            objVehicleLst.push(objVehicle);
+
+          }
+         
         });
         this.setState({ VehicleLst: objVehicleLst });
       }
@@ -443,7 +447,14 @@ class ListShipCoordinatorRouteCom extends Component {
   onValueChangeComboUser(rowname, rowvalue, rowIndex) {
     console.log("onValueChangeComboUser", rowname, rowvalue, rowIndex);
   }
-
+  // handleGetUserAll = (item) =>{
+  //   let x = this.props.InfoCoordinator.find(x => x.ShipmentOrderID == item.ShipmentOrderID);
+  //   console.log(x);
+    
+  //   let FullNameDeliverUser = item.ShipmentOrder_DeliverUserList.map((e) => (e.UserName !="" && e.FullName!= "") ? e.UserName + "-" + e.FullName : '');
+  //   FullNameDeliverUser = FullNameDeliverUser.filter(x=> x!="").join(",");
+  //   console.log('FullNameDeliverUser ',FullNameDeliverUser);
+  // }
   // check trùng nhân viên giao hàng
   checkDeliverUser(DeliverUserLst, RowDeliverUserLst) {
     let element = [];
@@ -1022,19 +1033,21 @@ class ListShipCoordinatorRouteCom extends Component {
 
                             let listOption = [];
                             let objDeliverUser = [];
-                            let FullNameDeliverUser = "";
+                            let FullNameDeliverUser = item.ShipmentOrder_DeliverUserList.map((e) => (e.UserName !="" && e.FullName!= "") ? e.UserName + "-" + e.FullName : '');
+                            console.log('arfull: ' ,FullNameDeliverUser);
+                            console.log('fullnamede: ' +FullNameDeliverUser.filter(x=> x!=""));
+                            FullNameDeliverUser = FullNameDeliverUser.filter(x=> x!="").join(",");
                             if (item.CarrierPartnerID > 0) {
                               item.ShipmentOrder_DeliverUserList &&
                                 item.ShipmentOrder_DeliverUserList.map((item1, index) => {
                                   objDeliverUser.push(item1.UserName);
-                                  FullNameDeliverUser +=  item1.FullName;
-
                                 });
+                              
                             } else {
                               item.ShipmentOrder_DeliverUserList &&
                                 item.ShipmentOrder_DeliverUserList.map((item2, index) => {
                                   listOption.push({ value: item2.UserName, label: item2.UserName + "-" + item2.FullName, FullName: item2.FullName });
-                                  FullNameDeliverUser +=  item2.FullName;
+                               
                                 });
                             }
 
@@ -1050,7 +1063,7 @@ class ListShipCoordinatorRouteCom extends Component {
                               <React.Fragment>
                                 <tr key={index} className="jsgrid-row">
                                   <td className="jsgrid-cell high-priority" style={{ width: "1%" }} onClick={() => this.handleDescriptionSubmit(item)}></td>
-                                  <td className="jsgrid-cell group-products" style={{ width: "50%" }}>
+                                  <td className="jsgrid-cell group-products" style={{ width: "30%" }}>
                                     <ul>
                                       <li className="item infoOder">
                                         <span className="nameOrder">
@@ -1058,10 +1071,7 @@ class ListShipCoordinatorRouteCom extends Component {
                                             {item.ShipmentOrderID}{" "}
                                           </Link>
                                         </span>
-                                        <span>
-                                          Nhân viên giao: {FullNameDeliverUser != "" ? FullNameDeliverUser : "Chưa có nhân viên giao"}
-                                         
-                                        </span>
+                                        
                                         {item.ActualDeliveryDate == null ? (
                                           <span className="badge badge-warning time">
                                             <i className="ti ti-timer"></i> {item.ExpectedDeliveryDate != null ? this._genCommentTime(item.ExpectedDeliveryDate) : ""}
@@ -1113,6 +1123,21 @@ class ListShipCoordinatorRouteCom extends Component {
                                         </div>
                                       </li>
                                     </ul>
+                                  </td>
+                                  <td className="jsgrid-cell group-products" style={{ width: "25%" }}>
+                                      <ul>
+                                        <li>
+                                          <span>{FullNameDeliverUser}</span>
+
+                                          {/* <span data-tip data-for="b-1" data-id="b-1" className="badge badge-primary ml-10" title="Lấy lại nhân viên giao" onClick={() => this.handleGetUserAll(item)}>
+                                            <i class="fa fa-users"></i>
+                                          </span>
+                                          <ReactTooltip id="b-1" type="">
+                                            <span>Lấy lại nhân viên giao</span>
+                                          </ReactTooltip> */}
+                                        </li>
+                                      </ul>
+
                                   </td>
                                   <td className="jsgrid-cell " style={{ width: "5%" }}>
                                     <div className="group-action">
