@@ -399,6 +399,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/Area" component={Area} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ShipmentOrder" component={ShipmentOrder} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ShipmentRoute" component={ShipmentRoute} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/ShipmentRouteNew" component={ShipmentRoute} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ManagerShipmentOrder" component={ManagerShipmentOrder} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ShipmentOrderControl" component={ShipmentOrderControl} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/Maps" component={MapContainer} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
