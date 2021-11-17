@@ -204,21 +204,27 @@ class ListShipCoordinatorRouteCom extends Component {
         true
       );
     }
+    
     objCoordinator[name] = selectedOption.value;
-    if (selectedOption.MainDriverUser != "") {
-      objCoordinator["VehicleDriverUser"] = { value: selectedOption.MainDriverUser, label: selectedOption.MainDriverUser + "-" + selectedOption.MainDriverUserFullName };
-    }
+      if (selectedOption.MainDriverUser != "") {
+        objCoordinator["VehicleDriverUser"] = { value: selectedOption.MainDriverUser, label: selectedOption.MainDriverUser + "-" + selectedOption.MainDriverUserFullName };
+      } else{
+        objCoordinator["VehicleDriverUser"] = "";
 
-    ShipmentOrder.map((row, indexRow) => {
-      if (row.IsPermission == true) {
-        row["VehicleDriverUser"] = selectedOption.MainDriverUser;
-        row["VehicleID"] = selectedOption.value;
       }
-    });
-    this.setState({
-      objCoordinator: objCoordinator,
-      ShipmentOrder: ShipmentOrder,
-    });
+  
+      ShipmentOrder.map((row, indexRow) => {
+        if (row.IsPermission == true) {
+          row["VehicleDriverUser"] = selectedOption.MainDriverUser;
+          row["VehicleID"] = selectedOption.value;
+        }
+      });
+      this.setState({
+        objCoordinator: objCoordinator,
+        ShipmentOrder: ShipmentOrder,
+      });
+
+    
   }
 
   handleValueChange1(e, selectedOption1) {
@@ -903,6 +909,7 @@ class ListShipCoordinatorRouteCom extends Component {
     let resultShipmentRouteSame = ShipmentRouteSameLst.filter((n) => n.ShipmentRouteID != ShipmentRouteID);
     console.log("VehicleLst: " + JSON.stringify(VehicleLst));
     console.log("VehicleID: " + this.state.objCoordinator.VehicleID);
+    
     let length_row = ShipmentOrder.length - 1;
     const isBelowThreshold = (currentValue) => currentValue.CarrierTypeID == 2;
     let isShow = ShipmentOrder.length === 0 ? false : ShipmentOrder.every(isBelowThreshold);
@@ -1041,21 +1048,26 @@ class ListShipCoordinatorRouteCom extends Component {
 
                             let listOption = [];
                             let objDeliverUser = [];
+                            let FullNameDeliverUser = "";
                             if (item.CarrierPartnerID > 0) {
                               item.ShipmentOrder_DeliverUserList &&
                                 item.ShipmentOrder_DeliverUserList.map((item1, index) => {
                                   objDeliverUser.push(item1.UserName);
+                                  FullNameDeliverUser +=  item1.FullName;
+
                                 });
                             } else {
                               item.ShipmentOrder_DeliverUserList &&
                                 item.ShipmentOrder_DeliverUserList.map((item2, index) => {
                                   listOption.push({ value: item2.UserName, label: item2.UserName + "-" + item2.FullName, FullName: item2.FullName });
+                                  FullNameDeliverUser +=  item2.FullName;
                                 });
                             }
 
                             let CarrierTypeCss = "badge badge-secondary mr-10";
                             let CarrierTypeTruncCss = "badge badge-secondary badge-active";
-                            if (item.CarrierTypeID == 1) {
+                            console.log("CarrierTypeID" +item.CarrierTypeID);
+                            if (item.CarrierTypeID == 1 || item.CarrierTypeID == 0) {
                               CarrierTypeCss = "badge badge-secondary  mr-10 badge-active";
                               CarrierTypeTruncCss = "badge badge-secondary";
                             }
@@ -1072,6 +1084,10 @@ class ListShipCoordinatorRouteCom extends Component {
                                             {item.ShipmentOrderID}{" "}
                                           </Link>
                                         </span>
+                                        <span>
+                                          Nhân viên giao: {FullNameDeliverUser != "" ? FullNameDeliverUser : "Chưa có nhân viên giao"}
+                                         
+                                        </span>
                                         {item.ActualDeliveryDate == null ? (
                                           <span className="badge badge-warning time">
                                             <i className="ti ti-timer"></i> {item.ExpectedDeliveryDate != null ? this._genCommentTime(item.ExpectedDeliveryDate) : ""}
@@ -1081,6 +1097,7 @@ class ListShipCoordinatorRouteCom extends Component {
                                             <i className="ti ti-timer"></i> {item.ShipmentOrderStatusName}
                                           </span>
                                         )}
+
                                       </li>
                                       <li className="item infoProduict">
                                         <span data-tip data-for={item.ShipmentOrderID} data-id={item.ShipmentOrderID}>
