@@ -1295,6 +1295,13 @@ const AppMenu = [
         SubMenu: [],
     },
     {
+        MenuName: "ShipmentRouteNew",
+        MenuTitle: "Phân tuyến New",
+        LinkTo: "/ShipmentRouteNew",
+        MenuIcon: "",
+        SubMenu: [],
+    },
+    {
         MenuName: "Price",
         MenuTitle: "Giá",
         LinkTo: "",

@@ -30,7 +30,6 @@ class ListShipCoordinatorRouteCom extends Component {
     this.handleConfirm = this.handleConfirm.bind(this);
     this.handleMapObjectDescription = this.handleMapObjectDescription.bind(this);
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
-    this.handleCheckVehicle = this.handleCheckVehicle.bind(this);
 
     this.state = {
       ShipmentOrder: this.props.InfoCoordinator,
@@ -66,7 +65,12 @@ class ListShipCoordinatorRouteCom extends Component {
     let objInfoCoordinator = {};
     let listOption = [];
     let objDeliverUser = [];
-    if (isShow == true) {
+    if (isShow == true) {        
+        
+        this.props.InfoCoordinator.sort(function(a,b) {
+            return new Date(a.ExpectedDeliveryDate) - new Date(b.ExpectedDeliveryDate);
+        });
+
       let objRouteVehicleRequset = {
         VehicleID: 1,
         ExpectedDeliveryDate: this.props.InfoCoordinator[0].ExpectedDeliveryDate,
@@ -207,7 +211,7 @@ class ListShipCoordinatorRouteCom extends Component {
 
     if (selectedOption.TotalAbilityVolume >= selectedOption.TotalShipmentVolume + selectedOption.TotalVolume) {
       this.addNotification(
-        "Tổng thể tích tối thiểu cần cho xe tải là " + selectedOption.TotalAbilityVolume + "Hiện tại chỉ có " + (selectedOption.TotalShipmentVolume + selectedOption.TotalVolume),
+        "Tổng thể tích tối thiểu cần cho xe tải là " + selectedOption.TotalAbilityVolume + " Hiện tại chỉ có " + (selectedOption.TotalShipmentVolume + selectedOption.TotalVolume),
         true
       );
     }
@@ -484,11 +488,6 @@ class ListShipCoordinatorRouteCom extends Component {
     return timeDisplay;
   }
 
-  handleCheckVehicle() {
-    const isErrorVehicle = this.state.ShipmentOrder.some((x) => x.CarrierTypeID === 2 && x.VehicleID === 0);
-    console.log({ isErrorVehicle });
-  }
-
   handleConfirm() {
     let elementobject = {};
     let element = [];
@@ -496,6 +495,8 @@ class ListShipCoordinatorRouteCom extends Component {
     let elementDeliverUserFullList = [];
 
     this.state.ShipmentOrder.map((row, indexRow) => {
+      console.log({ row });
+      console.log(this.state.objCoordinator.VehicleID);
       if (this.state.objCoordinator.IsRoute == true && row.CarrierTypeID != this.state.ShipmentOrder[0].CarrierTypeID) {
         //  this.addNotification("không cùng phương tiện giao hàng", true);
         const validationObject = { IsValidatonError: true, ValidationErrorMessage: "Vui lòng chọn lại, bắt buộc cùng loại phương tiện trong một tuyến." };
@@ -1113,7 +1114,7 @@ class ListShipCoordinatorRouteCom extends Component {
                                           )}
 
                                           <span className="badge badge-primary ml-10" onClick={() => this.handleDescriptionSubmit(item)}>
-                                            <i class="fa fa-edit"></i> Ghi chú
+                                            <i className="fa fa-edit"></i> Ghi chú
                                           </span>
                                         </div>
                                         <div className="item group-cod">
