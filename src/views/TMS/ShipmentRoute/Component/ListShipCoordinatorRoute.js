@@ -65,7 +65,12 @@ class ListShipCoordinatorRouteCom extends Component {
     let objInfoCoordinator = {};
     let listOption = [];
     let objDeliverUser = [];
-    if (isShow == true) {
+    if (isShow == true) {        
+        
+        this.props.InfoCoordinator.sort(function(a,b) {
+            return new Date(a.ExpectedDeliveryDate) - new Date(b.ExpectedDeliveryDate);
+        });
+
       let objRouteVehicleRequset = {
         VehicleID: 1,
         ExpectedDeliveryDate: this.props.InfoCoordinator[0].ExpectedDeliveryDate,
