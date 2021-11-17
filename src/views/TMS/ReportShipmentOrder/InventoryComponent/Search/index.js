@@ -8,24 +8,26 @@ import ReactNotification from "react-notifications-component";
 import {
     APIExportPath,
     APIHostName,
+    listColumn,
     listelement,
     MLObjectDefinition,
     PagePath,
 } from "../constants";
 
-import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
-import { MessageModal } from "../../../../../common/components/Modal";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
-import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
+import { MessageModal } from "../../../../../common/components/Modal";
 import { showModal, hideModal } from '../../../../../actions/modal';
+import { updatePagePath } from "../../../../../actions/pageAction";
+import DataGrid from "../../../../../common/components/DataGrid";
+import SearchForm from "../../../../../common/components/FormContainer/SearchForm";
 
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            exportData: null
+            gridData: []
         };
 
         this.gridref = React.createRef();
@@ -35,9 +37,10 @@ class SearchCom extends React.Component {
         this.addNotification = this.addNotification.bind(this);
         this.handleExportSubmit = this.handleExportSubmit.bind(this);
         this.handleHistorySubmit = this.handleHistorySubmit.bind(this);
-        this.handleSetMLObjectStoreID = this.handleSetMLObjectStoreID.bind(this);
+        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleSetInventoryStatusID = this.handleSetInventoryStatusID.bind(this);
         this.handleSetMLObjectProductID = this.handleSetMLObjectProductID.bind(this);
+        this.handleSetMLObjectStoreID = this.handleSetMLObjectStoreID.bind(this);
         this.showMessage = this.showMessage.bind(this);
     }
 
@@ -143,7 +146,8 @@ class SearchCom extends React.Component {
         }
 
         this.props.callFetchAPI(APIHostName, APIExportPath, uptMLObject).then(apiResult => {
-            console.log(uptMLObject, apiResult)
+            console.log(uptMLObject, apiResult);
+
             if (!apiResult.IsError) {
                 const updResultObject = apiResult.ResultObject.map(item => {
                     return {
@@ -168,6 +172,28 @@ class SearchCom extends React.Component {
 
     }
 
+    handleSearchSubmit(formData, MLObject) {
+        const uptMLObject = {
+            StoreIDList: this.handleSetMLObjectStoreID(MLObject.StoreID),
+            ProductIDList: this.handleSetMLObjectProductID(MLObject.ProductID),
+            InventoryStatusIDList: this.handleSetInventoryStatusID(MLObject.InventoryStatusID),
+        }
+        console.log(uptMLObject);
+
+        this.props.callFetchAPI(APIHostName, APIExportPath, uptMLObject).then(apiResult => {
+            if (!apiResult.IsError) {
+                this.setState({
+                    gridData: apiResult.ResultObject
+                })
+                if (apiResult.ResultObject.length == 0) {
+                    this.addNotification("Dữ liệu trống", apiResult.IsError)
+                }
+            } else {
+                this.showMessage(apiResult.Message);
+            }
+        });
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -175,18 +201,33 @@ class SearchCom extends React.Component {
 
                 <SearchForm
                     className="multiple"
+                    classNamebtnSearch="groupAction"
                     FormName="Báo cáo tồn kho linh kiện"
                     IsButtonExport={true}
                     IsButtonhistory={false}
-                    IsShowButtonSearch={false}
+                    IsShowButtonSearch={true}
                     listelement={listelement}
                     MLObjectDefinition={MLObjectDefinition}
                     onExportSubmit={this.handleExportSubmit}
                     onHistorySubmit={this.handleHistorySubmit}
-                    // onSubmit={}
+                    onSubmit={this.handleSearchSubmit}
                     ref={this.searchref}
                     TitleButtonExport="Xuất dữ liệu"
                 />
+
+                <DataGrid
+                    dataSource={this.state.gridData}
+                    IDSelectColumnName={""}
+                    IsAutoPaging={true}
+                    IsDelete={false}
+                    IsExportFile={false}
+                    IsShowButtonAdd={false}
+                    IsShowButtonDelete={false}
+                    listColumn={listColumn}
+                    PKColumnName={""}
+                    RowsPerPage={10}
+                />
+
             </React.Fragment>
         );
     }
