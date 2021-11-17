@@ -350,7 +350,7 @@ class AddCom extends React.Component {
                                 showTime={true}
                                 timeFormat={false}
                                 disabledDate={true}
-                                disabledTime={true}
+                                disabledTime={false}
                                 IsGetTime={true}
                                 dateFormat="DD-MM-YYYY HH:mm"//"YYYY-MM-DD"
                                 label="thời gian bắt đầu"
@@ -372,7 +372,7 @@ class AddCom extends React.Component {
                                 showTime={true}
                                 timeFormat={false}
                                 disabledDate={true}
-                                disabledTime={true}
+                                disabledTime={false}
                                 IsGetTime={true}
                                 dateFormat="DD-MM-YYYY HH:mm"//"YYYY-MM-DD"
                                 label="thời gian kết thúc"
