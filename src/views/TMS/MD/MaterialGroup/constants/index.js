@@ -413,6 +413,7 @@ export const TemplateExportMaterialGroup = [
         "Mô tả": "mô tả vật tư",
         "Bắt Buộc Phải Nhập Trả Nếu Không Sử Dụng": 0,
         "Thời Gian Phải Nhập Trả": 10,
+        "Kích hoạt": 1,
         "Hệ Thống": 0
 
     }
@@ -471,6 +472,10 @@ export const SchemaMaterialGroup = {
     },
     "Thời gian phải nhập trả": {
         prop: 'MustReturnNumHour',
+        type: Number
+    },
+    "Kích hoạt": {
+        prop: 'IsActived',
         type: Number
     },
     "Hệ thống": {
@@ -605,6 +610,13 @@ export const lstColMaterialGroupImportExcelModal = [
         Caption: "Thời gian phải nhập trả",
         DataSourceMember: "MustReturnNumHour",
         Width: 100
+    },
+    {
+        Name: "IsActived",
+        Type: "checkicon",
+        Caption: "Kích hoạt",
+        DataSourceMember: "IsActived",
+        Width: 80
     },
     {
         Name: "IsSystem",

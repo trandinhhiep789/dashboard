@@ -822,6 +822,11 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                         swaplabelModal={true}
                                     />
 
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước cho phép cập nhật lỗi thực tế" name="IsUpdateError"
+                                        controltype="InputControl" datasourcemember="IsUpdateError"
+                                        swaplabelModal={true}
+                                    />
+
                                 </div>
                             </div>
                         </TabPage>
