@@ -525,7 +525,7 @@ class ListShipCoordinatorRouteCom extends Component {
 
       if (row.CarrierTypeID === 2) {
         if (row.VehicleID === 0 || row.VehicleID === -1) {
-          const validationObject = { IsValidatonError: true, ValidationErrorMessage: "Vui lòng chọn bảng số xe" };
+          const validationObject = { IsValidatonError: true, ValidationErrorMessage: "Vui lòng chọn xe tải" };
           elementobject = Object.assign({}, elementobject, { ["CarrierTypeID-" + indexRow]: validationObject });
           return;
         }
@@ -1130,7 +1130,7 @@ class ListShipCoordinatorRouteCom extends Component {
                                       </li>
                                     </ul>
                                   </td>
-                                  <td className="jsgrid-cell " style={{ width: "5%" }}>
+                                  <td className="jsgrid-cell " style={{ width: "3%" }}>
                                     <div className="group-action">
                                       {ShipmentOrder.length > 1 ? (
                                         <a onClick={this.handleChangeOder(index, -1)} className="table-action hover-danger item-action">
@@ -1170,7 +1170,7 @@ class ListShipCoordinatorRouteCom extends Component {
                                         value={this.state.objectDescription[item.ShipmentOrderID]["content"]}
                                       />
                                     </td>
-                                    <td style={{ width: "5%", verticalAlign: "middle" }}></td>
+                                    <td style={{ width: "3%", verticalAlign: "middle" }}></td>
                                   </tr>
                                 )}
                               </React.Fragment>
