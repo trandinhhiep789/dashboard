@@ -124,7 +124,6 @@ class ListShipCoordinatorRouteCom extends Component {
       if (!apiResult.IsError) {
         apiResult.ResultObject.map((item) => {
           var m3 = item.Volume - (item.TotalVolume + item.TotalShipmentVolume);
-          console.log("m3m3", m3, m3.toFixed(3));
           let objVehicle = {
             value: item.VehicleID,
             label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + m3.toFixed(3) + "m3)",
@@ -1099,7 +1098,7 @@ class ListShipCoordinatorRouteCom extends Component {
                                           )}
 
                                           <span className="badge badge-primary ml-10" onClick={() => this.handleDescriptionSubmit(item)}>
-                                            <i class="fa fa-edit"></i> Ghi chú
+                                            <i className="fa fa-edit"></i> Ghi chú
                                           </span>
                                         </div>
                                         <div className="item group-cod">
