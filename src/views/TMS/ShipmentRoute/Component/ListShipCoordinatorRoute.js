@@ -121,10 +121,11 @@ class ListShipCoordinatorRouteCom extends Component {
     this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetVehicleWorkingPlan", objRouteVehicleRequset).then((apiResult) => {
       if (!apiResult.IsError) {
         apiResult.ResultObject.map((item) => {
-          //Volume -(TotalVolume+TotalShipmentVolume)
+          var m3 = (item.Volume - (item.TotalVolume + item.TotalShipmentVolume));
+          console.log("m3m3", m3, m3.toFixed(3));
           let objVehicle = {
             value: item.VehicleID,
-            label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + (item.Volume - (item.TotalVolume + item.TotalShipmentVolume)) + "m3)",
+            label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + m3.toFixed(3) + "m3)",
             MainDriverUser: item.MainDriverUser,
             MainDriverUserFullName: item.MainDriverUserFullName,
             TotalVolume: item.TotalShipmentVolume,
@@ -573,30 +574,13 @@ class ListShipCoordinatorRouteCom extends Component {
           ShipmentOrder[index]["CarrierTypeID"] = CarrierTypeID;
         }
       });
-      let objVehicleLst = [];
       let objRouteVehicleRequset = {
         VehicleID: 1,
         ExpectedDeliveryDate: ShipmentOrder[0].ExpectedDeliveryDate,
         CoordinatorStoreIDLst: ShipmentOrder.map((e) => e.CoordinatorStoreID).join(","),
         ShipmentOrderIDLst: ShipmentOrder.map((e) => e.ShipmentOrderID).join(","),
       };
-      this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetVehicleWorkingPlan", objRouteVehicleRequset).then((apiResult) => {
-        if (!apiResult.IsError) {
-          apiResult.ResultObject.map((item) => {
-            let objVehicle = {
-              value: item.VehicleID,
-              label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + (item.Volume - (item.TotalVolume + item.TotalShipmentVolume)) + "m3)",
-              MainDriverUser: item.MainDriverUser,
-              MainDriverUserFullName: item.MainDriverUserFullName,
-              TotalVolume: item.TotalShipmentVolume,
-              TotalShipmentVolume: item.TotalShipmentVolume,
-              TotalAbilityVolume: item.TotalAbilityVolume,
-            };
-            objVehicleLst.push(objVehicle);
-          });
-          this.setState({ VehicleLst: objVehicleLst });
-        }
-      });
+      let objVehicleLst = this.getinitVehicellst(objRouteVehicleRequset);
       this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: objVehicleLst });
     }
   };
@@ -616,30 +600,13 @@ class ListShipCoordinatorRouteCom extends Component {
       document.getElementsByClassName("car-menu")[0].style.color = "#fff";
       document.getElementsByClassName("motobike-menu")[0].style.background = "#e4e7ea";
       document.getElementsByClassName("motobike-menu")[0].style.color = "#616a78";
-      let objVehicleLst = [];
       let objRouteVehicleRequset = {
         VehicleID: 1,
         ExpectedDeliveryDate: ShipmentOrder[0].ExpectedDeliveryDate,
         CoordinatorStoreIDLst: ShipmentOrder.map((e) => e.CoordinatorStoreID).join(","),
         ShipmentOrderIDLst: ShipmentOrder.map((e) => e.ShipmentOrderID).join(","),
       };
-      this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetVehicleWorkingPlan", objRouteVehicleRequset).then((apiResult) => {
-        if (!apiResult.IsError) {
-          apiResult.ResultObject.map((item) => {
-            let objVehicle = {
-              value: item.VehicleID,
-              label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + (item.Volume - (item.TotalVolume + item.TotalShipmentVolume)) + "m3)",
-              MainDriverUser: item.MainDriverUser,
-              MainDriverUserFullName: item.MainDriverUserFullName,
-              TotalVolume: item.TotalShipmentVolume,
-              TotalShipmentVolume: item.TotalShipmentVolume,
-              TotalAbilityVolume: item.TotalAbilityVolume,
-            };
-            objVehicleLst.push(objVehicle);
-          });
-          this.setState({ VehicleLst: objVehicleLst });
-        }
-      });
+      let objVehicleLst = this.getinitVehicellst(objRouteVehicleRequset);
       this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: objVehicleLst });
     } else {
       this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: [] });
