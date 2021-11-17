@@ -27,8 +27,11 @@ class ListShipCoordinatorRouteCom extends Component {
     this.handleOnValueChangeDeliverUser = this.handleOnValueChangeDeliverUser.bind(this);
     this.handleCloseMessage = this.handleCloseMessage.bind(this);
     this.HandleChangeGird = this.HandleChangeGird.bind(this);
+    this.handleConfirm = this.handleConfirm.bind(this);
     this.handleMapObjectDescription = this.handleMapObjectDescription.bind(this);
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
+    this.handleCheckVehicle = this.handleCheckVehicle.bind(this);
+
     this.state = {
       ShipmentOrder: this.props.InfoCoordinator,
       objCoordinator: { CarrierPartnerID: -1, CarrierTypeID: 1, IsRoute: true, VehicleID: -1, VehicleDriverUser: {} },
@@ -121,10 +124,11 @@ class ListShipCoordinatorRouteCom extends Component {
     this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetVehicleWorkingPlan", objRouteVehicleRequset).then((apiResult) => {
       if (!apiResult.IsError) {
         apiResult.ResultObject.map((item) => {
-          //Volume -(TotalVolume+TotalShipmentVolume)
+          var m3 = (item.Volume - (item.TotalVolume + item.TotalShipmentVolume));
+          console.log("m3m3", m3, m3.toFixed(3));
           let objVehicle = {
             value: item.VehicleID,
-            label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + (item.Volume - (item.TotalVolume + item.TotalShipmentVolume)) + "m3)",
+            label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + m3.toFixed(3) + "m3)",
             MainDriverUser: item.MainDriverUser,
             MainDriverUserFullName: item.MainDriverUserFullName,
             TotalVolume: item.TotalShipmentVolume,
@@ -161,7 +165,6 @@ class ListShipCoordinatorRouteCom extends Component {
       };
     }, {});
     this.setState({ objectDescription: objectDescription });
-    console.log({ objectDescription });
   };
 
   handleOnValueChange(name, value) {
@@ -200,7 +203,7 @@ class ListShipCoordinatorRouteCom extends Component {
 
     if (selectedOption.TotalAbilityVolume >= selectedOption.TotalShipmentVolume + selectedOption.TotalVolume) {
       this.addNotification(
-        "Tổng thể tích tối thiểu cần cho xe tải là " + selectedOption.TotalAbilityVolume + "Hiện tại chỉ có " + (selectedOption.TotalShipmentVolume + selectedOption.TotalAbilityVolume),
+        "Tổng thể tích tối thiểu cần cho xe tải là " + selectedOption.TotalAbilityVolume + "Hiện tại chỉ có " + (selectedOption.TotalShipmentVolume + selectedOption.TotalVolume),
         true
       );
     }
@@ -470,14 +473,18 @@ class ListShipCoordinatorRouteCom extends Component {
     return timeDisplay;
   }
 
+  handleCheckVehicle() {
+    const isErrorVehicle = this.state.ShipmentOrder.some((x) => x.CarrierTypeID === 2 && x.VehicleID === 0);
+    console.log({ isErrorVehicle });
+  }
+
   handleConfirm() {
     let elementobject = {};
     let element = [];
     let elementDeliverUserList = [];
     let elementDeliverUserFullList = [];
-    this.state.ShipmentOrder.map((row, indexRow) => {
-      console.log({ row });
 
+    this.state.ShipmentOrder.map((row, indexRow) => {
       if (this.state.objCoordinator.IsRoute == true && row.CarrierTypeID != this.state.ShipmentOrder[0].CarrierTypeID) {
         //  this.addNotification("không cùng phương tiện giao hàng", true);
         const validationObject = { IsValidatonError: true, ValidationErrorMessage: "Vui lòng chọn lại, bắt buộc cùng loại phương tiện trong một tuyến." };
@@ -510,10 +517,12 @@ class ListShipCoordinatorRouteCom extends Component {
         });
       }
 
-      if (row.VehicleID == 0) {
-        const validationObject = { IsValidatonError: true, ValidationErrorMessage: "Vui lòng chọn bảng số xe" };
-        elementobject = Object.assign({}, elementobject, { ["CarrierTypeID-" + indexRow]: validationObject });
-        return;
+      if (row.CarrierTypeID === 2) {
+        if (row.VehicleID === 0 || row.VehicleID === -1) {
+          const validationObject = { IsValidatonError: true, ValidationErrorMessage: "Vui lòng chọn bảng số xe" };
+          elementobject = Object.assign({}, elementobject, { ["CarrierTypeID-" + indexRow]: validationObject });
+          return;
+        }
       }
 
       row["ShipmentOrder_DeliverUserList"].map((item, indexRow) => {
@@ -538,6 +547,7 @@ class ListShipCoordinatorRouteCom extends Component {
       this.addNotification(this.checkInputName(elementobject), true);
       return;
     }
+
     if (this.state.ShipmentRouteID != "") {
       this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddShipmentRouteLstNew", this.state.ShipmentOrder).then((apiResult) => {
         this.addNotification(apiResult.Message, apiResult.IsError);
@@ -579,30 +589,13 @@ class ListShipCoordinatorRouteCom extends Component {
           ShipmentOrder[index]["CarrierTypeID"] = CarrierTypeID;
         }
       });
-      let objVehicleLst = [];
       let objRouteVehicleRequset = {
         VehicleID: 1,
         ExpectedDeliveryDate: ShipmentOrder[0].ExpectedDeliveryDate,
         CoordinatorStoreIDLst: ShipmentOrder.map((e) => e.CoordinatorStoreID).join(","),
         ShipmentOrderIDLst: ShipmentOrder.map((e) => e.ShipmentOrderID).join(","),
       };
-      this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetVehicleWorkingPlan", objRouteVehicleRequset).then((apiResult) => {
-        if (!apiResult.IsError) {
-          apiResult.ResultObject.map((item) => {
-            let objVehicle = {
-              value: item.VehicleID,
-              label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + (item.Volume - (item.TotalVolume + item.TotalShipmentVolume)) + "m3)",
-              MainDriverUser: item.MainDriverUser,
-              MainDriverUserFullName: item.MainDriverUserFullName,
-              TotalVolume: item.TotalShipmentVolume,
-              TotalShipmentVolume: item.TotalShipmentVolume,
-              TotalAbilityVolume: item.TotalAbilityVolume,
-            };
-            objVehicleLst.push(objVehicle);
-          });
-          this.setState({ VehicleLst: objVehicleLst });
-        }
-      });
+      let objVehicleLst = this.getinitVehicellst(objRouteVehicleRequset);
       this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: objVehicleLst });
     }
   };
@@ -622,30 +615,13 @@ class ListShipCoordinatorRouteCom extends Component {
       document.getElementsByClassName("car-menu")[0].style.color = "#fff";
       document.getElementsByClassName("motobike-menu")[0].style.background = "#e4e7ea";
       document.getElementsByClassName("motobike-menu")[0].style.color = "#616a78";
-      let objVehicleLst = [];
       let objRouteVehicleRequset = {
         VehicleID: 1,
         ExpectedDeliveryDate: ShipmentOrder[0].ExpectedDeliveryDate,
         CoordinatorStoreIDLst: ShipmentOrder.map((e) => e.CoordinatorStoreID).join(","),
         ShipmentOrderIDLst: ShipmentOrder.map((e) => e.ShipmentOrderID).join(","),
       };
-      this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetVehicleWorkingPlan", objRouteVehicleRequset).then((apiResult) => {
-        if (!apiResult.IsError) {
-          apiResult.ResultObject.map((item) => {
-            let objVehicle = {
-              value: item.VehicleID,
-              label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + (item.Volume - (item.TotalVolume + item.TotalShipmentVolume)) + "m3)",
-              MainDriverUser: item.MainDriverUser,
-              MainDriverUserFullName: item.MainDriverUserFullName,
-              TotalVolume: item.TotalShipmentVolume,
-              TotalShipmentVolume: item.TotalShipmentVolume,
-              TotalAbilityVolume: item.TotalAbilityVolume,
-            };
-            objVehicleLst.push(objVehicle);
-          });
-          this.setState({ VehicleLst: objVehicleLst });
-        }
-      });
+      let objVehicleLst = this.getinitVehicellst(objRouteVehicleRequset);
       this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: objVehicleLst });
     } else {
       this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: [] });
@@ -657,8 +633,6 @@ class ListShipCoordinatorRouteCom extends Component {
   };
 
   handleDeleteID = (id) => (e) => {
-    console.log("this.state.ShipmentOrder", this.state.ShipmentOrder);
-
     let resultRouteID = this.state.ShipmentOrder.find((n) => n.ShipmentOrderID == id).ShipmentRouteID;
 
     this.state.ShipmentOrder.splice(
@@ -693,7 +667,7 @@ class ListShipCoordinatorRouteCom extends Component {
 
         let changeState2 = this.state;
         const vehicleResult = this.getinitVehicellst(objRouteVehicleRequset);
-        changeState = { ...changeState2, VehicleLst: vehicleResult };
+        changeState2 = { ...changeState2, VehicleLst: vehicleResult };
         this.setState(changeState2);
       }
     } else {
@@ -946,7 +920,7 @@ class ListShipCoordinatorRouteCom extends Component {
                     <i className="fa fa-motorcycle"></i>
                     Xe máy
                   </span>
-                  <span className="badge badge-secondary badge-active car-menu" onClick={this.handleChangeCourseALL(2)} style={{cursor: "pointer", fontSize: "15px"}}>
+                  <span className="badge badge-secondary badge-active car-menu" onClick={this.handleChangeCourseALL(2)} style={{ cursor: "pointer", fontSize: "15px" }}>
                     <i className="fa fa-truck fff"></i>
                     Xe tải
                   </span>
@@ -1385,7 +1359,7 @@ class ListShipCoordinatorRouteCom extends Component {
           <button className="btn btn-w-md btn-round btn-secondary" type="button" onClick={this.handleClose.bind(this)}>
             Làm mới
           </button>
-          <button className="btn btn-w-md btn-round btn-info ml-10" type="button" onClick={this.handleConfirm.bind(this)}>
+          <button className="btn btn-w-md btn-round btn-info ml-10" type="button" onClick={() => this.handleConfirm()}>
             Cập nhật
           </button>
         </div>
