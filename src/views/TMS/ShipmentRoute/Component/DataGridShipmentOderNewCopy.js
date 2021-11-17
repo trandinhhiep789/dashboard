@@ -13,7 +13,8 @@ import { formatDate, formatMonthDate } from "../../../../common/library/CommonLi
 import { formatMoney, formatNumber } from '../../../../utils/function';
 import { showModal, hideModal } from '../../../../actions/modal';
 import { MODAL_TYPE_VIEW } from '../../../../constants/actionTypes';
-import ListShipCoordinator from '../Component/ListShipCoordinator.js';
+//import ListShipCoordinator from '../Component/ListShipCoordinator.js';
+import ListShipCoordinator from '../Component/ListShipCoordinatorRoute.js';
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import ReactNotification from "react-notifications-component";
@@ -225,7 +226,6 @@ const dataGridShipmentOderNewCom = (props) => {
         }
         setGridData(gridDataShip);
         setDataSource(JSON.parse(JSON.stringify(dataSource)));
-
     }
 
     const handleClickShip = (ShipmentOrderID) => e => {
@@ -235,7 +235,17 @@ const dataGridShipmentOderNewCom = (props) => {
             if (!apiResult.IsError) {
                 setChangeGird(true);
                 let resultdd = gridDataShip.find(n => n.ShipmentOrderID == ShipmentOrderID)
-                if (!resultdd) gridDataShip.push(apiResult.ResultObject.ShipmentOrderDeliver);
+                if (!resultdd)
+                {
+                    if(gridDataShip.length > 0 && 
+                        apiResult.ResultObject.ShipmentOrderDeliver.IsPermission &&
+                        apiResult.ResultObject.ShipmentOrderDeliver.ShipmentOrder_DeliverUserList.length == 0)
+                    {
+                        apiResult.ResultObject.ShipmentOrderDeliver["ShipmentOrder_DeliverUserList"]= gridDataShip[0].ShipmentOrder_DeliverUserList
+                    }
+                    gridDataShip.push(apiResult.ResultObject.ShipmentOrderDeliver);
+                    setGridData(gridDataShip);
+                }
                 props.showModal(MODAL_TYPE_VIEW, {
                     title: 'Phân tuyến điều phối vận đơn ',
                     isShowOverlay: false,
@@ -251,8 +261,6 @@ const dataGridShipmentOderNewCom = (props) => {
                             IsCancelDelivery={true}
                             onChangeValue={handleShipmentOrder}
                             onChangeClose={handleCloseModal}
-                            
-
                         />
                     },
                     maxWidth: widthModal + 'px'
@@ -373,7 +381,7 @@ const dataGridShipmentOderNewCom = (props) => {
         props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetShipmentOrderRouteLst", RouteID).then(apiResult => {
             if (!apiResult.IsError) {
                 setShipmentRouteID(RouteID);
-                setGridData(apiResult.ResultObject);
+                setGridDataShip(apiResult.ResultObject);
                 setChangeGird(true);
                 props.showModal(MODAL_TYPE_VIEW, {
                     title: 'Phân tuyến điều phối vận đơn ',
@@ -383,7 +391,7 @@ const dataGridShipmentOderNewCom = (props) => {
                         text: <ListShipCoordinator
                             ShipmentOrderID={0}
                             ShipmentRouteID={RouteID}
-                            InfoCoordinator={gridDataShip}
+                            InfoCoordinator={apiResult.ResultObject}
                             IsUserCoordinator={true}
                             ShipmentOrderSame={[]}
                             IsCoordinator={true}
@@ -644,7 +652,6 @@ const dataGridShipmentOderNewCom = (props) => {
 
 
                                         </td>
-                                        {/* <td>{rowItem.ExpectedDeliveryDate}</td> */}
                                         <td className="groupInfoAction" style={{ width: '15%' }}>
                                             <div className="group-info-row">
                                                 <label className="item time">
@@ -869,14 +876,12 @@ const dataGridShipmentOderNewCom = (props) => {
                                                     <i className="fa fa-copy" data-id={ShipmentOrderID}></i>
                                                 </button>
                                             </div>
-
                                             {
                                                 _genCommentCarrierPartnerOnMobileView(rowItem.CarrierTypeID)
                                             }
                                         </div>
 
                                         <div className="group-address">
-                                            {/* <i className="fa fa-user"></i> */}
                                             <div className="person-info">
                                                 <span className="name">
                                                     {ReceiverFullName}
@@ -1094,7 +1099,6 @@ const dataGridShipmentOderNewCom = (props) => {
                                                             </button>
                                                         </div>
 
-
                                                         <div className="input-group input-group-select">
                                                             <input type="text" onChange={handleonChange} onKeyPress={handleKeyPress} className="form-control" aria-label="Text input with dropdown button" placeholder="Từ khóa" />
                                                             <div className="input-group-append">
@@ -1160,8 +1164,6 @@ const mapDispatchToProps = dispatch => {
         callGetUserCache: (cacheKeyID) => {
             return dispatch(callGetUserCache(cacheKeyID));
         }
-
-
     }
 }
 const DataGridShipmentOderNewCopy = connect(mapStateToProps, mapDispatchToProps)(React.memo(dataGridShipmentOderNewCom));
