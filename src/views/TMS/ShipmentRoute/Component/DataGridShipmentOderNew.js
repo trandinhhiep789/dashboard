@@ -617,13 +617,13 @@ class DataGridShipmentOderNewCom extends Component {
         })
         this.props.hideModal()
     }
-    handleCloseModal() {
-        this.props.hideModal()
+    handleCloseModal = () => {
+        this.props.hideModal();
         this.setState({
             changeGird: false,
             GridDataShip: [],
             ShipmentRouteID: ""
-        })
+        });
     }
 
 
@@ -637,7 +637,7 @@ class DataGridShipmentOderNewCom extends Component {
                 let resultdd = this.state.GridDataShip.find(n => n.ShipmentOrderID == ShipmentOrderID)
                 if (resultdd == undefined)
                 {
-                    if(this.state.GridDataShip.length>0&& apiResult.ResultObject.ShipmentOrderDeliver.IsPermission==true&&apiResult.ResultObject.ShipmentOrderDeliver.ShipmentOrder_DeliverUserList.length==0)
+                    if(this.state.GridDataShip.length > 0 && apiResult.ResultObject.ShipmentOrderDeliver.IsPermission==true && apiResult.ResultObject.ShipmentOrderDeliver.ShipmentOrder_DeliverUserList.length==0)
                     {
                         apiResult.ResultObject.ShipmentOrderDeliver["ShipmentOrder_DeliverUserList"]= this.state.GridDataShip[0].ShipmentOrder_DeliverUserList
                     }
@@ -680,7 +680,7 @@ class DataGridShipmentOderNewCom extends Component {
                 this.props.showModal(MODAL_TYPE_VIEW, {
                     title: 'Phân tuyến điều phối vận đơn ',
                     isShowOverlay: false,
-                    onhideModal: this.handleClose,
+                    onhideModal: this.handleCloseModal,
                     content: {
                         text: <ListShipCoordinator
                             ShipmentOrderID={0}
