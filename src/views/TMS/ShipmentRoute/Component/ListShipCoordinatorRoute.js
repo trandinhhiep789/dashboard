@@ -135,12 +135,11 @@ class ListShipCoordinatorRouteCom extends Component {
               label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + m3.toFixed(3) + "m3)",
               MainDriverUser: item.MainDriverUser,
               MainDriverUserFullName: item.MainDriverUserFullName,
-              TotalVolume: item.TotalShipmentVolume,
+              TotalVolume: item.TotalVolume,
               TotalShipmentVolume: item.TotalShipmentVolume,
               TotalAbilityVolume: item.TotalAbilityVolume,
             };
             objVehicleLst.push(objVehicle);
-
           }
          
         });
@@ -207,7 +206,6 @@ class ListShipCoordinatorRouteCom extends Component {
 
   handleOnValueChangeselectedOp(name, selectedOption) {
     let { objCoordinator, ShipmentOrder } = this.state;
-
     if (selectedOption.TotalAbilityVolume >= selectedOption.TotalShipmentVolume + selectedOption.TotalVolume) {
       this.addNotification(
         "Tổng thể tích tối thiểu cần cho xe tải là " + selectedOption.TotalAbilityVolume + " Hiện tại chỉ có " + (selectedOption.TotalShipmentVolume + selectedOption.TotalVolume),
