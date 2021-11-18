@@ -889,7 +889,9 @@ class ListShipCoordinatorRouteCom extends Component {
     let resultShipmentRouteSame = ShipmentRouteSameLst.filter((n) => n.ShipmentRouteID != ShipmentRouteID);
     console.log("VehicleLst: " + JSON.stringify(VehicleLst));
     console.log("VehicleID: " + this.state.objCoordinator.VehicleID);
-
+    console.log('selectedOption: ',this.state.selectedOption);
+    console.log('objDeliverUser: ',this.state.objDeliverUser);
+    console.log('ShipmentOrder: ',ShipmentOrder);
     let length_row = ShipmentOrder.length - 1;
     const isBelowThreshold = (currentValue) => currentValue.CarrierTypeID == 2;
     let isShow = ShipmentOrder.length === 0 ? false : ShipmentOrder.every(isBelowThreshold);
@@ -1028,10 +1030,9 @@ class ListShipCoordinatorRouteCom extends Component {
 
                             let listOption = [];
                             let objDeliverUser = [];
-                            let FullNameDeliverUser = item.ShipmentOrder_DeliverUserList.map((e) => (e.UserName != "" && e.FullName != "" ? e.UserName + "-" + e.FullName : ""));
-                            console.log("arfull: ", FullNameDeliverUser);
-                            console.log("fullnamede: " + FullNameDeliverUser.filter((x) => x != ""));
-                            FullNameDeliverUser = FullNameDeliverUser.filter((x) => x != "").join(",");
+                            
+                            let FullNameDeliverUser = item.ShipmentOrder_DeliverUserList ? item.ShipmentOrder_DeliverUserList.map((e) => (e.UserName != "" && e.FullName != "" ? e.UserName + "-" + e.FullName : "")).filter((x) => x != "") : "";
+                            
                             if (item.CarrierPartnerID > 0) {
                               item.ShipmentOrder_DeliverUserList &&
                                 item.ShipmentOrder_DeliverUserList.map((item1, index) => {
@@ -1110,7 +1111,7 @@ class ListShipCoordinatorRouteCom extends Component {
                                         </div>
                                         <div className="item group-cod">
                                           <span className="badge badge-secondary badge-active">
-                                            <i className="fa fa-dollar"></i> {formatMoney(item.TotalCOD, 0)}đ
+                                            <i className="fa fa-dollar"></i> {item.TotalCOD != "" ? formatMoney(item.TotalCOD, 0) : "0"}đ
                                           </span>
                                         </div>
                                       </li>
@@ -1119,7 +1120,10 @@ class ListShipCoordinatorRouteCom extends Component {
                                   <td className="jsgrid-cell group-products" style={{ width: "25%" }}>
                                     <ul>
                                       <li>
-                                        <span>{FullNameDeliverUser}</span>
+                                        <div className="ml-10" style={{textAlign:"left"}}>
+                                         
+                                          {FullNameDeliverUser != "" ? FullNameDeliverUser.map(s=><React.Fragment>{s}<br/></React.Fragment>) : ""}
+                                        </div>
 
                                         {/* <span data-tip data-for="b-1" data-id="b-1" className="badge badge-primary ml-10" title="Lấy lại nhân viên giao" onClick={() => this.handleGetUserAll(item)}>
                                             <i class="fa fa-users"></i>
