@@ -327,7 +327,7 @@ class ListShipCoordinatorRouteCom extends Component {
     this.notificationDOMRef.current.addNotification({
       container: "bottom-right",
       content: (
-        <div className={cssNotification}>
+        <div className={cssNotification} style={{background:"#ffc107",borderLeft:"#d49a5b"}}>
           <div className="notification-custom-icon">
             <i className={iconNotification} />
           </div>
@@ -446,14 +446,27 @@ class ListShipCoordinatorRouteCom extends Component {
   onValueChangeComboUser(rowname, rowvalue, rowIndex) {
     console.log("onValueChangeComboUser", rowname, rowvalue, rowIndex);
   }
-  // handleGetUserAll = (item) =>{
-  //   let x = this.props.InfoCoordinator.find(x => x.ShipmentOrderID == item.ShipmentOrderID);
-  //   console.log(x);
+  handleGetUserAll = (item) =>{
+    let x = this.props.InfoCoordinator.find(x => x.ShipmentOrderID == item.ShipmentOrderID);
+    console.log(x);
+    let listOption = [];
+    let objDeliverUser = [];
+    let FullNameDeliverUser = item.ShipmentOrder_DeliverUserList ? item.ShipmentOrder_DeliverUserList.map((e) => (e.UserName != "" && e.FullName != "" ? e.UserName + "-" + e.FullName : "")).filter((x) => x != "") : [];
+    let valuede = item.ShipmentOrder_DeliverUserList ? item.ShipmentOrder_DeliverUserList.map((e) => (e.UserName != "" && e.FullName != "" ? e.UserName : "")).filter((x) => x != "") : [];
+    item.ShipmentOrder_DeliverUserList &&
+        item.ShipmentOrder_DeliverUserList.map((item2, index) => {
+          if (item2.UserName != "" && item2.FullName) {
+            listOption.push({ value: item2.UserName, label: item2.UserName + "-" + item2.FullName, FullName: item2.FullName });
+            
+          }
+        });                     
+    
+    //FullNameDeliverUser = FullNameDeliverUser.filter(x=> x!="").join(",");
+    console.log('FullNameDeliverUser ',FullNameDeliverUser);
+    
+    this.handleOnValueChangeDeliverUser("ShipmentOrder_DeliverUserList", valuede, listOption)
 
-  //   let FullNameDeliverUser = item.ShipmentOrder_DeliverUserList.map((e) => (e.UserName !="" && e.FullName!= "") ? e.UserName + "-" + e.FullName : '');
-  //   FullNameDeliverUser = FullNameDeliverUser.filter(x=> x!="").join(",");
-  //   console.log('FullNameDeliverUser ',FullNameDeliverUser);
-  // }
+  }
   // check trùng nhân viên giao hàng
   checkDeliverUser(DeliverUserLst, RowDeliverUserLst) {
     let element = [];
@@ -1130,15 +1143,15 @@ class ListShipCoordinatorRouteCom extends Component {
                                       <li>
                                         <div className="ml-10" style={{textAlign:"left"}}>
                                          
-                                          {FullNameDeliverUser != "" ? FullNameDeliverUser.map(s=><React.Fragment>{s}<br/></React.Fragment>) : ""}
+                                          {FullNameDeliverUser != "" ? FullNameDeliverUser.map(s=> <React.Fragment>{s}<br/></React.Fragment> ) : ""}
                                         </div>
 
-                                        {/* <span data-tip data-for="b-1" data-id="b-1" className="badge badge-primary ml-10" title="Lấy lại nhân viên giao" onClick={() => this.handleGetUserAll(item)}>
+                                        <span data-tip data-for="b-1" data-id="b-1" className="badge badge-primary ml-10" title="Lấy lại nhân viên giao" onClick={() => this.handleGetUserAll(item)}>
                                             <i class="fa fa-users"></i>
                                           </span>
                                           <ReactTooltip id="b-1" type="">
                                             <span>Lấy lại nhân viên giao</span>
-                                          </ReactTooltip> */}
+                                          </ReactTooltip>
                                       </li>
                                     </ul>
                                   </td>
