@@ -56,13 +56,13 @@ export const listelement = [
         type: "ComboBoxNewChange",
         name: "cbStoreID",
         // classNameCol: "col-custom",
-        colspan: 4,
+        colspan: 2,
         DataSourceMember: "StoreID",
-        filterName: "cbAreaID",
+        // filterName: "cbAreaID",
         filterobj: "CompanyID",
         filterValue: 10,
         IsAutoLoadItemFromCache: true,
-        isMultiSelect: true,
+        isMultiSelect: false,
         label: "Mã kho",
         listoption: [],
         LoadItemCacheKeyID: ERPCOMMONCACHE_STORE,
@@ -158,6 +158,58 @@ export const listelement = [
         ValueMember: "InventoryStatusID",
     },
 ];
+
+export const listColumn = [
+    // {
+    //     Name: "STOREID",
+    //     Type: "text",
+    //     Caption: "Mã kho",
+    //     DataSourceMember: "STOREID",
+    //     // Width: 100
+    // },
+    {
+        Name: "STORENAME",
+        Type: "text",
+        Caption: "Tên kho",
+        DataSourceMember: "STORENAME",
+        // Width: 100
+    },
+    {
+        Name: "PRODUCTID",
+        Type: "text",
+        Caption: "Mã sản phẩm",
+        DataSourceMember: "PRODUCTID",
+        // Width: 100
+    },
+    {
+        Name: "PRODUCTNAME",
+        Type: "text",
+        Caption: "Tên sản phẩm",
+        DataSourceMember: "PRODUCTNAME",
+        // Width: 100
+    },
+    // {
+    //     Name: "INVENTORYSTATUSID",
+    //     Type: "text",
+    //     Caption: "Mã trạng thái",
+    //     DataSourceMember: "INVENTORYSTATUSID",
+    //     // Width: 100
+    // },
+    {
+        Name: "INVENTORYSTATUSNAME",
+        Type: "text",
+        Caption: "Tên trạng thái",
+        DataSourceMember: "INVENTORYSTATUSNAME",
+        // Width: 100
+    },
+    {
+        Name: "QUANTITY",
+        Type: "text",
+        Caption: "Số lượng tồn",
+        DataSourceMember: "QUANTITY",
+        // Width: 100
+    },
+]
 
 export const MLObjectDefinition = [
     {
