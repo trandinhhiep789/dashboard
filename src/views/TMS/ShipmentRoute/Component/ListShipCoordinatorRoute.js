@@ -457,7 +457,7 @@ class ListShipCoordinatorRouteCom extends Component {
     item.ShipmentOrder_DeliverUserList &&
         item.ShipmentOrder_DeliverUserList.map((item2, index) => {
           if (item2.UserName != "" && item2.FullName) {
-            listOption.push({ value: item2.UserName, label: item2.UserName + "-" + item2.FullName, FullName: item2.FullName });
+            listOption.push({ value: item2.UserName, label: item2.UserName + "-" + item2.FullName, name: item2.FullName });
             
           }
         });                     
@@ -1147,7 +1147,7 @@ class ListShipCoordinatorRouteCom extends Component {
                                   </td>
                                   <td className="jsgrid-cell group-products" style={{ width: "25%" }}>
                                     <ul>
-                                      <li>
+                                      <li style={{display: "flex", justifyContent:"space-between"}}>
 
                                         <div className="ml-10" style={{textAlign:"left"}}>
                                          
@@ -1155,13 +1155,15 @@ class ListShipCoordinatorRouteCom extends Component {
 
                                         
                                         </div>
-
-                                        <span data-tip data-for="b-1" data-id="b-1" className="badge badge-primary ml-10" title="Lấy lại nhân viên giao" onClick={() => this.handleGetUserAll(item)}>
-                                            <i class="fa fa-users"></i>
-                                          </span>
-                                          <ReactTooltip id="b-1" type="">
-                                            <span>Lấy lại nhân viên giao</span>
-                                          </ReactTooltip>
+                                        <div className="ml-10" style={{display:"flex",justifyContent:"center",flexDirection:"column",alignItems:"center"}}>
+                                          <span data-tip data-for="b-1" data-id="b-1" className="badge badge-primary ml-10" title="Lấy lại nhân viên giao" onClick={() => this.handleGetUserAll(item)}>
+                                              <i class="fa fa-users"></i>
+                                            </span>
+                                            <ReactTooltip id="b-1" type="">
+                                              <span>Lấy lại nhân viên giao</span>
+                                            </ReactTooltip>
+                                        </div> 
+                                        
                                       </li>
                                     </ul>
                                   </td>
