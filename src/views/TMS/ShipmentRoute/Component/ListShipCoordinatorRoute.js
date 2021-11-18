@@ -451,7 +451,6 @@ class ListShipCoordinatorRouteCom extends Component {
     let x = this.props.InfoCoordinator.find(x => x.ShipmentOrderID == item.ShipmentOrderID);
     console.log(x);
     let listOption = [];
-    let objDeliverUser = [];
     let FullNameDeliverUser = item.ShipmentOrder_DeliverUserList ? item.ShipmentOrder_DeliverUserList.map((e) => (e.UserName != "" && e.FullName != "" ? e.UserName + "-" + e.FullName : "")).filter((x) => x != "") : [];
     let valuede = item.ShipmentOrder_DeliverUserList ? item.ShipmentOrder_DeliverUserList.map((e) => (e.UserName != "" && e.FullName != "" ? e.UserName : "")).filter((x) => x != "") : [];
     item.ShipmentOrder_DeliverUserList &&
@@ -461,10 +460,6 @@ class ListShipCoordinatorRouteCom extends Component {
             
           }
         });                     
-    
-    //FullNameDeliverUser = FullNameDeliverUser.filter(x=> x!="").join(",");
-    console.log('FullNameDeliverUser ',FullNameDeliverUser);
-    
     this.handleOnValueChangeDeliverUser("ShipmentOrder_DeliverUserList", valuede, listOption)
 
   }
@@ -913,12 +908,6 @@ class ListShipCoordinatorRouteCom extends Component {
     let { ShipmentOrder, ShipmentRouteID, ShipmentOrderSameLst, ShipmentRouteLst, ShipmentRouteSameLst, Distances_RouteLst, Via_Distances, Via_Durations, girdSlide, VehicleLst } = this.state;
     let resultShipmentRoute = ShipmentRouteLst.filter((n) => n.ShipmentRouteID != ShipmentRouteID);
     let resultShipmentRouteSame = ShipmentRouteSameLst.filter((n) => n.ShipmentRouteID != ShipmentRouteID);
-    console.log("VehicleLst: " + JSON.stringify(VehicleLst));
-    console.log("VehicleID: " + this.state.objCoordinator.VehicleID);
-    console.log("selectedOption: ", this.state.selectedOption);
-    console.log("objDeliverUser: ", this.state.objDeliverUser);
-    console.log("ShipmentOrder: ", ShipmentOrder);
-    let length_row = ShipmentOrder.length - 1;
     const isBelowThreshold = (currentValue) => currentValue.CarrierTypeID == 2;
     let isShow = ShipmentOrder.length === 0 ? false : ShipmentOrder.every(isBelowThreshold);
 
