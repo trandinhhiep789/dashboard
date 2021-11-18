@@ -129,7 +129,7 @@ class ListShipCoordinatorRouteCom extends Component {
     this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetVehicleWorkingPlan", objRouteVehicleRequset).then((apiResult) => {
       if (!apiResult.IsError) {
         apiResult.ResultObject.map((item) => {
-          if (item.Volume > item.TotalVolume + item.TotalShipmentVolume || item.VehicleID == this.state.objCoordinator.VehicleID) {
+          if (((item.Volume > item.TotalVolume + item.TotalShipmentVolume)&&(item.Weight > item.TotalWeight + item.TotalShipmentWeight)) || item.VehicleID == this.state.objCoordinator.VehicleID) {
             var m3 = item.Volume - (item.TotalVolume + item.TotalShipmentVolume);
 
             let objVehicle = {
