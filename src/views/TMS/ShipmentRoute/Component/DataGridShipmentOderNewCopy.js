@@ -177,7 +177,7 @@ const dataGridShipmentOderNewCom = (props) => {
                                 ShipmentRouteID
                                 ShipmentRouteID={shipmentRouteID}
                                 InfoCoordinator={gridDataShip}
-                                ShipmentOrderSame={apiResult.ResultObject.ShipmentOrderDeliverSameList}
+                                ShipmentOrderSame={apiResult.ResultObject.ShipmentOrderDeliverList}
                                 IsUserCoordinator={true}
                                 IsCoordinator={true}
                                 IsCancelDelivery={true}

@@ -250,7 +250,7 @@ class ListShipCoordinatorRouteCom extends Component {
         if (!apiResult.IsError) {
           this.state.ShipmentOrder.map((row, indexRow) => {
             if ((this.state.objCoordinator.IsRoute == true || !row.IsCoordinator) && row.IsPermission == true && row.CarrierPartnerID <= 0) {
-              row["ShipmentOrder_DeliverUserList"] = objDeliverUser;
+              row["ShipmentOrder_DeliverUserList"] = objDeliverUser | [];
             }
           });
           this.setState({ selectedOption: selectedOption1, ShipmentOrder: this.state.ShipmentOrder, ShipmentRouteLst: apiResult.ResultObject });
@@ -280,7 +280,7 @@ class ListShipCoordinatorRouteCom extends Component {
         if (!apiResult.IsError) {
           this.state.ShipmentOrder.map((row, indexRow) => {
             if (row.IsPermission == true && row.CarrierPartnerID > 0) {
-              row["ShipmentOrder_DeliverUserList"] = objMultiDeliverUser;
+              row["ShipmentOrder_DeliverUserList"] = objMultiDeliverUser || [];
             }
           });
           this.setState({ objDeliverUser: value, ShipmentOrder: this.state.ShipmentOrder, ShipmentRouteLst: apiResult.ResultObject });
@@ -291,7 +291,7 @@ class ListShipCoordinatorRouteCom extends Component {
     } else {
       this.state.ShipmentOrder.map((row, indexRow) => {
         if (row.IsPermission == true && row.CarrierPartnerID > 0) {
-          row["ShipmentOrder_DeliverUserList"] = objMultiDeliverUser;
+          row["ShipmentOrder_DeliverUserList"] = objMultiDeliverUser || [];
         }
       });
       this.setState({ objDeliverUser: value, ShipmentRouteLst: [] });
@@ -1125,7 +1125,7 @@ class ListShipCoordinatorRouteCom extends Component {
                                         </div>
                                         <div className="item group-cod">
                                           <span className="badge badge-secondary badge-active">
-                                            <i className="fa fa-dollar"></i> {item.TotalCOD != "" ? formatMoney(item.TotalCOD, 0) : "0"}đ
+                                            <i className="fa fa-dollar"></i> {item.TotalCOD ? formatMoney(item.TotalCOD, 0) : "0"}đ
                                           </span>
                                         </div>
                                       </li>
