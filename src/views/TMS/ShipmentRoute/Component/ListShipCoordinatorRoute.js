@@ -1156,7 +1156,7 @@ class ListShipCoordinatorRouteCom extends Component {
                                         
                                         </div>
                                         <div className="ml-10" style={{display:"flex",justifyContent:"center",flexDirection:"column",alignItems:"center"}}>
-                                          <span data-tip data-for="b-1" data-id="b-1" className="badge badge-primary ml-10" title="Lấy lại nhân viên giao" onClick={() => this.handleGetUserAll(item)}>
+                                          <span data-tip data-for="b-1" data-id="b-1" className="badge badge-primary ml-10" onClick={() => this.handleGetUserAll(item)}>
                                               <i class="fa fa-users"></i>
                                             </span>
                                             <ReactTooltip id="b-1" type="">
