@@ -40,7 +40,6 @@ class SearchCom extends React.Component {
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleSetInventoryStatusID = this.handleSetInventoryStatusID.bind(this);
         this.handleSetMLObjectProductID = this.handleSetMLObjectProductID.bind(this);
-        this.handleSetMLObjectStoreID = this.handleSetMLObjectStoreID.bind(this);
         this.showMessage = this.showMessage.bind(this);
     }
 
@@ -103,21 +102,6 @@ class SearchCom extends React.Component {
         }
     }
 
-    handleSetMLObjectStoreID(parameter) {
-        if (parameter == -1 || parameter == "") {
-            return "";
-        } else {
-            const result = parameter.reduce((acc, val) => {
-                if (val == -1) {
-                    return acc;
-                } else {
-                    return `<${val}>${acc}`
-                }
-            }, "");
-            return result;
-        }
-    }
-
     handleSetMLObjectProductID(parameter) {
         if (parameter == -1 || parameter == "") {
             return "";
@@ -140,7 +124,7 @@ class SearchCom extends React.Component {
 
     handleExportSubmit(formData, MLObject) {
         const uptMLObject = {
-            StoreIDList: this.handleSetMLObjectStoreID(MLObject.StoreID),
+            StoreIDList: MLObject.StoreID,
             ProductIDList: this.handleSetMLObjectProductID(MLObject.ProductID),
             InventoryStatusIDList: this.handleSetInventoryStatusID(MLObject.InventoryStatusID),
         }
@@ -174,7 +158,7 @@ class SearchCom extends React.Component {
 
     handleSearchSubmit(formData, MLObject) {
         const uptMLObject = {
-            StoreIDList: this.handleSetMLObjectStoreID(MLObject.StoreID),
+            StoreIDList: MLObject.StoreID,
             ProductIDList: this.handleSetMLObjectProductID(MLObject.ProductID),
             InventoryStatusIDList: this.handleSetInventoryStatusID(MLObject.InventoryStatusID),
         }

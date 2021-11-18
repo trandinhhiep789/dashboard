@@ -10,11 +10,21 @@ export const AddLink = "/RewardComputeSchedule/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "RewardComputeScheduleID";
+
+const dtFromdate = new Date()
+dtFromdate.setDate(new Date().getDate() - 30);
 export const InitSearchParams = [
     { SearchKey: "@Keyword", SearchValue: "" },
-    { SearchKey: "@RewardComputeTypeID", SearchValue: -1 }
-]
-    ;
+    { SearchKey: "@RewardComputeTypeID", SearchValue: -1 },
+    {
+        SearchKey: "@FromDate",
+        SearchValue: dtFromdate
+    },
+    {
+        SearchKey: "@ToDate",
+        SearchValue: new Date()
+    }
+];
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
@@ -42,6 +52,8 @@ export const DetailPagePath = [
 const dtdateto = new Date()
 dtdateto.setDate(new Date().getDate() + 1);
 
+
+
 export const SearchElementList = [
     {
         type: "text",
@@ -68,6 +80,51 @@ export const SearchElementList = [
         ValueMember: "RewardComputeTypeID",
         NameMember: "RewardComputeTypeName"
     },
+    {
+        type: "date",
+        name: "dtFromDate",
+        label: "Từ ngày",
+        value: dtFromdate,
+        placeholder: "",
+        icon: "",
+        DataSourceMember: "FromDate",
+        ValueMember: "FromDate",
+        NameMember: "FromDate"
+    },
+    {
+        type: "date",
+        name: "dtToDate",
+        label: "Đến ngày",
+        value: new Date(),
+        placeholder: "",
+        icon: "",
+        DataSourceMember: "ToDate",
+        ValueMember: "ToDate",
+        NameMember: "ToDate"
+    }
+];
+
+export const SearchMLObjectDefinition = [
+    {
+        Name: "Keyword",
+        DefaultValue: "",
+        BindControlName: "txtKeyword"
+    },
+    {
+        Name: "RewardComputeTypeID",
+        DefaultValue: "-1",
+        BindControlName: "cbRewardComputeTypeID"
+    },
+    {
+        Name: "FromDate",
+        DefaultValue: "",
+        BindControlName: "dtFromDate"
+    },
+    {
+        Name: "ToDate",
+        DefaultValue: "",
+        BindControlName: "dtToDate"
+    }
 ];
 
 export const AddElementList = [
@@ -252,18 +309,7 @@ export const EditElementList = [
     }
 ];
 
-export const SearchMLObjectDefinition = [
-    {
-        Name: "Keyword",
-        DefaultValue: "",
-        BindControlName: "txtKeyword"
-    },
-    {
-        Name: "RewardComputeTypeID",
-        DefaultValue: "-1",
-        BindControlName: "cbRewardComputeTypeID"
-    }
-];
+
 
 export const MLObjectDefinition = [
     {

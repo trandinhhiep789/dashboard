@@ -24,6 +24,7 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { ERPCOMMONCACHE_AREATYPE, ERPCOMMONCACHE_MATERIALGROUP } from "../../../../../constants/keyCache";
+import { toIsoStringCus } from "../../../../../utils/function";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -78,6 +79,14 @@ class SearchCom extends React.Component {
             {
                 SearchKey: "@REWARDCOMPUTETYPEID",
                 SearchValue: MLObject.RewardComputeTypeID
+            },
+            {
+                SearchKey: "@FromDate",
+                SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString())
+            },
+            {
+                SearchKey: "@ToDate",
+                SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString())
             }
         ];
         this.setState({ SearchData: postData });
@@ -87,7 +96,6 @@ class SearchCom extends React.Component {
 
     callSearchData(searchData) {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
-            //this.searchref.current.changeLoadComplete();
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
                 // let _data = apiResult.ResultObject.map((item, index) => {
