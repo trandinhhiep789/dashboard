@@ -615,7 +615,7 @@ class DataGridShipmentOderNewCom extends Component {
             apiResult.ResultObject.ShipmentOrderDeliver["ShipmentOrder_DeliverUserList"] = this.state.GridDataShip[0].ShipmentOrder_DeliverUserList;
           }
 
-          if (this.state.GridDataShip.length > 0 && apiResult.ResultObject.ShipmentOrderDeliver.ShipmentOrder_DeliverUserList.length == 0) {
+          if (this.state.GridDataShip.length > 0 && apiResult.ResultObject.ShipmentOrderDeliver.IsPermission == true) {
             apiResult.ResultObject.ShipmentOrderDeliver["VehicleID"] = this.state.GridDataShip[0].VehicleID;
             apiResult.ResultObject.ShipmentOrderDeliver["DriverUser"] = this.state.GridDataShip[0].DriverUser;
           }
