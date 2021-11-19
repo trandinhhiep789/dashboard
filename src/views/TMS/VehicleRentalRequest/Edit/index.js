@@ -402,7 +402,7 @@ class EditCom extends React.Component {
                                     controltype="InputControl"
                                     value=""
                                     datasourcemember="ContractID"
-                                    validatonList={['required']}
+                                    validatonList={['required', 'specialNew']}
                                 //classNameCustom="customcontrol"
                                 />
                             </div>

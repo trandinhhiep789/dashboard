@@ -198,7 +198,7 @@ export function ValidationField(typelist, fieldValue, fieldCaption, elementItem)
             }
         }
     }
-    
+
     if (typelist.includes("numbernew") && IsEr == 0) {
         if (fieldValue) {
             if (fieldValue.toString().length > 1) {
@@ -243,6 +243,31 @@ export function ValidationField(typelist, fieldValue, fieldCaption, elementItem)
             Message: "Vui lòng nhập không nhập kí tự đặt biệt"
         }
     }
+
+    /*kiểm tra ký tự đặc biệt new*/
+    if (typelist.includes("specialNew") && IsEr == 0) {
+
+        const regEx = /^[a-zA-Z0-9]+$/;
+        let aa = regEx.test(fieldValue);
+        console.log("aa", aa)
+        if (aa) {
+            IsEr = 0;
+            result = {
+                IsError: false,
+                fieldValue: fieldValue,
+                Message: ""
+            }
+        }
+        else {
+            IsEr = 1;
+            result = {
+                IsError: true,
+                fieldValue: fieldValue,
+                Message: "Vui lòng nhập không nhập kí tự đặt biệt"
+            }
+        }
+    }
+
 
     /*Chỉ viết Hoa*/
     if (typelist.includes("toUpperCase") && IsEr == 0) {

@@ -334,7 +334,7 @@ class AddCom extends React.Component {
                                 controltype="InputControl"
                                 value=""
                                 datasourcemember="ContractID"
-                                validatonList={['required']}
+                                validatonList={['required', 'specialNew']}
                                 maxSize="15"
                             //classNameCustom="customcontrol"
                             />
