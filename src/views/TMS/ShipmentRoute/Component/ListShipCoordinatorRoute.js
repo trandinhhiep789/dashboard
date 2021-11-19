@@ -160,11 +160,18 @@ class ListShipCoordinatorRouteCom extends Component {
         const objVehicle = objVehicleLst.find((x) => x.value === objRoute.VehicleID);
 
         let objInfoCoordinator = this.state.objCoordinator;
+        if (objVehicle) {
+          objInfoCoordinator = {
+            ...objInfoCoordinator,
+            VehicleDriverUser: { value: objVehicle.MainDriverUser, label: objVehicle.MainDriverUser + "-" + objVehicle.MainDriverUserFullName },
+          };
+        } else {
+          objInfoCoordinator = {
+            ...objInfoCoordinator,
+            VehicleDriverUser: { value: -1, label: "" },
+          };
+        }
 
-        objInfoCoordinator = {
-          ...objInfoCoordinator,
-          VehicleDriverUser: { value: objVehicle.MainDriverUser, label: objVehicle.MainDriverUser + "-" + objVehicle.MainDriverUserFullName },
-        };
         this.setState({
           objCoordinator: objInfoCoordinator,
           VehicleLst: objVehicleLst,
