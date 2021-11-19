@@ -177,7 +177,7 @@ const dataGridShipmentOderNewCom = (props) => {
                                 ShipmentRouteID
                                 ShipmentRouteID={shipmentRouteID}
                                 InfoCoordinator={gridDataShip}
-                                ShipmentOrderSame={apiResult.ResultObject.ShipmentOrderDeliverSameList}
+                                ShipmentOrderSame={apiResult.ResultObject.ShipmentOrderDeliverList}
                                 IsUserCoordinator={true}
                                 IsCoordinator={true}
                                 IsCancelDelivery={true}
@@ -386,7 +386,7 @@ const dataGridShipmentOderNewCom = (props) => {
                 props.showModal(MODAL_TYPE_VIEW, {
                     title: 'Phân tuyến điều phối vận đơn ',
                     isShowOverlay: false,
-                    onhideModal: handleClose,
+                    onhideModal: handleCloseModal,
                     content: {
                         text: <ListShipCoordinator
                             ShipmentOrderID={0}
