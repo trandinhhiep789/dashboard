@@ -160,11 +160,18 @@ class ListShipCoordinatorRouteCom extends Component {
         const objVehicle = objVehicleLst.find((x) => x.value === objRoute.VehicleID);
 
         let objInfoCoordinator = this.state.objCoordinator;
+        if (objVehicle) {
+          objInfoCoordinator = {
+            ...objInfoCoordinator,
+            VehicleDriverUser: { value: objVehicle.MainDriverUser, label: objVehicle.MainDriverUser + "-" + objVehicle.MainDriverUserFullName },
+          };
+        } else {
+          objInfoCoordinator = {
+            ...objInfoCoordinator,
+            VehicleDriverUser: { value: -1, label: "" },
+          };
+        }
 
-        objInfoCoordinator = {
-          ...objInfoCoordinator,
-          VehicleDriverUser: { value: objVehicle.MainDriverUser, label: objVehicle.MainDriverUser + "-" + objVehicle.MainDriverUserFullName },
-        };
         this.setState({
           objCoordinator: objInfoCoordinator,
           VehicleLst: objVehicleLst,
@@ -626,6 +633,8 @@ class ListShipCoordinatorRouteCom extends Component {
         ShipmentOrder[index].VehicleID = -1;
         ShipmentOrder[index]["CarrierTypeID"] = CarrierTypeID;
       });
+      
+      this.setState({objCoordinator: { CarrierTypeID: 1, VehicleID: -1, VehicleDriverUser: {} }})
       this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: [] });
     } else {
       document.getElementsByClassName("car-menu")[0].style.background = "#15c377";
@@ -684,6 +693,8 @@ class ListShipCoordinatorRouteCom extends Component {
       this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: objVehicleLst });
     } else {
       this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: [] });
+      this.setState({objCoordinator: { CarrierTypeID: 1, VehicleID: -1, VehicleDriverUser: {} }})
+
       document.getElementsByClassName("motobike-menu")[0].style.background = "#15c377";
       document.getElementsByClassName("motobike-menu")[0].style.color = "#fff";
       document.getElementsByClassName("car-menu")[0].style.background = "#e4e7ea";
