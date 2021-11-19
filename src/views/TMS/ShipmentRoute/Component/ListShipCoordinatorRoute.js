@@ -35,7 +35,7 @@ class ListShipCoordinatorRouteCom extends Component {
       ShipmentOrder: this.props.InfoCoordinator,
       objCoordinator: { CarrierPartnerID: -1, CarrierTypeID: 1, IsRoute: true, VehicleID: -1, VehicleDriverUser: {} },
       VehicleLst: [],
-      selectedOption: [],
+      selectedOption: [], 
       objDeliverUser: [],
       DeliverUserList: {},
       DeliverUserServerList: [],
@@ -94,22 +94,22 @@ class ListShipCoordinatorRouteCom extends Component {
 
     if (objRoute != undefined) {
       if (objRoute != "") {
-        // objInfoCoordinator = {
-        //   CarrierPartnerID: objRoute.CarrierPartnerID,
-        //   CarrierTypeID: objRoute.CarrierTypeID,
-        //   IsRoute: true,
-        //   VehicleID: objRoute.VehicleID,
-        //   VehicleDriverUser: {
-        //     value: objRoute.DriverUser == "" ? -1 : objRoute.DriverUser,
-        //     label: objRoute.DriverUser == "" || objRoute.DriverUserFull == "" ? objRoute.DriverUser + "-" + objRoute.DriverUserFull : "",
-        //   },
-        // };
         objInfoCoordinator = {
           CarrierPartnerID: objRoute.CarrierPartnerID,
           CarrierTypeID: objRoute.CarrierTypeID,
           IsRoute: true,
           VehicleID: objRoute.VehicleID,
+          VehicleDriverUser: {
+            value: objRoute.DriverUser == "" ? -1 : objRoute.DriverUser,
+            label: objRoute.DriverUser == "" || objRoute.DriverUserFull == "" ? objRoute.DriverUser + "-" + objRoute.DriverUserFull : "",
+          },
         };
+        // objInfoCoordinator = {
+        //   CarrierPartnerID: objRoute.CarrierPartnerID,
+        //   CarrierTypeID: objRoute.CarrierTypeID,
+        //   IsRoute: true,
+        //   VehicleID: objRoute.VehicleID,
+        // };
       } else {
         objInfoCoordinator = { CarrierPartnerID: objRoute.CarrierPartnerID, CarrierTypeID: objRoute.CarrierTypeID, IsRoute: true, VehicleID: objRoute.VehicleID, VehicleDriverUser: {} };
       }
@@ -585,8 +585,8 @@ class ListShipCoordinatorRouteCom extends Component {
       this.state.ShipmentOrder[indexRow].OrderIndex = indexRow;
       this.state.ShipmentOrder[indexRow].DeliverUserLst = elementDeliverUserList.join();
       this.state.ShipmentOrder[indexRow].DeliverUserFullNameList = elementDeliverUserFullList.join();
-      this.state.ShipmentOrder[indexRow].DriverUser = row.CarrierTypeID == 2 ? this.state.objCoordinator.VehicleDriverUser.value : {};
-      this.state.ShipmentOrder[indexRow].VehicleID = row.CarrierTypeID == 2 ? this.state.objCoordinator.VehicleID : -1;
+      this.state.ShipmentOrder[indexRow].DriverUser = this.state.objCoordinator.VehicleDriverUser.value ;
+      this.state.ShipmentOrder[indexRow].VehicleID = this.state.objCoordinator.VehicleID ;
       this.state.ShipmentOrder[indexRow].CoordinatorNote = this.state.objectDescription[row.ShipmentOrderID]["content"];
     });
 
