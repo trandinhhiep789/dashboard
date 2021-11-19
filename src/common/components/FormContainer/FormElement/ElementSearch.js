@@ -282,13 +282,12 @@ class ElementComboBoxNewChangeCom extends Component {
 
     componentDidMount() {
         let { listoption, IsAutoLoadItemFromCache, LoadItemCacheKeyID, ValueMember, NameMember, filterValue, filterobj } = this.props;
-        // console.log("this.props.isautoloaditemfromcachess: ", this.props.isautoloaditemfromcache,this.props.loaditemcachekeyid,this.props.listoption)
+
         if (IsAutoLoadItemFromCache) {
-            // console.log("ValueMember ", ValueMember, NameMember, this.props);
 
             if (this.props.isUsercache == true) {
                 this.props.callGetUserCache(LoadItemCacheKeyID).then((result) => {
-                    // console.log("this.props.isautoloaditemfromcach2: ", this.props.LoadItemCacheKeyID, this.state.Listoption, result);
+
                     listoption = [{ value: -1, label: this.props.placeholder }];
                     if (!result.IsError && result.ResultObject.CacheData != null) {
                         result.ResultObject.CacheData.map((cacheItem) => {
@@ -305,45 +304,42 @@ class ElementComboBoxNewChangeCom extends Component {
                         this.setState({ ListOption: listoption });
 
                     }
-                    //  console.log("this.props.isautoloaditemfromcachess: ",this.props.loaditemcachekeyid, this.state.Listoption);
                 });
 
-            }
-            else {
+            } else {
                 this.props.callGetCache(LoadItemCacheKeyID).then((result) => {
 
-                    // console.log("this.props.isautoloaditemfromcach2: ", result);
                     listoption = [{ value: -1, label: this.props.placeholder }];
                     if (!result.IsError && result.ResultObject.CacheData != null) {
                         if (typeof filterobj != undefined) {
-                            // console.log(filterobj,result.ResultObject.CacheData,result.ResultObject.CacheData.filter(n => n.filterobj == 1))
-                            result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
-                                listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
-                            }
-                            );
 
-                        }
-                        else {
+                            if (this.props.IsFilterIncludes) { // filter giá trị trong chuỗi
+                                result.ResultObject.CacheData.filter(n => n[filterobj].includes(filterValue)).map((cacheItem) => {
+                                    listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
+                                });
+                            } else {
+                                result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
+                                    listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
+                                });
+                            }
+
+                        } else {
                             result.ResultObject.CacheData.map((cacheItem) => {
                                 listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
-                            }
-                            );
+                            });
                         }
 
                         this.setState({ ListOption: listoption, Data: result.ResultObject.CacheData });
                         const aa = this.bindcombox(this.props.value, listoption);
                         this.setState({ SelectedOption: aa });
-                    }
-                    else {
+                    } else {
                         this.setState({ ListOption: listoption });
                     }
-                    //  console.log("this.props.isautoloaditemfromcachess: ",this.props.loaditemcachekeyid, this.state.Listoption);
+
                 });
             }
 
-        }
-        else {
-            //console.log("this.props.isautoloaditemfromcache1: ",this.props.loaditemcachekeyid, this.state.Listoption);
+        } else {
             this.setState({ ListOption: listoption });
             const aa = this.bindcombox(this.props.value, listoption);
             this.setState({ SelectedOption: aa });
@@ -437,6 +433,10 @@ class ElementComboBoxNewChangeCom extends Component {
             </div>
         );
     }
+}
+
+ElementComboBoxNewChangeCom.defaultProps = {
+    IsFilterIncludes: false
 }
 
 const ElementComboBoxNewChange = connect(null, mapDispatchToProps)(ElementComboBoxNewChangeCom);
@@ -1366,6 +1366,7 @@ class ProductComboBoxCom extends React.Component {
         this.props.callFetchAPI("ERPAPI", 'api/ProductSearch/Search', listMLObject).then(apiResult => {
             let listOptionNew = [{ value: null, label: "------ Chọn ------" }];
             let selectedOption = [];
+
             for (let i = 0; i < apiResult.ResultObject.length; i++) {
                 listOptionNew.push({ value: apiResult.ResultObject[i].ProductID, label: apiResult.ResultObject[i].ProductName });
                 selectedOption.push({ value: apiResult.ResultObject[i].ProductID, label: apiResult.ResultObject[i].ProductName });

@@ -145,8 +145,11 @@ export const listelement = [
         type: "ComboBoxNewChange",
         name: "cbInventoryStatusID",
         // classNameCol: "col-custom",
-        colspan: 4,
+        colspan: 2,
         DataSourceMember: "InventoryStatusID",
+        IsFilterIncludes: true, //chuyển sang filter includes
+        filterobj: "CompanyIDList",
+        filterValue: "<10>",
         IsAutoLoadItemFromCache: true,
         isMultiSelect: true,
         label: "Trạng thái",
