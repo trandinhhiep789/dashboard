@@ -465,6 +465,8 @@ class DataGridShipmentOderNewCom extends Component {
       CarrierTypeID: objShipmentOrder.CarrierTypeID,
       DeliverUserList: [],
       CurrentShipmentOrderStepID: objShipmentOrder.CurrentShipmentOrderStepID,
+      ShipItemNameList: objShipmentOrder.ShipItemNameList,
+      PrimaryShipItemName: objShipmentOrder.PrimaryShipItemName
     };
     if (e.target.checked) {
       this.state.GridDataShip.push(objShip);
