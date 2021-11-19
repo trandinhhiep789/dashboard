@@ -28,8 +28,8 @@ class ListShipCoordinatorRouteCom extends Component {
     this.handleCloseMessage = this.handleCloseMessage.bind(this);
     this.HandleChangeGird = this.HandleChangeGird.bind(this);
     this.handleConfirm = this.handleConfirm.bind(this);
-    this.handleMapObjectDescription = this.handleMapObjectDescription.bind(this);
-    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
+    this.handleOnValueChangeselectedOp = this.handleOnValueChangeselectedOp.bind(this);
+    this.handleOnValueChangeVehicleDriverUser = this.handleOnValueChangeVehicleDriverUser.bind(this);
 
     this.state = {
       ShipmentOrder: this.props.InfoCoordinator,
@@ -56,8 +56,6 @@ class ListShipCoordinatorRouteCom extends Component {
   }
 
   componentDidMount() {
-    console.log("this.state.ShipmentOrder", this.state.ShipmentOrder);
-
     this.handleMapObjectDescription();
 
     const isBelowThreshold = (currentValue) => currentValue.CarrierTypeID == 2;
@@ -78,6 +76,7 @@ class ListShipCoordinatorRouteCom extends Component {
         CoordinatorStoreIDLst: this.props.InfoCoordinator.map((e) => e.CoordinatorStoreID).join(","),
         ShipmentOrderIDLst: this.props.InfoCoordinator.map((e) => e.ShipmentOrderID).join(","),
       };
+
       objVehicleLst = this.getinitVehicellst(objRouteVehicleRequset);
 
       document.getElementsByClassName("car-menu")[0].style.background = "#15c377";
@@ -90,15 +89,26 @@ class ListShipCoordinatorRouteCom extends Component {
       document.getElementsByClassName("car-menu")[0].style.background = "#e4e7ea";
       document.getElementsByClassName("car-menu")[0].style.color = "#616a78";
     }
+
     let objRoute = this.props.InfoCoordinator.find((n) => n.ShipmentRouteID == this.props.ShipmentRouteID);
+
     if (objRoute != undefined) {
       if (objRoute != "") {
+        // objInfoCoordinator = {
+        //   CarrierPartnerID: objRoute.CarrierPartnerID,
+        //   CarrierTypeID: objRoute.CarrierTypeID,
+        //   IsRoute: true,
+        //   VehicleID: objRoute.VehicleID,
+        //   VehicleDriverUser: {
+        //     value: objRoute.DriverUser == "" ? -1 : objRoute.DriverUser,
+        //     label: objRoute.DriverUser == "" || objRoute.DriverUserFull == "" ? objRoute.DriverUser + "-" + objRoute.DriverUserFull : "",
+        //   },
+        // };
         objInfoCoordinator = {
           CarrierPartnerID: objRoute.CarrierPartnerID,
           CarrierTypeID: objRoute.CarrierTypeID,
           IsRoute: true,
           VehicleID: objRoute.VehicleID,
-          VehicleDriverUser: { value: objRoute.DriverUser, label: objRoute.DriverUser + "-" + objRoute.DriverUserFull },
         };
       } else {
         objInfoCoordinator = { CarrierPartnerID: objRoute.CarrierPartnerID, CarrierTypeID: objRoute.CarrierTypeID, IsRoute: true, VehicleID: objRoute.VehicleID, VehicleDriverUser: {} };
@@ -129,7 +139,7 @@ class ListShipCoordinatorRouteCom extends Component {
     this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetVehicleWorkingPlan", objRouteVehicleRequset).then((apiResult) => {
       if (!apiResult.IsError) {
         apiResult.ResultObject.map((item) => {
-          if (((item.Volume > item.TotalVolume + item.TotalShipmentVolume)&&(item.Weight > item.TotalWeight + item.TotalShipmentWeight)) || item.VehicleID == this.state.objCoordinator.VehicleID) {
+          if ((item.Volume > item.TotalVolume + item.TotalShipmentVolume && item.Weight > item.TotalWeight + item.TotalShipmentWeight) || item.VehicleID == this.state.objCoordinator.VehicleID) {
             var m3 = item.Volume - (item.TotalVolume + item.TotalShipmentVolume);
 
             let objVehicle = {
@@ -144,7 +154,21 @@ class ListShipCoordinatorRouteCom extends Component {
             objVehicleLst.push(objVehicle);
           }
         });
-        this.setState({ VehicleLst: objVehicleLst });
+
+        let objRoute = this.props.InfoCoordinator.find((n) => n.ShipmentRouteID == this.props.ShipmentRouteID);
+
+        const objVehicle = objVehicleLst.find((x) => x.value === objRoute.VehicleID);
+
+        let objInfoCoordinator = this.state.objCoordinator;
+
+        objInfoCoordinator = {
+          ...objInfoCoordinator,
+          VehicleDriverUser: { value: objVehicle.MainDriverUser, label: objVehicle.MainDriverUser + "-" + objVehicle.MainDriverUserFullName },
+        };
+        this.setState({
+          objCoordinator: objInfoCoordinator,
+          VehicleLst: objVehicleLst,
+        });
       }
     });
     return objVehicleLst;
@@ -206,6 +230,7 @@ class ListShipCoordinatorRouteCom extends Component {
   }
 
   handleOnValueChangeselectedOp(name, selectedOption) {
+    console.log({ selectedOption });
     let { objCoordinator, ShipmentOrder } = this.state;
     if (selectedOption.TotalAbilityVolume >= selectedOption.TotalShipmentVolume + selectedOption.TotalVolume) {
       this.addNotification(
@@ -227,6 +252,11 @@ class ListShipCoordinatorRouteCom extends Component {
         row["VehicleID"] = selectedOption.value;
       }
     });
+
+    console.log({ name });
+    console.log({ objCoordinator });
+    console.log(this.state.VehicleLst);
+
     this.setState({
       objCoordinator: objCoordinator,
       ShipmentOrder: ShipmentOrder,
@@ -245,14 +275,16 @@ class ListShipCoordinatorRouteCom extends Component {
           StoreID: this.state.ShipmentOrder.length > 0 ? this.state.ShipmentOrder[0].CoordinatorStoreID : 0,
         });
       });
+
     if (selectedOption1) {
       this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/UserIsLockDelivery", listStaffDebtObject).then((apiResult) => {
         if (!apiResult.IsError) {
           this.state.ShipmentOrder.map((row, indexRow) => {
             if ((this.state.objCoordinator.IsRoute == true || !row.IsCoordinator) && row.IsPermission == true && row.CarrierPartnerID <= 0) {
-              row["ShipmentOrder_DeliverUserList"] = objDeliverUser | [];
+              row["ShipmentOrder_DeliverUserList"] = objDeliverUser || [];
             }
           });
+
           this.setState({ selectedOption: selectedOption1, ShipmentOrder: this.state.ShipmentOrder, ShipmentRouteLst: apiResult.ResultObject });
         } else {
           this.addNotification(apiResult.Message, apiResult.IsError);
@@ -275,6 +307,7 @@ class ListShipCoordinatorRouteCom extends Component {
           StoreID: this.state.ShipmentOrder[0].CoordinatorStoreID,
         });
       });
+
     if (selectedOption) {
       this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/UserIsLockDelivery", listStaffDebtObject).then((apiResult) => {
         if (!apiResult.IsError) {
@@ -327,7 +360,7 @@ class ListShipCoordinatorRouteCom extends Component {
     this.notificationDOMRef.current.addNotification({
       container: "bottom-right",
       content: (
-        <div className={cssNotification} style={{background:"#ffc107",borderLeft:"#d49a5b"}}>
+        <div className={cssNotification} style={{ background: "#ffc107", borderLeft: "#d49a5b" }}>
           <div className="notification-custom-icon">
             <i className={iconNotification} />
           </div>
@@ -365,10 +398,7 @@ class ListShipCoordinatorRouteCom extends Component {
 
   checkInputName(formValidation) {
     for (const key in formValidation) {
-      //      console.log("formValidation:", formValidation);
-
       if (formValidation[key] != undefined) {
-        // console.log("validation:", key, this.elementItemRefs[key]);
         if (formValidation[key] != [] && formValidation[key].IsValidatonError) {
           return formValidation[key].ValidationErrorMessage;
         }
@@ -447,22 +477,22 @@ class ListShipCoordinatorRouteCom extends Component {
     console.log("onValueChangeComboUser", rowname, rowvalue, rowIndex);
   }
 
-  handleGetUserAll = (item) =>{
-    let x = this.props.InfoCoordinator.find(x => x.ShipmentOrderID == item.ShipmentOrderID);
-    console.log(x);
+  handleGetUserAll = (item) => {
+    let x = this.props.InfoCoordinator.find((x) => x.ShipmentOrderID == item.ShipmentOrderID);
+
     let listOption = [];
-    let FullNameDeliverUser = item.ShipmentOrder_DeliverUserList ? item.ShipmentOrder_DeliverUserList.map((e) => (e.UserName != "" && e.FullName != "" ? e.UserName + "-" + e.FullName : "")).filter((x) => x != "") : [];
+    let FullNameDeliverUser = item.ShipmentOrder_DeliverUserList
+      ? item.ShipmentOrder_DeliverUserList.map((e) => (e.UserName != "" && e.FullName != "" ? e.UserName + "-" + e.FullName : "")).filter((x) => x != "")
+      : [];
     let valuede = item.ShipmentOrder_DeliverUserList ? item.ShipmentOrder_DeliverUserList.map((e) => (e.UserName != "" && e.FullName != "" ? e.UserName : "")).filter((x) => x != "") : [];
     item.ShipmentOrder_DeliverUserList &&
-        item.ShipmentOrder_DeliverUserList.map((item2, index) => {
-          if (item2.UserName != "" && item2.FullName) {
-            listOption.push({ value: item2.UserName, label: item2.UserName + "-" + item2.FullName, name: item2.FullName });
-            
-          }
-        });                     
-    this.handleOnValueChangeDeliverUser("ShipmentOrder_DeliverUserList", valuede, listOption)
-
-  }
+      item.ShipmentOrder_DeliverUserList.map((item2, index) => {
+        if (item2.UserName != "" && item2.FullName) {
+          listOption.push({ value: item2.UserName, label: item2.UserName + "-" + item2.FullName, name: item2.FullName });
+        }
+      });
+    this.handleOnValueChangeDeliverUser("ShipmentOrder_DeliverUserList", valuede, listOption);
+  };
 
   // check trùng nhân viên giao hàng
 
@@ -529,7 +559,6 @@ class ListShipCoordinatorRouteCom extends Component {
         row["ShipmentOrder_DeliverUserList"].map((item, indexRow) => {
           let objMultDeliverUser = { UserName: item.UserName, CarrierTypeID: row["CarrierTypeID"], TotalCOD: row["TotalCOD"] / row["ShipmentOrder_DeliverUserList"].length };
           element.push(objMultDeliverUser);
-          // console.log("UserName", row["ShipmentOrderID"], item.UserName, row["TotalCOD"] / row["ShipmentOrder_DeliverUserList"].length)
         });
       }
 
@@ -617,8 +646,6 @@ class ListShipCoordinatorRouteCom extends Component {
   };
 
   handleChangeCourse = (CarrierTypeID, rowIndex) => (e) => {
-    console.log({ CarrierTypeID, rowIndex });
-
     let { ShipmentOrder } = this.state;
     ShipmentOrder[rowIndex]["DriverUser"] = "";
     ShipmentOrder[rowIndex]["DriverUserFull"] = "";
@@ -628,8 +655,6 @@ class ListShipCoordinatorRouteCom extends Component {
     if (CarrierTypeID === 2) {
       ShipmentOrder[rowIndex].VehicleID = this.state.objCoordinator.VehicleID;
     }
-
-    console.log({ ShipmentOrder });
 
     const isBelowThreshold = (currentValue) => currentValue.CarrierTypeID == 2;
 
@@ -744,7 +769,7 @@ class ListShipCoordinatorRouteCom extends Component {
       if (!apiResult.IsError) {
         apiResult.ResultObject.map((item) => {
           let resultdd = ShipmentOrder.find((n) => n.ShipmentOrderID == item.ShipmentOrderID);
-          // console.log("resultdd",resultdd)
+
           if (resultdd == undefined) ShipmentOrder.push(item);
         });
         this.setState({
@@ -890,11 +915,10 @@ class ListShipCoordinatorRouteCom extends Component {
   handleDescriptionSubmit = (item) => {
     let varObjectDescription = this.state.objectDescription;
     let isShow = varObjectDescription[item.ShipmentOrderID]["isShow"];
-    console.log(varObjectDescription[item.ShipmentOrderID]["content"]);
+
     let varObjectChange = { ...varObjectDescription, [item.ShipmentOrderID]: { isShow: !isShow, content: varObjectDescription[item.ShipmentOrderID]["content"] } };
 
     this.setState({ objectDescription: varObjectChange });
-    console.log(isShow, item.ShipmentOrderID, varObjectDescription);
   };
 
   handleDescriptionChange = (item, event) => {
@@ -995,6 +1019,7 @@ class ListShipCoordinatorRouteCom extends Component {
               <div className="form-row">
                 <div className="col-md-6">
                   <FormControl.FormControlComboBoxNoCached
+                    key={this.state.objCoordinator.VehicleID}
                     name="VehicleID"
                     colspan="8"
                     labelcolspan="4"
@@ -1064,7 +1089,7 @@ class ListShipCoordinatorRouteCom extends Component {
 
                             let CarrierTypeCss = "badge badge-secondary mr-10";
                             let CarrierTypeTruncCss = "badge badge-secondary badge-active";
-                            console.log("CarrierTypeID" + item.CarrierTypeID);
+
                             if (item.CarrierTypeID == 1 || item.CarrierTypeID == 0) {
                               CarrierTypeCss = "badge badge-secondary  mr-10 badge-active";
                               CarrierTypeTruncCss = "badge badge-secondary";
@@ -1136,23 +1161,25 @@ class ListShipCoordinatorRouteCom extends Component {
                                   </td>
                                   <td className="jsgrid-cell group-products" style={{ width: "25%" }}>
                                     <ul>
-                                      <li style={{display: "flex", justifyContent:"space-between"}}>
-
-                                        <div className="ml-10" style={{textAlign:"left"}}>
-                                         
-                                          {FullNameDeliverUser != "" ? FullNameDeliverUser.map(s=> <React.Fragment>{s}<br/></React.Fragment> ) : ""}
-
-                                        
+                                      <li style={{ display: "flex", justifyContent: "space-between" }}>
+                                        <div className="ml-10" style={{ textAlign: "left" }}>
+                                          {FullNameDeliverUser != ""
+                                            ? FullNameDeliverUser.map((s) => (
+                                                <React.Fragment>
+                                                  {s}
+                                                  <br />
+                                                </React.Fragment>
+                                              ))
+                                            : ""}
                                         </div>
-                                        <div className="ml-10" style={{display:"flex",justifyContent:"center",flexDirection:"column",alignItems:"center"}}>
+                                        <div className="ml-10" style={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
                                           <span data-tip data-for="b-1" data-id="b-1" className="badge badge-primary ml-10" onClick={() => this.handleGetUserAll(item)}>
-                                              <i class="fa fa-users"></i>
-                                            </span>
-                                            <ReactTooltip id="b-1" type="">
-                                              <span>Lấy lại nhân viên giao</span>
-                                            </ReactTooltip>
-                                        </div> 
-                                        
+                                            <i class="fa fa-users"></i>
+                                          </span>
+                                          <ReactTooltip id="b-1" type="">
+                                            <span>Lấy lại nhân viên giao</span>
+                                          </ReactTooltip>
+                                        </div>
                                       </li>
                                     </ul>
                                   </td>
