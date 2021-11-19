@@ -14,8 +14,8 @@ import { formatDate, formatMonthDate } from "../../../../common/library/CommonLi
 import { formatMoney, formatNumber } from "../../../../utils/function";
 import { showModal, hideModal } from "../../../../actions/modal";
 import { MODAL_TYPE_VIEW } from "../../../../constants/actionTypes";
-//import ListShipCoordinator from '../Component/ListShipCoordinator.js';
-import ListShipCoordinator from "../Component/ListShipCoordinatorRoute.js";
+import ListShipCoordinator from '../Component/ListShipCoordinator.js';
+//import ListShipCoordinator from "../Component/ListShipCoordinatorRoute.js";
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from "react-html-parser";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import ReactNotification from "react-notifications-component";

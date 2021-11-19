@@ -45,6 +45,22 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
+        // this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/LoadInfoShipmentOrderMobile", "211116000000181").then(apiResult => {
+        //     console.log("49", apiResult)
+        // });
+        // const a = {
+        //     ErrorID: 3,
+        //     ShipmentOrderID: "test",
+        //     ErrorName: "test",
+        //     IsSystem: 0,
+        //     CreatedUser: "98138"
+        // }
+        // this.props.callFetchAPI(APIHostName, "api/ShipmentOrder_Error/Add", a).then(apiResult => {
+        //     console.log(apiResult)
+        // });
+        // this.props.callFetchAPI(APIHostName, "api/Error/SearchByShipmentOrderID", "211116000000181").then(apiResult => {
+        //     console.log("62", apiResult)
+        // });
     }
 
     showMessage(message) {
@@ -157,12 +173,18 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
+        if (MLObject.StoreID == -1) {
+            this.addNotification("Vui lòng chọn Mã Kho", true);
+            return;
+        }
+
         const uptMLObject = {
-            StoreIDList: MLObject.StoreID,
+            StoreID: MLObject.StoreID,
             ProductIDList: this.handleSetMLObjectProductID(MLObject.ProductID),
             InventoryStatusIDList: this.handleSetInventoryStatusID(MLObject.InventoryStatusID),
+            MainGroupIDList: MLObject.MainGroupID == -1 ? "" : MLObject.MainGroupID.toString(),
+            SubGroupIDList: MLObject.SubGroupID == -1 ? "" : MLObject.SubGroupID.toString()
         }
-        console.log(uptMLObject);
 
         this.props.callFetchAPI(APIHostName, APIExportPath, uptMLObject).then(apiResult => {
             if (!apiResult.IsError) {
@@ -209,7 +231,7 @@ class SearchCom extends React.Component {
                     IsShowButtonDelete={false}
                     listColumn={listColumn}
                     PKColumnName={""}
-                    RowsPerPage={10}
+                    RowsPerPage={20}
                 />
 
             </React.Fragment>

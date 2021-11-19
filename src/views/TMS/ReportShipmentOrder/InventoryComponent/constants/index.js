@@ -160,13 +160,13 @@ export const listelement = [
 ];
 
 export const listColumn = [
-    // {
-    //     Name: "STOREID",
-    //     Type: "text",
-    //     Caption: "Mã kho",
-    //     DataSourceMember: "STOREID",
-    //     // Width: 100
-    // },
+    {
+        Name: "STOREID",
+        Type: "text",
+        Caption: "Mã kho",
+        DataSourceMember: "STOREID",
+        // Width: 100
+    },
     {
         Name: "STORENAME",
         Type: "text",
@@ -188,13 +188,13 @@ export const listColumn = [
         DataSourceMember: "PRODUCTNAME",
         // Width: 100
     },
-    // {
-    //     Name: "INVENTORYSTATUSID",
-    //     Type: "text",
-    //     Caption: "Mã trạng thái",
-    //     DataSourceMember: "INVENTORYSTATUSID",
-    //     // Width: 100
-    // },
+    {
+        Name: "INVENTORYSTATUSID",
+        Type: "text",
+        Caption: "Mã trạng thái",
+        DataSourceMember: "INVENTORYSTATUSID",
+        // Width: 100
+    },
     {
         Name: "INVENTORYSTATUSNAME",
         Type: "text",
@@ -226,5 +226,15 @@ export const MLObjectDefinition = [
         Name: "InventoryStatusID",
         DefaultValue: "",
         BindControlName: "cbInventoryStatusID"
+    },
+    {
+        Name: "MainGroupID",
+        DefaultValue: "",
+        BindControlName: "cbMainGroupID"
+    },
+    {
+        Name: "SubGroupID",
+        DefaultValue: "",
+        BindControlName: "cbSubGroupID"
     },
 ];
