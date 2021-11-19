@@ -1669,13 +1669,13 @@ const AppMenu = [
                 MenuIcon: "",
                 SubMenu: [],
             },
-            {
-                MenuName: "InventoryComponent",
-                MenuTitle: "Báo cáo tồn kho linh kiện",
-                LinkTo: "/InventoryComponent",
-                MenuIcon: "",
-                SubMenu: [],
-            },
+            // {
+            //     MenuName: "InventoryComponent",
+            //     MenuTitle: "Báo cáo tồn kho linh kiện",
+            //     LinkTo: "/InventoryComponent",
+            //     MenuIcon: "",
+            //     SubMenu: [],
+            // },
             {
                 MenuName: "ComprehensiveReport",
                 MenuTitle: "Báo cáo tổng hợp",
