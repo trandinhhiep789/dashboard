@@ -250,7 +250,7 @@ class ListShipCoordinatorRouteCom extends Component {
         if (!apiResult.IsError) {
           this.state.ShipmentOrder.map((row, indexRow) => {
             if ((this.state.objCoordinator.IsRoute == true || !row.IsCoordinator) && row.IsPermission == true && row.CarrierPartnerID <= 0) {
-              row["ShipmentOrder_DeliverUserList"] = objDeliverUser | [];
+              row["ShipmentOrder_DeliverUserList"] = objDeliverUser || [];
             }
           });
           this.setState({ selectedOption: selectedOption1, ShipmentOrder: this.state.ShipmentOrder, ShipmentRouteLst: apiResult.ResultObject });
@@ -259,6 +259,11 @@ class ListShipCoordinatorRouteCom extends Component {
         }
       });
     } else {
+      this.state.ShipmentOrder.map((row, indexRow) => {
+        if (row.IsPermission == true) {
+          row["ShipmentOrder_DeliverUserList"] = objDeliverUser || [];
+        }
+      });
       this.setState({ selectedOption: selectedOption1, ShipmentRouteLst: [] });
     }
   }
@@ -327,7 +332,7 @@ class ListShipCoordinatorRouteCom extends Component {
     this.notificationDOMRef.current.addNotification({
       container: "bottom-right",
       content: (
-        <div className={cssNotification} style={{background:"#ffc107",borderLeft:"#d49a5b"}}>
+        <div className={cssNotification} style={{background:"#ba6508",borderLeft:"#d49a5b"}}>
           <div className="notification-custom-icon">
             <i className={iconNotification} />
           </div>
