@@ -251,7 +251,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtLength",
-        label: "chiều dài của loại xe",
+        label: "chiều dài của loại xe (m)",
         value: "",
         maxSize: "6",
         placeholder: "",
@@ -264,7 +264,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtWidth",
-        label: "chiều rộng của loại xe",
+        label: "chiều rộng của loại xe (m)",
         value: "",
         maxSize: "6",
         placeholder: "",
@@ -277,7 +277,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtHeight",
-        label: "chiều cao của loại xe",
+        label: "chiều cao của loại xe (m)",
         value: "",
         maxSize: "6",
         placeholder: "",
@@ -290,7 +290,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtWeight",
-        label: "tải trọng tối đa của loại xe",
+        label: "tải trọng tối đa của loại xe (kg)",
         value: "",
         maxSize: "6",
         placeholder: "",
@@ -303,7 +303,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtVolume",
-        label: "thể tích tối đa của loại xe",
+        label: "thể tích tối đa của loại xe (m3)",
         value: "",
         maxSize: "6",
         placeholder: "",
