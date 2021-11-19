@@ -626,6 +626,8 @@ class ListShipCoordinatorRouteCom extends Component {
         ShipmentOrder[index].VehicleID = -1;
         ShipmentOrder[index]["CarrierTypeID"] = CarrierTypeID;
       });
+      
+      this.setState({objCoordinator: { CarrierTypeID: 1, VehicleID: -1, VehicleDriverUser: {} }})
       this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: [] });
     } else {
       document.getElementsByClassName("car-menu")[0].style.background = "#15c377";
