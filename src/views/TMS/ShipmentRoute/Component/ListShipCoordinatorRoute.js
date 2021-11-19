@@ -585,8 +585,8 @@ class ListShipCoordinatorRouteCom extends Component {
       this.state.ShipmentOrder[indexRow].OrderIndex = indexRow;
       this.state.ShipmentOrder[indexRow].DeliverUserLst = elementDeliverUserList.join();
       this.state.ShipmentOrder[indexRow].DeliverUserFullNameList = elementDeliverUserFullList.join();
-      this.state.ShipmentOrder[indexRow].DriverUser = this.state.objCoordinator.VehicleDriverUser.value;
-      this.state.ShipmentOrder[indexRow].VehicleID = this.state.objCoordinator.VehicleID;
+      this.state.ShipmentOrder[indexRow].DriverUser = row.CarrierTypeID == 2 ? this.state.objCoordinator.VehicleDriverUser.value : {};
+      this.state.ShipmentOrder[indexRow].VehicleID = row.CarrierTypeID == 2 ? this.state.objCoordinator.VehicleID : -1;
       this.state.ShipmentOrder[indexRow].CoordinatorNote = this.state.objectDescription[row.ShipmentOrderID]["content"];
     });
 
@@ -636,10 +636,11 @@ class ListShipCoordinatorRouteCom extends Component {
         if (item.CarrierTypeID == 1) {
           ShipmentOrder[index]["DriverUser"] = "";
           ShipmentOrder[index]["DriverUserFull"] = "";
-          ShipmentOrder[index].VehicleID = -1;
+          ShipmentOrder[index].VehicleID = this.state.objCoordinator.VehicleID;
           ShipmentOrder[index]["CarrierTypeID"] = CarrierTypeID;
         }
       });
+     
       let objRouteVehicleRequset = {
         VehicleID: 1,
         ExpectedDeliveryDate: ShipmentOrder[0].ExpectedDeliveryDate,
