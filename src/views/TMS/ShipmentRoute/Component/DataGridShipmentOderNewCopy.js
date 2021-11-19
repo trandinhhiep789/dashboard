@@ -409,6 +409,10 @@ const dataGridShipmentOderNewCom = (props) => {
         });
     };
 
+    useEffect(() => {
+        setDataSource(props.dataSource);
+    },[props.dataSource]);
+
     const dataSourceMemo = useMemo(() => dataSource, [dataSource]);
     function renderDataGrid() {
         if (changeGird) {
