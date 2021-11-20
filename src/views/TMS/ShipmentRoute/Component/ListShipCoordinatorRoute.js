@@ -634,7 +634,7 @@ class ListShipCoordinatorRouteCom extends Component {
         ShipmentOrder[index]["CarrierTypeID"] = CarrierTypeID;
       });
       
-      this.setState({objCoordinator: { CarrierTypeID: 1, VehicleID: -1, VehicleDriverUser: {} }})
+      this.setState({objCoordinator: { CarrierPartnerID: -1, CarrierTypeID: 1, IsRoute: true, VehicleID: -1, VehicleDriverUser: {}  }})
       this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: [] });
     } else {
       document.getElementsByClassName("car-menu")[0].style.background = "#15c377";
@@ -693,7 +693,7 @@ class ListShipCoordinatorRouteCom extends Component {
       this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: objVehicleLst });
     } else {
       this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: [] });
-      this.setState({objCoordinator: { CarrierTypeID: 1, VehicleID: -1, VehicleDriverUser: {} }})
+      this.setState({objCoordinator: {CarrierPartnerID: -1, CarrierTypeID: 1, IsRoute: true, VehicleID: -1, VehicleDriverUser: {}  }})
 
       document.getElementsByClassName("motobike-menu")[0].style.background = "#15c377";
       document.getElementsByClassName("motobike-menu")[0].style.color = "#fff";
