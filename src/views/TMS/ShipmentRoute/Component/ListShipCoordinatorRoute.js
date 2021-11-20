@@ -98,7 +98,7 @@ class ListShipCoordinatorRouteCom extends Component {
           CarrierPartnerID: objRoute.CarrierPartnerID,
           CarrierTypeID: objRoute.CarrierTypeID,
           IsRoute: true,
-          VehicleID: objRoute.VehicleID,
+          VehicleID: objRoute.VehicleID == 0 ? -1 : objRoute.VehicleID ,
           VehicleDriverUser: {
             value: objRoute.DriverUser == "" ? -1 : objRoute.DriverUser,
             label: objRoute.DriverUser == "" || objRoute.DriverUserFull == "" ? objRoute.DriverUser + "-" + objRoute.DriverUserFull : "",
@@ -111,7 +111,7 @@ class ListShipCoordinatorRouteCom extends Component {
         //   VehicleID: objRoute.VehicleID,
         // };
       } else {
-        objInfoCoordinator = { CarrierPartnerID: objRoute.CarrierPartnerID, CarrierTypeID: objRoute.CarrierTypeID, IsRoute: true, VehicleID: objRoute.VehicleID, VehicleDriverUser: {} };
+        objInfoCoordinator = { CarrierPartnerID: objRoute.CarrierPartnerID, CarrierTypeID: objRoute.CarrierTypeID, IsRoute: true, VehicleID: objRoute.VehicleID == 0 ? -1 : objRoute.VehicleID, VehicleDriverUser: {} };
       }
 
       if (objRoute.CarrierPartnerID > 0) {
