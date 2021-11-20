@@ -131,6 +131,8 @@ class SearchCom extends React.Component {
     handleSetInventoryStatusID(parameter) {
         if (parameter == -1 || parameter == "") {
             return "";
+        } else if (parameter == 1) {
+            return "1";
         } else {
             const filtered = parameter.filter((item) => item != -1);
             let result = filtered.toString();
