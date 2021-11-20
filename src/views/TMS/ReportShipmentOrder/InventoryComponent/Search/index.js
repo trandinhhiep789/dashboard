@@ -139,15 +139,20 @@ class SearchCom extends React.Component {
     }
 
     handleExportSubmit(formData, MLObject) {
+        if (MLObject.StoreID == -1) {
+            this.addNotification("Vui lòng chọn Mã Kho", true);
+            return;
+        }
+
         const uptMLObject = {
-            StoreIDList: MLObject.StoreID,
+            StoreID: MLObject.StoreID,
             ProductIDList: this.handleSetMLObjectProductID(MLObject.ProductID),
             InventoryStatusIDList: this.handleSetInventoryStatusID(MLObject.InventoryStatusID),
+            MainGroupIDList: MLObject.MainGroupID == -1 ? "" : MLObject.MainGroupID.toString(),
+            SubGroupIDList: MLObject.SubGroupID == -1 ? "" : MLObject.SubGroupID.toString()
         }
 
         this.props.callFetchAPI(APIHostName, APIExportPath, uptMLObject).then(apiResult => {
-            console.log(uptMLObject, apiResult);
-
             if (!apiResult.IsError) {
                 const updResultObject = apiResult.ResultObject.map(item => {
                     return {

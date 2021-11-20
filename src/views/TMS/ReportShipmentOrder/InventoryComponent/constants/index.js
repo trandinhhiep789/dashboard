@@ -84,7 +84,7 @@ export const listelement = [
         LoadItemCacheKeyID: ERPCOMMONCACHE_MAINGROUP,
         NameMember: "MainGroupName",
         placeholder: "Ngành hàng",
-        value: -1,
+        value: 624,
         ValueMember: "MainGroupID",
     },
     {
@@ -103,7 +103,7 @@ export const listelement = [
         LoadItemCacheKeyID: ERPCOMMONCACHE_SUBGROUP,
         NameMember: "SubGroupName",
         placeholder: "Nhóm hàng",
-        value: -1,
+        value: 1771,
         ValueMember: "SubGroupID",
     },
     {
@@ -157,7 +157,7 @@ export const listelement = [
         LoadItemCacheKeyID: ERPRELATECACHE_INVENTORYSTATUS,
         NameMember: "InventoryStatusName",
         placeholder: "Trạng thái",
-        value: -1,
+        value: 1,
         ValueMember: "InventoryStatusID",
     },
 ];
