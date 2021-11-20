@@ -144,12 +144,13 @@ class ListShipCoordinatorRouteCom extends Component {
 
             let objVehicle = {
               value: item.VehicleID,
-              label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + m3.toFixed(3) + "m3)",
+              label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + m3.toFixed(3) + " m3)",
               MainDriverUser: item.MainDriverUser,
               MainDriverUserFullName: item.MainDriverUserFullName,
               TotalVolume: item.TotalVolume,
               TotalShipmentVolume: item.TotalShipmentVolume,
               TotalAbilityVolume: item.TotalAbilityVolume,
+              OrderM3: parseFloat(m3.toFixed(3))
             };
             objVehicleLst.push(objVehicle);
           }
@@ -171,7 +172,9 @@ class ListShipCoordinatorRouteCom extends Component {
             VehicleDriverUser: { value: -1, label: "" },
           };
         }
-
+        objVehicleLst.sort(function (a, b) {
+            return a.OrderM3 - b.OrderM3;
+          });
         this.setState({
           objCoordinator: objInfoCoordinator,
           VehicleLst: objVehicleLst,
