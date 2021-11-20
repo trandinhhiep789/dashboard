@@ -216,7 +216,9 @@ const dataGridShipmentOderNewCom = (props) => {
             CarrierPartnerID: objShipmentOrder.CarrierPartnerID,
             CarrierTypeID: objShipmentOrder.CarrierTypeID,
             DeliverUserList: [],
-            CurrentShipmentOrderStepID: objShipmentOrder.CurrentShipmentOrderStepID
+            CurrentShipmentOrderStepID: objShipmentOrder.CurrentShipmentOrderStepID,
+            ShipItemNameList: objShipmentOrder.ShipItemNameList,
+            PrimaryShipItemName: objShipmentOrder.PrimaryShipItemName
         };
         if (e.target.checked) {
             gridDataShip.push(objShip);
@@ -224,7 +226,7 @@ const dataGridShipmentOderNewCom = (props) => {
         else {
             gridDataShip.splice(gridDataShip.findIndex(n => n[name] == strShipmentOrdervalue), 1);
         }
-        setGridData(gridDataShip);
+        setGridDataShip(gridDataShip);
         setDataSource(JSON.parse(JSON.stringify(dataSource)));
     }
 
@@ -243,8 +245,12 @@ const dataGridShipmentOderNewCom = (props) => {
                     {
                         apiResult.ResultObject.ShipmentOrderDeliver["ShipmentOrder_DeliverUserList"]= gridDataShip[0].ShipmentOrder_DeliverUserList
                     }
+                    if (gridDataShip.length > 0 && apiResult.ResultObject.ShipmentOrderDeliver.IsPermission == true) {
+                        apiResult.ResultObject.ShipmentOrderDeliver["VehicleID"] = gridDataShip[0].VehicleID;
+                        apiResult.ResultObject.ShipmentOrderDeliver["DriverUser"] = gridDataShip[0].DriverUser;
+                    }
                     gridDataShip.push(apiResult.ResultObject.ShipmentOrderDeliver);
-                    setGridData(gridDataShip);
+                    setGridDataShip(gridDataShip);
                 }
                 props.showModal(MODAL_TYPE_VIEW, {
                     title: 'Phân tuyến điều phối vận đơn ',
@@ -408,6 +414,10 @@ const dataGridShipmentOderNewCom = (props) => {
             }
         });
     };
+
+    useEffect(() => {
+        setDataSource(props.dataSource);
+    },[props.dataSource]);
 
     const dataSourceMemo = useMemo(() => dataSource, [dataSource]);
     function renderDataGrid() {
