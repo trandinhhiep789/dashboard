@@ -637,7 +637,8 @@ class ListShipCoordinatorRouteCom extends Component {
         ShipmentOrder[index]["CarrierTypeID"] = CarrierTypeID;
       });
       
-      this.setState({objCoordinator: { CarrierPartnerID: -1, CarrierTypeID: 1, IsRoute: true, VehicleID: -1, VehicleDriverUser: {}  }});
+      var stateint = this.state.objCoordinator;
+      this.setState(...stateint, { CarrierTypeID: 1, IsRoute: true, VehicleID: -1, VehicleDriverUser: {}  });
       this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: [] });
     } else {
       document.getElementsByClassName("car-menu")[0].style.background = "#15c377";
@@ -696,8 +697,8 @@ class ListShipCoordinatorRouteCom extends Component {
       this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: objVehicleLst });
     } else {
       this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: [] });
-      this.setState({objCoordinator: {CarrierPartnerID: -1, CarrierTypeID: 1, IsRoute: true, VehicleID: -1, VehicleDriverUser: {}  }});
-
+      var stateint = this.state.objCoordinator;
+      this.setState(...stateint, { CarrierTypeID: 1, IsRoute: true, VehicleID: -1, VehicleDriverUser: {}  });
       document.getElementsByClassName("motobike-menu")[0].style.background = "#15c377";
       document.getElementsByClassName("motobike-menu")[0].style.color = "#fff";
       document.getElementsByClassName("car-menu")[0].style.background = "#e4e7ea";
@@ -720,7 +721,6 @@ class ListShipCoordinatorRouteCom extends Component {
       let objectVehicleDriverUser = { ...changeState1.objCoordinator, CarrierPartnerID: -1,VehicleDriverUser: {} };
       changeState1 = { ...changeState1, ShipmentOrder: this.state.ShipmentOrder, Via_Durations: 0, Via_Distances: "", objCoordinator: { objectVehicleDriverUser } };
       this.setState(changeState1);
-      this.setState({objCoordinator: { CarrierPartnerID: -1 }});
 
       // this.setState({
       //   ShipmentOrder: this.state.ShipmentOrder,
@@ -752,7 +752,6 @@ class ListShipCoordinatorRouteCom extends Component {
         Via_Distances: "",
       });
     }
-    this.setState({objCoordinator: { CarrierPartnerID: -1 }});
     
   };
 
