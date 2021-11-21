@@ -35,7 +35,7 @@ class ListShipCoordinatorRouteCom extends Component {
       ShipmentOrder: this.props.InfoCoordinator,
       objCoordinator: { CarrierPartnerID: -1, CarrierTypeID: 1, IsRoute: true, VehicleID: -1, VehicleDriverUser: {} },
       VehicleLst: [],
-      selectedOption: [], 
+      selectedOption: [],
       objDeliverUser: [],
       DeliverUserList: {},
       DeliverUserServerList: [],
@@ -98,7 +98,7 @@ class ListShipCoordinatorRouteCom extends Component {
           CarrierPartnerID: objRoute.CarrierPartnerID,
           CarrierTypeID: objRoute.CarrierTypeID,
           IsRoute: true,
-          VehicleID: objRoute.VehicleID,
+          VehicleID: objRoute.VehicleID == 0 ? -1 : objRoute.VehicleID,
           VehicleDriverUser: {
             value: objRoute.DriverUser == "" ? -1 : objRoute.DriverUser,
             label: objRoute.DriverUser == "" || objRoute.DriverUserFull == "" ? objRoute.DriverUser + "-" + objRoute.DriverUserFull : "",
@@ -111,7 +111,13 @@ class ListShipCoordinatorRouteCom extends Component {
         //   VehicleID: objRoute.VehicleID,
         // };
       } else {
-        objInfoCoordinator = { CarrierPartnerID: objRoute.CarrierPartnerID, CarrierTypeID: objRoute.CarrierTypeID, IsRoute: true, VehicleID: objRoute.VehicleID, VehicleDriverUser: {} };
+        objInfoCoordinator = {
+          CarrierPartnerID: objRoute.CarrierPartnerID,
+          CarrierTypeID: objRoute.CarrierTypeID,
+          IsRoute: true,
+          VehicleID: objRoute.VehicleID == 0 ? -1 : objRoute.VehicleID,
+          VehicleDriverUser: {},
+        };
       }
 
       if (objRoute.CarrierPartnerID > 0) {
@@ -144,12 +150,13 @@ class ListShipCoordinatorRouteCom extends Component {
 
             let objVehicle = {
               value: item.VehicleID,
-              label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + m3.toFixed(3) + "m3)",
+              label: item.VehicleID + "-" + item.LicenSeplateNumber + " (" + m3.toFixed(3) + " m3)",
               MainDriverUser: item.MainDriverUser,
               MainDriverUserFullName: item.MainDriverUserFullName,
               TotalVolume: item.TotalVolume,
               TotalShipmentVolume: item.TotalShipmentVolume,
               TotalAbilityVolume: item.TotalAbilityVolume,
+              OrderM3: parseFloat(m3.toFixed(3)),
             };
             objVehicleLst.push(objVehicle);
           }
@@ -171,7 +178,9 @@ class ListShipCoordinatorRouteCom extends Component {
             VehicleDriverUser: { value: -1, label: "" },
           };
         }
-
+        objVehicleLst.sort(function (a, b) {
+          return a.OrderM3 - b.OrderM3;
+        });
         this.setState({
           objCoordinator: objInfoCoordinator,
           VehicleLst: objVehicleLst,
@@ -242,7 +251,10 @@ class ListShipCoordinatorRouteCom extends Component {
     if (selectedOption.TotalAbilityVolume >= selectedOption.TotalShipmentVolume + selectedOption.TotalVolume) {
       this.addNotification(
         "Tổng thể tích tối thiểu cần cho xe tải là " + selectedOption.TotalAbilityVolume + " Hiện tại chỉ có " + (selectedOption.TotalShipmentVolume + selectedOption.TotalVolume),
-        true
+        true,
+        false,
+        "rgb(255, 184, 24)",
+        "rgb(186, 101, 8)"
       );
     }
 
@@ -360,9 +372,9 @@ class ListShipCoordinatorRouteCom extends Component {
     this.props.hideModal();
   }
 
-  addNotification(message1, IsError) {
+  addNotification(message1, isError, isDefault = true, color = "#ba6508", borderLeftColor = "#d49a5b") {
     let cssNotification, iconNotification;
-    if (!IsError) {
+    if (!isError) {
       cssNotification = "notification-custom-success";
       iconNotification = "fa fa-check";
     } else {
@@ -372,8 +384,7 @@ class ListShipCoordinatorRouteCom extends Component {
     this.notificationDOMRef.current.addNotification({
       container: "bottom-right",
       content: (
-
-        <div className={cssNotification} style={{background:"#ba6508",borderLeft:"#d49a5b"}}>
+        <div className={cssNotification} style={{ background: !isDefault ? color : "", borderLeft: !isDefault ? borderLeftColor : "" }}>
           <div className="notification-custom-icon">
             <i className={iconNotification} />
           </div>
@@ -386,7 +397,7 @@ class ListShipCoordinatorRouteCom extends Component {
           </div>
         </div>
       ),
-      dismiss: { duration: 8000 },
+      dismiss: { duration: 4000 },
       dismissable: { click: true },
     });
   }
@@ -592,8 +603,8 @@ class ListShipCoordinatorRouteCom extends Component {
       this.state.ShipmentOrder[indexRow].OrderIndex = indexRow;
       this.state.ShipmentOrder[indexRow].DeliverUserLst = elementDeliverUserList.join();
       this.state.ShipmentOrder[indexRow].DeliverUserFullNameList = elementDeliverUserFullList.join();
-      this.state.ShipmentOrder[indexRow].DriverUser = this.state.objCoordinator.VehicleDriverUser.value ;
-      this.state.ShipmentOrder[indexRow].VehicleID = this.state.objCoordinator.VehicleID ;
+      this.state.ShipmentOrder[indexRow].DriverUser = this.state.objCoordinator.VehicleDriverUser.value;
+      this.state.ShipmentOrder[indexRow].VehicleID = this.state.objCoordinator.VehicleID;
       this.state.ShipmentOrder[indexRow].CoordinatorNote = this.state.objectDescription[row.ShipmentOrderID]["content"];
     });
 
@@ -633,8 +644,9 @@ class ListShipCoordinatorRouteCom extends Component {
         ShipmentOrder[index].VehicleID = -1;
         ShipmentOrder[index]["CarrierTypeID"] = CarrierTypeID;
       });
-      
-      this.setState({objCoordinator: { CarrierTypeID: 1, VehicleID: -1, VehicleDriverUser: {} }})
+
+      var stateint = this.state.objCoordinator;
+      this.setState(...stateint, { CarrierTypeID: 1, IsRoute: true, VehicleID: -1, VehicleDriverUser: {} });
       this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: [] });
     } else {
       document.getElementsByClassName("car-menu")[0].style.background = "#15c377";
@@ -649,7 +661,7 @@ class ListShipCoordinatorRouteCom extends Component {
           ShipmentOrder[index]["CarrierTypeID"] = CarrierTypeID;
         }
       });
-     
+
       let objRouteVehicleRequset = {
         VehicleID: 1,
         ExpectedDeliveryDate: ShipmentOrder[0].ExpectedDeliveryDate,
@@ -693,8 +705,8 @@ class ListShipCoordinatorRouteCom extends Component {
       this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: objVehicleLst });
     } else {
       this.setState({ ShipmentOrder: ShipmentOrder, VehicleLst: [] });
-      this.setState({objCoordinator: { CarrierTypeID: 1, VehicleID: -1, VehicleDriverUser: {} }})
-
+      var stateint = this.state.objCoordinator;
+      this.setState(...stateint, { CarrierTypeID: 1, IsRoute: true, VehicleID: -1, VehicleDriverUser: {} });
       document.getElementsByClassName("motobike-menu")[0].style.background = "#15c377";
       document.getElementsByClassName("motobike-menu")[0].style.color = "#fff";
       document.getElementsByClassName("car-menu")[0].style.background = "#e4e7ea";
@@ -714,7 +726,7 @@ class ListShipCoordinatorRouteCom extends Component {
 
     if (resultRouteID == "" || resultCheckRouteID != null || this.props.ShipmentRouteID != "") {
       let changeState1 = this.state;
-      let objectVehicleDriverUser = { ...changeState1.objCoordinator, VehicleDriverUser: {} };
+      let objectVehicleDriverUser = { ...changeState1.objCoordinator, CarrierPartnerID: -1, VehicleDriverUser: {} };
       changeState1 = { ...changeState1, ShipmentOrder: this.state.ShipmentOrder, Via_Durations: 0, Via_Distances: "", objCoordinator: { objectVehicleDriverUser } };
       this.setState(changeState1);
 
