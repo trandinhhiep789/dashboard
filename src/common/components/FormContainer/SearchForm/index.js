@@ -260,6 +260,22 @@ export default class SearchForm extends Component {
                                     />
                                 );
 
+                            case "ComboBoxFilterTwoCondition": // lọc theo 2 điều kiện: 1 theo field search khác, 2 là giá trị tự truyền vào
+                                if (typeof elementItem.filterName != "undefined") {
+                                    elementItem.filterValue = this.state.FormData[elementItem.filterName].value;
+                                }
+
+                                return (
+                                    <ElementSearch.ElementComboBoxFilterTwoCondition
+                                        onValueChange={this.onValueChange}
+                                        ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                        inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
+                                        {...elementItem}
+                                        value={this.state.FormData[elementItem.name].value}
+                                        key={index}
+                                    />
+                                );
+
                             case "ComboBoxByCompany":
                                 if (typeof elementItem.filterName != "undefined") {
                                     elementItem.filterValue = this.state.FormData[elementItem.filterName].value;

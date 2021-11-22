@@ -54,14 +54,16 @@ export const listelement = [
         ValueMember: "ProvinceID",
     },
     {
-        type: "ComboBoxNewChange",
+        type: "ComboBoxFilterTwoCondition", // lọc theo 2 điều kiện: 1 theo field search cbProvinceID, 2 là CompanyID = 10
         name: "cbStoreID",
         // classNameCol: "col-custom",
         colspan: 2,
         DataSourceMember: "StoreID",
         filterName: "cbProvinceID",
         filterobj: "ProvinceID",
-        // filterValue: 10,
+        filterValue: "",
+        filterobj_1: "CompanyID",
+        filterValue_1: 10,
         IsAutoLoadItemFromCache: true,
         isMultiSelect: false,
         label: "Mã kho",

@@ -232,7 +232,10 @@ class SearchCom extends React.Component {
         this.props.callFetchAPI(APIHostName, APIExportPath, uptMLObject).then(apiResult => {
             if (!apiResult.IsError) {
                 if (apiResult.ResultObject.length == 0) {
-                    this.addNotification("Dữ liệu trống", apiResult.IsError)
+                    this.addNotification("Dữ liệu trống", apiResult.IsError);
+                    this.setState({
+                        gridData: []
+                    })
                 } else {
                     const uptResultObject = apiResult.ResultObject.map(item => {
                         return {
