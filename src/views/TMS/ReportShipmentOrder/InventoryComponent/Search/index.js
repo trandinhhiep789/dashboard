@@ -54,23 +54,6 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
-        // this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/LoadInfoShipmentOrderMobile", "211116000000181").then(apiResult => {
-        //     console.log("49", apiResult)
-        // });
-        // const a = {
-        //     ErrorID: 3,
-        //     ShipmentOrderID: "test",
-        //     ErrorName: "test",
-        //     IsSystem: 0,
-        //     CreatedUser: "98138"
-        // }
-        // this.props.callFetchAPI(APIHostName, "api/ShipmentOrder_Error/Add", a).then(apiResult => {
-        //     console.log(apiResult)
-        // });
-        // this.props.callFetchAPI(APIHostName, "api/Error/SearchByShipmentOrderID", "211116000000181").then(apiResult => {
-        //     console.log("62", apiResult)
-        // });
-        this.props.callClearLocalCache("ERPRELATECACHE.INVENTORYSTATUS");
     }
 
     showMessage(message) {

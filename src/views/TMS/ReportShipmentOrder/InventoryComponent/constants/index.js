@@ -1,11 +1,12 @@
 import {
-    ERPCOMMONCACHE_AREA_PROVINCE,
-    ERPCOMMONCACHE_AREATT,
     // ERPCOMMONCACHE_BRAND,
     // ERPCOMMONCACHE_MAINGROUP,
-    ERPCOMMONCACHE_STORE_AREA,
+    // ERPCOMMONCACHE_STORE_AREA,
     // ERPCOMMONCACHE_SUBGROUP,
     // ERPRELATECACHE_INVENTORYSTATUS,
+    ERPCOMMONCACHE_AREA_PROVINCE,
+    ERPCOMMONCACHE_AREATT,
+    ERPCOMMONCACHE_STORETMS,
 } from '../../../../../constants/keyCache';
 
 export const APIHostName = "TMSAPI";
@@ -58,14 +59,14 @@ export const listelement = [
         // classNameCol: "col-custom",
         colspan: 2,
         DataSourceMember: "StoreID",
-        filterName: "cbAreaID",
-        filterobj: "AreaID",
+        filterName: "cbProvinceID",
+        filterobj: "ProvinceID",
         // filterValue: 10,
         IsAutoLoadItemFromCache: true,
         isMultiSelect: false,
         label: "Mã kho",
         listoption: [],
-        LoadItemCacheKeyID: ERPCOMMONCACHE_STORE_AREA,
+        LoadItemCacheKeyID: ERPCOMMONCACHE_STORETMS,
         NameMember: "StoreName",
         placeholder: "Mã kho",
         value: -1,
