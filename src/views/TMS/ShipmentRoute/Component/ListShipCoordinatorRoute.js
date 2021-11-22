@@ -1153,13 +1153,19 @@ class ListShipCoordinatorRouteCom extends Component {
                                   objDeliverUser.push(item1.UserName);
                                   item1.UserName.split(",").map((valueName, i) => {
                                     if (listAllUser) {
-                                      listOptionUser.push(listAllUser.find((x) => x.value == valueName));
+                                      if (listAllUser.length>0) {
+                                        listOptionUser.push(listAllUser.find((x) => x.value == valueName));
+                                        
+                                      }
 
                                     }
                                   });
 
                                 });
                               if (listOptionUser.length > 0) {
+                                listOptionUser= listOptionUser.filter(function (el) {
+                                  return el != null;
+                                });
                                 FullNameDeliverUser = listOptionUser
                                   ? listOptionUser.map((e) => (e != undefined ? e.label : "")).filter((x) => x != "")
                                   : "";
