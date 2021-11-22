@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
-import { callGetCache } from "../../../../actions/cacheAction";
 import MultiSelectComboBox from "../../../../common/components/FormContainer/FormControl/MultiSelectComboBox";
 import FormControl from "../../../../common/components/FormContainer/FormControl";
 import { MessageModal } from "../../../../common/components/Modal";
@@ -13,6 +12,7 @@ import { Link } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import { Slide } from "react-slideshow-image";
 import "react-slideshow-image/dist/styles.css";
+import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
 import ElementInputModal from "../../../../common/components/FormContainer/FormElement/ElementInputModal";
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from "react-html-parser";
 import { formatMoney, formatNumber } from "../../../../utils/function";
@@ -64,6 +64,7 @@ class ListShipCoordinatorRouteCom extends Component {
     let objVehicleLst = [];
     let objInfoCoordinator = {};
     let listOption = [];
+    let listOptionUser = [];
     let objDeliverUser = [];
     if (isShow == true) {
       this.props.InfoCoordinator.sort(function (a, b) {
@@ -89,7 +90,13 @@ class ListShipCoordinatorRouteCom extends Component {
       document.getElementsByClassName("car-menu")[0].style.background = "#e4e7ea";
       document.getElementsByClassName("car-menu")[0].style.color = "#616a78";
     }
+    this.props.callGetUserCache("ERPCOMMONCACHE.PARTNERUSER").then((result) => {
+      result.ResultObject.CacheData.map((cacheItem) => {
+        listOptionUser.push({ value: cacheItem.UserName, label: cacheItem.UserName + "-" + cacheItem.FullName, name: cacheItem.FullName });
 
+      });
+      this.setState({ listAllUser: listOptionUser })
+    });
     let objRoute = this.props.InfoCoordinator.find((n) => n.ShipmentRouteID == this.props.ShipmentRouteID);
 
     if (objRoute != undefined) {
@@ -137,6 +144,7 @@ class ListShipCoordinatorRouteCom extends Component {
       VehicleLst: objVehicleLst,
       selectedOption: listOption,
       objDeliverUser: objDeliverUser,
+      listAllUser: listOptionUser
     });
   }
 
@@ -282,7 +290,7 @@ class ListShipCoordinatorRouteCom extends Component {
     });
   }
 
-  handleValueChange1(e, selectedOption1) {
+  handleValueChange1(e, selectedOption1, CarrierPartnerID) {
     let objDeliverUser = [];
     let listStaffDebtObject = [];
     selectedOption1 &&
@@ -299,9 +307,18 @@ class ListShipCoordinatorRouteCom extends Component {
       this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/UserIsLockDelivery", listStaffDebtObject).then((apiResult) => {
         if (!apiResult.IsError) {
           this.state.ShipmentOrder.map((row, indexRow) => {
-            if ((this.state.objCoordinator.IsRoute == true || !row.IsCoordinator) && row.IsPermission == true && row.CarrierPartnerID <= 0) {
-              row["ShipmentOrder_DeliverUserList"] = objDeliverUser || [];
+            if (CarrierPartnerID) {
+              if ((this.state.objCoordinator.IsRoute == true || !row.IsCoordinator) && row.IsPermission == true) {
+                row["ShipmentOrder_DeliverUserList"] = objDeliverUser || [];
+                row["CarrierPartnerID"] = CarrierPartnerID;
+
+              }
+            } else {
+              if ((this.state.objCoordinator.IsRoute == true || !row.IsCoordinator) && row.IsPermission == true && row.CarrierPartnerID <= 0) {
+                row["ShipmentOrder_DeliverUserList"] = objDeliverUser || [];
+              }
             }
+
           });
 
           this.setState({ selectedOption: selectedOption1, ShipmentOrder: this.state.ShipmentOrder, ShipmentRouteLst: apiResult.ResultObject });
@@ -319,7 +336,7 @@ class ListShipCoordinatorRouteCom extends Component {
     }
   }
 
-  handleOnValueChangeDeliverUser(name, value, selectedOption) {
+  handleOnValueChangeDeliverUser(name, value, selectedOption, CarrierPartnerID) {
     let objMultiDeliverUser = [];
     let listStaffDebtObject = [];
     selectedOption &&
@@ -336,9 +353,17 @@ class ListShipCoordinatorRouteCom extends Component {
       this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/UserIsLockDelivery", listStaffDebtObject).then((apiResult) => {
         if (!apiResult.IsError) {
           this.state.ShipmentOrder.map((row, indexRow) => {
-            if (row.IsPermission == true && row.CarrierPartnerID > 0) {
-              row["ShipmentOrder_DeliverUserList"] = objMultiDeliverUser || [];
+            if (CarrierPartnerID) {
+              if (row.IsPermission == true) {
+                row["ShipmentOrder_DeliverUserList"] = objMultiDeliverUser || [];
+                row["CarrierPartnerID"] = CarrierPartnerID;
+              }
+            } else {
+              if (row.IsPermission == true && row.CarrierPartnerID > 0) {
+                row["ShipmentOrder_DeliverUserList"] = objMultiDeliverUser || [];
+              }
             }
+
           });
           this.setState({ objDeliverUser: value, ShipmentOrder: this.state.ShipmentOrder, ShipmentRouteLst: apiResult.ResultObject });
         } else {
@@ -355,7 +380,7 @@ class ListShipCoordinatorRouteCom extends Component {
     }
   }
 
-  handleOnValueChangeVehicleDriverUser(name, value, selectedOption) {}
+  handleOnValueChangeVehicleDriverUser(name, value, selectedOption) { }
 
   //thông báo
   handleCloseMessage() {
@@ -384,7 +409,9 @@ class ListShipCoordinatorRouteCom extends Component {
     this.notificationDOMRef.current.addNotification({
       container: "bottom-right",
       content: (
+
         <div className={cssNotification} style={{ background: !isDefault ? color : "", borderLeft: !isDefault ? borderLeftColor : "" }}>
+
           <div className="notification-custom-icon">
             <i className={iconNotification} />
           </div>
@@ -501,23 +528,22 @@ class ListShipCoordinatorRouteCom extends Component {
     console.log("onValueChangeComboUser", rowname, rowvalue, rowIndex);
   }
 
-  handleGetUserAll = (item) => {
-    let x = this.props.InfoCoordinator.find((x) => x.ShipmentOrderID == item.ShipmentOrderID);
+  handleGetUserAll_1 = (listOption, CarrierPartnerID) => {
 
-    let listOption = [];
-    let FullNameDeliverUser = item.ShipmentOrder_DeliverUserList
-      ? item.ShipmentOrder_DeliverUserList.map((e) => (e.UserName != "" && e.FullName != "" ? e.UserName + "-" + e.FullName : "")).filter((x) => x != "")
-      : [];
-    let valuede = item.ShipmentOrder_DeliverUserList ? item.ShipmentOrder_DeliverUserList.map((e) => (e.UserName != "" && e.FullName != "" ? e.UserName : "")).filter((x) => x != "") : [];
-    item.ShipmentOrder_DeliverUserList &&
-      item.ShipmentOrder_DeliverUserList.map((item2, index) => {
-        if (item2.UserName != "" && item2.FullName) {
-          listOption.push({ value: item2.UserName, label: item2.UserName + "-" + item2.FullName, name: item2.FullName });
-        }
-      });
-    this.handleOnValueChangeDeliverUser("ShipmentOrder_DeliverUserList", valuede, listOption);
+    let valuede = listOption ? listOption.map((e) => (e.value != "" && e.name != "" ? e.value : "")).filter((x) => x != "") : [];
+    this.handleOnValueChange("CarrierPartnerID", CarrierPartnerID)
+    this.handleOnValueChangeDeliverUser("ShipmentOrder_DeliverUserList", valuede, listOption, CarrierPartnerID);
+    var stateint = this.state.objCoordinator;
+    this.setState(...stateint, { CarrierTypeID: CarrierPartnerID });
   };
+  handleGetUserAll_2 = (listOption, CarrierPartnerID) => {
+    this.handleOnValueChange("CarrierPartnerID", CarrierPartnerID)
 
+    this.handleValueChange1("ShipmentOrder_DeliverUserList", listOption, CarrierPartnerID);
+    var stateint = this.state.objCoordinator;
+    this.setState(...stateint, { CarrierTypeID: CarrierPartnerID });
+  };
+ 
   // check trùng nhân viên giao hàng
 
   checkDeliverUser(DeliverUserLst, RowDeliverUserLst) {
@@ -581,8 +607,11 @@ class ListShipCoordinatorRouteCom extends Component {
 
       if (row["TotalCOD"] > 0 && row["IsPaidIn"] == false) {
         row["ShipmentOrder_DeliverUserList"].map((item, indexRow) => {
-          let objMultDeliverUser = { UserName: item.UserName, CarrierTypeID: row["CarrierTypeID"], TotalCOD: row["TotalCOD"] / row["ShipmentOrder_DeliverUserList"].length };
-          element.push(objMultDeliverUser);
+          if (row["ShipmentOrder_DeliverUserList"][indexRow] !== row["ShipmentOrder_DeliverUserList"][indexRow - 1]) {
+            let objMultDeliverUser = { UserName: item.UserName, CarrierTypeID: row["CarrierTypeID"], TotalCOD: row["TotalCOD"] / row["ShipmentOrder_DeliverUserList"].length };
+            element.push(objMultDeliverUser);
+          }
+          
         });
       }
 
@@ -595,8 +624,11 @@ class ListShipCoordinatorRouteCom extends Component {
       }
 
       row["ShipmentOrder_DeliverUserList"].map((item, indexRow) => {
-        elementDeliverUserList.push(item.UserName);
-        elementDeliverUserFullList.push(item.UserName + "-" + item.FullName);
+        if (row["ShipmentOrder_DeliverUserList"][indexRow] !== row["ShipmentOrder_DeliverUserList"][indexRow - 1]) {
+          elementDeliverUserList.push(item.UserName);
+          elementDeliverUserFullList.push(item.UserName + "-" + item.FullName);
+        }
+        
       });
 
       this.state.ShipmentOrder[indexRow].IsRoute = this.state.objCoordinator.IsRoute;
@@ -606,6 +638,8 @@ class ListShipCoordinatorRouteCom extends Component {
       this.state.ShipmentOrder[indexRow].DriverUser = this.state.objCoordinator.VehicleDriverUser.value;
       this.state.ShipmentOrder[indexRow].VehicleID = this.state.objCoordinator.VehicleID;
       this.state.ShipmentOrder[indexRow].CoordinatorNote = this.state.objectDescription[row.ShipmentOrderID]["content"];
+      elementDeliverUserList = [];
+      elementDeliverUserFullList = [];
     });
 
     this.state.ShipmentOrder[0].DeliverUserTotalCODList = this.groupByNew(element, ["UserName", "CarrierTypeID"]);
@@ -760,6 +794,7 @@ class ListShipCoordinatorRouteCom extends Component {
         Via_Distances: "",
       });
     }
+
   };
 
   handleChangeOder = (rowIndex, OrderID) => (e) => {
@@ -972,7 +1007,7 @@ class ListShipCoordinatorRouteCom extends Component {
           <div className="card-body">
             <div className="form-row">
               <div className="col-md-6">
-                <FormControl.ComboBoxPartner
+                <FormControl.ComboBoxSelect
                   name="CarrierPartnerID"
                   colspan="8"
                   labelcolspan="4"
@@ -982,7 +1017,7 @@ class ListShipCoordinatorRouteCom extends Component {
                   valuemember="PartnerID"
                   nameMember="PartnerName"
                   controltype="InputControl"
-                  onChange={this.handleOnValueChange}
+                  onValueChange={this.handleOnValueChange}
                   value={this.state.objCoordinator.CarrierPartnerID}
                   listoption={null}
                   datasourcemember="CarrierPartnerID"
@@ -990,6 +1025,7 @@ class ListShipCoordinatorRouteCom extends Component {
                   isMultiSelect={false}
                   disabled={!this.props.IsCoordinator}
                 />
+               
               </div>
               <div className="col-md-6">
                 <div className="item group-status">
@@ -1099,7 +1135,13 @@ class ListShipCoordinatorRouteCom extends Component {
                             }
 
                             let listOption = [];
+                            let listAllUser = [];
+                            listAllUser = this.state.listAllUser;
+                            console.log('listAllUser', listAllUser);
+                            let listOptionUser = [];
+
                             let objDeliverUser = [];
+
 
                             let FullNameDeliverUser = item.ShipmentOrder_DeliverUserList
                               ? item.ShipmentOrder_DeliverUserList.map((e) => (e.UserName != "" && e.FullName != "" ? e.UserName + "-" + e.FullName : "")).filter((x) => x != "")
@@ -1109,7 +1151,20 @@ class ListShipCoordinatorRouteCom extends Component {
                               item.ShipmentOrder_DeliverUserList &&
                                 item.ShipmentOrder_DeliverUserList.map((item1, index) => {
                                   objDeliverUser.push(item1.UserName);
+                                  item1.UserName.split(",").map((valueName, i) => {
+                                    if (listAllUser) {
+                                      listOptionUser.push(listAllUser.find((x) => x.value == valueName));
+
+                                    }
+                                  });
+
                                 });
+                              if (listOptionUser.length > 0) {
+                                FullNameDeliverUser = listOptionUser
+                                  ? listOptionUser.map((e) => (e != undefined ? e.label : "")).filter((x) => x != "")
+                                  : "";
+                              }
+
                             } else {
                               item.ShipmentOrder_DeliverUserList &&
                                 item.ShipmentOrder_DeliverUserList.map((item2, index) => {
@@ -1195,17 +1250,25 @@ class ListShipCoordinatorRouteCom extends Component {
                                         <div className="ml-10" style={{ textAlign: "left" }}>
                                           {FullNameDeliverUser != ""
                                             ? FullNameDeliverUser.map((s) => (
-                                                <React.Fragment>
-                                                  {s}
-                                                  <br />
-                                                </React.Fragment>
-                                              ))
+                                              <React.Fragment>
+                                                {s}
+                                                <br />
+                                              </React.Fragment>
+                                            ))
                                             : ""}
                                         </div>
                                         <div className="ml-10" style={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
-                                          <span data-tip data-for="b-1" data-id="b-1" className="badge badge-primary ml-10" onClick={() => this.handleGetUserAll(item)}>
-                                            <i class="fa fa-users"></i>
-                                          </span>
+                                          {item.CarrierPartnerID > 0 ?
+                                            <span data-tip data-for="b-1" data-id="b-1" className="badge badge-primary ml-10" onClick={() => this.handleGetUserAll_1(listOptionUser, item.CarrierPartnerID)}>
+                                              <i class="fa fa-users"></i>
+                                            </span> :
+                                            <span data-tip data-for="b-1" data-id="b-1" className="badge badge-primary ml-10" onClick={() => this.handleGetUserAll_2(listOption, item.CarrierPartnerID)}>
+                                              <i class="fa fa-users"></i>
+                                            </span>
+                                          }
+
+
+
                                           <ReactTooltip id="b-1" type="">
                                             <span>Lấy lại nhân viên giao</span>
                                           </ReactTooltip>
@@ -1478,6 +1541,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     callFetchAPI: (hostname, hostURL, postData) => {
       return dispatch(callFetchAPI(hostname, hostURL, postData));
+    },
+    callGetUserCache: (cacheKeyID) => {
+      return dispatch(callGetUserCache(cacheKeyID));
     },
     showModal: (type, props) => {
       dispatch(showModal(type, props));
