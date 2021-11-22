@@ -191,7 +191,17 @@ class SearchCom extends React.Component {
             SearchData: DataSearch
         });
 
-        this.callSearchData(DataSearch);
+        let StartTime = new Date(MLObject.StartTime);
+        let EndTime = new Date(MLObject.EndTime);
+
+        console.log("submit", formData, MLObject)
+        console.log("compare", StartTime < EndTime)
+        if(StartTime < EndTime){
+            this.callSearchData(DataSearch);
+        }
+        else{
+            this.showMessage("Thời gian tìm Từ ngày phải nhỏ hơn Đến ngày.")
+        }
     }
 
     handleExportFile() {
@@ -263,10 +273,10 @@ class SearchCom extends React.Component {
                     listMLObject.push(MLObject);
                 });
 
-                if(listMLObject.length > 1){
+                if (listMLObject.length > 1) {
                     this.showMessage("Bạn đã vượt quá số lượng yêu cầu thuê xe cần cập nhật chi phí (1). Vui lòng chọn lại (1 yêu cầu)")
                 }
-                else{
+                else {
                     this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
                         title: 'Cập nhật chi phí thuê xe',
                         content: {
@@ -278,7 +288,7 @@ class SearchCom extends React.Component {
                         maxWidth: '800px'
                     });
                 }
-               
+
             } else {
                 this.showMessage("Bạn không có quyền cập nhật chi phí thuê xe!")
             }
@@ -286,7 +296,7 @@ class SearchCom extends React.Component {
 
     }
 
-    handleSelectUpdateCost(mlObject){
+    handleSelectUpdateCost(mlObject) {
         this.props.callFetchAPI(APIHostName, UpdateCostAPIPath, mlObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.addNotification(apiResult.Message, apiResult.IsError);
@@ -314,6 +324,7 @@ class SearchCom extends React.Component {
             });
         });
     }
+
 
     render() {
         const { gridDataSource } = this.state;
