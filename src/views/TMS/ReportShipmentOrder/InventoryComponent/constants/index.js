@@ -191,18 +191,18 @@ export const listColumn = [
         DataSourceMember: "PRODUCTNAME",
         // Width: 100
     },
+    // {
+    //     Name: "INVENTORYSTATUSID",
+    //     Type: "text",
+    //     Caption: "Mã trạng thái",
+    //     DataSourceMember: "INVENTORYSTATUSID",
+    //     // Width: 100
+    // },
     {
-        Name: "INVENTORYSTATUSID",
-        Type: "text",
-        Caption: "Mã trạng thái",
-        DataSourceMember: "INVENTORYSTATUSID",
-        // Width: 100
-    },
-    {
-        Name: "INVENTORYSTATUSNAME",
+        Name: "INVENTORYSTATUSIDNAME",
         Type: "text",
         Caption: "Tên trạng thái",
-        DataSourceMember: "INVENTORYSTATUSNAME",
+        DataSourceMember: "INVENTORYSTATUSIDNAME",
         // Width: 100
     },
     {
