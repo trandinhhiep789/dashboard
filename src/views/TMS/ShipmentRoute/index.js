@@ -6,8 +6,8 @@ import {
 } from "react-router-dom";
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../actions/fetchAPIAction";
-import Search from "./Search";
 import Searchnew from "./Search/indexnew";
+import SearchnewCopy from "./Search/indexnewCopy";
 import SearchShipmentRoute from "./Search/ShipmentRoute";
 import Detail from "./Detail";
 import NotFound from '../../NotFound'
@@ -21,7 +21,7 @@ class ShipmentRouteCom extends React.Component {
         return (
             <Switch>
                 <Route exact path="/ShipmentRoute" component={Searchnew} />
-                <Route exact path="/ShipmentRoute/indexnew" component={Search} />
+                <Route exact path="/ShipmentRouteNew" component={SearchnewCopy} />
                 <Route exact path="/ShipmentRoute/Detail/:id" component={Detail} />
                 <Route exact path="/ShipmentRoute/Manager" component={SearchShipmentRoute} />
                 <Route path="*" component={NotFound} />

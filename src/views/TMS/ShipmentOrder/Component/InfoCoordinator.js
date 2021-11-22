@@ -751,8 +751,8 @@ class InfoCoordinatorCom extends Component {
                                 placeholder="---Vui lòng chọn---"
                                 isMultiSelect={false}
                                 isselectedOp={true}
-                                filterValue={this.state.ShipmentOrder.CoordinatorStoreID}
-                                filterobj="MaincoordinAtorStoreID"
+                                // filterValue={this.state.ShipmentOrder.CoordinatorStoreID}
+                                // filterobj="MaincoordinAtorStoreID"
                                 disabled={this.state.ShipmentOrder.CarrierTypeID != 1 ? false : true}
                             />
                         </div>

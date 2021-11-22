@@ -2,9 +2,12 @@
     .input-group-dropdown-custom{
         clear: both;
         .ant-dropdown-trigger{
-            &:not(:disabled):not(.disabled){
+            &.disabled{
                 background-color: #f2f2f2;
             }
+            // &:not(:disabled):not(.disabled){
+            //     background-color: #f2f2f2;
+            // }
         }
     }
     .dropdown-toggle-disabled {

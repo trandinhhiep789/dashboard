@@ -23,7 +23,11 @@ import { MATERIALGROUP_VIEW, MATERIALGROUP_DELETE } from "../../../../../constan
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_AREATYPE, ERPCOMMONCACHE_MATERIALGROUP } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_MATERIALGROUP } from "../../../../../constants/keyCache";
+import { MODAL_TYPE_COMMONTMODALS } from '../../../../../constants/actionTypes';
+import { showModal } from '../../../../../actions/modal';
+import ExportTempExcelModalCom from '../ExportTempExcelModal';
+import ImportExcelModalCom from '../ImportExcelModal';
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -31,6 +35,8 @@ class SearchCom extends React.Component {
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleExportFileTemplate = this.handleExportFileTemplate.bind(this);
+        this.handleImportFile = this.handleImportFile.bind(this);
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
@@ -47,6 +53,28 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.callSearchData(this.state.SearchData);
         this.props.updatePagePath(PagePath);
+    }
+
+    handleExportFileTemplate() {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Xuất file mẫu',
+            content: {
+                text: <ExportTempExcelModalCom />
+            },
+            maxWidth: '30%'
+        })
+    }
+
+    handleImportFile() {
+        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+            title: 'Import File',
+            content: {
+                text: <ImportExcelModalCom
+                />
+            },
+            maxWidth: '30%',
+            afterClose: () => this.callSearchData(this.state.SearchData)
+        })
     }
 
     handleDelete(deleteList, pkColumnName) {
@@ -172,7 +200,14 @@ class SearchCom extends React.Component {
                         RequirePermission={MATERIALGROUP_VIEW}
                         DeletePermission={MATERIALGROUP_DELETE}
                         IsAutoPaging={true}
-                        RowsPerPage={10}
+                        RowsPerPage={20}
+
+                        isCustomExportFileTemplate={true}
+                        isCustomImportFile={true}
+                        isExportFileTemplate={true}
+                        IsImportFile={true}
+                        onExportFileTemplate={this.handleExportFileTemplate}
+                        onImportFile={this.handleImportFile}
                     />
                 </React.Fragment>
             );
@@ -208,6 +243,9 @@ const mapDispatchToProps = dispatch => {
         },
         callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID));
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
         }
     };
 };

@@ -404,7 +404,7 @@ class MaterialGroup_InstallCondCom extends React.Component {
                     let MLObject = GetMLObjectData(MLObjectDefinition, formData, dataSource);
                     if (MLObject) {
                         MLObject.InstallCondID = Math.random();
-                        MLObject.MaterialGroup = this.state.MaterialGroupID;
+                        MLObject.MaterialGroupID = this.state.MaterialGroupID;
                         MLObject.MainGroupID = MLObject.MainGroupID && Array.isArray(MLObject.MainGroupID) ? MLObject.MainGroupID[0] : MLObject.MainGroupID;
                         MLObject.ApplySubGroupID = MLObject.ApplySubGroupID && Array.isArray(MLObject.ApplySubGroupID) ? MLObject.ApplySubGroupID[0] : MLObject.ApplySubGroupID;
                         MLObject.ApplyTechspecsID = MLObject.ApplyTechspecsID && Array.isArray(MLObject.ApplyTechspecsID) ? MLObject.ApplyTechspecsID[0] : MLObject.ApplyTechspecsID;
@@ -496,7 +496,7 @@ class MaterialGroup_InstallCondCom extends React.Component {
                 if (isConfirmed) {
                     let MLObject = GetMLObjectData(MLObjectDefinition, formData, _MaterialGroup_InstallCondDataSource);
                     if (MLObject) {
-                        MLObject.MaterialGroup = this.state.MaterialGroupID;
+                        MLObject.MaterialGroupID = this.state.MaterialGroupID;
                         MLObject.MainGroupID = MLObject.MainGroupID && Array.isArray(MLObject.MainGroupID) ? MLObject.MainGroupID[0] : MLObject.MainGroupID;
                         MLObject.ApplySubGroupID = MLObject.ApplySubGroupID && Array.isArray(MLObject.ApplySubGroupID) ? MLObject.ApplySubGroupID[0] : MLObject.ApplySubGroupID;
                         MLObject.ApplyTechspecsID = MLObject.ApplyTechspecsID && Array.isArray(MLObject.ApplyTechspecsID) ? MLObject.ApplyTechspecsID[0] : MLObject.ApplyTechspecsID;

@@ -7,7 +7,7 @@ import {
 import { connect } from "react-redux";
 import { formatDate } from "../../../../common/library/CommonLib.js";
 import Select, { components } from 'react-select';
-
+import { formatMoney } from '../../../../utils/function';
 
 class VehicleRentalRequestInfoCom extends React.Component {
     constructor(props) {
@@ -64,7 +64,7 @@ class VehicleRentalRequestInfoCom extends React.Component {
                         <label className="col-form-label bold">Chi phí thuê xe:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{VehicleRentalRequest.Cost}</label>
+                        <label className="col-form-label">{formatMoney(VehicleRentalRequest.Cost, 0)}</label>
                     </div>
                 </div>
 
@@ -73,7 +73,7 @@ class VehicleRentalRequestInfoCom extends React.Component {
                         <label className="col-form-label bold">Mã phương tiện:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{VehicleRentalRequest.LicensePlateNumber}</label>
+                        <label className="col-form-label">{VehicleRentalRequest.VehicleName}</label>
                     </div><div className="form-group col-md-2">
                         <label className="col-form-label bold">Kho thuê:</label>
                     </div>
@@ -106,7 +106,7 @@ class VehicleRentalRequestInfoCom extends React.Component {
                         <label className="col-form-label bold">Thời gian bắt đầu:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{formatDate(VehicleRentalRequest.StartTime, true)}</label>
+                        <label className="col-form-label">{formatDate(VehicleRentalRequest.StartTime, false)}</label>
                     </div>
                 </div>
 
@@ -114,21 +114,14 @@ class VehicleRentalRequestInfoCom extends React.Component {
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Năng lực xe:</label>
                     </div>
-                    <div className="form-group col-md-2">
-                        <Select
-                            value={AbilityID}
-                            onChange={this.handleValueChange.bind(this)}
-                            options={listOption}
-                            placeholder={"--Vui lòng chọn--"}
-                            isDisabled ={this.props.IsUpdateAbility == true ? false : true}
-                        />
+                    <div className="form-group col-md-4">
+                        <label className="col-form-label">{VehicleRentalRequest.Ability + "%"}</label>
                     </div>
-                    <div className="form-group col-md-2"></div>
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Ngày kết thúc:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{formatDate(VehicleRentalRequest.EndTime, true)}</label>
+                        <label className="col-form-label">{formatDate(VehicleRentalRequest.EndTime, false)}</label>
                     </div>
                 </div>
             </React.Fragment>

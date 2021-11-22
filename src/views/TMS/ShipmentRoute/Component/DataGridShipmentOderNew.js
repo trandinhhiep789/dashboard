@@ -1,29 +1,28 @@
-import "react-notifications-component/dist/theme.css";
-
-import { Effect, Modal, ModalManager } from "react-dynamic-modal";
 import React, { Component, PropTypes } from "react";
-import ReactHtmlParser, { convertNodeToElement, htmlparser2, processNodes } from "react-html-parser";
-import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
-import { formatDate, formatMonthDate } from "../../../../common/library/CommonLib.js";
-import { formatMoney, formatNumber } from "../../../../utils/function";
-import { hideModal, showModal } from "../../../../actions/modal";
-
-import { APIHostName } from "../constants";
-import { DEFAULT_ROW_PER_PAGE } from "../../../../constants/systemVars.js";
-import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../constants/functionLists";
-import GridCell from "../../../../common/components/DataGrid/GridCell";
-import GridPage from "../../../../common/components/DataGrid/GridPage";
 import { Link } from "react-router-dom";
-import ListShipCoordinator from "../Component/ListShipCoordinator.js";
-import ListShipCoordinatorNew from "./ListShipCoordinatorNew";
-import { MODAL_TYPE_VIEW } from "../../../../constants/actionTypes";
+import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 import Media from "react-media";
 import { MessageModal } from "../../../../common/components/Modal";
 import ModelContainer from "../../../../common/components/Modal/ModelContainer";
-import ReactNotification from "react-notifications-component";
-import SOPrintTemplate from "../../../../common/components/PrintTemplate/SOPrintTemplate";
-import { callFetchAPI } from "../../../../actions/fetchAPIAction";
+import { DEFAULT_ROW_PER_PAGE } from "../../../../constants/systemVars.js";
+import GridCell from "../../../../common/components/DataGrid/GridCell";
+import GridPage from "../../../../common/components/DataGrid/GridPage";
 import { connect } from "react-redux";
+import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
+import { GET_CACHE_USER_FUNCTION_LIST } from "../../../../constants/functionLists";
+import { formatDate, formatMonthDate } from "../../../../common/library/CommonLib.js";
+import { formatMoney, formatNumber } from "../../../../utils/function";
+import { showModal, hideModal } from "../../../../actions/modal";
+import { MODAL_TYPE_VIEW } from "../../../../constants/actionTypes";
+import ListShipCoordinator from '../Component/ListShipCoordinator.js';
+//import ListShipCoordinator from "../Component/ListShipCoordinatorRoute.js";
+import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from "react-html-parser";
+import { callFetchAPI } from "../../../../actions/fetchAPIAction";
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
+import { APIHostName } from "../constants";
+
+import SOPrintTemplate from "../../../../common/components/PrintTemplate/SOPrintTemplate";
 import { fn } from "moment";
 
 class DataGridShipmentOderNewCom extends Component {
@@ -466,6 +465,8 @@ class DataGridShipmentOderNewCom extends Component {
       CarrierTypeID: objShipmentOrder.CarrierTypeID,
       DeliverUserList: [],
       CurrentShipmentOrderStepID: objShipmentOrder.CurrentShipmentOrderStepID,
+      ShipItemNameList: objShipmentOrder.ShipItemNameList,
+      PrimaryShipItemName: objShipmentOrder.PrimaryShipItemName
     };
     if (e.target.checked) {
       this.state.GridDataShip.push(objShip);
@@ -590,14 +591,14 @@ class DataGridShipmentOderNewCom extends Component {
     });
     this.props.hideModal();
   };
-  handleCloseModal() {
+  handleCloseModal = () => {
     this.props.hideModal();
     this.setState({
       changeGird: false,
       GridDataShip: [],
       ShipmentRouteID: "",
     });
-  }
+  };
 
   handleClickShip = (ShipmentOrderID) => (e) => {
     const { widthPercent } = this.state;
@@ -607,14 +608,29 @@ class DataGridShipmentOderNewCom extends Component {
       if (!apiResult.IsError) {
         this.setState({ changeGird: true });
         let resultdd = this.state.GridDataShip.find((n) => n.ShipmentOrderID == ShipmentOrderID);
-        if (resultdd == undefined) this.state.GridDataShip.push(apiResult.ResultObject.ShipmentOrderDeliver);
+        if (resultdd == undefined) {
+          if (
+            this.state.GridDataShip.length > 0 &&
+            apiResult.ResultObject.ShipmentOrderDeliver.IsPermission == true &&
+            apiResult.ResultObject.ShipmentOrderDeliver.ShipmentOrder_DeliverUserList.length == 0
+          ) {
+            apiResult.ResultObject.ShipmentOrderDeliver["ShipmentOrder_DeliverUserList"] = this.state.GridDataShip[0].ShipmentOrder_DeliverUserList;
+          }
+
+          if (this.state.GridDataShip.length > 0 && apiResult.ResultObject.ShipmentOrderDeliver.IsPermission == true) {
+            apiResult.ResultObject.ShipmentOrderDeliver["VehicleID"] = this.state.GridDataShip[0].VehicleID;
+            apiResult.ResultObject.ShipmentOrderDeliver["DriverUser"] = this.state.GridDataShip[0].DriverUser;
+          }
+          this.state.GridDataShip.push(apiResult.ResultObject.ShipmentOrderDeliver);
+        }
+
         this.props.showModal(MODAL_TYPE_VIEW, {
           title: "Phân tuyến điều phối vận đơn ",
           isShowOverlay: false,
           onhideModal: this.handleClose,
           content: {
             text: (
-              <ListShipCoordinatorNew
+              <ListShipCoordinator
                 ShipmentOrderID={0}
                 ShipmentRouteID={this.state.ShipmentRouteID}
                 InfoCoordinator={this.state.GridDataShip}
@@ -644,7 +660,7 @@ class DataGridShipmentOderNewCom extends Component {
         this.props.showModal(MODAL_TYPE_VIEW, {
           title: "Phân tuyến điều phối vận đơn ",
           isShowOverlay: false,
-          onhideModal: this.handleClose,
+          onhideModal: this.handleCloseModal,
           content: {
             text: (
               <ListShipCoordinator
@@ -690,7 +706,6 @@ class DataGridShipmentOderNewCom extends Component {
     mywindow.document.write("</body></html>");
     // mywindow.document.getElementsByName('body').css( "-webkit-print-color-adjust", "exact !important");
     mywindow.print();
-
     mywindow.close();
 
     return true;

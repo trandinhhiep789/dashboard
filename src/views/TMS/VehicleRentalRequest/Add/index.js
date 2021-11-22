@@ -92,10 +92,21 @@ class AddCom extends React.Component {
         MLObject.RequestUser = MLObject.RequestUser.value;
         MLObject.AddFunctionID = this.props.location.state.AddFunctionID;
         let data = new FormData();
-        data.append("vehicleRentalRequestATTObj", AttachmentList.FileURL);
-        data.append("vehicleRentalRequestObj", JSON.stringify(MLObject));
-        console.log("data", data, MLObject)
-      this.handleSubmit(data)
+        let StartTime = new Date(MLObject.StartTime);
+        let EndTime = new Date(MLObject.EndTime);
+
+        if ( StartTime > EndTime) {
+         
+            formData.dtEndTime.ErrorLst.IsValidatonError = true;
+            formData.dtEndTime.ErrorLst.ValidatonErrorMessage = "Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu thuê xe";
+        }
+        else{
+            data.append("vehicleRentalRequestATTObj", AttachmentList.FileURL);
+            data.append("vehicleRentalRequestObj", JSON.stringify(MLObject));
+            console.log("submit", data, formData, MLObject)
+            this.handleSubmit(data)
+        }
+
 
     }
 
@@ -146,11 +157,12 @@ class AddCom extends React.Component {
 
 
     handleChange(formData, MLObject) {
+        console.log("change", formData, MLObject)
         if (formData.dtEndTime.value.length > 0) {
             let StartTime = new Date(formData.dtStartTime.value);
             let EndTime = new Date(formData.dtEndTime.value);
 
-            if (EndTime >= StartTime) {
+            if (EndTime > StartTime) {
 
                 formData.dtEndTime.ErrorLst.IsValidatonError = false;
                 formData.dtEndTime.ErrorLst.ValidatonErrorMessage = "";
@@ -322,7 +334,8 @@ class AddCom extends React.Component {
                                 controltype="InputControl"
                                 value=""
                                 datasourcemember="ContractID"
-                                validatonList={['required']}
+                                validatonList={['required', 'specialNew']}
+                                maxSize="15"
                             //classNameCustom="customcontrol"
                             />
                         </div>
@@ -334,9 +347,12 @@ class AddCom extends React.Component {
                                 colspan="8"
                                 labelcolspan="4"
                                 readOnly={true}
-                                showTime={false}
+                                showTime={true}
                                 timeFormat={false}
-                                dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
+                                disabledDate={true}
+                                disabledTime={false}
+                                IsGetTime={true}
+                                dateFormat="DD-MM-YYYY HH:mm"//"YYYY-MM-DD"
                                 label="thời gian bắt đầu"
                                 placeholder={formatDate(currentDate, true)}
                                 controltype="InputControl"
@@ -344,6 +360,7 @@ class AddCom extends React.Component {
                                 validatonList={["required"]}
                                 datasourcemember="StartTime"
                             />
+                            
                         </div>
 
                         <div className="col-md-6">
@@ -352,9 +369,12 @@ class AddCom extends React.Component {
                                 colspan="8"
                                 labelcolspan="4"
                                 readOnly={true}
-                                showTime={false}
+                                showTime={true}
                                 timeFormat={false}
-                                dateFormat="DD-MM-YYYY"//"YYYY-MM-DD"
+                                disabledDate={true}
+                                disabledTime={false}
+                                IsGetTime={true}
+                                dateFormat="DD-MM-YYYY HH:mm"//"YYYY-MM-DD"
                                 label="thời gian kết thúc"
                                 placeholder={formatDate(currentDate, true)}
                                 controltype="InputControl"

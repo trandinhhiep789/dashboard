@@ -358,6 +358,12 @@ export const MLObjectDefinition = [
         DataSourceMember: "IsCreateMaterialReturnStep"
     },
     {
+        Name: "IsUpdateError",
+        DefaultValue: "",
+        BindControlName: "IsUpdateError",
+        DataSourceMember: "IsUpdateError"
+    },
+    {
         Name: "WebAppHelpDocumentID",
         DefaultValue: "",
         BindControlName: "WebAppHelpDocumentID",

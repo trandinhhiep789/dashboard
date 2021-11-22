@@ -26,7 +26,7 @@ class ElementTextCom extends Component {
             this.props.onValueChange(e.target.name, e.target.value);
     }
     render() {
-        let { name, label, placeholder, icon, colspan, value, readonly, ValidatonErrorMessage, classNameCol, subLabel } = this.props;
+        let { name, label, placeholder, colspan, value, readonly, ValidatonErrorMessage, classNameCol, subLabel } = this.props;
         let className = "form-control form-control-sm";
         let colspanClassName = "col-md-3";
         if (colspan) {
@@ -88,7 +88,7 @@ class ElementTextdropdownCom extends Component {
     }
 
     render() {
-        let { name, label, placeholder, icon, colspan, value, readonly, ValidatonErrorMessage, nameOption, valuenameOption, listoption, classNameCol } = this.props;
+        let { name, label, placeholder, colspan, value, readonly, ValidatonErrorMessage, nameOption, valuenameOption, listoption, classNameCol } = this.props;
         let className = "form-control form-control-sm txtKeyword";
         let colspanClassName = "col-md-3";
         if (colspan) {
@@ -208,7 +208,7 @@ class ElementCheckLDivboxCom extends Component {
             this.props.onValueChange(e.target.name, e.target.value);
     }
     render() {
-        let { name, label, value, colspan, classNameCol } = this.props;
+        let { label, colspan, classNameCol } = this.props;
         let colspanClassName = "col-md-4";
         if (colspan) {
             if (classNameCol) {
@@ -281,14 +281,13 @@ class ElementComboBoxNewChangeCom extends Component {
     }
 
     componentDidMount() {
-        let { listoption, IsAutoLoadItemFromCache, LoadItemCacheKeyID, ValueMember, NameMember, filterName, filterValue, filterobj } = this.props;
-        // console.log("this.props.isautoloaditemfromcachess: ", this.props.isautoloaditemfromcache,this.props.loaditemcachekeyid,this.props.listoption)
+        let { listoption, IsAutoLoadItemFromCache, LoadItemCacheKeyID, ValueMember, NameMember, filterValue, filterobj } = this.props;
+
         if (IsAutoLoadItemFromCache) {
-            // console.log("ValueMember ", ValueMember, NameMember, this.props);
 
             if (this.props.isUsercache == true) {
                 this.props.callGetUserCache(LoadItemCacheKeyID).then((result) => {
-                    // console.log("this.props.isautoloaditemfromcach2: ", this.props.LoadItemCacheKeyID, this.state.Listoption, result);
+
                     listoption = [{ value: -1, label: this.props.placeholder }];
                     if (!result.IsError && result.ResultObject.CacheData != null) {
                         result.ResultObject.CacheData.map((cacheItem) => {
@@ -305,45 +304,42 @@ class ElementComboBoxNewChangeCom extends Component {
                         this.setState({ ListOption: listoption });
 
                     }
-                    //  console.log("this.props.isautoloaditemfromcachess: ",this.props.loaditemcachekeyid, this.state.Listoption);
                 });
 
-            }
-            else {
+            } else {
                 this.props.callGetCache(LoadItemCacheKeyID).then((result) => {
 
-                    // console.log("this.props.isautoloaditemfromcach2: ", result);
                     listoption = [{ value: -1, label: this.props.placeholder }];
                     if (!result.IsError && result.ResultObject.CacheData != null) {
                         if (typeof filterobj != undefined) {
-                            // console.log(filterobj,result.ResultObject.CacheData,result.ResultObject.CacheData.filter(n => n.filterobj == 1))
-                            result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
-                                listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
-                            }
-                            );
 
-                        }
-                        else {
+                            if (this.props.IsFilterIncludes) { // filter giá trị trong chuỗi
+                                result.ResultObject.CacheData.filter(n => n[filterobj].includes(filterValue)).map((cacheItem) => {
+                                    listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
+                                });
+                            } else {
+                                result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
+                                    listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
+                                });
+                            }
+
+                        } else {
                             result.ResultObject.CacheData.map((cacheItem) => {
                                 listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
-                            }
-                            );
+                            });
                         }
 
                         this.setState({ ListOption: listoption, Data: result.ResultObject.CacheData });
                         const aa = this.bindcombox(this.props.value, listoption);
                         this.setState({ SelectedOption: aa });
-                    }
-                    else {
+                    } else {
                         this.setState({ ListOption: listoption });
                     }
-                    //  console.log("this.props.isautoloaditemfromcachess: ",this.props.loaditemcachekeyid, this.state.Listoption);
+
                 });
             }
 
-        }
-        else {
-            //console.log("this.props.isautoloaditemfromcache1: ",this.props.loaditemcachekeyid, this.state.Listoption);
+        } else {
             this.setState({ ListOption: listoption });
             const aa = this.bindcombox(this.props.value, listoption);
             this.setState({ SelectedOption: aa });
@@ -376,7 +372,7 @@ class ElementComboBoxNewChangeCom extends Component {
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.filterValue) !== JSON.stringify(nextProps.filterValue)) // Check if it's a new user, you can also use some unique property, like the ID
         {
-            let { filterName, filterobj, ValueMember, NameMember } = this.props;
+            let { filterobj, ValueMember, NameMember } = this.props;
             if (typeof filterobj != undefined) {
                 let listoptionnew = [{ value: -1, label: this.props.placeholder }];
                 //  console.log(filterobj,this.state.Data.filter(n => n[filterobj] == nextProps.filterValue))
@@ -396,7 +392,7 @@ class ElementComboBoxNewChangeCom extends Component {
     }
 
     render() {
-        let { name, label, icon, colspan, isMultiSelect, ValidatonErrorMessage, placeholder, classNameCol } = this.props;
+        let { name, label, colspan, ValidatonErrorMessage, placeholder, classNameCol } = this.props;
         let className = "select";
         let colspanClassName = "col-md-3";
         if (colspan) {
@@ -416,7 +412,6 @@ class ElementComboBoxNewChangeCom extends Component {
 
             className += " is-invalid";
         }
-        const selectedOption = this.state.SelectedOption;
 
         return (
             <div className={colspanClassName}  >
@@ -438,6 +433,10 @@ class ElementComboBoxNewChangeCom extends Component {
             </div>
         );
     }
+}
+
+ElementComboBoxNewChangeCom.defaultProps = {
+    IsFilterIncludes: false
 }
 
 const ElementComboBoxNewChange = connect(null, mapDispatchToProps)(ElementComboBoxNewChangeCom);
@@ -473,7 +472,7 @@ class ElementComboBoxCom extends Component {
         return selectedOption;
     }
     componentDidMount() {
-        let { listoption, IsAutoLoadItemFromCache, LoadItemCacheKeyID, ValueMember, NameMember, filterName, filterValue, filterobj } = this.props;
+        let { listoption, IsAutoLoadItemFromCache, LoadItemCacheKeyID, ValueMember, NameMember, filterValue, filterobj } = this.props;
         // console.log("this.props.isautoloaditemfromcachess: ", this.props.isautoloaditemfromcache,this.props.loaditemcachekeyid,this.props.listoption)
         if (IsAutoLoadItemFromCache) {
             // console.log("ValueMember ", ValueMember, NameMember, this.props);
@@ -568,7 +567,7 @@ class ElementComboBoxCom extends Component {
 
         if (JSON.stringify(this.props.filterValue) !== JSON.stringify(nextProps.filterValue)) // Check if it's a new user, you can also use some unique property, like the ID
         {
-            let { filterName, filterobj, ValueMember, NameMember } = this.props;
+            let { filterobj, ValueMember, NameMember } = this.props;
             if (typeof filterobj != undefined) {
                 let listoptionnew = [{ value: -1, label: this.props.placeholder }];
                 //  console.log(filterobj,this.state.Data.filter(n => n[filterobj] == nextProps.filterValue))
@@ -588,7 +587,7 @@ class ElementComboBoxCom extends Component {
     }
 
     render() {
-        let { name, label, icon, colspan, isMultiSelect, ValidatonErrorMessage, placeholder, classNameCol } = this.props;
+        let { name, label, colspan, ValidatonErrorMessage, placeholder, classNameCol } = this.props;
         let className = "select";
         let colspanClassName = "col-md-3";
         if (colspan) {
@@ -608,7 +607,6 @@ class ElementComboBoxCom extends Component {
 
             className += " is-invalid";
         }
-        const selectedOption = this.state.SelectedOption;
 
         return (
             <div className={colspanClassName}  >
@@ -696,7 +694,7 @@ class ElementComboBoxNewCom extends Component {
     }
 
     render() {
-        let { name, label, icon, colspan, isMultiSelect, validationErrorMessage, placeholder, classNameCol } = this.props;
+        let { name, isMultiSelect, validationErrorMessage, placeholder, classNameCol } = this.props;
         let className = "select";
 
         let formRowClassName = "form-row";
@@ -770,7 +768,7 @@ class ElementTextNewCom extends Component {
             this.props.onValueChange(e.target.name, e.target.value);
     }
     render() {
-        let { name, label, placeholder, icon, colspan, value, readonly, validationErrorMessage, classNameCol } = this.props;
+        let { name, placeholder, value, readonly, validationErrorMessage, classNameCol } = this.props;
         let className = "form-control form-control-sm";
         if (this.props.CSSClassName != null)
             className = this.props.CSSClassName;
@@ -835,7 +833,7 @@ class ElementTextNewFullCom extends Component {
             this.props.onValueChange(e.target.name, e.target.value);
     }
     render() {
-        let { name, label, placeholder, icon, colspan, value, readonly, validationErrorMessage, classNameCol } = this.props;
+        let { name, placeholder, value, validationErrorMessage, classNameCol } = this.props;
         let className = "form-control form-control-sm";
         if (this.props.CSSClassName != null)
             className = this.props.CSSClassName;
@@ -1055,7 +1053,6 @@ class ElementDatetimeMonthYearCom extends Component {
     handleValueChange(name, moment) {
         //e.preventDefault();
         // console.log('moment', moment.format('LL'))
-        const momentNew = ExportStringToMonth(moment)
         if (this.props.onValueChange != null)
             this.props.onValueChange(name, moment);
     }
@@ -1080,8 +1077,8 @@ class ElementDatetimeMonthYearCom extends Component {
             className += " is-invalid";
         }
         let classnameCus = "form-group form-group-input form-group-input-date "
-        if(this.props.classNameCustom != undefined || this.props.classNameCustom != "" ){
-            classnameCus ="form-group form-group-input form-group-input-date " + this.props.classNameCustom
+        if (this.props.classNameCustom != undefined || this.props.classNameCustom != "") {
+            classnameCus = "form-group form-group-input form-group-input-date " + this.props.classNameCustom
         }
 
         return (
@@ -1141,7 +1138,7 @@ class ElementComboBoxByCompanyCom extends Component {
         return selectedOption;
     }
     componentDidMount() {
-        let { listoption, IsAutoLoadItemFromCache, LoadItemCacheKeyID, ValueMember, NameMember, filterName, filterValue, filterobj } = this.props;
+        let { listoption, IsAutoLoadItemFromCache, LoadItemCacheKeyID, ValueMember, NameMember, filterValue, filterobj } = this.props;
         // console.log("this.props.isautoloaditemfromcachess: ", this.props.isautoloaditemfromcache,this.props.loaditemcachekeyid,this.props.listoption)
         if (IsAutoLoadItemFromCache) {
             // console.log("ValueMember ", ValueMember, NameMember, this.props);
@@ -1234,7 +1231,7 @@ class ElementComboBoxByCompanyCom extends Component {
 
         if (JSON.stringify(this.props.filterValue) !== JSON.stringify(nextProps.filterValue)) // Check if it's a new user, you can also use some unique property, like the ID
         {
-            let { filterName, filterobj, ValueMember, NameMember } = this.props;
+            let { filterobj, ValueMember, NameMember } = this.props;
             if (typeof filterobj != undefined) {
                 let listoptionnew = [{ value: -1, label: this.props.placeholder }];
                 //  console.log(filterobj,this.state.Data.filter(n => n[filterobj] == nextProps.filterValue))
@@ -1254,7 +1251,7 @@ class ElementComboBoxByCompanyCom extends Component {
     }
 
     render() {
-        let { name, label, icon, colspan, isMultiSelect, ValidatonErrorMessage, placeholder, classNameCol } = this.props;
+        let { name, label, colspan, isMultiSelect, ValidatonErrorMessage, placeholder, classNameCol } = this.props;
         let className = "select";
         let colspanClassName = "col-md-3";
         if (colspan) {
@@ -1369,6 +1366,7 @@ class ProductComboBoxCom extends React.Component {
         this.props.callFetchAPI("ERPAPI", 'api/ProductSearch/Search', listMLObject).then(apiResult => {
             let listOptionNew = [{ value: null, label: "------ Chọn ------" }];
             let selectedOption = [];
+
             for (let i = 0; i < apiResult.ResultObject.length; i++) {
                 listOptionNew.push({ value: apiResult.ResultObject[i].ProductID, label: apiResult.ResultObject[i].ProductName });
                 selectedOption.push({ value: apiResult.ResultObject[i].ProductID, label: apiResult.ResultObject[i].ProductName });
@@ -1505,7 +1503,7 @@ class ElementTextdropdownNewCom extends Component {
     }
 
     render() {
-        let { name, label, placeholder, icon, colspan, value, readonly, ValidatonErrorMessage, nameOption, valuenameOption, listoption, classNameCol } = this.props;
+        let { name, label, placeholder, colspan, value, readonly, ValidatonErrorMessage, nameOption, valuenameOption, listoption, classNameCol } = this.props;
         let className = "form-control form-control-sm txtKeyword";
         let colspanClassName = "col-md-3";
         if (colspan) {
@@ -1595,7 +1593,7 @@ class ElementTreeSelectCom extends Component {
         return selectedOption;
     }
     componentDidMount() {
-        let { listoption, IsAutoLoadItemFromCache, LoadItemCacheKeyID, ValueMember, NameMember, filterName, filterValue, filterobj } = this.props;
+        let { listoption, IsAutoLoadItemFromCache, LoadItemCacheKeyID, ValueMember, NameMember, filterValue, filterobj } = this.props;
         // console.log("this.props.isautoloaditemfromcachess: ", this.props.isautoloaditemfromcache,this.props.loaditemcachekeyid,this.props.listoption)
         if (IsAutoLoadItemFromCache) {
             // console.log("ValueMember ", ValueMember, NameMember, this.props);
@@ -1671,7 +1669,7 @@ class ElementTreeSelectCom extends Component {
     getComboValue(selectedOption) {
         let result = "";
         if (selectedOption != -1 && selectedOption != null && selectedOption != "") {
-            result = selectedOption.reduce((data, item, index) => {
+            result = selectedOption.reduce((data, item) => {
                 const comma = data.length ? "," : "";
                 return data + comma + item;
             }, '');
@@ -1693,7 +1691,7 @@ class ElementTreeSelectCom extends Component {
 
         if (JSON.stringify(this.props.filterValue) !== JSON.stringify(nextProps.filterValue)) // Check if it's a new user, you can also use some unique property, like the ID
         {
-            let { filterName, filterobj, ValueMember, NameMember } = this.props;
+            let { filterobj, ValueMember, NameMember } = this.props;
             if (typeof filterobj != undefined) {
                 let listoptionnew = [{ value: -1, label: this.props.placeholder }];
                 //  console.log(filterobj,this.state.Data.filter(n => n[filterobj] == nextProps.filterValue))
@@ -1713,7 +1711,7 @@ class ElementTreeSelectCom extends Component {
     }
 
     render() {
-        let { name, label, icon, colspan, isMultiSelect, ValidatonErrorMessage, placeholder, classNameCol, maxTagCount } = this.props;
+        let { label, colspan, ValidatonErrorMessage, placeholder, classNameCol, maxTagCount } = this.props;
         let className = "select";
         let colspanClassName = "col-md-3";
         if (colspan) {
@@ -1733,7 +1731,6 @@ class ElementTreeSelectCom extends Component {
 
             className += " is-invalid";
         }
-        const selectedOption = this.state.SelectedOption;
 
         const tProps = {
             treeData: this.state.ListOption,
@@ -1767,22 +1764,22 @@ const ElementTreeSelect = connect(null, mapDispatchToProps)(ElementTreeSelectCom
 
 
 export default {
-    ElementText,
-    ElementTextdropdown,
     ElementCheckbox,
+    ElementCheckLDivbox,
     ElementComboBox,
-    ElementTreeSelect,
     ElementComboBoxByCompany,
+    ElementComboBoxNew,
+    ElementComboBoxNewChange,
     ElementDatetime,
     ElementDatetimeFromTo,
-    ElementCheckLDivbox,
-    ElementComboBoxNew,
+    ElementDatetimeMonthYear,
+    ElementText,
+    ElementTextdropdown,
+    ElementTextdropdownNew,
     ElementTextNew,
     ElementTextNewFull,
-    ElementDatetimeMonthYear,
+    ElementTreeSelect,
     MultiSelectUserComboBox,
-    ElementComboBoxNewChange,
     ProductComboBox,
-    ElementTextdropdownNew
 };
 
