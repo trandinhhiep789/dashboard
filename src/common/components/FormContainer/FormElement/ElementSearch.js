@@ -312,17 +312,9 @@ class ElementComboBoxNewChangeCom extends Component {
                     listoption = [{ value: -1, label: this.props.placeholder }];
                     if (!result.IsError && result.ResultObject.CacheData != null) {
                         if (typeof filterobj != undefined) {
-
-                            if (this.props.IsFilterIncludes) { // filter giá trị trong chuỗi
-                                result.ResultObject.CacheData.filter(n => n[filterobj].includes(filterValue)).map((cacheItem) => {
-                                    listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
-                                });
-                            } else {
-                                result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
-                                    listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
-                                });
-                            }
-
+                            result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
+                                listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
+                            });
                         } else {
                             result.ResultObject.CacheData.map((cacheItem) => {
                                 listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
@@ -433,10 +425,6 @@ class ElementComboBoxNewChangeCom extends Component {
             </div>
         );
     }
-}
-
-ElementComboBoxNewChangeCom.defaultProps = {
-    IsFilterIncludes: false
 }
 
 const ElementComboBoxNewChange = connect(null, mapDispatchToProps)(ElementComboBoxNewChangeCom);
@@ -1398,6 +1386,8 @@ class ProductComboBoxCom extends React.Component {
         let comboValues = [];
         if (Array.isArray(selectedOption)) {
             comboValues = this.getComboValue(selectedOption);
+        } else if (selectedOption == null) {
+            comboValues.push({ ProductID: -1, ProductName: '------ Chọn ------' });
         } else {
             comboValues.push({ ProductID: selectedOption.value, ProductName: selectedOption.label });
         }

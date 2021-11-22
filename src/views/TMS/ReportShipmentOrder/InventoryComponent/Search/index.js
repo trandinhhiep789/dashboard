@@ -19,7 +19,7 @@ import {
 } from '../../../../../constants/keyCache';
 
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
-import { callGetCache } from "../../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { MessageModal } from "../../../../../common/components/Modal";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -48,6 +48,7 @@ class SearchCom extends React.Component {
         this.handleSetMLObjectProductID = this.handleSetMLObjectProductID.bind(this);
         this.handleChangeSearchForm = this.handleChangeSearchForm.bind(this);
         this.callGetCacheStore = this.callGetCacheStore.bind(this);
+        this.setInventoryStatusName = this.setInventoryStatusName.bind(this);
         this.showMessage = this.showMessage.bind(this);
     }
 
@@ -69,7 +70,7 @@ class SearchCom extends React.Component {
         // this.props.callFetchAPI(APIHostName, "api/Error/SearchByShipmentOrderID", "211116000000181").then(apiResult => {
         //     console.log("62", apiResult)
         // });
-
+        this.props.callClearLocalCache("ERPRELATECACHE.INVENTORYSTATUS");
     }
 
     showMessage(message) {
@@ -127,6 +128,19 @@ class SearchCom extends React.Component {
         })
     }
 
+    setInventoryStatusName(InventoryStatusID) {
+        switch (InventoryStatusID) {
+            case 1:
+                return "Mới";
+            case 2:
+                return "Trả xác";
+            case 5:
+                return "Thanh lý";
+            default:
+                break;
+        }
+    }
+
     handleExportFile(excelData) {
 
         const ws = XLSX.utils.json_to_sheet(excelData);
@@ -144,15 +158,25 @@ class SearchCom extends React.Component {
         if (parameter == -1 || parameter == "") {
             return "";
         } else {
-            const uptParameter = parameter.map(item => item.ProductID);
-            let result = uptParameter.toString();
-            return result;
+            const uptParameter = parameter.reduce((acc, val) => {
+                if (val.ProductID == -1) {
+                    return acc;
+                } else {
+                    if (acc == "") {
+                        return `${val.ProductID}`;
+                    } else {
+                        return `${acc},${val.ProductID}`;
+                    }
+                }
+            }, "");
+
+            return uptParameter;
         }
     }
 
     handleSetInventoryStatusID(parameter) {
-        if (parameter == -1 || parameter == "") {
-            return "";
+        if (parameter == -1 || parameter == "" || parameter == "1,2,5") {
+            return "1,2,5";
         } else if (parameter == 1) {
             return "1";
         } else {
@@ -172,8 +196,10 @@ class SearchCom extends React.Component {
             StoreID: MLObject.StoreID,
             ProductIDList: this.handleSetMLObjectProductID(MLObject.ProductID),
             InventoryStatusIDList: this.handleSetInventoryStatusID(MLObject.InventoryStatusID),
-            MainGroupIDList: MLObject.MainGroupID == -1 ? "" : MLObject.MainGroupID.toString(),
-            SubGroupIDList: MLObject.SubGroupID == -1 ? "" : MLObject.SubGroupID.toString()
+            // MainGroupIDList: MLObject.MainGroupID == -1 ? "" : MLObject.MainGroupID.toString(),
+            // SubGroupIDList: MLObject.SubGroupID == -1 ? "" : MLObject.SubGroupID.toString()
+            MainGroupIDList: 624,
+            SubGroupIDList: 1771
         }
 
         this.props.callFetchAPI(APIHostName, APIExportPath, uptMLObject).then(apiResult => {
@@ -187,8 +213,7 @@ class SearchCom extends React.Component {
                             "Tên kho": this.state.StoreName,
                             "Mã sản phẩm": item.PRODUCTID,
                             "Tên sản phẩm": item.PRODUCTNAME,
-                            "Mã trạng thái": item.INVENTORYSTATUSID,
-                            "Tên trạng thái": item.INVENTORYSTATUSNAME,
+                            "Tên trạng thái": this.setInventoryStatusName(item.INVENTORYSTATUSID),
                             "Số lượng tồn": item.QUANTITY
                         }
                     });
@@ -215,8 +240,10 @@ class SearchCom extends React.Component {
             StoreID: MLObject.StoreID,
             ProductIDList: this.handleSetMLObjectProductID(MLObject.ProductID),
             InventoryStatusIDList: this.handleSetInventoryStatusID(MLObject.InventoryStatusID),
-            MainGroupIDList: MLObject.MainGroupID == -1 ? "" : MLObject.MainGroupID.toString(),
-            SubGroupIDList: MLObject.SubGroupID == -1 ? "" : MLObject.SubGroupID.toString()
+            // MainGroupIDList: MLObject.MainGroupID == -1 ? "" : MLObject.MainGroupID.toString(),
+            // SubGroupIDList: MLObject.SubGroupID == -1 ? "" : MLObject.SubGroupID.toString()
+            MainGroupIDList: 624,
+            SubGroupIDList: 1771
         }
 
         this.props.callFetchAPI(APIHostName, APIExportPath, uptMLObject).then(apiResult => {
@@ -228,7 +255,7 @@ class SearchCom extends React.Component {
                         return {
                             ...item,
                             STORENAME: this.state.StoreName,
-                            INVENTORYSTATUSIDNAME: `${item.INVENTORYSTATUSID} - ${item.INVENTORYSTATUSNAME}`
+                            INVENTORYSTATUSNAME: this.setInventoryStatusName(item.INVENTORYSTATUSID)
                         }
                     })
 
@@ -243,7 +270,6 @@ class SearchCom extends React.Component {
     }
 
     handleChangeSearchForm(FormDataContolLstd, MLObjectDefinition) {
-        console.log(FormDataContolLstd, MLObjectDefinition)
         if (this.state.StoreID != FormDataContolLstd.cbStoreID.value) {
             this.callGetCacheStore(FormDataContolLstd.cbStoreID.value);
         }
@@ -312,6 +338,9 @@ const mapDispatchToProps = dispatch => {
         },
         hideModal: (type, props) => {
             dispatch(hideModal(type, props));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID));
         }
     };
 };
