@@ -674,3 +674,18 @@
 }
 
 
+.frmUpdateCost{
+    .txtUnit{
+        height: 35px;
+        font-size: 15px;
+        font-weight: 600;
+        vertical-align: bottom;
+        margin-bottom: 0;
+        text-align: left;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-content: flex-start;
+    }
+}

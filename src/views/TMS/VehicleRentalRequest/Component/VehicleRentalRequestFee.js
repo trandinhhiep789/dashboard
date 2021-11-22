@@ -113,10 +113,10 @@ class VehicleRentalRequestFeeCom extends Component {
 
     render() {
         return (
-            <div className="card modalForm">
+            <div className="card modalForm frmUpdateCost">
                 <div className="card-body">
                     <div className="form-row">
-                        <div className="col-md-12">
+                        <div className="col-md-11">
                             <FormControl.TextBoxCurrency
                                 name="txtCost"
                                 colspan="8"
@@ -130,6 +130,9 @@ class VehicleRentalRequestFeeCom extends Component {
                                 maxSize={15}
                                 onValueChange={this.handleOnValueChange}
                             />
+                        </div>
+                        <div className="col-md-1">
+                            <label className="txtUnit">VNĐ</label>
                         </div>
                     </div>
                 </div>
