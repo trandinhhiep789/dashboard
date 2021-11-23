@@ -627,7 +627,9 @@ class ListShipCoordinatorRouteCom extends Component {
       this.state.ShipmentOrder[indexRow].OrderIndex = indexRow;
       this.state.ShipmentOrder[indexRow].DeliverUserLst = elementDeliverUserList.join();
       this.state.ShipmentOrder[indexRow].DeliverUserFullNameList = elementDeliverUserFullList.join();
-      this.state.ShipmentOrder[indexRow].DriverUser = this.state.objCoordinator.VehicleDriverUser.value;
+      if (this.state.objCoordinator.VehicleDriverUservalue) {
+        this.state.ShipmentOrder[indexRow].DriverUser = this.state.objCoordinator.VehicleDriverUser.value;
+      }
       this.state.ShipmentOrder[indexRow].VehicleID = this.state.objCoordinator.VehicleID;
       this.state.ShipmentOrder[indexRow].CoordinatorNote = this.state.objectDescription[row.ShipmentOrderID]["content"];
       elementDeliverUserList = [];
@@ -642,9 +644,6 @@ class ListShipCoordinatorRouteCom extends Component {
       this.addNotification(this.checkInputName(elementobject), true);
       return;
     }
-
-    console.log("this.state.ShipmentOrder", this.state.ShipmentOrder);
-    console.log("SUBMITTTTTTTTTTTTTTTTTTT");
 
     if (this.state.ShipmentRouteID != "") {
       this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddShipmentRouteLstNew", this.state.ShipmentOrder).then((apiResult) => {
