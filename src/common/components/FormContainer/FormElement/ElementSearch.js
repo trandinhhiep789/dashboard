@@ -282,13 +282,12 @@ class ElementComboBoxNewChangeCom extends Component {
 
     componentDidMount() {
         let { listoption, IsAutoLoadItemFromCache, LoadItemCacheKeyID, ValueMember, NameMember, filterValue, filterobj } = this.props;
-        // console.log("this.props.isautoloaditemfromcachess: ", this.props.isautoloaditemfromcache,this.props.loaditemcachekeyid,this.props.listoption)
+
         if (IsAutoLoadItemFromCache) {
-            // console.log("ValueMember ", ValueMember, NameMember, this.props);
 
             if (this.props.isUsercache == true) {
                 this.props.callGetUserCache(LoadItemCacheKeyID).then((result) => {
-                    // console.log("this.props.isautoloaditemfromcach2: ", this.props.LoadItemCacheKeyID, this.state.Listoption, result);
+
                     listoption = [{ value: -1, label: this.props.placeholder }];
                     if (!result.IsError && result.ResultObject.CacheData != null) {
                         result.ResultObject.CacheData.map((cacheItem) => {
@@ -305,45 +304,34 @@ class ElementComboBoxNewChangeCom extends Component {
                         this.setState({ ListOption: listoption });
 
                     }
-                    //  console.log("this.props.isautoloaditemfromcachess: ",this.props.loaditemcachekeyid, this.state.Listoption);
                 });
 
-            }
-            else {
+            } else {
                 this.props.callGetCache(LoadItemCacheKeyID).then((result) => {
 
-                    // console.log("this.props.isautoloaditemfromcach2: ", result);
                     listoption = [{ value: -1, label: this.props.placeholder }];
                     if (!result.IsError && result.ResultObject.CacheData != null) {
                         if (typeof filterobj != undefined) {
-                            // console.log(filterobj,result.ResultObject.CacheData,result.ResultObject.CacheData.filter(n => n.filterobj == 1))
                             result.ResultObject.CacheData.filter(n => n[filterobj] == filterValue).map((cacheItem) => {
                                 listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
-                            }
-                            );
-
-                        }
-                        else {
+                            });
+                        } else {
                             result.ResultObject.CacheData.map((cacheItem) => {
                                 listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
-                            }
-                            );
+                            });
                         }
 
                         this.setState({ ListOption: listoption, Data: result.ResultObject.CacheData });
                         const aa = this.bindcombox(this.props.value, listoption);
                         this.setState({ SelectedOption: aa });
-                    }
-                    else {
+                    } else {
                         this.setState({ ListOption: listoption });
                     }
-                    //  console.log("this.props.isautoloaditemfromcachess: ",this.props.loaditemcachekeyid, this.state.Listoption);
+
                 });
             }
 
-        }
-        else {
-            //console.log("this.props.isautoloaditemfromcache1: ",this.props.loaditemcachekeyid, this.state.Listoption);
+        } else {
             this.setState({ ListOption: listoption });
             const aa = this.bindcombox(this.props.value, listoption);
             this.setState({ SelectedOption: aa });
@@ -440,6 +428,196 @@ class ElementComboBoxNewChangeCom extends Component {
 }
 
 const ElementComboBoxNewChange = connect(null, mapDispatchToProps)(ElementComboBoxNewChangeCom);
+
+
+class ElementComboBoxFilterTwoConditionCom extends Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = this.handleValueChange.bind(this);
+
+        this.state = {
+            ListOption: [],
+            Data: [],
+            SelectedOption: []
+        }
+    }
+
+    bindcombox(value, listOption) {
+        let values = value;
+        let selectedOption = [];
+        if (values == null || values === -1)
+            return { value: -1, label: this.props.placeholder };
+        if (typeof values.toString() == "string")
+            values = values.toString().split(',');
+        for (let i = 0; i < values.length; i++) {
+            for (let j = 0; j < listOption.length; j++) {
+                if (values[i] == listOption[j].value) {
+                    selectedOption.push({ value: listOption[j].value, label: listOption[j].label });
+                }
+            }
+        }
+        return selectedOption;
+    }
+
+    componentDidMount() {
+        let { listoption, IsAutoLoadItemFromCache, LoadItemCacheKeyID, ValueMember, NameMember, filterValue, filterobj, filterValue_1, filterobj_1 } = this.props;
+
+        if (IsAutoLoadItemFromCache) {
+
+            if (this.props.isUsercache == true) {
+                this.props.callGetUserCache(LoadItemCacheKeyID).then((result) => {
+
+                    listoption = [{ value: -1, label: this.props.placeholder }];
+
+                    if (!result.IsError && result.ResultObject.CacheData != null) {
+                        result.ResultObject.CacheData.map((cacheItem) => {
+                            listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
+                        }
+                        );
+
+                        this.setState({ ListOption: listoption });
+                        const aa = this.bindcombox(this.props.value, listoption);
+                        this.setState({ SelectedOption: aa });
+
+                    } else {
+                        this.setState({ ListOption: listoption });
+                    }
+                });
+
+            } else {
+                this.props.callGetCache(LoadItemCacheKeyID).then((result) => {
+
+                    listoption = [{ value: -1, label: this.props.placeholder }];
+
+                    if (!result.IsError && result.ResultObject.CacheData != null) {
+                        let cacheData = result.ResultObject.CacheData;
+
+                        if (typeof filterobj != undefined) {
+                            cacheData = cacheData.filter(n => n[filterobj] == filterValue);
+                        }
+
+                        if (typeof filterobj_1 != undefined) {
+                            cacheData = cacheData.filter(n => n[filterobj_1] == filterValue_1);
+                        }
+
+                        cacheData.forEach((cacheItem) => {
+                            listoption.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
+                        });
+
+                        this.setState({ ListOption: listoption, Data: result.ResultObject.CacheData });
+                        const aa = this.bindcombox(this.props.value, listoption);
+                        this.setState({ SelectedOption: aa });
+
+                    } else {
+                        this.setState({ ListOption: listoption });
+                    }
+
+                });
+            }
+
+        } else {
+            this.setState({ ListOption: listoption });
+            const aa = this.bindcombox(this.props.value, listoption);
+            this.setState({ SelectedOption: aa });
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(this.props.filterValue) !== JSON.stringify(nextProps.filterValue)) // Check if it's a new user, you can also use some unique property, like the ID
+        {
+            let { filterobj, filterobj_1, ValueMember, NameMember, placeholder } = this.props;
+            let listoptionnew = [{ value: -1, label: placeholder }];
+            let stateData = this.state.Data
+
+            if (typeof filterobj != undefined) {
+                stateData = stateData.filter(n => n[filterobj] == nextProps.filterValue);
+            }
+
+            if (typeof filterobj_1 != undefined) {
+                stateData = stateData.filter(n => n[filterobj_1] == this.props.filterValue_1)
+            }
+
+            stateData.forEach((cacheItem) => {
+                listoptionnew.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
+            });
+
+            this.setState({ ListOption: listoptionnew });
+        }
+
+        if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) // Check if it's a new user, you can also use some unique property, like the ID
+        {
+            const aa = this.bindcombox(nextProps.value, this.state.ListOption);
+            this.setState({ SelectedOption: aa });
+        }
+    }
+
+    getComboValue(selectedOption) {
+        let values = [];
+        if (selectedOption == null)
+            return -1;
+        if (this.props.isMultiSelect) {
+            for (let i = 0; i < selectedOption.length; i++) {
+                values.push(selectedOption[i].value);
+            }
+        } else {
+            return selectedOption.value;
+        }
+
+        return values;
+    }
+
+    handleValueChange(selectedOption) {
+        const comboValues = this.getComboValue(selectedOption);
+        this.setState({ SelectedOption: comboValues });
+        if (this.props.onValueChange)
+            this.props.onValueChange(this.props.name, comboValues, this.props.filterrest);
+    }
+
+    render() {
+        let { name, label, colspan, ValidatonErrorMessage, placeholder, classNameCol } = this.props;
+        let className = "select";
+        let colspanClassName = "col-md-3";
+        if (colspan) {
+            if (classNameCol) {
+                colspanClassName = "col-md-" + this.props.colspan + " " + classNameCol;
+            }
+            else {
+                colspanClassName = "col-md-" + this.props.colspan;
+            }
+        }
+        let labeldiv;
+        if (label) {
+            labeldiv = <label className="col-form-label" htmlFor="input-normal">{label}</label>;
+        }
+
+        if (ValidatonErrorMessage && ValidatonErrorMessage != "") {
+
+            className += " is-invalid";
+        }
+
+        return (
+            <div className={colspanClassName}  >
+                <div className="form-group form-group-input form-group-input-select">
+                    {labeldiv}
+                    <Select
+                        value={this.state.SelectedOption}
+                        name={name}
+                        ref={this.props.inputRef}
+                        onChange={this.handleValueChange}
+                        options={this.state.ListOption}
+                        isMulti={this.props.isMultiSelect}
+                        isSearchable={true}
+                        placeholder={placeholder}
+                        className={className}
+                    />
+                    <div className="invalid-feedback">{ValidatonErrorMessage}</div>
+                </div>
+            </div>
+        );
+    }
+}
+
+const ElementComboBoxFilterTwoCondition = connect(null, mapDispatchToProps)(ElementComboBoxFilterTwoConditionCom);
 
 
 class ElementComboBoxCom extends Component {
@@ -1366,6 +1544,7 @@ class ProductComboBoxCom extends React.Component {
         this.props.callFetchAPI("ERPAPI", 'api/ProductSearch/Search', listMLObject).then(apiResult => {
             let listOptionNew = [{ value: null, label: "------ Chọn ------" }];
             let selectedOption = [];
+
             for (let i = 0; i < apiResult.ResultObject.length; i++) {
                 listOptionNew.push({ value: apiResult.ResultObject[i].ProductID, label: apiResult.ResultObject[i].ProductName });
                 selectedOption.push({ value: apiResult.ResultObject[i].ProductID, label: apiResult.ResultObject[i].ProductName });
@@ -1397,6 +1576,8 @@ class ProductComboBoxCom extends React.Component {
         let comboValues = [];
         if (Array.isArray(selectedOption)) {
             comboValues = this.getComboValue(selectedOption);
+        } else if (selectedOption == null) {
+            comboValues.push({ ProductID: -1, ProductName: '------ Chọn ------' });
         } else {
             comboValues.push({ ProductID: selectedOption.value, ProductName: selectedOption.label });
         }
@@ -1767,6 +1948,7 @@ export default {
     ElementCheckLDivbox,
     ElementComboBox,
     ElementComboBoxByCompany,
+    ElementComboBoxFilterTwoCondition,
     ElementComboBoxNew,
     ElementComboBoxNewChange,
     ElementDatetime,

@@ -14,8 +14,12 @@ import {
     PagePath,
 } from "../constants";
 
+import {
+    ERPCOMMONCACHE_STORE,
+} from '../../../../../constants/keyCache';
+
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
-import { callGetCache } from "../../../../../actions/cacheAction";
+import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { MessageModal } from "../../../../../common/components/Modal";
 import { showModal, hideModal } from '../../../../../actions/modal';
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -27,7 +31,9 @@ class SearchCom extends React.Component {
         super(props);
 
         this.state = {
-            gridData: []
+            gridData: [],
+            StoreID: "",
+            StoreName: ""
         };
 
         this.gridref = React.createRef();
@@ -40,6 +46,9 @@ class SearchCom extends React.Component {
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleSetInventoryStatusID = this.handleSetInventoryStatusID.bind(this);
         this.handleSetMLObjectProductID = this.handleSetMLObjectProductID.bind(this);
+        this.handleChangeSearchForm = this.handleChangeSearchForm.bind(this);
+        this.callGetCacheStore = this.callGetCacheStore.bind(this);
+        this.setInventoryStatusName = this.setInventoryStatusName.bind(this);
         this.showMessage = this.showMessage.bind(this);
     }
 
@@ -87,34 +96,72 @@ class SearchCom extends React.Component {
         });
     }
 
-    handleExportFile(excelData) {
-        if (excelData.length == 0) {
-            this.addNotification("Dữ liệu không tồn tại. Không thể xuất file!")
-        } else {
-            const ws = XLSX.utils.json_to_sheet(excelData);
-            const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
-            const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-            const data = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
+    callGetCacheStore(StoreID) {
+        this.props.callGetCache(ERPCOMMONCACHE_STORE).then(result => {
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                const found = result.ResultObject.CacheData.find(item => item.CompanyID == 10 && item.StoreID == StoreID);
 
-            FileSaver.saveAs(data, "Danh sách định nghĩa kho điều phối giao hàng.xlsx");
+                if (found) {
+                    this.setState({
+                        StoreID: found.StoreID,
+                        StoreName: found.StoreName
+                    })
+                }
+            }
+        })
+    }
 
-            this.addNotification("Xuất file thành công!")
+    setInventoryStatusName(InventoryStatusID) {
+        switch (InventoryStatusID) {
+            case 1:
+                return "Mới";
+            case 2:
+                return "Trả xác";
+            case 5:
+                return "Thanh lý";
+            default:
+                break;
         }
+    }
+
+    handleExportFile(excelData) {
+
+        const ws = XLSX.utils.json_to_sheet(excelData);
+        const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+        const data = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
+
+        FileSaver.saveAs(data, "Danh sách định nghĩa kho điều phối giao hàng.xlsx");
+
+        this.addNotification("Xuất file thành công!")
+
     }
 
     handleSetMLObjectProductID(parameter) {
         if (parameter == -1 || parameter == "") {
             return "";
         } else {
-            const uptParameter = parameter.map(item => item.ProductID);
-            let result = uptParameter.toString();
-            return result;
+            const uptParameter = parameter.reduce((acc, val) => {
+                if (val.ProductID == -1) {
+                    return acc;
+                } else {
+                    if (acc == "") {
+                        return `${val.ProductID}`;
+                    } else {
+                        return `${acc},${val.ProductID}`;
+                    }
+                }
+            }, "");
+
+            return uptParameter;
         }
     }
 
     handleSetInventoryStatusID(parameter) {
-        if (parameter == -1 || parameter == "") {
-            return "";
+        if (parameter == -1 || parameter == "" || parameter == "1,2,5") {
+            return "1,2,5";
+        } else if (parameter == 1) {
+            return "1";
         } else {
             const filtered = parameter.filter((item) => item != -1);
             let result = filtered.toString();
@@ -123,29 +170,39 @@ class SearchCom extends React.Component {
     }
 
     handleExportSubmit(formData, MLObject) {
+        if (MLObject.StoreID == -1) {
+            this.addNotification("Vui lòng chọn Mã Kho", true);
+            return;
+        }
+
         const uptMLObject = {
-            StoreIDList: MLObject.StoreID,
+            StoreID: MLObject.StoreID,
             ProductIDList: this.handleSetMLObjectProductID(MLObject.ProductID),
             InventoryStatusIDList: this.handleSetInventoryStatusID(MLObject.InventoryStatusID),
+            // MainGroupIDList: MLObject.MainGroupID == -1 ? "" : MLObject.MainGroupID.toString(),
+            // SubGroupIDList: MLObject.SubGroupID == -1 ? "" : MLObject.SubGroupID.toString()
+            MainGroupIDList: 624,
+            SubGroupIDList: 1771
         }
 
         this.props.callFetchAPI(APIHostName, APIExportPath, uptMLObject).then(apiResult => {
-            console.log(uptMLObject, apiResult);
-
             if (!apiResult.IsError) {
-                const updResultObject = apiResult.ResultObject.map(item => {
-                    return {
-                        "Mã kho": item.STOREID,
-                        "Tên kho": item.STORENAME,
-                        "Mã sản phẩm": item.PRODUCTID,
-                        "Tên sản phẩm": item.PRODUCTNAME,
-                        "Mã trạng thái": item.INVENTORYSTATUSID,
-                        "Tên trạng thái": item.INVENTORYSTATUSNAME,
-                        "Số lượng tồn": item.QUANTITY
-                    }
-                });
+                if (apiResult.ResultObject == null || apiResult.ResultObject.length == 0) {
+                    this.addNotification("Dữ liệu trống không thể xuất file", true);
+                } else {
+                    const updResultObject = apiResult.ResultObject.map(item => {
+                        return {
+                            "Mã kho": item.STOREID,
+                            "Tên kho": this.state.StoreName,
+                            "Mã sản phẩm": item.PRODUCTID,
+                            "Tên sản phẩm": item.PRODUCTNAME,
+                            "Tên trạng thái": this.setInventoryStatusName(item.INVENTORYSTATUSID),
+                            "Số lượng tồn": item.QUANTITY
+                        }
+                    });
 
-                this.handleExportFile(updResultObject)
+                    this.handleExportFile(updResultObject)
+                }
             } else {
                 this.showMessage(apiResult.Message);
             }
@@ -157,25 +214,51 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
+        if (MLObject.StoreID == -1) {
+            this.addNotification("Vui lòng chọn Mã Kho", true);
+            return;
+        }
+
         const uptMLObject = {
-            StoreIDList: MLObject.StoreID,
+            StoreID: MLObject.StoreID,
             ProductIDList: this.handleSetMLObjectProductID(MLObject.ProductID),
             InventoryStatusIDList: this.handleSetInventoryStatusID(MLObject.InventoryStatusID),
+            // MainGroupIDList: MLObject.MainGroupID == -1 ? "" : MLObject.MainGroupID.toString(),
+            // SubGroupIDList: MLObject.SubGroupID == -1 ? "" : MLObject.SubGroupID.toString()
+            MainGroupIDList: 624,
+            SubGroupIDList: 1771
         }
-        console.log(uptMLObject);
 
         this.props.callFetchAPI(APIHostName, APIExportPath, uptMLObject).then(apiResult => {
             if (!apiResult.IsError) {
-                this.setState({
-                    gridData: apiResult.ResultObject
-                })
                 if (apiResult.ResultObject.length == 0) {
-                    this.addNotification("Dữ liệu trống", apiResult.IsError)
+                    this.addNotification("Dữ liệu trống", apiResult.IsError);
+                    this.setState({
+                        gridData: []
+                    })
+                } else {
+                    const uptResultObject = apiResult.ResultObject.map(item => {
+                        return {
+                            ...item,
+                            STORENAME: this.state.StoreName,
+                            INVENTORYSTATUSNAME: this.setInventoryStatusName(item.INVENTORYSTATUSID)
+                        }
+                    })
+
+                    this.setState({
+                        gridData: uptResultObject
+                    })
                 }
             } else {
                 this.showMessage(apiResult.Message);
             }
         });
+    }
+
+    handleChangeSearchForm(FormDataContolLstd, MLObjectDefinition) {
+        if (this.state.StoreID != FormDataContolLstd.cbStoreID.value) {
+            this.callGetCacheStore(FormDataContolLstd.cbStoreID.value);
+        }
     }
 
     render() {
@@ -192,6 +275,7 @@ class SearchCom extends React.Component {
                     IsShowButtonSearch={true}
                     listelement={listelement}
                     MLObjectDefinition={MLObjectDefinition}
+                    onchange={this.handleChangeSearchForm}
                     onExportSubmit={this.handleExportSubmit}
                     onHistorySubmit={this.handleHistorySubmit}
                     onSubmit={this.handleSearchSubmit}
@@ -209,7 +293,7 @@ class SearchCom extends React.Component {
                     IsShowButtonDelete={false}
                     listColumn={listColumn}
                     PKColumnName={""}
-                    RowsPerPage={10}
+                    RowsPerPage={20}
                 />
 
             </React.Fragment>
@@ -240,6 +324,9 @@ const mapDispatchToProps = dispatch => {
         },
         hideModal: (type, props) => {
             dispatch(hideModal(type, props));
+        },
+        callClearLocalCache: (cacheKeyID) => {
+            return dispatch(callClearLocalCache(cacheKeyID));
         }
     };
 };

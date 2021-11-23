@@ -104,6 +104,8 @@ class ProductComboBoxCom extends React.Component {
         let comboValues = [];
         if (Array.isArray(selectedOption)) {
             comboValues = this.getComboValue(selectedOption);
+        } else if (selectedOption == null) {
+            comboValues.push({ ProductID: -1, ProductName: '------ Chọn ------' });
         } else {
             comboValues.push({ ProductID: selectedOption.value, ProductName: selectedOption.label });
         }
