@@ -158,9 +158,9 @@ export const listelement = [
         isMultiSelect: true,
         label: "Trạng thái",
         listoption: [
-            { value: 1, label: "Mới" },
-            { value: 2, label: "Trả xác" },
-            { value: 5, label: "Thanh lý" },
+            { value: 1, label: "1 - Mới" },
+            { value: 2, label: "2 - Trả xác" },
+            { value: 5, label: "5 - Thanh lý" },
         ],
         // LoadItemCacheKeyID: ERPRELATECACHE_INVENTORYSTATUS,
         NameMember: "InventoryStatusName",
@@ -215,7 +215,7 @@ export const listColumn = [
     },
     {
         Name: "QUANTITY",
-        Type: "text",
+        Type: "numberDecimalWithComma",
         Caption: "Số lượng tồn",
         DataSourceMember: "QUANTITY",
         // Width: 100
