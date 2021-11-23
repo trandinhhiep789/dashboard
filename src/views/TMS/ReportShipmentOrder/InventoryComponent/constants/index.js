@@ -24,6 +24,7 @@ export const listelement = [
         // classNameCol: "col-custom",
         colspan: 2,
         DataSourceMember: "AreaID",
+        filterrest: "cbProvinceID,cbStoreID",
         IsAutoLoadItemFromCache: true,
         isMultiSelect: false,
         label: "Miền",
@@ -31,17 +32,18 @@ export const listelement = [
         LoadItemCacheKeyID: ERPCOMMONCACHE_AREATT,
         NameMember: "AreaName",
         placeholder: "Miền",
-        value: -1,
+        value: "",
         ValueMember: "AreaID",
     },
     {
+        // classNameCol: "col-custom",
         type: "ComboBox",
         name: "cbProvinceID",
-        // classNameCol: "col-custom",
         colspan: 2,
         DataSourceMember: "ProvinceID",
         filterName: "cbAreaID",
         filterobj: "AreaID",
+        filterrest: "cbStoreID",
         filterValue: "",
         IsAutoLoadItemFromCache: true,
         isMultiSelect: false,
@@ -50,11 +52,11 @@ export const listelement = [
         LoadItemCacheKeyID: ERPCOMMONCACHE_AREA_PROVINCE,
         NameMember: "ProvinceName",
         placeholder: "Tỉnh",
-        value: -1,
+        value: "",
         ValueMember: "ProvinceID",
     },
     {
-        type: "ComboBoxFilterTwoCondition", // lọc theo 2 điều kiện: 1 theo field search cbProvinceID, 2 là CompanyID = 10
+        type: "ComboBoxFilterTwoCondition", // lọc theo 2 điều kiện: 1 theo field search cbProvinceID, 2 theo CompanyID = 10
         name: "cbStoreID",
         // classNameCol: "col-custom",
         colspan: 2,
@@ -71,7 +73,7 @@ export const listelement = [
         LoadItemCacheKeyID: ERPCOMMONCACHE_STORETMS,
         NameMember: "StoreName",
         placeholder: "Mã kho",
-        value: -1,
+        value: "",
         ValueMember: "StoreID",
     },
     // {
@@ -156,9 +158,9 @@ export const listelement = [
         isMultiSelect: true,
         label: "Trạng thái",
         listoption: [
-            { value: 1, label: "Mới" },
-            { value: 2, label: "Trả xác" },
-            { value: 5, label: "Thanh lý" },
+            { value: 1, label: "1 - Mới" },
+            { value: 2, label: "2 - Trả xác" },
+            { value: 5, label: "5 - Thanh lý" },
         ],
         // LoadItemCacheKeyID: ERPRELATECACHE_INVENTORYSTATUS,
         NameMember: "InventoryStatusName",
@@ -213,7 +215,7 @@ export const listColumn = [
     },
     {
         Name: "QUANTITY",
-        Type: "text",
+        Type: "numberDecimalWithComma",
         Caption: "Số lượng tồn",
         DataSourceMember: "QUANTITY",
         // Width: 100
