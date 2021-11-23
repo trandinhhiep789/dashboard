@@ -865,6 +865,13 @@ const AppMenu = [
                         MenuIcon: "",
                         SubMenu: [],
                     },
+                    {
+                        MenuName: "ErrorApply",
+                        MenuTitle: "Bảng Map lỗi thực tế",
+                        LinkTo: "/ErrorApply",
+                        MenuIcon: "",
+                        SubMenu: [],
+                    },
                 ],
             },
             {
