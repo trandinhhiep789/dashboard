@@ -400,8 +400,10 @@ class ListShipCoordinatorCom extends Component {
             this.state.ShipmentOrder[indexRow].DeliverUserFullNameList = elementDeliverUserFullList.join();
         });
 
-        this.state.ShipmentOrder[0].DeliverUserTotalCODList = this.groupByNew(element, ['UserName', 'CarrierTypeID']);
-        this.state.ShipmentOrder[0].ShipmentRouteID = this.state.ShipmentRouteID;
+        if (this.state.ShipmentOrder.length > 0) {
+            this.state.ShipmentOrder[0].DeliverUserTotalCODList = this.groupByNew(element, ["UserName", "CarrierTypeID"]);
+            this.state.ShipmentOrder[0].ShipmentRouteID = this.state.ShipmentRouteID;
+        }
         this.setState({ FormValidation: elementobject });
 
         if (this.checkInputName(elementobject) != "") {
