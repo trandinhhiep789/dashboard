@@ -872,6 +872,20 @@ const AppMenu = [
                         MenuIcon: "",
                         SubMenu: [],
                     },
+                    {
+                        MenuName: "ErrorGroup",
+                        MenuTitle: "Nhóm lỗi thực tế",
+                        LinkTo: "/ErrorGroup",
+                        MenuIcon: "",
+                        SubMenu: [],
+                    },
+                    {
+                        MenuName: "Error",
+                        MenuTitle: "Lỗi thực tế",
+                        LinkTo: "/Error",
+                        MenuIcon: "",
+                        SubMenu: [],
+                    },
                 ],
             },
             {

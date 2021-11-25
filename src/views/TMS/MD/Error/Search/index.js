@@ -22,7 +22,7 @@ import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_QUALITYASSESSGROUP, ERPCOMMONCACHE_SERVICETYPE, ERPCOMMONCACHE_TMSREWARDTYPE } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_ERROR, ERPCOMMONCACHE_ERRORGROUP, ERPCOMMONCACHE_QUALITYASSESSGROUP, ERPCOMMONCACHE_SERVICETYPE, ERPCOMMONCACHE_TMSREWARDTYPE } from "../../../../../constants/keyCache";
 import { SERVICETYPE_VIEW, SERVICETYPE_DELETE, REWARDTYPE_VIEW, REWARDTYPE_DELETE, QUALITYASSESSGROUP_VIEW, QUALITYASSESSGROUP_DELETE, ERROR_VIEW, ERROR_DELETE } from "../../../../../constants/functionLists";
 
 class SearchCom extends React.Component {
@@ -64,7 +64,7 @@ class SearchCom extends React.Component {
             this.addNotification(apiResult.Message, apiResult.IsError);
             if (!apiResult.IsError) {
                 this.callSearchData(this.state.SearchData);
-                this.props.callClearLocalCache(ERPCOMMONCACHE_QUALITYASSESSGROUP);
+                this.props.callClearLocalCache(ERPCOMMONCACHE_ERROR);
                 // this.handleSubmitInsertLog();
             }
         });
@@ -155,7 +155,7 @@ class SearchCom extends React.Component {
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
-                        FormName="Tìm kiếm danh sách bảng Map lỗi thực tế"
+                        FormName="Tìm kiếm danh sách nhóm lỗi thực tế"
                         MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
