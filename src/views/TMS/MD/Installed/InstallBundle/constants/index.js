@@ -81,7 +81,7 @@ export const AddElementList = [
         placeholder: "",
         icon: "",
         listoption: [],
-        isMultiSelect:true,
+        isMultiSelect: true,
         datasourcemember: "ShipmentOrderTypeID",
         readonly: false,
         validatonList: ["Comborequired"],
@@ -178,7 +178,7 @@ export const EditElementList = [
         label: "loại yêu cầu vận chuyển",
         value: "",
         listoption: [],
-        isMultiSelect:true,
+        isMultiSelect: true,
         datasourcemember: "ShipmentOrderTypeID",
         readonly: false,
         validatonList: ["Comborequired"],
@@ -1055,11 +1055,11 @@ export const InstallBundle_MateriaColumnListEdit = [
         colspan: 10
     },
     {
-        name: "MaterialGroupName",
+        name: "MaterialGroupIDName",
         Type: "text",
         Caption: "Nhóm vật tư",
         label: "Nhóm vật tư",
-        datasourcemember: "MaterialGroupName",
+        datasourcemember: "MaterialGroupIDName",
         Width: 300,
         OrderIndex: 1
     },

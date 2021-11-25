@@ -211,6 +211,8 @@ import { getCookie } from "../../common/library/CommonLib.js";
 import { updatePagePath } from "../../actions/pageAction";
 import BaseDeliveryAbility from "../TMS/MD/BaseDeliveryAbility";
 import ErrorApply from "../TMS/MD/ErrorApply";
+import ErrorGroup from "../TMS/MD/ErrorGroup";
+import Error from "../TMS/MD/Error";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -510,6 +512,8 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/VehicleRentalRequest" component={VehicleRentalRequest} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="/ErrorApply" component={ErrorApply} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/ErrorGroup" component={ErrorGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/Error" component={Error} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 </Switch>

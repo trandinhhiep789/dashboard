@@ -600,12 +600,14 @@ class ListShipCoordinatorRouteCom extends Component {
       }
 
       if (row["TotalCOD"] > 0 && row["IsPaidIn"] == false) {
-        row["ShipmentOrder_DeliverUserList"].map((item, indexRow) => {
-          if (row["ShipmentOrder_DeliverUserList"][indexRow] !== row["ShipmentOrder_DeliverUserList"][indexRow - 1]) {
-            let objMultDeliverUser = { UserName: item.UserName, CarrierTypeID: row["CarrierTypeID"], TotalCOD: row["TotalCOD"] / row["ShipmentOrder_DeliverUserList"].length };
-            element.push(objMultDeliverUser);
-          }
-        });
+        if (Array.isArray(row["ShipmentOrder_DeliverUserList"])) {
+            row["ShipmentOrder_DeliverUserList"].map((item, indexRow) => {
+                if (row["ShipmentOrder_DeliverUserList"][indexRow] !== row["ShipmentOrder_DeliverUserList"][indexRow - 1]) {
+                  let objMultDeliverUser = { UserName: item.UserName, CarrierTypeID: row["CarrierTypeID"], TotalCOD: row["TotalCOD"] / row["ShipmentOrder_DeliverUserList"].length };
+                  element.push(objMultDeliverUser);
+                }
+            });
+        }
       }
 
       if (row.CarrierTypeID === 2) {
@@ -615,13 +617,14 @@ class ListShipCoordinatorRouteCom extends Component {
           return;
         }
       }
-
-      row["ShipmentOrder_DeliverUserList"].map((item, indexRow) => {
-        if (row["ShipmentOrder_DeliverUserList"][indexRow] !== row["ShipmentOrder_DeliverUserList"][indexRow - 1]) {
-          elementDeliverUserList.push(item.UserName);
-          elementDeliverUserFullList.push(item.UserName + "-" + item.FullName);
-        }
-      });
+      if (Array.isArray(row["ShipmentOrder_DeliverUserList"])) {
+        row["ShipmentOrder_DeliverUserList"].map((item, indexRow) => {
+            if (row["ShipmentOrder_DeliverUserList"][indexRow] !== row["ShipmentOrder_DeliverUserList"][indexRow - 1]) {
+              elementDeliverUserList.push(item.UserName);
+              elementDeliverUserFullList.push(item.UserName + "-" + item.FullName);
+            }
+          });
+      }
 
       this.state.ShipmentOrder[indexRow].IsRoute = this.state.objCoordinator.IsRoute;
       this.state.ShipmentOrder[indexRow].OrderIndex = indexRow;
