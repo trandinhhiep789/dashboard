@@ -170,7 +170,7 @@ class SearchCom extends React.Component {
     }
 
     handleExportSubmit(formData, MLObject) {
-        if (MLObject.StoreID == -1) {
+        if (MLObject.StoreID == -1 || MLObject.StoreID == "") {
             this.addNotification("Vui lòng chọn Mã Kho", true);
             return;
         }
@@ -214,7 +214,7 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        if (MLObject.StoreID == -1) {
+        if (MLObject.StoreID == -1 || MLObject.StoreID == "") {
             this.addNotification("Vui lòng chọn Mã Kho", true);
             return;
         }
