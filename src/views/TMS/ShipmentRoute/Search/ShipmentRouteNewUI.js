@@ -9,7 +9,6 @@ import {
   SearchMLObjectRouteDefinition,
   SearchShipmentRouteAPIPath,
   APIHostName,
-  DeleteAPIPath,
   InitSearchShipmentRouteParams,
   PagePath,
   DataGridColumnList,
@@ -22,12 +21,12 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
 import { callGetCache } from "../../../../actions/cacheAction";
+import DataGridNewUI from "./DataGirdNewUI";
 
-class ShipmentRouteCom extends React.Component {
+class ShipmentRouteNewUICom extends React.Component {
   constructor(props) {
     super(props);
     this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
-    this.handleCloseMessage = this.handleCloseMessage.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleonChangePage = this.handleonChangePage.bind(this);
 
@@ -41,6 +40,7 @@ class ShipmentRouteCom extends React.Component {
       PageNumber: 1,
       IsLoadDataComplete: false,
     };
+
     this.gridref = React.createRef();
     this.searchref = React.createRef();
     this.notificationDOMRef = React.createRef();
@@ -51,50 +51,32 @@ class ShipmentRouteCom extends React.Component {
     this.props.updatePagePath(PagePath);
   }
 
-  handleDelete(deleteList, pkColumnName) {
+  handleDelete(dataExport) {
     let listMLObject = [];
-    deleteList.map((row, index) => {
+    dataExport.map((row, index) => {
       let MLObject = {};
-      pkColumnName.map((pkItem, pkIndex) => {
-        MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
-      });
-      MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
+      MLObject = Object.assign({}, row, { DeletedUser: this.props.AppInfo.LoginInfo.Username });
+
       listMLObject.push(MLObject);
     });
 
-    console.log(listMLObject);
-
-    // this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/DeleteList", listMLObject).then((apiResult) => {
-    //   this.setState({ IsCallAPIError: apiResult.IsError });
-    //   this.addNotification(apiResult.Message, apiResult.IsError);
-    //   if (!apiResult.IsError) {
-    //     this.callSearchData(this.state.SearchData);
-    //   }
-    // });
+    this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/DeleteList", listMLObject).then((apiResult) => {
+      this.setState({ IsCallAPIError: apiResult.IsError });
+      this.addNotification(apiResult.Message, apiResult.IsError);
+      if (!apiResult.IsError) {
+        this.callSearchData(this.state.SearchData);
+      }
+    });
   }
 
-  handleInsertCustom(deleteList, pkColumnName) {
-    console.log("deleteList", deleteList);
-    console.log("pkColumnName", pkColumnName);
-
-    let listMLObject = [];
-    deleteList.map((row, index) => {
-      let MLObject = {};
-      pkColumnName.map((pkItem, pkIndex) => {
-        MLObject[pkItem.key] = row.pkColumnName[pkIndex].value;
-      });
-      listMLObject.push(MLObject);
+  handleInsertCustom(dataExport) {
+    this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/EstimateDeliveryDistance", dataExport).then((apiResult) => {
+      this.setState({ IsCallAPIError: apiResult.IsError });
+      this.addNotification(apiResult.Message, apiResult.IsError);
+      if (!apiResult.IsError) {
+        this.callSearchData(this.state.SearchData);
+      }
     });
-
-    console.log("listMLObject", listMLObject);
-
-    // this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/EstimateDeliveryDistance", listMLObject).then((apiResult) => {
-    //   this.setState({ IsCallAPIError: apiResult.IsError });
-    //   this.addNotification(apiResult.Message, apiResult.IsError);
-    //   if (!apiResult.IsError) {
-    //     this.callSearchData(this.state.SearchData);
-    //   }
-    // });
   }
 
   handleonChangePage(pageNum) {
@@ -154,12 +136,6 @@ class ShipmentRouteCom extends React.Component {
     });
   }
 
-  handleCloseMessage() {
-    // if (!this.state.IsCallAPIError) {
-    //     this.callSearchData(this.state.SearchData);
-    // }
-  }
-
   showMessage(message) {
     ModalManager.open(<MessageModal title="Thông báo" message={message} onRequestClose={() => true} onCloseModal={this.handleCloseMessage} />);
   }
@@ -212,7 +188,7 @@ class ShipmentRouteCom extends React.Component {
               className="multiple multiple-custom multiple-custom-display"
             />
           </div>
-          <DataGrid
+          <DataGridNewUI
             listColumn={DataGridColumnList}
             dataSource={this.state.gridDataSource}
             IDSelectColumnName={IDSelectColumnName}
@@ -270,5 +246,5 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-const ShipmentRoute = connect(mapStateToProps, mapDispatchToProps)(ShipmentRouteCom);
-export default ShipmentRoute;
+const ShipmentRouteNewUI = connect(mapStateToProps, mapDispatchToProps)(ShipmentRouteNewUICom);
+export default ShipmentRouteNewUI;

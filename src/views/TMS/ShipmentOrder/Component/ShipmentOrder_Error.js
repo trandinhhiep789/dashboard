@@ -129,6 +129,7 @@ class ShipmentOrder_ErrorCom extends Component {
                         <table className="table table-sm table-striped table-bordered table-hover table-condensed">
                             <thead className="thead-light">
                                 <tr>
+                                    <th className="jsgrid-header-cell" style={{ width: 250 }} >Mã lỗi</th>
                                     <th className="jsgrid-header-cell" style={{ width: 250 }} >Tên lỗi</th>
                                     <th className="jsgrid-header-cell" style={{ width: 250 }} >Thời gian</th>
                                     <th className="jsgrid-header-cell" style={{ width: 250 }} >Nhân viên</th>
@@ -137,6 +138,7 @@ class ShipmentOrder_ErrorCom extends Component {
                             <tbody>
                                 {this.state.ShipmentOrder_ErrorList && this.state.ShipmentOrder_ErrorList.map((item, index) => {
                                     return (<tr key={index}>
+                                        <td>{item.ErrorID}</td>
                                         <td>{item.ErrorName}</td>
                                         <td>{formatDate(item.CreatedDate)}</td>
                                         <td>{item.CreatedUserFullName}</td>

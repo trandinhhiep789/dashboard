@@ -1,31 +1,31 @@
 export const APIHostName = "TMSMDMAPI";
-export const SearchAPIPath = "api/Error_Apply/Search";
-export const LoadAPIPath = "api/Error_Apply/Load";
-export const AddAPIPath = "api/Error_Apply/Add";
-export const UpdateAPIPath = "api/Error_Apply/Update";
-export const DeleteAPIPath = "api/Error_Apply/Delete";
-export const UpdateOrderAPIPath = "api/Error_Apply/UpdateOrder";
-export const BackLink = "/ErrorApply";
-export const AddLink = "/ErrorApply/Add";
+export const SearchAPIPath = "api/ErrorGroup/Search";
+export const LoadAPIPath = "api/ErrorGroup/Load";
+export const AddAPIPath = "api/ErrorGroup/Add";
+export const UpdateAPIPath = "api/ErrorGroup/Update";
+export const DeleteAPIPath = "api/ErrorGroup/Delete";
+export const UpdateOrderAPIPath = "api/ErrorGroup/UpdateOrder";
+export const BackLink = "/ErrorGroup";
+export const AddLink = "/ErrorGroup/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";
 export const IDSelectColumnName = "chkSelect";
-export const PKColumnName = "ErrorApplyID";
+export const PKColumnName = "ErrorGroupID";
 export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách bảng Map lỗi thực tế" }
+    { Link: "", Title: "Danh sách nhóm lỗi thực tế" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/ErrorApply", Title: "Danh sách bảng Map lỗi thực tế" },
+    { Link: "/ErrorGroup", Title: "Danh sách nhóm lỗi thực tế" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/ErrorApply", Title: "Danh sách bảng Map lỗi thực tế" },
+    { Link: "/ErrorGroup", Title: "Danh sách nhóm lỗi thực tế" },
     { Link: "", Title: "Thêm" }
 ];
 
@@ -43,26 +43,23 @@ export const SearchElementList = [
 
 export const AddElementList = [
     {
-        type: "select",
-        name: "txtErrorID",
-        label: "Nhóm lỗi",
-        value: -1,
+        type: "text",
+        name: "txtErrorGroupName",
+        label: "tên nhóm lỗi thực tế",
+        value: "",
+        maxSize: "200",
         placeholder: "",
         icon: "",
-        listoption: [],
-        DataSourceMember: "ErrorID",
+        listoption: {},
+        DataSourceMember: "ErrorGroupName",
         readonly: false,
-        validatonList: ["Comborequired"],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.ERROR",
-        ValueMember: "ErrorID",
-        NameMember: "ErrorName"
+        validatonList: ["required"],
     },
     {
         type: "multiselect",
         name: "txtSubGroupID",
         label: "Nhóm hàng áp dụng",
-        value: "",
+        value: -1,
         placeholder: "",
         icon: "",
         listoption: [],
@@ -76,27 +73,27 @@ export const AddElementList = [
         NameMember: "SubGroupName"
     },
     {
-        type: "text",
-        name: "txtProductID",
-        label: "mã sản phẩm",
+        type: "textarea",
+        name: "txtDescription",
+        label: "Mô tả:",
         value: "",
-        maxSize: "50",
+        maxSize: "2000",
         placeholder: "",
         icon: "",
+        rows: "6",
         listoption: {},
-        DataSourceMember: "ProductID",
+        DataSourceMember: "Description",
         readonly: false,
-        validatonList: ["required"]
+        validatonList: []
     },
     {
         type: "checkbox",
         name: "chkIsActived",
         label: "Kích hoạt:",
-        value: true,
+        value: 1,
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "IsActived",
         readonly: false,
         validatonList: []
     },
@@ -104,46 +101,28 @@ export const AddElementList = [
         type: "checkbox",
         name: "chkIsSystem",
         label: "Hệ thống:",
-        value: false,
+        value: 0,
         placeholder: "",
         icon: "",
         listoption: {},
-        DataSourceMember: "IsSystem",
         readonly: false,
         validatonList: []
     }
-    
 ];
 
 export const EditElementList = [
-    // {
-    //     type: "text",
-    //     name: "txtErrorApplyID",
-    //     label: "mã bảng Map lỗi thực tế",
-    //     value: "",
-    //     maxSize: "20",
-    //     placeholder: "",
-    //     icon: "",
-    //     listoption: {},
-    //     DataSourceMember: "ErrorApplyID",
-    //     readonly: true,
-    //     validatonList: []
-    // },
     {
-        type: "select",
-        name: "txtErrorID",
-        label: "Nhóm lỗi",
-        value: -1,
+        type: "text",
+        name: "txtErrorGroupName",
+        label: "tên nhóm lỗi thực tế",
+        value: "",
+        maxSize: "200",
         placeholder: "",
         icon: "",
-        listoption: [],
-        DataSourceMember: "ErrorID",
+        listoption: {},
+        DataSourceMember: "ErrorGroupName",
         readonly: false,
-        validatonList: ["Comborequired"],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.ERROR",
-        ValueMember: "ErrorID",
-        NameMember: "ErrorName"
+        validatonList: ["required"],
     },
     {
         type: "multiselect",
@@ -163,17 +142,18 @@ export const EditElementList = [
         NameMember: "SubGroupName"
     },
     {
-        type: "text",
-        name: "txtProductID",
-        label: "mã sản phẩm",
+        type: "textarea",
+        name: "txtDescription",
+        label: "Mô tả:",
         value: "",
-        maxSize: "50",
+        maxSize: "2000",
         placeholder: "",
         icon: "",
+        rows: "6",
         listoption: {},
-        DataSourceMember: "ProductID",
+        DataSourceMember: "Description",
         readonly: false,
-        validatonList: ["required"]
+        validatonList: []
     },
     {
         type: "checkbox",
@@ -211,34 +191,16 @@ export const SearchMLObjectDefinition = [
 
 export const MLObjectDefinition = [
     {
-        Name: "ErrorApplyID",
+        Name: "ErrorGroupID",
         DefaultValue: "",
-        BindControlName: "",
-        DataSourceMember: "ErrorApplyID"
+        BindControlName: "txtErrorGroupID",
+        DataSourceMember: "ErrorGroupID"
     },
     {
-        Name: "ProductID",
+        Name: "ErrorGroupName",
         DefaultValue: "",
-        BindControlName: "txtProductID",
-        DataSourceMember: "ProductID"
-    },
-    {
-        Name: "ProductName",
-        DefaultValue: "",
-        BindControlName: "",
-        DataSourceMember: "ProductName"
-    },
-    {
-        Name: "ErrorID",
-        DefaultValue: "",
-        BindControlName: "txtErrorID",
-        DataSourceMember: "ErrorID"
-    },
-    {
-        Name: "ErrorName",
-        DefaultValue: "",
-        BindControlName: "",
-        DataSourceMember: "ErrorName"
+        BindControlName: "txtErrorGroupName",
+        DataSourceMember: "ErrorGroupName"
     },
     {
         Name: "SubGroupID",
@@ -247,10 +209,10 @@ export const MLObjectDefinition = [
         DataSourceMember: "SubGroupID"
     },
     {
-        Name: "SubGroupName",
+        Name: "Description",
         DefaultValue: "",
-        BindControlName: "",
-        DataSourceMember: "SubGroupName"
+        BindControlName: "txtDescription",
+        DataSourceMember: "Description"
     },
     {
         Name: "IsActived",
@@ -289,36 +251,36 @@ export const DataGridColumnList = [
         Name: "chkSelect",
         Type: "checkbox",
         Caption: "Chọn",
-        DataSourceMember: "ErrorApplyID",
+        DataSourceMember: "ErrorGroupID",
         Width: 60
     },
     {
-        Name: "ProductID",
+        Name: "ErrorGroupID",
         Type: "text",
-        Caption: "Mã sản phẩm",
-        DataSourceMember: "ProductID",
-        Width: 100
+        Caption: "Mã nhóm lỗi thực tế",
+        DataSourceMember: "ErrorGroupID",
+        Width: 150
     },
     {
-        Name: "ProductName",
+        Name: "ErrorGroupName",
         Type: "text",
-        Caption: "Tên sản phẩm",
-        DataSourceMember: "ProductName",
-        Width: 150
+        Caption: "Tên nhóm lỗi thực tế",
+        DataSourceMember: "ErrorGroupName",
+        Width: 250
     },
     {
         Name: "SubGroupName",
         Type: "text",
-        Caption: "Nhóm hàng",
+        Caption: "Nhóm hàng áp dụng",
         DataSourceMember: "SubGroupName",
-        Width: 150
+        Width: 250
     },
     {
-        Name: "ErrorName",
+        Name: "Description",
         Type: "text",
-        Caption: "Tên lỗi",
-        DataSourceMember: "ErrorName",
-        Width: 150
+        Caption: "Mô tả",
+        DataSourceMember: "Description",
+        //Width: 200
     },
     {
         Name: "IsActived",
@@ -345,9 +307,9 @@ export const DataGridColumnList = [
         Name: "Action",
         Type: "link",
         Caption: "Tác vụ",
-        DataSourceMember: "ErrorApplyID",
+        DataSourceMember: "ErrorGroupID",
         Width: 100,
-        Link: "/ErrorApply/Edit/",
+        Link: "/ErrorGroup/Edit/",
         LinkText: "Chỉnh sửa"
     }
 ];
