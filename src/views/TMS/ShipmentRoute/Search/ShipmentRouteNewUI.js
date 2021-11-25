@@ -9,7 +9,6 @@ import {
   SearchMLObjectRouteDefinition,
   SearchShipmentRouteAPIPath,
   APIHostName,
-  DeleteAPIPath,
   InitSearchShipmentRouteParams,
   PagePath,
   DataGridColumnList,

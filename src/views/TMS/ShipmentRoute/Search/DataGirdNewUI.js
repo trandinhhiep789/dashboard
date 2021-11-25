@@ -10,7 +10,6 @@ import { MessageModal } from "./../../../../common/components/Modal/index";
 import { Button, Card, Space, Table } from "antd";
 import { APIHostName } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
-import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from "react-html-parser";
 
 class DataGridNewUICom extends Component {
   constructor(props) {
