@@ -509,13 +509,13 @@ export const InitSearchShipmentRouteParams = [
 ];
 
 export const DataGridColumnList = [
-  {
-    Name: "chkSelect",
-    Type: "checkbox",
-    Caption: "Chọn",
-    DataSourceMember: "ShipmentRouteID",
-    Width: 40,
-  },
+  // {
+  //   Name: "chkSelect",
+  //   Type: "checkbox",
+  //   Caption: "Chọn",
+  //   DataSourceMember: "ShipmentRouteID",
+  //   Width: 40,
+  // },
   {
     Name: "ShipmentRouteID",
     Type: "texttolink",

@@ -227,7 +227,7 @@ class DataGridNewUICom extends Component {
 
             const dataSourceChild =
               this.state.DataSourceExpands[record.ShipmentRouteID] &&
-              this.state.DataSourceExpands[record.ShipmentRouteID].ShipmentRoute_OrderItem_1List.map((item, index) => {
+              this.state.DataSourceExpands[record.ShipmentRouteID].ShipmentRoute_OrderItemList.map((item, index) => {
                 return {
                   key: index,
                   ExpectedDeliveryDate: this._genCommentTime(item.ShipmentOrder.ExpectedDeliveryDate),
