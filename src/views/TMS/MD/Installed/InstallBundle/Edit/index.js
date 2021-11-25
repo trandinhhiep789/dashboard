@@ -64,7 +64,25 @@ class EditCom extends React.Component {
                 });
                 this.showMessage(apiResult.Message);
             } else {
-                this.setState({ DataSource: apiResult.ResultObject });
+                if (!apiResult.ResultObject.InstallBundle_MaterialList) {
+                    this.setState({
+                        DataSource: apiResult.ResultObject
+                    });
+                } else {
+                    const uptInstallBundle_MaterialList = apiResult.ResultObject.InstallBundle_MaterialList.map(item => {
+                        return {
+                            ...item,
+                            MaterialGroupIDName: `${item.MaterialGroupID} - ${item.MaterialGroupName}`
+                        }
+                    })
+
+                    this.setState({
+                        DataSource: {
+                            ...apiResult.ResultObject,
+                            InstallBundle_MaterialList: uptInstallBundle_MaterialList
+                        }
+                    });
+                };
             }
             this.setState({
                 IsLoadDataComplete: true
@@ -77,12 +95,11 @@ class EditCom extends React.Component {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-  
-        if (Array.isArray(MLObject.ShipmentOrderTypeID))
-        {
-            MLObject.ShipmentOrderTypeID= MLObject.ShipmentOrderTypeID.join();
+
+        if (Array.isArray(MLObject.ShipmentOrderTypeID)) {
+            MLObject.ShipmentOrderTypeID = MLObject.ShipmentOrderTypeID.join();
         }
-           
+
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
