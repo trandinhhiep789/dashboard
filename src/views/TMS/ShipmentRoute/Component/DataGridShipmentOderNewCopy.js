@@ -331,6 +331,8 @@ const dataGridShipmentOderNewCom = (props) => {
 
   const handleClose = () => {
     setChangeGird(false);
+    setGridDataShip([]);
+    setShipmentRouteID("");
     props.hideModal();
   };
 
@@ -339,7 +341,7 @@ const dataGridShipmentOderNewCom = (props) => {
     if (!apiResult.IsError) {
       props.hideModal();
       setChangeGird(false);
-      setGridData([]);
+      setGridDataShip([]);
       setShipmentRouteID("");
       if (props.onChangePageLoad) props.onChangePageLoad();
     }
