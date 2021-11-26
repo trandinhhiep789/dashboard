@@ -28,7 +28,7 @@ import { ExportStringToDate } from "../../../../common/library/ultils";
 import moment from 'moment';
 import { formatDate, formatDateCusNew } from "../../../../common/library/CommonLib";
 import ShipmentOrder_Conversation from "../Component/ShipmentOrder_Conversation";
-import ShipmentOrder_Error from "../Component/ShipmentOrder_Error";
+import ShipmentOrder_Symptom from "../Component/ShipmentOrder_Symptom";
 
 class DetailCom extends React.Component {
     constructor(props) {
@@ -157,9 +157,9 @@ class DetailCom extends React.Component {
                         InfoActionLogList={this.state.DataSource.ShipmentOrder_ActionLogList}
                     />
 
-                    <ShipmentOrder_Error
+                    <ShipmentOrder_Symptom
                         ShipmentOrderID={this.props.match.params.id}
-                        ShipmentOrder_ErrorList={this.state.DataSource.ShipmentOrder_ErrorList ? this.state.DataSource.ShipmentOrder_ErrorList : []}
+                        ShipmentOrder_SymptomList={this.state.DataSource.ShipmentOrder_SymptomList ? this.state.DataSource.ShipmentOrder_SymptomList : []}
                     />
 
                     <ShipmentOrder_Conversation

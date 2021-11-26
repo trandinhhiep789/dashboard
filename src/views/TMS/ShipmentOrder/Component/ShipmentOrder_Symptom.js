@@ -16,11 +16,11 @@ const containerStyle = {
     width: '98%',
     height: 'calc(100vh - 50%)'//'480px'
 }
-class ShipmentOrder_ErrorCom extends Component {
+class ShipmentOrder_SymptomCom extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            ShipmentOrder_ErrorList: this.props.ShipmentOrder_ErrorList
+            ShipmentOrder_SymptomList: this.props.ShipmentOrder_SymptomList
         }
 
         this.CompareTime = this.CompareTime.bind(this);
@@ -29,9 +29,9 @@ class ShipmentOrder_ErrorCom extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (JSON.stringify(this.props.ShipmentOrder_ErrorList) !== JSON.stringify(nextProps.ShipmentOrder_ErrorList)) {
+        if (JSON.stringify(this.props.ShipmentOrder_SymptomList) !== JSON.stringify(nextProps.ShipmentOrder_SymptomList)) {
             this.setState({
-                ShipmentOrder_ErrorList: nextProps.ShipmentOrder_ErrorList
+                ShipmentOrder_SymptomList: nextProps.ShipmentOrder_SymptomList
             })
         }
     }
@@ -119,7 +119,7 @@ class ShipmentOrder_ErrorCom extends Component {
 
     render() {
         // var a = this.state.ShipmentOrderType_WF.sort((a, b) => new Date(a.ProcessDate) - new Date(b.ProcessDate));
-        // let InfoActionLogLst = this.state.ShipmentOrder_ErrorList.sort((a, b) => new Date(a.CreatedDate) - new Date(b.CreatedDate));
+        // let InfoActionLogLst = this.state.ShipmentOrder_SymptomList.sort((a, b) => new Date(a.CreatedDate) - new Date(b.CreatedDate));
 
         return (
             <div className="card">
@@ -136,10 +136,10 @@ class ShipmentOrder_ErrorCom extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                {this.state.ShipmentOrder_ErrorList && this.state.ShipmentOrder_ErrorList.map((item, index) => {
+                                {this.state.ShipmentOrder_SymptomList && this.state.ShipmentOrder_SymptomList.map((item, index) => {
                                     return (<tr key={index}>
-                                        <td>{item.ErrorID}</td>
-                                        <td>{item.ErrorName}</td>
+                                        <td>{item.SymptomID}</td>
+                                        <td>{item.SymptomName}</td>
                                         <td>{formatDate(item.CreatedDate)}</td>
                                         <td>{item.CreatedUserFullName}</td>
                                     </tr>)
@@ -172,5 +172,5 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-const ShipmentOrder_Error = connect(mapStateToProps, mapDispatchToProps)(ShipmentOrder_ErrorCom);
-export default ShipmentOrder_Error;
+const ShipmentOrder_Symptom = connect(mapStateToProps, mapDispatchToProps)(ShipmentOrder_SymptomCom);
+export default ShipmentOrder_Symptom;
