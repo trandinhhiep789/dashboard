@@ -62,6 +62,11 @@ export const ExportStringToDate = (dateString) => {
     if (dateString) {
         try {
             const dataMoment = dateString.split(' ');
+
+            if (!dataMoment[2] || !dataMoment[1] || !dataMoment[0]) {
+                return dateString;
+            }
+
             let dateConvertMoment = dataMoment[2] + "-" + dataMoment[1] + "-" + dataMoment[0]
             return dateConvertMoment;
         } catch (error) {
@@ -76,8 +81,15 @@ export const ExportStringDate = (dateString, notGetTime) => {
         try {
             const dataMoment = dateString.split(' ');
 
+            if (!dataMoment[0] || !dataMoment[1]) {
+                return dateString;
+            }
 
             const dataMoment1 = dataMoment[0].split('-');
+
+            if (!dataMoment1[2] || !dataMoment1[1] || !dataMoment1[0]) {
+                return dateString;
+            }
 
             let dateConvertMoment = dataMoment1[2] + "-" + dataMoment1[1] + "-" + dataMoment1[0]
 

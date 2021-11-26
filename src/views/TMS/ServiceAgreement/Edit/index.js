@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
 import { Redirect } from "react-router-dom";
 import ReactNotification from "react-notifications-component";
+import moment from 'moment';
 
 import {
     APIHostName,
@@ -132,6 +133,11 @@ class EditCom extends React.Component {
 
         MLObject.ServiceAgreementNumber = MLObject.ServiceAgreementNumber.replace(/\s/g, '');
         MLObject.ServiceAgreementID = this.props.match.params.id;
+        MLObject.DepositedDate = MLObject.DepositedDate == "" ? "" : moment(MLObject.DepositedDate, "DD-MM-YYYY").set('hour', 12);
+        MLObject.ExpiredDate = MLObject.ExpiredDate == "" ? "" : moment(MLObject.ExpiredDate, "DD-MM-YYYY").set('hour', 12);
+        MLObject.ExtendedDate = MLObject.ExtendedDate == "" ? "" : moment(MLObject.ExtendedDate, "DD-MM-YYYY").set('hour', 12);
+        MLObject.SignedDate = MLObject.SignedDate == "" ? "" : moment(MLObject.SignedDate, "DD-MM-YYYY").set('hour', 12);
+        MLObject.Liquidateddate = MLObject.Liquidateddate == "" ? "" : moment(MLObject.Liquidateddate, "DD-MM-YYYY").set('hour', 12);
 
         //#region xử lý ServiceAgreementArea data
         const cloneServiceAgreementAreaSubmit = this.state.ServiceAgreementAreaSubmit.filter(item => !item.IsDeleted);
@@ -239,17 +245,25 @@ class EditCom extends React.Component {
             else {
                 apiResult.ResultObject.ShipmentOrder_DeliverUserList = [{ UserName: apiResult.ResultObject.DeputyUserName, FullName: apiResult.ResultObject.FullName }]
 
-                apiResult.ResultObject.SignedDateNew = formatDate(apiResult.ResultObject.SignedDate, true)
-                apiResult.ResultObject.ExpiredDateNew = formatDate(apiResult.ResultObject.ExpiredDate, true)
+                // apiResult.ResultObject.SignedDateNew = formatDate(apiResult.ResultObject.SignedDate, true)
+                // apiResult.ResultObject.ExpiredDateNew = formatDate(apiResult.ResultObject.ExpiredDate, true)
+
                 this.setState({
-                    DataSource: apiResult.ResultObject,
+                    DataSource: {
+                        ...apiResult.ResultObject,
+                        DepositedDate: new Date(apiResult.ResultObject.DepositedDate),
+                        ExpiredDate: new Date(apiResult.ResultObject.ExpiredDate),
+                        ExtendedDate: new Date(apiResult.ResultObject.ExtendedDate),
+                        Liquidateddate: new Date(apiResult.ResultObject.Liquidateddate),
+                        SignedDate: new Date(apiResult.ResultObject.SignedDate),
+                    },
                     IsDeposited: apiResult.ResultObject.IsDeposited,
                     IsExtended: apiResult.ResultObject.IsExtended,
                     IsLiquidated: apiResult.ResultObject.IsLiquidated,
                     IsLoadDataComplete: true,
                     IsSystem: apiResult.ResultObject.IsSystem,
                     ServiceAgreementAreaSubmit: apiResult.ResultObject.ServiceAgreement_AreaList,
-                    ServiceAgreementStoreSubmit: apiResult.ResultObject.ServiceAgreement_StoreList
+                    ServiceAgreementStoreSubmit: apiResult.ResultObject.ServiceAgreement_StoreList,
                 });
             }
         });
@@ -291,8 +305,11 @@ class EditCom extends React.Component {
 
         if (formData.dtExpiredDate.value.length > 0) {
 
-            const SignedDate = new Date(formData.dtSignedDate.value);
-            const ExpiredDate = new Date(formData.dtExpiredDate.value);
+            // const SignedDate = new Date(formData.dtSignedDate.value);
+            // const ExpiredDate = new Date(formData.dtExpiredDate.value);
+
+            let SignedDate = moment(formData.dtSignedDate.value, "DD-MM-YYYY");
+            let ExpiredDate = moment(formData.dtExpiredDate.value, "DD-MM-YYYY");
 
             if (ExpiredDate >= SignedDate) {
                 formData.dtExpiredDate.ErrorLst.IsValidatonError = false;
@@ -308,8 +325,10 @@ class EditCom extends React.Component {
         if (IsExtended) {
             if (formData.dtExtendedDate.value != null && formData.dtExtendedDate.value != "") {
 
-                let ExpiredDate = new Date(formData.dtExpiredDate.value);
-                let ExtendedDate = new Date(formData.dtExtendedDate.value);
+                // let ExpiredDate = new Date(formData.dtExpiredDate.value);
+                // let ExtendedDate = new Date(formData.dtExtendedDate.value);
+                let ExpiredDate = moment(formData.dtExpiredDate.value, "DD-MM-YYYY");
+                let ExtendedDate = moment(formData.dtExtendedDate.value, "DD-MM-YYYY");
 
                 if (ExpiredDate < ExtendedDate) {
 
@@ -345,12 +364,17 @@ class EditCom extends React.Component {
         //kiểm ngày thanh lý hợp đồng
 
         if (IsLiquidated) {
+
+            let SignedDate = moment(formData.dtSignedDate.value, "DD-MM-YYYY");
+            let ExtendedDate = moment(formData.dtExtendedDate.value, "DD-MM-YYYY");
+            let Liquidateddate = moment(formData.dtLiquidateddate.value, "DD-MM-YYYY");
+
             if (IsExtended) {
                 if (formData.dtExtendedDate.value != '' && formData.dtLiquidateddate.value != '' && formData.dtExtendedDate.value != null && formData.dtLiquidateddate.value != null) {
-                    let SignedDate = new Date(formData.dtSignedDate.value);
-                    let ExpiredDate = new Date(formData.dtExpiredDate.value);
-                    let ExtendedDate = new Date(formData.dtExtendedDate.value);
-                    let Liquidateddate = new Date(formData.dtLiquidateddate.value);
+                    // let SignedDate = new Date(formData.dtSignedDate.value);
+                    // let ExpiredDate = new Date(formData.dtExpiredDate.value);
+                    // let ExtendedDate = new Date(formData.dtExtendedDate.value);
+                    // let Liquidateddate = new Date(formData.dtLiquidateddate.value);
 
                     // if (formData.dtExtendedDate.value <= formData.dtLiquidateddate.value || formData.dtLiquidateddate.value <= formData.dtSignedDate.value) {
                     if (Liquidateddate >= SignedDate && ExtendedDate >= Liquidateddate) {
@@ -371,10 +395,10 @@ class EditCom extends React.Component {
             }
             else {
                 if (formData.dtLiquidateddate.value != '' && formData.dtLiquidateddate.value != null) {
-                    let SignedDate = new Date(formData.dtSignedDate.value);
-                    let ExpiredDate = new Date(formData.dtExpiredDate.value);
-                    let ExtendedDate = new Date(formData.dtExtendedDate.value);
-                    let Liquidateddate = new Date(formData.dtLiquidateddate.value);
+                    // let SignedDate = new Date(formData.dtSignedDate.value);
+                    // let ExpiredDate = new Date(formData.dtExpiredDate.value);
+                    // let ExtendedDate = new Date(formData.dtExtendedDate.value);
+                    // let Liquidateddate = new Date(formData.dtLiquidateddate.value);
 
                     if (Liquidateddate <= ExpiredDate && Liquidateddate >= SignedDate) {
                         formData.dtLiquidateddate.ErrorLst.IsValidatonError = false;

@@ -3,6 +3,7 @@ import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
 import ReactNotification from "react-notifications-component";
+import moment from 'moment';
 
 import {
     APIHostName,
@@ -124,17 +125,14 @@ class AddCom extends React.Component {
             return;
         }
 
-        // if (this.state.ServiceAgreementStoreSubmit.length == 0) {
-        //     this.addNotification("Danh sách kho áp dụng hợp đồng không được để trống", true);
-        //     return;
-        // }
-
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.DeputyUserName = MLObject.ShipmentOrder_DeliverUserList != undefined ? MLObject.ShipmentOrder_DeliverUserList[0].UserName : "";
-        // MLObject.SignedDate = new Date(ExportStringToDate(MLObject.SignedDate));
-        // MLObject.ExpiredDate = new Date(ExportStringToDate(MLObject.ExpiredDate));
-
-        MLObject.ServiceAgreementNumber = MLObject.ServiceAgreementNumber.replace(/\s/g, '')
+        MLObject.ServiceAgreementNumber = MLObject.ServiceAgreementNumber.replace(/\s/g, '');
+        MLObject.DepositedDate = MLObject.DepositedDate == "" ? "" : moment(MLObject.DepositedDate, "DD-MM-YYYY").set('hour', 12);
+        MLObject.ExpiredDate = MLObject.ExpiredDate == "" ? "" : moment(MLObject.ExpiredDate, "DD-MM-YYYY").set('hour', 12);
+        MLObject.ExtendedDate = MLObject.ExtendedDate == "" ? "" : moment(MLObject.ExtendedDate, "DD-MM-YYYY").set('hour', 12);
+        MLObject.SignedDate = MLObject.SignedDate == "" ? "" : moment(MLObject.SignedDate, "DD-MM-YYYY").set('hour', 12);
+        MLObject.Liquidateddate = MLObject.Liquidateddate == "" ? "" : moment(MLObject.Liquidateddate, "DD-MM-YYYY").set('hour', 12);
 
         //#region danh sách khu vực
         const ServiceAgreement_AreaList = this.state.ServiceAgreementAreaSubmit.map(item => {
@@ -159,7 +157,6 @@ class AddCom extends React.Component {
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.showMessage(apiResult.Message);
-
         });
     }
 
@@ -212,8 +209,10 @@ class AddCom extends React.Component {
         })
 
         if (formData.dtExpiredDate.value.length > 0) {
-            let SignedDate = new Date(formData.dtSignedDate.value);
-            let ExpiredDate = new Date(formData.dtExpiredDate.value);
+            // let SignedDate = new Date(formData.dtSignedDate.value);
+            // let ExpiredDate = new Date(formData.dtExpiredDate.value);
+            let SignedDate = moment(formData.dtSignedDate.value, "DD-MM-YYYY");
+            let ExpiredDate = moment(formData.dtExpiredDate.value, "DD-MM-YYYY");
 
             if (ExpiredDate >= SignedDate) {
 
@@ -229,9 +228,11 @@ class AddCom extends React.Component {
         // kiểm tra ngày gia hạn hợp đồng
         if (IsExtended) {
             if (formData.dtExtendedDate.value != '') {
-                let ExpiredDate = new Date(formData.dtExpiredDate.value);
-                let ExtendedDate = new Date(formData.dtExtendedDate.value);
-                // if (formData.dtExpiredDate.value >= formData.dtExtendedDate.value) {
+                // let ExpiredDate = new Date(formData.dtExpiredDate.value);
+                // let ExtendedDate = new Date(formData.dtExtendedDate.value);
+                let ExpiredDate = moment(formData.dtExpiredDate.value, "DD-MM-YYYY");
+                let ExtendedDate = moment(formData.dtExtendedDate.value, "DD-MM-YYYY");
+
                 if (ExtendedDate > ExpiredDate) {
 
                     formData.dtExtendedDate.ErrorLst.IsValidatonError = false;
@@ -256,12 +257,16 @@ class AddCom extends React.Component {
         //kiểm ngày thanh lý hợp đồng
 
         if (IsLiquidated) {
+
+            let SignedDate = moment(formData.dtSignedDate.value, "DD-MM-YYYY");
+            let ExtendedDate = moment(formData.dtExtendedDate.value, "DD-MM-YYYY");
+            let Liquidateddate = moment(formData.dtLiquidateddate.value, "DD-MM-YYYY");
+
             if (IsExtended) {
                 if (formData.dtExtendedDate.value != '' && formData.dtLiquidateddate.value != '') {
-                    let SignedDate = new Date(formData.dtSignedDate.value);
-                    let ExpiredDate = new Date(formData.dtExpiredDate.value);
-                    let ExtendedDate = new Date(formData.dtExtendedDate.value);
-                    let Liquidateddate = new Date(formData.dtLiquidateddate.value);
+                    // let SignedDate = new Date(formData.dtSignedDate.value);
+                    // let ExtendedDate = new Date(formData.dtExtendedDate.value);
+                    // let Liquidateddate = new Date(formData.dtLiquidateddate.value);
 
                     // if (formData.dtExtendedDate.value <= formData.dtLiquidateddate.value || formData.dtLiquidateddate.value <= formData.dtSignedDate.value) {
                     if (Liquidateddate >= SignedDate && ExtendedDate >= Liquidateddate) {
@@ -283,10 +288,9 @@ class AddCom extends React.Component {
             else {
                 if (formData.dtLiquidateddate.value != '') {
 
-                    let SignedDate = new Date(formData.dtSignedDate.value);
-                    let ExtendedDate = new Date(formData.dtExtendedDate.value);
-                    let ExpiredDate = new Date(formData.dtExpiredDate.value);
-                    let Liquidateddate = new Date(formData.dtLiquidateddate.value);
+                    // let SignedDate = new Date(formData.dtSignedDate.value);
+                    // let ExpiredDate = new Date(formData.dtExpiredDate.value);
+                    // let Liquidateddate = new Date(formData.dtLiquidateddate.value);
 
                     // if (formData.dtExpiredDate.value <= formData.dtLiquidateddate.value || formData.dtLiquidateddate.value <= formData.dtSignedDate.value) {
 
