@@ -177,8 +177,8 @@ const dataGridShipmentOderNewCom = (props) => {
                   ShipmentOrderID={0}
                   ShipmentRouteID
                   ShipmentRouteID={shipmentRouteID}
-                  InfoCoordinator={gridDataShip}
-                  ShipmentOrderSame={apiResult.ResultObject.ShipmentOrderDeliverList}
+                  InfoCoordinator={apiResult.ResultObject.ShipmentOrderDeliverList}
+                  ShipmentOrderSame={apiResult.ResultObject.ShipmentOrderDeliverSameList}
                   IsUserCoordinator={true}
                   IsCoordinator={true}
                   IsCancelDelivery={true}
@@ -331,6 +331,8 @@ const dataGridShipmentOderNewCom = (props) => {
 
   const handleClose = () => {
     setChangeGird(false);
+    setGridDataShip([]);
+    setShipmentRouteID("");
     props.hideModal();
   };
 
@@ -339,7 +341,7 @@ const dataGridShipmentOderNewCom = (props) => {
     if (!apiResult.IsError) {
       props.hideModal();
       setChangeGird(false);
-      setGridData([]);
+      setGridDataShip([]);
       setShipmentRouteID("");
       if (props.onChangePageLoad) props.onChangePageLoad();
     }

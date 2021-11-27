@@ -253,7 +253,6 @@ class ListShipCoordinatorRouteCom extends Component {
   }
 
   handleOnValueChangeselectedOp(name, selectedOption) {
-    console.log({ selectedOption });
     let { objCoordinator, ShipmentOrder } = this.state;
     if (selectedOption.TotalAbilityVolume >= selectedOption.TotalShipmentVolume + selectedOption.TotalVolume) {
       this.addNotification(
@@ -573,7 +572,20 @@ class ListShipCoordinatorRouteCom extends Component {
     let element = [];
     let elementDeliverUserList = [];
     let elementDeliverUserFullList = [];
-
+    if (this.state.ShipmentOrder.length > 0) {
+        let VehicleID = this.state.ShipmentOrder[0].VehicleID;
+        let vehicle = this.state.VehicleLst.find(x=>x.value === VehicleID);
+        if (vehicle && vehicle.TotalAbilityVolume >= vehicle.TotalShipmentVolume + vehicle.TotalVolume) {
+            this.addNotification(
+              "Tổng thể tích tối thiểu cần cho xe tải là " + vehicle.TotalAbilityVolume + " Hiện tại chỉ có " + (vehicle.TotalShipmentVolume + vehicle.TotalVolume),
+              true,
+              false,
+              "rgb(255, 184, 24)",
+              "rgb(186, 101, 8)"
+            );
+            return;
+        }
+    }
     this.state.ShipmentOrder.map((row, indexRow) => {
       if (this.state.objCoordinator.IsRoute == true && row.CarrierTypeID != this.state.ShipmentOrder[0].CarrierTypeID) {
         //  this.addNotification("không cùng phương tiện giao hàng", true);
