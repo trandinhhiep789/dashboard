@@ -1704,11 +1704,17 @@ const AppMenu = [
                 MenuIcon: "",
                 SubMenu: [],
             },
-
             {
                 MenuName: "SaleSummaryReport",
                 MenuTitle: "Báo cáo đơn hàng",
                 LinkTo: "/SaleSummaryReport",
+                MenuIcon: "",
+                SubMenu: [],
+            },
+            {
+                MenuName: "ShipmentOrderSymptom",
+                MenuTitle: "Báo cáo lỗi thực tế",
+                LinkTo: "/ShipmentOrderSymptomReport",
                 MenuIcon: "",
                 SubMenu: [],
             },

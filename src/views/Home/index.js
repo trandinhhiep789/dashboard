@@ -63,6 +63,7 @@ import InstallBundle from "../../views/TMS/MD/Installed/InstallBundle";
 import InstallMaterial from "../../views/TMS/MD/Installed/InstallMaterial";
 import InventoryMaterials from "../TMS/ReportShipmentOrder/InventoryMaterials";
 import InventoryComponent from "../TMS/ReportShipmentOrder/InventoryComponent";
+import ShipmentOrderSymptom from "../TMS/ReportShipmentOrder/ShipmentOrderSymptom";
 import InventoryRequest from "../TMS/InventoryRequest";
 import InventoryRequestType from "../TMS/MD/InventoryRequestType";
 import InvestigationShipmentOrderStatus from "../TMS/ReportShipmentOrder/InvestigationShipmentOrderStatus";
@@ -370,6 +371,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/InvestigationShipmentOrderStatus" component={InvestigationShipmentOrderStatus} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/InventoryMaterials" component={InventoryMaterials} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/InventoryComponent" component={InventoryComponent} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/ShipmentOrderSymptomReport" component={ShipmentOrderSymptom} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ComprehensiveReport" component={ComprehensiveReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/SaleSummaryReport" component={SaleSummaryReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ShipmentQualityAssess" component={ShipmentQualityAssess} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
