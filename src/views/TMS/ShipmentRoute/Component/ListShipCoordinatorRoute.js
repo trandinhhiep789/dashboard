@@ -138,6 +138,7 @@ class ListShipCoordinatorRouteCom extends Component {
           });
       }
     }
+
     this.setState({
       objCoordinator: objInfoCoordinator,
       VehicleLst: objVehicleLst,
@@ -169,9 +170,25 @@ class ListShipCoordinatorRouteCom extends Component {
           }
         });
 
+        if(this.props.InfoCoordinator[0].VehicleID) {
+            let vehicleID = this.props.InfoCoordinator[0].VehicleID;
+            if(vehicleID !== 0 && vehicleID !== -1) {
+                let vehicle = objVehicleLst.find(x=>x.value === vehicleID);
+                if (vehicle && vehicle.TotalAbilityVolume >= vehicle.TotalShipmentVolume + vehicle.TotalVolume) {
+                    this.addNotification(
+                        "Tổng thể tích tối thiểu cần cho xe tải là " + vehicle.TotalAbilityVolume + " Hiện tại chỉ có " + (vehicle.TotalShipmentVolume + vehicle.TotalVolume),
+                        true,
+                        false,
+                        "rgb(255, 184, 24)",
+                        "rgb(186, 101, 8)"
+                    );
+                }
+            }
+        }
+
         let objRoute = this.props.InfoCoordinator.find((n) => n.ShipmentRouteID == this.props.ShipmentRouteID);
 
-        const objVehicle = objVehicleLst.find((x) => x.value === objRoute.VehicleID);
+        const objVehicle = objRoute && objVehicleLst.find((x) => x.value === objRoute.VehicleID);
 
         let objInfoCoordinator = this.state.objCoordinator;
         if (objVehicle) {
@@ -278,9 +295,9 @@ class ListShipCoordinatorRouteCom extends Component {
       }
     });
 
-    console.log({ name });
-    console.log({ objCoordinator });
-    console.log(this.state.VehicleLst);
+    // console.log({ name });
+    // console.log({ objCoordinator });
+    // console.log(this.state.VehicleLst);
 
     this.setState({
       objCoordinator: objCoordinator,
@@ -572,20 +589,6 @@ class ListShipCoordinatorRouteCom extends Component {
     let element = [];
     let elementDeliverUserList = [];
     let elementDeliverUserFullList = [];
-    if (this.state.ShipmentOrder.length > 0) {
-        let VehicleID = this.state.ShipmentOrder[0].VehicleID;
-        let vehicle = this.state.VehicleLst.find(x=>x.value === VehicleID);
-        if (vehicle && vehicle.TotalAbilityVolume >= vehicle.TotalShipmentVolume + vehicle.TotalVolume) {
-            this.addNotification(
-              "Tổng thể tích tối thiểu cần cho xe tải là " + vehicle.TotalAbilityVolume + " Hiện tại chỉ có " + (vehicle.TotalShipmentVolume + vehicle.TotalVolume),
-              true,
-              false,
-              "rgb(255, 184, 24)",
-              "rgb(186, 101, 8)"
-            );
-            return;
-        }
-    }
     this.state.ShipmentOrder.map((row, indexRow) => {
       if (this.state.objCoordinator.IsRoute == true && row.CarrierTypeID != this.state.ShipmentOrder[0].CarrierTypeID) {
         //  this.addNotification("không cùng phương tiện giao hàng", true);
@@ -709,7 +712,6 @@ class ListShipCoordinatorRouteCom extends Component {
           changeState["ShipmentOrder"][index]["CarrierTypeID"] = CarrierTypeID;
         }
       });
-
       let objRouteVehicleRequset = {
         VehicleID: 1,
         ExpectedDeliveryDate: changeState["ShipmentOrder"][0].ExpectedDeliveryDate,
@@ -1160,7 +1162,7 @@ class ListShipCoordinatorRouteCom extends Component {
                             let listOption = [];
                             let listAllUser = [];
                             listAllUser = this.state.listAllUser;
-                            console.log("listAllUser", listAllUser);
+                            // console.log("listAllUser", listAllUser);
                             let listOptionUser = [];
 
                             let objDeliverUser = [];
