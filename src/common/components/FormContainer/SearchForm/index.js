@@ -9,7 +9,7 @@ import ReactTooltip from 'react-tooltip';
 
 import MultiTreeSelectByMGCOO from '../FormControl/MultiSelectComboBox/MultiTreeSelectByMGCOO'
 
-export default class SearchForm extends Component {
+class SearchForm extends Component {
     constructor(props) {
         super(props);
         this.onValueChange = this.onValueChange.bind(this);
@@ -408,7 +408,7 @@ export default class SearchForm extends Component {
                             </div>
                         ) : ""
                         }
-                        <button className={this.props.IsShowButtonSearch != undefined && this.props.IsShowButtonSearch == false ? "btnHide" : "btn btn-primary"} type="submit">
+                        <button className={this.props.IsShowButtonSearch != undefined && this.props.IsShowButtonSearch == false ? "btnHide" : "btn btn-primary"} type="submit" disabled={this.props.IsDisabledBtnSearch}>
                             {
                                 !!this.props.TitleButton ? this.props.TitleButton : <span className="fa fa-search">Tìm Kiếm</span>
 
@@ -427,7 +427,7 @@ export default class SearchForm extends Component {
                             //         !!this.props.TitleButtonExport ? <span className="ti ti-export"> {this.props.TitleButtonExport}</span> : <span className="ti ti-export"> Xuất dữ liệu</span>
                             //     }
                             // </button>
-                            <button type="button" className={this.props.btnExport ? this.props.btnExport : "btn btn-label btn-info btn-export-cus  ml-1"} onClick={this.handleExportSubmit.bind(this)}>
+                            <button type="button" className={this.props.btnExport ? this.props.btnExport : "btn btn-label btn-info btn-export-cus  ml-1"} onClick={this.handleExportSubmit.bind(this)} disabled={this.props.IsDisabledBtnExport}>
                                 <label><i className="ti-export"></i></label> Xuất dữ liệu
                             </button>
                         }
@@ -477,3 +477,10 @@ export default class SearchForm extends Component {
         );
     }
 }
+
+SearchForm.defaultProps = {
+    IsDisabledBtnExport: false,
+    IsDisabledBtnSearch: false
+}
+
+export default SearchForm;
