@@ -19,6 +19,7 @@ import "react-notifications-component/dist/theme.css";
 import { APIHostName } from "../constants";
 import ListShipCoordinator from "../../ShipmentRoute/Component/ListShipCoordinator";
 import GridPageShipmentRouteAuto from "./GridPageShipmentRouteAuto";
+import { Fragment } from "react";
 
 class DataGridShipmentRouteAutoCom extends Component {
   constructor(props) {
@@ -77,10 +78,10 @@ class DataGridShipmentRouteAutoCom extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (JSON.stringify(this.props.dataSource) !== JSON.stringify(nextProps.dataSource) || this.props.IsDataGridSmallSize === true || this.props.IsDataGridSmallSize === false) {
+    if (JSON.stringify(this.props.dataSource) !== JSON.stringify(nextProps.dataSource) || this.props.IsDataGridSmallSize !== nextProps.IsDataGridSmallSize) {
       const gridData = this.getCheckList(nextProps.dataSource);
       this.setState({
-        changeGird: this.props.IsDataGridSmallSize,
+        changeGird: nextProps.IsDataGridSmallSize,
         GridData: gridData,
         GridDataShip: [],
         DataSource: nextProps.dataSource,
@@ -478,7 +479,7 @@ class DataGridShipmentRouteAutoCom extends Component {
     }
     this.setState({ GridDataShip: this.state.GridDataShip });
   }
-  
+
   _genCommentTime(dates) {
     const date = new Date(Date.parse(dates));
     //let currentDate = new Date();
@@ -586,19 +587,23 @@ class DataGridShipmentRouteAutoCom extends Component {
   }
 
   handleClose = () => {
-    this.setState({
-      changeGird: false,
-    });
+    // this.setState({
+    //   changeGird: false,
+    // });
+
+    this.props.onDataGridSmallSize(false);
     this.props.hideModal();
   };
 
   handleCloseModal = () => {
-    this.props.hideModal();
     this.setState({
-      changeGird: false,
+      // changeGird: false,
       GridDataShip: [],
       ShipmentRouteID: "",
     });
+
+    this.props.onDataGridSmallSize(false);
+    this.props.hideModal();
   };
 
   handleClickShip = (ShipmentOrderID) => (e) => {
@@ -661,6 +666,7 @@ class DataGridShipmentRouteAutoCom extends Component {
     this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetShipmentOrderRouteLst", RouteID).then((apiResult) => {
       if (!apiResult.IsError) {
         this.setState({ ShipmentRouteID: RouteID, GridDataShip: apiResult.ResultObject, changeGird: true });
+
         this.props.showModal(MODAL_TYPE_VIEW, {
           title: "Phân tuyến điều phối vận đơn ",
           isShowOverlay: false,
@@ -741,6 +747,8 @@ class DataGridShipmentRouteAutoCom extends Component {
 
   renderDataGrid() {
     let { changeGird } = this.state;
+    console.log(changeGird);
+
     const dataSource = this.state.DataSource;
     if (changeGird) {
       return (
@@ -916,7 +924,7 @@ class DataGridShipmentRouteAutoCom extends Component {
       );
     } else {
       return (
-        <div className=" table-responsive">
+        <div className="table-responsive">
           <table className="table table-sm table-striped table-bordered table-hover table-condensed datagirdshippingorder" cellSpacing="0">
             <thead className="thead-light">
               <tr>
@@ -972,7 +980,7 @@ class DataGridShipmentRouteAutoCom extends Component {
                                   <ul>
                                     {rowItem.ShipmentRouteID == "" ? (
                                       <React.Fragment>
-                                        <li className="item ">
+                                        <li className="item">
                                           <div className="group-action">
                                             <div className="checkbox item-action">
                                               <label>
@@ -1421,7 +1429,6 @@ class DataGridShipmentRouteAutoCom extends Component {
                     <div className="card-title">{(this.props.title != undefined || this.props.title != "") && <h4 className="title">{this.props.title}</h4>}</div>
                     <div className="card-body">
                       {datagrid}
-
                       {this.props.IsAutoPaging && <GridPageShipmentRouteAuto numPage={pageCount} currentPage={this.state.PageNumber} onChangePage={this.onChangePageHandle} />}
                     </div>
                   </div>
