@@ -22,7 +22,7 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import Collapsible from "react-collapsible";
 import DataGridShipmentRouteAuto from "./../Components/DataGridShipmentRouteAuto";
-import { isThisSecond } from "date-fns";
+import { Fragment } from "react";
 
 class SearchCom extends React.Component {
   constructor(props) {
@@ -583,18 +583,20 @@ class SearchCom extends React.Component {
         </div>
 
         {this.state.IsLoadDataComplete && (
-          <div className="col-lg-12">
+          <div className="col-lg-12" style={{}}>
             <Collapsible
+              className="CollapsibleCustom"
               trigger={
-                <React.Fragment>
+                <Fragment>
                   <span>Khung giờ 08h00 - 10h00</span>
                   {this.state.IsDataGridSmallSize == true ? (
                     <span> | Tồng số đơn: {this.state.TimeFrame8to10.length}</span>
                   ) : (
                     <span style={{ position: "absolute", top: "50%", right: "30px", transform: "translateY(-50%)" }}>Tồng số đơn: {this.state.TimeFrame8to10.length}</span>
                   )}
-                </React.Fragment>
+                </Fragment>
               }
+              triggerStyle={{ backgroundColor: "#909ba7" }}
               easing="ease-in"
               open={false}
             >
@@ -626,6 +628,7 @@ class SearchCom extends React.Component {
             </Collapsible>
 
             <Collapsible
+              className="CollapsibleCustom"
               trigger={
                 <React.Fragment>
                   <span>Khung giờ 10h00 - 12h00</span>
@@ -636,6 +639,7 @@ class SearchCom extends React.Component {
                   )}
                 </React.Fragment>
               }
+              triggerStyle={{ backgroundColor: "#909ba7" }}
               easing="ease-in"
               open={false}
             >
@@ -667,6 +671,7 @@ class SearchCom extends React.Component {
             </Collapsible>
 
             <Collapsible
+              className="CollapsibleCustom"
               trigger={
                 <React.Fragment>
                   <span>Khung giờ 12h00 - 14h00</span>
@@ -679,6 +684,7 @@ class SearchCom extends React.Component {
                   )}
                 </React.Fragment>
               }
+              triggerStyle={{ backgroundColor: "#909ba7" }}
               easing="ease-in"
               open={false}
             >
@@ -710,6 +716,7 @@ class SearchCom extends React.Component {
             </Collapsible>
 
             <Collapsible
+              className="CollapsibleCustom"
               trigger={
                 <React.Fragment>
                   <span>Khung giờ 14h00 - 16h00</span>
@@ -721,6 +728,7 @@ class SearchCom extends React.Component {
                   )}
                 </React.Fragment>
               }
+              triggerStyle={{ backgroundColor: "#909ba7" }}
               easing="ease-in"
               open={false}
             >
@@ -752,6 +760,7 @@ class SearchCom extends React.Component {
             </Collapsible>
 
             <Collapsible
+              className="CollapsibleCustom"
               trigger={
                 <React.Fragment>
                   <span>Khung giờ 17h00 - 19h00</span>
@@ -763,6 +772,7 @@ class SearchCom extends React.Component {
                   )}
                 </React.Fragment>
               }
+              triggerStyle={{ backgroundColor: "#909ba7" }}
               easing="ease-in"
               open={false}
             >
@@ -794,6 +804,7 @@ class SearchCom extends React.Component {
             </Collapsible>
 
             <Collapsible
+              className="CollapsibleCustom"
               trigger={
                 <React.Fragment>
                   <span>Khung giờ 19h00 - 21h00</span>
@@ -805,6 +816,7 @@ class SearchCom extends React.Component {
                   )}
                 </React.Fragment>
               }
+              triggerStyle={{ backgroundColor: "#909ba7" }}
               easing="ease-in"
               open={false}
             >
@@ -836,6 +848,7 @@ class SearchCom extends React.Component {
             </Collapsible>
 
             <Collapsible
+              className="CollapsibleCustom"
               trigger={
                 <React.Fragment>
                   <span>Khung giờ khác</span>
@@ -847,6 +860,7 @@ class SearchCom extends React.Component {
                   )}
                 </React.Fragment>
               }
+              triggerStyle={{ backgroundColor: "#909ba7" }}
               easing="ease-in"
               open={false}
             >
