@@ -27,7 +27,8 @@ class SearchCom extends React.Component {
         super(props);
 
         this.state = {
-            gridData: []
+            gridData: [],
+            IsDisabledBtn: false,
         };
 
         this.gridref = React.createRef();
@@ -210,7 +211,19 @@ class SearchCom extends React.Component {
     }
 
     handleChangeSearchForm(FormDataContolLstd, MLObjectDefinition) {
+        const FromDate = new Date(FormDataContolLstd.dtFromDate.value)
+        const ToDate = new Date(FormDataContolLstd.dtToDate.value)
 
+        if (FromDate > ToDate) {
+            this.setState({
+                IsDisabledBtn: true
+            })
+            this.addNotification("Từ ngày phải nhỏ hơn đến ngày", true);
+        } else {
+            this.setState({
+                IsDisabledBtn: false
+            })
+        }
     }
 
     render() {
@@ -224,6 +237,8 @@ class SearchCom extends React.Component {
                     FormName="Báo cáo lỗi thực tế cho dịch vụ BHUQ và sửa chữa mới"
                     IsButtonExport={true}
                     IsButtonhistory={false}
+                    IsDisabledBtnExport={this.state.IsDisabledBtn}
+                    IsDisabledBtnSearch={this.state.IsDisabledBtn}
                     IsShowButtonSearch={true}
                     listelement={listelement}
                     MLObjectDefinition={MLObjectDefinition}
