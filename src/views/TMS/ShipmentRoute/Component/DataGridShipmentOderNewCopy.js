@@ -165,7 +165,7 @@ const dataGridShipmentOderNewCom = (props) => {
       const widthModal = (window.innerWidth * 55) / 100;
       props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderNewLst", gridDataShip).then((apiResult) => {
         if (!apiResult.IsError) {
-          setGridData(apiResult.ResultObject.ShipmentOrderDeliverList);
+          setGridDataShip(apiResult.ResultObject.ShipmentOrderDeliverList);
           setChangeGird(true);
           props.showModal(MODAL_TYPE_VIEW, {
             title: "Phân tuyến điều phối vận đơn",
