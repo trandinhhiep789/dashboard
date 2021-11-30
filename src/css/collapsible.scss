@@ -56,3 +56,64 @@
         padding-bottom: .2rem;
     }
 }
+
+
+
+.CollapsibleCustom{
+    background-color:#f0f0f0;
+    margin-bottom: 10px;
+    .Collapsible__contentInner {
+        padding: 10px;
+        border: 1px solid #d9d9d9;
+        border-top: 0; 
+        .row {
+            .card {
+                .card-body {
+                    .form-row {
+                        @media (max-width: 768px) {
+                            .form-group {
+                                &:first-child {
+                                    display: none;
+                                }
+                                margin-bottom: 0 !important;
+                                padding: 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .Collapsible__trigger {
+        display: block;
+        font-weight: 400;
+        text-decoration: none;
+        color: white;
+        position: relative;
+        //border: 1px solid #d9d9d9;
+        padding: 10px;
+        background: #0cabbf;
+        
+        &::after{
+            font-family: 'FontAwesome';
+            content: '\f107';
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            display: block;
+            transition: transform 300ms;
+        }
+        &.is-open {
+            &::after{
+                transform: rotateZ(180deg); 
+            }
+        }
+        &.is-disabled {
+            opacity: 0.5;
+            background-color: grey; }
+    }
+    table tr td{
+        padding-top: .2rem;
+        padding-bottom: .2rem;
+    }
+}

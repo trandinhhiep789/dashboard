@@ -614,6 +614,7 @@ class DataGridShipmentRouteAutoCom extends Component {
     this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderDeliver", ShipmentOrderID).then((apiResult) => {
       if (!apiResult.IsError) {
         this.setState({ changeGird: true });
+
         let resultdd = this.state.GridDataShip.find((n) => n.ShipmentOrderID == ShipmentOrderID);
         if (resultdd == undefined) {
           if (
@@ -628,6 +629,7 @@ class DataGridShipmentRouteAutoCom extends Component {
             apiResult.ResultObject.ShipmentOrderDeliver["VehicleID"] = this.state.GridDataShip[0].VehicleID;
             apiResult.ResultObject.ShipmentOrderDeliver["DriverUser"] = this.state.GridDataShip[0].DriverUser;
           }
+
           this.state.GridDataShip.push(apiResult.ResultObject.ShipmentOrderDeliver);
         }
 
@@ -662,7 +664,9 @@ class DataGridShipmentRouteAutoCom extends Component {
 
   handleClickShipmentRoute = (RouteID) => (e) => {
     const { widthPercent, ShipmentRouteID } = this.state;
+
     this.props.hideModal();
+
     this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetShipmentOrderRouteLst", RouteID).then((apiResult) => {
       if (!apiResult.IsError) {
         this.setState({ ShipmentRouteID: RouteID, GridDataShip: apiResult.ResultObject, changeGird: true });
