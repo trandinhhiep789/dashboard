@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
-import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 import { MessageModal } from "../../../../common/components/Modal";
 import {
   SearchElementList,
@@ -23,6 +22,8 @@ import "react-notifications-component/dist/theme.css";
 import Collapsible from "react-collapsible";
 import DataGridShipmentRouteAuto from "./../Components/DataGridShipmentRouteAuto";
 import { Fragment } from "react";
+import SearchFormShipmentRouteAuto from "../Components/SearchFormShipmentRouteAuto";
+import SearchForm from "../Components/SearchFormShipmentRouteAutoOldUI";
 
 class SearchCom extends React.Component {
   constructor(props) {
@@ -297,7 +298,7 @@ class SearchCom extends React.Component {
     });
   }
 
-  handleonChangeView() {
+  handleOnChangeView() {
     this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchSelected", []).then((apiResult) => {
       if (!apiResult.IsError) {
         this.setState({
@@ -570,7 +571,7 @@ class SearchCom extends React.Component {
       <React.Fragment>
         <ReactNotification ref={this.notificationDOMRef} />
         <div className="col-lg-12 SearchFormCustom" id="SearchFormCustom">
-          <SearchForm
+          {/* <SearchFormShipmentRouteAuto
             FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
             MLObjectDefinition={SearchMLObjectDefinition}
             listelement={this.state.SearchElementList}
@@ -578,6 +579,16 @@ class SearchCom extends React.Component {
             ref={this.searchref}
             btnGroup="btnSearch btncustom btnGroup"
             IsSetting={true}
+            className="multiple multiple-custom multiple-custom-display"
+          /> */}
+
+          <SearchForm
+            FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
+            MLObjectDefinition={SearchMLObjectDefinition}
+            listelement={this.state.SearchElementList}
+            onSubmit={this.handleSearchSubmit}
+            ref={this.searchref}
+            btnGroup="btnSearch btncustom btnGroup"
             className="multiple multiple-custom multiple-custom-display"
           />
         </div>
@@ -610,7 +621,7 @@ class SearchCom extends React.Component {
                 PKColumnName={PKColumnName}
                 onDeleteClick={this.handleDelete}
                 onChangePage={this.handleonChangePage}
-                onChangeView={this.handleonChangeView.bind(this)}
+                onChangeView={this.handleOnChangeView.bind(this)}
                 onSearchEvent={this.handleonSearchEvent.bind(this)}
                 onChangePageLoad={this.onChangePageLoad.bind(this)}
                 onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
@@ -653,7 +664,7 @@ class SearchCom extends React.Component {
                 PKColumnName={PKColumnName}
                 onDeleteClick={this.handleDelete}
                 onChangePage={this.handleonChangePage}
-                onChangeView={this.handleonChangeView.bind(this)}
+                onChangeView={this.handleOnChangeView.bind(this)}
                 onSearchEvent={this.handleonSearchEvent.bind(this)}
                 onChangePageLoad={this.onChangePageLoad.bind(this)}
                 onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
@@ -698,7 +709,7 @@ class SearchCom extends React.Component {
                 PKColumnName={PKColumnName}
                 onDeleteClick={this.handleDelete}
                 onChangePage={this.handleonChangePage}
-                onChangeView={this.handleonChangeView.bind(this)}
+                onChangeView={this.handleOnChangeView.bind(this)}
                 onSearchEvent={this.handleonSearchEvent.bind(this)}
                 onChangePageLoad={this.onChangePageLoad.bind(this)}
                 onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
@@ -742,7 +753,7 @@ class SearchCom extends React.Component {
                 PKColumnName={PKColumnName}
                 onDeleteClick={this.handleDelete}
                 onChangePage={this.handleonChangePage}
-                onChangeView={this.handleonChangeView.bind(this)}
+                onChangeView={this.handleOnChangeView.bind(this)}
                 onSearchEvent={this.handleonSearchEvent.bind(this)}
                 onChangePageLoad={this.onChangePageLoad.bind(this)}
                 onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
@@ -786,7 +797,7 @@ class SearchCom extends React.Component {
                 PKColumnName={PKColumnName}
                 onDeleteClick={this.handleDelete}
                 onChangePage={this.handleonChangePage}
-                onChangeView={this.handleonChangeView.bind(this)}
+                onChangeView={this.handleOnChangeView.bind(this)}
                 onSearchEvent={this.handleonSearchEvent.bind(this)}
                 onChangePageLoad={this.onChangePageLoad.bind(this)}
                 onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
@@ -830,7 +841,7 @@ class SearchCom extends React.Component {
                 PKColumnName={PKColumnName}
                 onDeleteClick={this.handleDelete}
                 onChangePage={this.handleonChangePage}
-                onChangeView={this.handleonChangeView.bind(this)}
+                onChangeView={this.handleOnChangeView.bind(this)}
                 onSearchEvent={this.handleonSearchEvent.bind(this)}
                 onChangePageLoad={this.onChangePageLoad.bind(this)}
                 onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
@@ -874,7 +885,7 @@ class SearchCom extends React.Component {
                 PKColumnName={PKColumnName}
                 onDeleteClick={this.handleDelete}
                 onChangePage={this.handleonChangePage}
-                onChangeView={this.handleonChangeView.bind(this)}
+                onChangeView={this.handleOnChangeView.bind(this)}
                 onSearchEvent={this.handleonSearchEvent.bind(this)}
                 onChangePageLoad={this.onChangePageLoad.bind(this)}
                 onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
