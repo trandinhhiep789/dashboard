@@ -1,4 +1,4 @@
-import { Button, Col, DatePicker, Input, Row, Select } from "antd";
+import { Button, Col, DatePicker, Input, Row, Select, Space } from "antd";
 import moment from "moment";
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -28,7 +28,7 @@ class SearchFormShipmentRouteAuto extends Component {
         SenderStoreID: -1,
         CoordinatorStoreID: -1,
         ShipmentOrderStatusGroupID: "1,2,3",
-        IsCoordinator: 2,
+        IsCoordinator: -1,
         CarrierTypeID: -1,
         Typename: -1,
       },
@@ -50,6 +50,12 @@ class SearchFormShipmentRouteAuto extends Component {
       { value: 2, label: "Chưa điều phối" },
     ];
 
+    this.Select3 = [
+      { value: -1, label: "Phương tiện" },
+      { value: 1, label: "Xe máy" },
+      { value: 2, label: "Xe tải" },
+    ];
+
     this.handleGetDataCacheLoaiYeuCauVanChuyen = this.handleGetDataCacheLoaiYeuCauVanChuyen.bind(this);
     this.handleGetDataCacheTinh = this.handleGetDataCacheTinh.bind(this);
     this.handleGetDataCacheHuyen = this.handleGetDataCacheHuyen.bind(this);
@@ -66,6 +72,58 @@ class SearchFormShipmentRouteAuto extends Component {
     this.handleGetDataCacheLoaiYeuCauVanChuyen();
     this.handleGetDataCacheTinh();
     this.handleGetDataCacheTrangThai();
+  }
+
+  callSearchData(KeyWord) {
+    let listMLObject = {
+      QueryParamList: [
+        {
+          QueryKey: "",
+          QueryValue: "",
+          QueryType: 18,
+          IsNotQuery: false,
+          SubQueryParamList: [
+            {
+              QueryKey: "sTOREID",
+              QueryValue: /^[0-9][0-9]*$/.test(KeyWord) == true ? KeyWord : "",
+              QueryType: 3,
+              IsNotQuery: false,
+            },
+            {
+              QueryKey: "sTORENAME",
+              QueryValue: KeyWord,
+              QueryType: 2,
+              IsNotQuery: false,
+            },
+          ],
+        },
+        {
+          QueryKey: "cOMPANYID",
+          QueryValue: "1",
+          QueryType: 1,
+          IsNotQuery: false,
+        },
+      ],
+      Top: 10,
+      IndexName: "store",
+      TypeName: "store",
+      IsCompressResultData: false,
+    };
+    this.props.callFetchAPI("ERPAPI", "api/CommonSearch/Search", listMLObject).then((apiResult) => {
+      const objStore = JSON.parse(apiResult.ResultObject).hits.hits;
+      let listOptionNew1 = [];
+      for (let i = 0; i < objStore.length; i++) {
+        listOptionNew1.push({
+          value: objStore[i]._source.sTOREID,
+          name: objStore[i]._source.sTORENAME,
+          StoreFax: objStore[i]._source.sTOREPHONENUM,
+          StoreAddress: objStore[i]._source.sTOREADDRESS,
+        });
+      }
+      this.setState({
+        ListOption: listOptionNew1,
+      });
+    });
   }
 
   handleGetDataCacheLoaiYeuCauVanChuyen() {
@@ -138,7 +196,6 @@ class SearchFormShipmentRouteAuto extends Component {
       let listOptionNew = [];
       if (!result.IsError && result.ResultObject.CacheData != null) {
         result.ResultObject.CacheData.map((cacheItem) => {
-         
           if (cacheItem.DistrictID === districtID) {
             listOptionNew.push({ value: cacheItem["WardID"], key: cacheItem["WardID"], label: cacheItem["WardID"] + " - " + cacheItem["WardName"] });
           }
@@ -260,21 +317,6 @@ class SearchFormShipmentRouteAuto extends Component {
     });
   }
 
-  bindcombox(value, listOption) {
-    let values = value;
-    let selectedOption = [];
-    if (values == null || values === -1) return selectedOption;
-    if (typeof values.toString() == "string") values = values.toString().split(",");
-    for (let i = 0; i < values.length; i++) {
-      for (let j = 0; j < listOption.length; j++) {
-        if (values[i] == listOption[j].value) {
-          selectedOption.push({ value: listOption[j].value, key: listOption[j], label: listOption[j].label });
-        }
-      }
-    }
-    return selectedOption;
-  }
-
   handleInputTuKhoaChange(event) {
     let stateChange = this.state;
     let objSearchData = stateChange.SearchData;
@@ -300,6 +342,16 @@ class SearchFormShipmentRouteAuto extends Component {
     let objSearchData = stateChange.SearchData;
 
     objSearchData = { ...objSearchData, ShipmentOrderTypeID: value.toString() };
+    stateChange = { ...stateChange, SearchData: objSearchData };
+
+    this.setState(stateChange);
+  }
+
+  handleSelectKhoangThoiGian(value) {
+    let stateChange = this.state;
+    let objSearchData = stateChange.SearchData;
+
+    objSearchData = { ...objSearchData, CreatedOrderTimeFo: value[0], CreatedOrderTimeTo: value[1] };
     stateChange = { ...stateChange, SearchData: objSearchData };
 
     this.setState(stateChange);
@@ -337,6 +389,36 @@ class SearchFormShipmentRouteAuto extends Component {
     this.setState(stateChange);
   }
 
+  handleSelectTrangThaiDieuPhoiChange(value) {
+    let stateChange = this.state;
+    let objSearchData = stateChange.SearchData;
+
+    objSearchData = { ...objSearchData, IsCoordinator: value };
+    stateChange = { ...stateChange, SearchData: objSearchData };
+
+    this.setState(stateChange);
+  }
+
+  handleSelectTrangThaiChange(value) {
+    let stateChange = this.state;
+    let objSearchData = stateChange.SearchData;
+
+    objSearchData = { ...objSearchData, ShipmentOrderStatusGroupID: value.toString() };
+    stateChange = { ...stateChange, SearchData: objSearchData };
+
+    this.setState(stateChange);
+  }
+
+  handleSelectPhuongTienChange(value) {
+    let stateChange = this.state;
+    let objSearchData = stateChange.SearchData;
+
+    objSearchData = { ...objSearchData, CarrierTypeID: value };
+    stateChange = { ...stateChange, SearchData: objSearchData };
+
+    this.setState(stateChange);
+  }
+
   handleSearch() {
     console.log("this.state.SearchData", this.state.SearchData);
   }
@@ -344,6 +426,7 @@ class SearchFormShipmentRouteAuto extends Component {
   render() {
     let renderSelect1 = this.Select1.map((item, index) => <Select.Option value={item.value}>{item.label}</Select.Option>);
     let renderSelect2 = this.Select2.map((item, index) => <Select.Option value={item.value}>{item.label}</Select.Option>);
+    let renderSelect3 = this.Select3.map((item, index) => <Select.Option value={item.value}>{item.label}</Select.Option>);
 
     return (
       <div style={{ height: "auto", backgroundColor: "white", margin: "10px 0", padding: "10px 5px" }}>
@@ -389,7 +472,7 @@ class SearchFormShipmentRouteAuto extends Component {
               clearIcon={false}
               format="DD/MM/YYYY"
               defaultValue={[moment(moment(), "DD/MM/YYYY"), moment(moment(), "DD/MM/YYYY")]}
-              showNow
+              onChange={(value) => this.handleSelectKhoangThoiGian(value)}
             />
           </Col>
 
@@ -439,7 +522,16 @@ class SearchFormShipmentRouteAuto extends Component {
           </Col>
 
           <Col>
-            <Select mode="multiple" style={{ width: "180px" }} maxTagTextLength={10} maxTagCount={1} placeholder="Trạng thái" defaultValue={[]} optionLabelProp="label">
+            <Select
+              mode="multiple"
+              style={{ width: "200px" }}
+              maxTagTextLength={10}
+              maxTagCount={1}
+              placeholder="Trạng thái"
+              defaultValue={[1, 2, 3]}
+              optionLabelProp="label"
+              onChange={(value) => this.handleSelectTrangThaiChange(value)}
+            >
               {this.state.ListOptionTrangThai.map((item, index) => (
                 <Select.Option key={index} value={item.value} label={item.label}>
                   {item.label}
@@ -449,14 +541,22 @@ class SearchFormShipmentRouteAuto extends Component {
           </Col>
 
           <Col>
-            <Select defaultValue={-1} style={{ width: "150px" }}>
+            <Select defaultValue={-1} style={{ width: "180px" }} onChange={(value) => this.handleSelectTrangThaiDieuPhoiChange(value)}>
               {renderSelect2}
             </Select>
           </Col>
 
           <Col>
+            <Select defaultValue={-1} style={{ width: "160px" }} onChange={(value) => this.handleSelectPhuongTienChange(value)}>
+              {renderSelect3}
+            </Select>
+          </Col>
+
+          <Col>
             <Button size="middle" type="primary" onClick={this.handleSearch}>
-              Tìm kiếm
+              <Space>
+                <i class="fa fa-search"></i>Tìm kiếm
+              </Space>
             </Button>
           </Col>
         </Row>
