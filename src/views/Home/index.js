@@ -211,9 +211,9 @@ import { connect } from "react-redux";
 import { getCookie } from "../../common/library/CommonLib.js";
 import { updatePagePath } from "../../actions/pageAction";
 import BaseDeliveryAbility from "../TMS/MD/BaseDeliveryAbility";
-import ErrorApply from "../TMS/MD/ErrorApply";
-import ErrorGroup from "../TMS/MD/ErrorGroup";
-import Error from "../TMS/MD/Error";
+import SymptomApply from "../TMS/MD/SymptomApply";
+import SymptomGroup from "../TMS/MD/SymptomGroup";
+import Symptom from "../TMS/MD/Symptom";
 import ShipmentRouteAuto from "./../TMS/ShipmentRouteAuto/index";
 
 class HomeCom extends React.Component {
@@ -515,9 +515,9 @@ class HomeCom extends React.Component {
                   <PrivateRoute path="/VehicleModel" component={VehicleModel} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                   <PrivateRoute path="/VehicleRentalRequest" component={VehicleRentalRequest} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
-                  <PrivateRoute path="/ErrorApply" component={ErrorApply} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
-                  <PrivateRoute path="/ErrorGroup" component={ErrorGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
-                  <PrivateRoute path="/Error" component={Error} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                  <PrivateRoute path="/SymptomApply" component={SymptomApply} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                  <PrivateRoute path="/SymptomGroup" component={SymptomGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                  <PrivateRoute path="/Symptom" component={Symptom} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                   <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                 </Switch>
