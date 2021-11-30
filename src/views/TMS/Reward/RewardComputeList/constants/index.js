@@ -168,7 +168,7 @@ export const GridColumnList = [
         Type: "checkicon",
         Caption: "Đã chốt thưởng",
         DataSourceMember: "IsConfirm",
-        Width: "10%"
+        Width: "5%"
     },
     {
         Name: "ConfirmFullName",
@@ -177,13 +177,19 @@ export const GridColumnList = [
         DataSourceMember: "ConfirmFullName",
         Width: "10%"
     },
-
+    {
+        Name: "ConfirmDate",
+        Type: "date",
+        Caption: "Ngày chốt",
+        DataSourceMember: "ConfirmDate",
+        Width: "10%"
+    },
     {
         Name: "IsUnConfirm",
         Type: "checkicon",
         Caption: "Đã bỏ chốt thưởng",
         DataSourceMember: "IsUnConfirm",
-        Width: "10%"
+        Width: "5%"
     },
     {
         Name: "UnConfirmFullName",

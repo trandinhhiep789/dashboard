@@ -14,6 +14,10 @@ import {
     APISearchPath,
 } from "../constants";
 
+import {
+    ERPCOMMONCACHE_SHIPMENTORDERTYPE,
+} from '../../../../../constants/keyCache';
+
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
 import { MessageModal } from "../../../../../common/components/Modal";
@@ -27,7 +31,10 @@ class SearchCom extends React.Component {
         super(props);
 
         this.state = {
-            gridData: []
+            gridData: [],
+            IsDisabledBtn: false,
+            listoptionShipmentOrderType: [],
+            listelement: null
         };
 
         this.gridref = React.createRef();
@@ -35,6 +42,7 @@ class SearchCom extends React.Component {
         this.notificationDOMRef = React.createRef();
 
         this.addNotification = this.addNotification.bind(this);
+        this.callCacheShipmentOrderType = this.callCacheShipmentOrderType.bind(this);
         this.handleExportSubmit = this.handleExportSubmit.bind(this);
         this.handleHistorySubmit = this.handleHistorySubmit.bind(this);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
@@ -44,6 +52,7 @@ class SearchCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
+        this.callCacheShipmentOrderType();
     }
 
     showMessage(message) {
@@ -84,6 +93,48 @@ class SearchCom extends React.Component {
             dismiss: { duration: 6000 },
             dismissable: { click: true }
         });
+    }
+
+    callCacheShipmentOrderType() {
+        const lstShipmentOrderType = [1010, 1016, 1017, 1018, 1019, 1020, 1021, 1022, 1023]; //danh sách BHUYQ và dịch vụ sửa chữa mới 
+
+        this.props.callGetCache(ERPCOMMONCACHE_SHIPMENTORDERTYPE).then((result) => {
+
+
+            if (!result.IsError && result.ResultObject.CacheData != null) {
+                let listoption = [];
+
+                result.ResultObject.CacheData.forEach(element => {
+                    const found = lstShipmentOrderType.find(item => item == element.ShipmentOrderTypeID);
+
+                    if (found) {
+                        listoption.push({
+                            label: `${element.ShipmentOrderTypeID} - ${element.ShipmentOrderTypeName}`,
+                            value: element.ShipmentOrderTypeID
+                        })
+                    }
+                })
+
+                const uptListelement = listelement.map(item => {
+                    if (item.name == "cbShipmentOrderTypeID") {
+                        return {
+                            ...item,
+                            listoption: [...item, ...listoption]
+                        }
+                    } else {
+                        return item
+                    }
+                })
+
+                this.setState({
+                    listelement: uptListelement
+                })
+            } else {
+                this.setState({
+                    listelement
+                })
+            }
+        })
     }
 
     handleExportFile(excelData) {
@@ -210,46 +261,64 @@ class SearchCom extends React.Component {
     }
 
     handleChangeSearchForm(FormDataContolLstd, MLObjectDefinition) {
+        const FromDate = new Date(FormDataContolLstd.dtFromDate.value)
+        const ToDate = new Date(FormDataContolLstd.dtToDate.value)
 
+        if (FromDate > ToDate) {
+            this.setState({
+                IsDisabledBtn: true
+            })
+            this.addNotification("Từ ngày phải nhỏ hơn đến ngày", true);
+        } else {
+            this.setState({
+                IsDisabledBtn: false
+            })
+        }
     }
 
     render() {
-        return (
-            <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
+        if (this.state.listelement == null) {
+            return <React.Fragment>Đang tải dữ liệu...</React.Fragment>
+        } else {
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
 
-                <SearchForm
-                    className="multiple"
-                    classNamebtnSearch="groupAction"
-                    FormName="Báo cáo lỗi thực tế cho dịch vụ BHUQ và sửa chữa mới"
-                    IsButtonExport={true}
-                    IsButtonhistory={false}
-                    IsShowButtonSearch={true}
-                    listelement={listelement}
-                    MLObjectDefinition={MLObjectDefinition}
-                    onchange={this.handleChangeSearchForm}
-                    onExportSubmit={this.handleExportSubmit}
-                    onHistorySubmit={this.handleHistorySubmit}
-                    onSubmit={this.handleSearchSubmit}
-                    ref={this.searchref}
-                    TitleButtonExport="Xuất dữ liệu"
-                />
+                    <SearchForm
+                        className="multiple"
+                        classNamebtnSearch="groupAction"
+                        FormName="Báo cáo lỗi thực tế cho dịch vụ BHUQ và sửa chữa mới"
+                        IsButtonExport={true}
+                        IsButtonhistory={false}
+                        IsDisabledBtnExport={this.state.IsDisabledBtn}
+                        IsDisabledBtnSearch={this.state.IsDisabledBtn}
+                        IsShowButtonSearch={true}
+                        listelement={this.state.listelement}
+                        MLObjectDefinition={MLObjectDefinition}
+                        onchange={this.handleChangeSearchForm}
+                        onExportSubmit={this.handleExportSubmit}
+                        onHistorySubmit={this.handleHistorySubmit}
+                        onSubmit={this.handleSearchSubmit}
+                        ref={this.searchref}
+                        TitleButtonExport="Xuất dữ liệu"
+                    />
 
-                <DataGrid
-                    dataSource={this.state.gridData}
-                    IDSelectColumnName={""}
-                    IsAutoPaging={true}
-                    IsDelete={false}
-                    IsExportFile={false}
-                    IsShowButtonAdd={false}
-                    IsShowButtonDelete={false}
-                    listColumn={listColumn}
-                    PKColumnName={""}
-                    RowsPerPage={20}
-                />
+                    <DataGrid
+                        dataSource={this.state.gridData}
+                        IDSelectColumnName={""}
+                        IsAutoPaging={true}
+                        IsDelete={false}
+                        IsExportFile={false}
+                        IsShowButtonAdd={false}
+                        IsShowButtonDelete={false}
+                        listColumn={listColumn}
+                        PKColumnName={""}
+                        RowsPerPage={20}
+                    />
 
-            </React.Fragment>
-        );
+                </React.Fragment>
+            );
+        }
     }
 }
 
