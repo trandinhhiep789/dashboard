@@ -826,6 +826,10 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                         controltype="InputControl" datasourcemember="IsUpdateSymptom"
                                         swaplabelModal={true}
                                     />
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước tự động gọi xuất hàng" name="AutoCallOutputGoods"
+                                        controltype="InputControl" datasourcemember="AutoCallOutputGoods"
+                                        swaplabelModal={true}
+                                    />
 
                                 </div>
                             </div>

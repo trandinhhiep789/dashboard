@@ -865,27 +865,27 @@ const AppMenu = [
             MenuIcon: "",
             SubMenu: [],
           },
-          // {
-          //     MenuName: "ErrorApply",
-          //     MenuTitle: "Bảng Map lỗi thực tế",
-          //     LinkTo: "/ErrorApply",
-          //     MenuIcon: "",
-          //     SubMenu: [],
-          // },
-          // {
-          //     MenuName: "ErrorGroup",
-          //     MenuTitle: "Nhóm lỗi thực tế",
-          //     LinkTo: "/ErrorGroup",
-          //     MenuIcon: "",
-          //     SubMenu: [],
-          // },
-          // {
-          //     MenuName: "Error",
-          //     MenuTitle: "Lỗi thực tế",
-          //     LinkTo: "/Error",
-          //     MenuIcon: "",
-          //     SubMenu: [],
-          // },
+          {
+              MenuName: "SymptomApply",
+              MenuTitle: "Bảng Map lỗi thực tế",
+              LinkTo: "/SymptomApply",
+              MenuIcon: "",
+              SubMenu: [],
+          },
+          {
+              MenuName: "SymptomGroup",
+              MenuTitle: "Nhóm lỗi thực tế",
+              LinkTo: "/SymptomGroup",
+              MenuIcon: "",
+              SubMenu: [],
+          },
+          {
+              MenuName: "Symptom",
+              MenuTitle: "Lỗi thực tế",
+              LinkTo: "/Symptom",
+              MenuIcon: "",
+              SubMenu: [],
+          }
         ],
       },
       {

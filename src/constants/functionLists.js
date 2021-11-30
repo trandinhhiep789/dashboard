@@ -801,7 +801,7 @@ export const MD_VEHICLEMODEL_DELETE = "MD_VEHICLEMODEL_DELETE";
 
 
 // khai báo lỗi thực tế
-export const ERROR_VIEW = "ERROR_VIEW";
-export const ERROR_ADD = "ERROR_ADD";
-export const ERROR_UPDATE = "ERROR_UPDATE";
-export const ERROR_DELETE = "ERROR_DELETE";
+export const SYMPTOM_VIEW = "SYMPTOM_VIEW";
+export const SYMPTOM_ADD = "SYMPTOM_ADD";
+export const SYMPTOM_UPDATE = "SYMPTOM_UPDATE";
+export const SYMPTOM_DELETE = "SYMPTOM_DELETE";

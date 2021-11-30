@@ -364,6 +364,12 @@ export const MLObjectDefinition = [
         DataSourceMember: "IsUpdateSymptom"
     },
     {
+        Name: "AutoCallOutputGoods",
+        DefaultValue: "",
+        BindControlName: "AutoCallOutputGoods",
+        DataSourceMember: "AutoCallOutputGoods"
+    },
+    {
         Name: "WebAppHelpDocumentID",
         DefaultValue: "",
         BindControlName: "WebAppHelpDocumentID",
