@@ -420,7 +420,9 @@ class SearchFormShipmentRouteAuto extends Component {
   }
 
   handleSearch() {
-    console.log("this.state.SearchData", this.state.SearchData);
+    if (this.props.onSubmit) {
+      this.props.onSubmit(this.state.SearchData);
+    }
   }
 
   render() {
@@ -437,7 +439,7 @@ class SearchFormShipmentRouteAuto extends Component {
               size="middle"
               placeholder="Từ khoá"
               addonAfter={
-                <Select style={{ width: "180px" }} defaultValue={-1} onChange={(value) => this.handleSelectTuKhoaChange(value)}>
+                <Select style={{ width: "170px" }} defaultValue={-1} onChange={(value) => this.handleSelectTuKhoaChange(value)}>
                   {renderSelect1}
                 </Select>
               }
@@ -450,7 +452,7 @@ class SearchFormShipmentRouteAuto extends Component {
               mode="multiple"
               style={{ width: "330px" }}
               maxTagTextLength={10}
-              maxTagCount={1}
+              maxTagCount={2}
               placeholder="Loại yêu cầu vận chuyển"
               defaultValue={[]}
               dropdownMatchSelectWidth={true}
@@ -467,17 +469,18 @@ class SearchFormShipmentRouteAuto extends Component {
 
           <Col>
             <DatePicker.RangePicker
-              locale={{ lang: { locale: "vi_VN", monthFormat: "MM", yearFormat: "YYYY" } }}
+              locale={{ lang: { locale: "vi_VN", yearFormat: "YYYY" } }}
               allowEmpty={false}
               clearIcon={false}
               format="DD/MM/YYYY"
               defaultValue={[moment(moment(), "DD/MM/YYYY"), moment(moment(), "DD/MM/YYYY")]}
               onChange={(value) => this.handleSelectKhoangThoiGian(value)}
+              style={{ width: "200px" }}
             />
           </Col>
 
           <Col>
-            <Select defaultValue={-1} style={{ width: "180px" }} onChange={(value) => this.handleSelectTinhChange(value)}>
+            <Select defaultValue={-1} style={{ width: "170px" }} onChange={(value) => this.handleSelectTinhChange(value)}>
               <Option value={-1}>Tỉnh / Thành phố</Option>
               {this.state.ListOptionTinh.map((item, index) => (
                 <Option value={item.value}>{item.label}</Option>

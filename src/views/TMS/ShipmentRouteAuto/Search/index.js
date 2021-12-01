@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
 import { MessageModal } from "../../../../common/components/Modal";
@@ -21,10 +21,13 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import Collapsible from "react-collapsible";
 import DataGridShipmentRouteAuto from "./../Components/DataGridShipmentRouteAuto";
-import { Fragment } from "react";
 import SearchFormShipmentRouteAuto from "../Components/SearchFormShipmentRouteAuto";
 import SearchForm from "../Components/SearchFormShipmentRouteAutoOldUI";
 import "../../../../css/DataGridShipmentRouteAuto.scss";
+import moment from "moment";
+import { Button, Card, Col, Row, Space, Statistic } from "antd";
+import { hideModal, showModal } from "../../../../actions/modal";
+import ListShipCoordinator from "../../ShipmentRoute/Component/ListShipCoordinator";
 
 class SearchCom extends React.Component {
   constructor(props) {
@@ -44,6 +47,7 @@ class SearchCom extends React.Component {
       PrintID: "",
       dataPrint: {},
       IsDataGridSmallSize: false,
+      GridDataShip: [],
 
       diffTimeFrame: [],
       TimeFrame8to10: [],
@@ -62,6 +66,8 @@ class SearchCom extends React.Component {
     this.handleonChangePage = this.handleonChangePage.bind(this);
     this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
     this.handleTimeDivision = this.handleTimeDivision.bind(this);
+    this.handleUserCoordinator = this.handleUserCoordinator.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
 
   componentDidMount() {
@@ -229,11 +235,9 @@ class SearchCom extends React.Component {
 
     jQuery(window).scroll(function () {
       if (jQuery(this).scrollTop() > 200) {
-        $("#fixedCard").addClass("fixedCard");
-        $("body").addClass("fixedScroll");
+        $("#menu-options").addClass("menu-options-fixed");
       } else {
-        $("#fixedCard").removeClass("fixedCard");
-        $("body").removeClass("fixedScroll");
+        $("#menu-options").removeClass("menu-options-fixed");
       }
     });
   }
@@ -360,7 +364,7 @@ class SearchCom extends React.Component {
     });
   }
 
-  handleSearchSubmit(formData, MLObject) {
+  handleSearchSubmit(MLObject) {
     const postData = [
       {
         SearchKey: "@Keyword",
@@ -568,23 +572,71 @@ class SearchCom extends React.Component {
     return true;
   }
 
+  handleClose = () => {
+    this.props.hideModal();
+  };
+
+  handleUserCoordinator() {
+    this.props.hideModal();
+
+    const { widthPercent } = this.state;
+
+    if (this.state.GridDataShip.length > 0) {
+      this.state.GridDataShip[0].ShipmentOrderTypelst = this.props.ShipmentOrderTypelst;
+
+      this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderNewLst", this.state.GridDataShip).then((apiResult) => {
+        if (!apiResult.IsError) {
+          this.setState({ GridDataShip: apiResult.ResultObject.ShipmentOrderDeliverList, changeGird: true });
+          this.props.showModal(MODAL_TYPE_VIEW, {
+            title: "Phân tuyến điều phối vận đơn",
+            isShowOverlay: false,
+            onhideModal: this.handleClose,
+            content: {
+              text: (
+                <ListShipCoordinator
+                  ShipmentOrderID={0}
+                  ShipmentRouteID
+                  ShipmentRouteID={this.state.ShipmentRouteID}
+                  InfoCoordinator={this.state.GridDataShip}
+                  ShipmentOrderSame={apiResult.ResultObject.ShipmentOrderDeliverSameList}
+                  IsUserCoordinator={true}
+                  IsCoordinator={true}
+                  IsCancelDelivery={true}
+                  onChangeValue={this.handleShipmentOrder.bind(this)}
+                  onChangeClose={this.handleCloseModal.bind(this)}
+                />
+              ),
+            },
+            maxWidth: widthPercent + "px",
+          });
+        } else {
+          this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
+        }
+      });
+    } else {
+      this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
+    }
+  }
+
   render() {
+    const currentHour = moment().hour();
+
     return (
       <React.Fragment>
         <ReactNotification ref={this.notificationDOMRef} />
         <div className="col-lg-12 SearchFormCustom" id="SearchFormCustom">
-          {/* <SearchFormShipmentRouteAuto
+          <SearchFormShipmentRouteAuto
             FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
             MLObjectDefinition={SearchMLObjectDefinition}
             listelement={this.state.SearchElementList}
-            onSubmit={this.handleSearchSubmit}
+            onSubmit={(object) => this.handleSearchSubmit(object)}
             ref={this.searchref}
             btnGroup="btnSearch btncustom btnGroup"
             IsSetting={true}
             className="multiple multiple-custom multiple-custom-display"
-          /> */}
+          />
 
-          <SearchForm
+          {/* <SearchForm
             FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
             MLObjectDefinition={SearchMLObjectDefinition}
             listelement={this.state.SearchElementList}
@@ -592,32 +644,57 @@ class SearchCom extends React.Component {
             ref={this.searchref}
             btnGroup="btnSearch btncustom btnGroup"
             className="multiple multiple-custom multiple-custom-display"
-          />
+          /> */}
+        </div>
+
+        <div id="menu-options">
+          <Space>
+            <Button type="primary" onClick={() => this.handleUserCoordinator()}>
+              Phân tuyến
+            </Button>
+            <Button type="primary">Phân tuyến tự động</Button>
+          </Space>
         </div>
 
         {this.state.IsLoadDataComplete && (
-          <div className="col-lg-12" style={{}}>
+          <div className="col-lg-12">
             <Collapsible
               className="CollapsibleCustom"
               trigger={
                 <Fragment>
-                  <span>Khung giờ 08h00 - 10h00</span>
-                  {this.state.IsDataGridSmallSize == true ? (
-                    <span> | Tồng số đơn: {this.state.TimeFrame8to10.length}</span>
-                  ) : (
-                    <span style={{ position: "absolute", top: "50%", right: "30px", transform: "translateY(-50%)" }}>Tồng số đơn: {this.state.TimeFrame8to10.length}</span>
-                  )}
+                  <Row gutter={24}>
+                    <Col span={5}>
+                      <Card>
+                        <Statistic title="Thời gian" value="08h00 - 10h00" valueStyle={{ color: "#3f8600" }} />
+                      </Card>
+                    </Col>
+                    <Col span={5}>
+                      <Card>
+                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame8to10.length} valueStyle={{ color: "#3f8600" }} />
+                      </Card>
+                    </Col>
+                    <Col span={5}>
+                      <Card>
+                        <Statistic title="Khởi tạo và chờ phân bổ" value="5" valueStyle={{ color: "#3f8600" }} />
+                      </Card>
+                    </Col>
+                    <Col span={5}>
+                      <Card>
+                        <Statistic title="Giao hàng thành công" value="5" valueStyle={{ color: "#3f8600" }} />
+                      </Card>
+                    </Col>
+                  </Row>
                 </Fragment>
               }
-              triggerStyle={{ backgroundColor: "#909ba7" }}
+              triggerStyle={{ backgroundColor: "white" }}
               easing="ease-in"
-              open={false}
+              open={currentHour >= 8 && currentHour < 10 ? true : false}
             >
               <DataGridShipmentRouteAuto
                 listColumn={DataGridColumnList}
-                // dataSource={this.state.gridDataSource}
                 dataSource={this.state.TimeFrame8to10}
                 IsLoadData={this.state.IsLoadData}
+                GridDataShip={this.state.GridDataShip}
                 AddLink={AddLink}
                 IDSelectColumnName={IDSelectColumnName}
                 PKColumnName={PKColumnName}
@@ -644,23 +721,39 @@ class SearchCom extends React.Component {
               className="CollapsibleCustom"
               trigger={
                 <React.Fragment>
-                  <span>Khung giờ 10h00 - 12h00</span>
-                  {this.state.IsDataGridSmallSize == true ? (
-                    <span> | Tồng số đơn: {this.state.TimeFrame10to12.length}</span>
-                  ) : (
-                    <span style={{ position: "absolute", top: "50%", right: "30px", transform: "translateY(-50%)" }}>Tồng số đơn: {this.state.TimeFrame10to12.length}</span>
-                  )}
+                  <Row gutter={24}>
+                    <Col span={5}>
+                      <Card>
+                        <Statistic title="Thời gian" value="10h00 - 12h00" valueStyle={{ color: "#3f8600" }} />
+                      </Card>
+                    </Col>
+                    <Col span={5}>
+                      <Card>
+                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame10to12.length} valueStyle={{ color: "#3f8600" }} />
+                      </Card>
+                    </Col>
+                    <Col span={5}>
+                      <Card>
+                        <Statistic title="Khởi tạo và chờ phân bổ" value="5" valueStyle={{ color: "#3f8600" }} />
+                      </Card>
+                    </Col>
+                    <Col span={5}>
+                      <Card>
+                        <Statistic title="Giao hàng thành công" value="5" valueStyle={{ color: "#3f8600" }} />
+                      </Card>
+                    </Col>
+                  </Row>
                 </React.Fragment>
               }
-              triggerStyle={{ backgroundColor: "#909ba7" }}
+              triggerStyle={{ backgroundColor: "white" }}
               easing="ease-in"
-              open={false}
+              open={currentHour >= 10 && currentHour < 12 ? true : false}
             >
               <DataGridShipmentRouteAuto
                 listColumn={DataGridColumnList}
-                // dataSource={this.state.gridDataSource}
                 dataSource={this.state.TimeFrame10to12}
                 IsLoadData={this.state.IsLoadData}
+                GridDataShip={this.state.GridDataShip}
                 AddLink={AddLink}
                 IDSelectColumnName={IDSelectColumnName}
                 PKColumnName={PKColumnName}
@@ -687,25 +780,39 @@ class SearchCom extends React.Component {
               className="CollapsibleCustom"
               trigger={
                 <React.Fragment>
-                  <span>Khung giờ 12h00 - 14h00</span>
-                  <span style={{ position: "absolute", top: "50%", right: "30px", transform: "translateY(-50%)" }}>Tồng số đơn: {this.state.TimeFrame12to14.length}</span>
-
-                  {this.state.IsDataGridSmallSize == true ? (
-                    <span> | Tồng số đơn: {this.state.TimeFrame12to14.length}</span>
-                  ) : (
-                    <span style={{ position: "absolute", top: "50%", right: "30px", transform: "translateY(-50%)" }}>Tồng số đơn: {this.state.TimeFrame12to14.length}</span>
-                  )}
+                  <Row gutter={24}>
+                    <Col span={5}>
+                      <Card>
+                        <Statistic title="Thời gian" value="12h00 - 14h00" valueStyle={{ color: "#3f8600" }} />
+                      </Card>
+                    </Col>
+                    <Col span={5}>
+                      <Card>
+                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame12to14.length} valueStyle={{ color: "#3f8600" }} />
+                      </Card>
+                    </Col>
+                    <Col span={5}>
+                      <Card>
+                        <Statistic title="Khởi tạo và chờ phân bổ" value="5" valueStyle={{ color: "#3f8600" }} />
+                      </Card>
+                    </Col>
+                    <Col span={5}>
+                      <Card>
+                        <Statistic title="Giao hàng thành công" value="5" valueStyle={{ color: "#3f8600" }} />
+                      </Card>
+                    </Col>
+                  </Row>
                 </React.Fragment>
               }
-              triggerStyle={{ backgroundColor: "#909ba7" }}
+              triggerStyle={{ backgroundColor: "white" }}
               easing="ease-in"
-              open={false}
+              open={currentHour >= 12 && currentHour < 14 ? true : false}
             >
               <DataGridShipmentRouteAuto
                 listColumn={DataGridColumnList}
-                // dataSource={this.state.gridDataSource}
                 dataSource={this.state.TimeFrame12to14}
                 IsLoadData={this.state.IsLoadData}
+                GridDataShip={this.state.GridDataShip}
                 AddLink={AddLink}
                 IDSelectColumnName={IDSelectColumnName}
                 PKColumnName={PKColumnName}
@@ -732,24 +839,39 @@ class SearchCom extends React.Component {
               className="CollapsibleCustom"
               trigger={
                 <React.Fragment>
-                  <span>Khung giờ 14h00 - 16h00</span>
-
-                  {this.state.IsDataGridSmallSize == true ? (
-                    <span> | Tồng số đơn: {this.state.TimeFrame14to16.length}</span>
-                  ) : (
-                    <span style={{ position: "absolute", top: "50%", right: "30px", transform: "translateY(-50%)" }}>Tồng số đơn: {this.state.TimeFrame14to16.length}</span>
-                  )}
+                  <Row gutter={24}>
+                    <Col span={5}>
+                      <Card>
+                        <Statistic title="Thời gian" value="14h00 - 16h00" valueStyle={{ color: "#3f8600" }} />
+                      </Card>
+                    </Col>
+                    <Col span={5}>
+                      <Card>
+                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame14to16.length} valueStyle={{ color: "#3f8600" }} />
+                      </Card>
+                    </Col>
+                    <Col span={5}>
+                      <Card>
+                        <Statistic title="Khởi tạo và chờ phân bổ" value="5" valueStyle={{ color: "#3f8600" }} />
+                      </Card>
+                    </Col>
+                    <Col span={5}>
+                      <Card>
+                        <Statistic title="Giao hàng thành công" value="5" valueStyle={{ color: "#3f8600" }} />
+                      </Card>
+                    </Col>
+                  </Row>
                 </React.Fragment>
               }
-              triggerStyle={{ backgroundColor: "#909ba7" }}
+              triggerStyle={{ backgroundColor: "white" }}
               easing="ease-in"
-              open={false}
+              open={currentHour >= 14 && currentHour < 16 ? true : false}
             >
               <DataGridShipmentRouteAuto
                 listColumn={DataGridColumnList}
-                // dataSource={this.state.gridDataSource}
                 dataSource={this.state.TimeFrame14to16}
                 IsLoadData={this.state.IsLoadData}
+                GridDataShip={this.state.GridDataShip}
                 AddLink={AddLink}
                 IDSelectColumnName={IDSelectColumnName}
                 PKColumnName={PKColumnName}
@@ -776,24 +898,39 @@ class SearchCom extends React.Component {
               className="CollapsibleCustom"
               trigger={
                 <React.Fragment>
-                  <span>Khung giờ 17h00 - 19h00</span>
-
-                  {this.state.IsDataGridSmallSize == true ? (
-                    <span> | Tồng số đơn: {this.state.TimeFrame17to19.length}</span>
-                  ) : (
-                    <span style={{ position: "absolute", top: "50%", right: "30px", transform: "translateY(-50%)" }}>Tồng số đơn: {this.state.TimeFrame17to19.length}</span>
-                  )}
+                  <Row gutter={24}>
+                    <Col span={5}>
+                      <Card>
+                        <Statistic title="Thời gian" value="17h00 - 19h00" valueStyle={{ color: "#3f8600" }} />
+                      </Card>
+                    </Col>
+                    <Col span={5}>
+                      <Card>
+                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame17to19.length} valueStyle={{ color: "#3f8600" }} />
+                      </Card>
+                    </Col>
+                    <Col span={5}>
+                      <Card>
+                        <Statistic title="Khởi tạo và chờ phân bổ" value="5" valueStyle={{ color: "#3f8600" }} />
+                      </Card>
+                    </Col>
+                    <Col span={5}>
+                      <Card>
+                        <Statistic title="Giao hàng thành công" value="5" valueStyle={{ color: "#3f8600" }} />
+                      </Card>
+                    </Col>
+                  </Row>
                 </React.Fragment>
               }
-              triggerStyle={{ backgroundColor: "#909ba7" }}
+              triggerStyle={{ backgroundColor: "white" }}
               easing="ease-in"
-              open={false}
+              open={currentHour >= 17 && currentHour < 19 ? true : false}
             >
               <DataGridShipmentRouteAuto
                 listColumn={DataGridColumnList}
-                // dataSource={this.state.gridDataSource}
                 dataSource={this.state.TimeFrame17to19}
                 IsLoadData={this.state.IsLoadData}
+                GridDataShip={this.state.GridDataShip}
                 AddLink={AddLink}
                 IDSelectColumnName={IDSelectColumnName}
                 PKColumnName={PKColumnName}
@@ -820,24 +957,39 @@ class SearchCom extends React.Component {
               className="CollapsibleCustom"
               trigger={
                 <React.Fragment>
-                  <span>Khung giờ 19h00 - 21h00</span>
-
-                  {this.state.IsDataGridSmallSize == true ? (
-                    <span> | Tồng số đơn: {this.state.TimeFrame19to21.length}</span>
-                  ) : (
-                    <span style={{ position: "absolute", top: "50%", right: "30px", transform: "translateY(-50%)" }}>Tồng số đơn: {this.state.TimeFrame19to21.length}</span>
-                  )}
+                  <Row gutter={24}>
+                    <Col span={5}>
+                      <Card>
+                        <Statistic title="Thời gian" value="19h00 - 21h00" valueStyle={{ color: "#3f8600" }} />
+                      </Card>
+                    </Col>
+                    <Col span={5}>
+                      <Card>
+                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame19to21.length} valueStyle={{ color: "#3f8600" }} />
+                      </Card>
+                    </Col>
+                    <Col span={5}>
+                      <Card>
+                        <Statistic title="Khởi tạo và chờ phân bổ" value="5" valueStyle={{ color: "#3f8600" }} />
+                      </Card>
+                    </Col>
+                    <Col span={5}>
+                      <Card>
+                        <Statistic title="Giao hàng thành công" value="5" valueStyle={{ color: "#3f8600" }} />
+                      </Card>
+                    </Col>
+                  </Row>
                 </React.Fragment>
               }
-              triggerStyle={{ backgroundColor: "#909ba7" }}
+              triggerStyle={{ backgroundColor: "white" }}
               easing="ease-in"
-              open={false}
+              open={currentHour >= 19 && currentHour < 21 ? true : false}
             >
               <DataGridShipmentRouteAuto
                 listColumn={DataGridColumnList}
-                // dataSource={this.state.gridDataSource}
                 dataSource={this.state.TimeFrame19to21}
                 IsLoadData={this.state.IsLoadData}
+                GridDataShip={this.state.GridDataShip}
                 AddLink={AddLink}
                 IDSelectColumnName={IDSelectColumnName}
                 PKColumnName={PKColumnName}
@@ -864,24 +1016,39 @@ class SearchCom extends React.Component {
               className="CollapsibleCustom"
               trigger={
                 <React.Fragment>
-                  <span>Khung giờ khác</span>
-
-                  {this.state.IsDataGridSmallSize == true ? (
-                    <span> | Tồng số đơn: {this.state.diffTimeFrame.length}</span>
-                  ) : (
-                    <span style={{ position: "absolute", top: "50%", right: "30px", transform: "translateY(-50%)" }}>Tồng số đơn: {this.state.diffTimeFrame.length}</span>
-                  )}
+                  <Row gutter={24}>
+                    <Col span={5}>
+                      <Card>
+                        <Statistic title="Thời gian khác" value="" valueStyle={{ color: "#3f8600" }} />
+                      </Card>
+                    </Col>
+                    <Col span={5}>
+                      <Card>
+                        <Statistic title="Tổng số đơn" value={this.state.diffTimeFrame.length} valueStyle={{ color: "#3f8600" }} />
+                      </Card>
+                    </Col>
+                    <Col span={5}>
+                      <Card>
+                        <Statistic title="Khởi tạo và chờ phân bổ" value="5" valueStyle={{ color: "#3f8600" }} />
+                      </Card>
+                    </Col>
+                    <Col span={5}>
+                      <Card>
+                        <Statistic title="Giao hàng thành công" value="5" valueStyle={{ color: "#3f8600" }} />
+                      </Card>
+                    </Col>
+                  </Row>
                 </React.Fragment>
               }
-              triggerStyle={{ backgroundColor: "#909ba7" }}
+              triggerStyle={{ backgroundColor: "white" }}
               easing="ease-in"
-              open={false}
+              open={currentHour >= 21 ? true : false}
             >
               <DataGridShipmentRouteAuto
                 listColumn={DataGridColumnList}
-                // dataSource={this.state.gridDataSource}
                 dataSource={this.state.diffTimeFrame}
                 IsLoadData={this.state.IsLoadData}
+                GridDataShip={this.state.GridDataShip}
                 AddLink={AddLink}
                 IDSelectColumnName={IDSelectColumnName}
                 PKColumnName={PKColumnName}
@@ -919,6 +1086,12 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    showModal: (type, props) => {
+      dispatch(showModal(type, props));
+    },
+    hideModal: () => {
+      dispatch(hideModal());
+    },
     updatePagePath: (pagePath) => {
       dispatch(updatePagePath(pagePath));
     },
