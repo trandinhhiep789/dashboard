@@ -18,8 +18,6 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { APIHostName } from "../constants";
 import ListShipCoordinator from "../../ShipmentRoute/Component/ListShipCoordinator";
-import GridPageShipmentRouteAuto from "./GridPageShipmentRouteAuto";
-import { Fragment } from "react";
 
 class DataGridShipmentRouteAutoCom extends Component {
   constructor(props) {
@@ -609,6 +607,8 @@ class DataGridShipmentRouteAutoCom extends Component {
   handleClickShip = (ShipmentOrderID) => (e) => {
     const { widthPercent } = this.state;
 
+    console.log("widthPercent", widthPercent);
+
     this.props.hideModal();
 
     this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderDeliver", ShipmentOrderID).then((apiResult) => {
@@ -652,7 +652,7 @@ class DataGridShipmentRouteAutoCom extends Component {
               />
             ),
           },
-          maxWidth: widthPercent + "px",
+          maxWidth: `${widthPercent - 20}px`,
         });
 
         this.props.onDataGridSmallSize(true);
@@ -664,7 +664,6 @@ class DataGridShipmentRouteAutoCom extends Component {
 
   handleClickShipmentRoute = (RouteID) => (e) => {
     const { widthPercent, ShipmentRouteID } = this.state;
-
     this.props.hideModal();
 
     this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetShipmentOrderRouteLst", RouteID).then((apiResult) => {
@@ -690,7 +689,7 @@ class DataGridShipmentRouteAutoCom extends Component {
               />
             ),
           },
-          maxWidth: widthPercent + "px",
+          maxWidth: `${widthPercent - 20}px`,
         });
 
         this.props.onDataGridSmallSize(true);
@@ -751,7 +750,6 @@ class DataGridShipmentRouteAutoCom extends Component {
 
   renderDataGrid() {
     let { changeGird } = this.state;
-    console.log(changeGird);
 
     const dataSource = this.state.DataSource;
     if (changeGird) {
@@ -932,7 +930,7 @@ class DataGridShipmentRouteAutoCom extends Component {
           <table className="table table-sm table-striped table-bordered table-hover table-condensed datagirdshippingorder" cellSpacing="0">
             <thead className="thead-light">
               <tr>
-                <th className="jsgrid-header-cell" style={{ width: "2%" }}></th>
+                <th className="jsgrid-header-cell" style={{ width: "3%" }}></th>
                 <th className="jsgrid-header-cell" style={{ width: "15%" }}>
                   Thời gian giao
                 </th>
@@ -980,7 +978,7 @@ class DataGridShipmentRouteAutoCom extends Component {
                             // console.log("check",rowItem.ShipmentOrderID,this.state.GridDataShip,this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
                             return (
                               <tr key={rowIndex} className={rowtrClass}>
-                                <td className={rowUndelivery} style={{ width: "2%" }}>
+                                <td className={rowUndelivery} style={{ width: "3%" }}>
                                   <ul>
                                     {rowItem.ShipmentRouteID == "" ? (
                                       <React.Fragment>
@@ -1201,7 +1199,7 @@ class DataGridShipmentRouteAutoCom extends Component {
             </div>
           </div>
         </div>
-        <table className="card-body">
+        <table className="card-body custom-card-body">
           <tbody>
             <tr>
               <td colspan={2}>
@@ -1431,9 +1429,9 @@ class DataGridShipmentRouteAutoCom extends Component {
                     </div> */}
 
                     <div className="card-title">{(this.props.title != undefined || this.props.title != "") && <h4 className="title">{this.props.title}</h4>}</div>
-                    <div className="card-body">
+                    <div className="card-body custom-card-body">
                       {datagrid}
-                      {this.props.IsAutoPaging && <GridPageShipmentRouteAuto numPage={pageCount} currentPage={this.state.PageNumber} onChangePage={this.onChangePageHandle} />}
+                      {/* {this.props.IsAutoPaging && <GridPageShipmentRouteAuto numPage={pageCount} currentPage={this.state.PageNumber} onChangePage={this.onChangePageHandle} />} */}
                     </div>
                   </div>
                 </div>
