@@ -24,6 +24,7 @@ import DataGridShipmentRouteAuto from "./../Components/DataGridShipmentRouteAuto
 import { Fragment } from "react";
 import SearchFormShipmentRouteAuto from "../Components/SearchFormShipmentRouteAuto";
 import SearchForm from "../Components/SearchFormShipmentRouteAutoOldUI";
+import "../../../../css/DataGridShipmentRouteAuto.scss";
 
 class SearchCom extends React.Component {
   constructor(props) {
@@ -438,6 +439,7 @@ class SearchCom extends React.Component {
     this.setState({
       IsLoadData: false,
     });
+
     this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then((apiResult) => {
       if (!apiResult.IsError) {
         this.handleTimeDivision(apiResult.ResultObject);
