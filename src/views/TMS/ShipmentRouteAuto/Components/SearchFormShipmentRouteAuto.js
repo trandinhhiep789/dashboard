@@ -1,4 +1,4 @@
-import { Button, Col, DatePicker, Input, Row, Select, Space } from "antd";
+import { Button, Col, DatePicker, Input, Row, Select, Space, Typography } from "antd";
 import moment from "moment";
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -20,8 +20,8 @@ class SearchFormShipmentRouteAuto extends Component {
       SearchData: {
         Keyword: "",
         ShipmentOrderTypeID: "",
-        CreatedOrderTimeFo: "2021-11-30T07:10:35.384Z",
-        CreatedOrderTimeTo: "2021-11-30T07:10:35.384Z",
+        CreatedOrderTimeFo: "",
+        CreatedOrderTimeTo: "",
         ReceiverProvinceID: -1,
         ReceiverDistrictID: -1,
         ReceiverWardID: -1,
@@ -66,12 +66,15 @@ class SearchFormShipmentRouteAuto extends Component {
     this.handleSelectLoaiYeuCauVanChuyenChange = this.handleSelectLoaiYeuCauVanChuyenChange.bind(this);
     this.handleSelectTinhChange = this.handleSelectTinhChange.bind(this);
     this.handleSelectHuyenChange = this.handleSelectHuyenChange.bind(this);
+    this.handleSelectKhoGuiChange = this.handleSelectKhoGuiChange.bind(this);
+    this.handleSelectKhoDieuPhoiChange = this.handleSelectKhoDieuPhoiChange.bind(this);
   }
 
   componentDidMount() {
     this.handleGetDataCacheLoaiYeuCauVanChuyen();
     this.handleGetDataCacheTinh();
     this.handleGetDataCacheTrangThai();
+    this.handleGetDataCacheKhoDieuPhoi();
   }
 
   callSearchData(KeyWord) {
@@ -214,65 +217,86 @@ class SearchFormShipmentRouteAuto extends Component {
     });
   }
 
-  handleGetDataCacheKhoGui() {
-    let listMLObject = {
-      QueryParamList: [
-        {
-          QueryKey: "",
-          QueryValue: "",
-          QueryType: 18,
-          IsNotQuery: false,
-          SubQueryParamList: [
-            {
-              QueryKey: "sTOREID",
-              QueryValue: /^[0-9][0-9]*$/.test(KeyWord) == true ? KeyWord : "",
-              QueryType: 3,
-              IsNotQuery: false,
-            },
-            {
-              QueryKey: "sTORENAME",
-              QueryValue: KeyWord,
-              QueryType: 2,
-              IsNotQuery: false,
-            },
-          ],
-        },
-        {
-          QueryKey: "cOMPANYID",
-          QueryValue: "1",
-          QueryType: 1,
-          IsNotQuery: false,
-        },
-      ],
-      Top: 10,
-      IndexName: "store",
-      TypeName: "store",
-      IsCompressResultData: false,
-    };
+  handleGetDataCacheKhoGui(districtID) {
+    // let listMLObject = {
+    //   QueryParamList: [
+    //     {
+    //       QueryKey: "",
+    //       QueryValue: "",
+    //       QueryType: 18,
+    //       IsNotQuery: false,
+    //       SubQueryParamList: [
+    //         {
+    //           QueryKey: "sTOREID",
+    //           QueryValue: /^[0-9][0-9]*$/.test(KeyWord) == true ? KeyWord : "",
+    //           QueryType: 3,
+    //           IsNotQuery: false,
+    //         },
+    //         {
+    //           QueryKey: "sTORENAME",
+    //           QueryValue: KeyWord,
+    //           QueryType: 2,
+    //           IsNotQuery: false,
+    //         },
+    //       ],
+    //     },
+    //     {
+    //       QueryKey: "cOMPANYID",
+    //       QueryValue: "1",
+    //       QueryType: 1,
+    //       IsNotQuery: false,
+    //     },
+    //   ],
+    //   Top: 10,
+    //   IndexName: "store",
+    //   TypeName: "store",
+    //   IsCompressResultData: false,
+    // };
 
-    this.props.callFetchAPI("ERPAPI", "api/CommonSearch/Search", listMLObject).then((apiResult) => {
-      const objStore = JSON.parse(apiResult.ResultObject).hits.hits;
+    // this.props.callFetchAPI("ERPAPI", "api/CommonSearch/Search", listMLObject).then((apiResult) => {
+    //   const objStore = JSON.parse(apiResult.ResultObject).hits.hits;
 
+    //   let listOptionNew = [];
+
+    //   for (let i = 0; i < objStore.length; i++) {
+    //     listOptionNew.push({
+    //       value: objStore[i]._source.sTOREID,
+    //       name: objStore[i]._source.sTORENAME,
+    //       StoreFax: objStore[i]._source.sTOREPHONENUM,
+    //       StoreAddress: objStore[i]._source.sTOREADDRESS,
+    //     });
+    //   }
+
+    //   let changeState = this.state;
+    //   changeState = { ...changeState, ListOptionKhoGui: listOptionNew };
+
+    //   this.setState(changeState);
+    // });
+
+    this.props.callGetCache("ERPCOMMONCACHE.STORE").then((result) => {
       let listOptionNew = [];
-
-      for (let i = 0; i < objStore.length; i++) {
-        listOptionNew.push({
-          value: objStore[i]._source.sTOREID,
-          name: objStore[i]._source.sTORENAME,
-          StoreFax: objStore[i]._source.sTOREPHONENUM,
-          StoreAddress: objStore[i]._source.sTOREADDRESS,
+      if (!result.IsError && result.ResultObject.CacheData != null) {
+        result.ResultObject.CacheData.map((cacheItem) => {
+          if (cacheItem.DistrictID === districtID) {
+            listOptionNew.push({ value: cacheItem["StoreID"], key: cacheItem["StoreID"], label: cacheItem["StoreID"] + " - " + cacheItem["StoreName"] });
+          }
         });
+
+        let changeState = this.state;
+        changeState = { ...changeState, ListOptionKhoGui: listOptionNew };
+
+        this.setState(changeState);
+      } else {
+        let changeState = this.state;
+        changeState = { ...changeState, ListOptionKhoGui: listOptionNew };
+
+        this.setState(changeState);
       }
-
-      let changeState = this.state;
-      changeState = { ...changeState, ListOptionKhoGui: listOptionNew };
-
-      this.setState(changeState);
     });
   }
 
   handleGetDataCacheKhoDieuPhoi() {
-    this.props.callGetCache("ERPCOMMONCACHE.STORE").then((result) => {
+    this.props.callGetCache("ERPCOMMONCACHE.USER_COOSTORE_BYUSER").then((result) => {
       let listOptionNew = [];
       if (!result.IsError && result.ResultObject.CacheData != null) {
         result.ResultObject.CacheData.map((cacheItem) => {
@@ -376,6 +400,7 @@ class SearchFormShipmentRouteAuto extends Component {
     stateChange = { ...stateChange, SearchData: objSearchData };
 
     this.handleGetDataCacheXa(value);
+    this.handleGetDataCacheKhoGui(value);
     this.setState(stateChange);
   }
 
@@ -419,8 +444,29 @@ class SearchFormShipmentRouteAuto extends Component {
     this.setState(stateChange);
   }
 
+  handleSelectKhoGuiChange(value) {
+    let stateChange = this.state;
+    let objSearchData = stateChange.SearchData;
+
+    objSearchData = { ...objSearchData, SenderStoreID: value };
+    stateChange = { ...stateChange, SearchData: objSearchData };
+
+    this.setState(stateChange);
+  }
+
+  handleSelectKhoDieuPhoiChange(value) {
+    let stateChange = this.state;
+    let objSearchData = stateChange.SearchData;
+
+    objSearchData = { ...objSearchData, CoordinatorStoreID: value };
+    stateChange = { ...stateChange, SearchData: objSearchData };
+
+    this.setState(stateChange);
+  }
+
   handleSearch() {
     if (this.props.onSubmit) {
+      console.log(this.state.SearchData);
       this.props.onSubmit(this.state.SearchData);
     }
   }
@@ -475,12 +521,15 @@ class SearchFormShipmentRouteAuto extends Component {
               format="DD/MM/YYYY"
               defaultValue={[moment(moment(), "DD/MM/YYYY"), moment(moment(), "DD/MM/YYYY")]}
               onChange={(value) => this.handleSelectKhoangThoiGian(value)}
-              style={{ width: "200px" }}
+              style={{ width: "210px" }}
+              ranges={{
+                "Ngày hôm nay": [moment(), moment()],
+              }}
             />
           </Col>
 
           <Col>
-            <Select defaultValue={-1} style={{ width: "170px" }} onChange={(value) => this.handleSelectTinhChange(value)}>
+            <Select defaultValue={-1} style={{ width: "170px" }} onChange={(value) => this.handleSelectTinhChange(value)} dropdownMatchSelectWidth={200}>
               <Option value={-1}>Tỉnh / Thành phố</Option>
               {this.state.ListOptionTinh.map((item, index) => (
                 <Option value={item.value}>{item.label}</Option>
@@ -489,7 +538,7 @@ class SearchFormShipmentRouteAuto extends Component {
           </Col>
 
           <Col>
-            <Select defaultValue={-1} style={{ width: "200px" }} onChange={(value) => this.handleSelectHuyenChange(value)}>
+            <Select defaultValue={-1} style={{ width: "200px" }} onChange={(value) => this.handleSelectHuyenChange(value)} dropdownMatchSelectWidth={250}>
               <Option value={-1}>Quận / Huyện</Option>
               {this.state.ListOptionHuyen.map((item, index) => (
                 <Option value={item.value}>{item.label}</Option>
@@ -507,16 +556,16 @@ class SearchFormShipmentRouteAuto extends Component {
           </Col>
 
           <Col>
-            <Select defaultValue={-1} style={{ width: "150px" }}>
-              <Option value={-1}>Kho gửi</Option>
+            <Select defaultValue={-1} style={{ width: "200px" }} dropdownMatchSelectWidth={400} onChange={(value) => this.handleSelectKhoGuiChange(value)}>
+              <Select.Option value={-1}>Kho gửi</Select.Option>
               {this.state.ListOptionKhoGui.map((item, index) => (
-                <Option value={item.value}>{item.label}</Option>
+                <Select.Option value={item.value}>{item.label}</Select.Option>
               ))}
             </Select>
           </Col>
 
           <Col>
-            <Select defaultValue={-1} style={{ width: "200px" }}>
+            <Select defaultValue={-1} style={{ width: "200px" }} dropdownMatchSelectWidth={400} onChange={(value) => this.handleSelectKhoDieuPhoiChange(value)}>
               <Option value={-1}>Kho điều phối</Option>
               {this.state.ListOptionKhoDieuPhoi.map((item, index) => (
                 <Option value={item.value}>{item.label}</Option>
