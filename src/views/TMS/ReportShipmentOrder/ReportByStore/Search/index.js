@@ -129,24 +129,24 @@ class SearchCom extends React.Component {
         this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then(apiResult => {
             //console.log("apiResult", apiResult)
             if (!apiResult.IsError) {
-                const tempData = apiResult.ResultObject.map((item, index) => {
+                const tempData = apiResult.ResultObject.ListShipmentOrderReportItem.map((item, index) => {
                     item.fulNameStore = item.CoordinatorStoreID + "- " + item.StoreName;
                     return item;
                 })
 
 
                 // xuất exel
-                const exelData = apiResult.ResultObject.map((item, index) => {
+                const exelData = apiResult.ResultObject.ListShipmentOrderReportExport.map((item, index) => {
                     let element = {
-                        "Kho điều phối": item.fulNameStore,
-                        "Tổng đơn": item.TotalOrder,
-                        "Chưa giao": item.TotalUndelivery,
-                        "Đang giao": item.TotalDelivering,
-                        "Giao xong": item.TotalDelivered,
-                        "Đã hoàn thành": item.TotalCompletedOrder,
-                        "Huỷ giao": item.TotalCancelDelivery,
-                        "Đã nộp tiền": item.TotalPaidIn,
-                        "Chưa nộp tiền": item.UnTotalPaidIn
+                        "Ngày hẹn giao": item.ExpectedDeliveryDate,
+                        "Mã vận đơn": item.ShipmentOrderID,
+                        "kho điều phối": item.StoreName,
+                        "Loại dịch vụ": item.ShipmentOrderTypeName,
+                        "Trưởng nhóm điều phối": item.CoordinatorUser,
+                        "Nhân viên giao hàng": item.DeliverUser,
+                        "Tổng tiền": item.TotalMoney,
+                        "Nợ": item.TotalUnPaidMoney,
+                        "Trạng thái vận đơn": item.ShipmentOrderStatusName                  
                     };
                     return element;
 

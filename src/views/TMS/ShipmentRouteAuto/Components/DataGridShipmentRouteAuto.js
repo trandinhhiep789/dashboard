@@ -18,6 +18,8 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { APIHostName } from "../constants";
 import ListShipCoordinator from "../../ShipmentRoute/Component/ListShipCoordinator";
+import { Button } from "antd";
+import ListShipCoordinatorRoute from "../../ShipmentRoute/Component/ListShipCoordinatorRoute";
 
 class DataGridShipmentRouteAutoCom extends Component {
   constructor(props) {
@@ -55,6 +57,8 @@ class DataGridShipmentRouteAutoCom extends Component {
   }
 
   componentDidMount() {
+    console.log("this.props.GridDataShip", this.props.GridDataShip);
+
     this.updateWindowDimensions();
 
     window.addEventListener("resize", this.updateWindowDimensions);
@@ -240,7 +244,7 @@ class DataGridShipmentRouteAutoCom extends Component {
     }
   }
 
-  handleonChange(e) {
+  handleOnChange(e) {
     this.setState({ KeywordId: e.target.value });
   }
 
@@ -388,44 +392,48 @@ class DataGridShipmentRouteAutoCom extends Component {
     this.props.hideModal();
   }
 
-  handleUserCoordinator() {
-    this.props.hideModal();
-    const { widthPercent } = this.state;
-    if (this.state.GridDataShip.length > 0) {
-      this.state.GridDataShip[0].ShipmentOrderTypelst = this.props.ShipmentOrderTypelst;
-      this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderNewLst", this.state.GridDataShip).then((apiResult) => {
-        if (!apiResult.IsError) {
-          this.setState({ GridDataShip: apiResult.ResultObject.ShipmentOrderDeliverList, changeGird: true });
-          this.props.showModal(MODAL_TYPE_VIEW, {
-            title: "Phân tuyến điều phối vận đơn",
-            isShowOverlay: false,
-            onhideModal: this.handleClose,
-            content: {
-              text: (
-                <ListShipCoordinator
-                  ShipmentOrderID={0}
-                  ShipmentRouteID
-                  ShipmentRouteID={this.state.ShipmentRouteID}
-                  InfoCoordinator={this.state.GridDataShip}
-                  ShipmentOrderSame={apiResult.ResultObject.ShipmentOrderDeliverSameList}
-                  IsUserCoordinator={true}
-                  IsCoordinator={true}
-                  IsCancelDelivery={true}
-                  onChangeValue={this.handleShipmentOrder.bind(this)}
-                  onChangeClose={this.handleCloseModal.bind(this)}
-                />
-              ),
-            },
-            maxWidth: widthPercent + "px",
-          });
-        } else {
-          this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
-        }
-      });
-    } else {
-      this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
-    }
-  }
+  // handleUserCoordinator() {
+  //   this.props.hideModal();
+
+  //   const { widthPercent } = this.state;
+
+  //   if (this.state.GridDataShip.length > 0) {
+
+  //     this.state.GridDataShip[0].ShipmentOrderTypelst = this.props.ShipmentOrderTypelst;
+
+  //     this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderNewLst", this.state.GridDataShip).then((apiResult) => {
+  //       if (!apiResult.IsError) {
+  //         this.setState({ GridDataShip: apiResult.ResultObject.ShipmentOrderDeliverList, changeGird: true });
+  //         this.props.showModal(MODAL_TYPE_VIEW, {
+  //           title: "Phân tuyến điều phối vận đơn",
+  //           isShowOverlay: false,
+  //           onhideModal: this.handleClose,
+  //           content: {
+  //             text: (
+  //               <ListShipCoordinator
+  //                 ShipmentOrderID={0}
+  //                 ShipmentRouteID
+  //                 ShipmentRouteID={this.state.ShipmentRouteID}
+  //                 InfoCoordinator={this.state.GridDataShip}
+  //                 ShipmentOrderSame={apiResult.ResultObject.ShipmentOrderDeliverSameList}
+  //                 IsUserCoordinator={true}
+  //                 IsCoordinator={true}
+  //                 IsCancelDelivery={true}
+  //                 onChangeValue={this.handleShipmentOrder.bind(this)}
+  //                 onChangeClose={this.handleCloseModal.bind(this)}
+  //               />
+  //             ),
+  //           },
+  //           maxWidth: widthPercent + "px",
+  //         });
+  //       } else {
+  //         this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
+  //       }
+  //     });
+  //   } else {
+  //     this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
+  //   }
+  // }
 
   handleSelected() {
     if (this.state.GridDataShip.length > 0) {
@@ -455,8 +463,11 @@ class DataGridShipmentRouteAutoCom extends Component {
 
   handleCheckShip(e) {
     const strShipmentOrdervalue = e.target.value;
+
     const name = e.target.name;
+
     const objShipmentOrder = this.state.DataSource.find((n) => n[name] == strShipmentOrdervalue);
+
     let objShip = {
       ShipmentOrderID: objShipmentOrder.ShipmentOrderID,
       ShipmentOrderTypeID: objShipmentOrder.ShipmentOrderTypeID,
@@ -467,15 +478,35 @@ class DataGridShipmentRouteAutoCom extends Component {
       ShipItemNameList: objShipmentOrder.ShipItemNameList,
       PrimaryShipItemName: objShipmentOrder.PrimaryShipItemName,
     };
+
+    let gridDataShip = this.state.GridDataShip;
+
     if (e.target.checked) {
-      this.state.GridDataShip.push(objShip);
+      gridDataShip.push(objShip);
+
+      const gridDataShipNew = [...this.props.GridDataShip, objShip];
+
+      if (this.props.onCheckShip) {
+        this.props.onCheckShip(gridDataShipNew);
+      }
     } else {
-      this.state.GridDataShip.splice(
-        this.state.GridDataShip.findIndex((n) => n[name] == strShipmentOrdervalue),
+      gridDataShip.splice(
+        gridDataShip.findIndex((n) => n[name] == strShipmentOrdervalue),
         1
       );
+
+      let gridDataShipNew = this.props.GridDataShip;
+      gridDataShipNew.splice(
+        gridDataShipNew.findIndex((n) => n[name] == strShipmentOrdervalue),
+        1
+      );
+
+      if (this.props.onCheckShip) {
+        this.props.onCheckShip(gridDataShipNew);
+      }
     }
-    this.setState({ GridDataShip: this.state.GridDataShip });
+
+    this.setState({ GridDataShip: gridDataShip });
   }
 
   _genCommentTime(dates) {
@@ -585,10 +616,6 @@ class DataGridShipmentRouteAutoCom extends Component {
   }
 
   handleClose = () => {
-    // this.setState({
-    //   changeGird: false,
-    // });
-
     this.props.onDataGridSmallSize(false);
     this.props.hideModal();
   };
@@ -606,8 +633,6 @@ class DataGridShipmentRouteAutoCom extends Component {
 
   handleClickShip = (ShipmentOrderID) => (e) => {
     const { widthPercent } = this.state;
-
-    console.log("widthPercent", widthPercent);
 
     this.props.hideModal();
 
@@ -639,7 +664,7 @@ class DataGridShipmentRouteAutoCom extends Component {
           onhideModal: this.handleClose,
           content: {
             text: (
-              <ListShipCoordinator
+              <ListShipCoordinatorRoute
                 ShipmentOrderID={0}
                 ShipmentRouteID={this.state.ShipmentRouteID}
                 InfoCoordinator={this.state.GridDataShip}
@@ -676,7 +701,7 @@ class DataGridShipmentRouteAutoCom extends Component {
           onhideModal: this.handleCloseModal,
           content: {
             text: (
-              <ListShipCoordinator
+              <ListShipCoordinatorRoute
                 ShipmentOrderID={0}
                 ShipmentRouteID={RouteID}
                 InfoCoordinator={this.state.GridDataShip}
@@ -769,7 +794,7 @@ class DataGridShipmentRouteAutoCom extends Component {
                 <tbody>
                   <tr>
                     <td colspan={2}>
-                      <div style={{ width: "100%", maxHeight: "500px", overflowY: "auto" }}>
+                      <div className="table-custom-scroll" style={{ width: "100%", maxHeight: "500px", overflowY: "auto" }}>
                         {dataSource != null &&
                           dataSource.map((rowItem, rowIndex) => {
                             let rowtrClass = "jsgrid-row unread";
@@ -927,14 +952,18 @@ class DataGridShipmentRouteAutoCom extends Component {
     } else {
       return (
         <div className="table-responsive">
-          <table className="table table-sm table-striped table-bordered table-hover table-condensed datagirdshippingorder" cellSpacing="0">
+          <table
+            className="table table-sm table-striped table-bordered table-hover table-condensed datagirdshippingorder
+          table-custom"
+            cellSpacing="0"
+          >
             <thead className="thead-light">
               <tr>
                 <th className="jsgrid-header-cell" style={{ width: "3%" }}></th>
                 <th className="jsgrid-header-cell" style={{ width: "15%" }}>
                   Thời gian giao
                 </th>
-                <th className="jsgrid-header-cell" style={{ width: "33%" }}>
+                <th className="jsgrid-header-cell" style={{ width: "34%" }}>
                   Địa chỉ
                 </th>
                 <th className="jsgrid-header-cell" style={{ width: "15%" }}>
@@ -943,15 +972,15 @@ class DataGridShipmentRouteAutoCom extends Component {
                 <th className="jsgrid-header-cell" style={{ width: "24%" }}>
                   Tên sản phẩm/Ghi chú
                 </th>
-                <th className="jsgrid-header-cell" style={{ width: "10%" }}>
+                <th className="jsgrid-header-cell" style={{ width: "9%" }}>
                   Thanh toán
                 </th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td colspan={6} style={{ margin: 0, padding: 0 }}>
-                  <div style={{ width: "100%", maxHeight: "500px", overflowY: "auto" }}>
+                <td colspan={7} style={{ margin: 0, padding: 0 }}>
+                  <div className="table-custom-scroll" style={{ width: "100%", maxHeight: "500px", overflowY: "auto" }}>
                     <table>
                       <tbody>
                         {dataSource != null &&
@@ -1022,7 +1051,7 @@ class DataGridShipmentRouteAutoCom extends Component {
                                     </li>
                                   </ul>
                                 </td>
-                                {/* <td>{rowItem.ExpectedDeliveryDate}</td> */}
+
                                 <td className="groupInfoAction" style={{ width: "15%" }}>
                                   <div className="group-info-row">
                                     <label className="item time">
@@ -1041,12 +1070,14 @@ class DataGridShipmentRouteAutoCom extends Component {
                                     </label>
                                   </div>
                                 </td>
-                                <td className="group-address" style={{ width: "33%" }}>
+                                <td className="group-address" style={{ width: "34%" }}>
                                   <div className="group-info-row">
                                     <label className="item person">
                                       <i className="fa fa-user"></i>
                                       <div className="person-info">
-                                        <span className="name">{rowItem.ReceiverFullName}</span>
+                                        <span className="name" style={{ wordBreak: "break-all" }}>
+                                          {rowItem.ReceiverFullName}
+                                        </span>
                                         <span className="line">-</span>
                                         <span className={rowItem.PhoneCount > 1 ? "phone  phonered" : "phone"}>({rowItem.ReceiverPhoneNumber})</span>
                                         {rowItem.PartnerSaleOrderID != "" ? <span className="line">-</span> : ""}
@@ -1106,7 +1137,7 @@ class DataGridShipmentRouteAutoCom extends Component {
                                         </label>
                                         {rowItem.DeliverUserFullNameList != "" ? (
                                           <label className="item address-receiver">
-                                            <span>{ReactHtmlParser(rowItem.DeliverUserFullNameList)}</span>
+                                            <span>{rowItem.DeliverUserFullNameList}</span>
                                           </label>
                                         ) : (
                                           ""
@@ -1135,7 +1166,7 @@ class DataGridShipmentRouteAutoCom extends Component {
                                     </label>
                                   </div>
                                 </td>
-                                <td className="group-price" style={{ width: "10%" }}>
+                                <td className="group-price" style={{ width: "9%" }}>
                                   <div className="group-row">
                                     <span className="item price3">{rowItem.IsCancelDelivery == true ? <span className="badge badge-danger">Đã hủy</span> : ""}</span>
                                     {rowItem.TotalCOD > 0 ? <span className="item pricecod">COD:{formatMoney(rowItem.TotalCOD, 0)}</span> : ""}
@@ -1191,7 +1222,7 @@ class DataGridShipmentRouteAutoCom extends Component {
           <div className="total-orders">Tổng đơn: {this.state.DataSource.length > 0 ? formatNumber(this.state.DataSource[0].TotaLRows) : ""}</div>
 
           <div className="input-group input-group-select">
-            <input type="text" onChange={this.handleonChange.bind(this)} onKeyPress={this.handleKeyPress} className="form-control" aria-label="Text input with dropdown button" placeholder="Từ khóa" />
+            <input type="text" onChange={this.handleOnChange.bind(this)} onKeyPress={this.handleKeyPress} className="form-control" aria-label="Text input with dropdown button" placeholder="Từ khóa" />
             <div className="input-group-append" onClick={this.handleSearchShip.bind(this)}>
               <span className="input-group-text">
                 <i className="ti-search"></i>
@@ -1373,7 +1404,7 @@ class DataGridShipmentRouteAutoCom extends Component {
 
     const pageCount = this.getPageCount(this.props.dataSource[0]);
 
-    const datagrid = this.renderDataGrid();
+    const dataGrid = this.renderDataGrid();
 
     let hasHeaderToolbar = true;
     if (this.props.isHideHeaderToolbar) hasHeaderToolbar = false;
@@ -1428,9 +1459,11 @@ class DataGridShipmentRouteAutoCom extends Component {
                       {(this.props.title != undefined || this.props.title != "") && <h4 className="title">{this.props.title}</h4>}
                     </div> */}
 
-                    <div className="card-title">{(this.props.title != undefined || this.props.title != "") && <h4 className="title">{this.props.title}</h4>}</div>
-                    <div className="card-body custom-card-body">
-                      {datagrid}
+                    <div className="card-title card-title-custom">
+                      <Button onClick={() => this.props.onShowModel(true)}>Phân tuyến</Button>
+                    </div>
+                    <div className="card-body card-body-custom">
+                      {dataGrid}
                       {/* {this.props.IsAutoPaging && <GridPageShipmentRouteAuto numPage={pageCount} currentPage={this.state.PageNumber} onChangePage={this.onChangePageHandle} />} */}
                     </div>
                   </div>
