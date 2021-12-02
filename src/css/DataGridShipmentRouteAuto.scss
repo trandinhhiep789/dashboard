@@ -1,0 +1,23 @@
+.SearchForm .card .card-body.custom-card-body {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+#menu-options {
+  height: auto;
+  width: 100%;
+  margin: 0 15px 15px 15px !important;
+  background-color: transparent;
+}
+
+.menu-options-fixed {
+  position: fixed;
+  top: 70px;
+  left: auto;
+  z-index: 999999999;
+  background-color: transparent;
+}
+
+.table-custom-scroll::-webkit-scrollbar {
+  width: 2px;
+}
