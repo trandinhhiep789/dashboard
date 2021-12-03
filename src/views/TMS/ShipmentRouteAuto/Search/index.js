@@ -769,6 +769,7 @@ class SearchCom extends React.Component {
                 </Fragment>
               }
               triggerStyle={{ backgroundColor: "white" }}
+              triggerOpenedClassName="collapsible-open-custom"
               easing="ease-in"
               open={currentHour >= 8 && currentHour < 10 ? true : false}
             >
@@ -837,6 +838,7 @@ class SearchCom extends React.Component {
                   </Row>
                 </React.Fragment>
               }
+              triggerOpenedClassName="collapsible-open-custom"
               triggerStyle={{ backgroundColor: "white" }}
               easing="ease-in"
               open={currentHour >= 10 && currentHour < 12 ? true : false}
@@ -905,6 +907,7 @@ class SearchCom extends React.Component {
                   </Row>
                 </React.Fragment>
               }
+              triggerOpenedClassName="collapsible-open-custom"
               triggerStyle={{ backgroundColor: "white" }}
               easing="ease-in"
               open={currentHour >= 12 && currentHour < 14 ? true : false}
@@ -973,6 +976,7 @@ class SearchCom extends React.Component {
                   </Row>
                 </React.Fragment>
               }
+              triggerOpenedClassName="collapsible-open-custom"
               triggerStyle={{ backgroundColor: "white" }}
               easing="ease-in"
               open={currentHour >= 14 && currentHour < 16 ? true : false}
@@ -1043,6 +1047,7 @@ class SearchCom extends React.Component {
                   </Row>
                 </React.Fragment>
               }
+              triggerOpenedClassName="collapsible-open-custom"
               triggerStyle={{ backgroundColor: "white" }}
               easing="ease-in"
               open={currentHour >= 17 && currentHour < 19 ? true : false}
@@ -1113,6 +1118,7 @@ class SearchCom extends React.Component {
                   </Row>
                 </React.Fragment>
               }
+              triggerOpenedClassName="collapsible-open-custom"
               triggerStyle={{ backgroundColor: "white" }}
               easing="ease-in"
               open={currentHour >= 19 && currentHour < 21 ? true : false}
@@ -1183,6 +1189,7 @@ class SearchCom extends React.Component {
                   </Row>
                 </React.Fragment>
               }
+              triggerOpenedClassName="collapsible-open-custom"
               triggerStyle={{ backgroundColor: "white" }}
               easing="ease-in"
               open={currentHour >= 21 ? true : false}

@@ -64,7 +64,6 @@
     text-decoration: none;
     color: white;
     position: relative;
-    //border: 1px solid #d9d9d9;
     padding: 0px !important;
     background: #0cabbf;
 
@@ -77,20 +76,32 @@
       display: block;
       transition: transform 300ms;
     }
+
     &.is-open {
       &::after {
         transform: rotateZ(180deg);
       }
     }
+
     &.is-disabled {
       opacity: 0.5;
       background-color: grey;
+    }
+
+    &.collapsible-open-custom {
+      padding: 0px !important;
     }
   }
 
   table tr td {
     padding-top: 0.2rem;
     padding-bottom: 0.2rem;
+  }
+}
+
+.Collapsible {
+  .collapsible-open-custom {
+    padding: 0px !important;
   }
 }
 
