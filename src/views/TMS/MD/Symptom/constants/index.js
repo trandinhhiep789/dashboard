@@ -44,6 +44,19 @@ export const SearchElementList = [
 export const AddElementList = [
     {
         type: "text",
+        name: "txtSymptomID",
+        label: "mã lỗi thực tế",
+        value: "",
+        maxSize: "9",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "SymptomID",
+        readonly: false,
+        validatonList: ["required","number"],
+    },
+    {
+        type: "text",
         name: "txtSymptomName",
         label: "tên lỗi thực tế",
         value: "",
@@ -111,6 +124,19 @@ export const AddElementList = [
 ];
 
 export const EditElementList = [
+    {
+        type: "text",
+        name: "txtSymptomID",
+        label: "mã lỗi thực tế",
+        value: "",
+        maxSize: "9",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "SymptomID",
+        readonly: true,
+        validatonList: ["required","number"],
+    },
     {
         type: "text",
         name: "txtSymptomName",
