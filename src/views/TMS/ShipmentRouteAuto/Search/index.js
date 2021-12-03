@@ -28,6 +28,9 @@ import moment from "moment";
 import { Button, Card, Col, Row, Space, Statistic } from "antd";
 import { hideModal, showModal } from "../../../../actions/modal";
 import ListShipCoordinator from "../../ShipmentRoute/Component/ListShipCoordinator";
+import ListShipCoordinatorRoute from "./../../ShipmentRoute/Component/ListShipCoordinatorRoute";
+import { MODAL_TYPE_VIEW } from "./../../../../constants/actionTypes";
+import ModalSearchFormShipmentRouteAutoCom from "../Components/ModalSearchFormShipmentRouteAuto";
 
 class SearchCom extends React.Component {
   constructor(props) {
@@ -48,6 +51,10 @@ class SearchCom extends React.Component {
       dataPrint: {},
       IsDataGridSmallSize: false,
       GridDataShip: [],
+      widthPercent: 0,
+      maxWidthGird: 0,
+      ShipmentRouteID: 0,
+      IsShowModel: false,
 
       diffTimeFrame: [],
       TimeFrame8to10: [],
@@ -63,14 +70,22 @@ class SearchCom extends React.Component {
 
     this.handleCloseMessage = this.handleCloseMessage.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
-    this.handleonChangePage = this.handleonChangePage.bind(this);
+    this.handleOnChangePage = this.handleOnChangePage.bind(this);
     this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
     this.handleTimeDivision = this.handleTimeDivision.bind(this);
     this.handleUserCoordinator = this.handleUserCoordinator.bind(this);
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+    this.handleShipmentOrder = this.handleShipmentOrder.bind(this);
+    this.handleCloseModal = this.handleCloseModal.bind(this);
+    this.handleCheckShip = this.handleCheckShip.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.handleShowModel = this.handleShowModel.bind(this);
   }
 
   componentDidMount() {
+    this.updateWindowDimensions();
+    window.addEventListener("resize", this.updateWindowDimensions);
+
     const localShipmentOrderInfo = localStorage.getItem("SearchShipmentOrderInfo");
     let InitSearchParams = [];
     if (localShipmentOrderInfo == null) {
@@ -157,6 +172,7 @@ class SearchCom extends React.Component {
       this.state.SearchElementList.find((n) => n.name == "cbShipmentOrderStatusGroupID").value = ShipmentOrderInfo.ShipmentOrderStatusGroupID;
       this.state.SearchElementList.find((n) => n.name == "cbIsCoordinator").value = ShipmentOrderInfo.IsCoordinator;
       this.state.SearchElementList.find((n) => n.name == "cbCarrierTypeID").value = ShipmentOrderInfo.CarrierTypeID;
+
       InitSearchParams = [
         {
           SearchKey: "@Keyword",
@@ -241,6 +257,20 @@ class SearchCom extends React.Component {
       }
     });
   }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateWindowDimensions);
+  }
+
+  updateWindowDimensions = () => {
+    const widthModal = (window.innerWidth * 55) / 100;
+    const clientWidth = document.getElementById("SearchFormCustom").clientWidth;
+
+    this.setState({
+      widthPercent: widthModal,
+      maxWidthGird: clientWidth,
+    });
+  };
 
   handleTimeDivision(dataResultObject) {
     let TimeFrame8to10 = [],
@@ -353,11 +383,10 @@ class SearchCom extends React.Component {
     this.callSearchData(this.state.SearchData);
   }
 
-  handleonChangePage(pageNum) {
+  handleOnChangePage(pageNum) {
     let listMLObject = [];
     const aa = { SearchKey: "@PAGEINDEX", SearchValue: pageNum - 1 };
     listMLObject = Object.assign([], this.state.SearchData, { [14]: aa });
-    // console.log(this.state.SearchData,listMLObject)
     this.callSearchData(listMLObject);
     this.setState({
       PageNumber: pageNum,
@@ -435,6 +464,7 @@ class SearchCom extends React.Component {
         SearchValue: 0,
       },
     ];
+
     this.setState({ SearchData: postData });
     this.callSearchData(postData);
   }
@@ -576,13 +606,40 @@ class SearchCom extends React.Component {
     this.props.hideModal();
   };
 
+  handleShipmentOrder(apiResult) {
+    this.addNotification(apiResult.Message, apiResult.IsError);
+    if (!apiResult.IsError) {
+      this.props.hideModal();
+      this.setState({ ShipmentRouteID: "", GridDataShip: [], changeGird: false });
+      if (this.props.onChangePageLoad != null) this.props.onChangePageLoad();
+    }
+  }
+
+  handleCloseModal = () => {
+    this.setState({
+      GridDataShip: [],
+      ShipmentRouteID: "",
+    });
+
+    this.props.onDataGridSmallSize(false);
+    this.props.hideModal();
+  };
+
+  handleCheckShip(paramGridDataShip) {
+    let changeState = this.state;
+    let gridDataShip = changeState.GridDataShip;
+
+    gridDataShip = [...paramGridDataShip];
+    changeState = { ...changeState, GridDataShip: gridDataShip };
+
+    this.setState(changeState);
+  }
+
   handleUserCoordinator() {
     this.props.hideModal();
 
-    const { widthPercent } = this.state;
-
     if (this.state.GridDataShip.length > 0) {
-      this.state.GridDataShip[0].ShipmentOrderTypelst = this.props.ShipmentOrderTypelst;
+      this.state.GridDataShip[0].ShipmentOrderTypelst = this.state.SearchData[2].SearchValue;
 
       this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderNewLst", this.state.GridDataShip).then((apiResult) => {
         if (!apiResult.IsError) {
@@ -593,9 +650,8 @@ class SearchCom extends React.Component {
             onhideModal: this.handleClose,
             content: {
               text: (
-                <ListShipCoordinator
+                <ListShipCoordinatorRoute
                   ShipmentOrderID={0}
-                  ShipmentRouteID
                   ShipmentRouteID={this.state.ShipmentRouteID}
                   InfoCoordinator={this.state.GridDataShip}
                   ShipmentOrderSame={apiResult.ResultObject.ShipmentOrderDeliverSameList}
@@ -607,7 +663,7 @@ class SearchCom extends React.Component {
                 />
               ),
             },
-            maxWidth: widthPercent + "px",
+            maxWidth: this.state.widthPercent + "px",
           });
         } else {
           this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
@@ -616,6 +672,10 @@ class SearchCom extends React.Component {
     } else {
       this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
     }
+  }
+
+  handleShowModel(isShow) {
+    this.setState({ IsShowModel: isShow });
   }
 
   render() {
@@ -664,23 +724,31 @@ class SearchCom extends React.Component {
                 <Fragment>
                   <Row gutter={24}>
                     <Col span={5}>
-                      <Card>
-                        <Statistic title="Thời gian" value="08h00 - 10h00" valueStyle={{ color: "#3f8600" }} />
+                      <Card size="small" bordered={false}>
+                        <Statistic title="Thời gian" value="08h00 - 10h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                       </Card>
                     </Col>
                     <Col span={5}>
-                      <Card>
-                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame8to10.length} valueStyle={{ color: "#3f8600" }} />
+                      <Card size="small" bordered={false}>
+                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame8to10.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                       </Card>
                     </Col>
                     <Col span={5}>
-                      <Card>
-                        <Statistic title="Khởi tạo và chờ phân bổ" value="5" valueStyle={{ color: "#3f8600" }} />
+                      <Card size="small" bordered={false}>
+                        <Statistic
+                          title="Khởi tạo và chờ phân bổ"
+                          value={this.state.TimeFrame8to10.filter((item) => item.ShipmentOrderStatusID === 20).length}
+                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                        />
                       </Card>
                     </Col>
                     <Col span={5}>
-                      <Card>
-                        <Statistic title="Giao hàng thành công" value="5" valueStyle={{ color: "#3f8600" }} />
+                      <Card size="small" bordered={false}>
+                        <Statistic
+                          title="Giao hàng thành công"
+                          value={this.state.TimeFrame8to10.filter((item) => item.ShipmentOrderStatusID === 28).length}
+                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                        />
                       </Card>
                     </Col>
                   </Row>
@@ -699,11 +767,13 @@ class SearchCom extends React.Component {
                 IDSelectColumnName={IDSelectColumnName}
                 PKColumnName={PKColumnName}
                 onDeleteClick={this.handleDelete}
-                onChangePage={this.handleonChangePage}
+                onChangePage={this.handleOnChangePage}
                 onChangeView={this.handleOnChangeView.bind(this)}
                 onSearchEvent={this.handleonSearchEvent.bind(this)}
                 onChangePageLoad={this.onChangePageLoad.bind(this)}
                 onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
+                onCheckShip={this.handleCheckShip}
+                onShowModel={this.handleShowModel}
                 onPrint={this.handlePrint.bind(this)}
                 IsDelete={false}
                 ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
@@ -723,23 +793,31 @@ class SearchCom extends React.Component {
                 <React.Fragment>
                   <Row gutter={24}>
                     <Col span={5}>
-                      <Card>
-                        <Statistic title="Thời gian" value="10h00 - 12h00" valueStyle={{ color: "#3f8600" }} />
+                      <Card size="small" bordered={false}>
+                        <Statistic title="Thời gian" value="10h00 - 12h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                       </Card>
                     </Col>
                     <Col span={5}>
-                      <Card>
-                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame10to12.length} valueStyle={{ color: "#3f8600" }} />
+                      <Card size="small" bordered={false}>
+                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame10to12.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                       </Card>
                     </Col>
                     <Col span={5}>
-                      <Card>
-                        <Statistic title="Khởi tạo và chờ phân bổ" value="5" valueStyle={{ color: "#3f8600" }} />
+                      <Card size="small" bordered={false}>
+                        <Statistic
+                          title="Khởi tạo và chờ phân bổ"
+                          value={this.state.TimeFrame10to12.filter((item) => item.ShipmentOrderStatusID === 20).length}
+                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                        />
                       </Card>
                     </Col>
                     <Col span={5}>
-                      <Card>
-                        <Statistic title="Giao hàng thành công" value="5" valueStyle={{ color: "#3f8600" }} />
+                      <Card size="small" bordered={false}>
+                        <Statistic
+                          title="Giao hàng thành công"
+                          value={this.state.TimeFrame10to12.filter((item) => item.ShipmentOrderStatusID === 28).length}
+                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                        />
                       </Card>
                     </Col>
                   </Row>
@@ -758,11 +836,12 @@ class SearchCom extends React.Component {
                 IDSelectColumnName={IDSelectColumnName}
                 PKColumnName={PKColumnName}
                 onDeleteClick={this.handleDelete}
-                onChangePage={this.handleonChangePage}
+                onChangePage={this.handleOnChangePage}
                 onChangeView={this.handleOnChangeView.bind(this)}
                 onSearchEvent={this.handleonSearchEvent.bind(this)}
                 onChangePageLoad={this.onChangePageLoad.bind(this)}
                 onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
+                onCheckShip={this.handleCheckShip}
                 onPrint={this.handlePrint.bind(this)}
                 IsDelete={false}
                 ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
@@ -782,23 +861,31 @@ class SearchCom extends React.Component {
                 <React.Fragment>
                   <Row gutter={24}>
                     <Col span={5}>
-                      <Card>
-                        <Statistic title="Thời gian" value="12h00 - 14h00" valueStyle={{ color: "#3f8600" }} />
+                      <Card size="small" bordered={false}>
+                        <Statistic title="Thời gian" value="12h00 - 14h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                       </Card>
                     </Col>
                     <Col span={5}>
-                      <Card>
-                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame12to14.length} valueStyle={{ color: "#3f8600" }} />
+                      <Card size="small" bordered={false}>
+                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame12to14.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                       </Card>
                     </Col>
                     <Col span={5}>
-                      <Card>
-                        <Statistic title="Khởi tạo và chờ phân bổ" value="5" valueStyle={{ color: "#3f8600" }} />
+                      <Card size="small" bordered={false}>
+                        <Statistic
+                          title="Khởi tạo và chờ phân bổ"
+                          value={this.state.TimeFrame12to14.filter((item) => item.ShipmentOrderStatusID === 20).length}
+                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                        />
                       </Card>
                     </Col>
                     <Col span={5}>
-                      <Card>
-                        <Statistic title="Giao hàng thành công" value="5" valueStyle={{ color: "#3f8600" }} />
+                      <Card size="small" bordered={false}>
+                        <Statistic
+                          title="Giao hàng thành công"
+                          value={this.state.TimeFrame12to14.filter((item) => item.ShipmentOrderStatusID === 28).length}
+                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                        />
                       </Card>
                     </Col>
                   </Row>
@@ -817,11 +904,12 @@ class SearchCom extends React.Component {
                 IDSelectColumnName={IDSelectColumnName}
                 PKColumnName={PKColumnName}
                 onDeleteClick={this.handleDelete}
-                onChangePage={this.handleonChangePage}
+                onChangePage={this.handleOnChangePage}
                 onChangeView={this.handleOnChangeView.bind(this)}
                 onSearchEvent={this.handleonSearchEvent.bind(this)}
                 onChangePageLoad={this.onChangePageLoad.bind(this)}
                 onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
+                onCheckShip={this.handleCheckShip}
                 onPrint={this.handlePrint.bind(this)}
                 IsDelete={false}
                 ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
@@ -841,23 +929,31 @@ class SearchCom extends React.Component {
                 <React.Fragment>
                   <Row gutter={24}>
                     <Col span={5}>
-                      <Card>
-                        <Statistic title="Thời gian" value="14h00 - 16h00" valueStyle={{ color: "#3f8600" }} />
+                      <Card size="small" bordered={false}>
+                        <Statistic title="Thời gian" value="14h00 - 16h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                       </Card>
                     </Col>
                     <Col span={5}>
-                      <Card>
-                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame14to16.length} valueStyle={{ color: "#3f8600" }} />
+                      <Card size="small" bordered={false}>
+                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame14to16.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                       </Card>
                     </Col>
                     <Col span={5}>
-                      <Card>
-                        <Statistic title="Khởi tạo và chờ phân bổ" value="5" valueStyle={{ color: "#3f8600" }} />
+                      <Card size="small" bordered={false}>
+                        <Statistic
+                          title="Khởi tạo và chờ phân bổ"
+                          value={this.state.TimeFrame14to16.filter((item) => item.ShipmentOrderStatusID === 20).length}
+                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                        />
                       </Card>
                     </Col>
                     <Col span={5}>
-                      <Card>
-                        <Statistic title="Giao hàng thành công" value="5" valueStyle={{ color: "#3f8600" }} />
+                      <Card size="small" bordered={false}>
+                        <Statistic
+                          title="Giao hàng thành công"
+                          value={this.state.TimeFrame14to16.filter((item) => item.ShipmentOrderStatusID === 28).length}
+                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                        />
                       </Card>
                     </Col>
                   </Row>
@@ -876,11 +972,12 @@ class SearchCom extends React.Component {
                 IDSelectColumnName={IDSelectColumnName}
                 PKColumnName={PKColumnName}
                 onDeleteClick={this.handleDelete}
-                onChangePage={this.handleonChangePage}
+                onChangePage={this.handleOnChangePage}
                 onChangeView={this.handleOnChangeView.bind(this)}
                 onSearchEvent={this.handleonSearchEvent.bind(this)}
                 onChangePageLoad={this.onChangePageLoad.bind(this)}
                 onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
+                onCheckShip={this.handleCheckShip}
                 onPrint={this.handlePrint.bind(this)}
                 IsDelete={false}
                 ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
@@ -900,23 +997,33 @@ class SearchCom extends React.Component {
                 <React.Fragment>
                   <Row gutter={24}>
                     <Col span={5}>
-                      <Card>
-                        <Statistic title="Thời gian" value="17h00 - 19h00" valueStyle={{ color: "#3f8600" }} />
+                      <Card size="small" bordered={false}>
+                        <Statistic title="Thời gian" value="17h00 - 19h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                       </Card>
                     </Col>
                     <Col span={5}>
-                      <Card>
-                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame17to19.length} valueStyle={{ color: "#3f8600" }} />
+                      <Card size="small" bordered={false}>
+                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame17to19.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                       </Card>
                     </Col>
                     <Col span={5}>
-                      <Card>
-                        <Statistic title="Khởi tạo và chờ phân bổ" value="5" valueStyle={{ color: "#3f8600" }} />
+                      <Card size="small" bordered={false}>
+                        <Statistic
+                          title="Khởi tạo và chờ phân bổ"
+                          value={this.state.TimeFrame17to19.filter((item) => item.ShipmentOrderStatusID === 20).length}
+                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                        />
                       </Card>
                     </Col>
                     <Col span={5}>
-                      <Card>
-                        <Statistic title="Giao hàng thành công" value="5" valueStyle={{ color: "#3f8600" }} />
+                      <Card size="small" bordered={false}>
+                        <Statistic
+                          title="Giao hàng thành công"
+                          value={this.state.TimeFrame17to19.filter((item) => item.ShipmentOrderStatusID === 29).length}
+                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                        />
                       </Card>
                     </Col>
                   </Row>
@@ -935,11 +1042,12 @@ class SearchCom extends React.Component {
                 IDSelectColumnName={IDSelectColumnName}
                 PKColumnName={PKColumnName}
                 onDeleteClick={this.handleDelete}
-                onChangePage={this.handleonChangePage}
+                onChangePage={this.handleOnChangePage}
                 onChangeView={this.handleOnChangeView.bind(this)}
                 onSearchEvent={this.handleonSearchEvent.bind(this)}
                 onChangePageLoad={this.onChangePageLoad.bind(this)}
                 onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
+                onCheckShip={this.handleCheckShip}
                 onPrint={this.handlePrint.bind(this)}
                 IsDelete={false}
                 ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
@@ -959,23 +1067,33 @@ class SearchCom extends React.Component {
                 <React.Fragment>
                   <Row gutter={24}>
                     <Col span={5}>
-                      <Card>
-                        <Statistic title="Thời gian" value="19h00 - 21h00" valueStyle={{ color: "#3f8600" }} />
+                      <Card size="small" bordered={false}>
+                        <Statistic title="Thời gian" value="19h00 - 21h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                       </Card>
                     </Col>
                     <Col span={5}>
-                      <Card>
-                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame19to21.length} valueStyle={{ color: "#3f8600" }} />
+                      <Card size="small" bordered={false}>
+                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame19to21.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                       </Card>
                     </Col>
                     <Col span={5}>
-                      <Card>
-                        <Statistic title="Khởi tạo và chờ phân bổ" value="5" valueStyle={{ color: "#3f8600" }} />
+                      <Card size="small" bordered={false}>
+                        <Statistic
+                          title="Khởi tạo và chờ phân bổ"
+                          value={this.state.TimeFrame19to21.filter((item) => item.ShipmentOrderStatusID === 20).length}
+                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                        />
                       </Card>
                     </Col>
                     <Col span={5}>
-                      <Card>
-                        <Statistic title="Giao hàng thành công" value="5" valueStyle={{ color: "#3f8600" }} />
+                      <Card size="small" bordered={false}>
+                        <Statistic
+                          title="Giao hàng thành công"
+                          value={this.state.TimeFrame19to21.filter((item) => item.ShipmentOrderStatusID === 28).length}
+                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                        />
                       </Card>
                     </Col>
                   </Row>
@@ -994,11 +1112,12 @@ class SearchCom extends React.Component {
                 IDSelectColumnName={IDSelectColumnName}
                 PKColumnName={PKColumnName}
                 onDeleteClick={this.handleDelete}
-                onChangePage={this.handleonChangePage}
+                onChangePage={this.handleOnChangePage}
                 onChangeView={this.handleOnChangeView.bind(this)}
                 onSearchEvent={this.handleonSearchEvent.bind(this)}
                 onChangePageLoad={this.onChangePageLoad.bind(this)}
                 onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
+                onCheckShip={this.handleCheckShip}
                 onPrint={this.handlePrint.bind(this)}
                 IsDelete={false}
                 ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
@@ -1018,23 +1137,33 @@ class SearchCom extends React.Component {
                 <React.Fragment>
                   <Row gutter={24}>
                     <Col span={5}>
-                      <Card>
-                        <Statistic title="Thời gian khác" value="" valueStyle={{ color: "#3f8600" }} />
+                      <Card size="small" bordered={false}>
+                        <Statistic title="Thời gian khác" value="" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                       </Card>
                     </Col>
                     <Col span={5}>
-                      <Card>
-                        <Statistic title="Tổng số đơn" value={this.state.diffTimeFrame.length} valueStyle={{ color: "#3f8600" }} />
+                      <Card size="small" bordered={false}>
+                        <Statistic title="Tổng số đơn" value={this.state.diffTimeFrame.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                       </Card>
                     </Col>
                     <Col span={5}>
-                      <Card>
-                        <Statistic title="Khởi tạo và chờ phân bổ" value="5" valueStyle={{ color: "#3f8600" }} />
+                      <Card size="small" bordered={false}>
+                        <Statistic
+                          title="Khởi tạo và chờ phân bổ"
+                          value={this.state.diffTimeFrame.filter((item) => item.ShipmentOrderStatusID === 20).length}
+                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                        />
                       </Card>
                     </Col>
                     <Col span={5}>
-                      <Card>
-                        <Statistic title="Giao hàng thành công" value="5" valueStyle={{ color: "#3f8600" }} />
+                      <Card size="small" bordered={false}>
+                        <Statistic
+                          title="Giao hàng thành công"
+                          value={this.state.diffTimeFrame.filter((item) => item.ShipmentOrderStatusID === 28).length}
+                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                        />
                       </Card>
                     </Col>
                   </Row>
@@ -1053,11 +1182,12 @@ class SearchCom extends React.Component {
                 IDSelectColumnName={IDSelectColumnName}
                 PKColumnName={PKColumnName}
                 onDeleteClick={this.handleDelete}
-                onChangePage={this.handleonChangePage}
+                onChangePage={this.handleOnChangePage}
                 onChangeView={this.handleOnChangeView.bind(this)}
                 onSearchEvent={this.handleonSearchEvent.bind(this)}
                 onChangePageLoad={this.onChangePageLoad.bind(this)}
                 onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
+                onCheckShip={this.handleCheckShip}
                 onPrint={this.handlePrint.bind(this)}
                 IsDelete={false}
                 ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
@@ -1072,6 +1202,8 @@ class SearchCom extends React.Component {
             </Collapsible>
           </div>
         )}
+
+        {this.state.IsShowModel && <ModalSearchFormShipmentRouteAutoCom />}
       </React.Fragment>
     );
   }

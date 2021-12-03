@@ -18,6 +18,8 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { APIHostName } from "../constants";
 import ListShipCoordinator from "../../ShipmentRoute/Component/ListShipCoordinator";
+import { Button } from "antd";
+import ListShipCoordinatorRoute from "../../ShipmentRoute/Component/ListShipCoordinatorRoute";
 
 class DataGridShipmentRouteAutoCom extends Component {
   constructor(props) {
@@ -43,7 +45,7 @@ class DataGridShipmentRouteAutoCom extends Component {
       IsCheckAll: false,
       PageNumber: this.props.PageNumber,
       ListPKColumnName: listPKColumnName,
-      GridDataShip: this.props.GridDataShip,
+      GridDataShip: [],
       KeywordId: "",
       printDataID: "",
       ShipmentRouteID: "",
@@ -55,6 +57,8 @@ class DataGridShipmentRouteAutoCom extends Component {
   }
 
   componentDidMount() {
+    console.log("this.props.GridDataShip", this.props.GridDataShip);
+
     this.updateWindowDimensions();
 
     window.addEventListener("resize", this.updateWindowDimensions);
@@ -240,7 +244,7 @@ class DataGridShipmentRouteAutoCom extends Component {
     }
   }
 
-  handleonChange(e) {
+  handleOnChange(e) {
     this.setState({ KeywordId: e.target.value });
   }
 
@@ -475,15 +479,34 @@ class DataGridShipmentRouteAutoCom extends Component {
       PrimaryShipItemName: objShipmentOrder.PrimaryShipItemName,
     };
 
+    let gridDataShip = this.state.GridDataShip;
+
     if (e.target.checked) {
-      this.state.GridDataShip.push(objShip);
+      gridDataShip.push(objShip);
+
+      const gridDataShipNew = [...this.props.GridDataShip, objShip];
+
+      if (this.props.onCheckShip) {
+        this.props.onCheckShip(gridDataShipNew);
+      }
     } else {
-      this.state.GridDataShip.splice(
-        this.state.GridDataShip.findIndex((n) => n[name] == strShipmentOrdervalue),
+      gridDataShip.splice(
+        gridDataShip.findIndex((n) => n[name] == strShipmentOrdervalue),
         1
       );
+
+      let gridDataShipNew = this.props.GridDataShip;
+      gridDataShipNew.splice(
+        gridDataShipNew.findIndex((n) => n[name] == strShipmentOrdervalue),
+        1
+      );
+
+      if (this.props.onCheckShip) {
+        this.props.onCheckShip(gridDataShipNew);
+      }
     }
-    this.setState({ GridDataShip: this.state.GridDataShip });
+
+    this.setState({ GridDataShip: gridDataShip });
   }
 
   _genCommentTime(dates) {
@@ -641,7 +664,7 @@ class DataGridShipmentRouteAutoCom extends Component {
           onhideModal: this.handleClose,
           content: {
             text: (
-              <ListShipCoordinator
+              <ListShipCoordinatorRoute
                 ShipmentOrderID={0}
                 ShipmentRouteID={this.state.ShipmentRouteID}
                 InfoCoordinator={this.state.GridDataShip}
@@ -678,7 +701,7 @@ class DataGridShipmentRouteAutoCom extends Component {
           onhideModal: this.handleCloseModal,
           content: {
             text: (
-              <ListShipCoordinator
+              <ListShipCoordinatorRoute
                 ShipmentOrderID={0}
                 ShipmentRouteID={RouteID}
                 InfoCoordinator={this.state.GridDataShip}
@@ -929,7 +952,11 @@ class DataGridShipmentRouteAutoCom extends Component {
     } else {
       return (
         <div className="table-responsive">
-          <table className="table table-sm table-striped table-bordered table-hover table-condensed datagirdshippingorder" cellSpacing="0">
+          <table
+            className="table table-sm table-striped table-bordered table-hover table-condensed datagirdshippingorder
+          table-custom"
+            cellSpacing="0"
+          >
             <thead className="thead-light">
               <tr>
                 <th className="jsgrid-header-cell" style={{ width: "3%" }}></th>
@@ -1024,7 +1051,7 @@ class DataGridShipmentRouteAutoCom extends Component {
                                     </li>
                                   </ul>
                                 </td>
-                                {/* <td>{rowItem.ExpectedDeliveryDate}</td> */}
+
                                 <td className="groupInfoAction" style={{ width: "15%" }}>
                                   <div className="group-info-row">
                                     <label className="item time">
@@ -1048,7 +1075,9 @@ class DataGridShipmentRouteAutoCom extends Component {
                                     <label className="item person">
                                       <i className="fa fa-user"></i>
                                       <div className="person-info">
-                                        <span className="name">{rowItem.ReceiverFullName}</span>
+                                        <span className="name" style={{ wordBreak: "break-all" }}>
+                                          {rowItem.ReceiverFullName}
+                                        </span>
                                         <span className="line">-</span>
                                         <span className={rowItem.PhoneCount > 1 ? "phone  phonered" : "phone"}>({rowItem.ReceiverPhoneNumber})</span>
                                         {rowItem.PartnerSaleOrderID != "" ? <span className="line">-</span> : ""}
@@ -1108,7 +1137,7 @@ class DataGridShipmentRouteAutoCom extends Component {
                                         </label>
                                         {rowItem.DeliverUserFullNameList != "" ? (
                                           <label className="item address-receiver">
-                                            <span>{ReactHtmlParser(rowItem.DeliverUserFullNameList)}</span>
+                                            <span>{rowItem.DeliverUserFullNameList}</span>
                                           </label>
                                         ) : (
                                           ""
@@ -1193,7 +1222,7 @@ class DataGridShipmentRouteAutoCom extends Component {
           <div className="total-orders">Tổng đơn: {this.state.DataSource.length > 0 ? formatNumber(this.state.DataSource[0].TotaLRows) : ""}</div>
 
           <div className="input-group input-group-select">
-            <input type="text" onChange={this.handleonChange.bind(this)} onKeyPress={this.handleKeyPress} className="form-control" aria-label="Text input with dropdown button" placeholder="Từ khóa" />
+            <input type="text" onChange={this.handleOnChange.bind(this)} onKeyPress={this.handleKeyPress} className="form-control" aria-label="Text input with dropdown button" placeholder="Từ khóa" />
             <div className="input-group-append" onClick={this.handleSearchShip.bind(this)}>
               <span className="input-group-text">
                 <i className="ti-search"></i>
@@ -1430,8 +1459,10 @@ class DataGridShipmentRouteAutoCom extends Component {
                       {(this.props.title != undefined || this.props.title != "") && <h4 className="title">{this.props.title}</h4>}
                     </div> */}
 
-                    <div className="card-title">{(this.props.title != undefined || this.props.title != "") && <h4 className="title">{this.props.title}</h4>}</div>
-                    <div className="card-body custom-card-body">
+                    <div className="card-title card-title-custom">
+                      <Button onClick={() => this.props.onShowModel(true)}>Phân tuyến</Button>
+                    </div>
+                    <div className="card-body card-body-custom">
                       {dataGrid}
                       {/* {this.props.IsAutoPaging && <GridPageShipmentRouteAuto numPage={pageCount} currentPage={this.state.PageNumber} onChangePage={this.onChangePageHandle} />} */}
                     </div>
