@@ -297,6 +297,9 @@ class SearchCom extends React.Component {
                         onSubmit={this.handleSearchSubmit}
                         ref={this.searchref}
                     />
+                    {/* <div className="rwComputeManual">
+                        <button type="button" className="btn btn-success rwbtComputeManual" onClick={()=>{alert("abc")}}>Chốt thưởng</button>
+                    </div> */}
                     <DataGrid
                         listColumn={DataGridColumnList}
                         dataSource={this.state.gridDataSource}

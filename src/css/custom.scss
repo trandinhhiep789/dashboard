@@ -568,4 +568,14 @@ select.form-control:-webkit-autofill:focus {
     margin: 12px;
 }
 
+.rwComputeManual{
+    overflow: auto;
+    width: 100%;
+    button{
+        float: right;
+        margin: 0 15px 10px 0;
+        font-size: 12px;
+    }
+}
+
 
