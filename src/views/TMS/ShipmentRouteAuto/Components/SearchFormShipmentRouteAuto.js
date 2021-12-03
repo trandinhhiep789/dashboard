@@ -477,8 +477,8 @@ class SearchFormShipmentRouteAuto extends Component {
     let renderSelect3 = this.Select3.map((item, index) => <Select.Option value={item.value}>{item.label}</Select.Option>);
 
     return (
-      <div style={{ height: "auto", backgroundColor: "white", margin: "10px 0", padding: "10px 5px" }}>
-        <Row gutter={[8, 16]}>
+      <div style={{ height: "auto", backgroundColor: "white", margin: "5px 0", padding: "10px 5px" }}>
+        <Row gutter={[8, 8]}>
           <Col>
             <Input
               name="Keyword"

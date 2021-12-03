@@ -94,10 +94,18 @@
   }
 }
 
+.ant-col.ant-col-ma {
+  margin: auto;
+}
+
 .ant-dropdown-custom-300 {
   width: 300px !important;
 }
 
 .ant-dropdown-custom-400 {
   width: 400px !important;
+}
+
+.f-13 * {
+  font-size: 13px;
 }
