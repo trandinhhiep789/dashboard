@@ -117,6 +117,18 @@
   width: 400px !important;
 }
 
+.ant-carousel-custom .slick-slide {
+  padding: 0 10px;
+}
+
+.ant-col-npd {
+  padding: 0 0 !important;
+}
+
 .f-13 * {
   font-size: 13px;
+}
+
+.scroll-2::-webkit-scrollbar {
+  width: 2px;
 }

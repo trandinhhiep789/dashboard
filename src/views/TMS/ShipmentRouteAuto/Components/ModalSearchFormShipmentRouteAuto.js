@@ -1,4 +1,4 @@
-import { Col, Drawer, Input, Row, Table, Select, Radio, Space, Card, Tag, Divider, Typography, AutoComplete } from "antd";
+import { Col, Drawer, Input, Row, Table, Select, Radio, Space, Card, Tag, Divider, Typography, AutoComplete, Button, Carousel } from "antd";
 import React, { Component } from "react";
 import { Fragment } from "react";
 import { ModalManager } from "react-dynamic-modal";
@@ -50,6 +50,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
           Value: -1,
         },
       },
+      ObjectValue: {},
     };
 
     this.notificationDOMRef = React.createRef();
@@ -87,7 +88,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
     //     ShipmentOrderIDLst: this.props.InfoCoordinator.map((e) => e.ShipmentOrderID).join(","),
     //   };
 
-    //   objVehicleLst = this.getinitVehicellst(objRouteVehicleRequset);
+    //   objVehicleLst = this.getInitVehicelList(objRouteVehicleRequset);
     // } else {
     // }
 
@@ -146,12 +147,15 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (JSON.stringify(this.props.InfoCoordinator) !== JSON.stringify(nextProps.InfoCoordinator)) {
-      this.setState({
-        ShipmentOrder: nextProps.InfoCoordinator,
-        ShipmentOrderSameLst: nextProps.ShipmentOrderSame,
-        Via_Durations: 0,
-        Via_Distances: "",
-      });
+      this.setState(
+        {
+          ShipmentOrder: nextProps.InfoCoordinator,
+          ShipmentOrderSameLst: nextProps.ShipmentOrderSame,
+          Via_Durations: 0,
+          Via_Distances: "",
+        },
+        () => this.handleMapObjectDescription()
+      );
     }
   }
 
@@ -335,7 +339,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
     this.handleLoadDatCacheNhanVienGiao();
   }
 
-  getinitVehicellst(objRouteVehicleRequset) {
+  getInitVehicelList(objRouteVehicleRequset) {
     let objVehicleLst = [];
     this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetVehicleWorkingPlan", objRouteVehicleRequset).then((apiResult) => {
       if (!apiResult.IsError) {
@@ -389,9 +393,11 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
             VehicleDriverUser: { value: -1, label: "" },
           };
         }
+
         objVehicleLst.sort(function (a, b) {
           return a.OrderM3 - b.OrderM3;
         });
+
         this.setState({
           objCoordinator: objInfoCoordinator,
           VehicleLst: objVehicleLst,
@@ -575,7 +581,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
     this.setState({ ShipmentOrder: this.state.ShipmentOrder });
   }
 
-  handleonValueChange(rowname, rowvalue, rowIndex) {
+  handleOnValueChange(rowname, rowvalue, rowIndex) {
     let objDeliverUser = [];
     let { ShipmentOrder } = this.state;
     if (rowname == "ShipmentOrder_DeliverUserList") {
@@ -635,22 +641,6 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
   onValueChangeComboUser(rowname, rowvalue, rowIndex) {
     console.log("onValueChangeComboUser", rowname, rowvalue, rowIndex);
   }
-
-  handleGetUserAll_1 = (listOption, CarrierPartnerID) => {
-    let valuede = listOption ? listOption.map((e) => (e.value != "" && e.name != "" ? e.value : "")).filter((x) => x != "") : [];
-    this.handleOnValueChange("CarrierPartnerID", CarrierPartnerID);
-    this.handleOnValueChangeDeliverUser("ShipmentOrder_DeliverUserList", valuede, listOption, CarrierPartnerID);
-    var stateint = this.state.objCoordinator;
-    this.setState(...stateint, { CarrierTypeID: CarrierPartnerID });
-  };
-
-  handleGetUserAll_2 = (listOption, CarrierPartnerID) => {
-    this.handleOnValueChange("CarrierPartnerID", CarrierPartnerID);
-
-    this.handleValueChange1("ShipmentOrder_DeliverUserList", listOption, CarrierPartnerID);
-    var stateint = this.state.objCoordinator;
-    this.setState(...stateint, { CarrierTypeID: CarrierPartnerID });
-  };
 
   // check trùng nhân viên giao hàng
 
@@ -817,7 +807,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
         ShipmentOrderIDLst: changeState["ShipmentOrder"].map((e) => e.ShipmentOrderID).join(","),
       };
 
-      let objVehicleLst = this.getinitVehicellst(objRouteVehicleRequset);
+      let objVehicleLst = this.getInitVehicelList(objRouteVehicleRequset);
 
       changeState = { ...changeState, VehicleLst: objVehicleLst };
       this.setState(changeState);
@@ -852,7 +842,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
         CoordinatorStoreIDLst: changeState["ShipmentOrder"].map((e) => e.CoordinatorStoreID).join(","),
         ShipmentOrderIDLst: changeState["ShipmentOrder"].map((e) => e.ShipmentOrderID).join(","),
       };
-      let objVehicleLst = this.getinitVehicellst(objRouteVehicleRequset);
+      let objVehicleLst = this.getInitVehicelList(objRouteVehicleRequset);
 
       changeState = { ...changeState, VehicleLst: objVehicleLst };
 
@@ -901,7 +891,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
         };
 
         let changeState2 = this.state;
-        const vehicleResult = this.getinitVehicellst(objRouteVehicleRequset);
+        const vehicleResult = this.getInitVehicelList(objRouteVehicleRequset);
         changeState2 = { ...changeState2, VehicleLst: vehicleResult };
         this.setState(changeState2);
       }
@@ -1118,7 +1108,9 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
   render() {
     return (
       <Drawer
-        title={<h3>Phân tuyến điều phối vận đơn</h3>}
+        title={<h4>Phân tuyến điều phối vận đơn</h4>}
+        headerStyle={{ height: "6vh", padding: "7px" }}
+        bodyStyle={{ height: "93vh", padding: "7px" }}
         placement="right"
         closable={true}
         visible={true}
@@ -1126,97 +1118,98 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
         width="50vw"
         mask={false}
         onClose={(event) => {
-          this.props.onCloseModal(false);
+          this.props.onCloseModal({ IsShowModel: false, IsDataGridSmallSize: false });
         }}
       >
-        <Row gutter={[8, 16]} style={{ marginBottom: "10px" }} className="f-13">
-          <Col span={5} className="ant-col-ma">
-            Đối tác :
-          </Col>
-          <Col sm={7} md={7} lg={8} xl={10}>
-            <Select
-              defaultValue={this.state.ObjectSelectValue.DoiTac.Value}
-              style={{ width: "100%" }}
-              dropdownMatchSelectWidth={400}
-              onChange={(value) => this.handleSelectDoiTacValueChange("CarrierPartnerID", value)}
-            >
-              {this.state.ObjectSelectValue.DoiTac.ListOption.map((item, index) => (
-                <Select.Option key={index} value={item.value}>
-                  {item.label}
-                </Select.Option>
-              ))}
-            </Select>
-          </Col>
-          <Col sm={12} md={12} lg={11} xl={9} style={{ textAlign: "center" }}>
-            <Radio.Group buttonStyle="solid">
-              <Space>
-                <Radio.Button value={1}>
-                  <Space>
-                    <i class="fa fa-motorcycle"></i> Xe máy
-                  </Space>
-                </Radio.Button>
-                <Radio.Button value={2}>
-                  <Space>
-                    <i class="fa fa-truck"></i> Xe tải
-                  </Space>
-                </Radio.Button>
-              </Space>
-            </Radio.Group>
-          </Col>
-        </Row>
-        <Row gutter={[8, 16]} style={{ marginBottom: "10px" }} className="f-13">
-          <Col span={5} className="ant-col-ma">
-            Nhân viên giao :
-          </Col>
-          <Col span={19}>
-            {this.state.objCoordinator.CarrierPartnerID == -1 || this.state.objCoordinator.CarrierPartnerID == 0 ? (
+        <div style={{ height: "18vh", overflowX: "hidden", overflowY: "auto" }}>
+          <Row gutter={[8, 8]} style={{ marginBottom: "5px" }} className="f-13">
+            <Col span={5} className="ant-col-ma">
+              Đối tác :
+            </Col>
+            <Col sm={7} md={7} lg={8} xl={10}>
               <Select
-                defaultValue={this.state.ObjectSelectValue.NhanVienGiao.Value}
+                defaultValue={this.state.ObjectSelectValue.DoiTac.Value}
                 style={{ width: "100%" }}
-                mode="multiple"
-                onInputKeyDown={(event) => this.handleSelectNhanVienGiaoInputValueChange(event)}
-                onChange={(value, options) => this.handleSelectNhanVienGiaoValueChange(value, options)}
-                optionLabelProp="label"
+                dropdownMatchSelectWidth={400}
+                onChange={(value) => this.handleSelectDoiTacValueChange("CarrierPartnerID", value)}
               >
-                {this.state.ObjectSelectValue.NhanVienGiao.ListOption.map((item, index) => (
-                  <Select.Option key={index} value={item.value} label={item.name} user={item}>
-                    {item.name}
+                {this.state.ObjectSelectValue.DoiTac.ListOption.map((item, index) => (
+                  <Select.Option key={index} value={item.value}>
+                    {item.label}
                   </Select.Option>
                 ))}
               </Select>
-            ) : (
-              <Select
-                defaultValue={this.state.ObjectSelectValue.NhanVienGiao.Value}
-                style={{ width: "100%" }}
-                mode="multiple"
-                onInputKeyDown={(event) => this.handleSelectNhanVienGiaoInputValueChange(event)}
-                onChange={(value, options) => this.handleSelectNhanVienGiaoValueChange(value, options)}
-                optionLabelProp="label"
-              >
-                {this.state.ObjectSelectValue.NhanVienGiao.ListOption.map((item, index) => (
-                  <Select.Option key={index} value={item.value} label={item.name} user={item}>
-                    {item.name}
-                  </Select.Option>
-                ))}
-              </Select>
-            )}
-          </Col>
-        </Row>
-        <Row gutter={[8, 16]} style={{ marginBottom: "10px" }} className="f-13">
-          <Col span={5} className="ant-col-ma">
-            Bảng số xe :
-          </Col>
-          <Col span={19}>
-            <Input.Group compact>
-              <Select defaultValue="" style={{ width: "60%" }}>
-                {/* <Option value="Sign Up">Sign Up</Option> */}
-              </Select>
-              <AutoComplete style={{ width: "40%" }} placeholder="Tài xế" options={[]} />
-            </Input.Group>
-          </Col>
-        </Row>
-        <Divider style={{ backgroundColor: "black" }}></Divider>
-        <div style={{ height: "300px", overflowX: "hidden", overflowY: "auto" }} className="f-13">
+            </Col>
+            <Col sm={12} md={12} lg={11} xl={9} style={{ textAlign: "center" }}>
+              <Radio.Group buttonStyle="solid">
+                <Space>
+                  <Radio.Button value={1}>
+                    <Space>
+                      <i class="fa fa-motorcycle"></i> Xe máy
+                    </Space>
+                  </Radio.Button>
+                  <Radio.Button value={2}>
+                    <Space>
+                      <i class="fa fa-truck"></i> Xe tải
+                    </Space>
+                  </Radio.Button>
+                </Space>
+              </Radio.Group>
+            </Col>
+          </Row>
+          <Row gutter={[8, 8]} style={{ marginBottom: "5px" }} className="f-13">
+            <Col span={5} className="ant-col-ma">
+              Nhân viên giao :
+            </Col>
+            <Col span={19}>
+              {this.state.objCoordinator.CarrierPartnerID == -1 || this.state.objCoordinator.CarrierPartnerID == 0 ? (
+                <Select
+                  defaultValue={this.state.ObjectSelectValue.NhanVienGiao.Value}
+                  style={{ width: "100%" }}
+                  mode="multiple"
+                  onInputKeyDown={(event) => this.handleSelectNhanVienGiaoInputValueChange(event)}
+                  onChange={(value, options) => this.handleSelectNhanVienGiaoValueChange(value, options)}
+                  optionLabelProp="label"
+                >
+                  {this.state.ObjectSelectValue.NhanVienGiao.ListOption.map((item, index) => (
+                    <Select.Option key={index} value={item.value} label={item.name} user={item}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              ) : (
+                <Select
+                  defaultValue={this.state.ObjectSelectValue.NhanVienGiao.Value}
+                  style={{ width: "100%" }}
+                  mode="multiple"
+                  onInputKeyDown={(event) => this.handleSelectNhanVienGiaoInputValueChange(event)}
+                  onChange={(value, options) => this.handleSelectNhanVienGiaoValueChange(value, options)}
+                  optionLabelProp="label"
+                >
+                  {this.state.ObjectSelectValue.NhanVienGiao.ListOption.map((item, index) => (
+                    <Select.Option key={index} value={item.value} label={item.name} user={item}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              )}
+            </Col>
+          </Row>
+          <Row gutter={[8, 8]} style={{ marginBottom: "5px" }} className="f-13">
+            <Col span={5} className="ant-col-ma">
+              Bảng số xe :
+            </Col>
+            <Col span={19}>
+              <Input.Group compact>
+                <Select defaultValue="" style={{ width: "60%" }}>
+                  {/* <Option value="Sign Up">Sign Up</Option> */}
+                </Select>
+                <AutoComplete style={{ width: "40%" }} placeholder="Tài xế" options={[]} />
+              </Input.Group>
+            </Col>
+          </Row>
+        </div>
+        <div style={{ height: "48vh", overflowX: "hidden", overflowY: "auto", scrollSnapType: "y mandatory" }} className="f-13 scroll-2">
           {this.state.ShipmentOrder &&
             this.state.ShipmentOrder.map((item, index) => {
               let isPermission = false;
@@ -1263,12 +1256,12 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
               }
 
               return (
-                <Row gutter={24} style={{ marginBottom: "10px" }}>
+                <Row gutter={24} style={{ marginBottom: "10px", scrollSnapAlign: "center" }}>
                   <Col span={24}>
                     <Card
                       size="small"
-                      headStyle={{ border: "1px solid #74b9ff", borderBottom: "none" }}
-                      bodyStyle={{ border: "1px solid #74b9ff" }}
+                      headStyle={{ border: "1px solid #74b9ff", borderBottom: "none", padding: "0 6px" }}
+                      bodyStyle={{ border: "1px solid #74b9ff", padding: "6px" }}
                       title={
                         <Space>
                           <Link target="_blank" to={{ pathname: "/ShipmentOrder/Detail/" + item.ShipmentOrderID }}>
@@ -1309,7 +1302,11 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
                           <Row gutter={[8, 16]}>
                             {isPermission == false ? (
                               <Col span={8}>
-                                <Tag.CheckableTag checked style={{ width: "100%", borderColor: "#1890ff", textAlign: "center" }} onClick={this.handleChangeCourse(1, index)}>
+                                <Tag.CheckableTag
+                                  checked={item.CarrierTypeID == 1 || item.CarrierTypeID == 0 ? true : false}
+                                  style={{ width: "100%", borderColor: "#1890ff", textAlign: "center" }}
+                                  onClick={this.handleChangeCourse(1, index)}
+                                >
                                   <Space>
                                     <i class="fa fa-motorcycle"></i> Xe máy
                                   </Space>
@@ -1317,7 +1314,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
                               </Col>
                             ) : (
                               <Col span={8}>
-                                <Tag.CheckableTag checked style={{ width: "100%", borderColor: "#1890ff", textAlign: "center" }}>
+                                <Tag.CheckableTag checked={item.CarrierTypeID == 1 || item.CarrierTypeID == 0 ? true : false} style={{ width: "100%", borderColor: "#1890ff", textAlign: "center" }}>
                                   <Space>
                                     <i class="fa fa-motorcycle"></i> Xe máy
                                   </Space>
@@ -1326,7 +1323,11 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
                             )}
                             {isPermission == false ? (
                               <Col span={8}>
-                                <Tag.CheckableTag style={{ width: "100%", borderColor: "#74b9ff", textAlign: "center" }} onClick={this.handleChangeCourse(2, index)}>
+                                <Tag.CheckableTag
+                                  checked={item.CarrierTypeID == 2 ? true : false}
+                                  style={{ width: "100%", borderColor: "#74b9ff", textAlign: "center" }}
+                                  onClick={this.handleChangeCourse(2, index)}
+                                >
                                   <Space>
                                     <i class="fa fa-truck"></i> Xe tải
                                   </Space>
@@ -1334,7 +1335,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
                               </Col>
                             ) : (
                               <Col span={8}>
-                                <Tag.CheckableTag style={{ width: "100%", borderColor: "#74b9ff", textAlign: "center" }}>
+                                <Tag.CheckableTag checked={item.CarrierTypeID == 2 ? true : false} style={{ width: "100%", borderColor: "#74b9ff", textAlign: "center" }}>
                                   <Space>
                                     <i class="fa fa-truck"></i> Xe tải
                                   </Space>
@@ -1355,17 +1356,17 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
                             </Col>
                           </Row>
                         </Col>
-                        <Col>
+                        <Col span={1}>
                           <Divider type="vertical" style={{ height: "100%", backgroundColor: " #74b9ff" }}></Divider>
                         </Col>
                         <Col span={8}></Col>
-                        <Col>
+                        <Col span={1}>
                           <Divider type="vertical" style={{ height: "100%", backgroundColor: " #74b9ff" }}></Divider>
                         </Col>
-                        <Col span={1} style={{ display: "flex", flexFlow: "column nowrap", justifyContent: "center", alignItems: "center" }}>
+                        <Col span={2} style={{ display: "flex", flexFlow: "column nowrap", justifyContent: "center", alignItems: "center" }}>
                           {this.state.ShipmentOrder.length > 1 ? (
-                            <Row>
-                              <Col>
+                            <Row gutter={24}>
+                              <Col span={24}>
                                 <i className="ti-angle-up" onClick={(event) => this.handleChangeOder(index, -1)}></i>
                               </Col>
                             </Row>
@@ -1404,6 +1405,53 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
                 </Row>
               );
             })}
+        </div>
+        <div style={{ height: "20vh", overflowX: "hidden", overflowY: "auto", marginBottom: "5px" }} className="f-13">
+          <Row gutter={24} justify="end" style={{ marginBottom: "5px" }}>
+            <Col>
+              <Space>
+                <Button size="small">Tính khoảng cách</Button>
+                <Button size="small" icon={<i className="ti-menu-alt"></i>} />
+                <Button size="small" icon={<i className="ti-menu"></i>} />
+              </Space>
+            </Col>
+          </Row>
+          <Row gutter={24}>
+            <Col span={24}>
+              <Carousel autoplay slidesToShow={2} pauseOnHover={true} speed={2000} className="ant-carousel-custom" >
+                <Card size="small" title={<Tag>123131</Tag>} headStyle={{ padding: "0 6px" }} bodyStyle={{ padding: "6px" }}>
+                  <span>Card content</span>
+                  <br />
+                  <span>Card content</span>
+                </Card>
+                <Card size="small" title={<Tag>123131</Tag>} headStyle={{ padding: "0 6px" }} bodyStyle={{ padding: "6px" }} className="f-13">
+                  <span>Card content</span>
+                  <br />
+                  <span>Card content</span>
+                </Card>
+                <Card size="small" title={<Tag>123131</Tag>} headStyle={{ padding: "0 6px" }} bodyStyle={{ padding: "6px" }} className="f-13">
+                  <span>Card content</span>
+                  <br />
+                  <span>Card content</span>
+                </Card>
+                <Card size="small" title={<Tag>123131</Tag>} headStyle={{ padding: "0 6px" }} bodyStyle={{ padding: "6px" }} className="f-13">
+                  <span>Card content</span>
+                  <br />
+                  <span>Card content</span>
+                </Card>
+              </Carousel>
+            </Col>
+          </Row>
+        </div>
+        <div style={{ height: "5vh", overflowX: "hidden", overflowY: "auto" }}>
+          <Row gutter={24} style={{ width: "100%" }}>
+            <Col span={4} offset={9}>
+              <Space>
+                <Button type="primary">Cập nhật</Button>
+                <Button>Làm mới</Button>
+              </Space>
+            </Col>
+          </Row>
         </div>
       </Drawer>
     );
