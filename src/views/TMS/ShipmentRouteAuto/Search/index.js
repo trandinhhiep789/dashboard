@@ -27,10 +27,9 @@ import "../../../../css/DataGridShipmentRouteAuto.scss";
 import moment from "moment";
 import { Button, Card, Col, Row, Space, Statistic } from "antd";
 import { hideModal, showModal } from "../../../../actions/modal";
-import ListShipCoordinator from "../../ShipmentRoute/Component/ListShipCoordinator";
-import ListShipCoordinatorRoute from "./../../ShipmentRoute/Component/ListShipCoordinatorRoute";
+import ModalSearchFormShipmentRouteAuto from "../Components/ModalSearchFormShipmentRouteAuto";
 import { MODAL_TYPE_VIEW } from "./../../../../constants/actionTypes";
-import ModalSearchFormShipmentRouteAutoCom from "../Components/ModalSearchFormShipmentRouteAuto";
+import ListShipCoordinatorRoute from "../../ShipmentRoute/Component/ListShipCoordinatorRoute";
 
 class SearchCom extends React.Component {
   constructor(props) {
@@ -51,10 +50,9 @@ class SearchCom extends React.Component {
       dataPrint: {},
       IsDataGridSmallSize: false,
       GridDataShip: [],
-      widthPercent: 0,
-      maxWidthGird: 0,
       ShipmentRouteID: 0,
       IsShowModel: false,
+      ShipmentOrderSame: [],
 
       diffTimeFrame: [],
       TimeFrame8to10: [],
@@ -674,6 +672,22 @@ class SearchCom extends React.Component {
     }
   }
 
+  // handleUserCoordinator() {
+  //   if (this.state.GridDataShip.length > 0) {
+  //     this.state.GridDataShip[0].ShipmentOrderTypelst = this.state.SearchData[2].SearchValue;
+
+  //     this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderNewLst", this.state.GridDataShip).then((apiResult) => {
+  //       if (!apiResult.IsError) {
+  //         this.setState({ ShipmentOrderSame: apiResult.ResultObject.ShipmentOrderDeliverSameList, GridDataShip: apiResult.ResultObject.ShipmentOrderDeliverList, changeGird: true, IsShowModel: true });
+  //       } else {
+  //         this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
+  //       }
+  //     });
+  //   } else {
+  //     this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
+  //   }
+  // }
+
   handleShowModel(isShow) {
     this.setState({ IsShowModel: isShow });
   }
@@ -755,6 +769,7 @@ class SearchCom extends React.Component {
                 </Fragment>
               }
               triggerStyle={{ backgroundColor: "white" }}
+              triggerOpenedClassName="collapsible-open-custom"
               easing="ease-in"
               open={currentHour >= 8 && currentHour < 10 ? true : false}
             >
@@ -823,6 +838,7 @@ class SearchCom extends React.Component {
                   </Row>
                 </React.Fragment>
               }
+              triggerOpenedClassName="collapsible-open-custom"
               triggerStyle={{ backgroundColor: "white" }}
               easing="ease-in"
               open={currentHour >= 10 && currentHour < 12 ? true : false}
@@ -891,6 +907,7 @@ class SearchCom extends React.Component {
                   </Row>
                 </React.Fragment>
               }
+              triggerOpenedClassName="collapsible-open-custom"
               triggerStyle={{ backgroundColor: "white" }}
               easing="ease-in"
               open={currentHour >= 12 && currentHour < 14 ? true : false}
@@ -959,6 +976,7 @@ class SearchCom extends React.Component {
                   </Row>
                 </React.Fragment>
               }
+              triggerOpenedClassName="collapsible-open-custom"
               triggerStyle={{ backgroundColor: "white" }}
               easing="ease-in"
               open={currentHour >= 14 && currentHour < 16 ? true : false}
@@ -1029,6 +1047,7 @@ class SearchCom extends React.Component {
                   </Row>
                 </React.Fragment>
               }
+              triggerOpenedClassName="collapsible-open-custom"
               triggerStyle={{ backgroundColor: "white" }}
               easing="ease-in"
               open={currentHour >= 17 && currentHour < 19 ? true : false}
@@ -1099,6 +1118,7 @@ class SearchCom extends React.Component {
                   </Row>
                 </React.Fragment>
               }
+              triggerOpenedClassName="collapsible-open-custom"
               triggerStyle={{ backgroundColor: "white" }}
               easing="ease-in"
               open={currentHour >= 19 && currentHour < 21 ? true : false}
@@ -1169,6 +1189,7 @@ class SearchCom extends React.Component {
                   </Row>
                 </React.Fragment>
               }
+              triggerOpenedClassName="collapsible-open-custom"
               triggerStyle={{ backgroundColor: "white" }}
               easing="ease-in"
               open={currentHour >= 21 ? true : false}
@@ -1203,7 +1224,20 @@ class SearchCom extends React.Component {
           </div>
         )}
 
-        {this.state.IsShowModel && <ModalSearchFormShipmentRouteAutoCom />}
+        {this.state.IsShowModel && (
+          <ModalSearchFormShipmentRouteAuto
+            ShipmentOrderID={0}
+            ShipmentRouteID={this.state.ShipmentRouteID}
+            InfoCoordinator={this.state.GridDataShip}
+            ShipmentOrderSame={this.state.ShipmentOrderSame}
+            IsUserCoordinator={true}
+            IsCoordinator={true}
+            IsCancelDelivery={true}
+            onChangeValue={this.handleShipmentOrder.bind(this)}
+            onChangeClose={this.handleCloseModal.bind(this)}
+            onCloseModal={this.handleShowModel.bind(this)}
+          />
+        )}
       </React.Fragment>
     );
   }

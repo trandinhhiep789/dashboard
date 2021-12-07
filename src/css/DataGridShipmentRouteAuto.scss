@@ -64,7 +64,6 @@
     text-decoration: none;
     color: white;
     position: relative;
-    //border: 1px solid #d9d9d9;
     padding: 0px !important;
     background: #0cabbf;
 
@@ -77,14 +76,20 @@
       display: block;
       transition: transform 300ms;
     }
+
     &.is-open {
       &::after {
         transform: rotateZ(180deg);
       }
     }
+
     &.is-disabled {
       opacity: 0.5;
       background-color: grey;
+    }
+
+    &.collapsible-open-custom {
+      padding: 0px !important;
     }
   }
 
@@ -94,10 +99,24 @@
   }
 }
 
+.Collapsible {
+  .collapsible-open-custom {
+    padding: 0px !important;
+  }
+}
+
+.ant-col.ant-col-ma {
+  margin: auto;
+}
+
 .ant-dropdown-custom-300 {
   width: 300px !important;
 }
 
 .ant-dropdown-custom-400 {
   width: 400px !important;
+}
+
+.f-13 * {
+  font-size: 13px;
 }
