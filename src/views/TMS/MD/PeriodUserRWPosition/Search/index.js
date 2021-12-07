@@ -18,7 +18,8 @@ import {
     PagePath,
     DataTemplateExport,
     schema,
-    AddByFileAPIPath
+    AddByFileAPIPath,
+    AutoAddAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -36,6 +37,7 @@ class SearchCom extends React.Component {
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleAutoAdd = this.handleAutoAdd.bind(this);
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
@@ -52,6 +54,16 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.callSearchData(this.state.SearchData);
         this.props.updatePagePath(PagePath);
+    }
+
+    handleAutoAdd(){
+        this.props.callFetchAPI(APIHostName, AutoAddAPIPath, {}).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            if (!apiResult.IsError) {
+                this.callSearchData(this.state.SearchData);
+            }
+            this.addNotification(apiResult.Message, apiResult.IsError);
+        });
     }
 
     handleExportFile(result) {
@@ -297,9 +309,9 @@ class SearchCom extends React.Component {
                         onSubmit={this.handleSearchSubmit}
                         ref={this.searchref}
                     />
-                    {/* <div className="rwComputeManual">
-                        <button type="button" className="btn btn-success rwbtComputeManual" onClick={()=>{alert("abc")}}>Chốt thưởng</button>
-                    </div> */}
+                    <div className="rwComputeManual">
+                        <button type="button" className="btn btn-success rwbtComputeManual" onClick={()=>{this.handleAutoAdd()}}>Chốt thưởng</button>
+                    </div>
                     <DataGrid
                         listColumn={DataGridColumnList}
                         dataSource={this.state.gridDataSource}
