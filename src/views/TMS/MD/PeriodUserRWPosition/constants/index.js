@@ -2,6 +2,7 @@ export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/PeriodUserRWPosition/Search";
 export const LoadAPIPath = "api/PeriodUserRWPosition/Load";
 export const AddAPIPath = "api/PeriodUserRWPosition/Add";
+export const AutoAddAPIPath = "api/PeriodUserRWPosition/AutoAdd";
 export const AddByFileAPIPath = "api/PeriodUserRWPosition/AddByFile";
 export const UpdateAPIPath = "api/PeriodUserRWPosition/Update";
 export const DeleteAPIPath = "api/PeriodUserRWPosition/Delete";
