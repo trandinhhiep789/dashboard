@@ -25,23 +25,8 @@ class DataGridShipmentRouteAutoCom extends Component {
   constructor(props) {
     super(props);
 
-    this.onValueChange = this.onValueChange.bind(this);
-    this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
-    this.onChangePageHandle = this.onChangePageHandle.bind(this);
-    this.handleCloseModel = this.handleCloseModel.bind(this);
-    this.checkAll = this.checkAll.bind(this);
-    this.getCheckList = this.getCheckList.bind(this);
-    this.renderDataGridSmallSize = this.renderDataGridSmallSize.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
-    this.handleCheckShip = this.handleCheckShip.bind(this);
-    this.handleSearchDataInput = this.handleSearchDataInput.bind(this);
-    this.handleSearchDataSelect = this.handleSearchDataSelect.bind(this);
-
     const pkColumnName = this.props.PKColumnName.split(",");
     const listPKColumnName = pkColumnName.map((item) => ({ key: item }));
-
     this.notificationDOMRef = React.createRef();
     this.dataSeachRef = React.createRef();
 
@@ -52,7 +37,7 @@ class DataGridShipmentRouteAutoCom extends Component {
       IsCheckAll: false,
       PageNumber: this.props.PageNumber,
       ListPKColumnName: listPKColumnName,
-      GridDataShip: [],
+      GridDataShip: this.props.GridDataShip,
       KeywordId: "",
       printDataID: "",
       ShipmentRouteID: "",
@@ -66,7 +51,22 @@ class DataGridShipmentRouteAutoCom extends Component {
         IsSearchDataInput: false,
         IsSearchDataSelect: false,
       },
+      IsReload: false,
     };
+
+    this.onValueChange = this.onValueChange.bind(this);
+    this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.onChangePageHandle = this.onChangePageHandle.bind(this);
+    this.handleCloseModel = this.handleCloseModel.bind(this);
+    this.checkAll = this.checkAll.bind(this);
+    this.getCheckList = this.getCheckList.bind(this);
+    this.renderDataGridSmallSize = this.renderDataGridSmallSize.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+    this.handleCheckShip = this.handleCheckShip.bind(this);
+    this.handleSearchDataInput = this.handleSearchDataInput.bind(this);
+    this.handleSearchDataSelect = this.handleSearchDataSelect.bind(this);
   }
 
   componentDidMount() {
@@ -87,9 +87,16 @@ class DataGridShipmentRouteAutoCom extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (JSON.stringify(this.props.dataSource) !== JSON.stringify(nextProps.dataSource) || this.props.IsDataGridSmallSize !== nextProps.IsDataGridSmallSize) {
+    if (
+      JSON.stringify(this.props.dataSource) !== JSON.stringify(nextProps.dataSource) ||
+      this.props.IsDataGridSmallSize !== nextProps.IsDataGridSmallSize ||
+      JSON.stringify(this.props.GridDataShip) !== JSON.stringify(nextProps.GridDataShip)
+    ) {
       const gridData = this.getCheckList(nextProps.dataSource);
-      this.setState({
+      let changeState = this.state;
+      
+      changeState = {
+        ...changeState,
         changeGird: nextProps.IsDataGridSmallSize,
         GridData: gridData,
         GridDataShip: nextProps.GridDataShip,
@@ -97,7 +104,9 @@ class DataGridShipmentRouteAutoCom extends Component {
         DataSourceOrigin: nextProps.dataSource,
         PageNumber: nextProps.PageNumber,
         ShipmentRouteID: "",
-      });
+      };
+
+      this.setState(changeState);
     }
 
     if (JSON.stringify(this.props.IsLoadData) !== JSON.stringify(nextProps.IsLoadData)) {
@@ -109,6 +118,16 @@ class DataGridShipmentRouteAutoCom extends Component {
       });
     }
   }
+
+  // shouldComponentUpdate(nextProps, nextStates) {
+  //   if (
+  //     this.props.GridDataShip.length == 0 ||
+  //     (JSON.stringify(this.state.GridDataShip) !== JSON.stringify(nextProps.GridDataShip))
+  //   ) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   componentWillUnmount() {
     window.removeEventListener("resize", this.updateWindowDimensions);
@@ -473,54 +492,6 @@ class DataGridShipmentRouteAutoCom extends Component {
     }
   }
 
-  handleCheckShip(e) {
-    const strShipmentOrdervalue = e.target.value;
-
-    const name = e.target.name;
-
-    const objShipmentOrder = this.state.DataSource.find((n) => n[name] == strShipmentOrdervalue);
-
-    let objShip = {
-      ShipmentOrderID: objShipmentOrder.ShipmentOrderID,
-      ShipmentOrderTypeID: objShipmentOrder.ShipmentOrderTypeID,
-      CarrierPartnerID: objShipmentOrder.CarrierPartnerID,
-      CarrierTypeID: objShipmentOrder.CarrierTypeID,
-      DeliverUserList: [],
-      CurrentShipmentOrderStepID: objShipmentOrder.CurrentShipmentOrderStepID,
-      ShipItemNameList: objShipmentOrder.ShipItemNameList,
-      PrimaryShipItemName: objShipmentOrder.PrimaryShipItemName,
-    };
-
-    let gridDataShip = this.state.GridDataShip;
-
-    if (e.target.checked) {
-      gridDataShip.push(objShip);
-
-      const gridDataShipNew = [...this.props.GridDataShip, objShip];
-
-      if (this.props.onCheckShip) {
-        this.props.onCheckShip(gridDataShipNew);
-      }
-    } else {
-      gridDataShip.splice(
-        gridDataShip.findIndex((n) => n[name] == strShipmentOrdervalue),
-        1
-      );
-
-      let gridDataShipNew = this.props.GridDataShip;
-      gridDataShipNew.splice(
-        gridDataShipNew.findIndex((n) => n[name] == strShipmentOrdervalue),
-        1
-      );
-
-      if (this.props.onCheckShip) {
-        this.props.onCheckShip(gridDataShipNew);
-      }
-    }
-
-    this.setState({ GridDataShip: gridDataShip });
-  }
-
   _genCommentTime(dates) {
     const date = new Date(Date.parse(dates));
     //let currentDate = new Date();
@@ -643,6 +614,40 @@ class DataGridShipmentRouteAutoCom extends Component {
     this.props.hideModal();
   };
 
+  handleCheckShip(e) {
+    const strShipmentOrderValue = e.target.value;
+    const name = e.target.name;
+    const objShipmentOrder = this.state.DataSource.find((n) => n[name] == strShipmentOrderValue);
+
+    let objShip = {
+      ShipmentOrderID: objShipmentOrder.ShipmentOrderID,
+      ShipmentOrderTypeID: objShipmentOrder.ShipmentOrderTypeID,
+      CarrierPartnerID: objShipmentOrder.CarrierPartnerID,
+      CarrierTypeID: objShipmentOrder.CarrierTypeID,
+      DeliverUserList: [],
+      CurrentShipmentOrderStepID: objShipmentOrder.CurrentShipmentOrderStepID,
+      ShipItemNameList: objShipmentOrder.ShipItemNameList,
+      PrimaryShipItemName: objShipmentOrder.PrimaryShipItemName,
+    };
+
+    let changeState = this.state;
+    let gridDataShip = changeState.GridDataShip;
+
+    if (e.target.checked) {
+      gridDataShip.push(objShip);
+      this.props.onCheckShip({ TimeFrame: this.props.TimeFrame, GridDataShip: gridDataShip, ShipmentOrderID: "" });
+    } else {
+      gridDataShip.splice(
+        gridDataShip.findIndex((n) => n[name] == strShipmentOrderValue),
+        1
+      );
+      this.props.onCheckShip({ TimeFrame: this.props.TimeFrame, GridDataShip: gridDataShip, ShipmentOrderID: strShipmentOrderValue });
+    }
+
+    // changeState = { ...changeState, GridDataShip: gridDataShip };
+    // this.setState(changeState);
+  }
+
   // handleClickShip = (ShipmentOrderID) => (e) => {
   //   const { widthPercent } = this.state;
 
@@ -698,82 +703,93 @@ class DataGridShipmentRouteAutoCom extends Component {
   //   });
   // };
 
-  handleClickShip = (ShipmentOrderID) => (e) => {
-    this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderDeliver", ShipmentOrderID).then((apiResult) => {
-      if (!apiResult.IsError) {
-        let resultdd = this.state.GridDataShip.find((n) => n.ShipmentOrderID == ShipmentOrderID);
+  // handleClickShip = (ShipmentOrderID) => (e) => {
+  //   this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderDeliver", ShipmentOrderID).then((apiResult) => {
+  //     if (!apiResult.IsError) {
+  //       let resultdd = this.state.GridDataShip.find((n) => n.ShipmentOrderID == ShipmentOrderID);
 
-        if (resultdd == undefined) {
-          if (
-            this.state.GridDataShip.length > 0 &&
-            apiResult.ResultObject.ShipmentOrderDeliver.IsPermission == true &&
-            apiResult.ResultObject.ShipmentOrderDeliver.ShipmentOrder_DeliverUserList.length == 0
-          ) {
-            apiResult.ResultObject.ShipmentOrderDeliver["ShipmentOrder_DeliverUserList"] = this.state.GridDataShip[0].ShipmentOrder_DeliverUserList;
-          }
+  //       if (resultdd == undefined) {
+  //         if (
+  //           this.state.GridDataShip.length > 0 &&
+  //           apiResult.ResultObject.ShipmentOrderDeliver.IsPermission == true &&
+  //           apiResult.ResultObject.ShipmentOrderDeliver.ShipmentOrder_DeliverUserList.length == 0
+  //         ) {
+  //           apiResult.ResultObject.ShipmentOrderDeliver["ShipmentOrder_DeliverUserList"] = this.state.GridDataShip[0].ShipmentOrder_DeliverUserList;
+  //         }
 
-          if (this.state.GridDataShip.length > 0 && apiResult.ResultObject.ShipmentOrderDeliver.IsPermission == true) {
-            apiResult.ResultObject.ShipmentOrderDeliver["VehicleID"] = this.state.GridDataShip[0].VehicleID;
-            apiResult.ResultObject.ShipmentOrderDeliver["DriverUser"] = this.state.GridDataShip[0].DriverUser;
-          }
+  //         if (this.state.GridDataShip.length > 0 && apiResult.ResultObject.ShipmentOrderDeliver.IsPermission == true) {
+  //           apiResult.ResultObject.ShipmentOrderDeliver["VehicleID"] = this.state.GridDataShip[0].VehicleID;
+  //           apiResult.ResultObject.ShipmentOrderDeliver["DriverUser"] = this.state.GridDataShip[0].DriverUser;
+  //         }
 
-          this.state.GridDataShip.push(apiResult.ResultObject.ShipmentOrderDeliver);
-        }
+  //         this.state.GridDataShip.push(apiResult.ResultObject.ShipmentOrderDeliver);
+  //       }
 
-        const stateChange = {
-          ShipmentRouteID: this.state.ShipmentRouteID,
-          GridDataShip: this.state.GridDataShip,
-          ShipmentOrderSame: apiResult.ResultObject.ShipmentOrderDeliverList,
-          IsUserCoordinator: true,
-          IsCoordinator: true,
-          IsCancelDelivery: true,
-          IsShowModel: true,
-          IsDataGridSmallSize: true,
-        };
+  //       // const stateChange = {
+  //       //   ShipmentRouteID: this.state.ShipmentRouteID,
+  //       //   TimeFrame: this.props.TimeFrame,
+  //       //   GridDataShipFormModal: this.state.GridDataShip,
+  //       //   ShipmentOrderSame: apiResult.ResultObject.ShipmentOrderDeliverList,
+  //       //   IsUserCoordinator: true,
+  //       //   IsCoordinator: true,
+  //       //   IsCancelDelivery: true,
+  //       //   IsShowModel: true,
+  //       //   IsDataGridSmallSize: true,
+  //       // };
 
-        this.props.onShowModel(stateChange);
-      } else {
-        this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
-      }
-    });
-  };
+  //       // this.props.onShowModel(stateChange);
+  //     } else {
+  //       this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
+  //     }
+  //   });
+  // };
 
-  handleClickShipmentRoute = (RouteID) => (e) => {
-    const { widthPercent, ShipmentRouteID } = this.state;
-    this.props.hideModal();
+  // handleClickShipmentRoute = (RouteID) => (e) => {
+  //   const { widthPercent, ShipmentRouteID } = this.state;
+  //   this.props.hideModal();
 
-    this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetShipmentOrderRouteLst", RouteID).then((apiResult) => {
-      if (!apiResult.IsError) {
-        this.setState({ ShipmentRouteID: RouteID, GridDataShip: apiResult.ResultObject, changeGird: true });
+  //   this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetShipmentOrderRouteLst", RouteID).then((apiResult) => {
+  //     if (!apiResult.IsError) {
+  //       this.setState({ ShipmentRouteID: RouteID, GridDataShip: apiResult.ResultObject, changeGird: true });
 
-        this.props.showModal(MODAL_TYPE_VIEW, {
-          title: "Phân tuyến điều phối vận đơn ",
-          isShowOverlay: false,
-          onhideModal: this.handleCloseModal,
-          content: {
-            text: (
-              <ListShipCoordinatorRoute
-                ShipmentOrderID={0}
-                ShipmentRouteID={RouteID}
-                InfoCoordinator={this.state.GridDataShip}
-                IsUserCoordinator={true}
-                ShipmentOrderSame={[]}
-                IsCoordinator={true}
-                IsCancelDelivery={true}
-                onChangeValue={this.handleShipmentOrder.bind(this)}
-                onChangeClose={this.handleCloseModal.bind(this)}
-              />
-            ),
-          },
-          maxWidth: `${widthPercent - 20}px`,
-        });
+  //       this.props.showModal(MODAL_TYPE_VIEW, {
+  //         title: "Phân tuyến điều phối vận đơn ",
+  //         isShowOverlay: false,
+  //         onhideModal: this.handleCloseModal,
+  //         content: {
+  //           text: (
+  //             <ListShipCoordinatorRoute
+  //               ShipmentOrderID={0}
+  //               ShipmentRouteID={RouteID}
+  //               InfoCoordinator={this.state.GridDataShip}
+  //               IsUserCoordinator={true}
+  //               ShipmentOrderSame={[]}
+  //               IsCoordinator={true}
+  //               IsCancelDelivery={true}
+  //               onChangeValue={this.handleShipmentOrder.bind(this)}
+  //               onChangeClose={this.handleCloseModal.bind(this)}
+  //             />
+  //           ),
+  //         },
+  //         maxWidth: `${widthPercent - 20}px`,
+  //       });
 
-        this.props.onDataGridSmallSize(true);
-      } else {
-        this.showMessage(apiResult.message);
-      }
-    });
-  };
+  //       this.props.onDataGridSmallSize(true);
+  //     } else {
+  //       this.showMessage(apiResult.message);
+  //     }
+  //   });
+  // };
+
+  handleClickShip(paramShipmentRouteID){
+
+  }
+
+  handleClickShipmentRoute(paramRouteID) {
+    if (this.props.onShipmentRoute) {
+      this.props.onShipmentRoute(paramRouteID);
+    }
+  }
 
   handlePrintClickNew(e) {
     const ShipmentOrderID = e.target.attributes["data-id"].value;
@@ -993,7 +1009,7 @@ class DataGridShipmentRouteAutoCom extends Component {
                                                       name={"ShipmentOrderID"}
                                                       onChange={this.handleCheckShip.bind(this)}
                                                       value={rowItem.ShipmentOrderID}
-                                                      checked={this.state.GridDataShip.some((n) => n.ShipmentOrderID == rowItem.ShipmentOrderID)}
+                                                      checked={this.state.GridDataShip === undefined ? false : this.state.GridDataShip.some((n) => n.ShipmentOrderID == rowItem.ShipmentOrderID)}
                                                     />
                                                     <span className="cr">
                                                       <i className="cr-icon fa fa-check"></i>
@@ -1003,14 +1019,14 @@ class DataGridShipmentRouteAutoCom extends Component {
                                               </div>
                                             </li>
                                             <li className="item ">
-                                              <button className="btn" onClick={this.handleClickShip(rowItem.ShipmentOrderID)}>
+                                              <button className="btn" onClick={()=>this.handleClickShip(rowItem.ShipmentOrderID)}>
                                                 <i className="fa fa-user-plus"></i>
                                               </button>
                                             </li>
                                           </React.Fragment>
                                         ) : (
                                           <li className="item ">
-                                            <button onClick={this.handleClickShipmentRoute(rowItem.ShipmentRouteID)} className="btn btn-user-plus" title="Đã được phân tuyến">
+                                            <button onClick={() => this.handleClickShipmentRoute(rowItem.ShipmentRouteID)} className="btn btn-user-plus" title="Đã được phân tuyến">
                                               <i className="fa fa-user-plus"></i>
                                             </button>
                                           </li>
@@ -1044,7 +1060,9 @@ class DataGridShipmentRouteAutoCom extends Component {
                                           <div className="item">
                                             <i className="fa fa-user"></i>
                                             <div className="person-info">
-                                              <span className="name">{rowItem.ReceiverFullName}</span>
+                                              <span className="name" style={{ wordBreak: "break-all" }}>
+                                                {rowItem.ReceiverFullName}
+                                              </span>
                                               <span className="line">-</span>
                                               <span className={rowItem.PhoneCount > 1 ? "phone  phonered" : "phone"}>({rowItem.ReceiverPhoneNumber})</span>
                                               <span className="line">-</span>
@@ -1187,7 +1205,7 @@ class DataGridShipmentRouteAutoCom extends Component {
                                                   name={"ShipmentOrderID"}
                                                   onChange={this.handleCheckShip}
                                                   value={rowItem.ShipmentOrderID}
-                                                  checked={this.state.GridDataShip.some((n) => n.ShipmentOrderID == rowItem.ShipmentOrderID)}
+                                                  checked={this.state.GridDataShip === undefined ? false : this.state.GridDataShip.some((n) => n.ShipmentOrderID == rowItem.ShipmentOrderID)}
                                                 />
                                                 <span className="cr">
                                                   <i className="cr-icon fa fa-check"></i>
@@ -1204,7 +1222,7 @@ class DataGridShipmentRouteAutoCom extends Component {
                                       </React.Fragment>
                                     ) : (
                                       <li className="item ">
-                                        <button onClick={this.handleClickShipmentRoute(rowItem.ShipmentRouteID)} className="btn btn-user-plus" title="Đã được phân tuyến">
+                                        <button onClick={() => this.handleClickShipmentRoute(rowItem.ShipmentRouteID)} className="btn btn-user-plus" title="Đã được phân tuyến">
                                           <i className="fa fa-user-plus"></i>
                                         </button>
                                       </li>
@@ -1557,6 +1575,8 @@ class DataGridShipmentRouteAutoCom extends Component {
   }
 
   render() {
+    console.log(this.props.TimeFrame);
+
     const dataGrid = this.renderDataGrid();
 
     return (
@@ -1588,10 +1608,11 @@ class DataGridShipmentRouteAutoCom extends Component {
                           loading={this.state.ObjectSearchData.IsSearchDataInput}
                           enterButton
                           allowClear
+                          style={{ width: matches.large ? "400px": "60%" }}
                         />
                         <Select
                           defaultValue={this.state.ObjectSearchData.VehicleID}
-                          style={{ width: 120 }}
+                          style={{ width: "200px" }}
                           options={[
                             { label: "Phương tiện", value: -1 },
                             { label: "Xe máy", value: 1 },

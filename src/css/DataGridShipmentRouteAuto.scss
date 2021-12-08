@@ -23,7 +23,7 @@
   position: fixed;
   top: 70px;
   left: auto;
-  z-index: 999999999;
+  z-index: 999;
   background-color: transparent;
 }
 
@@ -117,12 +117,49 @@
   width: 400px !important;
 }
 
-.ant-carousel-custom .slick-slide {
-  padding: 0 10px;
+.ant-carousel .slick-prev:hover,
+.ant-carousel .slick-next:hover,
+.ant-carousel .slick-prev:focus,
+.ant-carousel .slick-next:focus {
+  background-color: #a9a4a499;
+}
+
+.ant-carousel-custom {
+  .slick-slide {
+    padding: 0 10px;
+  }
+
+  .slick-next {
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 10px;
+    background-color: #a9a4a499;
+    z-index: 999;
+  }
+
+  .slick-prev {
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 10px;
+    background-color: #a9a4a499;
+    z-index: 999;
+  }
 }
 
 .ant-col-npd {
   padding: 0 0 !important;
+}
+
+.ant-modal-custom {
+  .ant-drawer-close {
+    padding: 10px;
+  }
 }
 
 .f-13 * {
@@ -131,4 +168,21 @@
 
 .scroll-2::-webkit-scrollbar {
   width: 2px;
+}
+
+.text {
+  line-height: 23px;
+  padding: 0;
+  margin: 0;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.text-overflow {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
