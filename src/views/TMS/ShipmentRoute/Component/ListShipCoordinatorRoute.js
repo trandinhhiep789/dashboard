@@ -678,19 +678,17 @@ class ListShipCoordinatorRouteCom extends Component {
       return;
     }
 
-    console.log("this.state.ShipmentOrder", this.state.ShipmentOrder);
-
-    // if (this.state.ShipmentRouteID != "") {
-    //   this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddShipmentRouteLstNew", this.state.ShipmentOrder).then((apiResult) => {
-    //     this.addNotification(apiResult.Message, apiResult.IsError);
-    //     if (this.props.onChangeValue != null) this.props.onChangeValue(apiResult);
-    //   });
-    // } else {
-    //   this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNew", this.state.ShipmentOrder).then((apiResult) => {
-    //     this.addNotification(apiResult.Message, apiResult.IsError);
-    //     if (this.props.onChangeValue != null) this.props.onChangeValue(apiResult);
-    //   });
-    // }
+    if (this.state.ShipmentRouteID != "") {
+      this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddShipmentRouteLstNew", this.state.ShipmentOrder).then((apiResult) => {
+        this.addNotification(apiResult.Message, apiResult.IsError);
+        if (this.props.onChangeValue != null) this.props.onChangeValue(apiResult);
+      });
+    } else {
+      this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNew", this.state.ShipmentOrder).then((apiResult) => {
+        this.addNotification(apiResult.Message, apiResult.IsError);
+        if (this.props.onChangeValue != null) this.props.onChangeValue(apiResult);
+      });
+    }
   }
 
   handleChangeCourseALL = (CarrierTypeID) => (e) => {
