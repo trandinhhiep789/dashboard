@@ -28,8 +28,6 @@ import moment from "moment";
 import { Button, Card, Col, Row, Space, Statistic } from "antd";
 import { hideModal, showModal } from "../../../../actions/modal";
 import ModalSearchFormShipmentRouteAuto from "../Components/ModalSearchFormShipmentRouteAuto";
-import { MODAL_TYPE_VIEW } from "./../../../../constants/actionTypes";
-import ListShipCoordinatorRoute from "../../ShipmentRoute/Component/ListShipCoordinatorRoute";
 
 class SearchCom extends React.Component {
   constructor(props) {
@@ -37,7 +35,7 @@ class SearchCom extends React.Component {
 
     this.state = {
       CallAPIMessage: "",
-      gridDataSource: [],
+      GridDataSource: [],
       IsCallAPIError: false,
       SearchData: InitSearchParams,
       SearchElementList: SearchElementList,
@@ -49,8 +47,18 @@ class SearchCom extends React.Component {
       PrintID: "",
       dataPrint: {},
       IsDataGridSmallSize: false,
-      GridDataShip: [],
-      ShipmentRouteID: 0,
+      GridDataShipFormModalTemp: [],
+      GridDataShipFormModal: [],
+      GridDataShip: {
+        diffTimeFrame: [],
+        TimeFrame8to10: [],
+        TimeFrame10to12: [],
+        TimeFrame12to14: [],
+        TimeFrame14to16: [],
+        TimeFrame17to19: [],
+        TimeFrame19to21: [],
+      },
+      ShipmentRouteID: "",
       IsShowModel: false,
       ShipmentOrderSame: [],
 
@@ -78,6 +86,8 @@ class SearchCom extends React.Component {
     this.handleCheckShip = this.handleCheckShip.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleShowModel = this.handleShowModel.bind(this);
+    this.handleRemoveCheckShip = this.handleRemoveCheckShip.bind(this);
+    this.handleClickShipmentRoute = this.handleClickShipmentRoute.bind(this);
   }
 
   componentDidMount() {
@@ -335,7 +345,7 @@ class SearchCom extends React.Component {
     this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchSelected", []).then((apiResult) => {
       if (!apiResult.IsError) {
         this.setState({
-          gridDataSource: apiResult.ResultObject,
+          GridDataSource: apiResult.ResultObject,
         });
       }
     });
@@ -353,7 +363,7 @@ class SearchCom extends React.Component {
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByKeyword", String(Keywordid).trim()).then((apiResult) => {
           if (!apiResult.IsError) {
             this.setState({
-              gridDataSource: apiResult.ResultObject,
+              GridDataSource: apiResult.ResultObject,
             });
           }
         });
@@ -361,7 +371,7 @@ class SearchCom extends React.Component {
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByPhoneNember", String(Keywordid).trim()).then((apiResult) => {
           if (!apiResult.IsError) {
             this.setState({
-              gridDataSource: apiResult.ResultObject,
+              GridDataSource: apiResult.ResultObject,
             });
           }
         });
@@ -369,7 +379,7 @@ class SearchCom extends React.Component {
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByPartnerSaleOrderID", String(Keywordid).trim()).then((apiResult) => {
           if (!apiResult.IsError) {
             this.setState({
-              gridDataSource: apiResult.ResultObject,
+              GridDataSource: apiResult.ResultObject,
             });
           }
         });
@@ -477,7 +487,7 @@ class SearchCom extends React.Component {
         this.handleTimeDivision(apiResult.ResultObject);
 
         this.setState({
-          gridDataSource: apiResult.ResultObject,
+          GridDataSource: apiResult.ResultObject,
           IsCallAPIError: apiResult.IsError,
           IsLoadDataComplete: true,
           IsLoadData: true,
@@ -608,7 +618,7 @@ class SearchCom extends React.Component {
     this.addNotification(apiResult.Message, apiResult.IsError);
     if (!apiResult.IsError) {
       this.props.hideModal();
-      this.setState({ ShipmentRouteID: "", GridDataShip: [], changeGird: false });
+      this.setState({ ShipmentRouteID: "", GridDataShip: [], ChangeGird: false });
       if (this.props.onChangePageLoad != null) this.props.onChangePageLoad();
     }
   }
@@ -623,62 +633,95 @@ class SearchCom extends React.Component {
     this.props.hideModal();
   };
 
-  handleCheckShip(paramGridDataShip) {
+  //Xử lý thêm nút checked
+  handleCheckShip({ TimeFrame, GridDataShip, ShipmentOrderID }) {
     let changeState = this.state;
     let gridDataShip = changeState.GridDataShip;
 
-    gridDataShip = [...paramGridDataShip];
+    gridDataShip = { ...gridDataShip, [TimeFrame]: GridDataShip };
     changeState = { ...changeState, GridDataShip: gridDataShip };
 
-    this.setState(changeState);
+    // if (ShipmentOrderID !== "") {
+    //   let girdDataShipModal = changeState.GridDataShipFormModal;
+    //   girdDataShipModal.splice(
+    //     girdDataShipModal.findIndex((item) => item.ShipmentOrderID == ShipmentOrderID),
+    //     1
+    //   );
+    //   changeState = { ...changeState, GridDataShipFormModal: girdDataShipModal };
+    // }
+
+    this.setState(changeState, () => {
+      if (this.state.IsShowModel) {
+        this.handleUserCoordinator();
+      }
+    });
   }
 
-  handleUserCoordinator() {
-    this.props.hideModal();
+  calculateTimeFrame(paramShipmentOrderID) {
+    let objShipmentOrder = this.state.GridDataSource.filter((item) => item.ShipmentOrderID === paramShipmentOrderID);
+    const uptExpectedDeliveryDate = new Date(objShipmentOrder[0].ExpectedDeliveryDate);
+    let hour = uptExpectedDeliveryDate.getHours();
 
-    if (this.state.GridDataShip.length > 0) {
-      this.state.GridDataShip[0].ShipmentOrderTypelst = this.state.SearchData[2].SearchValue;
+    if (hour >= 8 && hour < 10) return "TimeFrame8to10";
+    if (hour >= 10 && hour < 12) return "TimeFrame10to12";
+    if (hour >= 12 && hour < 14) return "TimeFrame12to14";
+    if (hour >= 14 && hour < 16) return "TimeFrame14to16";
+    if (hour >= 17 && hour < 19) return "TimeFrame17to19";
+    if (hour >= 19 && hour < 21) return "TimeFrame19to21";
+    else return "diffTimeFrame";
+  }
 
-      this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderNewLst", this.state.GridDataShip).then((apiResult) => {
-        if (!apiResult.IsError) {
-          this.setState({ GridDataShip: apiResult.ResultObject.ShipmentOrderDeliverList, changeGird: true });
-          this.props.showModal(MODAL_TYPE_VIEW, {
-            title: "Phân tuyến điều phối vận đơn",
-            isShowOverlay: false,
-            onhideModal: this.handleClose,
-            content: {
-              text: (
-                <ListShipCoordinatorRoute
-                  ShipmentOrderID={0}
-                  ShipmentRouteID={this.state.ShipmentRouteID}
-                  InfoCoordinator={this.state.GridDataShip}
-                  ShipmentOrderSame={apiResult.ResultObject.ShipmentOrderDeliverSameList}
-                  IsUserCoordinator={true}
-                  IsCoordinator={true}
-                  IsCancelDelivery={true}
-                  onChangeValue={this.handleShipmentOrder.bind(this)}
-                  onChangeClose={this.handleCloseModal.bind(this)}
-                />
-              ),
-            },
-            maxWidth: this.state.widthPercent + "px",
-          });
-        } else {
-          this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
-        }
+  handleRemoveCheckShip(paramShipmentOrderID) {
+    let isExistInGridDataShipModalTemp = this.state.GridDataShipFormModalTemp.some((item) => item.ShipmentOrderID == paramShipmentOrderID);
+
+    if (isExistInGridDataShipModalTemp) {
+      let timeFrame = this.calculateTimeFrame(paramShipmentOrderID);
+      let changeState = this.state;
+      let gridDataShip = changeState.GridDataShip;
+      let arrTimeFrame = gridDataShip[timeFrame];
+
+      arrTimeFrame.splice(
+        arrTimeFrame.findIndex((item) => item.ShipmentOrderID === paramShipmentOrderID),
+        1
+      );
+
+      changeState = { ...changeState, GridDataShip: gridDataShip };
+      this.setState(changeState, () => {
+        console.log("this.state.GridDataShip", this.state.GridDataShip);
       });
-    } else {
-      this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
     }
   }
 
   // handleUserCoordinator() {
+  //   this.props.hideModal();
+
   //   if (this.state.GridDataShip.length > 0) {
   //     this.state.GridDataShip[0].ShipmentOrderTypelst = this.state.SearchData[2].SearchValue;
 
   //     this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderNewLst", this.state.GridDataShip).then((apiResult) => {
   //       if (!apiResult.IsError) {
-  //         this.setState({ ShipmentOrderSame: apiResult.ResultObject.ShipmentOrderDeliverSameList, GridDataShip: apiResult.ResultObject.ShipmentOrderDeliverList, changeGird: true, IsShowModel: true });
+  //         this.setState({ GridDataShip: apiResult.ResultObject.ShipmentOrderDeliverList, ChangeGird: true });
+  //         this.props.showModal(MODAL_TYPE_VIEW, {
+  //           title: "Phân tuyến điều phối vận đơn",
+  //           isShowOverlay: false,
+  //           onhideModal: this.handleClose,
+  //           content: {
+  //             text: (
+  //               <ListShipCoordinatorRoute
+  //                 ShipmentOrderID={0}
+  //                 ShipmentRouteID={this.state.ShipmentRouteID}
+  //                 InfoCoordinator={this.state.GridDataShip}
+  //                 ShipmentOrderSame={apiResult.ResultObject.ShipmentOrderDeliverSameList}
+  //                 IsUserCoordinator={true}
+  //                 IsCoordinator={true}
+  //                 IsCancelDelivery={true}
+  //                 onChangeValue={this.handleShipmentOrder.bind(this)}
+  //                 onChangeClose={this.handleCloseModal.bind(this)}
+  //               />
+  //             ),
+  //           },
+  //           maxWidth: this.state.widthPercent + "px",
+  //         });
   //       } else {
   //         this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
   //       }
@@ -688,8 +731,159 @@ class SearchCom extends React.Component {
   //   }
   // }
 
-  handleShowModel(isShow) {
-    this.setState({ IsShowModel: isShow });
+  handleCheckGirdDataShipIsEmpty() {
+    const { diffTimeFrame, TimeFrame8to10, TimeFrame10to12, TimeFrame12to14, TimeFrame14to16, TimeFrame17to19, TimeFrame19to21 } = this.state.GridDataShip;
+
+    return diffTimeFrame.length > 0
+      ? "diffTimeFrame"
+      : TimeFrame8to10.length > 0
+      ? "TimeFrame8to10"
+      : TimeFrame10to12.length > 0
+      ? "TimeFrame10to12"
+      : TimeFrame12to14.length > 0
+      ? "TimeFrame12to14"
+      : TimeFrame14to16.length > 0
+      ? "TimeFrame14to16"
+      : TimeFrame17to19.length > 0
+      ? "TimeFrame17to19"
+      : TimeFrame19to21.length > 0
+      ? "TimeFrame19to21"
+      : "";
+  }
+
+  // Xử lý phân tuyến bằng checked
+  handleUserCoordinator() {
+    let checkGridDataShipEmptyResult = this.handleCheckGirdDataShipIsEmpty();
+
+    if (checkGridDataShipEmptyResult !== "") {
+      let changeState = this.state;
+      changeState = { ...changeState, IsDataGridSmallSize: true };
+
+      let arrRequest = [];
+      for (const [key, value] of Object.entries(this.state.GridDataShip)) {
+        if (value.length > 0) {
+          arrRequest = [...arrRequest, ...value];
+        }
+      }
+
+      changeState = { ...changeState, GridDataShipFormModalTemp: arrRequest };
+      this.setState(changeState);
+
+      arrRequest[0].ShipmentOrderTypelst = this.state.SearchData[2].SearchValue;
+
+      this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderNewLst", arrRequest).then((apiResult) => {
+        if (!apiResult.IsError) {
+          let changeState = this.state;
+
+          changeState = {
+            ...changeState,
+            ShipmentOrderSame: apiResult.ResultObject.ShipmentOrderDeliverSameList,
+            GridDataShipFormModal: apiResult.ResultObject.ShipmentOrderDeliverList,
+            ChangeGird: true,
+            IsShowModel: true,
+          };
+          this.setState(changeState);
+        } else {
+          this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
+        }
+      });
+    } else {
+      this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
+    }
+  }
+
+  // Xử lý đã phân tuyến
+  handleClickShipmentRoute(paramRouteID) {
+    this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetShipmentOrderRouteLst", paramRouteID).then((apiResult) => {
+      if (!apiResult.IsError) {
+        let changeState = this.state;
+        changeState = {
+          ...changeState,
+          ShipmentRouteID: paramRouteID,
+          GridDataShipFormModal: apiResult.ResultObject,
+          ShipmentOrderSame: [],
+          ChangeGird: true,
+          IsShowModel: true,
+          IsDataGridSmallSize: true,
+        };
+
+        this.setState(changeState);
+      } else {
+        this.showMessage(apiResult.message);
+      }
+    });
+  }
+
+  // Xử lý phân tuyến từng cái
+  handleClickShip(paramShipmentOrderID) {
+    this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderDeliver", paramShipmentOrderID).then((apiResult) => {
+      if (!apiResult.IsError) {
+        this.setState({ ChangeGird: true, IsDataGridSmallSize: true });
+
+        let resultdd = this.state.GridDataShipFormModal.find((n) => n.ShipmentOrderID == ShipmentOrderID);
+        if (resultdd == undefined) {
+          if (
+            this.state.GridDataShipFormModal.length > 0 &&
+            apiResult.ResultObject.ShipmentOrderDeliver.IsPermission == true &&
+            apiResult.ResultObject.ShipmentOrderDeliver.ShipmentOrder_DeliverUserList.length == 0
+          ) {
+            apiResult.ResultObject.ShipmentOrderDeliver["ShipmentOrder_DeliverUserList"] = this.state.GridDataShipFormModal[0].ShipmentOrder_DeliverUserList;
+          }
+
+          if (this.state.GridDataShipFormModal.length > 0 && apiResult.ResultObject.ShipmentOrderDeliver.IsPermission == true) {
+            apiResult.ResultObject.ShipmentOrderDeliver["VehicleID"] = this.state.GridDataShipFormModal[0].VehicleID;
+            apiResult.ResultObject.ShipmentOrderDeliver["DriverUser"] = this.state.GridDataShipFormModal[0].DriverUser;
+          }
+
+          this.state.GridDataShipFormModal.push(apiResult.ResultObject.ShipmentOrderDeliver);
+        }
+
+        let changeState = this.state;
+
+        changeState = {
+          ...changeState,
+          ShipmentOrderSame: apiResult.ResultObject.ShipmentOrderDeliverList,
+          GridDataShipFormModal: this.state.GridDataShipFormModal,
+          ChangeGird: true,
+          IsShowModel: true,
+        };
+
+        this.setState(changeState);
+
+        // this.props.showModal(MODAL_TYPE_VIEW, {
+        //   title: "Phân tuyến điều phối vận đơn ",
+        //   isShowOverlay: false,
+        //   onhideModal: this.handleClose,
+        //   content: {
+        //     text: (
+        //       <ListShipCoordinatorRoute
+        //         ShipmentRouteID={this.state.ShipmentRouteID}
+        //         InfoCoordinator={this.state.GridDataShip}
+        //         ShipmentOrderSame={apiResult.ResultObject.ShipmentOrderDeliverList}
+        //         IsUserCoordinator={true}
+        //         IsCoordinator={true}
+        //         IsCancelDelivery={true}
+        //         onChangeValue={this.handleShipmentOrder.bind(this)}
+        //         onChangeClose={this.handleCloseModal.bind(this)}
+        //       />
+        //     ),
+        //   },
+        //   maxWidth: `${widthPercent - 20}px`,
+        // });
+      } else {
+        this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
+      }
+    });
+  }
+
+  handleShowModel(paramObjectChangeState) {
+    let changeState = this.state;
+
+    changeState = { ...changeState, ...paramObjectChangeState };
+    if (paramObjectChangeState.IsShowModel == false) {
+      changeState = { ...changeState, GridDataShipFormModal: [], GridDataShipFormModalTemp: [], ShipmentRouteID: "" };
+    }
+    this.setState(changeState);
   }
 
   render() {
@@ -774,10 +968,12 @@ class SearchCom extends React.Component {
               open={currentHour >= 8 && currentHour < 10 ? true : false}
             >
               <DataGridShipmentRouteAuto
+                key={1}
                 listColumn={DataGridColumnList}
                 dataSource={this.state.TimeFrame8to10}
                 IsLoadData={this.state.IsLoadData}
-                GridDataShip={this.state.GridDataShip}
+                TimeFrame="TimeFrame8to10"
+                GridDataShip={this.state.GridDataShip.TimeFrame8to10}
                 AddLink={AddLink}
                 IDSelectColumnName={IDSelectColumnName}
                 PKColumnName={PKColumnName}
@@ -788,6 +984,7 @@ class SearchCom extends React.Component {
                 onChangePageLoad={this.onChangePageLoad.bind(this)}
                 onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
                 onCheckShip={this.handleCheckShip}
+                onShipmentRoute={this.handleClickShipmentRoute}
                 onShowModel={this.handleShowModel}
                 onPrint={this.handlePrint.bind(this)}
                 IsDelete={false}
@@ -844,10 +1041,12 @@ class SearchCom extends React.Component {
               open={currentHour >= 10 && currentHour < 12 ? true : false}
             >
               <DataGridShipmentRouteAuto
+                key={2}
                 listColumn={DataGridColumnList}
                 dataSource={this.state.TimeFrame10to12}
                 IsLoadData={this.state.IsLoadData}
-                GridDataShip={this.state.GridDataShip}
+                TimeFrame="TimeFrame10to12"
+                GridDataShip={this.state.GridDataShip.TimeFrame10to12}
                 AddLink={AddLink}
                 IDSelectColumnName={IDSelectColumnName}
                 PKColumnName={PKColumnName}
@@ -857,7 +1056,9 @@ class SearchCom extends React.Component {
                 onSearchEvent={this.handleonSearchEvent.bind(this)}
                 onChangePageLoad={this.onChangePageLoad.bind(this)}
                 onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
+                onShowModel={this.handleShowModel}
                 onCheckShip={this.handleCheckShip}
+                onShipmentRoute={this.handleClickShipmentRoute}
                 onPrint={this.handlePrint.bind(this)}
                 IsDelete={false}
                 ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
@@ -913,10 +1114,12 @@ class SearchCom extends React.Component {
               open={currentHour >= 12 && currentHour < 14 ? true : false}
             >
               <DataGridShipmentRouteAuto
+                key={3}
                 listColumn={DataGridColumnList}
                 dataSource={this.state.TimeFrame12to14}
                 IsLoadData={this.state.IsLoadData}
-                GridDataShip={this.state.GridDataShip}
+                TimeFrame="TimeFrame12to14"
+                GridDataShip={this.state.GridDataShip.TimeFrame12to14}
                 AddLink={AddLink}
                 IDSelectColumnName={IDSelectColumnName}
                 PKColumnName={PKColumnName}
@@ -926,7 +1129,9 @@ class SearchCom extends React.Component {
                 onSearchEvent={this.handleonSearchEvent.bind(this)}
                 onChangePageLoad={this.onChangePageLoad.bind(this)}
                 onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
+                onShowModel={this.handleShowModel}
                 onCheckShip={this.handleCheckShip}
+                onShipmentRoute={this.handleClickShipmentRoute}
                 onPrint={this.handlePrint.bind(this)}
                 IsDelete={false}
                 ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
@@ -982,10 +1187,12 @@ class SearchCom extends React.Component {
               open={currentHour >= 14 && currentHour < 16 ? true : false}
             >
               <DataGridShipmentRouteAuto
+                key={4}
                 listColumn={DataGridColumnList}
                 dataSource={this.state.TimeFrame14to16}
                 IsLoadData={this.state.IsLoadData}
-                GridDataShip={this.state.GridDataShip}
+                TimeFrame="TimeFrame14to16"
+                GridDataShip={this.state.GridDataShip.TimeFrame14to16}
                 AddLink={AddLink}
                 IDSelectColumnName={IDSelectColumnName}
                 PKColumnName={PKColumnName}
@@ -995,7 +1202,9 @@ class SearchCom extends React.Component {
                 onSearchEvent={this.handleonSearchEvent.bind(this)}
                 onChangePageLoad={this.onChangePageLoad.bind(this)}
                 onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
+                onShowModel={this.handleShowModel}
                 onCheckShip={this.handleCheckShip}
+                onShipmentRoute={this.handleClickShipmentRoute}
                 onPrint={this.handlePrint.bind(this)}
                 IsDelete={false}
                 ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
@@ -1053,10 +1262,12 @@ class SearchCom extends React.Component {
               open={currentHour >= 17 && currentHour < 19 ? true : false}
             >
               <DataGridShipmentRouteAuto
+                key={5}
                 listColumn={DataGridColumnList}
                 dataSource={this.state.TimeFrame17to19}
                 IsLoadData={this.state.IsLoadData}
-                GridDataShip={this.state.GridDataShip}
+                TimeFrame="TimeFrame17to19"
+                GridDataShip={this.state.GridDataShip.TimeFrame17to19}
                 AddLink={AddLink}
                 IDSelectColumnName={IDSelectColumnName}
                 PKColumnName={PKColumnName}
@@ -1066,7 +1277,9 @@ class SearchCom extends React.Component {
                 onSearchEvent={this.handleonSearchEvent.bind(this)}
                 onChangePageLoad={this.onChangePageLoad.bind(this)}
                 onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
+                onShowModel={this.handleShowModel}
                 onCheckShip={this.handleCheckShip}
+                onShipmentRoute={this.handleClickShipmentRoute}
                 onPrint={this.handlePrint.bind(this)}
                 IsDelete={false}
                 ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
@@ -1124,10 +1337,12 @@ class SearchCom extends React.Component {
               open={currentHour >= 19 && currentHour < 21 ? true : false}
             >
               <DataGridShipmentRouteAuto
+                key={6}
                 listColumn={DataGridColumnList}
                 dataSource={this.state.TimeFrame19to21}
                 IsLoadData={this.state.IsLoadData}
-                GridDataShip={this.state.GridDataShip}
+                TimeFrame="TimeFrame19to21"
+                GridDataShip={this.state.GridDataShip.TimeFrame19to21}
                 AddLink={AddLink}
                 IDSelectColumnName={IDSelectColumnName}
                 PKColumnName={PKColumnName}
@@ -1137,7 +1352,9 @@ class SearchCom extends React.Component {
                 onSearchEvent={this.handleonSearchEvent.bind(this)}
                 onChangePageLoad={this.onChangePageLoad.bind(this)}
                 onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
+                onShowModel={this.handleShowModel}
                 onCheckShip={this.handleCheckShip}
+                onShipmentRoute={this.handleClickShipmentRoute}
                 onPrint={this.handlePrint.bind(this)}
                 IsDelete={false}
                 ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
@@ -1195,10 +1412,12 @@ class SearchCom extends React.Component {
               open={currentHour >= 21 ? true : false}
             >
               <DataGridShipmentRouteAuto
+                key={7}
                 listColumn={DataGridColumnList}
                 dataSource={this.state.diffTimeFrame}
                 IsLoadData={this.state.IsLoadData}
-                GridDataShip={this.state.GridDataShip}
+                TimeFrame="diffTimeFrame"
+                GridDataShip={this.state.GridDataShip.diffTimeFrame}
                 AddLink={AddLink}
                 IDSelectColumnName={IDSelectColumnName}
                 PKColumnName={PKColumnName}
@@ -1208,7 +1427,9 @@ class SearchCom extends React.Component {
                 onSearchEvent={this.handleonSearchEvent.bind(this)}
                 onChangePageLoad={this.onChangePageLoad.bind(this)}
                 onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
+                onShowModel={this.handleShowModel}
                 onCheckShip={this.handleCheckShip}
+                onShipmentRoute={this.handleClickShipmentRoute}
                 onPrint={this.handlePrint.bind(this)}
                 IsDelete={false}
                 ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
@@ -1226,9 +1447,9 @@ class SearchCom extends React.Component {
 
         {this.state.IsShowModel && (
           <ModalSearchFormShipmentRouteAuto
-            ShipmentOrderID={0}
+            // ShipmentOrderID={0}
             ShipmentRouteID={this.state.ShipmentRouteID}
-            InfoCoordinator={this.state.GridDataShip}
+            InfoCoordinator={this.state.GridDataShipFormModal}
             ShipmentOrderSame={this.state.ShipmentOrderSame}
             IsUserCoordinator={true}
             IsCoordinator={true}
@@ -1236,6 +1457,7 @@ class SearchCom extends React.Component {
             onChangeValue={this.handleShipmentOrder.bind(this)}
             onChangeClose={this.handleCloseModal.bind(this)}
             onCloseModal={this.handleShowModel.bind(this)}
+            onRemoveShip={this.handleRemoveCheckShip}
           />
         )}
       </React.Fragment>
