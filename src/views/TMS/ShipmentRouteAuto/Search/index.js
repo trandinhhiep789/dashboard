@@ -81,13 +81,13 @@ class SearchCom extends React.Component {
     this.handleTimeDivision = this.handleTimeDivision.bind(this);
     this.handleUserCoordinator = this.handleUserCoordinator.bind(this);
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
-    this.handleShipmentOrder = this.handleShipmentOrder.bind(this);
-    this.handleCloseModal = this.handleCloseModal.bind(this);
     this.handleCheckShip = this.handleCheckShip.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleShowModel = this.handleShowModel.bind(this);
     this.handleRemoveCheckShip = this.handleRemoveCheckShip.bind(this);
     this.handleClickShipmentRoute = this.handleClickShipmentRoute.bind(this);
+    this.handleClickShip = this.handleClickShip.bind(this);
+    this.addNotification = this.addNotification.bind(this);
   }
 
   componentDidMount() {
@@ -508,8 +508,8 @@ class SearchCom extends React.Component {
     ModalManager.open(<MessageModal title="Thông báo" message={message} onRequestClose={() => true} onCloseModal={this.handleCloseMessage} />);
   }
 
-  addNotification(message1, IsError) {
-    if (!IsError) {
+  addNotification(message, isError) {
+    if (!isError) {
       this.setState({
         cssNotification: "notification-custom-success",
         iconNotification: "fa fa-check",
@@ -520,6 +520,7 @@ class SearchCom extends React.Component {
         iconNotification: "fa fa-exclamation",
       });
     }
+
     this.notificationDOMRef.current.addNotification({
       container: "bottom-right",
       content: (
@@ -532,7 +533,7 @@ class SearchCom extends React.Component {
               <span>×</span>
             </div>
             <h4 className="notification-title">Thông Báo</h4>
-            <p className="notification-message">{message1}</p>
+            <p className="notification-message">{message}</p>
           </div>
         </div>
       ),
@@ -614,45 +615,32 @@ class SearchCom extends React.Component {
     this.props.hideModal();
   };
 
-  handleShipmentOrder(apiResult) {
-    this.addNotification(apiResult.Message, apiResult.IsError);
-    if (!apiResult.IsError) {
-      this.props.hideModal();
-      this.setState({ ShipmentRouteID: "", GridDataShip: [], ChangeGird: false });
-      if (this.props.onChangePageLoad != null) this.props.onChangePageLoad();
-    }
-  }
-
-  handleCloseModal = () => {
-    this.setState({
-      GridDataShip: [],
-      ShipmentRouteID: "",
-    });
-
-    this.props.onDataGridSmallSize(false);
-    this.props.hideModal();
-  };
+  // handleShipmentOrder(apiResult) {
+  //   this.addNotification(apiResult.Message, apiResult.IsError);
+  //   if (!apiResult.IsError) {
+  //     this.setState({ ShipmentRouteID: "", GridDataShip: [], ChangeGird: false });
+  //     if (this.props.onChangePageLoad != null) this.props.onChangePageLoad();
+  //   }
+  // }
 
   //Xử lý thêm nút checked
-  handleCheckShip({ TimeFrame, GridDataShip, ShipmentOrderID }) {
+  handleCheckShip({ TimeFrame, GridDataShip, ShipmentOrderID, IsSinger }) {
     let changeState = this.state;
     let gridDataShip = changeState.GridDataShip;
+    console.log("gridDataShip_1", gridDataShip);
 
     gridDataShip = { ...gridDataShip, [TimeFrame]: GridDataShip };
-    changeState = { ...changeState, GridDataShip: gridDataShip };
 
-    // if (ShipmentOrderID !== "") {
-    //   let girdDataShipModal = changeState.GridDataShipFormModal;
-    //   girdDataShipModal.splice(
-    //     girdDataShipModal.findIndex((item) => item.ShipmentOrderID == ShipmentOrderID),
-    //     1
-    //   );
-    //   changeState = { ...changeState, GridDataShipFormModal: girdDataShipModal };
-    // }
+    console.log("gridDataShip_2", gridDataShip);
+
+    changeState = { ...changeState, GridDataShip: gridDataShip };
 
     this.setState(changeState, () => {
       if (this.state.IsShowModel) {
         this.handleUserCoordinator();
+      }
+      if (IsSinger) {
+        this.handleClickShip(ShipmentOrderID);
       }
     });
   }
@@ -671,6 +659,7 @@ class SearchCom extends React.Component {
     else return "diffTimeFrame";
   }
 
+  // Xử lý bỏ checked khi nhấn xoá trong modal
   handleRemoveCheckShip(paramShipmentOrderID) {
     let isExistInGridDataShipModalTemp = this.state.GridDataShipFormModalTemp.some((item) => item.ShipmentOrderID == paramShipmentOrderID);
 
@@ -733,6 +722,8 @@ class SearchCom extends React.Component {
 
   handleCheckGirdDataShipIsEmpty() {
     const { diffTimeFrame, TimeFrame8to10, TimeFrame10to12, TimeFrame12to14, TimeFrame14to16, TimeFrame17to19, TimeFrame19to21 } = this.state.GridDataShip;
+
+    console.log({ diffTimeFrame, TimeFrame8to10, TimeFrame10to12, TimeFrame12to14, TimeFrame14to16, TimeFrame17to19, TimeFrame19to21 });
 
     return diffTimeFrame.length > 0
       ? "diffTimeFrame"
@@ -818,9 +809,12 @@ class SearchCom extends React.Component {
   handleClickShip(paramShipmentOrderID) {
     this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderDeliver", paramShipmentOrderID).then((apiResult) => {
       if (!apiResult.IsError) {
-        this.setState({ ChangeGird: true, IsDataGridSmallSize: true });
+        let changeState = this.state;
+        changeState = { ...changeState, ChangeGird: true, IsDataGridSmallSize: true };
+        this.setState(changeState);
 
-        let resultdd = this.state.GridDataShipFormModal.find((n) => n.ShipmentOrderID == ShipmentOrderID);
+        let resultdd = this.state.GridDataShipFormModal.find((n) => n.ShipmentOrderID == paramShipmentOrderID);
+
         if (resultdd == undefined) {
           if (
             this.state.GridDataShipFormModal.length > 0 &&
@@ -838,8 +832,7 @@ class SearchCom extends React.Component {
           this.state.GridDataShipFormModal.push(apiResult.ResultObject.ShipmentOrderDeliver);
         }
 
-        let changeState = this.state;
-
+        changeState = this.state;
         changeState = {
           ...changeState,
           ShipmentOrderSame: apiResult.ResultObject.ShipmentOrderDeliverList,
@@ -849,41 +842,33 @@ class SearchCom extends React.Component {
         };
 
         this.setState(changeState);
-
-        // this.props.showModal(MODAL_TYPE_VIEW, {
-        //   title: "Phân tuyến điều phối vận đơn ",
-        //   isShowOverlay: false,
-        //   onhideModal: this.handleClose,
-        //   content: {
-        //     text: (
-        //       <ListShipCoordinatorRoute
-        //         ShipmentRouteID={this.state.ShipmentRouteID}
-        //         InfoCoordinator={this.state.GridDataShip}
-        //         ShipmentOrderSame={apiResult.ResultObject.ShipmentOrderDeliverList}
-        //         IsUserCoordinator={true}
-        //         IsCoordinator={true}
-        //         IsCancelDelivery={true}
-        //         onChangeValue={this.handleShipmentOrder.bind(this)}
-        //         onChangeClose={this.handleCloseModal.bind(this)}
-        //       />
-        //     ),
-        //   },
-        //   maxWidth: `${widthPercent - 20}px`,
-        // });
       } else {
         this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
       }
     });
   }
 
+  //Xử lý hiện/ản modal
   handleShowModel(paramObjectChangeState) {
     let changeState = this.state;
 
     changeState = { ...changeState, ...paramObjectChangeState };
+
     if (paramObjectChangeState.IsShowModel == false) {
-      changeState = { ...changeState, GridDataShipFormModal: [], GridDataShipFormModalTemp: [], ShipmentRouteID: "" };
+      let gridDataShip = changeState.GridDataShip;
+
+      for (const [key, value] of Object.entries(gridDataShip)) {
+        gridDataShip[key] = [];
+      }
+
+      changeState = { ...changeState, IsDataGridSmallSize: false, GridDataShip: gridDataShip, GridDataShipFormModal: [], GridDataShipFormModalTemp: [], ShipmentRouteID: "", ChangeGird: false };
     }
-    this.setState(changeState);
+
+    this.setState(changeState, () => {
+      if (paramObjectChangeState.IsShowModel == false) {
+        this.onChangePageLoad();
+      }
+    });
   }
 
   render() {
@@ -984,6 +969,7 @@ class SearchCom extends React.Component {
                 onChangePageLoad={this.onChangePageLoad.bind(this)}
                 onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
                 onCheckShip={this.handleCheckShip}
+                onClickShip={this.handleClickShip}
                 onShipmentRoute={this.handleClickShipmentRoute}
                 onShowModel={this.handleShowModel}
                 onPrint={this.handlePrint.bind(this)}
@@ -1058,6 +1044,7 @@ class SearchCom extends React.Component {
                 onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
                 onShowModel={this.handleShowModel}
                 onCheckShip={this.handleCheckShip}
+                onClickShip={this.handleClickShip}
                 onShipmentRoute={this.handleClickShipmentRoute}
                 onPrint={this.handlePrint.bind(this)}
                 IsDelete={false}
@@ -1131,6 +1118,7 @@ class SearchCom extends React.Component {
                 onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
                 onShowModel={this.handleShowModel}
                 onCheckShip={this.handleCheckShip}
+                onClickShip={this.handleClickShip}
                 onShipmentRoute={this.handleClickShipmentRoute}
                 onPrint={this.handlePrint.bind(this)}
                 IsDelete={false}
@@ -1204,6 +1192,7 @@ class SearchCom extends React.Component {
                 onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
                 onShowModel={this.handleShowModel}
                 onCheckShip={this.handleCheckShip}
+                onClickShip={this.handleClickShip}
                 onShipmentRoute={this.handleClickShipmentRoute}
                 onPrint={this.handlePrint.bind(this)}
                 IsDelete={false}
@@ -1279,6 +1268,7 @@ class SearchCom extends React.Component {
                 onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
                 onShowModel={this.handleShowModel}
                 onCheckShip={this.handleCheckShip}
+                onClickShip={this.handleClickShip}
                 onShipmentRoute={this.handleClickShipmentRoute}
                 onPrint={this.handlePrint.bind(this)}
                 IsDelete={false}
@@ -1354,6 +1344,7 @@ class SearchCom extends React.Component {
                 onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
                 onShowModel={this.handleShowModel}
                 onCheckShip={this.handleCheckShip}
+                onClickShip={this.handleClickShip}
                 onShipmentRoute={this.handleClickShipmentRoute}
                 onPrint={this.handlePrint.bind(this)}
                 IsDelete={false}
@@ -1429,6 +1420,7 @@ class SearchCom extends React.Component {
                 onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
                 onShowModel={this.handleShowModel}
                 onCheckShip={this.handleCheckShip}
+                onClickShip={this.handleClickShip}
                 onShipmentRoute={this.handleClickShipmentRoute}
                 onPrint={this.handlePrint.bind(this)}
                 IsDelete={false}
@@ -1454,10 +1446,10 @@ class SearchCom extends React.Component {
             IsUserCoordinator={true}
             IsCoordinator={true}
             IsCancelDelivery={true}
-            onChangeValue={this.handleShipmentOrder.bind(this)}
-            onChangeClose={this.handleCloseModal.bind(this)}
+            // onChangeValue={this.handleShipmentOrder.bind(this)}
             onCloseModal={this.handleShowModel.bind(this)}
             onRemoveShip={this.handleRemoveCheckShip}
+            onShowNotification={this.addNotification}
           />
         )}
       </React.Fragment>

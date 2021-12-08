@@ -18,7 +18,7 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { APIHostName } from "../constants";
 import ListShipCoordinator from "../../ShipmentRoute/Component/ListShipCoordinator";
-import { Button, Input, Space, Select } from "antd";
+import {  Input, Select } from "antd";
 import ListShipCoordinatorRoute from "../../ShipmentRoute/Component/ListShipCoordinatorRoute";
 
 class DataGridShipmentRouteAutoCom extends Component {
@@ -94,7 +94,7 @@ class DataGridShipmentRouteAutoCom extends Component {
     ) {
       const gridData = this.getCheckList(nextProps.dataSource);
       let changeState = this.state;
-      
+
       changeState = {
         ...changeState,
         changeGird: nextProps.IsDataGridSmallSize,
@@ -271,7 +271,7 @@ class DataGridShipmentRouteAutoCom extends Component {
     this.setState({ KeywordId: e.target.value });
     if (e.key == "Enter") {
       const searchText = e.target.value;
-      this.handleonSearchEvent(searchText);
+      this.handleOnSearchEvent(searchText);
     }
   }
 
@@ -280,10 +280,10 @@ class DataGridShipmentRouteAutoCom extends Component {
   }
 
   handleSearchShip() {
-    this.handleonSearchEvent(this.state.KeywordId);
+    this.handleOnSearchEvent(this.state.KeywordId);
   }
 
-  handleonSearchEvent(Keywordid) {
+  handleOnSearchEvent(Keywordid) {
     let { changeIsserver } = this.state;
     if (changeIsserver) {
       let resultShipment = this.props.dataSource.filter(
@@ -614,11 +614,9 @@ class DataGridShipmentRouteAutoCom extends Component {
     this.props.hideModal();
   };
 
-  handleCheckShip(e) {
-    const strShipmentOrderValue = e.target.value;
-    const name = e.target.name;
+  handleCheckShip(name, value, checked, isSinger = false) {
+    const strShipmentOrderValue = value;
     const objShipmentOrder = this.state.DataSource.find((n) => n[name] == strShipmentOrderValue);
-
     let objShip = {
       ShipmentOrderID: objShipmentOrder.ShipmentOrderID,
       ShipmentOrderTypeID: objShipmentOrder.ShipmentOrderTypeID,
@@ -629,23 +627,22 @@ class DataGridShipmentRouteAutoCom extends Component {
       ShipItemNameList: objShipmentOrder.ShipItemNameList,
       PrimaryShipItemName: objShipmentOrder.PrimaryShipItemName,
     };
-
     let changeState = this.state;
     let gridDataShip = changeState.GridDataShip;
 
-    if (e.target.checked) {
+    if (checked) {
       gridDataShip.push(objShip);
-      this.props.onCheckShip({ TimeFrame: this.props.TimeFrame, GridDataShip: gridDataShip, ShipmentOrderID: "" });
+      this.props.onCheckShip({ TimeFrame: this.props.TimeFrame, GridDataShip: gridDataShip, ShipmentOrderID: strShipmentOrderValue, IsSinger: isSinger });
     } else {
       gridDataShip.splice(
         gridDataShip.findIndex((n) => n[name] == strShipmentOrderValue),
         1
       );
-      this.props.onCheckShip({ TimeFrame: this.props.TimeFrame, GridDataShip: gridDataShip, ShipmentOrderID: strShipmentOrderValue });
+      this.props.onCheckShip({ TimeFrame: this.props.TimeFrame, GridDataShip: gridDataShip, ShipmentOrderID: strShipmentOrderValue, IsSinger: isSinger });
     }
 
-    // changeState = { ...changeState, GridDataShip: gridDataShip };
-    // this.setState(changeState);
+    changeState = { ...changeState, GridDataShip: gridDataShip };
+    this.setState(changeState);
   }
 
   // handleClickShip = (ShipmentOrderID) => (e) => {
@@ -703,47 +700,6 @@ class DataGridShipmentRouteAutoCom extends Component {
   //   });
   // };
 
-  // handleClickShip = (ShipmentOrderID) => (e) => {
-  //   this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderDeliver", ShipmentOrderID).then((apiResult) => {
-  //     if (!apiResult.IsError) {
-  //       let resultdd = this.state.GridDataShip.find((n) => n.ShipmentOrderID == ShipmentOrderID);
-
-  //       if (resultdd == undefined) {
-  //         if (
-  //           this.state.GridDataShip.length > 0 &&
-  //           apiResult.ResultObject.ShipmentOrderDeliver.IsPermission == true &&
-  //           apiResult.ResultObject.ShipmentOrderDeliver.ShipmentOrder_DeliverUserList.length == 0
-  //         ) {
-  //           apiResult.ResultObject.ShipmentOrderDeliver["ShipmentOrder_DeliverUserList"] = this.state.GridDataShip[0].ShipmentOrder_DeliverUserList;
-  //         }
-
-  //         if (this.state.GridDataShip.length > 0 && apiResult.ResultObject.ShipmentOrderDeliver.IsPermission == true) {
-  //           apiResult.ResultObject.ShipmentOrderDeliver["VehicleID"] = this.state.GridDataShip[0].VehicleID;
-  //           apiResult.ResultObject.ShipmentOrderDeliver["DriverUser"] = this.state.GridDataShip[0].DriverUser;
-  //         }
-
-  //         this.state.GridDataShip.push(apiResult.ResultObject.ShipmentOrderDeliver);
-  //       }
-
-  //       // const stateChange = {
-  //       //   ShipmentRouteID: this.state.ShipmentRouteID,
-  //       //   TimeFrame: this.props.TimeFrame,
-  //       //   GridDataShipFormModal: this.state.GridDataShip,
-  //       //   ShipmentOrderSame: apiResult.ResultObject.ShipmentOrderDeliverList,
-  //       //   IsUserCoordinator: true,
-  //       //   IsCoordinator: true,
-  //       //   IsCancelDelivery: true,
-  //       //   IsShowModel: true,
-  //       //   IsDataGridSmallSize: true,
-  //       // };
-
-  //       // this.props.onShowModel(stateChange);
-  //     } else {
-  //       this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
-  //     }
-  //   });
-  // };
-
   // handleClickShipmentRoute = (RouteID) => (e) => {
   //   const { widthPercent, ShipmentRouteID } = this.state;
   //   this.props.hideModal();
@@ -781,8 +737,11 @@ class DataGridShipmentRouteAutoCom extends Component {
   //   });
   // };
 
-  handleClickShip(paramShipmentRouteID){
-
+  handleClickShip(paramShipmentRouteID) {
+    this.handleCheckShip("ShipmentOrderID", paramShipmentRouteID, true, true);
+    // if (this.props.onClickShip) {
+    //   this.props.onClickShip(paramShipmentRouteID);
+    // }
   }
 
   handleClickShipmentRoute(paramRouteID) {
@@ -793,6 +752,7 @@ class DataGridShipmentRouteAutoCom extends Component {
 
   handlePrintClickNew(e) {
     const ShipmentOrderID = e.target.attributes["data-id"].value;
+
     this.setState({
       printDataID: ShipmentOrderID,
     });
@@ -801,10 +761,8 @@ class DataGridShipmentRouteAutoCom extends Component {
   }
 
   handlePrintClick() {
-    // window.print();
-    // return;
-
     var mywindow = window.open("", "", "right=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0");
+
     mywindow.document.write("<html><head>");
     mywindow.document.write("<title>Đơn vận chuyển</title>");
     mywindow.document.write('<link rel="stylesheet" href="main.css" type="text/css" />');
@@ -843,8 +801,10 @@ class DataGridShipmentRouteAutoCom extends Component {
   handleSearchDataInput(value) {
     let ChangeState = this.state;
     let objSearchData = ChangeState.ObjectSearchData;
+
     objSearchData = { ...objSearchData, IsSearchDataInput: true };
     ChangeState = { ...ChangeState, ObjectSearchData: objSearchData };
+
     this.setState(ChangeState);
 
     let dispose = setTimeout(() => {
@@ -857,14 +817,10 @@ class DataGridShipmentRouteAutoCom extends Component {
           this.renderDataGrid();
         });
       } else {
-        console.log("this.state.ObjectSearchData.VehicleID", this.state.ObjectSearchData.VehicleID);
-        console.log("DataSourceOrigin", this.state.DataSourceOrigin);
         if (this.state.ObjectSearchData.VehicleID == -1) {
           let arrSearch = this.state.DataSourceOrigin.filter(
             (x) => x.ShipmentOrderID.includes(value) || x.ReceiverFullName.includes(value) || x.PrimaryShipItemName.includes(value) || x.PartnerSaleOrderID.includes(value)
           );
-
-          console.log(arrSearch);
 
           let ChangeState = this.state;
           let objSearchData = ChangeState.ObjectSearchData;
@@ -894,6 +850,7 @@ class DataGridShipmentRouteAutoCom extends Component {
     }, 2000);
   }
 
+  // Xử lý tìm kiếm trong component con
   handleSearchDataSelect(value) {
     let ChangeState = this.state;
     let objSearchData = ChangeState.ObjectSearchData;
@@ -1007,7 +964,7 @@ class DataGridShipmentRouteAutoCom extends Component {
                                                       readOnly
                                                       className="form-control form-control-sm"
                                                       name={"ShipmentOrderID"}
-                                                      onChange={this.handleCheckShip.bind(this)}
+                                                      onChange={(event) => this.handleCheckShip(event.target.name, event.target.value, event.target.checked)}
                                                       value={rowItem.ShipmentOrderID}
                                                       checked={this.state.GridDataShip === undefined ? false : this.state.GridDataShip.some((n) => n.ShipmentOrderID == rowItem.ShipmentOrderID)}
                                                     />
@@ -1019,7 +976,7 @@ class DataGridShipmentRouteAutoCom extends Component {
                                               </div>
                                             </li>
                                             <li className="item ">
-                                              <button className="btn" onClick={()=>this.handleClickShip(rowItem.ShipmentOrderID)}>
+                                              <button className="btn" onClick={() => this.handleClickShip(rowItem.ShipmentOrderID)}>
                                                 <i className="fa fa-user-plus"></i>
                                               </button>
                                             </li>
@@ -1203,7 +1160,7 @@ class DataGridShipmentRouteAutoCom extends Component {
                                                   readOnly
                                                   className="form-control form-control-sm"
                                                   name={"ShipmentOrderID"}
-                                                  onChange={this.handleCheckShip}
+                                                  onChange={(event) => this.handleCheckShip(event.target.name, event.target.value, event.target.checked)}
                                                   value={rowItem.ShipmentOrderID}
                                                   checked={this.state.GridDataShip === undefined ? false : this.state.GridDataShip.some((n) => n.ShipmentOrderID == rowItem.ShipmentOrderID)}
                                                 />
@@ -1215,7 +1172,7 @@ class DataGridShipmentRouteAutoCom extends Component {
                                           </div>
                                         </li>
                                         <li className="item ">
-                                          <button className="btn" onClick={this.handleClickShip(rowItem.ShipmentOrderID)}>
+                                          <button className="btn" onClick={() => this.handleClickShip(rowItem.ShipmentOrderID)}>
                                             <i className="fa fa-user-plus"></i>
                                           </button>
                                         </li>
@@ -1599,29 +1556,25 @@ class DataGridShipmentRouteAutoCom extends Component {
                   >
                     <ReactNotification ref={this.notificationDOMRef} />
                     <div className="card-title card-title-custom">
-                      <Space>
-                        {/* <Button onClick={() => this.props.onShowModel(true)}>Phân tuyến</Button> */}
-                        {/* <Input onChange={(event) => this.handleSearchData(event)} allowClear={true} /> */}
-                        <Input.Search
-                          placeholder="Tìm kiếm"
-                          onChange={(event) => this.handleSearchDataInput(event.target.value)}
-                          loading={this.state.ObjectSearchData.IsSearchDataInput}
-                          enterButton
-                          allowClear
-                          style={{ width: matches.large ? "400px": "60%" }}
-                        />
-                        <Select
-                          defaultValue={this.state.ObjectSearchData.VehicleID}
-                          style={{ width: "200px" }}
-                          options={[
-                            { label: "Phương tiện", value: -1 },
-                            { label: "Xe máy", value: 1 },
-                            { label: "Xe tải", value: 2 },
-                          ]}
-                          loading={this.state.ObjectSearchData.IsSearchDataSelect}
-                          onChange={(value) => this.handleSearchDataSelect(value)}
-                        ></Select>
-                      </Space>
+                      <Input.Search
+                        placeholder="Tìm kiếm"
+                        onChange={(event) => this.handleSearchDataInput(event.target.value)}
+                        loading={this.state.ObjectSearchData.IsSearchDataInput}
+                        enterButton
+                        allowClear
+                        style={{ width: "60%", maxWidth: "400px", marginRight: "10px" }}
+                      />
+                      <Select
+                        defaultValue={this.state.ObjectSearchData.VehicleID}
+                        style={{ width: "40%", maxWidth: "200px" }}
+                        options={[
+                          { label: "Phương tiện", value: -1 },
+                          { label: "Xe máy", value: 1 },
+                          { label: "Xe tải", value: 2 },
+                        ]}
+                        loading={this.state.ObjectSearchData.IsSearchDataSelect}
+                        onChange={(value) => this.handleSearchDataSelect(value)}
+                      />
                     </div>
                     <div className="card-body card-body-custom">
                       {dataGrid}
