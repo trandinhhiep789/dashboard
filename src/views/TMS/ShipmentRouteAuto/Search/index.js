@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, PureComponent } from "react";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
 import { MessageModal } from "../../../../common/components/Modal";
@@ -29,7 +29,7 @@ import { Button, Card, Col, Row, Space, Statistic } from "antd";
 import { hideModal, showModal } from "../../../../actions/modal";
 import ModalSearchFormShipmentRouteAuto from "../Components/ModalSearchFormShipmentRouteAuto";
 
-class SearchCom extends React.Component {
+class SearchCom extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -627,16 +627,13 @@ class SearchCom extends React.Component {
   handleCheckShip({ TimeFrame, GridDataShip, ShipmentOrderID, IsSinger }) {
     let changeState = this.state;
     let gridDataShip = changeState.GridDataShip;
-    console.log("gridDataShip_1", gridDataShip);
 
     gridDataShip = { ...gridDataShip, [TimeFrame]: GridDataShip };
-
-    console.log("gridDataShip_2", gridDataShip);
 
     changeState = { ...changeState, GridDataShip: gridDataShip };
 
     this.setState(changeState, () => {
-      if (this.state.IsShowModel) {
+      if (this.state.IsShowModel && IsSinger == false) {
         this.handleUserCoordinator();
       }
       if (IsSinger) {
@@ -809,10 +806,6 @@ class SearchCom extends React.Component {
   handleClickShip(paramShipmentOrderID) {
     this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderDeliver", paramShipmentOrderID).then((apiResult) => {
       if (!apiResult.IsError) {
-        let changeState = this.state;
-        changeState = { ...changeState, ChangeGird: true, IsDataGridSmallSize: true };
-        this.setState(changeState);
-
         let resultdd = this.state.GridDataShipFormModal.find((n) => n.ShipmentOrderID == paramShipmentOrderID);
 
         if (resultdd == undefined) {
@@ -832,12 +825,13 @@ class SearchCom extends React.Component {
           this.state.GridDataShipFormModal.push(apiResult.ResultObject.ShipmentOrderDeliver);
         }
 
-        changeState = this.state;
+        let changeState = this.state;
         changeState = {
           ...changeState,
           ShipmentOrderSame: apiResult.ResultObject.ShipmentOrderDeliverList,
           GridDataShipFormModal: this.state.GridDataShipFormModal,
           ChangeGird: true,
+          IsDataGridSmallSize: true,
           IsShowModel: true,
         };
 
@@ -1447,7 +1441,7 @@ class SearchCom extends React.Component {
             IsCoordinator={true}
             IsCancelDelivery={true}
             // onChangeValue={this.handleShipmentOrder.bind(this)}
-            onCloseModal={this.handleShowModel.bind(this)}
+            onCloseModal={this.handleShowModel}
             onRemoveShip={this.handleRemoveCheckShip}
             onShowNotification={this.addNotification}
           />

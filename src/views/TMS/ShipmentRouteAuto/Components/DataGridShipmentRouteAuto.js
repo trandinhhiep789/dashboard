@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import { Link } from "react-router-dom";
 import { ModalManager } from "react-dynamic-modal";
 import Media from "react-media";
@@ -18,10 +18,10 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { APIHostName } from "../constants";
 import ListShipCoordinator from "../../ShipmentRoute/Component/ListShipCoordinator";
-import {  Input, Select } from "antd";
+import { Input, Select } from "antd";
 import ListShipCoordinatorRoute from "../../ShipmentRoute/Component/ListShipCoordinatorRoute";
 
-class DataGridShipmentRouteAutoCom extends Component {
+class DataGridShipmentRouteAutoCom extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -45,11 +45,37 @@ class DataGridShipmentRouteAutoCom extends Component {
       changeGird: false,
       maxWidthGird: 0,
       changeIsserver: false,
+      // ObjectSearchData: {
+      //   VehicleID: -1,
+      //   Keyword: "",
+      //   IsSearchDataInput: false,
+      //   IsSearchDataSelect: false,
+      // },
       ObjectSearchData: {
-        VehicleID: -1,
-        Keyword: "",
-        IsSearchDataInput: false,
-        IsSearchDataSelect: false,
+        InputSearch: {
+          Value: "",
+          IsLoading: false,
+        },
+        SelectVehicle: {
+          Value: -1,
+          ListOption: [],
+          IsLoading: false,
+        },
+        SelectProvince: {
+          Value: -1,
+          ListOption: [],
+          IsLoading: false,
+        },
+        SelectDistrict: {
+          Value: -1,
+          ListOption: [],
+          IsLoading: false,
+        },
+        SelectWard: {
+          Value: -1,
+          ListOption: [],
+          IsLoading: false,
+        },
       },
       IsReload: false,
     };
@@ -65,13 +91,16 @@ class DataGridShipmentRouteAutoCom extends Component {
     this.handleClose = this.handleClose.bind(this);
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     this.handleCheckShip = this.handleCheckShip.bind(this);
-    this.handleSearchDataInput = this.handleSearchDataInput.bind(this);
-    this.handleSearchDataSelect = this.handleSearchDataSelect.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSelectVehicleValueChange = this.handleSelectVehicleValueChange.bind(this);
+    this.handleGetDataCacheProvince = this.handleGetDataCacheProvince.bind(this);
+    this.handleGetDataCacheDistrict = this.handleGetDataCacheDistrict.bind(this);
+    this.handleGetDataCacheWard = this.handleGetDataCacheWard.bind(this);
   }
 
   componentDidMount() {
     this.updateWindowDimensions();
-
+    this.handleGetDataCacheProvince();
     window.addEventListener("resize", this.updateWindowDimensions);
     if (this.props.dataSource) {
       const gridData = this.getCheckList(this.props.dataSource);
@@ -119,16 +148,6 @@ class DataGridShipmentRouteAutoCom extends Component {
     }
   }
 
-  // shouldComponentUpdate(nextProps, nextStates) {
-  //   if (
-  //     this.props.GridDataShip.length == 0 ||
-  //     (JSON.stringify(this.state.GridDataShip) !== JSON.stringify(nextProps.GridDataShip))
-  //   ) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
-
   componentWillUnmount() {
     window.removeEventListener("resize", this.updateWindowDimensions);
   }
@@ -141,6 +160,105 @@ class DataGridShipmentRouteAutoCom extends Component {
       maxWidthGird: clientWidth,
     });
   };
+
+  handleGetDataCacheProvince() {
+    this.props.callGetCache("ERPCOMMONCACHE.PROVINCE").then((result) => {
+      let listOptionNew = [];
+
+      if (!result.IsError && result.ResultObject.CacheData != null) {
+        result.ResultObject.CacheData.map((cacheItem) => {
+          listOptionNew.push({ value: cacheItem["ProvinceID"], key: cacheItem["ProvinceID"], label: cacheItem["ProvinceID"] + " - " + cacheItem["ProvinceName"] });
+        });
+
+        let changeState = this.state;
+        let objSearchData = changeState.ObjectSearchData;
+        let objProvince = objSearchData.SelectProvince;
+
+        objProvince = { ...objProvince, ListOption: listOptionNew };
+        objSearchData = { ...objSearchData, SelectProvince: objProvince };
+        changeState = { ...changeState, ObjectSearchData: objSearchData };
+
+        this.setState(changeState);
+      } else {
+        let changeState = this.state;
+        let objSearchData = changeState.ObjectSearchData;
+        let objProvince = objSearchData.SelectProvince;
+
+        objProvince = { ...objProvince, ListOption: listOptionNew };
+        objSearchData = { ...objSearchData, SelectProvince: objProvince };
+        changeState = { ...changeState, ObjectSearchData: objSearchData };
+
+        this.setState(changeState);
+      }
+    });
+  }
+
+  handleGetDataCacheDistrict(paramProvinceID) {
+    this.props.callGetCache("ERPCOMMONCACHE.DISTRICT").then((result) => {
+      let listOptionNew = [];
+
+      if (!result.IsError && result.ResultObject.CacheData != null) {
+        result.ResultObject.CacheData.map((cacheItem) => {
+          if (cacheItem.ProvinceID === paramProvinceID) {
+            listOptionNew.push({ value: cacheItem["DistrictID"], key: cacheItem["DistrictID"], label: cacheItem["DistrictID"] + " - " + cacheItem["DistrictName"] });
+          }
+        });
+
+        let changeState = this.state;
+        let objSearchData = changeState.ObjectSearchData;
+        let objDistrict = objSearchData.SelectDistrict;
+
+        objDistrict = { ...objDistrict, ListOption: listOptionNew };
+        objSearchData = { ...objSearchData, SelectDistrict: objDistrict };
+        changeState = { ...changeState, ObjectSearchData: objSearchData };
+
+        this.setState(changeState);
+      } else {
+        let changeState = this.state;
+        let objSearchData = changeState.ObjectSearchData;
+        let objDistrict = objSearchData.SelectDistrict;
+
+        objDistrict = { ...objDistrict, ListOption: listOptionNew };
+        objSearchData = { ...objSearchData, SelectDistrict: objDistrict };
+        changeState = { ...changeState, ObjectSearchData: objSearchData };
+
+        this.setState(changeState);
+      }
+    });
+  }
+
+  handleGetDataCacheWard(paramDistrictID) {
+    this.props.callGetCache("ERPCOMMONCACHE.WARD").then((result) => {
+      let listOptionNew = [];
+      if (!result.IsError && result.ResultObject.CacheData != null) {
+        result.ResultObject.CacheData.map((cacheItem) => {
+          if (cacheItem.DistrictID === paramDistrictID) {
+            listOptionNew.push({ value: cacheItem["WardID"], key: cacheItem["WardID"], label: cacheItem["WardID"] + " - " + cacheItem["WardName"] });
+          }
+        });
+
+        let changeState = this.state;
+        let objSearchData = changeState.ObjectSearchData;
+        let objWard = objSearchData.SelectWard;
+
+        objWard = { ...objWard, ListOption: listOptionNew };
+        objSearchData = { ...objSearchData, SelectWard: objWard };
+        changeState = { ...changeState, ObjectSearchData: objSearchData };
+
+        this.setState(changeState);
+      } else {
+        let changeState = this.state;
+        let objSearchData = changeState.ObjectSearchData;
+        let objWard = objSearchData.SelectWard;
+
+        objWard = { ...objWard, ListOption: listOptionNew };
+        objSearchData = { ...objSearchData, SelectWard: objWard };
+        changeState = { ...changeState, ObjectSearchData: objSearchData };
+
+        this.setState(changeState);
+      }
+    });
+  }
 
   checkAll(e) {
     const isCheck = e.target.checked;
@@ -423,49 +541,6 @@ class DataGridShipmentRouteAutoCom extends Component {
     this.props.hideModal();
   }
 
-  // handleUserCoordinator() {
-  //   this.props.hideModal();
-
-  //   const { widthPercent } = this.state;
-
-  //   if (this.state.GridDataShip.length > 0) {
-
-  //     this.state.GridDataShip[0].ShipmentOrderTypelst = this.props.ShipmentOrderTypelst;
-
-  //     this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderNewLst", this.state.GridDataShip).then((apiResult) => {
-  //       if (!apiResult.IsError) {
-  //         this.setState({ GridDataShip: apiResult.ResultObject.ShipmentOrderDeliverList, changeGird: true });
-  //         this.props.showModal(MODAL_TYPE_VIEW, {
-  //           title: "Phân tuyến điều phối vận đơn",
-  //           isShowOverlay: false,
-  //           onhideModal: this.handleClose,
-  //           content: {
-  //             text: (
-  //               <ListShipCoordinator
-  //                 ShipmentOrderID={0}
-  //                 ShipmentRouteID
-  //                 ShipmentRouteID={this.state.ShipmentRouteID}
-  //                 InfoCoordinator={this.state.GridDataShip}
-  //                 ShipmentOrderSame={apiResult.ResultObject.ShipmentOrderDeliverSameList}
-  //                 IsUserCoordinator={true}
-  //                 IsCoordinator={true}
-  //                 IsCancelDelivery={true}
-  //                 onChangeValue={this.handleShipmentOrder.bind(this)}
-  //                 onChangeClose={this.handleCloseModal.bind(this)}
-  //               />
-  //             ),
-  //           },
-  //           maxWidth: widthPercent + "px",
-  //         });
-  //       } else {
-  //         this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
-  //       }
-  //     });
-  //   } else {
-  //     this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
-  //   }
-  // }
-
   handleSelected() {
     if (this.state.GridDataShip.length > 0) {
       this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/UpdateSelected", this.state.GridDataShip).then((apiResult) => {
@@ -645,103 +720,8 @@ class DataGridShipmentRouteAutoCom extends Component {
     this.setState(changeState);
   }
 
-  // handleClickShip = (ShipmentOrderID) => (e) => {
-  //   const { widthPercent } = this.state;
-
-  //   this.props.hideModal();
-
-  //   this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderDeliver", ShipmentOrderID).then((apiResult) => {
-  //     if (!apiResult.IsError) {
-  //       this.setState({ changeGird: true });
-
-  //       let resultdd = this.state.GridDataShip.find((n) => n.ShipmentOrderID == ShipmentOrderID);
-  //       if (resultdd == undefined) {
-  //         if (
-  //           this.state.GridDataShip.length > 0 &&
-  //           apiResult.ResultObject.ShipmentOrderDeliver.IsPermission == true &&
-  //           apiResult.ResultObject.ShipmentOrderDeliver.ShipmentOrder_DeliverUserList.length == 0
-  //         ) {
-  //           apiResult.ResultObject.ShipmentOrderDeliver["ShipmentOrder_DeliverUserList"] = this.state.GridDataShip[0].ShipmentOrder_DeliverUserList;
-  //         }
-
-  //         if (this.state.GridDataShip.length > 0 && apiResult.ResultObject.ShipmentOrderDeliver.IsPermission == true) {
-  //           apiResult.ResultObject.ShipmentOrderDeliver["VehicleID"] = this.state.GridDataShip[0].VehicleID;
-  //           apiResult.ResultObject.ShipmentOrderDeliver["DriverUser"] = this.state.GridDataShip[0].DriverUser;
-  //         }
-
-  //         this.state.GridDataShip.push(apiResult.ResultObject.ShipmentOrderDeliver);
-  //       }
-
-  //       this.props.showModal(MODAL_TYPE_VIEW, {
-  //         title: "Phân tuyến điều phối vận đơn ",
-  //         isShowOverlay: false,
-  //         onhideModal: this.handleClose,
-  //         content: {
-  //           text: (
-  //             <ListShipCoordinatorRoute
-  //               ShipmentRouteID={this.state.ShipmentRouteID}
-  //               InfoCoordinator={this.state.GridDataShip}
-  //               ShipmentOrderSame={apiResult.ResultObject.ShipmentOrderDeliverList}
-  //               IsUserCoordinator={true}
-  //               IsCoordinator={true}
-  //               IsCancelDelivery={true}
-  //               onChangeValue={this.handleShipmentOrder.bind(this)}
-  //               onChangeClose={this.handleCloseModal.bind(this)}
-  //             />
-  //           ),
-  //         },
-  //         maxWidth: `${widthPercent - 20}px`,
-  //       });
-
-  //       this.props.onDataGridSmallSize(true);
-  //     } else {
-  //       this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
-  //     }
-  //   });
-  // };
-
-  // handleClickShipmentRoute = (RouteID) => (e) => {
-  //   const { widthPercent, ShipmentRouteID } = this.state;
-  //   this.props.hideModal();
-
-  //   this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetShipmentOrderRouteLst", RouteID).then((apiResult) => {
-  //     if (!apiResult.IsError) {
-  //       this.setState({ ShipmentRouteID: RouteID, GridDataShip: apiResult.ResultObject, changeGird: true });
-
-  //       this.props.showModal(MODAL_TYPE_VIEW, {
-  //         title: "Phân tuyến điều phối vận đơn ",
-  //         isShowOverlay: false,
-  //         onhideModal: this.handleCloseModal,
-  //         content: {
-  //           text: (
-  //             <ListShipCoordinatorRoute
-  //               ShipmentOrderID={0}
-  //               ShipmentRouteID={RouteID}
-  //               InfoCoordinator={this.state.GridDataShip}
-  //               IsUserCoordinator={true}
-  //               ShipmentOrderSame={[]}
-  //               IsCoordinator={true}
-  //               IsCancelDelivery={true}
-  //               onChangeValue={this.handleShipmentOrder.bind(this)}
-  //               onChangeClose={this.handleCloseModal.bind(this)}
-  //             />
-  //           ),
-  //         },
-  //         maxWidth: `${widthPercent - 20}px`,
-  //       });
-
-  //       this.props.onDataGridSmallSize(true);
-  //     } else {
-  //       this.showMessage(apiResult.message);
-  //     }
-  //   });
-  // };
-
   handleClickShip(paramShipmentRouteID) {
     this.handleCheckShip("ShipmentOrderID", paramShipmentRouteID, true, true);
-    // if (this.props.onClickShip) {
-    //   this.props.onClickShip(paramShipmentRouteID);
-    // }
   }
 
   handleClickShipmentRoute(paramRouteID) {
@@ -798,11 +778,13 @@ class DataGridShipmentRouteAutoCom extends Component {
     localStorage.setItem("IsserverInfo", MLObjectInfo);
   }
 
-  handleSearchDataInput(value) {
+  handleInputChange(value, options) {
     let ChangeState = this.state;
     let objSearchData = ChangeState.ObjectSearchData;
+    let objInputSearch = objSearchData.InputSearch;
 
-    objSearchData = { ...objSearchData, IsSearchDataInput: true };
+    objInputSearch = { ...objInputSearch, IsLoading: true };
+    objSearchData = { ...objSearchData, InputSearch: objInputSearch };
     ChangeState = { ...ChangeState, ObjectSearchData: objSearchData };
 
     this.setState(ChangeState);
@@ -811,8 +793,12 @@ class DataGridShipmentRouteAutoCom extends Component {
       if (value == "") {
         let ChangeState = this.state;
         let objSearchData = ChangeState.ObjectSearchData;
-        objSearchData = { ...objSearchData, IsSearchDataInput: false, Keyword: "" };
+        let objInputSearch = objSearchData.InputSearch;
+
+        objInputSearch = { ...objInputSearch, IsLoading: false, Value: "" };
+        objSearchData = { ...objSearchData, InputSearch: objInputSearch };
         ChangeState = { ...ChangeState, ObjectSearchData: objSearchData, DataSource: ChangeState.DataSourceOrigin };
+
         this.setState(ChangeState, () => {
           this.renderDataGrid();
         });
@@ -824,8 +810,11 @@ class DataGridShipmentRouteAutoCom extends Component {
 
           let ChangeState = this.state;
           let objSearchData = ChangeState.ObjectSearchData;
-          objSearchData = { ...objSearchData, IsSearchDataInput: false, Keyword: value };
-          ChangeState = { ...ChangeState, DataSource: arrSearch, ObjectSearchData: objSearchData };
+          let objInputSearch = objSearchData.InputSearch;
+
+          objInputSearch = { ...objInputSearch, IsLoading: false, Value: value };
+          objSearchData = { ...objSearchData, InputSearch: objInputSearch };
+          ChangeState = { ...ChangeState, ObjectSearchData: objSearchData, DataSource: arrSearch };
 
           this.setState(ChangeState, () => {
             this.renderDataGrid();
@@ -839,8 +828,11 @@ class DataGridShipmentRouteAutoCom extends Component {
 
           let ChangeState = this.state;
           let objSearchData = ChangeState.ObjectSearchData;
-          objSearchData = { ...objSearchData, IsSearchDataInput: false, Keyword: value };
-          ChangeState = { ...ChangeState, DataSource: arrSearch, ObjectSearchData: objSearchData };
+          let objInputSearch = objSearchData.InputSearch;
+
+          objInputSearch = { ...objInputSearch, IsLoading: false, Value: value };
+          objSearchData = { ...objSearchData, InputSearch: objInputSearch };
+          ChangeState = { ...ChangeState, ObjectSearchData: objSearchData, DataSource: arrSearch };
 
           this.setState(ChangeState, () => {
             this.renderDataGrid();
@@ -850,30 +842,43 @@ class DataGridShipmentRouteAutoCom extends Component {
     }, 2000);
   }
 
-  // Xử lý tìm kiếm trong component con
-  handleSearchDataSelect(value) {
+  handleSelectVehicleValueChange(value, options) {
     let ChangeState = this.state;
     let objSearchData = ChangeState.ObjectSearchData;
-    objSearchData = { ...objSearchData, IsSearchDataSelect: true };
+    let objVehicle = objSearchData.SelectVehicle;
+
+    objVehicle = { ...objVehicle, IsLoading: true };
+    objSearchData = { ...objSearchData, SelectVehicle: objVehicle };
     ChangeState = { ...ChangeState, ObjectSearchData: objSearchData };
+
     this.setState(ChangeState);
 
-    if (this.state.ObjectSearchData.Keyword === "") {
+    if (this.state.ObjectSearchData.InputSearch.Value === "") {
       if (value == -1) {
         let ChangeState = this.state;
         let objSearchData = ChangeState.ObjectSearchData;
-        objSearchData = { ...objSearchData, IsSearchDataSelect: false, VehicleID: -1 };
-        ChangeState = { ...ChangeState, DataSource: this.state.DataSourceOrigin, ObjectSearchData: objSearchData };
+        let objVehicle = objSearchData.SelectVehicle;
+
+        objVehicle = { ...objVehicle, IsLoading: false, Value: -1 };
+        objSearchData = { ...objSearchData, SelectVehicle: objVehicle };
+        ChangeState = { ...ChangeState, ObjectSearchData: objSearchData, DataSource: this.state.DataSourceOrigin };
+
         this.setState(ChangeState, () => {
           this.renderDataGrid();
         });
       } else {
         let arrSearch = this.state.DataSourceOrigin.filter((x) => x.CarrierTypeID == value);
 
+        console.log("arrSearch", arrSearch);
+
         let ChangeState = this.state;
         let objSearchData = ChangeState.ObjectSearchData;
-        objSearchData = { ...objSearchData, IsSearchDataSelect: false, VehicleID: value };
-        ChangeState = { ...ChangeState, DataSource: arrSearch, ObjectSearchData: objSearchData };
+        let objVehicle = objSearchData.SelectVehicle;
+
+        objVehicle = { ...objVehicle, IsLoading: false, Value: value };
+        objSearchData = { ...objSearchData, SelectVehicle: objVehicle };
+        ChangeState = { ...ChangeState, ObjectSearchData: objSearchData, DataSource: arrSearch };
+
         this.setState(ChangeState, () => {
           this.renderDataGrid();
         });
@@ -882,8 +887,12 @@ class DataGridShipmentRouteAutoCom extends Component {
       if (value == -1) {
         let ChangeState = this.state;
         let objSearchData = ChangeState.ObjectSearchData;
-        objSearchData = { ...objSearchData, VehicleID: value };
+        let objVehicle = objSearchData.SelectVehicle;
+
+        objVehicle = { ...objVehicle, IsLoading: false, Value: value };
+        objSearchData = { ...objSearchData, SelectVehicle: objVehicle };
         ChangeState = { ...ChangeState, ObjectSearchData: objSearchData };
+
         this.setState(ChangeState, () => {
           this.handleSearchDataInput(this.state.ObjectSearchData.Keyword);
         });
@@ -899,11 +908,159 @@ class DataGridShipmentRouteAutoCom extends Component {
 
         let ChangeState = this.state;
         let objSearchData = ChangeState.ObjectSearchData;
-        objSearchData = { ...objSearchData, IsSearchDataSelect: false, VehicleID: value };
-        ChangeState = { ...ChangeState, DataSource: arrSearch, ObjectSearchData: objSearchData };
+        let objVehicle = objSearchData.SelectVehicle;
+
+        objVehicle = { ...objVehicle, IsLoading: false, Value: value };
+        objSearchData = { ...objSearchData, SelectVehicle: objVehicle };
+        ChangeState = { ...ChangeState, ObjectSearchData: objSearchData, DataSource: arrSearch };
+
         this.setState(ChangeState, () => {
           this.renderDataGrid();
         });
+      }
+    }
+  }
+
+  handleSelectProvinceValueChange(value, options) {
+    let ChangeState = this.state;
+    let objSearchData = ChangeState.ObjectSearchData;
+    let objProvince = objSearchData.SelectProvince;
+    let objDistrict = objSearchData.SelectDistrict;
+    let objWard = objSearchData.SelectWard;
+
+    objWard = { ...objWard, ListOption: [], Value: -1 };
+    objDistrict = { ...objDistrict, ListOption: [], Value: -1 };
+    objProvince = { ...objProvince, IsLoading: true, Value: value };
+    objSearchData = { ...objSearchData, SelectProvince: objProvince, SelectDistrict: objDistrict, SelectWard: objWard };
+    objSearchData = { ...objSearchData, SelectProvince: objProvince };
+    ChangeState = { ...ChangeState, ObjectSearchData: objSearchData };
+
+    this.handleGetDataCacheDistrict(value);
+
+    this.setState(ChangeState);
+
+    if (this.state.ObjectSearchData.InputSearch.Value == "") {
+      if (this.state.ObjectSearchData.SelectVehicle.Value == -1) {
+        if (value == -1) {
+          let ChangeState = this.state;
+          let objSearchData = ChangeState.ObjectSearchData;
+          let objProvince = objSearchData.SelectProvince;
+
+          objProvince = { ...objProvince, IsLoading: false, Value: -1 };
+          objSearchData = { ...objSearchData, SelectProvince: objProvince };
+          ChangeState = { ...ChangeState, ObjectSearchData: objSearchData, DataSource: ChangeState.DataSourceOrigin };
+
+          this.setState(ChangeState, () => {
+            this.renderDataGrid();
+          });
+        } else {
+          let arrSearch = this.state.DataSourceOrigin.filter((item) => item.ReceiverProvinceID == value);
+          let ChangeState = this.state;
+          let objSearchData = ChangeState.ObjectSearchData;
+          let objProvince = objSearchData.SelectProvince;
+
+          objProvince = { ...objProvince, IsLoading: false, Value: value };
+          objSearchData = { ...objSearchData, SelectProvince: objProvince };
+          ChangeState = { ...ChangeState, ObjectSearchData: objSearchData, DataSource: arrSearch };
+
+          this.setState(ChangeState, () => {
+            this.renderDataGrid();
+          });
+        }
+      }
+    }
+  }
+
+  handleSelectDistrictValueChange(value, options) {
+    let ChangeState = this.state;
+    let objSearchData = ChangeState.ObjectSearchData;
+    let objDistrict = objSearchData.SelectDistrict;
+    let objWard = objSearchData.SelectWard;
+
+    objWard = { ...objWard, ListOption: [], Value: -1 };
+    objDistrict = { ...objDistrict, IsLoading: false, Value: value };
+    objSearchData = { ...objSearchData, SelectDistrict: objDistrict, SelectWard: objWard };
+    ChangeState = { ...ChangeState, ObjectSearchData: objSearchData };
+
+    this.handleGetDataCacheWard(value);
+
+    this.setState(ChangeState);
+
+    if (this.state.ObjectSearchData.InputSearch.Value == "") {
+      if (this.state.ObjectSearchData.SelectVehicle.Value == -1) {
+        if (value == -1) {
+          let ChangeState = this.state;
+          let objSearchData = ChangeState.ObjectSearchData;
+          let objDistrict = objSearchData.SelectDistrict;
+
+          objDistrict = { ...objDistrict, IsLoading: false, Value: -1 };
+          objSearchData = { ...objSearchData, SelectDistrict: objDistrict };
+          ChangeState = { ...ChangeState, ObjectSearchData: objSearchData, DataSource: ChangeState.DataSourceOrigin };
+
+          this.setState(ChangeState, () => {
+            this.handleSelectProvinceValueChange(this.state.ObjectSearchData.SelectProvince.Value, null);
+          });
+        } else {
+          let arrSearch = this.state.DataSourceOrigin.filter((item) => item.ReceiverProvinceID == this.state.ObjectSearchData.SelectProvince.Value && item.ReceiverDistrictID == value);
+          let ChangeState = this.state;
+          let objSearchData = ChangeState.ObjectSearchData;
+          let objDistrict = objSearchData.SelectDistrict;
+
+          objDistrict = { ...objDistrict, IsLoading: false, Value: value };
+          objSearchData = { ...objSearchData, SelectDistrict: objDistrict };
+          ChangeState = { ...ChangeState, ObjectSearchData: objSearchData, DataSource: arrSearch };
+
+          this.setState(ChangeState, () => {
+            this.renderDataGrid();
+          });
+        }
+      }
+    }
+  }
+
+  handleSelectWardValueChange(value, options) {
+    let ChangeState = this.state;
+    let objSearchData = ChangeState.ObjectSearchData;
+    let objWard = objSearchData.SelectWard;
+
+    objWard = { ...objWard, IsLoading: true, Value: value };
+    objSearchData = { ...objSearchData, SelectWard: objWard };
+    ChangeState = { ...ChangeState, ObjectSearchData: objSearchData };
+
+    this.handleGetDataCacheDistrict(value);
+
+    this.setState(ChangeState);
+
+    if (this.state.ObjectSearchData.InputSearch.Value == "") {
+      if (this.state.ObjectSearchData.SelectVehicle.Value == -1) {
+        if (value == -1) {
+          let ChangeState = this.state;
+          let objSearchData = ChangeState.ObjectSearchData;
+          let objWard = objSearchData.SelectWard;
+
+          objWard = { ...objWard, IsLoading: false, Value: -1 };
+          objSearchData = { ...objSearchData, SelectWard: objWard };
+          ChangeState = { ...ChangeState, ObjectSearchData: objSearchData, DataSource: ChangeState.DataSourceOrigin };
+
+          this.setState(ChangeState, () => {
+            this.handleSelectWardValueChange(this.state.ObjectSearchData.SelectDistrict.Value, null);
+          });
+        } else {
+          let arrSearch = this.state.DataSourceOrigin.filter(
+            (item) => item.ReceiverProvinceID == this.state.ObjectSearchData.SelectProvince.Value && item.ReceiverDistrictID == value && item.ReceiverWardID == value
+          );
+          let ChangeState = this.state;
+          let objSearchData = ChangeState.ObjectSearchData;
+          let objWard = objSearchData.SelectWard;
+
+          objWard = { ...objWard, IsLoading: false, Value: value };
+          objSearchData = { ...objSearchData, SelectWard: objWard };
+          ChangeState = { ...ChangeState, ObjectSearchData: objSearchData, DataSource: arrSearch };
+
+          this.setState(ChangeState, () => {
+            this.renderDataGrid();
+          });
+        }
       }
     }
   }
@@ -1556,25 +1713,85 @@ class DataGridShipmentRouteAutoCom extends Component {
                   >
                     <ReactNotification ref={this.notificationDOMRef} />
                     <div className="card-title card-title-custom">
-                      <Input.Search
-                        placeholder="Tìm kiếm"
-                        onChange={(event) => this.handleSearchDataInput(event.target.value)}
-                        loading={this.state.ObjectSearchData.IsSearchDataInput}
-                        enterButton
-                        allowClear
-                        style={{ width: "60%", maxWidth: "400px", marginRight: "10px" }}
-                      />
-                      <Select
-                        defaultValue={this.state.ObjectSearchData.VehicleID}
-                        style={{ width: "40%", maxWidth: "200px" }}
-                        options={[
-                          { label: "Phương tiện", value: -1 },
-                          { label: "Xe máy", value: 1 },
-                          { label: "Xe tải", value: 2 },
-                        ]}
-                        loading={this.state.ObjectSearchData.IsSearchDataSelect}
-                        onChange={(value) => this.handleSearchDataSelect(value)}
-                      />
+                      <Input.Group compact>
+                        <Input.Search
+                          placeholder="Tìm kiếm"
+                          onChange={(event) => this.handleInputChange(event.target.value)}
+                          loading={this.state.ObjectSearchData.InputSearch.IsLoading}
+                          enterButton
+                          allowClear
+                          style={{ width: "60%", maxWidth: "400px" }}
+                        />
+
+                        <Select
+                          value={this.state.ObjectSearchData.SelectVehicle.Value}
+                          style={{ width: "40%", maxWidth: "200px" }}
+                          options={[
+                            { label: "Phương tiện", value: -1 },
+                            { label: "Xe máy", value: 1 },
+                            { label: "Xe tải", value: 2 },
+                          ]}
+                          loading={this.state.ObjectSearchData.SelectVehicle.IsLoading}
+                          onChange={(value, options) => this.handleSelectVehicleValueChange(value, options)}
+                        />
+
+                        <Select
+                          showSearch
+                          value={this.state.ObjectSearchData.SelectProvince.Value}
+                          style={{ width: "40%", maxWidth: "200px" }}
+                          loading={this.state.ObjectSearchData.SelectProvince.IsLoading}
+                          filterOption={(input, option) => {
+                            return option.children.includes(input);
+                          }}
+                          onChange={(value, options) => this.handleSelectProvinceValueChange(value, options)}
+                        >
+                          <Select.Option value={-1}>Tỉnh / Thành phố</Select.Option>
+                          {this.state.ObjectSearchData.SelectProvince.ListOption.length > 0 &&
+                            this.state.ObjectSearchData.SelectProvince.ListOption.map((item, index) => (
+                              <Select.Option value={item.value} province={item}>
+                                {item.label}
+                              </Select.Option>
+                            ))}
+                        </Select>
+
+                        <Select
+                          showSearch
+                          value={this.state.ObjectSearchData.SelectDistrict.Value}
+                          style={{ width: "40%", maxWidth: "200px" }}
+                          loading={this.state.ObjectSearchData.SelectDistrict.IsLoading}
+                          onChange={(value, options) => this.handleSelectDistrictValueChange(value, options)}
+                          filterOption={(input, option) => {
+                            return option.children.includes(input);
+                          }}
+                        >
+                          <Select.Option value={-1}>Quận / Huyện</Select.Option>
+                          {this.state.ObjectSearchData.SelectDistrict.ListOption.length > 0 &&
+                            this.state.ObjectSearchData.SelectDistrict.ListOption.map((item, index) => (
+                              <Select.Option value={item.value} district={item}>
+                                {item.label}
+                              </Select.Option>
+                            ))}
+                        </Select>
+
+                        <Select
+                          showSearch
+                          value={this.state.ObjectSearchData.SelectWard.Value}
+                          style={{ width: "40%", maxWidth: "200px" }}
+                          loading={this.state.ObjectSearchData.SelectWard.IsLoading}
+                          filterOption={(input, option) => {
+                            return option.children.includes(input);
+                          }}
+                          onChange={(value, options) => this.handleSelectWardValueChange(value, options)}
+                        >
+                          <Select.Option value={-1}>Phường / Xã</Select.Option>
+                          {this.state.ObjectSearchData.SelectWard.ListOption.length > 0 &&
+                            this.state.ObjectSearchData.SelectWard.ListOption.map((item, index) => (
+                              <Select.Option value={item.value} ward={item}>
+                                {item.label}
+                              </Select.Option>
+                            ))}
+                        </Select>
+                      </Input.Group>
                     </div>
                     <div className="card-body card-body-custom">
                       {dataGrid}
