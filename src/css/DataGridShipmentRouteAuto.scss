@@ -34,7 +34,11 @@
 .CollapsibleCustom {
   background-color: #f0f0f0;
   margin-bottom: 10px !important;
-
+  transition: all 0.5;
+  border: 1px solid rgba(144, 202, 249, 0.46);
+  &:hover {
+    cursor: pointer;
+  }
   .Collapsible__contentInner {
     padding: 10px;
     border: 1px solid #d9d9d9;
