@@ -1,4 +1,4 @@
-import React, { Fragment, PureComponent } from "react";
+import React, { Fragment, Component } from "react";
 import { connect } from "react-redux";
 import { ModalManager } from "react-dynamic-modal";
 import { MessageModal } from "../../../../common/components/Modal";
@@ -29,7 +29,7 @@ import { Button, Card, Col, Row, Space, Statistic } from "antd";
 import { hideModal, showModal } from "../../../../actions/modal";
 import ModalSearchFormShipmentRouteAuto from "../Components/ModalSearchFormShipmentRouteAuto";
 
-class SearchCom extends PureComponent {
+class SearchCom extends Component {
   constructor(props) {
     super(props);
 
@@ -45,7 +45,7 @@ class SearchCom extends PureComponent {
       IsLoadDataComplete: false,
       IsLoadData: false,
       PrintID: "",
-      dataPrint: {},
+      DataPrint: {},
       IsDataGridSmallSize: false,
       GridDataShipFormModalTemp: [],
       GridDataShipFormModal: [],
@@ -69,6 +69,8 @@ class SearchCom extends PureComponent {
       TimeFrame14to16: [],
       TimeFrame17to19: [],
       TimeFrame19to21: [],
+
+      ObjectDescription: {},
     };
 
     this.searchref = React.createRef();
@@ -548,10 +550,7 @@ class SearchCom extends PureComponent {
     });
 
     this.props.callFetchAPI("TMSAPI", "api/ShipmentOrder/LoadPrintData", id).then((apiResult) => {
-      //this.setState({ IsCallAPIError: apiResult.IsError });
       if (!apiResult.IsError) {
-        // debugger;
-        // console.log("apiResult.ResultObject", apiResult.ResultObject);
         let itemList = apiResult.ResultObject.ShipmentOrder_ItemList;
         let itemListOutside = [];
         let itemListResult = [];
@@ -588,7 +587,7 @@ class SearchCom extends PureComponent {
           apiResult.ResultObject.ShipmentOrder_ItemList = itemListResult;
         }
 
-        this.setState({ dataPrint: apiResult.ResultObject });
+        this.setState({ DataPrint: apiResult.ResultObject });
         setTimeout(() => {
           this.handlePrintClick();
         }, 300);
@@ -629,7 +628,6 @@ class SearchCom extends PureComponent {
     let gridDataShip = changeState.GridDataShip;
 
     gridDataShip = { ...gridDataShip, [TimeFrame]: GridDataShip };
-
     changeState = { ...changeState, GridDataShip: gridDataShip };
 
     this.setState(changeState, () => {
@@ -658,6 +656,7 @@ class SearchCom extends PureComponent {
 
   // Xử lý bỏ checked khi nhấn xoá trong modal
   handleRemoveCheckShip(paramShipmentOrderID) {
+    console.log("paramShipmentOrderID", paramShipmentOrderID);
     let isExistInGridDataShipModalTemp = this.state.GridDataShipFormModalTemp.some((item) => item.ShipmentOrderID == paramShipmentOrderID);
 
     if (isExistInGridDataShipModalTemp) {
@@ -672,9 +671,7 @@ class SearchCom extends PureComponent {
       );
 
       changeState = { ...changeState, GridDataShip: gridDataShip };
-      this.setState(changeState, () => {
-        console.log("this.state.GridDataShip", this.state.GridDataShip);
-      });
+      this.setState(changeState);
     }
   }
 
@@ -762,12 +759,14 @@ class SearchCom extends PureComponent {
       this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderNewLst", arrRequest).then((apiResult) => {
         if (!apiResult.IsError) {
           let changeState = this.state;
+          let objDescription = this.handleMapObjectDescription(apiResult.ResultObject.ShipmentOrderDeliverList);
 
           changeState = {
             ...changeState,
             ShipmentOrderSame: apiResult.ResultObject.ShipmentOrderDeliverSameList,
             GridDataShipFormModal: apiResult.ResultObject.ShipmentOrderDeliverList,
             ChangeGird: true,
+            ObjectDescription: objDescription,
             IsShowModel: true,
           };
           this.setState(changeState);
@@ -785,6 +784,9 @@ class SearchCom extends PureComponent {
     this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetShipmentOrderRouteLst", paramRouteID).then((apiResult) => {
       if (!apiResult.IsError) {
         let changeState = this.state;
+
+        let objDescription = this.handleMapObjectDescription(apiResult.ResultObject);
+
         changeState = {
           ...changeState,
           ShipmentRouteID: paramRouteID,
@@ -793,6 +795,7 @@ class SearchCom extends PureComponent {
           ChangeGird: true,
           IsShowModel: true,
           IsDataGridSmallSize: true,
+          ObjectDescription: objDescription,
         };
 
         this.setState(changeState);
@@ -823,14 +826,18 @@ class SearchCom extends PureComponent {
           }
 
           this.state.GridDataShipFormModal.push(apiResult.ResultObject.ShipmentOrderDeliver);
+          this.state.GridDataShipFormModalTemp.push(apiResult.ResultObject.ShipmentOrderDeliver);
         }
 
+        let objDescription = this.handleMapObjectDescription(this.state.GridDataShipFormModal);
         let changeState = this.state;
+
         changeState = {
           ...changeState,
           ShipmentOrderSame: apiResult.ResultObject.ShipmentOrderDeliverList,
           GridDataShipFormModal: this.state.GridDataShipFormModal,
           ChangeGird: true,
+          ObjectDescription: objDescription,
           IsDataGridSmallSize: true,
           IsShowModel: true,
         };
@@ -865,6 +872,23 @@ class SearchCom extends PureComponent {
     });
   }
 
+  handleMapObjectDescription(paramDataSource) {
+    return paramDataSource.reduce((a, v) => {
+      return {
+        ...a,
+        [v.ShipmentOrderID]: {
+          isShow: false,
+          content: v.CoordinatorNote,
+        },
+      };
+    }, {});
+
+    // let changeState = this.state;
+
+    // changeState = { ...changeState, ObjectDescription: objDescription };
+    // this.setState(changeState);
+  }
+
   render() {
     const currentHour = moment().hour();
 
@@ -872,16 +896,7 @@ class SearchCom extends PureComponent {
       <React.Fragment>
         <ReactNotification ref={this.notificationDOMRef} />
         <div className="col-lg-12 SearchFormCustom" id="SearchFormCustom">
-          <SearchFormShipmentRouteAuto
-            FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
-            MLObjectDefinition={SearchMLObjectDefinition}
-            listelement={this.state.SearchElementList}
-            onSubmit={(object) => this.handleSearchSubmit(object)}
-            ref={this.searchref}
-            btnGroup="btnSearch btncustom btnGroup"
-            IsSetting={true}
-            className="multiple multiple-custom multiple-custom-display"
-          />
+          <SearchFormShipmentRouteAuto FormName="Tìm kiếm danh sách loại phương tiện vận chuyển" onSubmit={(object) => this.handleSearchSubmit(object)} ref={this.searchref} />
 
           {/* <SearchForm
             FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
@@ -1440,6 +1455,7 @@ class SearchCom extends PureComponent {
             IsUserCoordinator={true}
             IsCoordinator={true}
             IsCancelDelivery={true}
+            ObjectDescription={this.state.ObjectDescription}
             // onChangeValue={this.handleShipmentOrder.bind(this)}
             onCloseModal={this.handleShowModel}
             onRemoveShip={this.handleRemoveCheckShip}

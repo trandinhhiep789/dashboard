@@ -18,10 +18,10 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { APIHostName } from "../constants";
 import ListShipCoordinator from "../../ShipmentRoute/Component/ListShipCoordinator";
-import { Input, Select } from "antd";
+import { Input, Select, Space } from "antd";
 import ListShipCoordinatorRoute from "../../ShipmentRoute/Component/ListShipCoordinatorRoute";
 
-class DataGridShipmentRouteAutoCom extends PureComponent {
+class DataGridShipmentRouteAutoCom extends Component {
   constructor(props) {
     super(props);
 
@@ -778,6 +778,7 @@ class DataGridShipmentRouteAutoCom extends PureComponent {
     localStorage.setItem("IsserverInfo", MLObjectInfo);
   }
 
+  // Xử lý tìm kiếm
   handleInputChange(value, options) {
     let ChangeState = this.state;
     let objSearchData = ChangeState.ObjectSearchData;
@@ -967,6 +968,66 @@ class DataGridShipmentRouteAutoCom extends PureComponent {
             this.renderDataGrid();
           });
         }
+      } else {
+        if (value == -1) {
+          let ChangeState = this.state;
+          let objSearchData = ChangeState.ObjectSearchData;
+          let objProvince = objSearchData.SelectProvince;
+
+          objProvince = { ...objProvince, IsLoading: false, Value: -1 };
+          objSearchData = { ...objSearchData, SelectProvince: objProvince };
+          ChangeState = { ...ChangeState, ObjectSearchData: objSearchData, DataSource: ChangeState.DataSourceOrigin };
+
+          this.setState(ChangeState, () => {
+            this.handleSelectVehicleValueChange(this.state.ObjectSearchData.SelectVehicle.Value, null);
+          });
+        } else {
+          let arrSearch = this.state.DataSourceOrigin.filter((item) => item.VehicleID === this.state.ObjectSearchData.SelectVehicle.Value && item.ReceiverProvinceID == value);
+          let ChangeState = this.state;
+          let objSearchData = ChangeState.ObjectSearchData;
+          let objProvince = objSearchData.SelectProvince;
+
+          objProvince = { ...objProvince, IsLoading: false, Value: value };
+          objSearchData = { ...objSearchData, SelectProvince: objProvince };
+          ChangeState = { ...ChangeState, ObjectSearchData: objSearchData, DataSource: arrSearch };
+
+          this.setState(ChangeState, () => {
+            this.renderDataGrid();
+          });
+        }
+      }
+    } else {
+      if (value == -1) {
+        let ChangeState = this.state;
+        let objSearchData = ChangeState.ObjectSearchData;
+        let objProvince = objSearchData.SelectProvince;
+
+        objProvince = { ...objProvince, IsLoading: false, Value: -1 };
+        objSearchData = { ...objSearchData, SelectProvince: objProvince };
+        ChangeState = { ...ChangeState, ObjectSearchData: objSearchData, DataSource: ChangeState.DataSourceOrigin };
+
+        this.setState(ChangeState, () => {
+          this.handleInputChange(this.state.ObjectSearchData.InputSearch.Value, null);
+        });
+      } else {
+        let arrSearch = this.state.DataSourceOrigin.filter(
+          (item) =>
+            item.ShipmentOrderID.includes(value) ||
+            item.ReceiverFullName.includes(value) ||
+            item.PrimaryShipItemName.includes(value) ||
+            (item.PartnerSaleOrderID.includes(value) && item.ReceiverProvinceID == value)
+        );
+        let ChangeState = this.state;
+        let objSearchData = ChangeState.ObjectSearchData;
+        let objProvince = objSearchData.SelectProvince;
+
+        objProvince = { ...objProvince, IsLoading: false, Value: value };
+        objSearchData = { ...objSearchData, SelectProvince: objProvince };
+        ChangeState = { ...ChangeState, ObjectSearchData: objSearchData, DataSource: arrSearch };
+
+        this.setState(ChangeState, () => {
+          this.renderDataGrid();
+        });
       }
     }
   }
@@ -1713,85 +1774,14 @@ class DataGridShipmentRouteAutoCom extends PureComponent {
                   >
                     <ReactNotification ref={this.notificationDOMRef} />
                     <div className="card-title card-title-custom">
-                      <Input.Group compact>
-                        <Input.Search
-                          placeholder="Tìm kiếm"
-                          onChange={(event) => this.handleInputChange(event.target.value)}
-                          loading={this.state.ObjectSearchData.InputSearch.IsLoading}
-                          enterButton
-                          allowClear
-                          style={{ width: "60%", maxWidth: "400px" }}
-                        />
-
-                        <Select
-                          value={this.state.ObjectSearchData.SelectVehicle.Value}
-                          style={{ width: "40%", maxWidth: "200px" }}
-                          options={[
-                            { label: "Phương tiện", value: -1 },
-                            { label: "Xe máy", value: 1 },
-                            { label: "Xe tải", value: 2 },
-                          ]}
-                          loading={this.state.ObjectSearchData.SelectVehicle.IsLoading}
-                          onChange={(value, options) => this.handleSelectVehicleValueChange(value, options)}
-                        />
-
-                        <Select
-                          showSearch
-                          value={this.state.ObjectSearchData.SelectProvince.Value}
-                          style={{ width: "40%", maxWidth: "200px" }}
-                          loading={this.state.ObjectSearchData.SelectProvince.IsLoading}
-                          filterOption={(input, option) => {
-                            return option.children.includes(input);
-                          }}
-                          onChange={(value, options) => this.handleSelectProvinceValueChange(value, options)}
-                        >
-                          <Select.Option value={-1}>Tỉnh / Thành phố</Select.Option>
-                          {this.state.ObjectSearchData.SelectProvince.ListOption.length > 0 &&
-                            this.state.ObjectSearchData.SelectProvince.ListOption.map((item, index) => (
-                              <Select.Option value={item.value} province={item}>
-                                {item.label}
-                              </Select.Option>
-                            ))}
-                        </Select>
-
-                        <Select
-                          showSearch
-                          value={this.state.ObjectSearchData.SelectDistrict.Value}
-                          style={{ width: "40%", maxWidth: "200px" }}
-                          loading={this.state.ObjectSearchData.SelectDistrict.IsLoading}
-                          onChange={(value, options) => this.handleSelectDistrictValueChange(value, options)}
-                          filterOption={(input, option) => {
-                            return option.children.includes(input);
-                          }}
-                        >
-                          <Select.Option value={-1}>Quận / Huyện</Select.Option>
-                          {this.state.ObjectSearchData.SelectDistrict.ListOption.length > 0 &&
-                            this.state.ObjectSearchData.SelectDistrict.ListOption.map((item, index) => (
-                              <Select.Option value={item.value} district={item}>
-                                {item.label}
-                              </Select.Option>
-                            ))}
-                        </Select>
-
-                        <Select
-                          showSearch
-                          value={this.state.ObjectSearchData.SelectWard.Value}
-                          style={{ width: "40%", maxWidth: "200px" }}
-                          loading={this.state.ObjectSearchData.SelectWard.IsLoading}
-                          filterOption={(input, option) => {
-                            return option.children.includes(input);
-                          }}
-                          onChange={(value, options) => this.handleSelectWardValueChange(value, options)}
-                        >
-                          <Select.Option value={-1}>Phường / Xã</Select.Option>
-                          {this.state.ObjectSearchData.SelectWard.ListOption.length > 0 &&
-                            this.state.ObjectSearchData.SelectWard.ListOption.map((item, index) => (
-                              <Select.Option value={item.value} ward={item}>
-                                {item.label}
-                              </Select.Option>
-                            ))}
-                        </Select>
-                      </Input.Group>
+                      <Input.Search
+                        placeholder="Tìm kiếm"
+                        onChange={(event) => this.handleInputChange(event.target.value)}
+                        loading={this.state.ObjectSearchData.InputSearch.IsLoading}
+                        enterButton
+                        allowClear
+                        style={{ width: "60%", maxWidth: "400px", margin: "5px 0" }}
+                      />
                     </div>
                     <div className="card-body card-body-custom">
                       {dataGrid}

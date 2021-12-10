@@ -1,6 +1,6 @@
 import { Col, Drawer, Input, Row, Table, Select, Radio, Space, Card, Tag, Divider, Typography, AutoComplete, Button, Carousel, Tooltip } from "antd";
 import { RightOutlined, LeftOutlined, CloseCircleTwoTone } from "@ant-design/icons";
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import { Fragment } from "react";
 import { connect } from "react-redux";
 import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
@@ -31,7 +31,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
       ShipmentRouteSameLst: [],
       Distances_RouteLst: [],
       GirdSlide: false,
-      ObjectDescription: {},
+      ObjectDescription: this.props.ObjectDescription,
       ListAllUser: [],
       ObjectControlValue: {
         DoiTac: {
@@ -73,6 +73,8 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
     let lstOptionUser = [];
     let isXeTai = this.props.InfoCoordinator.every((item) => item.CarrierTypeID == 2);
 
+    let changeState = this.state;
+
     if (isXeTai) {
       this.props.InfoCoordinator.sort(function (a, b) {
         return new Date(a.ExpectedDeliveryDate) - new Date(b.ExpectedDeliveryDate);
@@ -86,33 +88,13 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
         lstOptionUser.push({ value: cacheItem.UserName, label: cacheItem.UserName + "-" + cacheItem.FullName, name: cacheItem.FullName });
       });
 
-      let changeState = this.state;
       changeState = { ...changeState, ListAllUser: lstOptionUser };
-      this.setState(changeState);
+      // this.setState(changeState);
     });
 
     let objRoute = this.props.InfoCoordinator.find((n) => n.ShipmentRouteID == this.props.ShipmentRouteID);
 
-    console.log("objRoute", objRoute);
-    console.log("this.props.ShipmentRouteID", this.props.ShipmentRouteID);
-
     if (objRoute != undefined) {
-      // if (objRoute != "") {
-      //   objInfoCoordinator = {
-      //     CarrierPartnerID: objRoute.CarrierPartnerID,
-      //     CarrierTypeID: objRoute.CarrierTypeID,
-      //     IsRoute: true,
-      //     VehicleID: objRoute.VehicleID == 0 ? -1 : objRoute.VehicleID,
-      //   };
-      // } else {
-      //   objInfoCoordinator = {
-      //     CarrierPartnerID: objRoute.CarrierPartnerID,
-      //     CarrierTypeID: objRoute.CarrierTypeID,
-      //     IsRoute: true,
-      //     VehicleID: objRoute.VehicleID == 0 ? -1 : objRoute.VehicleID,
-      //   };
-      // }
-
       objInfoCoordinator = {
         CarrierPartnerID: objRoute.CarrierPartnerID,
         CarrierTypeID: objRoute.CarrierTypeID,
@@ -134,18 +116,14 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
             lstValue.push(item1.UserName);
           });
       } else {
-        console.log("objRoute.ShipmentOrder_DeliverUserList", objRoute.ShipmentOrder_DeliverUserList);
-
         objRoute.ShipmentOrder_DeliverUserList.length > 0 &&
           objRoute.ShipmentOrder_DeliverUserList.map((item2, index) => {
-            console.log(item2);
             lstOption.push({ value: item2.UserName, name: item2.UserName + "-" + item2.FullName, FullName: item2.FullName });
             lstValue.push(item2.UserName);
           });
       }
     }
 
-    let changeState = this.state;
     let objControlValue = changeState.ObjectControlValue;
     let objNhanVienGiao = objControlValue.NhanVienGiao;
     let objDoiTac = objControlValue.DoiTac;
@@ -163,39 +141,24 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
 
     this.setState(changeState, () => {
       this.handleLoadSelectDoiTac();
-      this.handleMapObjectDescription();
     });
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("nextProps.InfoCoordinator", nextProps.InfoCoordinator);
     if (JSON.stringify(this.state.ShipmentOrder) !== JSON.stringify(nextProps.InfoCoordinator)) {
       let changeState = this.state;
-      console.log(nextProps.InfoCoordinator);
+
       changeState = {
         ...changeState,
         ShipmentOrder: nextProps.InfoCoordinator,
         ShipmentOrderSameLst: nextProps.ShipmentOrderSame,
+        ObjectDescription: nextProps.ObjectDescription,
         Via_Durations: 0,
         Via_Distances: "",
       };
 
       this.setState(changeState);
     }
-
-    // let changeState = this.state;
-
-    // changeState = {
-    //   ...changeState,
-    //   ShipmentOrder: nextProps.InfoCoordinator,
-    //   ShipmentOrderSameLst: nextProps.ShipmentOrderSame,
-    //   Via_Durations: 0,
-    //   Via_Distances: "",
-    // };
-
-    // this.setState(changeState, () => {
-    this.handleMapObjectDescription();
-    // });
   }
 
   //#endregion
@@ -225,7 +188,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
         let objSelectValue = changeState.ObjectControlValue;
         let objDoiTac = objSelectValue.DoiTac;
 
-        objDoiTac = { ...objDoiTac, ListOption: listOption, Value: "-1" };
+        objDoiTac = { ...objDoiTac, ListOption: listOption, Value: -1 };
         objSelectValue = { ...objSelectValue, DoiTac: objDoiTac };
         changeState = { ...changeState, objSelectValue };
 
@@ -644,33 +607,22 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
     });
   }
 
-  handleMapObjectDescription(paramLstDataSource = null) {
-    let objDescription = {};
-    if (paramLstDataSource == null) {
-      objDescription = this.props.InfoCoordinator.reduce((a, v) => {
-        return {
-          ...a,
-          [v.ShipmentOrderID]: {
-            isShow: false,
-            content: v.CoordinatorNote,
-          },
-        };
-      }, {});
-    } else {
-      objDescription = paramLstDataSource.reduce((a, v) => {
-        return {
-          ...a,
-          [v.ShipmentOrderID]: {
-            isShow: false,
-            content: v.CoordinatorNote,
-          },
-        };
-      }, {});
-    }
-    let changeState = this.state;
-    changeState = { ...changeState, ObjectDescription: objDescription };
-    this.setState(changeState);
-  }
+  // handleMapObjectDescription() {
+  //   let objDescription = this.props.InfoCoordinator.reduce((a, v) => {
+  //     return {
+  //       ...a,
+  //       [v.ShipmentOrderID]: {
+  //         isShow: false,
+  //         content: v.CoordinatorNote,
+  //       },
+  //     };
+  //   }, {});
+
+  //   let changeState = this.state;
+
+  //   changeState = { ...changeState, ObjectDescription: objDescription };
+  //   this.setState(changeState);
+  // }
 
   handleCloseModal() {
     this.props.hideModal();
@@ -1186,14 +1138,14 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
   }
 
   handleDescriptionSubmit(item) {
-    let stateChange = this.state;
-    let objDescription = stateChange.ObjectDescription;
+    let changeState = this.state;
+    let objDescription = changeState.ObjectDescription;
     let isShow = objDescription[item.ShipmentOrderID]["isShow"];
 
     objDescription = { ...objDescription, [item.ShipmentOrderID]: { isShow: !isShow, content: objDescription[item.ShipmentOrderID]["content"] } };
 
-    stateChange = { ...stateChange, ObjectDescription: objDescription };
-    this.setState(stateChange);
+    changeState = { ...changeState, ObjectDescription: objDescription };
+    this.setState(changeState);
   }
 
   handleDescriptionChange(item, event) {
