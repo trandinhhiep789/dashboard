@@ -215,6 +215,7 @@ import SymptomApply from "../TMS/MD/SymptomApply";
 import SymptomGroup from "../TMS/MD/SymptomGroup";
 import Symptom from "../TMS/MD/Symptom";
 import ShipmentRouteAuto from "./../TMS/ShipmentRouteAuto/index";
+import ListNoteRewardReport from "../TMS/Reward/ListNoteRewardReport";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -415,6 +416,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/FuelSubsIDizePeriod" component={FuelSubsIDizePeriod} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/RewardComputeType" component={RewardComputeType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ConfirmReward" component={ConfirmReward} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/ListNoteRewardReport" component={ListNoteRewardReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="/AreaType" component={AreaType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/Area" component={Area} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />

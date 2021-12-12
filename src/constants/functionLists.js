@@ -505,6 +505,9 @@ export const REWARDDETAIL_VIEW = "REWARDDETAIL_VIEW";
 export const TMS_TMSREWARD_VIEW = "TMS_TMSREWARD_VIEW";
 export const TMS_TMSREWARD_SO_TYPE_VIEW = "TMS_TMSREWARD_SO_TYPE_VIEW";
 
+//Báo cáo danh sách vận đơn không được tính thưởng
+export const TMS_NOTREWARD_EXPORT = "TMS_NOTREWARD_EXPORT";
+
 //Kiểm tra điểm thưởng
 export const TMS_TMSREWARD_REVIEW = "TMS_TMSREWARD_REVIEW";
 //Tính chi phí thưởng theo ngày
