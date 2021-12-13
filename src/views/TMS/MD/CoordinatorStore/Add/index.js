@@ -216,22 +216,21 @@ class AddCom extends React.Component {
           <div className="row">
             <div className="col-md-6">
               {/* <FormControl.ComboBoxSelect
-
-                                name="cbShipmentOrderTypeID"
-                                colspan="8"
-                                labelcolspan="4"
-                                label="loại yêu cầu vận chuyển"
-                                validatonList={["Comborequired"]}
-                                placeholder="-- Vui lòng chọn --"
-                                isautoloaditemfromcache={true}
-                                loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERTYPE"
-                                valuemember="ShipmentOrderTypeID"
-                                nameMember="ShipmentOrderTypeName"
-                                controltype="InputControl"
-                                value={""}
-                                listoption={null}
-                                isMultiSelect={true}
-                                datasourcemember="ShipmentOrderTypeID" /> */}
+                name="cbShipmentOrderTypeID"
+                colspan="8"
+                labelcolspan="4"
+                label="loại yêu cầu vận chuyển"
+                validatonList={["Comborequired"]}
+                placeholder="-- Vui lòng chọn --"
+                isautoloaditemfromcache={true}
+                loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERTYPE"
+                valuemember="ShipmentOrderTypeID"
+                nameMember="ShipmentOrderTypeName"
+                controltype="InputControl"
+                value={""}
+                listoption={null}
+                isMultiSelect={true}
+                datasourcemember="ShipmentOrderTypeID" /> */}
 
               <FormControl.FormControlComboBox
                 name="cbShipmentOrderTypeID"
@@ -241,7 +240,7 @@ class AddCom extends React.Component {
                 // validatonList={[""]}
                 isautoloaditemfromcache={true}
                 validatonList={["Comborequired"]}
-                isMultiSelect={true}
+                isMultiSelect={false}
                 placeholder="-- Vui lòng chọn --"
                 loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERTYPE"
                 valuemember="ShipmentOrderTypeID"
