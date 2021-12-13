@@ -2244,7 +2244,7 @@ class FormControlComboBoxNewCom extends Component {
             const aa = this.bindcombox(nextProps.value, this.state.Listoption);
             this.setState({ SelectedOption: aa });
         }
-        debugger;
+        
         if (JSON.stringify(this.props.listoption) !== JSON.stringify(nextProps.listoption)) // Check if it's a new user, you can also use some unique property, like the ID
         {
             this.setState({ Listoption: nextProps.listoption });
