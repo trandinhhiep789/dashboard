@@ -44,6 +44,7 @@ export const SearchElementList = [
     ValueMember: "ShipmentOrderTypeID",
     NameMember: "ShipmentOrderTypeName",
     classNameCol: "col-custom",
+    validatonList: ["Comborequired"],
   },
 ];
 
