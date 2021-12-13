@@ -89,7 +89,8 @@ class DetailCom extends React.Component {
                     DataSource: apiResult.ResultObject,
                     ShipmentOrderType_WorkFlowList: apiResult.ResultObject.ShipmentOrderType_WorkFlowList,
                     CurrentShipmentOrderStepID: apiResult.ResultObject.CurrentShipmentOrderStepID,
-                    IsLoadDataComplete: true
+                    IsLoadDataComplete: true,
+                    IsCancelDelivery: apiResult.ResultObject.IsCancelDelivery
                 });
             }
         });

@@ -1,17 +1,13 @@
 import { Col, Drawer, Input, Row, Table, Select, Radio, Space, Card, Tag, Divider, Typography, AutoComplete, Button, Carousel, Tooltip } from "antd";
-import { RightOutlined, LeftOutlined } from "@ant-design/icons";
-import React, { Component } from "react";
+import { RightOutlined, LeftOutlined, CloseCircleTwoTone } from "@ant-design/icons";
+import React, { Component, PureComponent } from "react";
 import { Fragment } from "react";
-import { ModalManager } from "react-dynamic-modal";
 import { connect } from "react-redux";
 import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
-import { MessageModal } from "./../../../../common/components/Modal/index";
 import { formatMoney } from "./../../../../utils/function";
 import { Link } from "react-router-dom";
-import ReactHtmlParser from "react-html-parser";
 import { APIHostName } from "./../constants/index";
-import ReactNotification from "react-notifications-component";
 
 class ModalSearchFormShipmentRouteAutoCom extends Component {
   constructor(props) {
@@ -35,7 +31,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
       ShipmentRouteSameLst: [],
       Distances_RouteLst: [],
       GirdSlide: false,
-      ObjectDescription: {},
+      ObjectDescription: this.props.ObjectDescription,
       ListAllUser: [],
       ObjectControlValue: {
         DoiTac: {
@@ -61,10 +57,6 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
       ObjectValue: {},
     };
 
-    this.notificationDOMRef = React.createRef();
-
-    this.handleOnValueChangeDeliverUser = this.handleOnValueChangeDeliverUser.bind(this);
-    this.handleCloseMessage = this.handleCloseMessage.bind(this);
     this.HandleChangeGird = this.HandleChangeGird.bind(this);
     this.handleLoadSelectDoiTac = this.handleLoadSelectDoiTac.bind(this);
     this.handleClickShipmentOrderSame = this.handleClickShipmentOrderSame.bind(this);
@@ -79,7 +71,9 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
     let lstOption = [];
     let lstValue = [];
     let lstOptionUser = [];
-    let isXeTai = this.props.InfoCoordinator.some((item) => item.CarrierTypeID == 2);
+    let isXeTai = this.props.InfoCoordinator.every((item) => item.CarrierTypeID == 2);
+
+    let changeState = this.state;
 
     if (isXeTai) {
       this.props.InfoCoordinator.sort(function (a, b) {
@@ -94,29 +88,19 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
         lstOptionUser.push({ value: cacheItem.UserName, label: cacheItem.UserName + "-" + cacheItem.FullName, name: cacheItem.FullName });
       });
 
-      let changeState = this.state;
       changeState = { ...changeState, ListAllUser: lstOptionUser };
-      this.setState(changeState);
+      // this.setState(changeState);
     });
 
     let objRoute = this.props.InfoCoordinator.find((n) => n.ShipmentRouteID == this.props.ShipmentRouteID);
 
     if (objRoute != undefined) {
-      if (objRoute != "") {
-        objInfoCoordinator = {
-          CarrierPartnerID: objRoute.CarrierPartnerID,
-          CarrierTypeID: objRoute.CarrierTypeID,
-          IsRoute: true,
-          VehicleID: objRoute.VehicleID == 0 ? -1 : objRoute.VehicleID,
-        };
-      } else {
-        objInfoCoordinator = {
-          CarrierPartnerID: objRoute.CarrierPartnerID,
-          CarrierTypeID: objRoute.CarrierTypeID,
-          IsRoute: true,
-          VehicleID: objRoute.VehicleID == 0 ? -1 : objRoute.VehicleID,
-        };
-      }
+      objInfoCoordinator = {
+        CarrierPartnerID: objRoute.CarrierPartnerID,
+        CarrierTypeID: objRoute.CarrierTypeID,
+        IsRoute: true,
+        VehicleID: objRoute.VehicleID == 0 ? -1 : objRoute.VehicleID,
+      };
 
       if (objRoute.CarrierPartnerID > 0) {
         this.props.callGetUserCache("ERPCOMMONCACHE.PARTNERUSER").then((result) => {
@@ -127,12 +111,12 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
           }
         });
 
-        objRoute.ShipmentOrder_DeliverUserList &&
+        objRoute.ShipmentOrder_DeliverUserList.length > 0 &&
           objRoute.ShipmentOrder_DeliverUserList.map((item1, index) => {
             lstValue.push(item1.UserName);
           });
       } else {
-        objRoute.ShipmentOrder_DeliverUserList &&
+        objRoute.ShipmentOrder_DeliverUserList.length > 0 &&
           objRoute.ShipmentOrder_DeliverUserList.map((item2, index) => {
             lstOption.push({ value: item2.UserName, name: item2.UserName + "-" + item2.FullName, FullName: item2.FullName });
             lstValue.push(item2.UserName);
@@ -140,7 +124,6 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
       }
     }
 
-    let changeState = this.state;
     let objControlValue = changeState.ObjectControlValue;
     let objNhanVienGiao = objControlValue.NhanVienGiao;
     let objDoiTac = objControlValue.DoiTac;
@@ -158,18 +141,18 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
 
     this.setState(changeState, () => {
       this.handleLoadSelectDoiTac();
-      this.handleMapObjectDescription();
     });
   }
 
   componentWillReceiveProps(nextProps) {
-    if (JSON.stringify(this.props.InfoCoordinator) !== JSON.stringify(nextProps.InfoCoordinator)) {
+    if (JSON.stringify(this.state.ShipmentOrder) !== JSON.stringify(nextProps.InfoCoordinator)) {
       let changeState = this.state;
 
       changeState = {
         ...changeState,
         ShipmentOrder: nextProps.InfoCoordinator,
         ShipmentOrderSameLst: nextProps.ShipmentOrderSame,
+        ObjectDescription: nextProps.ObjectDescription,
         Via_Durations: 0,
         Via_Distances: "",
       };
@@ -205,7 +188,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
         let objSelectValue = changeState.ObjectControlValue;
         let objDoiTac = objSelectValue.DoiTac;
 
-        objDoiTac = { ...objDoiTac, ListOption: listOption, Value: "-1" };
+        objDoiTac = { ...objDoiTac, ListOption: listOption, Value: -1 };
         objSelectValue = { ...objSelectValue, DoiTac: objDoiTac };
         changeState = { ...changeState, objSelectValue };
 
@@ -332,7 +315,8 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
 
     options &&
       options.map((item, index) => {
-        let objShip_DeliverUser = { UserName: item.user.value, FullName: item.user.name };
+        let objShip_DeliverUser = { UserName: item.user.value, FullName: item.user.FullName };
+
         objDeliverUser.push(objShip_DeliverUser);
         listStaffDebtObject.push({
           UserName: item.value,
@@ -360,7 +344,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
 
           this.setState(stateChange);
         } else {
-          this.addNotification(apiResult.Message, apiResult.IsError);
+          this.props.onShowNotification(apiResult.Message, apiResult.IsError);
         }
       });
     } else {
@@ -417,7 +401,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
 
           this.setState(stateChange);
         } else {
-          this.addNotification(apiResult.Message, apiResult.IsError);
+          this.props.onShowNotification(apiResult.Message, apiResult.IsError);
         }
       });
     } else {
@@ -505,7 +489,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
           if (vehicleID !== 0 && vehicleID !== -1) {
             let vehicle = lstVehicle.find((x) => x.value === vehicleID);
             if (vehicle && vehicle.TotalAbilityVolume >= vehicle.TotalShipmentVolume + vehicle.TotalVolume) {
-              this.addNotification(
+              this.props.onShowNotification(
                 "Tổng thể tích tối thiểu cần cho xe tải là " + vehicle.TotalAbilityVolume + " Hiện tại chỉ có " + (vehicle.TotalShipmentVolume + vehicle.TotalVolume),
                 true,
                 false,
@@ -567,8 +551,9 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
         changeState["ShipmentOrder"][index]["CarrierTypeID"] = value;
       });
 
-      let objCoordinator = changeState["objCoordinator"];
-      objCoordinator = { ...objCoordinator, CarrierTypeID: 1, IsRoute: true, VehicleID: -1, VehicleDriverUser: {} };
+      let objCoordinator = changeState.objCoordinator;
+
+      objCoordinator = { ...objCoordinator, CarrierTypeID: value, IsRoute: true, VehicleID: -1, VehicleDriverUser: { value: -1, label: "" } };
       changeState = { ...changeState, VehicleLst: [], objCoordinator: objCoordinator };
 
       this.setState(changeState);
@@ -582,19 +567,17 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
         }
       });
 
-      this.handleLoadBienSoXe();
-
-      this.setState(changeState);
+      this.setState(changeState, () => {
+        this.handleLoadBienSoXe();
+      });
     }
   }
 
   handleSelectBienSoXeValueChange(value, options) {
-    console.log({ value, options });
-
     let { objCoordinator, ShipmentOrder } = this.state;
 
     if (options.vehicle.TotalAbilityVolume >= options.vehicle.TotalShipmentVolume + options.vehicle.TotalVolume) {
-      this.addNotification(
+      this.props.onShowNotification(
         "Tổng thể tích tối thiểu cần cho xe tải là " + options.vehicle.TotalAbilityVolume + " Hiện tại chỉ có " + (options.vehicle.TotalShipmentVolume + options.vehicle.TotalVolume),
         true,
         false,
@@ -618,125 +601,32 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
       }
     });
 
-    // console.log({ name });
-    // console.log({ objCoordinator });
-    // console.log(this.state.VehicleLst);
-
     this.setState({
       objCoordinator: objCoordinator,
       ShipmentOrder: ShipmentOrder,
     });
   }
 
-  handleMapObjectDescription() {
-    const objectDescription = this.props.InfoCoordinator.reduce((a, v) => {
-      return {
-        ...a,
-        [v.ShipmentOrderID]: {
-          isShow: false,
-          content: v.CoordinatorNote,
-        },
-      };
-    }, {});
+  // handleMapObjectDescription() {
+  //   let objDescription = this.props.InfoCoordinator.reduce((a, v) => {
+  //     return {
+  //       ...a,
+  //       [v.ShipmentOrderID]: {
+  //         isShow: false,
+  //         content: v.CoordinatorNote,
+  //       },
+  //     };
+  //   }, {});
 
-    let changeState = this.state;
-    changeState = { ...changeState, ObjectDescription: objectDescription };
-    this.setState(changeState);
-  }
+  //   let changeState = this.state;
 
-  handleOnValueChangeDeliverUser(name, value, selectedOption, CarrierPartnerID) {
-    let objMultiDeliverUser = [];
-    let listStaffDebtObject = [];
-    selectedOption &&
-      selectedOption.map((item, index) => {
-        let objMultiShip_DeliverUser = { UserName: item.value, FullName: item.name };
-        objMultiDeliverUser.push(objMultiShip_DeliverUser);
-        listStaffDebtObject.push({
-          UserName: item.value,
-          StoreID: this.state.ShipmentOrder[0].CoordinatorStoreID,
-        });
-      });
-
-    if (selectedOption) {
-      this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/UserIsLockDelivery", listStaffDebtObject).then((apiResult) => {
-        if (!apiResult.IsError) {
-          this.state.ShipmentOrder.map((row, indexRow) => {
-            if (CarrierPartnerID) {
-              if (row.IsPermission == true) {
-                row["ShipmentOrder_DeliverUserList"] = objMultiDeliverUser || [];
-                row["CarrierPartnerID"] = CarrierPartnerID;
-              }
-            } else {
-              if (row.IsPermission == true && row.CarrierPartnerID > 0) {
-                row["ShipmentOrder_DeliverUserList"] = objMultiDeliverUser || [];
-              }
-            }
-          });
-          this.setState({ objDeliverUser: value, ShipmentOrder: this.state.ShipmentOrder, ShipmentRouteLst: apiResult.ResultObject });
-        } else {
-          this.addNotification(apiResult.Message, apiResult.IsError);
-        }
-      });
-    } else {
-      this.state.ShipmentOrder.map((row, indexRow) => {
-        if (row.IsPermission == true && row.CarrierPartnerID > 0) {
-          row["ShipmentOrder_DeliverUserList"] = objMultiDeliverUser || [];
-        }
-      });
-      this.setState({ objDeliverUser: value, ShipmentRouteLst: [] });
-    }
-  }
-
-  handleCloseMessage() {
-    if (!this.state.IsCallAPIError) {
-      if (this.props.onChangeValue != null) this.props.onChangeValue();
-    }
-  }
-
-  showMessage(message) {
-    ModalManager.open(<MessageModal title="Thông báo" message={message} onRequestClose={() => true} onCloseModal={this.handleCloseMessage} />);
-  }
+  //   changeState = { ...changeState, ObjectDescription: objDescription };
+  //   this.setState(changeState);
+  // }
 
   handleCloseModal() {
     this.props.hideModal();
   }
-
-  addNotification(message1, isError, isDefault = true, color = "#ba6508", borderLeftColor = "#d49a5b") {
-    let cssNotification, iconNotification;
-    if (!isError) {
-      cssNotification = "notification-custom-success";
-      iconNotification = "fa fa-check";
-    } else {
-      cssNotification = "notification-danger";
-      iconNotification = "fa fa-exclamation";
-    }
-    this.notificationDOMRef.current.addNotification({
-      container: "bottom-right",
-      content: (
-        <div className={cssNotification} style={{ background: !isDefault ? color : "", borderLeft: !isDefault ? borderLeftColor : "" }}>
-          <div className="notification-custom-icon">
-            <i className={iconNotification} />
-          </div>
-          <div className="notification-custom-content">
-            <div className="notification-close">
-              <span>×</span>
-            </div>
-            <h4 className="notification-title">Thông Báo</h4>
-            <p className="notification-message">{ReactHtmlParser(message1)}</p>
-          </div>
-        </div>
-      ),
-      dismiss: { duration: 4000 },
-      dismissable: { click: true },
-    });
-  }
-
-  handleClose() {
-    if (this.props.onChangeClose != null) {
-      this.props.onChangeClose();
-    }
-  }
-  //End thông báo
 
   groupByNew(data, fields, sumBy = "TotalCOD") {
     let r = [],
@@ -792,7 +682,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
             ShipmentOrder[rowIndex][rowname] = objDeliverUser;
             this.setState({ ShipmentOrder: ShipmentOrder });
           } else {
-            this.addNotification(apiResult.Message, apiResult.IsError);
+            this.props.onShowNotification(apiResult.Message, apiResult.IsError);
           }
         });
       } else {
@@ -830,8 +720,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
     console.log("onValueChangeComboUser", rowname, rowvalue, rowIndex);
   }
 
-  // check trùng nhân viên giao hàng
-
+  // Kiểm tra trùng nhân viên giao hàng
   checkDeliverUser(DeliverUserLst, RowDeliverUserLst) {
     let element = [];
     let Rowelement = [];
@@ -875,7 +764,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
 
       if (this.state.objCoordinator.IsRoute == true) {
         if (this.checkDeliverUser(row.ShipmentOrder_DeliverUserList, this.state.ShipmentOrder[0].ShipmentOrder_DeliverUserList) == false) {
-          //   this.addNotification("không cùng nhân viên giao hàng", true);
+          //   this.props.onShowNotification("không cùng nhân viên giao hàng", true);
           const validationObject = { IsValidatonError: true, ValidationErrorMessage: "Vui lòng chọn lại, bắt buộc cùng nhân viên giao hàng trong một tuyến." };
           elementobject = Object.assign({}, elementobject, { ["ShipmentOrder_DeliverUserList-" + indexRow]: validationObject });
           return;
@@ -908,6 +797,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
           return;
         }
       }
+
       if (Array.isArray(row["ShipmentOrder_DeliverUserList"])) {
         row["ShipmentOrder_DeliverUserList"].map((item, indexRow) => {
           if (row["ShipmentOrder_DeliverUserList"][indexRow] !== row["ShipmentOrder_DeliverUserList"][indexRow - 1]) {
@@ -921,9 +811,15 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
       this.state.ShipmentOrder[indexRow].OrderIndex = indexRow;
       this.state.ShipmentOrder[indexRow].DeliverUserLst = elementDeliverUserList.join();
       this.state.ShipmentOrder[indexRow].DeliverUserFullNameList = elementDeliverUserFullList.join();
+
       if (this.state.objCoordinator.VehicleDriverUservalue) {
         this.state.ShipmentOrder[indexRow].DriverUser = this.state.objCoordinator.VehicleDriverUser.value;
       }
+
+      if (this.state.objCoordinator.CarrierTypeID == 1) {
+        this.state.ShipmentOrder[indexRow].VehicleID = -1;
+      }
+
       this.state.ShipmentOrder[indexRow].VehicleID = this.state.objCoordinator.VehicleID;
       this.state.ShipmentOrder[indexRow].CoordinatorNote = this.state.ObjectDescription[row.ShipmentOrderID]["content"];
       elementDeliverUserList = [];
@@ -934,66 +830,34 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
       this.state.ShipmentOrder[0].DeliverUserTotalCODList = this.groupByNew(element, ["UserName", "CarrierTypeID"]);
       this.state.ShipmentOrder[0].ShipmentRouteID = this.state.ShipmentRouteID;
     }
+
     this.setState({ FormValidation: elementobject });
 
     if (this.checkInputName(elementobject) != "") {
-      this.addNotification(this.checkInputName(elementobject), true);
+      this.props.onShowNotification(this.checkInputName(elementobject), true);
       return;
     }
 
-    console.log("this.state.ShipmentOrder", this.state.ShipmentOrder);
-
     if (this.state.ShipmentRouteID != "") {
       this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddShipmentRouteLstNew", this.state.ShipmentOrder).then((apiResult) => {
-        this.addNotification(apiResult.Message, apiResult.IsError);
-        if (this.props.onChangeValue != null) this.props.onChangeValue(apiResult);
+        this.props.onShowNotification(apiResult.Message, apiResult.IsError);
+        if (!apiResult.IsError) {
+          this.props.onCloseModal({ IsShowModel: false });
+        }
       });
     } else {
       this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNew", this.state.ShipmentOrder).then((apiResult) => {
-        this.addNotification(apiResult.Message, apiResult.IsError);
-        if (this.props.onChangeValue != null) this.props.onChangeValue(apiResult);
+        this.props.onShowNotification(apiResult.Message, apiResult.IsError);
+
+        if (!apiResult.IsError) {
+          this.props.onCloseModal({ IsShowModel: false });
+        }
       });
     }
   }
 
-  // handleChangeCourseAll = (CarrierTypeID) => (e) => {
-  //   let changeState = this.state;
-
-  //   if (CarrierTypeID == 1) {
-
-  //     changeState["ShipmentOrder"].map((item, index) => {
-  //       changeState["ShipmentOrder"][index]["DriverUser"] = "";
-  //       changeState["ShipmentOrder"][index]["DriverUserFull"] = "";
-  //       changeState["ShipmentOrder"][index]["VehicleID"] = -1;
-  //       changeState["ShipmentOrder"][index]["CarrierTypeID"] = CarrierTypeID;
-  //     });
-
-  //     let objCoordinator = changeState["objCoordinator"];
-  //     objCoordinator = { ...objCoordinator, CarrierTypeID: 1, IsRoute: true, VehicleID: -1, VehicleDriverUser: {} };
-  //     changeState = { ...changeState, VehicleLst: [], objCoordinator: objCoordinator };
-  //     this.setState(changeState);
-  //   } else {
-  //     document.getElementsByClassName("car-menu")[0].style.background = "#15c377";
-  //     document.getElementsByClassName("car-menu")[0].style.color = "#fff";
-  //     document.getElementsByClassName("motobike-menu")[0].style.background = "#e4e7ea";
-  //     document.getElementsByClassName("motobike-menu")[0].style.color = "#616a78";
-
-  //     changeState["ShipmentOrder"].map((item, index) => {
-  //       if (item.CarrierTypeID == 1) {
-  //         changeState["ShipmentOrder"][index]["DriverUser"] = "";
-  //         changeState["ShipmentOrder"][index]["DriverUserFull"] = "";
-  //         changeState["ShipmentOrder"][index]["VehicleID"] = changeState["objCoordinator"]["VehicleID"];
-  //         changeState["ShipmentOrder"][index]["CarrierTypeID"] = CarrierTypeID;
-  //       }
-  //     });
-  //     let objVehicleLst = this.handleLoadBienSoXe();
-
-  //     changeState = { ...changeState, VehicleLst: objVehicleLst };
-  //     this.setState(changeState);
-  //   }
-  // };
-
-  handleChangeCourse = (CarrierTypeID, rowIndex) => (e) => {
+  // Chuyển đổi sang loại xe
+  handleChangeCourse(CarrierTypeID, rowIndex) {
     let changeState = this.state;
 
     changeState["ShipmentOrder"][rowIndex]["DriverUser"] = "";
@@ -1025,8 +889,9 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
 
       this.setState(changeState);
     }
-  };
+  }
 
+  // Xoá 1 đơn
   handleDeleteID(paramShipmentOrderID) {
     let resultRouteID = this.state.ShipmentOrder.find((n) => n.ShipmentOrderID == paramShipmentOrderID).ShipmentRouteID;
 
@@ -1055,23 +920,21 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
         Via_Durations: 0,
         Via_Distances: "",
         objCoordinator: { objectVehicleDriverUser },
-
         ObjectControlValue: objControlValue,
       };
 
       this.setState(changeState2);
     } else {
-      this.setState({
-        ShipmentOrder: this.state.ShipmentOrder,
-        ShipmentRouteID: "",
-        Via_Durations: 0,
-        Via_Distances: "",
-      });
+      let changeState = this.state;
+      changeState = { ...changeState, ShipmentOrder: this.state.ShipmentOrder, ShipmentRouteID: "", Via_Durations: 0, Via_Distances: "" };
+
+      this.setState(changeState);
     }
 
     this.props.onRemoveShip(paramShipmentOrderID);
   }
 
+  // Thay đổi vị trí đơn
   handleChangeOder(rowIndex, OrderID) {
     let { ShipmentOrder } = this.state;
     let totalcout = ShipmentOrder.length - 1;
@@ -1103,23 +966,25 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
   }
 
   handleClickRoute = (RouteID) => (e) => {
-    let { ShipmentOrder } = this.state;
-    ShipmentOrder = ShipmentOrder.filter((n) => n.ShipmentRouteID == "");
+    let changeState = this.state;
+    let lstShipmentOrder = changeState.ShipmentOrder;
+
+    lstShipmentOrder = lstShipmentOrder.filter((n) => n.ShipmentRouteID == "");
+
     this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetShipmentOrderRouteLst", RouteID).then((apiResult) => {
       if (!apiResult.IsError) {
         apiResult.ResultObject.map((item) => {
-          let resultdd = ShipmentOrder.find((n) => n.ShipmentOrderID == item.ShipmentOrderID);
+          let resultdd = lstShipmentOrder.find((n) => n.ShipmentOrderID == item.ShipmentOrderID);
 
-          if (resultdd == undefined) ShipmentOrder.push(item);
+          if (resultdd == undefined) {
+            lstShipmentOrder.push(item);
+          }
         });
-        this.setState({
-          ShipmentRouteID: RouteID,
-          ShipmentOrder: ShipmentOrder,
-          Via_Durations: 0,
-          Via_Distances: "",
-        });
+
+        changeState = { ...changeState, ShipmentRouteID: RouteID, ShipmentOrder: lstShipmentOrder, Via_Durations: 0, Via_Distances: "" };
+        this.setState(changeState);
       } else {
-        this.addNotification(apiResult.Message, apiResult.IsError);
+        this.props.onShowNotification(apiResult.Message, apiResult.IsError);
       }
     });
   };
@@ -1151,14 +1016,16 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
     ShipmentOrder.map((item, index) => {
       let strDistances = "";
       const Receivervalues = item.ReceiverGeoLocation.split(",");
+
       if (Receivervalues == "") {
-        this.addNotification("Không xác định được tạo độ nhà vận đơn " + item.ShipmentOrderID, true);
+        this.props.onShowNotification("Không xác định được tạo độ nhà vận đơn " + item.ShipmentOrderID, true);
       }
 
       let objReceiverPoints = {
         Latitude: Receivervalues[0],
         Longitude: Receivervalues[1],
       };
+
       if (index == 0) {
         strDistances = "Kho => " + ShipmentOrder[0].ShipmentOrderID;
         const values = ShipmentOrder[0].SenderGeoLocation.split(",");
@@ -1171,6 +1038,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
       }
 
       Points.push(objReceiverPoints);
+
       if (index > 0 && ShipmentOrder.length - 1 > index) {
         strDistances = ShipmentOrder[index - 1].ShipmentOrderID + "=> " + item.ShipmentOrderID;
         DistancesRouteLst.push(strDistances);
@@ -1204,6 +1072,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
 
     let resultPoints = Points.find((n) => n.Latitude == "");
     let Distances_RouteLst = [];
+
     if (resultPoints == undefined) {
       this.props.callFetchAPI(APIHostName, "api/Maps/FindPathViaRoute", paramsRequest).then((apiResult) => {
         if (!apiResult.IsError) {
@@ -1225,60 +1094,69 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
     }
   };
 
-  HandleChangeGird(id) {
-    if (id == 1) {
-      this.setState({
-        GirdSlide: true,
-      });
+  HandleChangeGird(paramID) {
+    if (paramID == 1) {
+      let changeState = this.state;
+
+      changeState = { ...changeState, GirdSlide: true };
+      this.setState(changeState);
     } else {
-      let { ShipmentOrder } = this.state;
+      let changeState = this.state;
+      let lstShipmentOrder = changeState.ShipmentOrder;
+
       let RowWardIDelement = [];
-      ShipmentOrder.map((row, indexRow) => {
+
+      lstShipmentOrder.map((row, indexRow) => {
         RowWardIDelement.push(row.ReceiverWardID);
       });
+
       let objRouteByWard = { CoordinatorStoreID: "73309", WardIDLst: RowWardIDelement.join() };
+
       this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetShipmentRouteByWardID", objRouteByWard).then((apiResult) => {
         if (!apiResult.IsError) {
-          this.setState({
-            GirdSlide: false,
-            ShipmentRouteSameLst: apiResult.ResultObject,
-          });
+          changeState = { ...changeState, GirdSlide: false, ShipmentRouteSameLst: apiResult.ResultObject };
+          this.setState(changeState);
         } else {
-          this.addNotification(apiResult.Message, apiResult.IsError);
+          this.props.onShowNotification(apiResult.Message, apiResult.IsError);
         }
       });
     }
   }
 
-  handleDeleteRoute = (RouteID) => (e) => {
-    let listMLObject = [];
-    let MLObject = { ShipmentRouteID: RouteID };
-    listMLObject.push(MLObject);
+  handleDeleteRoute(paramRouteID) {
+    let lstMLObject = [];
+    let MLObject = { ShipmentRouteID: paramRouteID };
 
-    this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/DeleteList", listMLObject).then((apiResult) => {
-      this.addNotification(apiResult.Message, apiResult.IsError);
+    lstMLObject.push(MLObject);
+
+    this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/DeleteList", lstMLObject).then((apiResult) => {
+      this.props.onShowNotification(apiResult.Message, apiResult.IsError);
       if (!apiResult.IsError) {
-        if (this.props.onChangeValue != null) this.props.onChangeValue(apiResult);
+        this.props.onCloseModal({ IsShowModel: false, IsDataGridSmallSize: false });
       }
     });
-  };
+  }
 
   handleDescriptionSubmit(item) {
-    let stateChange = this.state;
-    let objDescription = stateChange.ObjectDescription;
+    let changeState = this.state;
+    let objDescription = changeState.ObjectDescription;
     let isShow = objDescription[item.ShipmentOrderID]["isShow"];
 
     objDescription = { ...objDescription, [item.ShipmentOrderID]: { isShow: !isShow, content: objDescription[item.ShipmentOrderID]["content"] } };
 
-    stateChange = { ...stateChange, ObjectDescription: objDescription };
-    this.setState(stateChange);
+    changeState = { ...changeState, ObjectDescription: objDescription };
+    this.setState(changeState);
   }
 
   handleDescriptionChange(item, event) {
     const { value } = event.target;
-    let varObjectDescription = this.state.ObjectDescription;
-    let varObjectChange = { ...varObjectDescription, [item.ShipmentOrderID]: { isShow: varObjectDescription[item.ShipmentOrderID]["isShow"], content: value } };
-    this.setState({ ObjectDescription: varObjectChange });
+    let changeState = this.state;
+    let objDescription = changeState.ObjectDescription;
+
+    objDescription = { ...objDescription, [item.ShipmentOrderID]: { isShow: objDescription[item.ShipmentOrderID]["isShow"], content: value } };
+    changeState = { ...changeState, ObjectDescription: objDescription };
+
+    this.setState(changeState);
   }
 
   //#endregion
@@ -1288,14 +1166,11 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
   render() {
     let resultShipmentRoute = this.state.ShipmentRouteLst.filter((n) => n.ShipmentRouteID != this.state.ShipmentRouteID);
     let resultShipmentRouteSame = this.state.ShipmentRouteSameLst.filter((n) => n.ShipmentRouteID != this.state.ShipmentRouteID);
-    let isXeTai = this.state.ShipmentOrder.some((item) => item.CarrierTypeID == 2);
+    let isXeTai = this.state.ShipmentOrder.every((item) => item.CarrierTypeID == 2);
     let arrayVehicleDriverUser = [{ ...this.state.objCoordinator.VehicleDriverUser }];
-
-    console.log("RERENDER");
 
     return (
       <Fragment>
-        <ReactNotification ref={this.notificationDOMRef} />
         <Drawer
           className="ant-modal-custom"
           title={<h4>Phân tuyến điều phối vận đơn</h4>}
@@ -1308,7 +1183,9 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
           width="50vw"
           mask={false}
           onClose={(event) => {
-            this.props.onCloseModal({ IsShowModel: false, IsDataGridSmallSize: false });
+            if (this.props.onCloseModal) {
+              this.props.onCloseModal({ IsShowModel: false, IsDataGridSmallSize: false });
+            }
           }}
         >
           <div style={{ height: isXeTai ? "18vh" : "13vh", overflowX: "hidden", overflowY: "auto" }}>
@@ -1479,6 +1356,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
                   <Row gutter={24} style={{ marginBottom: "10px", scrollSnapAlign: "center" }}>
                     <Col span={24}>
                       <Card
+                        key={index}
                         size="small"
                         headStyle={{ border: "1px solid #74b9ff", borderBottom: "none", padding: "0 6px" }}
                         bodyStyle={{ border: "1px solid #74b9ff", padding: "6px" }}
@@ -1525,7 +1403,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
                                   <Tag.CheckableTag
                                     checked={item.CarrierTypeID == 1 || item.CarrierTypeID == 0 ? true : false}
                                     style={{ width: "100%", borderColor: "#1890ff", textAlign: "center" }}
-                                    onClick={this.handleChangeCourse(1, index)}
+                                    onClick={() => this.handleChangeCourse(1, index)}
                                   >
                                     <Space>
                                       <i className="fa fa-motorcycle"></i> Xe máy
@@ -1546,7 +1424,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
                                   <Tag.CheckableTag
                                     checked={item.CarrierTypeID == 2 ? true : false}
                                     style={{ width: "100%", borderColor: "#74b9ff", textAlign: "center" }}
-                                    onClick={this.handleChangeCourse(2, index)}
+                                    onClick={() => this.handleChangeCourse(2, index)}
                                   >
                                     <Space>
                                       <i className="fa fa-truck"></i> Xe tải
@@ -1584,14 +1462,12 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
                             <Divider type="vertical" style={{ height: "100%", backgroundColor: " #74b9ff" }}></Divider>
                           </Col>
                           <Col span={2} style={{ display: "flex", flexFlow: "column nowrap", justifyContent: "center", alignItems: "center" }}>
-                            {this.state.ShipmentOrder.length > 1 ? (
+                            {this.state.ShipmentOrder.length > 1 && (
                               <Row gutter={24}>
                                 <Col span={24}>
                                   <i className="ti-angle-up" onClick={(event) => this.handleChangeOder(index, -1)}></i>
                                 </Col>
                               </Row>
-                            ) : (
-                              ""
                             )}
                             {isPermission == false ? (
                               <Row>
@@ -1602,14 +1478,12 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
                             ) : (
                               ""
                             )}
-                            {this.state.ShipmentOrder.length > 1 ? (
+                            {this.state.ShipmentOrder.length > 1 && (
                               <Row>
                                 <Col>
                                   <i className="ti-angle-down" onClick={(event) => this.handleChangeOder(index, 1)}></i>
                                 </Col>
                               </Row>
-                            ) : (
-                              ""
                             )}
                           </Col>
                         </Row>
@@ -1632,8 +1506,18 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
               })}
           </div>
           <div style={{ height: "20vh", overflowX: "hidden", overflowY: "auto", marginBottom: "5px" }} className="f-13">
-            <Row gutter={24} justify="end" style={{ marginBottom: "5px" }}>
-              <Col>
+            <Row gutter={24} style={{ marginBottom: "5px" }}>
+              <Col span={12}>
+                {this.state.ShipmentRouteID != "" && (
+                  <Tag color="cyan">
+                    <Space>
+                      Mã tuyến {this.state.ShipmentRouteID}
+                      <CloseCircleTwoTone twoToneColor="#ff7675" onClick={(event) => this.handleDeleteRoute(this.state.ShipmentRouteID)} />
+                    </Space>
+                  </Tag>
+                )}
+              </Col>
+              <Col span={12} style={{ display: "flex", flexDirection: "row-reverse" }}>
                 <Space>
                   <Button size="small" type="primary">
                     Tính khoảng cách
@@ -1647,12 +1531,15 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
               <Col span={24}>
                 {(() => {
                   if (resultShipmentRoute.length > 0) {
+                    let arrObject = resultShipmentRoute.filter((item1) => {
+                      return !this.state.ShipmentOrder.some((item2) => item2.ShipmentOrderID == item1.ShipmentOrderID);
+                    });
                     return (
                       <Carousel
                         className="ant-carousel-custom"
                         autoplay
                         autoplaySpeed={2000}
-                        slidesToShow={2}
+                        slidesToShow={arrObject.length > 1 ? 2 : 1}
                         arrows={true}
                         nextArrow={
                           <Button type="primary" size="middle">
@@ -1696,11 +1583,16 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
                       </Carousel>
                     );
                   } else if (resultShipmentRouteSame.length > 0 && this.state.GirdSlide === false) {
+                    let arrObject = this.state.resultShipmentRouteSame.filter((item1) => {
+                      return !this.state.ShipmentOrder.some((item2) => item2.ShipmentOrderID == item1.ShipmentOrderID);
+                    });
+
                     return (
                       <Carousel
                         className="ant-carousel-custom"
                         autoplay
                         autoplaySpeed={2000}
+                        slidesToShow={arrObject.length > 1 ? 2 : 1}
                         arrows={true}
                         nextArrow={
                           <Button type="primary" size="middle">
@@ -1712,7 +1604,6 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
                             <LeftOutlined style={{ color: "black" }} />
                           </Button>
                         }
-                        slidesToShow={2}
                       >
                         {resultShipmentRouteSame.length > 0 &&
                           resultShipmentRouteSame.map((item, index) => (
@@ -1745,12 +1636,16 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
                       </Carousel>
                     );
                   } else {
+                    let arrObject = this.state.ShipmentOrderSameLst.filter((item1) => {
+                      return !this.state.ShipmentOrder.some((item2) => item2.ShipmentOrderID == item1.ShipmentOrderID);
+                    });
+
                     return (
                       <Carousel
                         className="ant-carousel-custom"
                         autoplay
                         autoplaySpeed={2000}
-                        slidesToShow={this.state.ShipmentOrderSameLst.length > 1 ? 2 : 1}
+                        slidesToShow={arrObject.length > 1 ? 2 : 1}
                         arrows={true}
                         nextArrow={
                           <Button type="primary" size="middle">
@@ -1766,6 +1661,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
                         {this.state.ShipmentOrderSameLst.length > 0 &&
                           this.state.ShipmentOrderSameLst.map((item, index) => {
                             let resultdd = this.state.ShipmentOrder.find((n) => n.ShipmentOrderID == item.ShipmentOrderID);
+
                             if (resultdd === undefined) {
                               return (
                                 <div>

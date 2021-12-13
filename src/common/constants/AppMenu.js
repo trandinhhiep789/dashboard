@@ -1416,6 +1416,13 @@ const AppMenu = [
             MenuIcon: "",
             SubMenu: [],
           },
+          {
+            MenuName: "ListNoteRewardReport",
+            MenuTitle: "Xuất dữ liệu vận đơn không được tính thưởng",
+            LinkTo: "/ListNoteRewardReport",
+            MenuIcon: "",
+            SubMenu: [],
+          },
         ],
       },
       {
