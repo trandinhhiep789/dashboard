@@ -90,16 +90,13 @@ class EditCom extends React.Component {
 
     Promise.all([this.handleLoadCacheSenderStore(), this.handleLoadData()]).then((allResult) => {
       let listOption = [];
-
       let partnerID = allResult[1].ResultObject.PartnerID;
-      console.log("companyID", partnerID);
+
       if (!allResult[0].IsError && allResult[0].ResultObject.CacheData != null) {
         allResult[0].ResultObject.CacheData.filter((item) => [partnerID].includes(item["CompanyID"])).map((cacheItem) => {
           listOption.push({ value: cacheItem["StoreID"], label: cacheItem["StoreID"] + "-" + cacheItem["StoreName"], name: cacheItem["StoreName"] });
         });
       }
-
-      this.setState({ DataSourceSenderStore: listOption });
 
       if (allResult[1].IsError) {
         this.setState({
@@ -129,6 +126,8 @@ class EditCom extends React.Component {
         this.convertDataCoordinatorStoreWard(allResult[1].ResultObject.CoordinatorStoreWard_ItemList);
 
         this.setState({
+          DataSourceSenderStore: listOption,
+          ValuePartner: partnerID,
           DataSource: allResult[1].ResultObject,
           DataWard: allResult[1].ResultObject.CoordinatorStoreWard_ItemList,
           IsLoadDataComplete: true,
@@ -223,6 +222,7 @@ class EditCom extends React.Component {
         }
       });
     }
+    
     if (formData.chkIsCheckCustomerAddress.value) {
       this.setState({
         IsShowCustomerAddress: false,
@@ -457,25 +457,26 @@ class EditCom extends React.Component {
                                   />
                               </div> */}
 
-              <div className="col-md-6">
+              <div className="col-md-6" key={this.state.ValuePartner}>
                 <FormControl.FormControlComboBoxNew
                   colspan="8"
                   controltype="InputControl"
                   datasourcemember="SenderStoreID"
                   disabled={this.state.IsSystem}
-                  // filterobj="CompanyID"
-                  // filterValue={[1, 10]}
+                  //   filterobj="CompanyID"
+                  //   filterValue={this.state.ValuePartner}
                   isautoloaditemfromcache={false}
                   label="kho xuất"
                   labelcolspan="4"
                   listoption={this.state.DataSourceSenderStore}
+                  //   listoption={null}
                   loaditemcachekeyid="ERPCOMMONCACHE.STORE"
                   name="cbSenderStoreID"
                   nameMember="StoreName"
                   placeholder="-- Vui lòng chọn --"
                   readOnly={this.state.IsSystem}
                   validatonList={["Comborequired"]}
-                  value={7446}
+                  value={""}
                   valuemember="StoreID"
                 />
               </div>
