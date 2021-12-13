@@ -21,7 +21,7 @@ import ListShipCoordinator from "../../ShipmentRoute/Component/ListShipCoordinat
 import { Input, Select } from "antd";
 import ListShipCoordinatorRoute from "../../ShipmentRoute/Component/ListShipCoordinatorRoute";
 
-class DataGridShipmentRouteAutoCom extends PureComponent {
+class DataGridShipmentRouteAutoCom extends Component {
   constructor(props) {
     super(props);
 
@@ -32,7 +32,7 @@ class DataGridShipmentRouteAutoCom extends PureComponent {
 
     this.state = {
       GridData: {},
-      DataSource: this.props.dataSource,
+      DataSource: this.props.dataSource.slice(0, 10),
       DataSourceOrigin: this.props.dataSource,
       IsCheckAll: false,
       PageNumber: this.props.PageNumber,
@@ -98,7 +98,20 @@ class DataGridShipmentRouteAutoCom extends PureComponent {
     this.handleGetDataCacheWard = this.handleGetDataCacheWard.bind(this);
   }
 
+  recursiveDataSource = () => {
+    setTimeout(() => {
+      let hasMore = this.state.DataSource.length + 1 < this.props.dataSource.length;
+      console.log(this.props.TimeFrame)
+      console.log("this.state.DataSource.length ======= ", this.state.DataSource.length)
+      this.setState((prev, props) => ({
+        DataSource: props.dataSource.slice(0, prev.DataSource.length + 20)
+      }));
+      if (hasMore) this.recursiveDataSource();
+    }, 0)
+  }
+
   componentDidMount() {
+    this.recursiveDataSource();
     this.updateWindowDimensions();
     this.handleGetDataCacheProvince();
     window.addEventListener("resize", this.updateWindowDimensions);
@@ -1715,7 +1728,7 @@ class DataGridShipmentRouteAutoCom extends PureComponent {
                     <div className="card-title card-title-custom">
                       <Input.Group compact>
                         <Input.Search
-                          placeholder="Tìm kiếm"
+                          placeholder="Nhập số điện thoại hoặc địa chỉ"
                           onChange={(event) => this.handleInputChange(event.target.value)}
                           loading={this.state.ObjectSearchData.InputSearch.IsLoading}
                           enterButton
@@ -1723,7 +1736,7 @@ class DataGridShipmentRouteAutoCom extends PureComponent {
                           style={{ width: "60%", maxWidth: "400px" }}
                         />
 
-                        <Select
+                        {/* <Select
                           value={this.state.ObjectSearchData.SelectVehicle.Value}
                           style={{ width: "40%", maxWidth: "200px" }}
                           options={[
@@ -1790,7 +1803,7 @@ class DataGridShipmentRouteAutoCom extends PureComponent {
                                 {item.label}
                               </Select.Option>
                             ))}
-                        </Select>
+                        </Select> */}
                       </Input.Group>
                     </div>
                     <div className="card-body card-body-custom">
