@@ -1711,11 +1711,11 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
           <div style={{ height: "6vh", overflowX: "hidden", overflowY: "auto" }}>
             <Row gutter={24} style={{ width: "100%" }}>
               <Col span={4} offset={11}>
-                <Space>
+                {/* <Space>
                   <Button type="primary" onClick={(event) => this.handleConfirm()}>
                     Phân tuyến
                   </Button>
-                </Space>
+                </Space> */}
               </Col>
             </Row>
           </div>
