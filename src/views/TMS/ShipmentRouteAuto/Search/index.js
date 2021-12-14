@@ -260,7 +260,7 @@ class SearchCom extends Component {
     this.props.updatePagePath(PagePath);
 
     jQuery(window).scroll(function () {
-      if (jQuery(this).scrollTop() > 335) {
+      if (jQuery(this).scrollTop() > 332) {
         $(".menu-options").addClass("menu-options-fixed");
       } else {
         $(".menu-options").removeClass("menu-options-fixed");
@@ -934,14 +934,14 @@ class SearchCom extends Component {
           /> */}
         </div>
 
-        <div className="menu-options" style={{marginTop: "10px"}}>
+        {/* <div className="menu-options" style={{marginTop: "10px"}}>
           <Space>
             <Button type="primary" onClick={() => this.handleUserCoordinator()}>
               Phân tuyến
             </Button>
-            {/* <Button type="primary">Phân tuyến tự động</Button> */}
+            <Button type="primary">Phân tuyến tự động</Button>
           </Space>
-        </div>
+        </div> */}
 
         {this.state.IsLoadDataComplete && (
           <div className="col-lg-12" style={{backgroundColor: "aliceblue" , border: "1px solid #03a9f4"}}>
@@ -1484,14 +1484,14 @@ class SearchCom extends Component {
                 />
                 </Collapsible>
               </Tabs.TabPane>
-              <Tabs.TabPane tab={<Space>
+              {/* <Tabs.TabPane tab={<Space>
                 <Button type="primary" onClick={() => this.handleUserCoordinator()}>
                   Phân tuyến
                 </Button>
-                {/* <Button type="primary">Phân tuyến tự động</Button> */}
+                <Button type="primary">Phân tuyến tự động</Button>
               </Space>} disabled  key="8">
 
-              </Tabs.TabPane>
+              </Tabs.TabPane> */}
             </Tabs>
           </div>
         )}
