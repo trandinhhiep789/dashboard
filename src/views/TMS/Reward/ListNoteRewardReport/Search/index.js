@@ -15,6 +15,7 @@ import { toIsoStringCus } from "../../../../../utils/function";
 import { showModal, hideModal } from "../../../../../actions/modal";
 import { MODAL_TYPE_DOWNLOAD_EXCEL, MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
 import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../../constants/keyCache";
+import { TMS_NOTREWARD_EXPORT } from "../../../../../constants/functionLists";
 
 class SearchCom extends React.Component {
   constructor(props) {
@@ -32,7 +33,7 @@ class SearchCom extends React.Component {
       GridDataSource: [],
       IsLoadDataComplete: false,
       DataExport: [],
-      TemplateID: "26",
+      TemplateID: "",
     };
     this.gridref = React.createRef();
     this.searchref = React.createRef();
@@ -202,7 +203,7 @@ class SearchCom extends React.Component {
           listColumn={GridColumnList}
           PKColumnName={"ShipmentOrderID"}
           ref={this.gridref}
-          // RequirePermission={TMS_NOTREWARD_EXPORT}
+          RequirePermission={TMS_NOTREWARD_EXPORT}
           RowsPerPage={50}
         />
       </React.Fragment>

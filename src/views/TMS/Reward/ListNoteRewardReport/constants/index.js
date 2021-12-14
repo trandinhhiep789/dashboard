@@ -28,6 +28,8 @@ export const SearchElementList = [
     format: "MM-YYYY",
     colspan: 2,
     placeholder: "MM-YYYY",
+    isDisableNext:true,
+    isAllowClear:false
   },
   {
     type: "ComboBoxNewChange",
@@ -44,7 +46,6 @@ export const SearchElementList = [
     ValueMember: "ShipmentOrderTypeID",
     NameMember: "ShipmentOrderTypeName",
     classNameCol: "col-custom",
-    validatonList: ["Comborequired"],
   },
 ];
 
