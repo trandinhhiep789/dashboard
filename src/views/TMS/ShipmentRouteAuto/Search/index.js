@@ -260,10 +260,10 @@ class SearchCom extends Component {
     this.props.updatePagePath(PagePath);
 
     jQuery(window).scroll(function () {
-      if (jQuery(this).scrollTop() > 80) {
-        $("#menu-options").addClass("menu-options-fixed");
+      if (jQuery(this).scrollTop() > 335) {
+        $(".menu-options").addClass("menu-options-fixed");
       } else {
-        $("#menu-options").removeClass("menu-options-fixed");
+        $(".menu-options").removeClass("menu-options-fixed");
       }
     });
   }
@@ -907,7 +907,7 @@ class SearchCom extends Component {
         <ReactNotification ref={this.notificationDOMRef} />
         <div className="col-lg-12 SearchFormCustom" id="SearchFormCustom">
 
-        <Collapse style={{backgroundColor: 'white'}}>
+        <Collapse style={{backgroundColor: 'white', marginBottom: '10px'}}>
           <Collapse.Panel header="Tim kiếm, lọc dữ liệu phân tuyến vận chuyển" key="1">
             <SearchFormShipmentRouteAuto
                 FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
@@ -934,12 +934,12 @@ class SearchCom extends Component {
           /> */}
         </div>
 
-        <div id="menu-options" style={{marginTop: "10px"}}>
+        <div className="menu-options" style={{marginTop: "10px"}}>
           <Space>
             <Button type="primary" onClick={() => this.handleUserCoordinator()}>
               Phân tuyến
             </Button>
-            <Button type="primary">Phân tuyến tự động</Button>
+            {/* <Button type="primary">Phân tuyến tự động</Button> */}
           </Space>
         </div>
 
@@ -1483,6 +1483,14 @@ class SearchCom extends Component {
                   RowsPerPage={10000}
                 />
                 </Collapsible>
+              </Tabs.TabPane>
+              <Tabs.TabPane tab={<Space>
+                <Button type="primary" onClick={() => this.handleUserCoordinator()}>
+                  Phân tuyến
+                </Button>
+                {/* <Button type="primary">Phân tuyến tự động</Button> */}
+              </Space>} disabled  key="8">
+
               </Tabs.TabPane>
             </Tabs>
           </div>
