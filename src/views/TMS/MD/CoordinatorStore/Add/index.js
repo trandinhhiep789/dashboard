@@ -121,6 +121,7 @@ class AddCom extends React.Component {
     if (this.state.DataSource.CoordinatorStoreWard_ItemList == null) {
       this.state.DataSource.CoordinatorStoreWard_ItemList = [];
     }
+
     this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
       title: "Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối",
       content: {
@@ -240,7 +241,7 @@ class AddCom extends React.Component {
                 // validatonList={[""]}
                 isautoloaditemfromcache={true}
                 validatonList={["Comborequired"]}
-                isMultiSelect={false}
+                isMultiSelect={true}
                 placeholder="-- Vui lòng chọn --"
                 loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERTYPE"
                 valuemember="ShipmentOrderTypeID"
@@ -303,12 +304,13 @@ class AddCom extends React.Component {
                 readOnly={this.state.IsSystem}
                 validatonList={["Comborequired"]}
                 placeholder="-- Vui lòng chọn --"
-                isautoloaditemfromcache={false}
+                isautoloaditemfromcache={true}
                 loaditemcachekeyid="ERPCOMMONCACHE.STORE"
                 valuemember="StoreID"
                 nameMember="StoreName"
                 controltype="InputControl"
                 value={""}
+                // listoption={this.state.DataSourceSenderStore}
                 listoption={this.state.DataSourceSenderStore}
                 datasourcemember="SenderStoreID"
               />
