@@ -1173,9 +1173,10 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
       <Fragment>
         <Drawer
           className="ant-modal-custom"
-          title={<h4>Phân tuyến điều phối vận đơn</h4>}
-          headerStyle={{ height: "6vh", padding: "7px" }}
+          title={<h4 style={{margin: 0}}>Phân tuyến điều phối vận đơn</h4>}
+          headerStyle={{ height: "6vh", padding: "7px", backgroundColor: "gold" }}
           bodyStyle={{ height: "93vh", padding: "7px" }}
+          style={{ backgroundColor: "#eeeeee70" }}
           placement="right"
           closable={true}
           visible={true}
@@ -1207,8 +1208,9 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
                   ))}
                 </Select>
               </Col>
+              {/* ẩn tag xe máy, xe tải vì chỉ có nhân viên xe máy giao */}
               <Col sm={12} md={12} lg={11} xl={9} style={{ textAlign: "center" }}>
-                <Radio.Group
+                {/* <Radio.Group
                   buttonStyle="solid"
                   value={this.state.ObjectControlValue.LoaiXe.Value}
                   onChange={(event) => {
@@ -1227,7 +1229,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
                       </Space>
                     </Radio.Button>
                   </Space>
-                </Radio.Group>
+                </Radio.Group> */}
               </Col>
             </Row>
             <Row gutter={[8, 8]} style={{ marginBottom: "5px" }} className="f-13">
@@ -1272,7 +1274,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
               </Col>
             </Row>
             <Row gutter={[8, 8]} style={{ marginBottom: "5px" }} className="f-13">
-              {isXeTai && (
+              {/* {isXeTai && (
                 <Fragment>
                   <Col span={5} className="ant-col-ma">
                     Bảng số xe :
@@ -1302,10 +1304,10 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
                     </Input.Group>
                   </Col>
                 </Fragment>
-              )}
+              )} */}
             </Row>
           </div>
-          <div style={{ height: isXeTai ? "48vh" : "53vh", overflowX: "hidden", overflowY: "auto", scrollSnapType: "y mandatory" }} className="f-13 scroll-2">
+          <div style={{ height: isXeTai ? "48vh" : "46vh", overflowX: "hidden", overflowY: "auto", scrollSnapType: "y mandatory" }} className="f-13 scroll-2">
             {this.state.ShipmentOrder &&
               this.state.ShipmentOrder.map((item, index) => {
                 let isPermission = false;
@@ -1386,7 +1388,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
                             </Tag>
                           </Space>
                         }
-                        style={{ width: "100%" }}
+                        style={{ width: "100%", backgroundColor: "azure" }}
                       >
                         <Row gutter={24}>
                           <Col span={12}>
@@ -1398,7 +1400,8 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
                               </Col>
                             </Row>
                             <Row gutter={[8, 16]}>
-                              {isPermission == false ? (
+                              {/* ẩn tag xe máy, xe tải vì chỉ có nhân viên xe máy giao */}
+                              {/* {isPermission == false ? (
                                 <Col span={8}>
                                   <Tag.CheckableTag
                                     checked={item.CarrierTypeID == 1 || item.CarrierTypeID == 0 ? true : false}
@@ -1439,7 +1442,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
                                     </Space>
                                   </Tag.CheckableTag>
                                 </Col>
-                              )}
+                              )} */}
 
                               <Col span={8}>
                                 <Tag.CheckableTag
@@ -1505,8 +1508,8 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
                 );
               })}
           </div>
-          <div style={{ height: "20vh", overflowX: "hidden", overflowY: "auto", marginBottom: "5px" }} className="f-13">
-            <Row gutter={24} style={{ marginBottom: "5px" }}>
+          <div style={{ height: "25vh", overflowX: "hidden", overflowY: "auto", marginBottom: "5px" }} className="f-13">
+            {/* <Row gutter={24} style={{ marginBottom: "5px" }}>
               <Col span={12}>
                 {this.state.ShipmentRouteID != "" && (
                   <Tag color="cyan">
@@ -1527,190 +1530,191 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
                 </Space>
               </Col>
             </Row>
-            <Row gutter={24}>
-              <Col span={24}>
-                {(() => {
-                  if (resultShipmentRoute.length > 0) {
-                    let arrObject = resultShipmentRoute.filter((item1) => {
-                      return !this.state.ShipmentOrder.some((item2) => item2.ShipmentOrderID == item1.ShipmentOrderID);
-                    });
-                    return (
-                      <Carousel
-                        className="ant-carousel-custom"
-                        autoplay
-                        autoplaySpeed={2000}
-                        slidesToShow={arrObject.length > 1 ? 2 : 1}
-                        arrows={true}
-                        nextArrow={
-                          <Button type="primary" size="middle">
-                            <RightOutlined style={{ color: "black" }} />
-                          </Button>
-                        }
-                        prevArrow={
-                          <Button type="primary" size="middle">
-                            <LeftOutlined style={{ color: "black" }} />
-                          </Button>
-                        }
-                      >
-                        {resultShipmentRoute.length > 0 &&
-                          resultShipmentRoute.map((item, index) => (
-                            <Card
-                              key={index}
-                              size="small"
-                              title={
-                                <Space>
-                                  <Link target="_blank" to={{ pathname: "/ShipmentOrder/Detail/" + item.ShipmentOrderID }}>
-                                    <Tag color="cyan"> {item.ShipmentOrderID}</Tag>
-                                  </Link>
-                                  <Tag color="orange">
-                                    <i className="ti ti-timer"></i>
-                                    {item.ExpectedDeliveryDate != null ? this._genCommentTime(item.ExpectedDeliveryDate) : ""}
-                                  </Tag>
-                                </Space>
+            <div style={{backgroundColor: "#91d2e7", padding: "10px 0 15px", borderRadius: "5px"}}>
+              <Row gutter={24}>
+                <Col span={24}>
+                  {(() => {
+                    if (resultShipmentRoute.length > 0) {
+                      let arrObject = resultShipmentRoute.filter((item1) => {
+                        return !this.state.ShipmentOrder.some((item2) => item2.ShipmentOrderID == item1.ShipmentOrderID);
+                      });
+                      return (
+                        <Carousel
+                          className="ant-carousel-custom"
+                          autoplay
+                          autoplaySpeed={2000}
+                          slidesToShow={arrObject.length > 1 ? 2 : 1}
+                          arrows={true}
+                          nextArrow={
+                            <Button type="primary" size="middle">
+                              <RightOutlined style={{ color: "black" }} />
+                            </Button>
+                          }
+                          prevArrow={
+                            <Button type="primary" size="middle">
+                              <LeftOutlined style={{ color: "black" }} />
+                            </Button>
+                          }
+                        >
+                          {resultShipmentRoute.length > 0 &&
+                            resultShipmentRoute.map((item, index) => (
+                              <Card
+                                key={index}
+                                size="small"
+                                title={
+                                  <Space>
+                                    <Link target="_blank" to={{ pathname: "/ShipmentOrder/Detail/" + item.ShipmentOrderID }}>
+                                      <Tag color="cyan"> {item.ShipmentOrderID}</Tag>
+                                    </Link>
+                                    <Tag color="orange">
+                                      <i className="ti ti-timer"></i>
+                                      {item.ExpectedDeliveryDate != null ? this._genCommentTime(item.ExpectedDeliveryDate) : ""}
+                                    </Tag>
+                                  </Space>
+                                }
+                                style={{ width: "100%", cursor: "pointer" }}
+                                headStyle={{ padding: "0 6px" }}
+                                bodyStyle={{ padding: "6px" }}
+                              >
+                                <Tooltip placement="top" color="blue" title={item.DeliverUserFullNameList}>
+                                  <p className="text text-overflow">{item.DeliverUserFullNameList}</p>
+                                </Tooltip>
+                                <Tooltip placement="top" color="blue" title={item.RouteNote.split(";")[0]}>
+                                  <p className="text text-overflow">{item.RouteNote.split(";")[0]}</p>
+                                </Tooltip>
+                              </Card>
+                            ))}
+                        </Carousel>
+                      );
+                    } else if (resultShipmentRouteSame.length > 0 && this.state.GirdSlide === false) {
+                      let arrObject = this.state.resultShipmentRouteSame.filter((item1) => {
+                        return !this.state.ShipmentOrder.some((item2) => item2.ShipmentOrderID == item1.ShipmentOrderID);
+                      });
+
+                      return (
+                        <Carousel
+                          className="ant-carousel-custom"
+                          autoplay
+                          autoplaySpeed={2000}
+                          slidesToShow={arrObject.length > 1 ? 2 : 1}
+                          arrows={true}
+                          nextArrow={
+                            <Button type="primary" size="middle">
+                              <RightOutlined style={{ color: "black" }} />
+                            </Button>
+                          }
+                          prevArrow={
+                            <Button type="primary" size="middle">
+                              <LeftOutlined style={{ color: "black" }} />
+                            </Button>
+                          }
+                        >
+                          {resultShipmentRouteSame.length > 0 &&
+                            resultShipmentRouteSame.map((item, index) => (
+                              <Card
+                                key={index}
+                                size="small"
+                                title={
+                                  <Space>
+                                    <Link target="_blank" to={{ pathname: "/ShipmentOrder/Detail/" + item.ShipmentOrderID }}>
+                                      <Tag color="cyan"> {item.ShipmentOrderID}</Tag>
+                                    </Link>
+                                    <Tag color="orange">
+                                      <i className="ti ti-timer"></i>
+                                      {item.ExpectedDeliveryDate != null ? this._genCommentTime(item.ExpectedDeliveryDate) : ""}
+                                    </Tag>
+                                  </Space>
+                                }
+                                style={{ width: "100%", cursor: "pointer" }}
+                                headStyle={{ padding: "0 6px" }}
+                                bodyStyle={{ padding: "6px" }}
+                              >
+                                <Tooltip placement="top" color="blue" title={item.DeliverUserFullNameList}>
+                                  <p className="text text-overflow">{item.DeliverUserFullNameList}</p>
+                                </Tooltip>
+                                <Tooltip placement="top" color="blue" title={item.RouteNote.split(";")[0]}>
+                                  <p className="text text-overflow">{item.RouteNote.split(";")[0]}</p>
+                                </Tooltip>
+                              </Card>
+                            ))}
+                        </Carousel>
+                      );
+                    } else {
+                      let arrObject = this.state.ShipmentOrderSameLst.filter((item1) => {
+                        return !this.state.ShipmentOrder.some((item2) => item2.ShipmentOrderID == item1.ShipmentOrderID);
+                      });
+
+                      return (
+                        <Carousel
+                          className="ant-carousel-custom"
+                          autoplay
+                          autoplaySpeed={2000}
+                          slidesToShow={arrObject.length > 1 ? 2 : 1}
+                          arrows={true}
+                          nextArrow={
+                            <Button type="primary" size="middle">
+                              <RightOutlined style={{ color: "black" }} />
+                            </Button>
+                          }
+                          prevArrow={
+                            <Button type="primary" size="middle">
+                              <LeftOutlined style={{ color: "black" }} />
+                            </Button>
+                          }
+                        >
+                          {this.state.ShipmentOrderSameLst.length > 0 &&
+                            this.state.ShipmentOrderSameLst.map((item, index) => {
+                              let resultdd = this.state.ShipmentOrder.find((n) => n.ShipmentOrderID == item.ShipmentOrderID);
+
+                              if (resultdd === undefined) {
+                                return (
+                                  <div>
+                                    <Card
+                                      key={index}
+                                      size="small"
+                                      title={
+                                        <Space>
+                                          <Link target="_blank" to={{ pathname: "/ShipmentOrder/Detail/" + item.ShipmentOrderID }}>
+                                            <Tag color="cyan"> {item.ShipmentOrderID}</Tag>
+                                          </Link>
+                                          <Tag color="orange">
+                                            <i className="ti ti-timer"></i>
+                                            {item.ExpectedDeliveryDate != null ? this._genCommentTime(item.ExpectedDeliveryDate) : ""}
+                                          </Tag>
+                                        </Space>
+                                      }
+                                      style={{ width: "100%", cursor: "pointer" }}
+                                      headStyle={{ padding: "0 6px" }}
+                                      bodyStyle={{ padding: "6px" }}
+                                      onClick={(event) => this.handleClickShipmentOrderSame(item.ShipmentOrderID)}
+                                    >
+                                      <Tooltip placement="top" color="blue" title={item.ShipItemNameList}>
+                                        <p className="text text-overflow">{item.ShipItemNameList}</p>
+                                      </Tooltip>
+
+                                      <Tooltip placement="top" color="blue" title={item.ReceiverFullAddress}>
+                                        <p className="text bold text-overflow">{item.ReceiverFullAddress}</p>
+                                      </Tooltip>
+                                    </Card>
+                                  </div>
+                                );
                               }
-                              style={{ width: "100%", cursor: "pointer" }}
-                              headStyle={{ padding: "0 6px" }}
-                              bodyStyle={{ padding: "6px" }}
-                            >
-                              <Tooltip placement="top" color="blue" title={item.DeliverUserFullNameList}>
-                                <p className="text text-overflow">{item.DeliverUserFullNameList}</p>
-                              </Tooltip>
-                              <Tooltip placement="top" color="blue" title={item.RouteNote.split(";")[0]}>
-                                <p className="text text-overflow">{item.RouteNote.split(";")[0]}</p>
-                              </Tooltip>
-                            </Card>
-                          ))}
-                      </Carousel>
-                    );
-                  } else if (resultShipmentRouteSame.length > 0 && this.state.GirdSlide === false) {
-                    let arrObject = this.state.resultShipmentRouteSame.filter((item1) => {
-                      return !this.state.ShipmentOrder.some((item2) => item2.ShipmentOrderID == item1.ShipmentOrderID);
-                    });
-
-                    return (
-                      <Carousel
-                        className="ant-carousel-custom"
-                        autoplay
-                        autoplaySpeed={2000}
-                        slidesToShow={arrObject.length > 1 ? 2 : 1}
-                        arrows={true}
-                        nextArrow={
-                          <Button type="primary" size="middle">
-                            <RightOutlined style={{ color: "black" }} />
-                          </Button>
-                        }
-                        prevArrow={
-                          <Button type="primary" size="middle">
-                            <LeftOutlined style={{ color: "black" }} />
-                          </Button>
-                        }
-                      >
-                        {resultShipmentRouteSame.length > 0 &&
-                          resultShipmentRouteSame.map((item, index) => (
-                            <Card
-                              key={index}
-                              size="small"
-                              title={
-                                <Space>
-                                  <Link target="_blank" to={{ pathname: "/ShipmentOrder/Detail/" + item.ShipmentOrderID }}>
-                                    <Tag color="cyan"> {item.ShipmentOrderID}</Tag>
-                                  </Link>
-                                  <Tag color="orange">
-                                    <i className="ti ti-timer"></i>
-                                    {item.ExpectedDeliveryDate != null ? this._genCommentTime(item.ExpectedDeliveryDate) : ""}
-                                  </Tag>
-                                </Space>
-                              }
-                              style={{ width: "100%", cursor: "pointer" }}
-                              headStyle={{ padding: "0 6px" }}
-                              bodyStyle={{ padding: "6px" }}
-                            >
-                              <Tooltip placement="top" color="blue" title={item.DeliverUserFullNameList}>
-                                <p className="text text-overflow">{item.DeliverUserFullNameList}</p>
-                              </Tooltip>
-                              <Tooltip placement="top" color="blue" title={item.RouteNote.split(";")[0]}>
-                                <p className="text text-overflow">{item.RouteNote.split(";")[0]}</p>
-                              </Tooltip>
-                            </Card>
-                          ))}
-                      </Carousel>
-                    );
-                  } else {
-                    let arrObject = this.state.ShipmentOrderSameLst.filter((item1) => {
-                      return !this.state.ShipmentOrder.some((item2) => item2.ShipmentOrderID == item1.ShipmentOrderID);
-                    });
-
-                    return (
-                      <Carousel
-                        className="ant-carousel-custom"
-                        autoplay
-                        autoplaySpeed={2000}
-                        slidesToShow={arrObject.length > 1 ? 2 : 1}
-                        arrows={true}
-                        nextArrow={
-                          <Button type="primary" size="middle">
-                            <RightOutlined style={{ color: "black" }} />
-                          </Button>
-                        }
-                        prevArrow={
-                          <Button type="primary" size="middle">
-                            <LeftOutlined style={{ color: "black" }} />
-                          </Button>
-                        }
-                      >
-                        {this.state.ShipmentOrderSameLst.length > 0 &&
-                          this.state.ShipmentOrderSameLst.map((item, index) => {
-                            let resultdd = this.state.ShipmentOrder.find((n) => n.ShipmentOrderID == item.ShipmentOrderID);
-
-                            if (resultdd === undefined) {
-                              return (
-                                <div>
-                                  <Card
-                                    key={index}
-                                    size="small"
-                                    title={
-                                      <Space>
-                                        <Link target="_blank" to={{ pathname: "/ShipmentOrder/Detail/" + item.ShipmentOrderID }}>
-                                          <Tag color="cyan"> {item.ShipmentOrderID}</Tag>
-                                        </Link>
-                                        <Tag color="orange">
-                                          <i className="ti ti-timer"></i>
-                                          {item.ExpectedDeliveryDate != null ? this._genCommentTime(item.ExpectedDeliveryDate) : ""}
-                                        </Tag>
-                                      </Space>
-                                    }
-                                    style={{ width: "100%", cursor: "pointer" }}
-                                    headStyle={{ padding: "0 6px" }}
-                                    bodyStyle={{ padding: "6px" }}
-                                    onClick={(event) => this.handleClickShipmentOrderSame(item.ShipmentOrderID)}
-                                  >
-                                    <Tooltip placement="top" color="blue" title={item.ShipItemNameList}>
-                                      <p className="text text-overflow">{item.ShipItemNameList}</p>
-                                    </Tooltip>
-
-                                    <Tooltip placement="top" color="blue" title={item.ReceiverFullAddress}>
-                                      <p className="text bold text-overflow">{item.ReceiverFullAddress}</p>
-                                    </Tooltip>
-                                  </Card>
-                                </div>
-                              );
-                            }
-                          })}
-                      </Carousel>
-                    );
-                  }
-                })()}
-              </Col>
-            </Row>
+                            })}
+                        </Carousel>
+                      );
+                    }
+                  })()}
+                </Col>
+              </Row>
+            </div> */}
           </div>
-          <div style={{ height: "5vh", overflowX: "hidden", overflowY: "auto" }}>
+          <div style={{ height: "6vh", overflowX: "hidden", overflowY: "auto" }}>
             <Row gutter={24} style={{ width: "100%" }}>
-              <Col span={4} offset={9}>
+              <Col span={4} offset={10}>
                 <Space>
                   <Button type="primary" onClick={(event) => this.handleConfirm()}>
-                    Cập nhật
+                    Phân tuyến
                   </Button>
-                  <Button>Làm mới</Button>
                 </Space>
               </Col>
             </Row>

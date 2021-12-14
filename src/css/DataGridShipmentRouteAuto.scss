@@ -12,17 +12,15 @@
   margin-bottom: 0 !important ;
 }
 
-#menu-options {
-  height: auto;
-  width: 100%;
-  margin: 0 15px 15px 15px !important;
-  background-color: transparent;
+.menu-options {
+  display: none;
 }
 
 .menu-options-fixed {
+  display: block;
   position: fixed;
-  top: 70px;
-  left: auto;
+  bottom: 70px;
+  right: 70px;
   z-index: 999;
   background-color: transparent;
 }
@@ -40,9 +38,6 @@
     cursor: pointer;
   }
   .Collapsible__contentInner {
-    padding: 10px;
-    border: 1px solid #d9d9d9;
-    border-top: 0;
     .row {
       .card {
         .card-body {
@@ -104,6 +99,11 @@
 }
 
 .Collapsible {
+  margin-bottom: 10px !important;
+  .Collapsible__contentInner {
+    border: 1px solid #d9d9d9 !important;
+    padding: 0 !important;
+  }
   .collapsible-open-custom {
     padding: 0px !important;
   }
@@ -156,6 +156,9 @@
   }
 }
 
+.ant-carousel .slick-dots-bottom {
+  bottom: -23px;
+}
 .ant-col-npd {
   padding: 0 0 !important;
 }
