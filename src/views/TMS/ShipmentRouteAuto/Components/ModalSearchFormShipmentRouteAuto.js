@@ -273,6 +273,21 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
       for (let i = 0; i < apiResult.ResultObject.length; i++) {
         if (this.props.isCheckPartner == undefined) {
           if (apiResult.ResultObject[i].UserName.substr(0, 3) != "004") {
+            let isExist = this.state.ObjectControlValue.NhanVienGiao.ListOption.some((item) => item.value == apiResult.ResultObject[i].UserName);
+            if (!isExist) {
+              listOptionNew1.push({
+                value: apiResult.ResultObject[i].UserName,
+                name: apiResult.ResultObject[i].UserName + "-" + apiResult.ResultObject[i].FullName,
+                FullName: apiResult.ResultObject[i].FullName,
+                DepartmentName: apiResult.ResultObject[i].DepartmentName,
+                PositionName: apiResult.ResultObject[i].PositionName,
+                Address: apiResult.ResultObject[i].Address,
+              });
+            }
+          }
+        } else {
+          let isExist = this.state.ObjectControlValue.NhanVienGiao.ListOption.some((item) => item.value === apiResult.ResultObject[i].UserName);
+          if (!isExist) {
             listOptionNew1.push({
               value: apiResult.ResultObject[i].UserName,
               name: apiResult.ResultObject[i].UserName + "-" + apiResult.ResultObject[i].FullName,
@@ -282,15 +297,6 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
               Address: apiResult.ResultObject[i].Address,
             });
           }
-        } else {
-          listOptionNew1.push({
-            value: apiResult.ResultObject[i].UserName,
-            name: apiResult.ResultObject[i].UserName + "-" + apiResult.ResultObject[i].FullName,
-            FullName: apiResult.ResultObject[i].FullName,
-            DepartmentName: apiResult.ResultObject[i].DepartmentName,
-            PositionName: apiResult.ResultObject[i].PositionName,
-            Address: apiResult.ResultObject[i].Address,
-          });
         }
       }
 
@@ -1173,7 +1179,7 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
       <Fragment>
         <Drawer
           className="ant-modal-custom"
-          title={<h4 style={{margin: 0}}>Phân tuyến điều phối vận đơn</h4>}
+          title={<h4 style={{ margin: 0 }}>Phân tuyến điều phối vận đơn</h4>}
           headerStyle={{ height: "6vh", padding: "7px", backgroundColor: "gold" }}
           bodyStyle={{ height: "93vh", padding: "7px" }}
           style={{ backgroundColor: "#eeeeee70" }}
