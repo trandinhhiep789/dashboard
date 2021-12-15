@@ -216,6 +216,7 @@ import SymptomGroup from "../TMS/MD/SymptomGroup";
 import Symptom from "../TMS/MD/Symptom";
 import ShipmentRouteAuto from "./../TMS/ShipmentRouteAuto/index";
 import ListNoteRewardReport from "../TMS/Reward/ListNoteRewardReport";
+import TeamLeaderBonusFundReport from "../TMS/ReportShipmentOrder/TeamLeaderBonusFundReport";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -397,6 +398,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/OverdueStaffDebt" component={OverdueStaffDebt} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ControlStatusReport" component={ControlStatusReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/CrossCheckReport" component={CrossCheckReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/TeamLeaderBonusFundReport" component={TeamLeaderBonusFundReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="/QuanlityReportAll" component={QuanlityReportAll} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/QualityReportBranch" component={QualityReportBranch} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />

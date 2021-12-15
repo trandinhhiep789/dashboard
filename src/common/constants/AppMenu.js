@@ -1736,6 +1736,13 @@ const AppMenu = [
         MenuIcon: "",
         SubMenu: [],
       },
+      {
+        MenuName: "TeamLeaderBonusFundReport",
+        MenuTitle: "Báo cáo quỹ thưởng trưởng nhóm",
+        LinkTo: "/TeamLeaderBonusFundReport",
+        MenuIcon: "",
+        SubMenu: [],
+      },
     ],
   },
   {
