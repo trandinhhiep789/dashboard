@@ -1303,7 +1303,7 @@ const AppMenu = [
   // },
   {
     MenuName: "ShipmentOrderNew",
-    MenuTitle: "Điều phối",
+    MenuTitle: "QL Vận đơn",
     LinkTo: "/ShipmentOrder",
     MenuIcon: "",
     SubMenu: [],
@@ -1332,7 +1332,6 @@ const AppMenu = [
       },
     ],
   },
-
   {
     MenuName: "Price",
     MenuTitle: "Giá",
