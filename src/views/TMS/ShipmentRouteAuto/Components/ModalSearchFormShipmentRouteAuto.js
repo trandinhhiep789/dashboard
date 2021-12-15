@@ -839,14 +839,14 @@ class ModalSearchFormShipmentRouteAutoCom extends Component {
     }
 
     if (this.state.ShipmentRouteID != "") {
-      this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddShipmentRouteLstNew", this.state.ShipmentOrder).then((apiResult) => {
+      this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNew_1", this.state.ShipmentOrder).then((apiResult) => {
         this.props.onShowNotification(apiResult.Message, apiResult.IsError);
         if (!apiResult.IsError) {
           this.props.onCloseModal({ IsShowModel: false });
         }
       });
     } else {
-      this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNew", this.state.ShipmentOrder).then((apiResult) => {
+      this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNew_1", this.state.ShipmentOrder).then((apiResult) => {
         this.props.onShowNotification(apiResult.Message, apiResult.IsError);
 
         if (!apiResult.IsError) {
