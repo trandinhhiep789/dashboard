@@ -56,6 +56,8 @@ class ListShipCoordinatorRouteCom extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props.ShipmentRouteID);
+
     this.handleMapObjectDescription();
 
     const isBelowThreshold = (currentValue) => currentValue.CarrierTypeID == 2;
@@ -96,6 +98,7 @@ class ListShipCoordinatorRouteCom extends Component {
       });
       this.setState({ listAllUser: listOptionUser });
     });
+
     let objRoute = this.props.InfoCoordinator.find((n) => n.ShipmentRouteID == this.props.ShipmentRouteID);
 
     if (objRoute != undefined) {
@@ -170,20 +173,20 @@ class ListShipCoordinatorRouteCom extends Component {
           }
         });
 
-        if(this.props.InfoCoordinator[0].VehicleID) {
-            let vehicleID = this.props.InfoCoordinator[0].VehicleID;
-            if(vehicleID !== 0 && vehicleID !== -1) {
-                let vehicle = objVehicleLst.find(x=>x.value === vehicleID);
-                if (vehicle && vehicle.TotalAbilityVolume >= vehicle.TotalShipmentVolume + vehicle.TotalVolume) {
-                    this.addNotification(
-                        "Tổng thể tích tối thiểu cần cho xe tải là " + vehicle.TotalAbilityVolume + " Hiện tại chỉ có " + (vehicle.TotalShipmentVolume + vehicle.TotalVolume),
-                        true,
-                        false,
-                        "rgb(255, 184, 24)",
-                        "rgb(186, 101, 8)"
-                    );
-                }
+        if (this.props.InfoCoordinator[0].VehicleID) {
+          let vehicleID = this.props.InfoCoordinator[0].VehicleID;
+          if (vehicleID !== 0 && vehicleID !== -1) {
+            let vehicle = objVehicleLst.find((x) => x.value === vehicleID);
+            if (vehicle && vehicle.TotalAbilityVolume >= vehicle.TotalShipmentVolume + vehicle.TotalVolume) {
+              this.addNotification(
+                "Tổng thể tích tối thiểu cần cho xe tải là " + vehicle.TotalAbilityVolume + " Hiện tại chỉ có " + (vehicle.TotalShipmentVolume + vehicle.TotalVolume),
+                true,
+                false,
+                "rgb(255, 184, 24)",
+                "rgb(186, 101, 8)"
+              );
             }
+          }
         }
 
         let objRoute = this.props.InfoCoordinator.find((n) => n.ShipmentRouteID == this.props.ShipmentRouteID);
@@ -271,6 +274,10 @@ class ListShipCoordinatorRouteCom extends Component {
 
   handleOnValueChangeselectedOp(name, selectedOption) {
     let { objCoordinator, ShipmentOrder } = this.state;
+
+    console.log(name);
+    console.log(selectedOption);
+    console.log(objCoordinator);
     if (selectedOption.TotalAbilityVolume >= selectedOption.TotalShipmentVolume + selectedOption.TotalVolume) {
       this.addNotification(
         "Tổng thể tích tối thiểu cần cho xe tải là " + selectedOption.TotalAbilityVolume + " Hiện tại chỉ có " + (selectedOption.TotalShipmentVolume + selectedOption.TotalVolume),
@@ -306,6 +313,8 @@ class ListShipCoordinatorRouteCom extends Component {
   }
 
   handleValueChange1(e, selectedOption1, CarrierPartnerID) {
+    console.log("handleValueChange1_CarrierPartnerID", CarrierPartnerID);
+
     let objDeliverUser = [];
     let listStaffDebtObject = [];
     selectedOption1 &&
@@ -323,6 +332,7 @@ class ListShipCoordinatorRouteCom extends Component {
         if (!apiResult.IsError) {
           this.state.ShipmentOrder.map((row, indexRow) => {
             if (CarrierPartnerID) {
+              console.log("OKKKKKKKKKKK");
               if ((this.state.objCoordinator.IsRoute == true || !row.IsCoordinator) && row.IsPermission == true) {
                 row["ShipmentOrder_DeliverUserList"] = objDeliverUser || [];
                 row["CarrierPartnerID"] = CarrierPartnerID;
@@ -352,6 +362,9 @@ class ListShipCoordinatorRouteCom extends Component {
   handleOnValueChangeDeliverUser(name, value, selectedOption, CarrierPartnerID) {
     let objMultiDeliverUser = [];
     let listStaffDebtObject = [];
+
+    console.log(value, selectedOption, CarrierPartnerID);
+
     selectedOption &&
       selectedOption.map((item, index) => {
         let objMultiShip_DeliverUser = { UserName: item.value, FullName: item.name };
@@ -616,12 +629,12 @@ class ListShipCoordinatorRouteCom extends Component {
 
       if (row["TotalCOD"] > 0 && row["IsPaidIn"] == false) {
         if (Array.isArray(row["ShipmentOrder_DeliverUserList"])) {
-            row["ShipmentOrder_DeliverUserList"].map((item, indexRow) => {
-                if (row["ShipmentOrder_DeliverUserList"][indexRow] !== row["ShipmentOrder_DeliverUserList"][indexRow - 1]) {
-                  let objMultDeliverUser = { UserName: item.UserName, CarrierTypeID: row["CarrierTypeID"], TotalCOD: row["TotalCOD"] / row["ShipmentOrder_DeliverUserList"].length };
-                  element.push(objMultDeliverUser);
-                }
-            });
+          row["ShipmentOrder_DeliverUserList"].map((item, indexRow) => {
+            if (row["ShipmentOrder_DeliverUserList"][indexRow] !== row["ShipmentOrder_DeliverUserList"][indexRow - 1]) {
+              let objMultDeliverUser = { UserName: item.UserName, CarrierTypeID: row["CarrierTypeID"], TotalCOD: row["TotalCOD"] / row["ShipmentOrder_DeliverUserList"].length };
+              element.push(objMultDeliverUser);
+            }
+          });
         }
       }
 
@@ -634,11 +647,11 @@ class ListShipCoordinatorRouteCom extends Component {
       }
       if (Array.isArray(row["ShipmentOrder_DeliverUserList"])) {
         row["ShipmentOrder_DeliverUserList"].map((item, indexRow) => {
-            if (row["ShipmentOrder_DeliverUserList"][indexRow] !== row["ShipmentOrder_DeliverUserList"][indexRow - 1]) {
-              elementDeliverUserList.push(item.UserName);
-              elementDeliverUserFullList.push(item.UserName + "-" + item.FullName);
-            }
-          });
+          if (row["ShipmentOrder_DeliverUserList"][indexRow] !== row["ShipmentOrder_DeliverUserList"][indexRow - 1]) {
+            elementDeliverUserList.push(item.UserName);
+            elementDeliverUserFullList.push(item.UserName + "-" + item.FullName);
+          }
+        });
       }
 
       this.state.ShipmentOrder[indexRow].IsRoute = this.state.objCoordinator.IsRoute;
@@ -655,8 +668,8 @@ class ListShipCoordinatorRouteCom extends Component {
     });
 
     if (this.state.ShipmentOrder.length > 0) {
-        this.state.ShipmentOrder[0].DeliverUserTotalCODList = this.groupByNew(element, ["UserName", "CarrierTypeID"]);
-        this.state.ShipmentOrder[0].ShipmentRouteID = this.state.ShipmentRouteID;
+      this.state.ShipmentOrder[0].DeliverUserTotalCODList = this.groupByNew(element, ["UserName", "CarrierTypeID"]);
+      this.state.ShipmentOrder[0].ShipmentRouteID = this.state.ShipmentRouteID;
     }
     this.setState({ FormValidation: elementobject });
 
@@ -1025,6 +1038,8 @@ class ListShipCoordinatorRouteCom extends Component {
     let resultShipmentRouteSame = ShipmentRouteSameLst.filter((n) => n.ShipmentRouteID != ShipmentRouteID);
     const isBelowThreshold = (currentValue) => currentValue.CarrierTypeID == 2;
     let isShow = ShipmentOrder.length === 0 ? false : ShipmentOrder.every(isBelowThreshold);
+
+    console.log({ resultShipmentRoute, resultShipmentRouteSame }, this.state.ShipmentOrderSameLst);
 
     return (
       <React.Fragment>

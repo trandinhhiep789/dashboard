@@ -147,6 +147,13 @@ export const listColumn = [
         // Width: 100
     },
     {
+        Name: "SymptomIDName",
+        Type: "text",
+        Caption: "Trường lỗi",
+        DataSourceMember: "SymptomIDName",
+        // Width: 100
+    },
+    {
         Name: "ExpectedDeliveryDate",
         Type: "datetime",
         Caption: "Ngày hẹn giao",
@@ -155,7 +162,7 @@ export const listColumn = [
     },
     {
         Name: "UpdatedDate",
-        Type: "date",
+        Type: "datetime",
         Caption: "Ngày cập nhật lỗi",
         DataSourceMember: "UpdatedDate",
         // Width: 100
@@ -165,13 +172,6 @@ export const listColumn = [
         Type: "text",
         Caption: "Nhân viên cập nhật",
         DataSourceMember: "UpdatedUserIDName",
-        // Width: 100
-    },
-    {
-        Name: "SymptomIDName",
-        Type: "text",
-        Caption: "Trường lỗi",
-        DataSourceMember: "SymptomIDName",
         // Width: 100
     },
 ]

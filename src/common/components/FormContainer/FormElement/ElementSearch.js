@@ -1235,6 +1235,10 @@ class ElementDatetimeMonthYearCom extends Component {
             this.props.onValueChange(name, moment);
     }
 
+    handleDisableDate(current){
+        return current && current > moment().startOf('day');
+    }
+
     render() {
         let { name, label, format, colspan, value, ValidatonErrorMessage, classNameCol } = this.props;
         let className = "custom-month ";
@@ -1274,6 +1278,8 @@ class ElementDatetimeMonthYearCom extends Component {
                             name={name}
                             format={format}
                             locale={vi_VN}
+                            disabledDate={this.props.isDisableNext ? this.handleDisableDate : null}
+                            allowClear={this.props.isAllowClear ? true : false}
                             monthCellContentRender={() => this.handleMonthCellRender}
                         />
                         <div className="invalid-feedback">{ValidatonErrorMessage}</div>

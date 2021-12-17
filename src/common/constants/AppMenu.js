@@ -1332,7 +1332,7 @@ const AppMenu = [
   // },
   {
     MenuName: "ShipmentOrderNew",
-    MenuTitle: "Điều phối",
+    MenuTitle: "QL Vận đơn",
     LinkTo: "/ShipmentOrder",
     MenuIcon: "",
     SubMenu: [],
@@ -1361,7 +1361,6 @@ const AppMenu = [
       },
     ],
   },
-
   {
     MenuName: "Price",
     MenuTitle: "Giá",
@@ -1442,6 +1441,13 @@ const AppMenu = [
             MenuName: "ConfirmReward",
             MenuTitle: "Xuất dữ liệu chốt thưởng",
             LinkTo: "/ConfirmReward",
+            MenuIcon: "",
+            SubMenu: [],
+          },
+          {
+            MenuName: "ListNoteRewardReport",
+            MenuTitle: "Xuất dữ liệu vận đơn không được tính thưởng",
+            LinkTo: "/ListNoteRewardReport",
             MenuIcon: "",
             SubMenu: [],
           },
@@ -1791,6 +1797,13 @@ const AppMenu = [
         MenuName: "ShipmentOrderSymptom",
         MenuTitle: "Báo cáo lỗi thực tế",
         LinkTo: "/ShipmentOrderSymptomReport",
+        MenuIcon: "",
+        SubMenu: [],
+      },
+      {
+        MenuName: "TeamLeaderBonusFundReport",
+        MenuTitle: "Báo cáo quỹ thưởng trưởng nhóm",
+        LinkTo: "/TeamLeaderBonusFundReport",
         MenuIcon: "",
         SubMenu: [],
       },

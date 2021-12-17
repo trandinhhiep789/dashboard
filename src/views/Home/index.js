@@ -222,6 +222,10 @@ import ConstructServiceType from "../TMS/MD/ConstructServiceType";
 import ConstructService from "../TMS/MD/ConstructService";
 import CurrentProjectTypeReport from "../TMS/ReportShipmentOrder/CurrentProjectTypeReport";
 import ProjectArchitectureInfo from "../TMS/MD/ProjectArchitectureInfo";
+import ListNoteRewardReport from "../TMS/Reward/ListNoteRewardReport";
+import TeamLeaderBonusFundReport from "../TMS/ReportShipmentOrder/TeamLeaderBonusFundReport";
+
+import TestOrTools from '../TMS/TestOrTool';
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -403,6 +407,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/OverdueStaffDebt" component={OverdueStaffDebt} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ControlStatusReport" component={ControlStatusReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/CrossCheckReport" component={CrossCheckReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/TeamLeaderBonusFundReport" component={TeamLeaderBonusFundReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="/QuanlityReportAll" component={QuanlityReportAll} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/QualityReportBranch" component={QualityReportBranch} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
@@ -422,6 +427,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/FuelSubsIDizePeriod" component={FuelSubsIDizePeriod} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/RewardComputeType" component={RewardComputeType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ConfirmReward" component={ConfirmReward} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/ListNoteRewardReport" component={ListNoteRewardReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="/AreaType" component={AreaType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/Area" component={Area} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
@@ -549,6 +555,8 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/ArchitechtureType_PRJType" component={ArchitechtureType_PRJType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ConstructServiceType" component={ConstructServiceType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ConstructService" component={ConstructService} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+
+                                    <PrivateRoute path="/TestOrTools" component={TestOrTools} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 </Switch>

@@ -6,335 +6,317 @@ import InputGrid from "../../../../../common/components/FormContainer/FormContro
 import FormContainer from "../../../../../common/components/FormContainer";
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
 import { MessageModal } from "../../../../../common/components/Modal";
-import { showModal, hideModal } from '../../../../../actions/modal';
-import { MODAL_TYPE_SEARCH, MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_CONFIRMATION } from '../../../../../constants/actionTypes';
-import SearchModal from "../../../../../common/components/Form/AdvanceForm/FormControl/FormSearchModal"
+import { showModal, hideModal } from "../../../../../actions/modal";
+import { MODAL_TYPE_SEARCH, MODAL_TYPE_COMMONTMODALS, MODAL_TYPE_CONFIRMATION } from "../../../../../constants/actionTypes";
+import SearchModal from "../../../../../common/components/Form/AdvanceForm/FormControl/FormSearchModal";
 import InputGridControl from "../../../../../common/components/FormContainer/FormControl/InputGrid/InputGridControl.js";
 import MD5Digest from "../../../../../common/library/cryptography/MD5Digest.js";
-import {
-    APIHostName,
-    AddNewAPIPath,
-    MLObjectDefinition,
-    BackLink,
-    AddPagePath,
-    DataGridColumnList,
-    PKColumnNameWard
-} from "../constants";
+import { APIHostName, AddNewAPIPath, MLObjectDefinition, BackLink, AddPagePath, DataGridColumnList, PKColumnNameWard } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { COORDINATORSTORE_ADD } from "../../../../../constants/functionLists";
-import CoordinatorStoreWard from '../../CoordinatorStoreWard'
+import CoordinatorStoreWard from "../../CoordinatorStoreWard";
 import StoreWard from "../../CoordinatorStoreWard/Component/StoreWard";
 import ReactNotification from "react-notifications-component";
 import MultiStoreComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiStoreComboBox";
 import MultiAllStoreComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiAllStoreComboBox";
 import MultiSelectStoreByCompanyComboBox from "../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/MultiSelectStoreByCompanyComboBox";
 
-
 class AddCom extends React.Component {
-    constructor(props) {
-        super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleCloseMessage = this.handleCloseMessage.bind(this);
-        this.handleInsertNew = this.handleInsertNew.bind(this)
-        this.handleInputChangeObjItem = this.handleInputChangeObjItem.bind(this);
-        this.handleEdit = this.handleEdit.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.addNotification = this.addNotification.bind(this);
+  constructor(props) {
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCloseMessage = this.handleCloseMessage.bind(this);
+    this.handleInsertNew = this.handleInsertNew.bind(this);
+    this.handleInputChangeObjItem = this.handleInputChangeObjItem.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.addNotification = this.addNotification.bind(this);
 
-        this.state = {
-            CallAPIMessage: "",
-            IsCallAPIError: false,
-            IsCloseForm: false,
-            IsShowCustomerAddress: true,
-            DataSource: {},
-            DataWard: [],
-            cssNotification: "",
-            iconNotification: "",
-            SenderStoreID: "",
-        };
-        this.searchref = React.createRef();
-        this.gridref = React.createRef();
-        this.notificationDOMRef = React.createRef();
+    this.state = {
+      CallAPIMessage: "",
+      IsCallAPIError: false,
+      IsCloseForm: false,
+      IsShowCustomerAddress: true,
+      DataSource: {},
+      DataWard: [],
+      cssNotification: "",
+      iconNotification: "",
+      SenderStoreID: "",
+      ValuePartner: -1,
+      ValueSenderStore: -1,
+      DataSourceSenderStore: [],
+    };
+
+    this.searchref = React.createRef();
+    this.gridref = React.createRef();
+    this.notificationDOMRef = React.createRef();
+  }
+
+  componentDidMount() {
+    this.props.updatePagePath(AddPagePath);
+  }
+
+  handleCloseMessage() {
+    if (!this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
+  }
+
+  showMessage(message) {
+    ModalManager.open(<MessageModal title="Thông báo" message={message} onRequestClose={() => true} onCloseModal={this.handleCloseMessage} />);
+  }
+
+  handleSubmit(formData, MLObject) {
+    // console.log("222", MLObject);
+    // const { SenderStoreID } = this.state;
+    MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
+    MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
+    MLObject.CoordinatorStoreWard_ItemList = this.state.DataSource.CoordinatorStoreWard_ItemList;
+    // MLObject.SenderStoreID = SenderStoreID;
+
+    if (MLObject.ShipmentOrderTypeID && Array.isArray(MLObject.ShipmentOrderTypeID)) {
+      let result = MLObject.ShipmentOrderTypeID.filter((item) => Number.isInteger(item) === true);
+      MLObject.ListShipmentOrderTypeID = result;
+      MLObject.ShipmentOrderTypeID = -1;
     }
+    // console.log("databc", MLObject);
 
+    this.props.callFetchAPI(APIHostName, AddNewAPIPath, MLObject).then((apiResult) => {
+      // console.log("object", MLObject, apiResult)
+      this.setState({ IsCallAPIError: apiResult.IsError });
+      this.showMessage(apiResult.Message);
+    });
+  }
 
-    componentDidMount() {
-        this.props.updatePagePath(AddPagePath);
+  handleChange(formData, MLObject) {
+    if (formData.cbPartnerID.value !== this.state.ValuePartner) {
+      formData.cbSenderStoreID.value = "";
+      this.setState({ ValuePartner: formData.cbPartnerID.value });
 
-    }
+      this.props.callGetCache("ERPCOMMONCACHE.STORE").then((result) => {
+        let listOption = [];
 
-    handleCloseMessage() {
-        if (!this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
-    }
-
-    showMessage(message) {
-        ModalManager.open(
-            <MessageModal
-                title="Thông báo"
-                message={message}
-                onRequestClose={() => true}
-                onCloseModal={this.handleCloseMessage}
-            />
-        );
-    }
-
-
-    handleSubmit(formData, MLObject) {
-        // console.log("222", MLObject);
-        // const { SenderStoreID } = this.state;
-        MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
-        MLObject.LoginlogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        MLObject.CoordinatorStoreWard_ItemList = this.state.DataSource.CoordinatorStoreWard_ItemList;
-        // MLObject.SenderStoreID = SenderStoreID;
-
-        if (MLObject.ShipmentOrderTypeID && Array.isArray(MLObject.ShipmentOrderTypeID)) {
-            let result = MLObject.ShipmentOrderTypeID.filter(item => Number.isInteger(item) === true);
-            MLObject.ListShipmentOrderTypeID = result;
-            MLObject.ShipmentOrderTypeID = -1;
+        if (!result.IsError && result.ResultObject.CacheData != null) {
+          result.ResultObject.CacheData.filter((item) => [formData.cbPartnerID.value].includes(item["CompanyID"])).map((cacheItem) => {
+            listOption.push({ value: cacheItem["StoreID"], label: cacheItem["StoreID"] + "-" + cacheItem["StoreName"], name: cacheItem["StoreName"] });
+          });
+          this.setState({ DataSourceSenderStore: listOption });
         }
-        // console.log("databc", MLObject);
-
-
-        this.props.callFetchAPI(APIHostName, AddNewAPIPath, MLObject).then(apiResult => {
-            // console.log("object", MLObject, apiResult)
-            this.setState({ IsCallAPIError: apiResult.IsError });
-            this.showMessage(apiResult.Message);
-        });
-
+      });
     }
 
-    handleChange(formData, MLObject) {
-        if (formData.chkIsCheckCustomerAddress.value) {
-            this.setState({
-                IsShowCustomerAddress: false
-            })
-        }
-        else {
-            this.setState({
-                IsShowCustomerAddress: true
-            })
-        }
+    if (formData.chkIsCheckCustomerAddress.value) {
+      this.setState({
+        IsShowCustomerAddress: false,
+      });
+    } else {
+      this.setState({
+        IsShowCustomerAddress: true,
+      });
+    }
+  }
+
+  handleInsertNew() {
+    if (this.state.DataSource.CoordinatorStoreWard_ItemList == null) {
+      this.state.DataSource.CoordinatorStoreWard_ItemList = [];
     }
 
-    handleInsertNew() {
-        if (this.state.DataSource.CoordinatorStoreWard_ItemList == null) {
-            this.state.DataSource.CoordinatorStoreWard_ItemList = []
-        }
-        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: 'Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối',
-            content: {
-                text: <StoreWard
-                    DataSource={this.state.DataSource.CoordinatorStoreWard_ItemList}
-                    onInputChangeObj={this.handleInputChangeObjItem}
-                    isMultiSelectWard={true}
-                />
-            },
-            maxWidth: '1000px'
-        })
+    this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+      title: "Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối",
+      content: {
+        text: <StoreWard DataSource={this.state.DataSource.CoordinatorStoreWard_ItemList} onInputChangeObj={this.handleInputChangeObjItem} isMultiSelectWard={true} />,
+      },
+      maxWidth: "1000px",
+    });
+  }
+
+  handleInputChangeObjItem(ObjItem, result) {
+    const formData = Object.assign({}, this.state.DataSource, { ["CoordinatorStoreWard_ItemList"]: ObjItem });
+    this.setState({ DataSource: formData });
+    this.props.hideModal();
+  }
+
+  handleEdit(index) {
+    // console.log('handleEdit', index)
+    this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
+      title: "Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối",
+      content: {
+        text: <StoreWard D DataSource={this.state.DataSource.CoordinatorStoreWard_ItemList} index={parseInt(index)} onInputChangeObj={this.handleInputChangeObjItem} isMultiSelectWard={false} />,
+      },
+      maxWidth: "1000px",
+    });
+  }
+
+  handleDelete(id) {
+    let dataSourceValue = this.state.DataSource.CoordinatorStoreWard_ItemList.filter(function (value, index) {
+      return value.WardID != id;
+    });
+    const formData = Object.assign({}, this.state.DataSource, { ["CoordinatorStoreWard_ItemList"]: dataSourceValue });
+    this.setState({ DataSource: formData });
+  }
+
+  addNotification(message1, IsError) {
+    if (!IsError) {
+      this.setState({
+        cssNotification: "notification-custom-success",
+        iconNotification: "fa fa-check",
+      });
+    } else {
+      this.setState({
+        cssNotification: "notification-danger",
+        iconNotification: "fa fa-exclamation",
+      });
+    }
+    this.notificationDOMRef.current.addNotification({
+      container: "bottom-right",
+      content: (
+        <div className={this.state.cssNotification}>
+          <div className="notification-custom-icon">
+            <i className={this.state.iconNotification} />
+          </div>
+          <div className="notification-custom-content">
+            <div className="notification-close">
+              <span>×</span>
+            </div>
+            <h4 className="notification-title">Thông Báo</h4>
+            <p className="notification-message">{message1}</p>
+          </div>
+        </div>
+      ),
+      dismiss: { duration: 6000 },
+      dismissable: { click: true },
+    });
+  }
+
+  onChangeAllStore(name, objstore) {
+    console.log("onChangeAllStore", name, objstore);
+    this.setState({
+      SenderStoreID: objstore.value,
+    });
+  }
+
+  render() {
+    const { DataSource, IsShowCustomerAddress, DataWard } = this.state;
+    if (this.state.IsCloseForm) {
+      return <Redirect to={BackLink} />;
     }
 
-    handleInputChangeObjItem(ObjItem, result) {
-        const formData = Object.assign({}, this.state.DataSource, { ["CoordinatorStoreWard_ItemList"]: ObjItem });
-        this.setState({ DataSource: formData });
-        this.props.hideModal()
-    }
+    return (
+      <React.Fragment>
+        <ReactNotification ref={this.notificationDOMRef} />
+        <FormContainer
+          FormName="Thêm định nghĩa kho điều phối giao hàng"
+          MLObjectDefinition={MLObjectDefinition}
+          listelement={[]}
+          onSubmit={this.handleSubmit}
+          BackLink={BackLink}
+          onchange={this.handleChange.bind(this)}
+          RequirePermission={COORDINATORSTORE_ADD}
+        >
+          <div className="row">
+            <div className="col-md-6">
+              {/* <FormControl.ComboBoxSelect
+                name="cbShipmentOrderTypeID"
+                colspan="8"
+                labelcolspan="4"
+                label="loại yêu cầu vận chuyển"
+                validatonList={["Comborequired"]}
+                placeholder="-- Vui lòng chọn --"
+                isautoloaditemfromcache={true}
+                loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERTYPE"
+                valuemember="ShipmentOrderTypeID"
+                nameMember="ShipmentOrderTypeName"
+                controltype="InputControl"
+                value={""}
+                listoption={null}
+                isMultiSelect={true}
+                datasourcemember="ShipmentOrderTypeID" /> */}
 
-    handleEdit(index) {
-        // console.log('handleEdit', index)
-        this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: 'Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối',
-            content: {
-                text: <StoreWard
-                    D DataSource={this.state.DataSource.CoordinatorStoreWard_ItemList}
-                    index={parseInt(index)}
-                    onInputChangeObj={this.handleInputChangeObjItem}
-                    isMultiSelectWard={false}
-                />
-            },
-            maxWidth: '1000px'
-        })
-    }
+              <FormControl.FormControlComboBox
+                name="cbShipmentOrderTypeID"
+                colspan="8"
+                labelcolspan="4"
+                label="loại yêu cầu vận chuyển"
+                // validatonList={[""]}
+                isautoloaditemfromcache={true}
+                validatonList={["Comborequired"]}
+                isMultiSelect={true}
+                placeholder="-- Vui lòng chọn --"
+                loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERTYPE"
+                valuemember="ShipmentOrderTypeID"
+                nameMember="ShipmentOrderTypeName"
+                controltype="InputControl"
+                value={""}
+                listoption={null}
+                datasourcemember="ShipmentOrderTypeID"
+                isAllowSelectAll={true}
+              />
+            </div>
+            <div className="col-md-6">
+              <FormControl.FormControlComboBox
+                name="cbPartnerID"
+                colspan="8"
+                labelcolspan="4"
+                label="đối tác"
+                validatonList={["Comborequired"]}
+                placeholder="-- Vui lòng chọn --"
+                isautoloaditemfromcache={true}
+                loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
+                valuemember="PartnerID"
+                nameMember="PartnerName"
+                controltype="InputControl"
+                value={""}
+                listoption={null}
+                datasourcemember="PartnerID"
+                filterValue={1}
+                filterobj="PartnerTypeID"
+              />
+            </div>
 
-    handleDelete(id) {
+            <div className="col-md-6">
+              <FormControl.FormControlComboBox
+                name="cbStoreID"
+                colspan="8"
+                labelcolspan="4"
+                label="kho điều phối"
+                validatonList={["Comborequired"]}
+                placeholder="-- Vui lòng chọn --"
+                isautoloaditemfromcache={true}
+                loaditemcachekeyid="ERPCOMMONCACHE.STORE"
+                valuemember="StoreID"
+                nameMember="StoreName"
+                controltype="InputControl"
+                value={""}
+                listoption={null}
+                datasourcemember="StoreID"
+                filterValue={10}
+                filterobj="CompanyID"
+              />
+            </div>
+            <div className="col-md-6">
+              <FormControl.FormControlComboBoxNew
+                name="cbSenderStoreID"
+                colspan="8"
+                labelcolspan="4"
+                label="kho xuất"
+                disabled={this.state.IsSystem}
+                readOnly={this.state.IsSystem}
+                validatonList={["Comborequired"]}
+                placeholder="-- Vui lòng chọn --"
+                isautoloaditemfromcache={true}
+                loaditemcachekeyid="ERPCOMMONCACHE.STORE"
+                valuemember="StoreID"
+                nameMember="StoreName"
+                controltype="InputControl"
+                value={""}
+                // listoption={this.state.DataSourceSenderStore}
+                listoption={this.state.DataSourceSenderStore}
+                datasourcemember="SenderStoreID"
+              />
+            </div>
 
-        let dataSourceValue = this.state.DataSource.CoordinatorStoreWard_ItemList.filter(function (value, index) {
-            return value.WardID != id;
-        });
-        const formData = Object.assign({}, this.state.DataSource, { ["CoordinatorStoreWard_ItemList"]: dataSourceValue });
-        this.setState({ DataSource: formData });
-    }
-
-    addNotification(message1, IsError) {
-        if (!IsError) {
-            this.setState({
-                cssNotification: "notification-custom-success",
-                iconNotification: "fa fa-check"
-            });
-        } else {
-            this.setState({
-                cssNotification: "notification-danger",
-                iconNotification: "fa fa-exclamation"
-            });
-        }
-        this.notificationDOMRef.current.addNotification({
-            container: "bottom-right",
-            content: (
-                <div className={this.state.cssNotification}>
-                    <div className="notification-custom-icon">
-                        <i className={this.state.iconNotification} />
-                    </div>
-                    <div className="notification-custom-content">
-                        <div className="notification-close">
-                            <span>×</span>
-                        </div>
-                        <h4 className="notification-title">Thông Báo</h4>
-                        <p className="notification-message">{message1}</p>
-                    </div>
-                </div>
-            ),
-            dismiss: { duration: 6000 },
-            dismissable: { click: true }
-        });
-    }
-
-    onChangeAllStore(name, objstore) {
-        console.log("onChangeAllStore", name, objstore)
-        this.setState({
-            SenderStoreID: objstore.value
-        })
-
-    }
-
-    render() {
-        const { DataSource, IsShowCustomerAddress, DataWard } = this.state;
-        if (this.state.IsCloseForm) {
-            return <Redirect to={BackLink} />;
-        }
-
-        return (
-            <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
-                <FormContainer
-                    FormName="Thêm định nghĩa kho điều phối giao hàng"
-                    MLObjectDefinition={MLObjectDefinition}
-                    listelement={[]}
-                    onSubmit={this.handleSubmit}
-                    BackLink={BackLink}
-                    onchange={this.handleChange.bind(this)}
-                    RequirePermission={COORDINATORSTORE_ADD}
-                >
-                    <div className="row">
-                        <div className="col-md-6">
-                            {/* <FormControl.ComboBoxSelect
-
-                                name="cbShipmentOrderTypeID"
-                                colspan="8"
-                                labelcolspan="4"
-                                label="loại yêu cầu vận chuyển"
-                                validatonList={["Comborequired"]}
-                                placeholder="-- Vui lòng chọn --"
-                                isautoloaditemfromcache={true}
-                                loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERTYPE"
-                                valuemember="ShipmentOrderTypeID"
-                                nameMember="ShipmentOrderTypeName"
-                                controltype="InputControl"
-                                value={""}
-                                listoption={null}
-                                isMultiSelect={true}
-                                datasourcemember="ShipmentOrderTypeID" /> */}
-
-                            <FormControl.FormControlComboBox
-                                name="cbShipmentOrderTypeID"
-                                colspan="8"
-                                labelcolspan="4"
-                                label="loại yêu cầu vận chuyển"
-                                // validatonList={[""]}
-                                isautoloaditemfromcache={true}
-                                validatonList={["Comborequired"]}
-                                isMultiSelect={true}
-                                placeholder="-- Vui lòng chọn --"
-                                loaditemcachekeyid="ERPCOMMONCACHE.SHIPMENTORDERTYPE"
-                                valuemember="ShipmentOrderTypeID"
-                                nameMember="ShipmentOrderTypeName"
-                                controltype="InputControl"
-                                value={""}
-                                listoption={null}
-                                datasourcemember="ShipmentOrderTypeID"
-                                isAllowSelectAll={true}
-                            />
-                        </div>
-                        <div className="col-md-6">
-                            <FormControl.FormControlComboBox
-
-                                name="cbPartnerID"
-                                colspan="8"
-                                labelcolspan="4"
-                                label="đối tác"
-                                validatonList={["Comborequired"]}
-                                placeholder="-- Vui lòng chọn --"
-                                isautoloaditemfromcache={true}
-                                loaditemcachekeyid="ERPCOMMONCACHE.PARTNER"
-                                valuemember="PartnerID"
-                                nameMember="PartnerName"
-                                controltype="InputControl"
-                                value={""}
-                                listoption={null}
-                                datasourcemember="PartnerID"
-                                filterValue={1}
-                                filterobj="PartnerTypeID"
-                            />
-
-                        </div>
-
-                        <div className="col-md-6">
-                            <FormControl.FormControlComboBox
-
-                                name="cbStoreID"
-                                colspan="8"
-                                labelcolspan="4"
-                                label="kho điều phối"
-                                validatonList={["Comborequired"]}
-                                placeholder="-- Vui lòng chọn --"
-                                isautoloaditemfromcache={true}
-                                loaditemcachekeyid="ERPCOMMONCACHE.STORE"
-                                valuemember="StoreID"
-                                nameMember="StoreName"
-                                controltype="InputControl"
-                                value={""}
-                                listoption={null}
-                                datasourcemember="StoreID"
-                                filterValue={10}
-                                filterobj="CompanyID"
-                            />
-                        </div>
-                        <div className="col-md-6">
-                            <FormControl.FormControlComboBoxNew
-
-                                name="cbSenderStoreID"
-                                colspan="8"
-                                labelcolspan="4"
-                                label="kho xuất"
-                                disabled={this.state.IsSystem}
-                                readOnly={this.state.IsSystem}
-                                validatonList={["Comborequired"]}
-                                placeholder="-- Vui lòng chọn --"
-                                isautoloaditemfromcache={true}
-                                loaditemcachekeyid="ERPCOMMONCACHE.STORE"
-                                valuemember="StoreID"
-                                nameMember="StoreName"
-                                controltype="InputControl"
-                                value={""}
-                                listoption={null}
-                                datasourcemember="SenderStoreID"
-                                filterValue={[1, 10]}
-                                filterobj="CompanyID"
-                            />
-                        </div>
-
-                        {/* <div className="col-md-6">
+            {/* <div className="col-md-6">
                             <MultiAllStoreComboBox
                                 name="cbSenderStoreID"
                                 colspan="8"
@@ -356,7 +338,7 @@ class AddCom extends React.Component {
                             /> 
                         </div> */}
 
-                        {/* <div className="col-md-6">
+            {/* <div className="col-md-6">
 
                             <MultiSelectStoreByCompanyComboBox
                                 name="cbSenderStoreID"
@@ -388,7 +370,7 @@ class AddCom extends React.Component {
                             />
                         </div> */}
 
-                        {/* <div className="col-md-6">
+            {/* <div className="col-md-6">
                             <FormControl.FormControlComboBox
                                 name="cbDistrictID"
                                 colspan="8"
@@ -430,9 +412,9 @@ class AddCom extends React.Component {
                                 filterobj="DistrictID"
                             />
                         </div> */}
-                    </div>
-                    <div className="row">
-                        {/* <div className="col-md-6">
+          </div>
+          <div className="row">
+            {/* <div className="col-md-6">
                             <FormControl.FormControlComboBox
                                 name="cbDistrictID"
                                 colspan="8"
@@ -475,51 +457,51 @@ class AddCom extends React.Component {
                             />
                         </div> */}
 
-                        <div className="col-md-6">
-                            <FormControl.CheckBox
-                                name="chkIsActived"
-                                colspan="8"
-                                labelcolspan="4"
-                                readOnly={false}
-                                label="kích hoạt"
-                                controltype="InputControl"
-                                value={true}
-                                datasourcemember="IsActived"
-                                classNameCustom="customCheckbox"
-                            />
-                        </div>
+            <div className="col-md-6">
+              <FormControl.CheckBox
+                name="chkIsActived"
+                colspan="8"
+                labelcolspan="4"
+                readOnly={false}
+                label="kích hoạt"
+                controltype="InputControl"
+                value={true}
+                datasourcemember="IsActived"
+                classNameCustom="customCheckbox"
+              />
+            </div>
 
-                        <div className="col-md-6">
-                            <FormControl.CheckBox
-                                name="chkIsSystem"
-                                colspan="8"
-                                labelcolspan="4"
-                                readOnly={false}
-                                label="hệ thống"
-                                controltype="InputControl"
-                                value=""
-                                datasourcemember="IsSystem"
-                                classNameCustom="customCheckbox"
-                            />
-                        </div>
-                        <div className="col-md-6">
-                            <FormControl.CheckBox
-                                label="kiểm tra địa chỉ khách hàng"
-                                name="chkIsCheckCustomerAddress"
-                                datasourcemember="IsCheckCustomerAddress"
-                                controltype="InputControl"
-                                colspan="8"
-                                value={false}
-                                disabled={true}
-                                labelcolspan="4"
-                                classNameCustom="customCheckbox"
-                                titleSmall="Chọn vào đây để khai báo danh sách phường/xã"
-                            />
-                        </div>
-                        <div className="col-md-6"></div>
-                    </div>
+            <div className="col-md-6">
+              <FormControl.CheckBox
+                name="chkIsSystem"
+                colspan="8"
+                labelcolspan="4"
+                readOnly={false}
+                label="hệ thống"
+                controltype="InputControl"
+                value=""
+                datasourcemember="IsSystem"
+                classNameCustom="customCheckbox"
+              />
+            </div>
+            <div className="col-md-6">
+              <FormControl.CheckBox
+                label="kiểm tra địa chỉ khách hàng"
+                name="chkIsCheckCustomerAddress"
+                datasourcemember="IsCheckCustomerAddress"
+                controltype="InputControl"
+                colspan="8"
+                value={false}
+                disabled={true}
+                labelcolspan="4"
+                classNameCustom="customCheckbox"
+                titleSmall="Chọn vào đây để khai báo danh sách phường/xã"
+              />
+            </div>
+            <div className="col-md-6"></div>
+          </div>
 
-                    {/* <InputGridControl
+          {/* <InputGridControl
                         name="CoordinatorStoreWard_ItemList"
                         controltype="InputGridControl"
                         title="Danh sách phường/xã địa bàn của khách hàng tương ứng với kho điều phối"
@@ -533,40 +515,37 @@ class AddCom extends React.Component {
                         isHiddenButtonAdd={IsShowCustomerAddress}
                         ref={this.gridref}
                     /> */}
-
-                </FormContainer>
-            </React.Fragment>
-
-
-        );
-    }
+        </FormContainer>
+      </React.Fragment>
+    );
+  }
 }
 
-const mapStateToProps = state => {
-    return {
-        AppInfo: state,
-        FetchAPIInfo: state.FetchAPIInfo
-    };
+const mapStateToProps = (state) => {
+  return {
+    AppInfo: state,
+    FetchAPIInfo: state.FetchAPIInfo,
+  };
 };
 
-const mapDispatchToProps = dispatch => {
-    return {
-        updatePagePath: pagePath => {
-            dispatch(updatePagePath(pagePath));
-        },
-        callFetchAPI: (hostname, hostURL, postData) => {
-            return dispatch(callFetchAPI(hostname, hostURL, postData));
-        },
-        callGetCache: (cacheKeyID) => {
-            return dispatch(callGetCache(cacheKeyID));
-        },
-        showModal: (type, props) => {
-            dispatch(showModal(type, props));
-        },
-        hideModal: () => {
-            dispatch(hideModal());
-        }
-    };
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updatePagePath: (pagePath) => {
+      dispatch(updatePagePath(pagePath));
+    },
+    callFetchAPI: (hostname, hostURL, postData) => {
+      return dispatch(callFetchAPI(hostname, hostURL, postData));
+    },
+    callGetCache: (cacheKeyID) => {
+      return dispatch(callGetCache(cacheKeyID));
+    },
+    showModal: (type, props) => {
+      dispatch(showModal(type, props));
+    },
+    hideModal: () => {
+      dispatch(hideModal());
+    },
+  };
 };
 
 const Add = connect(mapStateToProps, mapDispatchToProps)(AddCom);

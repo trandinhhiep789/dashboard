@@ -14,7 +14,7 @@ import { formatDate, formatMonthDate } from "../../../../common/library/CommonLi
 import { formatMoney, formatNumber } from "../../../../utils/function";
 import { showModal, hideModal } from "../../../../actions/modal";
 import { MODAL_TYPE_VIEW } from "../../../../constants/actionTypes";
-import ListShipCoordinator from '../Component/ListShipCoordinator.js';
+import ListShipCoordinator from "../Component/ListShipCoordinator.js";
 //import ListShipCoordinator from "../Component/ListShipCoordinatorRoute.js";
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from "react-html-parser";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
@@ -61,6 +61,8 @@ class DataGridShipmentOderNewCom extends Component {
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
   componentDidMount() {
+    
+
     this.updateWindowDimensions();
     window.addEventListener("resize", this.updateWindowDimensions);
     if (this.props.dataSource) {
@@ -466,7 +468,7 @@ class DataGridShipmentOderNewCom extends Component {
       DeliverUserList: [],
       CurrentShipmentOrderStepID: objShipmentOrder.CurrentShipmentOrderStepID,
       ShipItemNameList: objShipmentOrder.ShipItemNameList,
-      PrimaryShipItemName: objShipmentOrder.PrimaryShipItemName
+      PrimaryShipItemName: objShipmentOrder.PrimaryShipItemName,
     };
     if (e.target.checked) {
       this.state.GridDataShip.push(objShip);
