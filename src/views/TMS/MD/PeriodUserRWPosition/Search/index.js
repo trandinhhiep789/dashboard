@@ -44,7 +44,8 @@ class SearchCom extends React.Component {
             IsCallAPIError: false,
             SearchData: InitSearchParams,
             dataExport: [],
-            DataTemplateExport
+            DataTemplateExport,
+            PageNumber: 1
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -204,6 +205,14 @@ class SearchCom extends React.Component {
             {
                 SearchKey: "@Keyword",
                 SearchValue: MLObject.Keyword
+            },
+            {
+                SearchKey: "@PAGESIZE",
+                SearchValue: 100
+            },
+            {
+                SearchKey: "@PAGEINDEX",
+                SearchValue: 0
             }
         ];
         this.setState({ SearchData: postData });
@@ -246,6 +255,17 @@ class SearchCom extends React.Component {
                 });
                 this.showMessage(apiResult.Message);
             }
+        });
+    }
+
+    handleonChangePage(pageNum) {
+        let listMLObject = [];
+        const aa = { SearchKey: "@PAGEINDEX", SearchValue: pageNum - 1 };
+        listMLObject = Object.assign([], this.state.SearchData, { [2]: aa });
+        // console.log(this.state.SearchData,listMLObject)
+        this.callSearchData(listMLObject)
+        this.setState({
+            PageNumber: pageNum
         });
     }
 
@@ -324,7 +344,12 @@ class SearchCom extends React.Component {
                         DeletePermission={PERIODUSERRWPOSITION_DELETE}
                         ExportPermission={PERIODUSERRWPOSITION_EXPORT}
                         IsAutoPaging={true}
-                        RowsPerPage={30}
+                        RowsPerPage={100}
+                        isPaginationServer={true}
+                        PageNumber={this.state.PageNumber}
+                        onChangePage={this.handleonChangePage.bind(this)}
+
+
                         IsExportFile={true}
                         DataExport={this.state.dataExport}
                         fileName="Danh sách vị trí thưởng theo khoảng thời gian"

@@ -543,7 +543,7 @@ export const DataGridColumnList = [
         Link: "/DataExportTemplate/Detail/",
         Caption: "Tên template xuất dữ liệu",
         DataSourceMember: "DataExportTemplateName",
-        Width: 200
+        Width: 250
     },
     // {
     //     Name: "DataExportTemplateContent",

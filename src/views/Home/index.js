@@ -215,6 +215,13 @@ import SymptomApply from "../TMS/MD/SymptomApply";
 import SymptomGroup from "../TMS/MD/SymptomGroup";
 import Symptom from "../TMS/MD/Symptom";
 import ShipmentRouteAuto from "./../TMS/ShipmentRouteAuto/index";
+import MaintainConstructListReport from "../TMS/ReportShipmentOrder/MaintainConstructListReport";
+import ConstructRevenueReport from "../TMS/ReportShipmentOrder/ConstructRevenueReport";
+import ArchitechtureType_PRJType from "../TMS/MD/ArchitechtureType_PRJType";
+import ConstructServiceType from "../TMS/MD/ConstructServiceType";
+import ConstructService from "../TMS/MD/ConstructService";
+import CurrentProjectTypeReport from "../TMS/ReportShipmentOrder/CurrentProjectTypeReport";
+import ProjectArchitectureInfo from "../TMS/MD/ProjectArchitectureInfo";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -533,6 +540,15 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/SymptomApply" component={SymptomApply} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/SymptomGroup" component={SymptomGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/Symptom" component={Symptom} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+
+                                    <PrivateRoute path="/MaintainConstructListReport" component={MaintainConstructListReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/ConstructRevenueReport" component={ConstructRevenueReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/CurrentProjectTypeReport" component={CurrentProjectTypeReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/ProjectArchitectureInfo" component={ProjectArchitectureInfo} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    
+                                    <PrivateRoute path="/ArchitechtureType_PRJType" component={ArchitechtureType_PRJType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/ConstructServiceType" component={ConstructServiceType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/ConstructService" component={ConstructService} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 </Switch>
