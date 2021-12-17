@@ -28,6 +28,8 @@ export const SearchElementList = [
     format: "MM-YYYY",
     colspan: 2,
     placeholder: "MM-YYYY",
+    isDisableNext:true,
+    isAllowClear:false
   },
   {
     type: "ComboBoxNewChange",

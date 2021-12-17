@@ -32,7 +32,7 @@ class DataGridShipmentRouteAutoCom extends Component {
 
     this.state = {
       GridData: {},
-      DataSource: this.props.dataSource,
+      DataSource: this.props.dataSource.slice(0, 10),
       DataSourceOrigin: this.props.dataSource,
       IsCheckAll: false,
       PageNumber: this.props.PageNumber,
@@ -98,7 +98,20 @@ class DataGridShipmentRouteAutoCom extends Component {
     this.handleGetDataCacheWard = this.handleGetDataCacheWard.bind(this);
   }
 
+  recursiveDataSource = () => {
+    setTimeout(() => {
+      let hasMore = this.state.DataSource.length + 1 < this.props.dataSource.length;
+      console.log(this.props.TimeFrame)
+      console.log("this.state.DataSource.length ======= ", this.state.DataSource.length)
+      this.setState((prev, props) => ({
+        DataSource: props.dataSource.slice(0, prev.DataSource.length + 20)
+      }));
+      if (hasMore) this.recursiveDataSource();
+    }, 0)
+  }
+
   componentDidMount() {
+    this.recursiveDataSource();
     this.updateWindowDimensions();
     this.handleGetDataCacheProvince();
     window.addEventListener("resize", this.updateWindowDimensions);
@@ -1206,11 +1219,11 @@ class DataGridShipmentRouteAutoCom extends Component {
                                             </button>
                                           </li>
                                         )}
-                                        <li className="item printing">
+                                        {/* <li className="item printing">
                                           <button className="btn" onClick={this.handlePrintClickNew.bind(this)}>
                                             <i className="ti ti-printer" data-id={rowItem.ShipmentOrderID}></i>
                                           </button>
-                                        </li>
+                                        </li> */}
                                       </ul>
                                     </td>
 
@@ -1257,9 +1270,9 @@ class DataGridShipmentRouteAutoCom extends Component {
                                           </div>
                                         </li>
 
-                                        <li className="address-customer">
+                                        {/* <li className="address-customer">
                                           <span>{rowItem.ReceiverFullAddress}</span>
-                                        </li>
+                                        </li> */}
 
                                         <li className={rowItem.IsInputReturn == true ? "item lstProducts lblReturns" : "item lstProducts"}>
                                           <span>{rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(/;/g, "<br/>"))}</span>
@@ -1402,11 +1415,11 @@ class DataGridShipmentRouteAutoCom extends Component {
                                         </button>
                                       </li>
                                     )}
-                                    <li className="item printing">
+                                    {/* <li className="item printing">
                                       <button className="btn" onClick={this.handlePrintClickNew.bind(this)}>
                                         <i className="ti ti-printer" data-id={rowItem.ShipmentOrderID}></i>
                                       </button>
-                                    </li>
+                                    </li> */}
                                   </ul>
                                 </td>
 
@@ -1445,9 +1458,9 @@ class DataGridShipmentRouteAutoCom extends Component {
                                         </button>
                                       </div>
                                     </label>
-                                    <label className="item address-receiver">
+                                    {/* <label className="item address-receiver">
                                       <span>{rowItem.ReceiverFullAddress}</span>
-                                    </label>
+                                    </label> */}
                                     <label className="item address-repository-created">
                                       <span>{rowItem.SenderFullName}</span>
                                     </label>

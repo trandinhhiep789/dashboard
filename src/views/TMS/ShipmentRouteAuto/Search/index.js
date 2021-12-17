@@ -25,7 +25,7 @@ import SearchFormShipmentRouteAuto from "../Components/SearchFormShipmentRouteAu
 import SearchForm from "../Components/SearchFormShipmentRouteAutoOldUI";
 import "../../../../css/DataGridShipmentRouteAuto.scss";
 import moment from "moment";
-import { Button, Card, Col, Row, Space, Statistic } from "antd";
+import { Button, Card, Col, Row, Space, Statistic, Tabs, Collapse, Steps, Popover  } from "antd";
 import { hideModal, showModal } from "../../../../actions/modal";
 import ModalSearchFormShipmentRouteAuto from "../Components/ModalSearchFormShipmentRouteAuto";
 
@@ -75,6 +75,7 @@ class SearchCom extends Component {
 
     this.searchref = React.createRef();
     this.notificationDOMRef = React.createRef();
+    this.refShipmentAuto = React.createRef()
 
     this.handleCloseMessage = this.handleCloseMessage.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
@@ -260,10 +261,10 @@ class SearchCom extends Component {
     this.props.updatePagePath(PagePath);
 
     jQuery(window).scroll(function () {
-      if (jQuery(this).scrollTop() > 200) {
-        $("#menu-options").addClass("menu-options-fixed");
+      if (jQuery(this).scrollTop() > 332) {
+        $(".menu-options").addClass("menu-options-fixed");
       } else {
-        $("#menu-options").removeClass("menu-options-fixed");
+        $(".menu-options").removeClass("menu-options-fixed");
       }
     });
   }
@@ -889,14 +890,141 @@ class SearchCom extends Component {
     // this.setState(changeState);
   }
 
+  shipmentRouteAuto (){
+    const a = [
+      {
+        name: "haha",
+        Ds: [
+          {ShipmentOrderID: "123"},
+          {ShipmentOrderID: "345"},
+          {ShipmentOrderID: "678"},
+        ]
+      },
+      {
+        name: "hihi",
+        Ds: [
+          {ShipmentOrderID: "111"},
+          {ShipmentOrderID: "222"},
+          {ShipmentOrderID: "333"},
+          {ShipmentOrderID: "112"},
+          {ShipmentOrderID: "221"},
+          {ShipmentOrderID: "331"},
+          {ShipmentOrderID: "1df11"},
+          {ShipmentOrderID: "22f2"},
+          {ShipmentOrderID: "3a3"},
+          {ShipmentOrderID: "11d2"},
+          {ShipmentOrderID: "22s1"},
+          {ShipmentOrderID: "33b1"},
+        ]
+      },
+      {
+        name: "hahasa",
+        Ds: [
+          {ShipmentOrderID: "1a23"},
+          {ShipmentOrderID: "34as5"},
+          {ShipmentOrderID: "67c8"},
+        ]
+      },
+      {
+        name: "hahaa",
+        Ds: [
+          {ShipmentOrderID: "1a2q3"},
+          {ShipmentOrderID: "3d4ass5"},
+          {ShipmentOrderID: "67cc8"},
+          {ShipmentOrderID: "1a2qa3"},
+          {ShipmentOrderID: "3qd4as5"},
+          {ShipmentOrderID: "67ccd8"},
+          {ShipmentOrderID: "1a2aq3"},
+          {ShipmentOrderID: "3d4as5"},
+          {ShipmentOrderID: "67cc8z"},
+          {ShipmentOrderID: "1a2qaa3"},
+          {ShipmentOrderID: "3qd4acs5"},
+          {ShipmentOrderID: "6a7ccd8"},
+        ]
+      },
+     ]
+
+     var randomColor
+     const pickRandomColor = [
+        "#1f5ff4",
+        "#c55d53",
+        "#cb68c5",
+        "#65b411",
+        "#f4b323",
+        "#420e3e",
+        "#e80024",
+        "#585ccc",
+        "#d44371",
+        "#14915f",
+        "#e79940",
+        "#6be54"
+      ]
+    return (
+      <div style={{width: "100%", backgroundColor: "white", padding: "20px", minHeight: "50vh", border: "1px solid blue"}}>
+        <h4>Danh sách các tuyến đề xuất</h4>
+        {a && a.map((line) => (
+          <div key={line.name}>
+            {randomColor = pickRandomColor[Math.floor(Math.random() * 11)]}
+            <div style={{display: "flex", width: "100%"}}>
+            <div style={{display: "flex",height: "9px", width: "90%",justifyContent: "space-between", borderBottom: `3px solid ${randomColor}`, marginBottom: "30px"}}>
+              {line.Ds.map((a) =>
+                <Popover key={a.ShipmentOrderID} content={a.ShipmentOrderID} title={a.ShipmentOrderID}>
+                  <div style={{width: '16px', height: '16px', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: "white"}}>
+                    <div style={{ position: 'relative',width: '12px', height: '12px', border: `3px solid ${randomColor}`, backgroundColor: `${randomColor}`, borderRadius: '50%', cursor: "pointer"}}>
+                      <div style={{ position: "absolute", top: "10px", left: "-8px"}}>
+                        {a.ShipmentOrderID  }
+                      </div>
+                    </div>
+                  </div>
+                </Popover>)
+              }
+            </div>
+            <div style={{width: "10%", textAlign: "right"}}>
+              <Button type="primary" size="small">Xem bản đồ</Button>
+            </div>
+            </div>
+          </div>
+        ))}
+        
+      </div>
+    )
+  }
+
   render() {
     const currentHour = moment().hour();
+
+    const phanTuyenTuDong = this.shipmentRouteAuto();
+
+    const active_tab = (time) => {
+      if(time >= 8 && time < 10) return "1"
+      else if (time >= 10 && time < 12) return "2"
+      else if (time >= 12 && time < 14) return "3"
+      else if (time >= 14 && time < 16) return "4"
+      else if (time >= 17 && time < 19) return "5"
+      else if (time >= 19 && time < 21) return "6"
+      else return "7"
+    }
 
     return (
       <React.Fragment>
         <ReactNotification ref={this.notificationDOMRef} />
         <div className="col-lg-12 SearchFormCustom" id="SearchFormCustom">
-          <SearchFormShipmentRouteAuto FormName="Tìm kiếm danh sách loại phương tiện vận chuyển" onSubmit={(object) => this.handleSearchSubmit(object)} ref={this.searchref} />
+
+        <Collapse style={{backgroundColor: 'white', marginBottom: '10px'}}>
+          <Collapse.Panel header="Tim kiếm, lọc dữ liệu phân tuyến vận chuyển" key="1">
+            <SearchFormShipmentRouteAuto
+                FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
+                MLObjectDefinition={SearchMLObjectDefinition}
+                listelement={this.state.SearchElementList}
+                onSubmit={(object) => this.handleSearchSubmit(object)}
+                ref={this.searchref}
+                btnGroup="btnSearch btncustom btnGroup"
+                IsSetting={true}
+                className="multiple multiple-custom multiple-custom-display"
+              />
+          </Collapse.Panel>
+        </Collapse>
+          
 
           {/* <SearchForm
             FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
@@ -909,542 +1037,570 @@ class SearchCom extends Component {
           /> */}
         </div>
 
-        <div id="menu-options">
+        {/* <div className="menu-options" style={{marginTop: "10px"}}>
           <Space>
             <Button type="primary" onClick={() => this.handleUserCoordinator()}>
               Phân tuyến
             </Button>
-            <Button type="primary">Phân tuyến tự động</Button>
+            <Button type="primary" onClick={() => this.shipmentRouteAuto()}>Phân tuyến tự động</Button>
           </Space>
-        </div>
+        </div> */}
 
         {this.state.IsLoadDataComplete && (
-          <div className="col-lg-12">
-            <Collapsible
-              className="CollapsibleCustom"
-              trigger={
-                <Fragment>
-                  <Row gutter={24}>
-                    <Col span={5}>
-                      <Card size="small" bordered={false}>
-                        <Statistic title="Thời gian" value="08h00 - 10h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                      </Card>
-                    </Col>
-                    <Col span={5}>
-                      <Card size="small" bordered={false}>
-                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame8to10.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                      </Card>
-                    </Col>
-                    <Col span={5}>
-                      <Card size="small" bordered={false}>
-                        <Statistic
-                          title="Khởi tạo và chờ phân bổ"
-                          value={this.state.TimeFrame8to10.filter((item) => item.ShipmentOrderStatusID === 20).length}
-                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                        />
-                      </Card>
-                    </Col>
-                    <Col span={5}>
-                      <Card size="small" bordered={false}>
-                        <Statistic
-                          title="Giao hàng thành công"
-                          value={this.state.TimeFrame8to10.filter((item) => item.ShipmentOrderStatusID === 28).length}
-                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                        />
-                      </Card>
-                    </Col>
-                  </Row>
-                </Fragment>
-              }
-              triggerStyle={{ backgroundColor: "white" }}
-              triggerOpenedClassName="collapsible-open-custom"
-              easing="ease-in"
-              open={currentHour >= 8 && currentHour < 10 ? true : false}
-            >
-              <DataGridShipmentRouteAuto
-                key={1}
-                listColumn={DataGridColumnList}
-                dataSource={this.state.TimeFrame8to10}
-                IsLoadData={this.state.IsLoadData}
-                TimeFrame="TimeFrame8to10"
-                GridDataShip={this.state.GridDataShip.TimeFrame8to10}
-                AddLink={AddLink}
-                IDSelectColumnName={IDSelectColumnName}
-                PKColumnName={PKColumnName}
-                onDeleteClick={this.handleDelete}
-                onChangePage={this.handleOnChangePage}
-                onChangeView={this.handleOnChangeView.bind(this)}
-                onSearchEvent={this.handleonSearchEvent.bind(this)}
-                onChangePageLoad={this.onChangePageLoad.bind(this)}
-                onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
-                onCheckShip={this.handleCheckShip}
-                onClickShip={this.handleClickShip}
-                onShipmentRoute={this.handleClickShipmentRoute}
-                onShowModel={this.handleShowModel}
-                onPrint={this.handlePrint.bind(this)}
-                IsDelete={false}
-                ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
-                IsAdd={false}
-                IsDataGridSmallSize={this.state.IsDataGridSmallSize}
-                PageNumber={this.state.PageNumber}
-                DeletePermission={"SHIPMENTORDER_DELETE"}
-                EditPermission={"SHIPMENTORDER_UPDATE"}
-                IsAutoPaging={true}
-                RowsPerPage={10000}
-              />
-            </Collapsible>
+          <div className="col-lg-12" style={{backgroundColor: "aliceblue" , border: "1px solid #03a9f4"}}>
+            <Tabs defaultActiveKey={active_tab(currentHour)} size="large">
+              <Tabs.TabPane tab="08h00 - 10h00" key="1">
+                <Collapsible
+                className="CollapsibleCustom"
+                trigger={
+                  <Fragment>
+                    <Row gutter={24}>
+                      <Col span={5}>
+                        <Card size="small" bordered={false}>
+                          <Statistic title="Thời gian" value="08h00 - 10h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                        </Card>
+                      </Col>
+                      <Col span={5}>
+                        <Card size="small" bordered={false}>
+                          <Statistic title="Tổng số đơn" value={this.state.TimeFrame8to10.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                        </Card>
+                      </Col>
+                      <Col span={5}>
+                        <Card size="small" bordered={false}>
+                          <Statistic
+                            title="Khởi tạo và chờ phân bổ"
+                            value={this.state.TimeFrame8to10.filter((item) => item.ShipmentOrderStatusID === 20).length}
+                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                          />
+                        </Card>
+                      </Col>
+                      <Col span={5}>
+                        <Card size="small" bordered={false}>
+                          <Statistic
+                            title="Giao hàng thành công"
+                            value={this.state.TimeFrame8to10.filter((item) => item.ShipmentOrderStatusID === 28).length}
+                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                          />
+                        </Card>
+                      </Col>
+                    </Row>
+                  </Fragment>
+                }
+                triggerStyle={{ backgroundColor: "white" }}
+                triggerOpenedClassName="collapsible-open-custom"
+                easing="ease-in"
+                // open={currentHour >= 8 && currentHour < 10 ? true : false}
+                open={true}
+              >
+                <DataGridShipmentRouteAuto
+                  key={1}
+                  listColumn={DataGridColumnList}
+                  dataSource={this.state.TimeFrame8to10}
+                  IsLoadData={this.state.IsLoadData}
+                  TimeFrame="TimeFrame8to10"
+                  GridDataShip={this.state.GridDataShip.TimeFrame8to10}
+                  AddLink={AddLink}
+                  IDSelectColumnName={IDSelectColumnName}
+                  PKColumnName={PKColumnName}
+                  onDeleteClick={this.handleDelete}
+                  onChangePage={this.handleOnChangePage}
+                  onChangeView={this.handleOnChangeView.bind(this)}
+                  onSearchEvent={this.handleonSearchEvent.bind(this)}
+                  onChangePageLoad={this.onChangePageLoad.bind(this)}
+                  onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
+                  onCheckShip={this.handleCheckShip}
+                  onClickShip={this.handleClickShip}
+                  onShipmentRoute={this.handleClickShipmentRoute}
+                  onShowModel={this.handleShowModel}
+                  onPrint={this.handlePrint.bind(this)}
+                  IsDelete={false}
+                  ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
+                  IsAdd={false}
+                  IsDataGridSmallSize={this.state.IsDataGridSmallSize}
+                  PageNumber={this.state.PageNumber}
+                  DeletePermission={"SHIPMENTORDER_DELETE"}
+                  EditPermission={"SHIPMENTORDER_UPDATE"}
+                  IsAutoPaging={true}
+                  RowsPerPage={10000}
+                />
+                </Collapsible>
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="10h00 - 12h00" key="2">
+                <Collapsible
+                className="CollapsibleCustom"
+                trigger={
+                  <React.Fragment>
+                    <Row gutter={24}>
+                      <Col span={5}>
+                        <Card size="small" bordered={false}>
+                          <Statistic title="Thời gian" value="10h00 - 12h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                        </Card>
+                      </Col>
+                      <Col span={5}>
+                        <Card size="small" bordered={false}>
+                          <Statistic title="Tổng số đơn" value={this.state.TimeFrame10to12.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                        </Card>
+                      </Col>
+                      <Col span={5}>
+                        <Card size="small" bordered={false}>
+                          <Statistic
+                            title="Khởi tạo và chờ phân bổ"
+                            value={this.state.TimeFrame10to12.filter((item) => item.ShipmentOrderStatusID === 20).length}
+                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                          />
+                        </Card>
+                      </Col>
+                      <Col span={5}>
+                        <Card size="small" bordered={false}>
+                          <Statistic
+                            title="Giao hàng thành công"
+                            value={this.state.TimeFrame10to12.filter((item) => item.ShipmentOrderStatusID === 28).length}
+                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                          />
+                        </Card>
+                      </Col>
+                    </Row>
+                  </React.Fragment>
+                }
+                triggerOpenedClassName="collapsible-open-custom"
+                triggerStyle={{ backgroundColor: "white" }}
+                easing="ease-in"
+                // open={currentHour >= 10 && currentHour < 12 ? true : false}
+                open={true}
+              >
+                <DataGridShipmentRouteAuto
+                  key={2}
+                  listColumn={DataGridColumnList}
+                  dataSource={this.state.TimeFrame10to12}
+                  IsLoadData={this.state.IsLoadData}
+                  TimeFrame="TimeFrame10to12"
+                  GridDataShip={this.state.GridDataShip.TimeFrame10to12}
+                  AddLink={AddLink}
+                  IDSelectColumnName={IDSelectColumnName}
+                  PKColumnName={PKColumnName}
+                  onDeleteClick={this.handleDelete}
+                  onChangePage={this.handleOnChangePage}
+                  onChangeView={this.handleOnChangeView.bind(this)}
+                  onSearchEvent={this.handleonSearchEvent.bind(this)}
+                  onChangePageLoad={this.onChangePageLoad.bind(this)}
+                  onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
+                  onShowModel={this.handleShowModel}
+                  onCheckShip={this.handleCheckShip}
+                  onClickShip={this.handleClickShip}
+                  onShipmentRoute={this.handleClickShipmentRoute}
+                  onPrint={this.handlePrint.bind(this)}
+                  IsDelete={false}
+                  ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
+                  IsAdd={false}
+                  IsDataGridSmallSize={this.state.IsDataGridSmallSize}
+                  PageNumber={this.state.PageNumber}
+                  DeletePermission={"SHIPMENTORDER_DELETE"}
+                  EditPermission={"SHIPMENTORDER_UPDATE"}
+                  IsAutoPaging={true}
+                  RowsPerPage={10000}
+                />
+                </Collapsible>
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="12h00 - 14h00" key="3">
+                <Collapsible
+                className="CollapsibleCustom"
+                trigger={
+                  <React.Fragment>
+                    <Row gutter={24}>
+                      <Col span={5}>
+                        <Card size="small" bordered={false}>
+                          <Statistic title="Thời gian" value="12h00 - 14h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                        </Card>
+                      </Col>
+                      <Col span={5}>
+                        <Card size="small" bordered={false}>
+                          <Statistic title="Tổng số đơn" value={this.state.TimeFrame12to14.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                        </Card>
+                      </Col>
+                      <Col span={5}>
+                        <Card size="small" bordered={false}>
+                          <Statistic
+                            title="Khởi tạo và chờ phân bổ"
+                            value={this.state.TimeFrame12to14.filter((item) => item.ShipmentOrderStatusID === 20).length}
+                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                          />
+                        </Card>
+                      </Col>
+                      <Col span={5}>
+                        <Card size="small" bordered={false}>
+                          <Statistic
+                            title="Giao hàng thành công"
+                            value={this.state.TimeFrame12to14.filter((item) => item.ShipmentOrderStatusID === 28).length}
+                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                          />
+                        </Card>
+                      </Col>
+                    </Row>
+                  </React.Fragment>
+                }
+                triggerOpenedClassName="collapsible-open-custom"
+                triggerStyle={{ backgroundColor: "white" }}
+                easing="ease-in"
+                // open={currentHour >= 12 && currentHour < 14 ? true : false}
+                open={true}
+              >
+                <DataGridShipmentRouteAuto
+                  key={3}
+                  listColumn={DataGridColumnList}
+                  dataSource={this.state.TimeFrame12to14}
+                  IsLoadData={this.state.IsLoadData}
+                  TimeFrame="TimeFrame12to14"
+                  GridDataShip={this.state.GridDataShip.TimeFrame12to14}
+                  AddLink={AddLink}
+                  IDSelectColumnName={IDSelectColumnName}
+                  PKColumnName={PKColumnName}
+                  onDeleteClick={this.handleDelete}
+                  onChangePage={this.handleOnChangePage}
+                  onChangeView={this.handleOnChangeView.bind(this)}
+                  onSearchEvent={this.handleonSearchEvent.bind(this)}
+                  onChangePageLoad={this.onChangePageLoad.bind(this)}
+                  onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
+                  onShowModel={this.handleShowModel}
+                  onCheckShip={this.handleCheckShip}
+                  onClickShip={this.handleClickShip}
+                  onShipmentRoute={this.handleClickShipmentRoute}
+                  onPrint={this.handlePrint.bind(this)}
+                  IsDelete={false}
+                  ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
+                  IsAdd={false}
+                  IsDataGridSmallSize={this.state.IsDataGridSmallSize}
+                  PageNumber={this.state.PageNumber}
+                  DeletePermission={"SHIPMENTORDER_DELETE"}
+                  EditPermission={"SHIPMENTORDER_UPDATE"}
+                  IsAutoPaging={true}
+                  RowsPerPage={10000}
+                />
+                </Collapsible>
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="14h00 - 16h00" key="4">
+                <Collapsible
+                className="CollapsibleCustom"
+                trigger={
+                  <React.Fragment>
+                    <Row gutter={24}>
+                      <Col span={5}>
+                        <Card size="small" bordered={false}>
+                          <Statistic title="Thời gian" value="14h00 - 16h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                        </Card>
+                      </Col>
+                      <Col span={5}>
+                        <Card size="small" bordered={false}>
+                          <Statistic title="Tổng số đơn" value={this.state.TimeFrame14to16.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                        </Card>
+                      </Col>
+                      <Col span={5}>
+                        <Card size="small" bordered={false}>
+                          <Statistic
+                            title="Khởi tạo và chờ phân bổ"
+                            value={this.state.TimeFrame14to16.filter((item) => item.ShipmentOrderStatusID === 20).length}
+                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                          />
+                        </Card>
+                      </Col>
+                      <Col span={5}>
+                        <Card size="small" bordered={false}>
+                          <Statistic
+                            title="Giao hàng thành công"
+                            value={this.state.TimeFrame14to16.filter((item) => item.ShipmentOrderStatusID === 28).length}
+                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                          />
+                        </Card>
+                      </Col>
+                    </Row>
+                  </React.Fragment>
+                }
+                triggerOpenedClassName="collapsible-open-custom"
+                triggerStyle={{ backgroundColor: "white" }}
+                easing="ease-in"
+                // open={currentHour >= 14 && currentHour < 16 ? true : false}
+                open={true}
+              >
+                <DataGridShipmentRouteAuto
+                  key={4}
+                  listColumn={DataGridColumnList}
+                  dataSource={this.state.TimeFrame14to16}
+                  IsLoadData={this.state.IsLoadData}
+                  TimeFrame="TimeFrame14to16"
+                  GridDataShip={this.state.GridDataShip.TimeFrame14to16}
+                  AddLink={AddLink}
+                  IDSelectColumnName={IDSelectColumnName}
+                  PKColumnName={PKColumnName}
+                  onDeleteClick={this.handleDelete}
+                  onChangePage={this.handleOnChangePage}
+                  onChangeView={this.handleOnChangeView.bind(this)}
+                  onSearchEvent={this.handleonSearchEvent.bind(this)}
+                  onChangePageLoad={this.onChangePageLoad.bind(this)}
+                  onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
+                  onShowModel={this.handleShowModel}
+                  onCheckShip={this.handleCheckShip}
+                  onClickShip={this.handleClickShip}
+                  onShipmentRoute={this.handleClickShipmentRoute}
+                  onPrint={this.handlePrint.bind(this)}
+                  IsDelete={false}
+                  ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
+                  IsAdd={false}
+                  IsDataGridSmallSize={this.state.IsDataGridSmallSize}
+                  PageNumber={this.state.PageNumber}
+                  DeletePermission={"SHIPMENTORDER_DELETE"}
+                  EditPermission={"SHIPMENTORDER_UPDATE"}
+                  IsAutoPaging={true}
+                  RowsPerPage={10000}
+                />
+                </Collapsible>
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="17h00 - 19h00" key="5">
+                <Collapsible
+                className="CollapsibleCustom"
+                trigger={
+                  <React.Fragment>
+                    <Row gutter={24}>
+                      <Col span={5}>
+                        <Card size="small" bordered={false}>
+                          <Statistic title="Thời gian" value="17h00 - 19h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                        </Card>
+                      </Col>
+                      <Col span={5}>
+                        <Card size="small" bordered={false}>
+                          <Statistic title="Tổng số đơn" value={this.state.TimeFrame17to19.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                        </Card>
+                      </Col>
+                      <Col span={5}>
+                        <Card size="small" bordered={false}>
+                          <Statistic
+                            title="Khởi tạo và chờ phân bổ"
+                            value={this.state.TimeFrame17to19.filter((item) => item.ShipmentOrderStatusID === 20).length}
+                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                          />
+                        </Card>
+                      </Col>
+                      <Col span={5}>
+                        <Card size="small" bordered={false}>
+                          <Statistic
+                            title="Giao hàng thành công"
+                            value={this.state.TimeFrame17to19.filter((item) => item.ShipmentOrderStatusID === 29).length}
+                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                          />
+                        </Card>
+                      </Col>
+                    </Row>
+                  </React.Fragment>
+                }
+                triggerOpenedClassName="collapsible-open-custom"
+                triggerStyle={{ backgroundColor: "white" }}
+                easing="ease-in"
+                // open={currentHour >= 17 && currentHour < 19 ? true : false}
+                open={true}
+              >
+                <DataGridShipmentRouteAuto
+                  key={5}
+                  listColumn={DataGridColumnList}
+                  dataSource={this.state.TimeFrame17to19}
+                  IsLoadData={this.state.IsLoadData}
+                  TimeFrame="TimeFrame17to19"
+                  GridDataShip={this.state.GridDataShip.TimeFrame17to19}
+                  AddLink={AddLink}
+                  IDSelectColumnName={IDSelectColumnName}
+                  PKColumnName={PKColumnName}
+                  onDeleteClick={this.handleDelete}
+                  onChangePage={this.handleOnChangePage}
+                  onChangeView={this.handleOnChangeView.bind(this)}
+                  onSearchEvent={this.handleonSearchEvent.bind(this)}
+                  onChangePageLoad={this.onChangePageLoad.bind(this)}
+                  onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
+                  onShowModel={this.handleShowModel}
+                  onCheckShip={this.handleCheckShip}
+                  onClickShip={this.handleClickShip}
+                  onShipmentRoute={this.handleClickShipmentRoute}
+                  onPrint={this.handlePrint.bind(this)}
+                  IsDelete={false}
+                  ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
+                  IsAdd={false}
+                  IsDataGridSmallSize={this.state.IsDataGridSmallSize}
+                  PageNumber={this.state.PageNumber}
+                  DeletePermission={"SHIPMENTORDER_DELETE"}
+                  EditPermission={"SHIPMENTORDER_UPDATE"}
+                  IsAutoPaging={true}
+                  RowsPerPage={10000}
+                />
+                </Collapsible>
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="19h00 - 21h00" key="6">
+                <Collapsible
+                className="CollapsibleCustom"
+                trigger={
+                  <React.Fragment>
+                    <Row gutter={24}>
+                      <Col span={5}>
+                        <Card size="small" bordered={false}>
+                          <Statistic title="Thời gian" value="19h00 - 21h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                        </Card>
+                      </Col>
+                      <Col span={5}>
+                        <Card size="small" bordered={false}>
+                          <Statistic title="Tổng số đơn" value={this.state.TimeFrame19to21.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                        </Card>
+                      </Col>
+                      <Col span={5}>
+                        <Card size="small" bordered={false}>
+                          <Statistic
+                            title="Khởi tạo và chờ phân bổ"
+                            value={this.state.TimeFrame19to21.filter((item) => item.ShipmentOrderStatusID === 20).length}
+                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                          />
+                        </Card>
+                      </Col>
+                      <Col span={5}>
+                        <Card size="small" bordered={false}>
+                          <Statistic
+                            title="Giao hàng thành công"
+                            value={this.state.TimeFrame19to21.filter((item) => item.ShipmentOrderStatusID === 28).length}
+                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                          />
+                        </Card>
+                      </Col>
+                    </Row>
+                  </React.Fragment>
+                }
+                triggerOpenedClassName="collapsible-open-custom"
+                triggerStyle={{ backgroundColor: "white" }}
+                easing="ease-in"
+                // open={currentHour >= 19 && currentHour < 21 ? true : false}
+                open={true}
+              >
+                <DataGridShipmentRouteAuto
+                  key={6}
+                  listColumn={DataGridColumnList}
+                  dataSource={this.state.TimeFrame19to21}
+                  IsLoadData={this.state.IsLoadData}
+                  TimeFrame="TimeFrame19to21"
+                  GridDataShip={this.state.GridDataShip.TimeFrame19to21}
+                  AddLink={AddLink}
+                  IDSelectColumnName={IDSelectColumnName}
+                  PKColumnName={PKColumnName}
+                  onDeleteClick={this.handleDelete}
+                  onChangePage={this.handleOnChangePage}
+                  onChangeView={this.handleOnChangeView.bind(this)}
+                  onSearchEvent={this.handleonSearchEvent.bind(this)}
+                  onChangePageLoad={this.onChangePageLoad.bind(this)}
+                  onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
+                  onShowModel={this.handleShowModel}
+                  onCheckShip={this.handleCheckShip}
+                  onClickShip={this.handleClickShip}
+                  onShipmentRoute={this.handleClickShipmentRoute}
+                  onPrint={this.handlePrint.bind(this)}
+                  IsDelete={false}
+                  ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
+                  IsDataGridSmallSize={this.state.IsDataGridSmallSize}
+                  IsAdd={false}
+                  PageNumber={this.state.PageNumber}
+                  DeletePermission={"SHIPMENTORDER_DELETE"}
+                  EditPermission={"SHIPMENTORDER_UPDATE"}
+                  IsAutoPaging={true}
+                  RowsPerPage={10000}
+                />
+                </Collapsible>
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="Thời gian khác" key="7">
+                <Collapsible
+                className="CollapsibleCustom"
+                trigger={
+                  <React.Fragment>
+                    <Row gutter={24}>
+                      <Col span={5}>
+                        <Card size="small" bordered={false}>
+                          <Statistic title="Thời gian khác" value="" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                        </Card>
+                      </Col>
+                      <Col span={5}>
+                        <Card size="small" bordered={false}>
+                          <Statistic title="Tổng số đơn" value={this.state.diffTimeFrame.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                        </Card>
+                      </Col>
+                      <Col span={5}>
+                        <Card size="small" bordered={false}>
+                          <Statistic
+                            title="Khởi tạo và chờ phân bổ"
+                            value={this.state.diffTimeFrame.filter((item) => item.ShipmentOrderStatusID === 20).length}
+                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                          />
+                        </Card>
+                      </Col>
+                      <Col span={5}>
+                        <Card size="small" bordered={false}>
+                          <Statistic
+                            title="Giao hàng thành công"
+                            value={this.state.diffTimeFrame.filter((item) => item.ShipmentOrderStatusID === 28).length}
+                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                          />
+                        </Card>
+                      </Col>
+                    </Row>
+                  </React.Fragment>
+                }
+                triggerOpenedClassName="collapsible-open-custom"
+                triggerStyle={{ backgroundColor: "white" }}
+                easing="ease-in"
+                // open={currentHour >= 21 || currentHour >= 16 && currentHour < 17 ? true : false}
+                open={true}
+              >
+                <DataGridShipmentRouteAuto
+                  key={7}
+                  listColumn={DataGridColumnList}
+                  dataSource={this.state.diffTimeFrame}
+                  IsLoadData={this.state.IsLoadData}
+                  TimeFrame="diffTimeFrame"
+                  GridDataShip={this.state.GridDataShip.diffTimeFrame}
+                  AddLink={AddLink}
+                  IDSelectColumnName={IDSelectColumnName}
+                  PKColumnName={PKColumnName}
+                  onDeleteClick={this.handleDelete}
+                  onChangePage={this.handleOnChangePage}
+                  onChangeView={this.handleOnChangeView.bind(this)}
+                  onSearchEvent={this.handleonSearchEvent.bind(this)}
+                  onChangePageLoad={this.onChangePageLoad.bind(this)}
+                  onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
+                  onShowModel={this.handleShowModel}
+                  onCheckShip={this.handleCheckShip}
+                  onClickShip={this.handleClickShip}
+                  onShipmentRoute={this.handleClickShipmentRoute}
+                  onPrint={this.handlePrint.bind(this)}
+                  IsDelete={false}
+                  ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
+                  IsAdd={false}
+                  IsDataGridSmallSize={this.state.IsDataGridSmallSize}
+                  PageNumber={this.state.PageNumber}
+                  DeletePermission={"SHIPMENTORDER_DELETE"}
+                  EditPermission={"SHIPMENTORDER_UPDATE"}
+                  IsAutoPaging={true}
+                  RowsPerPage={10000}
+                />
+                </Collapsible>
+              </Tabs.TabPane>
+              <Tabs.TabPane tab={
+              <Space>
+                <Button type="primary" onClick={() => this.handleUserCoordinator()}>
+                  Phân tuyến
+                </Button>
+                <Button type="primary" onClick={() => this.refShipmentAuto.current.scrollIntoView({ behavior: 'smooth', block: 'start' })}>Phân tuyến tự động</Button>
+              </Space>} disabled  key="8">
 
-            <Collapsible
-              className="CollapsibleCustom"
-              trigger={
-                <React.Fragment>
-                  <Row gutter={24}>
-                    <Col span={5}>
-                      <Card size="small" bordered={false}>
-                        <Statistic title="Thời gian" value="10h00 - 12h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                      </Card>
-                    </Col>
-                    <Col span={5}>
-                      <Card size="small" bordered={false}>
-                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame10to12.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                      </Card>
-                    </Col>
-                    <Col span={5}>
-                      <Card size="small" bordered={false}>
-                        <Statistic
-                          title="Khởi tạo và chờ phân bổ"
-                          value={this.state.TimeFrame10to12.filter((item) => item.ShipmentOrderStatusID === 20).length}
-                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                        />
-                      </Card>
-                    </Col>
-                    <Col span={5}>
-                      <Card size="small" bordered={false}>
-                        <Statistic
-                          title="Giao hàng thành công"
-                          value={this.state.TimeFrame10to12.filter((item) => item.ShipmentOrderStatusID === 28).length}
-                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                        />
-                      </Card>
-                    </Col>
-                  </Row>
-                </React.Fragment>
-              }
-              triggerOpenedClassName="collapsible-open-custom"
-              triggerStyle={{ backgroundColor: "white" }}
-              easing="ease-in"
-              open={currentHour >= 10 && currentHour < 12 ? true : false}
-            >
-              <DataGridShipmentRouteAuto
-                key={2}
-                listColumn={DataGridColumnList}
-                dataSource={this.state.TimeFrame10to12}
-                IsLoadData={this.state.IsLoadData}
-                TimeFrame="TimeFrame10to12"
-                GridDataShip={this.state.GridDataShip.TimeFrame10to12}
-                AddLink={AddLink}
-                IDSelectColumnName={IDSelectColumnName}
-                PKColumnName={PKColumnName}
-                onDeleteClick={this.handleDelete}
-                onChangePage={this.handleOnChangePage}
-                onChangeView={this.handleOnChangeView.bind(this)}
-                onSearchEvent={this.handleonSearchEvent.bind(this)}
-                onChangePageLoad={this.onChangePageLoad.bind(this)}
-                onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
-                onShowModel={this.handleShowModel}
-                onCheckShip={this.handleCheckShip}
-                onClickShip={this.handleClickShip}
-                onShipmentRoute={this.handleClickShipmentRoute}
-                onPrint={this.handlePrint.bind(this)}
-                IsDelete={false}
-                ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
-                IsAdd={false}
-                IsDataGridSmallSize={this.state.IsDataGridSmallSize}
-                PageNumber={this.state.PageNumber}
-                DeletePermission={"SHIPMENTORDER_DELETE"}
-                EditPermission={"SHIPMENTORDER_UPDATE"}
-                IsAutoPaging={true}
-                RowsPerPage={10000}
-              />
-            </Collapsible>
-
-            <Collapsible
-              className="CollapsibleCustom"
-              trigger={
-                <React.Fragment>
-                  <Row gutter={24}>
-                    <Col span={5}>
-                      <Card size="small" bordered={false}>
-                        <Statistic title="Thời gian" value="12h00 - 14h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                      </Card>
-                    </Col>
-                    <Col span={5}>
-                      <Card size="small" bordered={false}>
-                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame12to14.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                      </Card>
-                    </Col>
-                    <Col span={5}>
-                      <Card size="small" bordered={false}>
-                        <Statistic
-                          title="Khởi tạo và chờ phân bổ"
-                          value={this.state.TimeFrame12to14.filter((item) => item.ShipmentOrderStatusID === 20).length}
-                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                        />
-                      </Card>
-                    </Col>
-                    <Col span={5}>
-                      <Card size="small" bordered={false}>
-                        <Statistic
-                          title="Giao hàng thành công"
-                          value={this.state.TimeFrame12to14.filter((item) => item.ShipmentOrderStatusID === 28).length}
-                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                        />
-                      </Card>
-                    </Col>
-                  </Row>
-                </React.Fragment>
-              }
-              triggerOpenedClassName="collapsible-open-custom"
-              triggerStyle={{ backgroundColor: "white" }}
-              easing="ease-in"
-              open={currentHour >= 12 && currentHour < 14 ? true : false}
-            >
-              <DataGridShipmentRouteAuto
-                key={3}
-                listColumn={DataGridColumnList}
-                dataSource={this.state.TimeFrame12to14}
-                IsLoadData={this.state.IsLoadData}
-                TimeFrame="TimeFrame12to14"
-                GridDataShip={this.state.GridDataShip.TimeFrame12to14}
-                AddLink={AddLink}
-                IDSelectColumnName={IDSelectColumnName}
-                PKColumnName={PKColumnName}
-                onDeleteClick={this.handleDelete}
-                onChangePage={this.handleOnChangePage}
-                onChangeView={this.handleOnChangeView.bind(this)}
-                onSearchEvent={this.handleonSearchEvent.bind(this)}
-                onChangePageLoad={this.onChangePageLoad.bind(this)}
-                onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
-                onShowModel={this.handleShowModel}
-                onCheckShip={this.handleCheckShip}
-                onClickShip={this.handleClickShip}
-                onShipmentRoute={this.handleClickShipmentRoute}
-                onPrint={this.handlePrint.bind(this)}
-                IsDelete={false}
-                ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
-                IsAdd={false}
-                IsDataGridSmallSize={this.state.IsDataGridSmallSize}
-                PageNumber={this.state.PageNumber}
-                DeletePermission={"SHIPMENTORDER_DELETE"}
-                EditPermission={"SHIPMENTORDER_UPDATE"}
-                IsAutoPaging={true}
-                RowsPerPage={10000}
-              />
-            </Collapsible>
-
-            <Collapsible
-              className="CollapsibleCustom"
-              trigger={
-                <React.Fragment>
-                  <Row gutter={24}>
-                    <Col span={5}>
-                      <Card size="small" bordered={false}>
-                        <Statistic title="Thời gian" value="14h00 - 16h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                      </Card>
-                    </Col>
-                    <Col span={5}>
-                      <Card size="small" bordered={false}>
-                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame14to16.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                      </Card>
-                    </Col>
-                    <Col span={5}>
-                      <Card size="small" bordered={false}>
-                        <Statistic
-                          title="Khởi tạo và chờ phân bổ"
-                          value={this.state.TimeFrame14to16.filter((item) => item.ShipmentOrderStatusID === 20).length}
-                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                        />
-                      </Card>
-                    </Col>
-                    <Col span={5}>
-                      <Card size="small" bordered={false}>
-                        <Statistic
-                          title="Giao hàng thành công"
-                          value={this.state.TimeFrame14to16.filter((item) => item.ShipmentOrderStatusID === 28).length}
-                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                        />
-                      </Card>
-                    </Col>
-                  </Row>
-                </React.Fragment>
-              }
-              triggerOpenedClassName="collapsible-open-custom"
-              triggerStyle={{ backgroundColor: "white" }}
-              easing="ease-in"
-              open={currentHour >= 14 && currentHour < 16 ? true : false}
-            >
-              <DataGridShipmentRouteAuto
-                key={4}
-                listColumn={DataGridColumnList}
-                dataSource={this.state.TimeFrame14to16}
-                IsLoadData={this.state.IsLoadData}
-                TimeFrame="TimeFrame14to16"
-                GridDataShip={this.state.GridDataShip.TimeFrame14to16}
-                AddLink={AddLink}
-                IDSelectColumnName={IDSelectColumnName}
-                PKColumnName={PKColumnName}
-                onDeleteClick={this.handleDelete}
-                onChangePage={this.handleOnChangePage}
-                onChangeView={this.handleOnChangeView.bind(this)}
-                onSearchEvent={this.handleonSearchEvent.bind(this)}
-                onChangePageLoad={this.onChangePageLoad.bind(this)}
-                onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
-                onShowModel={this.handleShowModel}
-                onCheckShip={this.handleCheckShip}
-                onClickShip={this.handleClickShip}
-                onShipmentRoute={this.handleClickShipmentRoute}
-                onPrint={this.handlePrint.bind(this)}
-                IsDelete={false}
-                ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
-                IsAdd={false}
-                IsDataGridSmallSize={this.state.IsDataGridSmallSize}
-                PageNumber={this.state.PageNumber}
-                DeletePermission={"SHIPMENTORDER_DELETE"}
-                EditPermission={"SHIPMENTORDER_UPDATE"}
-                IsAutoPaging={true}
-                RowsPerPage={10000}
-              />
-            </Collapsible>
-
-            <Collapsible
-              className="CollapsibleCustom"
-              trigger={
-                <React.Fragment>
-                  <Row gutter={24}>
-                    <Col span={5}>
-                      <Card size="small" bordered={false}>
-                        <Statistic title="Thời gian" value="17h00 - 19h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                      </Card>
-                    </Col>
-                    <Col span={5}>
-                      <Card size="small" bordered={false}>
-                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame17to19.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                      </Card>
-                    </Col>
-                    <Col span={5}>
-                      <Card size="small" bordered={false}>
-                        <Statistic
-                          title="Khởi tạo và chờ phân bổ"
-                          value={this.state.TimeFrame17to19.filter((item) => item.ShipmentOrderStatusID === 20).length}
-                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                        />
-                      </Card>
-                    </Col>
-                    <Col span={5}>
-                      <Card size="small" bordered={false}>
-                        <Statistic
-                          title="Giao hàng thành công"
-                          value={this.state.TimeFrame17to19.filter((item) => item.ShipmentOrderStatusID === 29).length}
-                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                        />
-                      </Card>
-                    </Col>
-                  </Row>
-                </React.Fragment>
-              }
-              triggerOpenedClassName="collapsible-open-custom"
-              triggerStyle={{ backgroundColor: "white" }}
-              easing="ease-in"
-              open={currentHour >= 17 && currentHour < 19 ? true : false}
-            >
-              <DataGridShipmentRouteAuto
-                key={5}
-                listColumn={DataGridColumnList}
-                dataSource={this.state.TimeFrame17to19}
-                IsLoadData={this.state.IsLoadData}
-                TimeFrame="TimeFrame17to19"
-                GridDataShip={this.state.GridDataShip.TimeFrame17to19}
-                AddLink={AddLink}
-                IDSelectColumnName={IDSelectColumnName}
-                PKColumnName={PKColumnName}
-                onDeleteClick={this.handleDelete}
-                onChangePage={this.handleOnChangePage}
-                onChangeView={this.handleOnChangeView.bind(this)}
-                onSearchEvent={this.handleonSearchEvent.bind(this)}
-                onChangePageLoad={this.onChangePageLoad.bind(this)}
-                onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
-                onShowModel={this.handleShowModel}
-                onCheckShip={this.handleCheckShip}
-                onClickShip={this.handleClickShip}
-                onShipmentRoute={this.handleClickShipmentRoute}
-                onPrint={this.handlePrint.bind(this)}
-                IsDelete={false}
-                ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
-                IsAdd={false}
-                IsDataGridSmallSize={this.state.IsDataGridSmallSize}
-                PageNumber={this.state.PageNumber}
-                DeletePermission={"SHIPMENTORDER_DELETE"}
-                EditPermission={"SHIPMENTORDER_UPDATE"}
-                IsAutoPaging={true}
-                RowsPerPage={10000}
-              />
-            </Collapsible>
-
-            <Collapsible
-              className="CollapsibleCustom"
-              trigger={
-                <React.Fragment>
-                  <Row gutter={24}>
-                    <Col span={5}>
-                      <Card size="small" bordered={false}>
-                        <Statistic title="Thời gian" value="19h00 - 21h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                      </Card>
-                    </Col>
-                    <Col span={5}>
-                      <Card size="small" bordered={false}>
-                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame19to21.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                      </Card>
-                    </Col>
-                    <Col span={5}>
-                      <Card size="small" bordered={false}>
-                        <Statistic
-                          title="Khởi tạo và chờ phân bổ"
-                          value={this.state.TimeFrame19to21.filter((item) => item.ShipmentOrderStatusID === 20).length}
-                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                        />
-                      </Card>
-                    </Col>
-                    <Col span={5}>
-                      <Card size="small" bordered={false}>
-                        <Statistic
-                          title="Giao hàng thành công"
-                          value={this.state.TimeFrame19to21.filter((item) => item.ShipmentOrderStatusID === 28).length}
-                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                        />
-                      </Card>
-                    </Col>
-                  </Row>
-                </React.Fragment>
-              }
-              triggerOpenedClassName="collapsible-open-custom"
-              triggerStyle={{ backgroundColor: "white" }}
-              easing="ease-in"
-              open={currentHour >= 19 && currentHour < 21 ? true : false}
-            >
-              <DataGridShipmentRouteAuto
-                key={6}
-                listColumn={DataGridColumnList}
-                dataSource={this.state.TimeFrame19to21}
-                IsLoadData={this.state.IsLoadData}
-                TimeFrame="TimeFrame19to21"
-                GridDataShip={this.state.GridDataShip.TimeFrame19to21}
-                AddLink={AddLink}
-                IDSelectColumnName={IDSelectColumnName}
-                PKColumnName={PKColumnName}
-                onDeleteClick={this.handleDelete}
-                onChangePage={this.handleOnChangePage}
-                onChangeView={this.handleOnChangeView.bind(this)}
-                onSearchEvent={this.handleonSearchEvent.bind(this)}
-                onChangePageLoad={this.onChangePageLoad.bind(this)}
-                onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
-                onShowModel={this.handleShowModel}
-                onCheckShip={this.handleCheckShip}
-                onClickShip={this.handleClickShip}
-                onShipmentRoute={this.handleClickShipmentRoute}
-                onPrint={this.handlePrint.bind(this)}
-                IsDelete={false}
-                ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
-                IsDataGridSmallSize={this.state.IsDataGridSmallSize}
-                IsAdd={false}
-                PageNumber={this.state.PageNumber}
-                DeletePermission={"SHIPMENTORDER_DELETE"}
-                EditPermission={"SHIPMENTORDER_UPDATE"}
-                IsAutoPaging={true}
-                RowsPerPage={10000}
-              />
-            </Collapsible>
-
-            <Collapsible
-              className="CollapsibleCustom"
-              trigger={
-                <React.Fragment>
-                  <Row gutter={24}>
-                    <Col span={5}>
-                      <Card size="small" bordered={false}>
-                        <Statistic title="Thời gian khác" value="" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                      </Card>
-                    </Col>
-                    <Col span={5}>
-                      <Card size="small" bordered={false}>
-                        <Statistic title="Tổng số đơn" value={this.state.diffTimeFrame.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                      </Card>
-                    </Col>
-                    <Col span={5}>
-                      <Card size="small" bordered={false}>
-                        <Statistic
-                          title="Khởi tạo và chờ phân bổ"
-                          value={this.state.diffTimeFrame.filter((item) => item.ShipmentOrderStatusID === 20).length}
-                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                        />
-                      </Card>
-                    </Col>
-                    <Col span={5}>
-                      <Card size="small" bordered={false}>
-                        <Statistic
-                          title="Giao hàng thành công"
-                          value={this.state.diffTimeFrame.filter((item) => item.ShipmentOrderStatusID === 28).length}
-                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                          valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                        />
-                      </Card>
-                    </Col>
-                  </Row>
-                </React.Fragment>
-              }
-              triggerOpenedClassName="collapsible-open-custom"
-              triggerStyle={{ backgroundColor: "white" }}
-              easing="ease-in"
-              open={currentHour >= 21 ? true : false}
-            >
-              <DataGridShipmentRouteAuto
-                key={7}
-                listColumn={DataGridColumnList}
-                dataSource={this.state.diffTimeFrame}
-                IsLoadData={this.state.IsLoadData}
-                TimeFrame="diffTimeFrame"
-                GridDataShip={this.state.GridDataShip.diffTimeFrame}
-                AddLink={AddLink}
-                IDSelectColumnName={IDSelectColumnName}
-                PKColumnName={PKColumnName}
-                onDeleteClick={this.handleDelete}
-                onChangePage={this.handleOnChangePage}
-                onChangeView={this.handleOnChangeView.bind(this)}
-                onSearchEvent={this.handleonSearchEvent.bind(this)}
-                onChangePageLoad={this.onChangePageLoad.bind(this)}
-                onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
-                onShowModel={this.handleShowModel}
-                onCheckShip={this.handleCheckShip}
-                onClickShip={this.handleClickShip}
-                onShipmentRoute={this.handleClickShipmentRoute}
-                onPrint={this.handlePrint.bind(this)}
-                IsDelete={false}
-                ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
-                IsAdd={false}
-                IsDataGridSmallSize={this.state.IsDataGridSmallSize}
-                PageNumber={this.state.PageNumber}
-                DeletePermission={"SHIPMENTORDER_DELETE"}
-                EditPermission={"SHIPMENTORDER_UPDATE"}
-                IsAutoPaging={true}
-                RowsPerPage={10000}
-              />
-            </Collapsible>
+              </Tabs.TabPane>
+            </Tabs>
           </div>
         )}
+        <div ref={this.refShipmentAuto}>.</div>
+        {this.state.IsLoadDataComplete && phanTuyenTuDong}
 
         {this.state.IsShowModel && (
           <ModalSearchFormShipmentRouteAuto

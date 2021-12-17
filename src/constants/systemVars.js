@@ -13,13 +13,14 @@ export const API_HOST_LIST = {
   TMSAPI: {
     HostName: "TMSAPI",
     // HostBaseURL: "http://192.168.1.5:2121/",
-    HostBaseURL: "http://localhost:44338/",
-    //HostBaseURL: 'http://devtmsapi.tterpbeta.vn/'
+    // HostBaseURL: "http://localhost:44338/",
+    // HostBaseURL: 'http://devtmsapi.tterpbeta.vn/'
+    HostBaseURL: 'https://tmsapi.dichvutantam.vn/'
   },
   TMSMDMAPI: {
     HostName: "TMSMDMAPI",
-    HostBaseURL: "https://localhost:44336/",
-    //HostBaseURL: "https://devtmsmdmapi.tterpbeta.vn/",
+    // HostBaseURL: "https://localhost:44336/",
+    HostBaseURL: "https://devtmsmdmapi.tterpbeta.vn/",
   },
   CacheAPI: {
     HostName: "CacheAPI",

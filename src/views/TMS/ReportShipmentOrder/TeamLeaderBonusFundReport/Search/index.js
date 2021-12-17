@@ -15,7 +15,7 @@ import { toIsoStringCus } from "../../../../../utils/function";
 import { showModal, hideModal } from "../../../../../actions/modal";
 import { MODAL_TYPE_DOWNLOAD_EXCEL, MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
 import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../../constants/keyCache";
-import { TMS_NOTREWARD_EXPORT } from "../../../../../constants/functionLists";
+import { TMS_TEAMLEADERBONUSFUNDREPORT_EXPORT } from "../../../../../constants/functionLists";
 
 class SearchCom extends React.Component {
   constructor(props) {
@@ -49,7 +49,7 @@ class SearchCom extends React.Component {
       if (apiResult.IsError) {
         this.showMessage(apiResult.Message);
       } else {
-        let templateID = apiResult.ResultObject.CacheData.filter((x) => x.TMSConfigID == "TEMPLATE_EXPORT_NOTREWARD");
+        let templateID = apiResult.ResultObject.CacheData.filter((x) => x.TMSConfigID == "TEMPLATE_EXPORT_TEAMLEADERBONUSFUNDREPORT");
 
         this.setState({
           TemplateID: templateID[0].TMSConfigValue,
@@ -66,12 +66,8 @@ class SearchCom extends React.Component {
   handleSearchSubmit(formData, MLObject) {
     const postData = [
       {
-        SearchKey: "@MONTH",
+        SearchKey: "@REWARDMONTH",
         SearchValue: toIsoStringCus(new Date(MLObject.Month).toISOString()),
-      },
-      {
-        SearchKey: "@LISTSHIPMENTORDERTYPEID",
-        SearchValue: MLObject.ShipmentOrderTypeID.toString(),
       },
     ];
 
@@ -91,21 +87,17 @@ class SearchCom extends React.Component {
   handleExportExcel(formData, MLObject) {
     const postData = [
       {
-        SearchKey: "@MONTH",
+        SearchKey: "@REWARDMONTH",
         SearchValue: toIsoStringCus(new Date(MLObject.Month).toISOString()),
-      },
-      {
-        SearchKey: "@LISTSHIPMENTORDERTYPEID",
-        SearchValue: MLObject.ShipmentOrderTypeID.toString(),
       },
     ];
 
     const postDataNew = {
       DataExportTemplateID: this.state.TemplateID,
-      LoadDataStoreName: "TMS.TMS_LISTNOTEREWARDREPORT",
-      KeyCached: "TMS_NOTREWARD_EXPORT",
+      LoadDataStoreName: "TMS.TMS_TMSMONTHLYREWARD_BYTYPE",
+      KeyCached: "TMS_TEAMLEADERBONUSFUNDREPORT_EXPORT",
       SearchParamList: postData,
-      ExportDataParamsDescription: "MONTH: " + toIsoStringCus(new Date(MLObject.Month).toISOString()) + " - SHIPMENTORDERTYPEID: " + MLObject.ShipmentOrderTypeID.toString(),
+      ExportDataParamsDescription: "REWARDMONTH: " + toIsoStringCus(new Date(MLObject.Month).toISOString())
     };
 
     this.callSearchDataExportExcel(postDataNew);
@@ -137,31 +129,6 @@ class SearchCom extends React.Component {
     ModalManager.open(<MessageModal title="Thông báo" message={message} onRequestClose={() => true} />);
   }
 
-  handleExportCSV(Data) {
-    const fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-    const fileExtension = ".xlsx";
-    let result;
-    if (Data.length == 0) {
-      result = {
-        IsError: true,
-        Message: "Dữ liệu không tồn tại. Không thể xuất file!",
-      };
-    } else {
-      const ws = XLSX.utils.json_to_sheet(Data);
-      const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
-      const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-      const data = new Blob([excelBuffer], { type: fileType });
-
-      FileSaver.saveAs(data, "Danh sách chi tiết thương" + fileExtension);
-
-      result = {
-        IsError: false,
-        Message: "Xuất file thành công!",
-      };
-    }
-    this.showMessage(result.Message);
-  }
-
   handleHistorySearch() {
     this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
       title: "Tải file",
@@ -176,7 +143,7 @@ class SearchCom extends React.Component {
         <SearchForm
           className="multiple"
           classNamebtnSearch="groupAction"
-          FormName="Tìm kiếm danh sách vận đơn không được tính thưởng"
+          FormName="Tìm kiếm Báo cáo quỹ thưởng trưởng nhóm"
           MLObjectDefinition={SearchMLObjectDefinition}
           listelement={SearchElementList}
           ref={this.searchref}
@@ -203,7 +170,7 @@ class SearchCom extends React.Component {
           listColumn={GridColumnList}
           PKColumnName={"ShipmentOrderID"}
           ref={this.gridref}
-          RequirePermission={TMS_NOTREWARD_EXPORT}
+          RequirePermission={TMS_TEAMLEADERBONUSFUNDREPORT_EXPORT}
           RowsPerPage={50}
         />
       </React.Fragment>

@@ -1303,7 +1303,7 @@ const AppMenu = [
   // },
   {
     MenuName: "ShipmentOrderNew",
-    MenuTitle: "Điều phối",
+    MenuTitle: "QL Vận đơn",
     LinkTo: "/ShipmentOrder",
     MenuIcon: "",
     SubMenu: [],
@@ -1332,7 +1332,6 @@ const AppMenu = [
       },
     ],
   },
-
   {
     MenuName: "Price",
     MenuTitle: "Giá",
@@ -1733,6 +1732,13 @@ const AppMenu = [
         MenuName: "ShipmentOrderSymptom",
         MenuTitle: "Báo cáo lỗi thực tế",
         LinkTo: "/ShipmentOrderSymptomReport",
+        MenuIcon: "",
+        SubMenu: [],
+      },
+      {
+        MenuName: "TeamLeaderBonusFundReport",
+        MenuTitle: "Báo cáo quỹ thưởng trưởng nhóm",
+        LinkTo: "/TeamLeaderBonusFundReport",
         MenuIcon: "",
         SubMenu: [],
       },
