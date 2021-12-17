@@ -217,6 +217,8 @@ import Symptom from "../TMS/MD/Symptom";
 import ShipmentRouteAuto from "./../TMS/ShipmentRouteAuto/index";
 import ListNoteRewardReport from "../TMS/Reward/ListNoteRewardReport";
 
+import TestOrTools from '../TMS/TestOrTool';
+
 class HomeCom extends React.Component {
     constructor(props) {
         super(props);
@@ -535,6 +537,8 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/SymptomApply" component={SymptomApply} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/SymptomGroup" component={SymptomGroup} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/Symptom" component={Symptom} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+
+                                    <PrivateRoute path="/TestOrTools" component={TestOrTools} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 </Switch>
