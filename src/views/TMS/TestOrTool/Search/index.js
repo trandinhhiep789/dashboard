@@ -2,6 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import ReactNotification from "react-notifications-component";
 import readXlsxFile from 'read-excel-file';
+import { Button, Popover } from "antd";
+
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
@@ -10,7 +12,23 @@ class SearchCom extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {};
+        this.state = {
+            dataSource: null,
+            pickRandomColor: [
+                "#1f5ff4",
+                "#c55d53",
+                "#cb68c5",
+                "#65b411",
+                "#f4b323",
+                "#420e3e",
+                "#e80024",
+                "#585ccc",
+                "#d44371",
+                "#14915f",
+                "#e79940",
+                "#6be54"
+            ]
+        };
 
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -134,6 +152,13 @@ class SearchCom extends React.Component {
 
                 this.props.callFetchAPI("TMSAPI", "api/test/VehicleRouting", a).then(apiResult => {
                     console.log('output', apiResult);
+                    if (apiResult.IsError) {
+                        alert("Lỗi gọi api");
+                    } else {
+                        this.setState({
+                            dataSource: apiResult.ResultObject
+                        })
+                    }
                 });
             }).catch(error => {
                 console.log("error", error);
@@ -155,6 +180,40 @@ class SearchCom extends React.Component {
                 <button type="button" onClick={this.handleExport}>
                     Xuất file mẫu
                 </button>
+
+                {
+                    this.state.dataSource != null && <div style={{ width: "100%", backgroundColor: "white", padding: "20px", minHeight: "50vh", border: "1px solid blue" }}>
+                        <h4>Danh sách các tuyến đề xuất</h4>
+                        {this.state.dataSource.ListShipmentOrderRoute.map((line, index) => (
+                            <div key={index}>
+                                <div>
+                                    {`Tổng quảng đường: ${this.state.dataSource.ListTotalDistance[index]}m, tổng khối lượng: ${this.state.dataSource.ListTotalLoad[index]}kg`}
+                                </div>
+
+                                <div style={{ display: "flex", width: "100%" }}>
+                                    <div style={{ display: "flex", height: "9px", width: "90%", justifyContent: "space-between", borderBottom: `3px solid ${this.state.pickRandomColor[Math.floor(Math.random() * 11)]}`, marginBottom: "30px" }}>
+                                        {line.map((item) =>
+                                            <Popover
+                                                key={item.ShipmentOrderID}
+                                                content={`Cân nặng: ${item.Weight}`}
+                                                title={`Mã vận đơn ${item.ShipmentOrderID}`}>
+                                                <div style={{ position: "relative", width: '12px', height: '12px', border: `3px solid #1f5ff4`, backgroundColor: `#1f5ff4`, borderRadius: '50%', cursor: "pointer" }}>
+                                                    <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>
+                                                        {item.ShipmentOrderID}
+                                                    </div>
+                                                </div>
+                                            </Popover>)
+                                        }
+                                    </div>
+                                    <div style={{ width: "10%", textAlign: "right" }}>
+                                        <Button type="primary" size="small">Xem bản đồ</Button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+
+                    </div>
+                }
 
                 < input type="file" id="buttonImportFile" style={{ display: "none" }} />
             </React.Fragment>
