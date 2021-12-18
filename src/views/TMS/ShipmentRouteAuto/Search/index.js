@@ -1024,7 +1024,7 @@ class SearchCom extends Component {
                         ))}
                       </div>
                     </div>
-                    <div style={{ width: "10%", textAlign: "right" }}>
+                    <div style={{ width: "10%", textAlign: "right",paddingTop: "18px" }}>
                       <Tooltip title="Xem bản đồ">
                         <Button type="primary" shape="circle" icon={<EyeOutlined />} />
                       </Tooltip>&nbsp;
