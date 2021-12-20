@@ -84,38 +84,38 @@ class SearchCom extends React.Component {
 
     handleImport() {
         const schema = {
-            'ACTUALRECEIVERGEOLOCATION': {
-                prop: 'ACTUALRECEIVERGEOLOCATION',
+            'SALEORDERID': {
+                prop: 'SALEORDERID',
                 type: String,
             },
-            'SHIPMENTORDERID': {
-                prop: 'SHIPMENTORDERID',
+            'AFTERDELIVERYTIME': {
+                prop: 'AFTERDELIVERYTIME',
                 type: String,
             },
-            'RECEIVERFULLNAME': {
-                prop: 'RECEIVERFULLNAME',
+            'QUANTITYPACKAGE': {
+                prop: 'QUANTITYPACKAGE',
                 type: String,
             },
-            'RECEIVERFULLADDRESS': {
-                prop: 'RECEIVERFULLADDRESS',
+            'DELIVERYADDRESS': {
+                prop: 'DELIVERYADDRESS',
                 type: String,
             },
-            'WEIGHT': {
-                prop: 'WEIGHT',
-                type: Number,
+            'WARDNAME': {
+                prop: 'WARDNAME',
+                type: String,
             },
-            'LENGTH': {
-                prop: 'LENGTH',
-                type: Number,
+            'DISTRICTNAME': {
+                prop: 'DISTRICTNAME',
+                type: String,
             },
-            'WIDTH': {
-                prop: 'WIDTH',
-                type: Number,
+            'PROVINCENAME': {
+                prop: 'PROVINCENAME',
+                type: String,
             },
-            'HEIGHT': {
-                prop: 'HEIGHT',
+            'TOTALWEIGHT': {
+                prop: 'TOTALWEIGHT',
                 type: Number,
-            },
+            }
         }
 
         const input = document.getElementById('buttonImportFile');
@@ -123,18 +123,12 @@ class SearchCom extends React.Component {
 
         input.addEventListener("change", () => {
             readXlsxFile(input.files[0], { sheet: "data", schema }).then((data) => {
-                console.log(data.rows)
+
                 const input = data.rows.map(item => {
                     return {
-                        ShipmentOrderID: item.SHIPMENTORDERID ? item.SHIPMENTORDERID : 0,
-                        ReceiverGeoLocation: item.ACTUALRECEIVERGEOLOCATION,
-                        ReceiverFullName: item.RECEIVERFULLNAME ? item.RECEIVERFULLNAME : "",
-                        ReceiverPhoneNumber: item.RECEIVERPHONENUMBER ? item.RECEIVERPHONENUMBER : "",
-                        ReceiverFullAddress: item.RECEIVERFULLADDRESS ? item.RECEIVERFULLADDRESS : "",
-                        Weight: item.WEIGHT ? item.WEIGHT : 0,
-                        Length: item.LENGTH ? item.LENGTH : 0,
-                        Width: item.WIDTH ? item.WIDTH : 0,
-                        Height: item.HEIGHT ? item.HEIGHT : 0
+                        PartnerSaleOrderID: item.SALEORDERID ? item.SALEORDERID : 0,
+                        ReceiverFullAddress: `${item.DELIVERYADDRESS}, ${item.WARDNAME}, ${item.DISTRICTNAME}, ${item.PROVINCENAME}`,
+                        Weight: item.TOTALWEIGHT ? item.TOTALWEIGHT : 0
                     }
                 })
 
@@ -178,8 +172,9 @@ class SearchCom extends React.Component {
 
                 {
                     this.state.dataSource != null && <div style={{ width: "100%", backgroundColor: "white", padding: "20px", height: "57vh", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
-                        <h4>Danh sách các tuyến đề xuất</h4>
-                        <h5>Tổng cộng số km các tuyến: <i style={{ fontWeight: "700" }}>{parseInt(this.state.dataSource.TotalDistance / 1000)}</i> km</h5>
+                        <h5>Danh sách các tuyến đề xuất</h5>
+                        <h6>Tổng cộng số km: <i style={{ fontWeight: "700" }}>{parseInt(this.state.dataSource.TotalDistance / 1000)}</i> km</h6>
+                        <h6>Tổng cộng số tải: <i style={{ fontWeight: "700" }}>{this.state.dataSource.TotalLoad}</i> kg</h6>
                         <div style={{ width: "100%", backgroundColor: "white", padding: "20px", height: "60vh", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
                             {
                                 this.state.dataSource.ListShipmentOrderRoute && this.state.dataSource.ListShipmentOrderRoute.map((line, index) => (
@@ -198,7 +193,7 @@ class SearchCom extends React.Component {
                                                     <div style={{ display: "flex" }}>
                                                         {
                                                             this.state.dataSource.ListShipmentOrderRoute[index].map((objShipmentOrder, i) => (
-                                                                <div key={objShipmentOrder.ShipmentOrderID} style={{ display: "flex", width: i != 0 && "100%" }}>
+                                                                <div key={objShipmentOrder.PartnerSaleOrderID} style={{ display: "flex", width: i != 0 && "100%" }}>
                                                                     {
                                                                         i != 0 && (objShipmentOrder.IsCompleteDeliverIed
                                                                             ? <div style={{ width: "100%", height: "10px", borderBottom: `3px solid ${randomColor}` }}></div>
@@ -213,19 +208,19 @@ class SearchCom extends React.Component {
                                                                                         <p>{objShipmentOrder.ReceiverFullAddress}</p>
                                                                                     </div>
                                                                                 }
-                                                                                title={objShipmentOrder.ShipmentOrderID}>
+                                                                                title={objShipmentOrder.PartnerSaleOrderID}>
                                                                                 <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
                                                                                     {
                                                                                         objShipmentOrder.IsCompleteDeliverIed ?
                                                                                             <div
                                                                                                 style={{ position: "relative", width: "12px", height: "12px", border: `3px solid ${randomColor}`, backgroundColor: `${randomColor}`, borderRadius: "50%", cursor: "pointer" }}
                                                                                             >
-                                                                                                <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{objShipmentOrder.ShipmentOrderID}</div>
+                                                                                                <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{objShipmentOrder.PartnerSaleOrderID}</div>
                                                                                             </div> :
                                                                                             <div
                                                                                                 style={{ position: "relative", width: "12px", height: "12px", border: `3px solid ${randomColor}`, backgroundColor: "white", borderRadius: "50%", cursor: "pointer" }}
                                                                                             >
-                                                                                                <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{objShipmentOrder.ShipmentOrderID}</div>
+                                                                                                <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{objShipmentOrder.PartnerSaleOrderID}</div>
                                                                                             </div>
                                                                                     }
                                                                                 </div>
