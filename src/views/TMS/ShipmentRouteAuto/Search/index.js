@@ -25,7 +25,8 @@ import SearchFormShipmentRouteAuto from "../Components/SearchFormShipmentRouteAu
 import SearchForm from "../Components/SearchFormShipmentRouteAutoOldUI";
 import "../../../../css/DataGridShipmentRouteAuto.scss";
 import moment from "moment";
-import { Button, Card, Col, Row, Space, Statistic, Tabs, Collapse, Steps, Popover } from "antd";
+import { Button, Card, Col, Row, Space, Statistic, Tabs, Collapse, Popover, Tooltip } from "antd";
+import { EyeOutlined, PartitionOutlined } from "@ant-design/icons";
 import { hideModal, showModal } from "../../../../actions/modal";
 import ModalSearchFormShipmentRouteAuto from "../Components/ModalSearchFormShipmentRouteAuto";
 import ModalVietBanDoShipmentRouteAuto from "../Components/ModalVietBanDoShipmentRouteAuto";
@@ -77,7 +78,6 @@ class SearchCom extends Component {
 
         this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
-        this.refShipmentAuto = React.createRef();
 
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
@@ -896,79 +896,148 @@ class SearchCom extends Component {
         const a = [
             {
                 name: "haha",
-                Ds: [{ ShipmentOrderID: "123" }, { ShipmentOrderID: "345" }, { ShipmentOrderID: "678" }],
+                km: "12000",
+                kg: "80",
+                Ds: [
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "123" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "345" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "678" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "678s" }
+                ],
             },
             {
                 name: "hihi",
+                km: "52000",
+                kg: "80",
                 Ds: [
-                    { ShipmentOrderID: "111" },
-                    { ShipmentOrderID: "222" },
-                    { ShipmentOrderID: "333" },
-                    { ShipmentOrderID: "112" },
-                    { ShipmentOrderID: "221" },
-                    { ShipmentOrderID: "331" },
-                    { ShipmentOrderID: "1df11" },
-                    { ShipmentOrderID: "22f2" },
-                    { ShipmentOrderID: "3a3" },
-                    { ShipmentOrderID: "11d2" },
-                    { ShipmentOrderID: "22s1" },
-                    { ShipmentOrderID: "33b1" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "111" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "222" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "333" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "112" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "221" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "331" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "1df11" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "22f2" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "3a3" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "11d2" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "22s1" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "33b1" },
                 ],
             },
             {
                 name: "hahasa",
-                Ds: [{ ShipmentOrderID: "1a23" }, { ShipmentOrderID: "34as5" }, { ShipmentOrderID: "67c8" }],
+                km: "142000",
+                kg: "80",
+                Ds: [{ diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "1a23" }, { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "34as5" }, { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "67c8" }],
             },
             {
                 name: "hahaa",
+                km: "12000",
+                kg: "80",
                 Ds: [
-                    { ShipmentOrderID: "1a2q3" },
-                    { ShipmentOrderID: "3d4ass5" },
-                    { ShipmentOrderID: "67cc8" },
-                    { ShipmentOrderID: "1a2qa3" },
-                    { ShipmentOrderID: "3qd4as5" },
-                    { ShipmentOrderID: "67ccd8" },
-                    { ShipmentOrderID: "1a2aq3" },
-                    { ShipmentOrderID: "3d4as5" },
-                    { ShipmentOrderID: "67cc8z" },
-                    { ShipmentOrderID: "1a2qaa3" },
-                    { ShipmentOrderID: "3qd4acs5" },
-                    { ShipmentOrderID: "6a7ccd8" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "1a2q3" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "3d4ass5" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "67cc8" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "1a2qa3" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "3qd4as5" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "67ccd8" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "1a2aq3" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "3d4as5" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "67cc8z" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "1a2qaa3" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "3qd4acs5" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "6a7ccd8" },
+                ],
+            },
+            {
+                name: "hashaa",
+                km: "127000",
+                kg: "80",
+                Ds: [
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "1ad2q3" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "3da4ass5" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "67ccc8" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "1a2qac3" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "3qzd4as5" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "67csxcd8" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "1a2xacq3" },
+                ],
+            },
+            {
+                name: "hasshaa",
+                km: "120600",
+                kg: "80",
+                Ds: [
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "1ad2qa3" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "3da4adss5" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "67cvcc8" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "1a2aqac3" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "3qzds4as5" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "67csxcdc8" },
+                    { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "1a2xaacq3" },
                 ],
             },
         ];
-
         var randomColor;
         const pickRandomColor = ["#1f5ff4", "#c55d53", "#cb68c5", "#65b411", "#f4b323", "#420e3e", "#e80024", "#585ccc", "#d44371", "#14915f", "#e79940", "#6be54"];
         return (
-            <div style={{ width: "100%", backgroundColor: "white", padding: "20px", minHeight: "50vh", border: "1px solid blue" }}>
+            <div>
                 <h4>Danh sách các tuyến đề xuất</h4>
-                {a &&
-                    a.map((line) => (
-                        <div key={line.name}>
-                            {(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}
-                            <div style={{ display: "flex", width: "100%" }}>
-                                <div style={{ display: "flex", height: "9px", width: "90%", justifyContent: "space-between", borderBottom: `3px solid ${randomColor}`, marginBottom: "30px" }}>
-                                    {line.Ds.map((a) => (
-                                        <Popover key={a.ShipmentOrderID} content={a.ShipmentOrderID} title={a.ShipmentOrderID}>
-                                            <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
-                                                <div
-                                                    style={{ position: "relative", width: "12px", height: "12px", border: `3px solid ${randomColor}`, backgroundColor: `${randomColor}`, borderRadius: "50%", cursor: "pointer" }}
-                                                >
-                                                    <div style={{ position: "absolute", top: "10px", left: "-8px" }}>{a.ShipmentOrderID}</div>
+                <h5>Tổng cộng số km các tuyến: <i style={{ fontWeight: "700" }}>{a.reduce((t, v) => t + ((v.km * 1) / 1000), 0)}</i> km</h5>
+                <div style={{ width: "100%", backgroundColor: "white", padding: "20px", height: "57vh", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
+                    <div style={{}}>
+                        {a &&
+                            a.map((line, i) => (
+                                <div key={line.name}>
+                                    <p style={{ display: "none" }}>{(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}</p>
+                                    <div style={{ display: "flex" }}>
+                                        <span style={{ fontWeight: "700", fontSize: "15px" }}>
+                                            {i}
+                                        </span>&ensp;
+                                        <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
+                                            <div style={{ width: "90%", marginBottom: "30px" }}>
+                                                <div>
+                                                    <i>Số km: {((line.km) * 1) / 1000}</i>&ensp;
+                                                    <i>Tổng khối lượng: {line.kg}</i>
+                                                </div>
+                                                <div style={{ display: "flex" }}>
+                                                    {line.Ds.map((a, i, row) => (
+                                                        <div key={a.ShipmentOrderID} style={{ display: "flex", width: i != 0 && "100%" }}>
+                                                            {i != 0 && (a.finish ? <div style={{ width: "100%", height: "10px", borderBottom: `3px solid ${randomColor}` }}></div> : <div style={{ width: "100%", height: "10px", borderBottom: `3px solid #80808030` }}></div>)}
+                                                            <Popover content={<div><p>{a.tenKH}</p><p>{a.diaChi}</p></div>} title={a.ShipmentOrderID}>
+                                                                <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
+                                                                    {a.finish ?
+                                                                        <div
+                                                                            style={{ position: "relative", width: "12px", height: "12px", border: `3px solid ${randomColor}`, backgroundColor: `${randomColor}`, borderRadius: "50%", cursor: "pointer" }}
+                                                                        >
+                                                                            <div style={{ position: "absolute", top: "10px", left: "-8px" }}>{a.ShipmentOrderID}</div>
+                                                                        </div> :
+                                                                        <div
+                                                                            style={{ position: "relative", width: "12px", height: "12px", border: `3px solid ${randomColor}`, backgroundColor: "white", borderRadius: "50%", cursor: "pointer" }}
+                                                                        >
+                                                                            <div style={{ position: "absolute", top: "10px", left: "-8px" }}>{a.ShipmentOrderID}</div>
+                                                                        </div>
+                                                                    }
+                                                                </div>
+                                                            </Popover>
+                                                        </div>
+                                                    ))}
                                                 </div>
                                             </div>
-                                        </Popover>
-                                    ))}
+                                            <div style={{ width: "10%", textAlign: "right", paddingTop: "18px" }}>
+                                                <Tooltip title="Xem bản đồ">
+                                                    <Button type="primary" shape="circle" icon={<EyeOutlined />} />
+                                                </Tooltip>&nbsp;
+                                                <Tooltip title="Phân tuyến">
+                                                    <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
+                                                </Tooltip>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div style={{ width: "10%", textAlign: "right" }}>
-                                    <Button type="primary" size="small">
-                                        Xem bản đồ
-                                    </Button>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+                            ))}
+                    </div>
+                </div>
             </div>
         );
     }
@@ -1569,14 +1638,20 @@ class SearchCom extends Component {
                                 </Collapsible>
                             </Tabs.TabPane>
                             <Tabs.TabPane
+                                tab="Phân tuyến tự động"
+                                key="9"
+                            >
+                                {phanTuyenTuDong}
+                            </Tabs.TabPane>
+                            <Tabs.TabPane
                                 tab={
                                     <Space>
                                         <Button type="primary" onClick={() => this.handleUserCoordinator()}>
                                             Phân tuyến
                                         </Button>
-                                        <Button type="primary" onClick={() => this.refShipmentAuto.current.scrollIntoView({ behavior: "smooth", block: "start" })}>
-                                            Phân tuyến tự động
-                                        </Button>
+                                        {/* <Button type="primary">
+                      Phân tuyến tự động
+                    </Button> */}
                                     </Space>
                                 }
                                 disabled
@@ -1585,11 +1660,6 @@ class SearchCom extends Component {
                         </Tabs>
                     </div>
                 )}
-                <div ref={this.refShipmentAuto}>.</div>
-
-                {this.state.IsLoadDataComplete && phanTuyenTuDong}
-
-                {this.state.IsShowModelMap && <ModalVietBanDoShipmentRouteAuto />}
 
                 {this.state.IsShowModel && (
                     <ModalSearchFormShipmentRouteAuto
