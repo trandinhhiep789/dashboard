@@ -982,62 +982,122 @@ class SearchCom extends Component {
     const pickRandomColor = ["#1f5ff4", "#c55d53", "#cb68c5", "#65b411", "#f4b323", "#420e3e", "#e80024", "#585ccc", "#d44371", "#14915f", "#e79940", "#6be54"];
     return (
       <div>
-        <h4>Danh sách các tuyến đề xuất</h4>
-        <h5>Tổng cộng số km các tuyến: <i style={{fontWeight:"700"}}>{a.reduce((t, v) => t + ((v.km * 1)/1000), 0)}</i> km</h5>
-        <div style={{ width: "100%", backgroundColor: "white", padding: "20px", height: "57vh", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
-          <div style={{}}>
-          {a &&
-            a.map((line, i) => (
-              <div key={line.name}>
-                <p style={{display:"none"}}>{(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}</p>
-                <div style={{display:"flex"}}>
-                  <span style={{fontWeight: "700", fontSize: "15px"}}>
-                    {i}
-                  </span>&ensp;
-                  <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
-                    <div style={{ width: "90%",  marginBottom: "30px" }}>
-                      <div>
-                        <i>Số km: {((line.km) * 1) / 1000}</i>&ensp;
-                        <i>Tổng khối lượng: {line.kg}</i>
-                      </div>
-                      <div style={{ display: "flex" }}>
-                        {line.Ds.map((a, i, row) => (
-                          <div key={a.ShipmentOrderID} style={{display: "flex",width: i != 0 && "100%"}}>
-                            {i != 0 && (a.finish ? <div style={{ width: "100%",height: "10px", borderBottom: `3px solid ${randomColor}`}}></div> : <div style={{ width: "100%",height: "10px", borderBottom: `3px solid #80808030`}}></div>)}
-                            <Popover content={<div><p>{a.tenKH}</p><p>{a.diaChi}</p></div>} title={a.ShipmentOrderID}>
-                              <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
-                              {a.finish ? 
-                                <div
-                                  style={{ position: "relative", width: "12px", height: "12px", border: `3px solid ${randomColor}`, backgroundColor: `${randomColor}`, borderRadius: "50%", cursor: "pointer" }}
-                                >
-                                  <div style={{ position: "absolute", top: "10px", left: "-8px" }}>{a.ShipmentOrderID}</div>
-                                </div> : 
-                                <div
-                                  style={{ position: "relative", width: "12px", height: "12px", border: `3px solid ${randomColor}`, backgroundColor: "white", borderRadius: "50%", cursor: "pointer" }}
-                                >
-                                  <div style={{ position: "absolute", top: "10px", left: "-8px" }}>{a.ShipmentOrderID}</div>
-                                </div>
-                              }
-                              </div>
-                            </Popover>
+        <Tabs defaultActiveKey="1" style={{backgroundColor: "white", padding:"15px"}}>
+          <Tabs.TabPane tab="Xe máy" key="1">
+            <h5>Tổng cộng số km các tuyến: <i style={{fontWeight:"700"}}>{a.reduce((t, v) => t + ((v.km * 1)/1000), 0)}</i> km</h5>
+            <div style={{ width: "100%", backgroundColor: "white", padding: "20px", height: "57vh", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
+              <div style={{}}>
+              {a &&
+                a.map((line, i) => (
+                  <div key={line.name}>
+                    <p style={{display:"none"}}>{(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}</p>
+                    <div style={{display:"flex"}}>
+                      <span style={{fontWeight: "700", fontSize: "15px"}}>
+                        {i}
+                      </span>&ensp;
+                      <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
+                        <div style={{ width: "90%",  marginBottom: "30px" }}>
+                          <div>
+                            <i>Số km: {((line.km) * 1) / 1000}</i>&ensp;
+                            <i>Tổng khối lượng: {line.kg}</i>
                           </div>
-                        ))}
+                          <div style={{ display: "flex" }}>
+                            {line.Ds.map((a, i, row) => (
+                              <div key={a.ShipmentOrderID} style={{display: "flex",width: i != 0 && "100%"}}>
+                                {i != 0 && (a.finish ? <div style={{ width: "100%",height: "10px", borderBottom: `3px solid ${randomColor}`}}></div> : <div style={{ width: "100%",height: "10px", borderBottom: `3px solid #80808030`}}></div>)}
+                                <Popover content={<div><p>{a.tenKH}</p><p>{a.diaChi}</p></div>} title={a.ShipmentOrderID}>
+                                  <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
+                                  {a.finish ? 
+                                    <div
+                                      style={{ position: "relative", width: "12px", height: "12px", border: `3px solid ${randomColor}`, backgroundColor: `${randomColor}`, borderRadius: "50%", cursor: "pointer" }}
+                                    >
+                                      <div style={{ position: "absolute", top: "10px", left: "-8px" }}>{a.ShipmentOrderID}</div>
+                                    </div> : 
+                                    <div
+                                      style={{ position: "relative", width: "12px", height: "12px", border: `3px solid ${randomColor}`, backgroundColor: "white", borderRadius: "50%", cursor: "pointer" }}
+                                    >
+                                      <div style={{ position: "absolute", top: "10px", left: "-8px" }}>{a.ShipmentOrderID}</div>
+                                    </div>
+                                  }
+                                  </div>
+                                </Popover>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        <div style={{ width: "10%", textAlign: "right",paddingTop: "18px" }}>
+                          <Tooltip title="Xem bản đồ">
+                            <Button type="primary" shape="circle" icon={<EyeOutlined />} />
+                          </Tooltip>&nbsp;
+                          <Tooltip title="Phân tuyến">
+                            <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
+                          </Tooltip>
+                        </div>
                       </div>
-                    </div>
-                    <div style={{ width: "10%", textAlign: "right",paddingTop: "18px" }}>
-                      <Tooltip title="Xem bản đồ">
-                        <Button type="primary" shape="circle" icon={<EyeOutlined />} />
-                      </Tooltip>&nbsp;
-                      <Tooltip title="Phân tuyến">
-                        <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
-                      </Tooltip>
                     </div>
                   </div>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+          </Tabs.TabPane>
+          <Tabs.TabPane tab="Xe tải" key="2">
+            <h5>Tổng cộng số km các tuyến: <i style={{fontWeight:"700"}}>{a.reduce((t, v) => t + ((v.km * 1)/1000), 0)}</i> km</h5>
+            <div style={{ width: "100%", backgroundColor: "white", padding: "20px", height: "57vh", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
+              <div style={{}}>
+              {a &&
+                a.map((line, i) => (
+                  <div key={line.name}>
+                    <p style={{display:"none"}}>{(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}</p>
+                    <div style={{display:"flex"}}>
+                      <span style={{fontWeight: "700", fontSize: "15px"}}>
+                        {i}
+                      </span>&ensp;
+                      <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
+                        <div style={{ width: "90%",  marginBottom: "30px" }}>
+                          <div>
+                            <i>Số km: {((line.km) * 1) / 1000}</i>&ensp;
+                            <i>Tổng khối lượng: {line.kg}</i>
+                          </div>
+                          <div style={{ display: "flex" }}>
+                            {line.Ds.map((a, i, row) => (
+                              <div key={a.ShipmentOrderID} style={{display: "flex",width: i != 0 && "100%"}}>
+                                {i != 0 && (a.finish ? <div style={{ width: "100%",height: "10px", borderBottom: `3px solid ${randomColor}`}}></div> : <div style={{ width: "100%",height: "10px", borderBottom: `3px solid #80808030`}}></div>)}
+                                <Popover content={<div><p>{a.tenKH}</p><p>{a.diaChi}</p></div>} title={a.ShipmentOrderID}>
+                                  <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
+                                  {a.finish ? 
+                                    <div
+                                      style={{ position: "relative", width: "12px", height: "12px", border: `3px solid ${randomColor}`, backgroundColor: `${randomColor}`, borderRadius: "50%", cursor: "pointer" }}
+                                    >
+                                      <div style={{ position: "absolute", top: "10px", left: "-8px" }}>{a.ShipmentOrderID}</div>
+                                    </div> : 
+                                    <div
+                                      style={{ position: "relative", width: "12px", height: "12px", border: `3px solid ${randomColor}`, backgroundColor: "white", borderRadius: "50%", cursor: "pointer" }}
+                                    >
+                                      <div style={{ position: "absolute", top: "10px", left: "-8px" }}>{a.ShipmentOrderID}</div>
+                                    </div>
+                                  }
+                                  </div>
+                                </Popover>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        <div style={{ width: "10%", textAlign: "right",paddingTop: "18px" }}>
+                          <Tooltip title="Xem bản đồ">
+                            <Button type="primary" shape="circle" icon={<EyeOutlined />} />
+                          </Tooltip>&nbsp;
+                          <Tooltip title="Phân tuyến">
+                            <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
+                          </Tooltip>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Tabs.TabPane>
+        </Tabs>
       </div>
     );
   }
