@@ -12,7 +12,21 @@ export const AddLink = "/PeriodUserRWPosition/Add";
 export const AddLogAPIPath = "api/UserActivity/Add";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "PeriodUserRWPositionID";
-export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
+export const InitSearchParams = 
+[
+    {
+        SearchKey: "@Keyword",
+        SearchValue: ""
+    },
+    {
+        SearchKey: "@PAGESIZE",
+        SearchValue: 100
+    },
+    {
+        SearchKey: "@PAGEINDEX",
+        SearchValue: 0
+    }
+];
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
@@ -402,7 +416,7 @@ export const DataGridColumnList = [
         DataSourceMember: "IsActived",
         Width: 80
     },
-    
+
     // {
     //     Name: "IsSystem",
     //     Type: "checkicon",

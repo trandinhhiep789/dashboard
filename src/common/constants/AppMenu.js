@@ -866,25 +866,25 @@ const AppMenu = [
             SubMenu: [],
           },
           {
-              MenuName: "SymptomApply",
-              MenuTitle: "Bảng Map lỗi thực tế",
-              LinkTo: "/SymptomApply",
-              MenuIcon: "",
-              SubMenu: [],
+            MenuName: "SymptomApply",
+            MenuTitle: "Bảng Map lỗi thực tế",
+            LinkTo: "/SymptomApply",
+            MenuIcon: "",
+            SubMenu: [],
           },
           {
-              MenuName: "SymptomGroup",
-              MenuTitle: "Nhóm lỗi thực tế",
-              LinkTo: "/SymptomGroup",
-              MenuIcon: "",
-              SubMenu: [],
+            MenuName: "SymptomGroup",
+            MenuTitle: "Nhóm lỗi thực tế",
+            LinkTo: "/SymptomGroup",
+            MenuIcon: "",
+            SubMenu: [],
           },
           {
-              MenuName: "Symptom",
-              MenuTitle: "Lỗi thực tế",
-              LinkTo: "/Symptom",
-              MenuIcon: "",
-              SubMenu: [],
+            MenuName: "Symptom",
+            MenuTitle: "Lỗi thực tế",
+            LinkTo: "/Symptom",
+            MenuIcon: "",
+            SubMenu: [],
           }
         ],
       },
@@ -917,7 +917,36 @@ const AppMenu = [
           },
         ],
       },
-    ],
+      {
+        MenuName: "MaintainConstruct",
+        MenuTitle: "Doanh thu xây dựng bảo trì",
+        LinkTo: "/MaintainConstruct",
+        MenuIcon: "",
+        SubMenu: [
+          {
+            MenuName: "ArchitechtureType_PRJType",
+            MenuTitle: "Bảng Map loại mô hình và loại công trình",
+            LinkTo: "/ArchitechtureType_PRJType",
+            MenuIcon: "",
+            SubMenu: [],
+          },
+          {
+            MenuName: "ConstructServiceType",
+            MenuTitle: "Loại công việc xây dựng bảo trì",
+            LinkTo: "/ConstructServiceType",
+            MenuIcon: "",
+            SubMenu: [],
+          },
+          {
+            MenuName: "ConstructService",
+            MenuTitle: "Công việc xây dựng bảo trì",
+            LinkTo: "/ConstructService",
+            MenuIcon: "",
+            SubMenu: [],
+          },
+        ],
+      }
+    ]
   },
   {
     MenuName: "PartnerPriviledge",
@@ -1635,6 +1664,42 @@ const AppMenu = [
         ],
       },
       {
+        MenuName: "MaintainConstructRP",
+        MenuTitle: "Doanh thu xây dựng bảo trì",
+        LinkTo: "",
+        MenuIcon: "",
+        SubMenu: [
+          {
+            MenuName: "MaintainConstructListReport",
+            MenuTitle: "Danh sách công trình bảo trì ",
+            LinkTo: "/MaintainConstructListReport",
+            MenuIcon: "",
+            SubMenu: [],
+          },
+          {
+            MenuName: "ConstructRevenueReport",
+            MenuTitle: "Danh sách công trình bảo trì đang tính doanh thu",
+            LinkTo: "/ConstructRevenueReport",
+            MenuIcon: "",
+            SubMenu: [],
+          },
+          {
+            MenuName: "CurrentProjectTypeReport",
+            MenuTitle: "Danh sách loại công trình hiện tại của siêu thị",
+            LinkTo: "/CurrentProjectTypeReport",
+            MenuIcon: "",
+            SubMenu: [],
+          },
+          // {
+          //   MenuName: "ProjectArchitectureInfo",
+          //   MenuTitle: "Danh sách công trình xây dựng",
+          //   LinkTo: "/ProjectArchitectureInfo",
+          //   MenuIcon: "",
+          //   SubMenu: [],
+          // },
+        ],
+      },
+      {
         MenuName: "QualityReport",
         MenuTitle: "Báo cáo chất lượng",
         LinkTo: "/",
@@ -1757,7 +1822,7 @@ const AppMenu = [
     LinkTo: "/Documents",
     MenuIcon: "",
     SubMenu: [],
-  },
+  }
 ];
 
 export default AppMenu;
