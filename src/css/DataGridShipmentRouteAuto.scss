@@ -37,6 +37,7 @@
   &:hover {
     cursor: pointer;
   }
+
   .Collapsible__contentInner {
     .row {
       .card {
@@ -107,6 +108,14 @@
   .collapsible-open-custom {
     padding: 0px !important;
   }
+
+  .Collapsible__trigger.is-disabled{
+    opacity: 1 !important;
+  }
+}
+
+.ant-collapse-search .ant-collapse-content-box{
+  padding: 0 !important;
 }
 
 .ant-col.ant-col-ma {

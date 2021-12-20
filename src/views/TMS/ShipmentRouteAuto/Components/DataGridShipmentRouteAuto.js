@@ -1786,7 +1786,7 @@ class DataGridShipmentRouteAutoCom extends Component {
                     style={{ maxWidth: this.state.changeGird == false ? this.state.maxWidthGird : "49%", borderRadius: "5px", margin: 0 }}
                   >
                     <ReactNotification ref={this.notificationDOMRef} />
-                    <div className="card-title card-title-custom">
+                    {/* <div className="card-title card-title-custom">
                       <Input.Search
                         placeholder="Tìm kiếm"
                         onChange={(event) => this.handleInputChange(event.target.value)}
@@ -1795,7 +1795,7 @@ class DataGridShipmentRouteAutoCom extends Component {
                         allowClear
                         style={{ width: "60%", maxWidth: "400px", margin: "5px 0" }}
                       />
-                    </div>
+                    </div> */}
                     <div className="card-body card-body-custom">
                       {dataGrid}
                       {/* {this.props.IsAutoPaging && <GridPageShipmentRouteAuto numPage={pageCount} currentPage={this.state.PageNumber} onChangePage={this.onChangePageHandle} />} */}
