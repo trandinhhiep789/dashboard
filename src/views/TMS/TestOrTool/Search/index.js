@@ -7,6 +7,7 @@ import { Button, Popover } from "antd";
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
+import ModalVietBanDoShipmentRouteAuto from "../../ShipmentRouteAuto/Components/ModalVietBanDoShipmentRouteAuto";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -27,7 +28,9 @@ class SearchCom extends React.Component {
                 "#14915f",
                 "#e79940",
                 "#6be54"
-            ]
+            ],
+            dataSourceMap: [],
+            isShowModalMap: false
         };
 
         this.gridref = React.createRef();
@@ -35,9 +38,11 @@ class SearchCom extends React.Component {
         this.notificationDOMRef = React.createRef();
         this.handleImport = this.handleImport.bind(this);
         this.handleExport = this.handleExport.bind(this);
+        this.handleShowModalMap = this.handleShowModalMap.bind(this);
     }
 
     componentDidMount() {
+
     }
 
     handleExport() {
@@ -117,40 +122,24 @@ class SearchCom extends React.Component {
 
         input.addEventListener("change", () => {
             readXlsxFile(input.files[0], { sheet: "data", schema }).then((data) => {
-                let Sourses = [], arrShipmentOrderID = [], Demands = [];
-
-                data.rows.forEach(item => {
-                    if (!item.SHIPMENTORDERID) {
-                        arrShipmentOrderID.push(0);
-                    } else {
-                        arrShipmentOrderID.push(item.SHIPMENTORDERID);
+                console.log(data.rows)
+                const input = data.rows.map(item => {
+                    return {
+                        ShipmentOrderID: item.SHIPMENTORDERID ? item.SHIPMENTORDERID : 0,
+                        ReceiverGeoLocation: item.ACTUALRECEIVERGEOLOCATION,
+                        ReceiverFullName: item.RECEIVERFULLADDRESS ? item.RECEIVERFULLADDRESS : "",
+                        ReceiverPhoneNumber: item.RECEIVERPHONENUMBER ? item.RECEIVERPHONENUMBER : "",
+                        ReceiverFullAddress: item.RECEIVERFULLADDRESS ? item.RECEIVERFULLADDRESS : "",
+                        Weight: item.WEIGHT ? item.WEIGHT : 0,
+                        Length: item.LENGTH ? item.LENGTH : 0,
+                        Width: item.WIDTH ? item.WIDTH : 0,
+                        Height: item.HEIGHT ? item.HEIGHT : 0
                     }
-
-                    const arrLocation = item.ACTUALRECEIVERGEOLOCATION.split(",");
-                    Sourses.push({
-                        Latitude: arrLocation[0],
-                        Longitude: arrLocation[1]
-                    })
-
-                    if (!item.SHIPMENTORDERID) {
-                        Demands.push(0);
-                    } else {
-                        Demands.push(item.WEIGHT);
-                    }
-
                 })
 
-                const a = {
-                    AlleyAvoidance: true,
-                    TransportType: 0,
-                    Sourses,
-                    arrShipmentOrderID,
-                    Demands: Demands
-                }
+                console.log("input", input);
 
-                console.log("input", a);
-
-                this.props.callFetchAPI("TMSAPI", "api/test/VehicleRouting", a).then(apiResult => {
+                this.props.callFetchAPI("TMSAPI", "api/test/VehicleRouting", input).then(apiResult => {
                     console.log('output', apiResult);
                     if (apiResult.IsError) {
                         alert("Lỗi gọi api");
@@ -166,6 +155,11 @@ class SearchCom extends React.Component {
                 input.value = "";
             })
         }, { once: true })
+    }
+
+    handleShowModalMap(index) {
+        console.log(index);
+        this.setState({ dataSourceMap: this.state.dataSource.ListShipmentOrderRoute[index], isShowModalMap: true })
     }
 
     render() {
@@ -206,7 +200,7 @@ class SearchCom extends React.Component {
                                         }
                                     </div>
                                     <div style={{ width: "10%", textAlign: "right" }}>
-                                        <Button type="primary" size="small">Xem bản đồ</Button>
+                                        <Button type="primary" size="small" onClick={() => this.handleShowModalMap(index)}>Xem bản đồ</Button>
                                     </div>
                                 </div>
                             </div>
@@ -215,7 +209,10 @@ class SearchCom extends React.Component {
                     </div>
                 }
 
+
                 < input type="file" id="buttonImportFile" style={{ display: "none" }} />
+
+                {this.state.isShowModalMap && <ModalVietBanDoShipmentRouteAuto ListShipmentOrder={this.state.dataSourceMap} onClose={() => this.setState({ isShowModalMap: false })} />}
             </React.Fragment>
         );
     }
