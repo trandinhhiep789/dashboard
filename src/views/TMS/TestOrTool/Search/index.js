@@ -2,7 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import ReactNotification from "react-notifications-component";
 import readXlsxFile from 'read-excel-file';
-import { Button, Popover } from "antd";
+import { Button, Popover, Tooltip } from "antd";
+import { EyeOutlined, PartitionOutlined } from "@ant-design/icons";
 
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
@@ -127,7 +128,7 @@ class SearchCom extends React.Component {
                     return {
                         ShipmentOrderID: item.SHIPMENTORDERID ? item.SHIPMENTORDERID : 0,
                         ReceiverGeoLocation: item.ACTUALRECEIVERGEOLOCATION,
-                        ReceiverFullName: item.RECEIVERFULLADDRESS ? item.RECEIVERFULLADDRESS : "",
+                        ReceiverFullName: item.RECEIVERFULLNAME ? item.RECEIVERFULLNAME : "",
                         ReceiverPhoneNumber: item.RECEIVERPHONENUMBER ? item.RECEIVERPHONENUMBER : "",
                         ReceiverFullAddress: item.RECEIVERFULLADDRESS ? item.RECEIVERFULLADDRESS : "",
                         Weight: item.WEIGHT ? item.WEIGHT : 0,
@@ -158,11 +159,11 @@ class SearchCom extends React.Component {
     }
 
     handleShowModalMap(index) {
-        console.log(index);
         this.setState({ dataSourceMap: this.state.dataSource.ListShipmentOrderRoute[index], isShowModalMap: true })
     }
 
     render() {
+        let randomColor = "";
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -176,36 +177,88 @@ class SearchCom extends React.Component {
                 </button>
 
                 {
-                    this.state.dataSource != null && <div style={{ width: "100%", backgroundColor: "white", padding: "20px", minHeight: "50vh", border: "1px solid blue" }}>
+                    this.state.dataSource != null && <div style={{ width: "100%", backgroundColor: "white", padding: "20px", height: "57vh", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
                         <h4>Danh sách các tuyến đề xuất</h4>
-                        {this.state.dataSource.ListShipmentOrderRoute.map((line, index) => (
-                            <div key={index}>
-                                <div>
-                                    {`Tổng quảng đường: ${this.state.dataSource.ListTotalDistance[index]}m, tổng khối lượng: ${this.state.dataSource.ListTotalLoad[index]}kg`}
-                                </div>
-
-                                <div style={{ display: "flex", width: "100%" }}>
-                                    <div style={{ display: "flex", height: "9px", width: "90%", justifyContent: "space-between", borderBottom: `3px solid ${this.state.pickRandomColor[Math.floor(Math.random() * 11)]}`, marginBottom: "30px" }}>
-                                        {line.map((item) =>
-                                            <Popover
-                                                key={item.ShipmentOrderID}
-                                                content={`Cân nặng: ${item.Weight}`}
-                                                title={`Mã vận đơn ${item.ShipmentOrderID}`}>
-                                                <div style={{ position: "relative", width: '12px', height: '12px', border: `3px solid #1f5ff4`, backgroundColor: `#1f5ff4`, borderRadius: '50%', cursor: "pointer" }}>
-                                                    <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>
-                                                        {item.ShipmentOrderID}
+                        <h5>Tổng cộng số km các tuyến: <i style={{ fontWeight: "700" }}>{parseInt(this.state.dataSource.TotalDistance / 1000)}</i> km</h5>
+                        <div style={{ width: "100%", backgroundColor: "white", padding: "20px", height: "60vh", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
+                            {
+                                this.state.dataSource.ListShipmentOrderRoute && this.state.dataSource.ListShipmentOrderRoute.map((line, index) => (
+                                    <div key={index}>
+                                        <p style={{ display: "none" }}>{(randomColor = this.state.pickRandomColor[Math.floor(Math.random() * 11)])}</p>
+                                        <div style={{ display: "flex" }}>
+                                            <span style={{ fontWeight: "700", fontSize: "15px" }}>
+                                                {index}
+                                            </span>&ensp;
+                                            <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
+                                                <div style={{ width: "90%", marginBottom: "30px" }}>
+                                                    <div>
+                                                        <i>Số km: {parseInt(this.state.dataSource.ListTotalDistance[index] / 1000)}</i>&ensp;
+                                                        <i>Tổng khối lượng: {this.state.dataSource.ListTotalLoad[index]}</i>
+                                                    </div>
+                                                    <div style={{ display: "flex" }}>
+                                                        {
+                                                            this.state.dataSource.ListShipmentOrderRoute[index].map((objShipmentOrder, i) => (
+                                                                <div key={objShipmentOrder.ShipmentOrderID} style={{ display: "flex", width: i != 0 && "100%" }}>
+                                                                    {
+                                                                        i != 0 && (objShipmentOrder.IsCompleteDeliverIed
+                                                                            ? <div style={{ width: "100%", height: "10px", borderBottom: `3px solid ${randomColor}` }}></div>
+                                                                            : <div style={{ width: "100%", height: "10px", borderBottom: `3px solid #80808030` }}></div>)
+                                                                    }
+                                                                    {
+                                                                        i != 0
+                                                                            ? <Popover
+                                                                                content={
+                                                                                    <div>
+                                                                                        <p>{objShipmentOrder.ReceiverFullName}</p>
+                                                                                        <p>{objShipmentOrder.ReceiverFullAddress}</p>
+                                                                                    </div>
+                                                                                }
+                                                                                title={objShipmentOrder.ShipmentOrderID}>
+                                                                                <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
+                                                                                    {
+                                                                                        objShipmentOrder.IsCompleteDeliverIed ?
+                                                                                            <div
+                                                                                                style={{ position: "relative", width: "12px", height: "12px", border: `3px solid ${randomColor}`, backgroundColor: `${randomColor}`, borderRadius: "50%", cursor: "pointer" }}
+                                                                                            >
+                                                                                                <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{objShipmentOrder.ShipmentOrderID}</div>
+                                                                                            </div> :
+                                                                                            <div
+                                                                                                style={{ position: "relative", width: "12px", height: "12px", border: `3px solid ${randomColor}`, backgroundColor: "white", borderRadius: "50%", cursor: "pointer" }}
+                                                                                            >
+                                                                                                <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{objShipmentOrder.ShipmentOrderID}</div>
+                                                                                            </div>
+                                                                                    }
+                                                                                </div>
+                                                                            </Popover>
+                                                                            : <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
+                                                                                {
+                                                                                    <div
+                                                                                        style={{ position: "relative", width: "12px", height: "12px", border: `3px solid ${randomColor}`, backgroundColor: `${randomColor}`, borderRadius: "50%", cursor: "pointer" }}
+                                                                                    >
+                                                                                        <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>0</div>
+                                                                                    </div>
+                                                                                }
+                                                                            </div>
+                                                                    }
+                                                                </div>
+                                                            ))
+                                                        }
                                                     </div>
                                                 </div>
-                                            </Popover>)
-                                        }
+                                                <div style={{ width: "10%", textAlign: "right", paddingTop: "18px" }}>
+                                                    <Tooltip title="Xem bản đồ">
+                                                        <Button type="primary" shape="circle" icon={<EyeOutlined />} onClick={() => this.handleShowModalMap(index)} />
+                                                    </Tooltip>&nbsp;
+                                                    <Tooltip title="Phân tuyến">
+                                                        <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
+                                                    </Tooltip>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div style={{ width: "10%", textAlign: "right" }}>
-                                        <Button type="primary" size="small" onClick={() => this.handleShowModalMap(index)}>Xem bản đồ</Button>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-
+                                ))
+                            }
+                        </div>
                     </div>
                 }
 
