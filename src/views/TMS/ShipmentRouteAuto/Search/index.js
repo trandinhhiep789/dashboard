@@ -625,7 +625,7 @@ class SearchCom extends Component {
     //   }
     // }
 
-    //Xử lý thêm nút checked
+    // Xử lý thêm nút checked
     handleCheckShip({ TimeFrame, GridDataShip, ShipmentOrderID, IsSinger }) {
         let changeState = this.state;
         let gridDataShip = changeState.GridDataShip;
@@ -643,6 +643,7 @@ class SearchCom extends Component {
         });
     }
 
+    // Tính khoảng thời gian
     calculateTimeFrame(paramShipmentOrderID) {
         let objShipmentOrder = this.state.GridDataSource.filter((item) => item.ShipmentOrderID === paramShipmentOrderID);
         const uptExpectedDeliveryDate = new Date(objShipmentOrder[0].ExpectedDeliveryDate);
@@ -717,10 +718,10 @@ class SearchCom extends Component {
     //   }
     // }
 
+
+    // Kiểm tra GridDataShip có phần tử không
     handleCheckGirdDataShipIsEmpty() {
         const { diffTimeFrame, TimeFrame8to10, TimeFrame10to12, TimeFrame12to14, TimeFrame14to16, TimeFrame17to19, TimeFrame19to21 } = this.state.GridDataShip;
-
-        console.log({ diffTimeFrame, TimeFrame8to10, TimeFrame10to12, TimeFrame12to14, TimeFrame14to16, TimeFrame17to19, TimeFrame19to21 });
 
         return diffTimeFrame.length > 0
             ? "diffTimeFrame"
@@ -852,7 +853,7 @@ class SearchCom extends Component {
         });
     }
 
-    //Xử lý hiện/ản modal
+    // Xử lý hiện/ản modal
     handleShowModel(paramObjectChangeState) {
         let changeState = this.state;
 
@@ -875,6 +876,7 @@ class SearchCom extends Component {
         });
     }
 
+    // Xử lý ghi chú
     handleMapObjectDescription(paramDataSource) {
         return paramDataSource.reduce((a, v) => {
             return {
@@ -890,6 +892,26 @@ class SearchCom extends Component {
 
         // changeState = { ...changeState, ObjectDescription: objDescription };
         // this.setState(changeState);
+    }
+
+    // Xử lý phân tuyến tự động
+    handleShipmentRouteAuto(){
+        let arrRequest = [];
+        for (const [key, value] of Object.entries(this.state.GridDataShip)) {
+            if (value.length > 0) {
+                arrRequest = value.reduce((curArray, curValue)=>{
+                    return [...curArray, {ShipmentOrderID: curValue.ShipmentOrderID, ShipmentOrderTypeID:curValue.ShipmentOrderTypeID}]
+                }, [])
+              
+            }
+        }
+      
+        this.props.callFetchAPI(APIHostName, "api/test/VehicleRouting", arrRequest).then((apiResult) => {
+            if (!apiResult.IsError) {
+            } else {
+                this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
+            }
+        });
     }
 
     shipmentRouteAuto() {
@@ -980,6 +1002,7 @@ class SearchCom extends Component {
         ];
         var randomColor;
         const pickRandomColor = ["#1f5ff4", "#c55d53", "#cb68c5", "#65b411", "#f4b323", "#420e3e", "#e80024", "#585ccc", "#d44371", "#14915f", "#e79940", "#6be54"];
+
         return (
             <div>
                 <Tabs defaultActiveKey="1" style={{ padding: "15px", backgroundColor: "white"}}>
@@ -1105,7 +1128,7 @@ class SearchCom extends Component {
     render() {
         const currentHour = moment().hour();
 
-        const phanTuyenTuDong = this.shipmentRouteAuto();
+        const renderPhanTuyenTuDong = this.shipmentRouteAuto();
 
         const active_tab = (time) => {
             if (time >= 8 && time < 10) return "1";
@@ -1137,24 +1160,24 @@ class SearchCom extends Component {
                     </Collapse>
 
                     {/* <SearchForm
-            FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
-            MLObjectDefinition={SearchMLObjectDefinition}
-            listelement={this.state.SearchElementList}
-            onSubmit={this.handleSearchSubmit}
-            ref={this.searchref}
-            btnGroup="btnSearch btncustom btnGroup"
-            className="multiple multiple-custom multiple-custom-display"
-          /> */}
+                            FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
+                            MLObjectDefinition={SearchMLObjectDefinition}
+                            listelement={this.state.SearchElementList}
+                            onSubmit={this.handleSearchSubmit}
+                            ref={this.searchref}
+                            btnGroup="btnSearch btncustom btnGroup"
+                            className="multiple multiple-custom multiple-custom-display"
+                        /> */}
                 </div>
 
                 {/* <div className="menu-options" style={{marginTop: "10px"}}>
-          <Space>
-            <Button type="primary" onClick={() => this.handleUserCoordinator()}>
-              Phân tuyến
-            </Button>
-            <Button type="primary" onClick={() => this.shipmentRouteAuto()}>Phân tuyến tự động</Button>
-          </Space>
-        </div> */}
+                        <Space>
+                            <Button type="primary" onClick={() => this.handleUserCoordinator()}>
+                            Phân tuyến
+                            </Button>
+                            <Button type="primary" onClick={() => this.shipmentRouteAuto()}>Phân tuyến tự động</Button>
+                        </Space>
+                    </div> */}
 
                 {this.state.IsLoadDataComplete && (
                     <div className="col-lg-12" style={{ backgroundColor: "aliceblue", border: "1px solid #03a9f4" }}>
@@ -1701,7 +1724,7 @@ class SearchCom extends Component {
                                 tab="Phân tuyến tự động"
                                 key="9"
                             >
-                                {phanTuyenTuDong}
+                                {renderPhanTuyenTuDong}
                             </Tabs.TabPane>
                             <Tabs.TabPane
                                 tab={
@@ -1709,9 +1732,9 @@ class SearchCom extends Component {
                                         <Button type="primary" onClick={() => this.handleUserCoordinator()}>
                                             Phân tuyến
                                         </Button>
-                                        {/* <Button type="primary">
-                      Phân tuyến tự động
-                    </Button> */}
+                                        <Button type="primary" onClick={(_)=>this.handleShipmentRouteAuto()}>
+                                            Phân tuyến tự động
+                                        </Button>
                                     </Space>
                                 }
                                 disabled
