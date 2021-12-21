@@ -25,7 +25,7 @@ import SearchFormShipmentRouteAuto from "../Components/SearchFormShipmentRouteAu
 import SearchForm from "../Components/SearchFormShipmentRouteAutoOldUI";
 import "../../../../css/DataGridShipmentRouteAuto.scss";
 import moment from "moment";
-import { Button, Card, Col, Row, Space, Statistic, Tabs, Collapse, Popover, Tooltip } from "antd";
+import { Button, Card, Col, Row, Space, Statistic, Tabs, Collapse, Popover, Tooltip, Input } from "antd";
 import { EyeOutlined, PartitionOutlined } from "@ant-design/icons";
 import { hideModal, showModal } from "../../../../actions/modal";
 import ModalSearchFormShipmentRouteAuto from "../Components/ModalSearchFormShipmentRouteAuto";
@@ -64,7 +64,24 @@ class SearchCom extends Component {
             IsShowModel: false,
             IsShowModelMap: false,
             ShipmentOrderSame: [],
-
+            ObjectIsDisabled:{
+                diffTimeFrame: false,
+                TimeFrame8to10: false,
+                TimeFrame10to12:false,
+                TimeFrame12to14:false,
+                TimeFrame14to16:false,
+                TimeFrame17to19:false,
+                TimeFrame19to21:false,
+            },
+            ObjectTimeFrameDataSource:{
+                diffTimeFrame: [],
+                TimeFrame8to10: [],
+                TimeFrame10to12: [],
+                TimeFrame12to14: [],
+                TimeFrame14to16: [],
+                TimeFrame17to19: [],
+                TimeFrame19to21: [],
+            },
             diffTimeFrame: [],
             TimeFrame8to10: [],
             TimeFrame10to12: [],
@@ -300,6 +317,7 @@ class SearchCom extends Component {
 
             switch (true) {
                 case hour >= 8 && hour < 10:
+
                     TimeFrame8to10.push(item);
                     break;
                 case hour >= 10 && hour < 12:
@@ -332,6 +350,15 @@ class SearchCom extends Component {
             TimeFrame14to16,
             TimeFrame17to19,
             TimeFrame19to21,
+            ObjectTimeFrameDataSource:{
+                diffTimeFrame,
+                TimeFrame8to10,
+                TimeFrame10to12,
+                TimeFrame12to14,
+                TimeFrame14to16,
+                TimeFrame17to19,
+                TimeFrame19to21,
+            }
         });
     }
 
@@ -617,15 +644,8 @@ class SearchCom extends Component {
         this.props.hideModal();
     };
 
-    // handleShipmentOrder(apiResult) {
-    //   this.addNotification(apiResult.Message, apiResult.IsError);
-    //   if (!apiResult.IsError) {
-    //     this.setState({ ShipmentRouteID: "", GridDataShip: [], ChangeGird: false });
-    //     if (this.props.onChangePageLoad != null) this.props.onChangePageLoad();
-    //   }
-    // }
 
-    //Xử lý thêm nút checked
+    // Xử lý thêm nút checked
     handleCheckShip({ TimeFrame, GridDataShip, ShipmentOrderID, IsSinger }) {
         let changeState = this.state;
         let gridDataShip = changeState.GridDataShip;
@@ -643,6 +663,7 @@ class SearchCom extends Component {
         });
     }
 
+    // Tính khoảng thời gian
     calculateTimeFrame(paramShipmentOrderID) {
         let objShipmentOrder = this.state.GridDataSource.filter((item) => item.ShipmentOrderID === paramShipmentOrderID);
         const uptExpectedDeliveryDate = new Date(objShipmentOrder[0].ExpectedDeliveryDate);
@@ -659,7 +680,6 @@ class SearchCom extends Component {
 
     // Xử lý bỏ checked khi nhấn xoá trong modal
     handleRemoveCheckShip(paramShipmentOrderID) {
-        console.log("paramShipmentOrderID", paramShipmentOrderID);
         let isExistInGridDataShipModalTemp = this.state.GridDataShipFormModalTemp.some((item) => item.ShipmentOrderID == paramShipmentOrderID);
 
         if (isExistInGridDataShipModalTemp) {
@@ -678,49 +698,9 @@ class SearchCom extends Component {
         }
     }
 
-    // handleUserCoordinator() {
-    //   this.props.hideModal();
-
-    //   if (this.state.GridDataShip.length > 0) {
-    //     this.state.GridDataShip[0].ShipmentOrderTypelst = this.state.SearchData[2].SearchValue;
-
-    //     this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderNewLst", this.state.GridDataShip).then((apiResult) => {
-    //       if (!apiResult.IsError) {
-    //         this.setState({ GridDataShip: apiResult.ResultObject.ShipmentOrderDeliverList, ChangeGird: true });
-    //         this.props.showModal(MODAL_TYPE_VIEW, {
-    //           title: "Phân tuyến điều phối vận đơn",
-    //           isShowOverlay: false,
-    //           onhideModal: this.handleClose,
-    //           content: {
-    //             text: (
-    //               <ListShipCoordinatorRoute
-    //                 ShipmentOrderID={0}
-    //                 ShipmentRouteID={this.state.ShipmentRouteID}
-    //                 InfoCoordinator={this.state.GridDataShip}
-    //                 ShipmentOrderSame={apiResult.ResultObject.ShipmentOrderDeliverSameList}
-    //                 IsUserCoordinator={true}
-    //                 IsCoordinator={true}
-    //                 IsCancelDelivery={true}
-    //                 onChangeValue={this.handleShipmentOrder.bind(this)}
-    //                 onChangeClose={this.handleCloseModal.bind(this)}
-    //               />
-    //             ),
-    //           },
-    //           maxWidth: this.state.widthPercent + "px",
-    //         });
-    //       } else {
-    //         this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
-    //       }
-    //     });
-    //   } else {
-    //     this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
-    //   }
-    // }
-
+    // Kiểm tra GridDataShip có phần tử không
     handleCheckGirdDataShipIsEmpty() {
         const { diffTimeFrame, TimeFrame8to10, TimeFrame10to12, TimeFrame12to14, TimeFrame14to16, TimeFrame17to19, TimeFrame19to21 } = this.state.GridDataShip;
-
-        console.log({ diffTimeFrame, TimeFrame8to10, TimeFrame10to12, TimeFrame12to14, TimeFrame14to16, TimeFrame17to19, TimeFrame19to21 });
 
         return diffTimeFrame.length > 0
             ? "diffTimeFrame"
@@ -852,7 +832,7 @@ class SearchCom extends Component {
         });
     }
 
-    //Xử lý hiện/ản modal
+    // Xử lý hiện/ản modal
     handleShowModel(paramObjectChangeState) {
         let changeState = this.state;
 
@@ -875,6 +855,7 @@ class SearchCom extends Component {
         });
     }
 
+    // Xử lý ghi chú
     handleMapObjectDescription(paramDataSource) {
         return paramDataSource.reduce((a, v) => {
             return {
@@ -892,6 +873,26 @@ class SearchCom extends Component {
         // this.setState(changeState);
     }
 
+    // Xử lý phân tuyến tự động
+    handleShipmentRouteAuto(){
+        let arrRequest = [];
+        for (const [key, value] of Object.entries(this.state.GridDataShip)) {
+            if (value.length > 0) {
+                arrRequest = value.reduce((curArray, curValue)=>{
+                    return [...curArray, {ShipmentOrderID: curValue.ShipmentOrderID, ShipmentOrderTypeID:curValue.ShipmentOrderTypeID}]
+                }, [])
+              
+            }
+        }
+      
+        this.props.callFetchAPI(APIHostName, "api/test/VehicleRouting", arrRequest).then((apiResult) => {
+            if (!apiResult.IsError) {
+            } else {
+                this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
+            }
+        });
+    }
+    
     shipmentRouteAuto() {
         const a = [
             {
@@ -980,72 +981,165 @@ class SearchCom extends Component {
         ];
         var randomColor;
         const pickRandomColor = ["#1f5ff4", "#c55d53", "#cb68c5", "#65b411", "#f4b323", "#420e3e", "#e80024", "#585ccc", "#d44371", "#14915f", "#e79940", "#6be54"];
+
         return (
             <div>
-                <h4>Danh sách các tuyến đề xuất</h4>
-                <h5>Tổng cộng số km các tuyến: <i style={{ fontWeight: "700" }}>{a.reduce((t, v) => t + ((v.km * 1) / 1000), 0)}</i> km</h5>
-                <div style={{ width: "100%", backgroundColor: "white", padding: "20px", height: "57vh", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
-                    <div style={{}}>
-                        {a &&
-                            a.map((line, i) => (
-                                <div key={line.name}>
-                                    <p style={{ display: "none" }}>{(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}</p>
-                                    <div style={{ display: "flex" }}>
-                                        <span style={{ fontWeight: "700", fontSize: "15px" }}>
-                                            {i}
-                                        </span>&ensp;
-                                        <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
-                                            <div style={{ width: "90%", marginBottom: "30px" }}>
-                                                <div>
-                                                    <i>Số km: {((line.km) * 1) / 1000}</i>&ensp;
-                                                    <i>Tổng khối lượng: {line.kg}</i>
+                <Tabs defaultActiveKey="1" style={{ padding: "15px", backgroundColor: "white"}}>
+                  <Tabs.TabPane tab="Xe máy" key="1">
+                    <h5>Tổng cộng số km các tuyến: <i style={{ fontWeight: "700" }}>{a.reduce((t, v) => t + ((v.km * 1) / 1000), 0)}</i> km</h5>
+                    <div style={{ width: "100%", backgroundColor: "white", padding: "20px", height: "57vh", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
+                        <div style={{}}>
+                            {a &&
+                                a.map((line, i) => (
+                                    <div key={line.name}>
+                                        <p style={{ display: "none" }}>{(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}</p>
+                                        <div style={{ display: "flex" }}>
+                                            <span style={{ fontWeight: "700", fontSize: "15px" }}>
+                                                {i}
+                                            </span>&ensp;
+                                            <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
+                                                <div style={{ width: "90%", marginBottom: "30px" }}>
+                                                    <div>
+                                                        <i>Số km: {((line.km) * 1) / 1000}</i>&ensp;
+                                                        <i>Tổng khối lượng: {line.kg}</i>
+                                                    </div>
+                                                    <div style={{ display: "flex" }}>
+                                                        {line.Ds.map((a, i, row) => (
+                                                            <div key={a.ShipmentOrderID} style={{ display: "flex", width: i != 0 && "100%" }}>
+                                                                {i != 0 && (a.finish ? <div style={{ width: "100%", height: "10px", borderBottom: `3px solid ${randomColor}` }}></div> : <div style={{ width: "100%", height: "10px", borderBottom: `3px solid #80808030` }}></div>)}
+                                                                <Popover content={<div><p>{a.tenKH}</p><p>{a.diaChi}</p></div>} title={a.ShipmentOrderID}>
+                                                                    <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
+                                                                        {a.finish ?
+                                                                            <div
+                                                                                style={{ position: "relative", width: "12px", height: "12px", border: `3px solid ${randomColor}`, backgroundColor: `${randomColor}`, borderRadius: "50%", cursor: "pointer" }}
+                                                                            >
+                                                                                <div style={{ position: "absolute", top: "10px", left: "-8px" }}>{a.ShipmentOrderID}</div>
+                                                                            </div> :
+                                                                            <div
+                                                                                style={{ position: "relative", width: "12px", height: "12px", border: `3px solid ${randomColor}`, backgroundColor: "white", borderRadius: "50%", cursor: "pointer" }}
+                                                                            >
+                                                                                <div style={{ position: "absolute", top: "10px", left: "-8px" }}>{a.ShipmentOrderID}</div>
+                                                                            </div>
+                                                                        }
+                                                                    </div>
+                                                                </Popover>
+                                                            </div>
+                                                        ))}
+                                                    </div>
                                                 </div>
-                                                <div style={{ display: "flex" }}>
-                                                    {line.Ds.map((a, i, row) => (
-                                                        <div key={a.ShipmentOrderID} style={{ display: "flex", width: i != 0 && "100%" }}>
-                                                            {i != 0 && (a.finish ? <div style={{ width: "100%", height: "10px", borderBottom: `3px solid ${randomColor}` }}></div> : <div style={{ width: "100%", height: "10px", borderBottom: `3px solid #80808030` }}></div>)}
-                                                            <Popover content={<div><p>{a.tenKH}</p><p>{a.diaChi}</p></div>} title={a.ShipmentOrderID}>
-                                                                <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
-                                                                    {a.finish ?
-                                                                        <div
-                                                                            style={{ position: "relative", width: "12px", height: "12px", border: `3px solid ${randomColor}`, backgroundColor: `${randomColor}`, borderRadius: "50%", cursor: "pointer" }}
-                                                                        >
-                                                                            <div style={{ position: "absolute", top: "10px", left: "-8px" }}>{a.ShipmentOrderID}</div>
-                                                                        </div> :
-                                                                        <div
-                                                                            style={{ position: "relative", width: "12px", height: "12px", border: `3px solid ${randomColor}`, backgroundColor: "white", borderRadius: "50%", cursor: "pointer" }}
-                                                                        >
-                                                                            <div style={{ position: "absolute", top: "10px", left: "-8px" }}>{a.ShipmentOrderID}</div>
-                                                                        </div>
-                                                                    }
-                                                                </div>
-                                                            </Popover>
-                                                        </div>
-                                                    ))}
+                                                <div style={{ width: "10%", textAlign: "right", paddingTop: "18px" }}>
+                                                    <Tooltip title="Xem bản đồ">
+                                                        <Button type="primary" shape="circle" icon={<EyeOutlined />} />
+                                                    </Tooltip>&nbsp;
+                                                    <Tooltip title="Phân tuyến">
+                                                        <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
+                                                    </Tooltip>
                                                 </div>
-                                            </div>
-                                            <div style={{ width: "10%", textAlign: "right", paddingTop: "18px" }}>
-                                                <Tooltip title="Xem bản đồ">
-                                                    <Button type="primary" shape="circle" icon={<EyeOutlined />} />
-                                                </Tooltip>&nbsp;
-                                                <Tooltip title="Phân tuyến">
-                                                    <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
-                                                </Tooltip>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
+                        </div>
                     </div>
-                </div>
+                  </Tabs.TabPane>
+                  <Tabs.TabPane tab="Xe tải" key="2">
+                    <h5>Tổng cộng số km các tuyến: <i style={{ fontWeight: "700" }}>{a.reduce((t, v) => t + ((v.km * 1) / 1000), 0)}</i> km</h5>
+                    <div style={{ width: "100%", backgroundColor: "white", padding: "20px", height: "57vh", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
+                        <div style={{}}>
+                            {a &&
+                                a.map((line, i) => (
+                                    <div key={line.name}>
+                                        <p style={{ display: "none" }}>{(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}</p>
+                                        <div style={{ display: "flex" }}>
+                                            <span style={{ fontWeight: "700", fontSize: "15px" }}>
+                                                {i}
+                                            </span>&ensp;
+                                            <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
+                                                <div style={{ width: "90%", marginBottom: "30px" }}>
+                                                    <div>
+                                                        <i>Số km: {((line.km) * 1) / 1000}</i>&ensp;
+                                                        <i>Tổng khối lượng: {line.kg}</i>
+                                                    </div>
+                                                    <div style={{ display: "flex" }}>
+                                                        {line.Ds.map((a, i, row) => (
+                                                            <div key={a.ShipmentOrderID} style={{ display: "flex", width: i != 0 && "100%" }}>
+                                                                {i != 0 && (a.finish ? <div style={{ width: "100%", height: "10px", borderBottom: `3px solid ${randomColor}` }}></div> : <div style={{ width: "100%", height: "10px", borderBottom: `3px solid #80808030` }}></div>)}
+                                                                <Popover content={<div><p>{a.tenKH}</p><p>{a.diaChi}</p></div>} title={a.ShipmentOrderID}>
+                                                                    <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
+                                                                        {a.finish ?
+                                                                            <div
+                                                                                style={{ position: "relative", width: "12px", height: "12px", border: `3px solid ${randomColor}`, backgroundColor: `${randomColor}`, borderRadius: "50%", cursor: "pointer" }}
+                                                                            >
+                                                                                <div style={{ position: "absolute", top: "10px", left: "-8px" }}>{a.ShipmentOrderID}</div>
+                                                                            </div> :
+                                                                            <div
+                                                                                style={{ position: "relative", width: "12px", height: "12px", border: `3px solid ${randomColor}`, backgroundColor: "white", borderRadius: "50%", cursor: "pointer" }}
+                                                                            >
+                                                                                <div style={{ position: "absolute", top: "10px", left: "-8px" }}>{a.ShipmentOrderID}</div>
+                                                                            </div>
+                                                                        }
+                                                                    </div>
+                                                                </Popover>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                                <div style={{ width: "10%", textAlign: "right", paddingTop: "18px" }}>
+                                                    <Tooltip title="Xem bản đồ">
+                                                        <Button type="primary" shape="circle" icon={<EyeOutlined />} />
+                                                    </Tooltip>&nbsp;
+                                                    <Tooltip title="Phân tuyến">
+                                                        <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
+                                                    </Tooltip>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                        </div>
+                    </div>
+                  </Tabs.TabPane>
+                </Tabs>
             </div>
         );
     }
 
+    // Disable Collapse
+    handleDisabled(keyCollapse, isCollapse){
+        let changeState=this.state;
+        let objIsDisabled=changeState.ObjectIsDisabled;
+
+        objIsDisabled={...objIsDisabled, [keyCollapse]:isCollapse};
+        changeState={...changeState, ObjectIsDisabled:objIsDisabled};
+
+        this.setState(changeState);
+    }
+
+    // Xử lý tìm kiếm
+    handleInputChange(value, timeFrame) {
+        let dispose = setTimeout(() => {
+          if (value == "") {
+            this.setState({ [timeFrame]: this.state.ObjectTimeFrameDataSource[timeFrame] });
+          } else {
+            let resultSearch = this.state.ObjectTimeFrameDataSource[timeFrame].filter(
+                (n) =>
+                n.ShipmentOrderID.toLowerCase().includes(value.toLowerCase()) ||
+                n.ReceiverFullName.toLowerCase().includes(value.toLowerCase()) ||
+                n.ReceiverPhoneNumber.toLowerCase().includes(value.toLowerCase()) ||
+                n.PartnerSaleOrderID.toLowerCase().includes(value.toLowerCase()) ||
+                n.PrimaryShipItemName.toLowerCase().includes(value.toLowerCase()) ||
+                n.ReceiverFullAddress.toLowerCase().includes(value.toLowerCase()) ||
+                n.ShipItemNameList.toLowerCase().includes(value.toLowerCase())
+            );
+            this.setState({ [timeFrame]: resultSearch });
+          }
+        }, 2000);
+      }
+
     render() {
         const currentHour = moment().hour();
 
-        const phanTuyenTuDong = this.shipmentRouteAuto();
+        const renderPhanTuyenTuDong = this.shipmentRouteAuto();
 
         const active_tab = (time) => {
             if (time >= 8 && time < 10) return "1";
@@ -1060,8 +1154,8 @@ class SearchCom extends Component {
         return (
             <React.Fragment>
                 <ReactNotification ref={this.notificationDOMRef} />
-                <div className="col-lg-12 SearchFormCustom" id="SearchFormCustom">
-                    <Collapse style={{ backgroundColor: "white", marginBottom: "10px" }}>
+                <div className="col-lg-12 SearchFormCustom" id="SearchFormCustom" style={{padding: 0}}>
+                    <Collapse className="ant-collapse-search" style={{ backgroundColor: "white", marginBottom: "10px"}}>
                         <Collapse.Panel header="Tim kiếm, lọc dữ liệu phân tuyến vận chuyển" key="1">
                             <SearchFormShipmentRouteAuto
                                 FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
@@ -1077,24 +1171,24 @@ class SearchCom extends Component {
                     </Collapse>
 
                     {/* <SearchForm
-            FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
-            MLObjectDefinition={SearchMLObjectDefinition}
-            listelement={this.state.SearchElementList}
-            onSubmit={this.handleSearchSubmit}
-            ref={this.searchref}
-            btnGroup="btnSearch btncustom btnGroup"
-            className="multiple multiple-custom multiple-custom-display"
-          /> */}
+                            FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
+                            MLObjectDefinition={SearchMLObjectDefinition}
+                            listelement={this.state.SearchElementList}
+                            onSubmit={this.handleSearchSubmit}
+                            ref={this.searchref}
+                            btnGroup="btnSearch btncustom btnGroup"
+                            className="multiple multiple-custom multiple-custom-display"
+                        /> */}
                 </div>
 
                 {/* <div className="menu-options" style={{marginTop: "10px"}}>
-          <Space>
-            <Button type="primary" onClick={() => this.handleUserCoordinator()}>
-              Phân tuyến
-            </Button>
-            <Button type="primary" onClick={() => this.shipmentRouteAuto()}>Phân tuyến tự động</Button>
-          </Space>
-        </div> */}
+                        <Space>
+                            <Button type="primary" onClick={() => this.handleUserCoordinator()}>
+                            Phân tuyến
+                            </Button>
+                            <Button type="primary" onClick={() => this.shipmentRouteAuto()}>Phân tuyến tự động</Button>
+                        </Space>
+                    </div> */}
 
                 {this.state.IsLoadDataComplete && (
                     <div className="col-lg-12" style={{ backgroundColor: "aliceblue", border: "1px solid #03a9f4" }}>
@@ -1102,20 +1196,21 @@ class SearchCom extends Component {
                             <Tabs.TabPane tab="08h00 - 10h00" key="1">
                                 <Collapsible
                                     className="CollapsibleCustom"
+                                    triggerDisabled={this.state.ObjectIsDisabled.TimeFrame8to10}
                                     trigger={
                                         <Fragment>
                                             <Row gutter={24}>
-                                                <Col span={5}>
+                                                <Col span={4}>
                                                     <Card size="small" bordered={false}>
                                                         <Statistic title="Thời gian" value="08h00 - 10h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                                                     </Card>
                                                 </Col>
-                                                <Col span={5}>
+                                                <Col span={4}>
                                                     <Card size="small" bordered={false}>
                                                         <Statistic title="Tổng số đơn" value={this.state.TimeFrame8to10.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                                                     </Card>
                                                 </Col>
-                                                <Col span={5}>
+                                                <Col span={4}>
                                                     <Card size="small" bordered={false}>
                                                         <Statistic
                                                             title="Khởi tạo và chờ phân bổ"
@@ -1124,12 +1219,28 @@ class SearchCom extends Component {
                                                         />
                                                     </Card>
                                                 </Col>
-                                                <Col span={5}>
+                                                <Col span={4}>
                                                     <Card size="small" bordered={false}>
                                                         <Statistic
                                                             title="Giao hàng thành công"
                                                             value={this.state.TimeFrame8to10.filter((item) => item.ShipmentOrderStatusID === 28).length}
                                                             valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                                        />
+                                                    </Card>
+                                                </Col>
+                                                <Col span={8}>
+                                                    <Card size="small" bordered={false}>
+                                                        <Statistic
+                                                            title="Tìm kiếm"
+                                                            valueRender={(node)=>{
+                                                                return (<Input
+                                                                    placeholder="Tìm kiếm"
+                                                                    onMouseEnter={(_)=>this.handleDisabled("TimeFrame8to10", true)}
+                                                                    onMouseLeave={(_)=>this.handleDisabled("TimeFrame8to10", false)}
+                                                                    onChange={(event) => this.handleInputChange(event.target.value, "TimeFrame8to10")}
+                                                                    style={{ width: "100%" }}
+                                                                />)
+                                                            }}
                                                         />
                                                     </Card>
                                                 </Col>
@@ -1139,8 +1250,12 @@ class SearchCom extends Component {
                                     triggerStyle={{ backgroundColor: "white" }}
                                     triggerOpenedClassName="collapsible-open-custom"
                                     easing="ease-in"
+                                    onClick={(_)=>{
+                                        this.handleCollapse("TimeFrame8to10", false)
+                                    }}
                                     // open={currentHour >= 8 && currentHour < 10 ? true : false}
                                     open={true}
+                                    
                                 >
                                     <DataGridShipmentRouteAuto
                                         key={1}
@@ -1178,20 +1293,21 @@ class SearchCom extends Component {
                             <Tabs.TabPane tab="10h00 - 12h00" key="2">
                                 <Collapsible
                                     className="CollapsibleCustom"
+                                    triggerDisabled={this.state.ObjectIsDisabled.TimeFrame10to12}
                                     trigger={
                                         <React.Fragment>
                                             <Row gutter={24}>
-                                                <Col span={5}>
+                                                <Col span={4}>
                                                     <Card size="small" bordered={false}>
                                                         <Statistic title="Thời gian" value="10h00 - 12h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                                                     </Card>
                                                 </Col>
-                                                <Col span={5}>
+                                                <Col span={4}>
                                                     <Card size="small" bordered={false}>
                                                         <Statistic title="Tổng số đơn" value={this.state.TimeFrame10to12.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                                                     </Card>
                                                 </Col>
-                                                <Col span={5}>
+                                                <Col span={4}>
                                                     <Card size="small" bordered={false}>
                                                         <Statistic
                                                             title="Khởi tạo và chờ phân bổ"
@@ -1200,12 +1316,28 @@ class SearchCom extends Component {
                                                         />
                                                     </Card>
                                                 </Col>
-                                                <Col span={5}>
+                                                <Col span={4}>
                                                     <Card size="small" bordered={false}>
                                                         <Statistic
                                                             title="Giao hàng thành công"
                                                             value={this.state.TimeFrame10to12.filter((item) => item.ShipmentOrderStatusID === 28).length}
                                                             valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                                        />
+                                                    </Card>
+                                                </Col>
+                                                <Col span={8}>
+                                                    <Card size="small" bordered={false}>
+                                                        <Statistic
+                                                            title="Tìm kiếm"
+                                                            valueRender={(node)=>{
+                                                                return (<Input
+                                                                    placeholder="Tìm kiếm"
+                                                                    onMouseEnter={(_)=>this.handleDisabled("TimeFrame10to12", true)}
+                                                                    onMouseLeave={(_)=>this.handleDisabled("TimeFrame10to12", false)}
+                                                                    onChange={(event) => this.handleInputChange(event.target.value, "TimeFrame10to12")}
+                                                                    style={{ width: "100%" }}
+                                                                />)
+                                                            }}
                                                         />
                                                     </Card>
                                                 </Col>
@@ -1254,20 +1386,21 @@ class SearchCom extends Component {
                             <Tabs.TabPane tab="12h00 - 14h00" key="3">
                                 <Collapsible
                                     className="CollapsibleCustom"
+                                    triggerDisabled={this.state.ObjectIsDisabled.TimeFrame12to14}
                                     trigger={
                                         <React.Fragment>
                                             <Row gutter={24}>
-                                                <Col span={5}>
+                                                <Col span={4}>
                                                     <Card size="small" bordered={false}>
                                                         <Statistic title="Thời gian" value="12h00 - 14h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                                                     </Card>
                                                 </Col>
-                                                <Col span={5}>
+                                                <Col span={4}>
                                                     <Card size="small" bordered={false}>
                                                         <Statistic title="Tổng số đơn" value={this.state.TimeFrame12to14.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                                                     </Card>
                                                 </Col>
-                                                <Col span={5}>
+                                                <Col span={4}>
                                                     <Card size="small" bordered={false}>
                                                         <Statistic
                                                             title="Khởi tạo và chờ phân bổ"
@@ -1276,12 +1409,28 @@ class SearchCom extends Component {
                                                         />
                                                     </Card>
                                                 </Col>
-                                                <Col span={5}>
+                                                <Col span={4}>
                                                     <Card size="small" bordered={false}>
                                                         <Statistic
                                                             title="Giao hàng thành công"
                                                             value={this.state.TimeFrame12to14.filter((item) => item.ShipmentOrderStatusID === 28).length}
                                                             valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                                        />
+                                                    </Card>
+                                                </Col>
+                                                <Col span={8}>
+                                                    <Card size="small" bordered={false}>
+                                                        <Statistic
+                                                            title="Tìm kiếm"
+                                                            valueRender={(node)=>{
+                                                                return (<Input
+                                                                    placeholder="Tìm kiếm"
+                                                                    onMouseEnter={(_)=>this.handleDisabled("TimeFrame12to14", true)}
+                                                                    onMouseLeave={(_)=>this.handleDisabled("TimeFrame12to14", false)}
+                                                                    onChange={(event) => this.handleInputChange(event.target.value, "TimeFrame12to14")}
+                                                                    style={{ width: "100%" }}
+                                                                />)
+                                                            }}
                                                         />
                                                     </Card>
                                                 </Col>
@@ -1330,20 +1479,21 @@ class SearchCom extends Component {
                             <Tabs.TabPane tab="14h00 - 16h00" key="4">
                                 <Collapsible
                                     className="CollapsibleCustom"
+                                    triggerDisabled={this.state.ObjectIsDisabled.TimeFrame14to16}
                                     trigger={
                                         <React.Fragment>
                                             <Row gutter={24}>
-                                                <Col span={5}>
+                                                <Col span={4}>
                                                     <Card size="small" bordered={false}>
                                                         <Statistic title="Thời gian" value="14h00 - 16h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                                                     </Card>
                                                 </Col>
-                                                <Col span={5}>
+                                                <Col span={4}>
                                                     <Card size="small" bordered={false}>
                                                         <Statistic title="Tổng số đơn" value={this.state.TimeFrame14to16.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                                                     </Card>
                                                 </Col>
-                                                <Col span={5}>
+                                                <Col span={4}>
                                                     <Card size="small" bordered={false}>
                                                         <Statistic
                                                             title="Khởi tạo và chờ phân bổ"
@@ -1352,12 +1502,28 @@ class SearchCom extends Component {
                                                         />
                                                     </Card>
                                                 </Col>
-                                                <Col span={5}>
+                                                <Col span={4}>
                                                     <Card size="small" bordered={false}>
                                                         <Statistic
                                                             title="Giao hàng thành công"
                                                             value={this.state.TimeFrame14to16.filter((item) => item.ShipmentOrderStatusID === 28).length}
                                                             valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                                        />
+                                                    </Card>
+                                                </Col>
+                                                <Col span={8}>
+                                                    <Card size="small" bordered={false}>
+                                                        <Statistic
+                                                            title="Tìm kiếm"
+                                                            valueRender={(node)=>{
+                                                                return (<Input
+                                                                    placeholder="Tìm kiếm"
+                                                                    onMouseEnter={(_)=>this.handleDisabled("TimeFrame14to16", true)}
+                                                                    onMouseLeave={(_)=>this.handleDisabled("TimeFrame14to16", false)}
+                                                                    onChange={(event) => this.handleInputChange(event.target.value, "TimeFrame14to16")}
+                                                                    style={{ width: "100%" }}
+                                                                />)
+                                                            }}
                                                         />
                                                     </Card>
                                                 </Col>
@@ -1406,20 +1572,21 @@ class SearchCom extends Component {
                             <Tabs.TabPane tab="17h00 - 19h00" key="5">
                                 <Collapsible
                                     className="CollapsibleCustom"
+                                    triggerDisabled={this.state.ObjectIsDisabled.TimeFrame17to19}
                                     trigger={
                                         <React.Fragment>
                                             <Row gutter={24}>
-                                                <Col span={5}>
+                                                <Col span={4}>
                                                     <Card size="small" bordered={false}>
                                                         <Statistic title="Thời gian" value="17h00 - 19h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                                                     </Card>
                                                 </Col>
-                                                <Col span={5}>
+                                                <Col span={4}>
                                                     <Card size="small" bordered={false}>
                                                         <Statistic title="Tổng số đơn" value={this.state.TimeFrame17to19.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                                                     </Card>
                                                 </Col>
-                                                <Col span={5}>
+                                                <Col span={4}>
                                                     <Card size="small" bordered={false}>
                                                         <Statistic
                                                             title="Khởi tạo và chờ phân bổ"
@@ -1429,13 +1596,29 @@ class SearchCom extends Component {
                                                         />
                                                     </Card>
                                                 </Col>
-                                                <Col span={5}>
+                                                <Col span={4}>
                                                     <Card size="small" bordered={false}>
                                                         <Statistic
                                                             title="Giao hàng thành công"
                                                             value={this.state.TimeFrame17to19.filter((item) => item.ShipmentOrderStatusID === 29).length}
                                                             valueStyle={{ color: "#3f8600", fontSize: "20px" }}
                                                             valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                                        />
+                                                    </Card>
+                                                </Col>
+                                                <Col span={8}>
+                                                    <Card size="small" bordered={false}>
+                                                        <Statistic
+                                                            title="Tìm kiếm"
+                                                            valueRender={(node)=>{
+                                                                return (<Input
+                                                                    placeholder="Tìm kiếm"
+                                                                    onMouseEnter={(_)=>this.handleDisabled("TimeFrame17to19", true)}
+                                                                    onMouseLeave={(_)=>this.handleDisabled("TimeFrame17to19", false)}
+                                                                    onChange={(event) => this.handleInputChange(event.target.value, "TimeFrame17to19")}
+                                                                    style={{ width: "100%" }}
+                                                                />)
+                                                            }}
                                                         />
                                                     </Card>
                                                 </Col>
@@ -1484,20 +1667,21 @@ class SearchCom extends Component {
                             <Tabs.TabPane tab="19h00 - 21h00" key="6">
                                 <Collapsible
                                     className="CollapsibleCustom"
+                                    triggerDisabled={this.state.ObjectIsDisabled.TimeFrame19to21}
                                     trigger={
                                         <React.Fragment>
                                             <Row gutter={24}>
-                                                <Col span={5}>
+                                                <Col span={4}>
                                                     <Card size="small" bordered={false}>
                                                         <Statistic title="Thời gian" value="19h00 - 21h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                                                     </Card>
                                                 </Col>
-                                                <Col span={5}>
+                                                <Col span={4}>
                                                     <Card size="small" bordered={false}>
                                                         <Statistic title="Tổng số đơn" value={this.state.TimeFrame19to21.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                                                     </Card>
                                                 </Col>
-                                                <Col span={5}>
+                                                <Col span={4}>
                                                     <Card size="small" bordered={false}>
                                                         <Statistic
                                                             title="Khởi tạo và chờ phân bổ"
@@ -1507,13 +1691,29 @@ class SearchCom extends Component {
                                                         />
                                                     </Card>
                                                 </Col>
-                                                <Col span={5}>
+                                                <Col span={4}>
                                                     <Card size="small" bordered={false}>
                                                         <Statistic
                                                             title="Giao hàng thành công"
                                                             value={this.state.TimeFrame19to21.filter((item) => item.ShipmentOrderStatusID === 28).length}
                                                             valueStyle={{ color: "#3f8600", fontSize: "20px" }}
                                                             valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                                        />
+                                                    </Card>
+                                                </Col>
+                                                <Col span={8}>
+                                                    <Card size="small" bordered={false}>
+                                                        <Statistic
+                                                            title="Tìm kiếm"
+                                                            valueRender={(node)=>{
+                                                                return (<Input
+                                                                    placeholder="Tìm kiếm"
+                                                                    onMouseEnter={(_)=>this.handleDisabled("TimeFrame19to21", true)}
+                                                                    onMouseLeave={(_)=>this.handleDisabled("TimeFrame19to21", false)}
+                                                                    onChange={(event) => this.handleInputChange(event.target.value, "TimeFrame19to21")}
+                                                                    style={{ width: "100%" }}
+                                                                />)
+                                                            }}
                                                         />
                                                     </Card>
                                                 </Col>
@@ -1562,20 +1762,21 @@ class SearchCom extends Component {
                             <Tabs.TabPane tab="Thời gian khác" key="7">
                                 <Collapsible
                                     className="CollapsibleCustom"
+                                    triggerDisabled={this.state.ObjectIsDisabled.diffTimeFrame}
                                     trigger={
                                         <React.Fragment>
                                             <Row gutter={24}>
-                                                <Col span={5}>
+                                                <Col span={4}>
                                                     <Card size="small" bordered={false}>
                                                         <Statistic title="Thời gian khác" value="" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                                                     </Card>
                                                 </Col>
-                                                <Col span={5}>
+                                                <Col span={4}>
                                                     <Card size="small" bordered={false}>
                                                         <Statistic title="Tổng số đơn" value={this.state.diffTimeFrame.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                                                     </Card>
                                                 </Col>
-                                                <Col span={5}>
+                                                <Col span={4}>
                                                     <Card size="small" bordered={false}>
                                                         <Statistic
                                                             title="Khởi tạo và chờ phân bổ"
@@ -1585,13 +1786,29 @@ class SearchCom extends Component {
                                                         />
                                                     </Card>
                                                 </Col>
-                                                <Col span={5}>
+                                                <Col span={4}>
                                                     <Card size="small" bordered={false}>
                                                         <Statistic
                                                             title="Giao hàng thành công"
                                                             value={this.state.diffTimeFrame.filter((item) => item.ShipmentOrderStatusID === 28).length}
                                                             valueStyle={{ color: "#3f8600", fontSize: "20px" }}
                                                             valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                                        />
+                                                    </Card>
+                                                </Col>
+                                                <Col span={8}>
+                                                    <Card size="small" bordered={false}>
+                                                        <Statistic
+                                                            title="Tìm kiếm"
+                                                            valueRender={(node)=>{
+                                                                return (<Input
+                                                                    placeholder="Tìm kiếm"
+                                                                    onMouseEnter={(_)=>this.handleDisabled("diffTimeFrame", true)}
+                                                                    onMouseLeave={(_)=>this.handleDisabled("diffTimeFrame", false)}
+                                                                    onChange={(event) => this.handleInputChange(event.target.value, "diffTimeFrame")}
+                                                                    style={{ width: "100%" }}
+                                                                />)
+                                                            }}
                                                         />
                                                     </Card>
                                                 </Col>
@@ -1641,7 +1858,7 @@ class SearchCom extends Component {
                                 tab="Phân tuyến tự động"
                                 key="9"
                             >
-                                {phanTuyenTuDong}
+                                {renderPhanTuyenTuDong}
                             </Tabs.TabPane>
                             <Tabs.TabPane
                                 tab={
@@ -1649,9 +1866,9 @@ class SearchCom extends Component {
                                         <Button type="primary" onClick={() => this.handleUserCoordinator()}>
                                             Phân tuyến
                                         </Button>
-                                        {/* <Button type="primary">
-                      Phân tuyến tự động
-                    </Button> */}
+                                        <Button type="primary" onClick={(_)=>this.handleShipmentRouteAuto()}>
+                                            Phân tuyến tự động
+                                        </Button>
                                     </Space>
                                 }
                                 disabled

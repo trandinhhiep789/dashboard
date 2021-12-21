@@ -1,8 +1,18 @@
-.vContent{
-    max-height: 200px;
-    height: auto;
-    width: 200px;
-    display: flex;
-    justify-content: center;
-   
+.vContent {
+  max-height: 200px;
+  height: auto;
+  width: 200px;
+  display: flex;
+  justify-content: center;
+}
+
+.ant-modal-vietbando .ant-modal-content .ant-modal-header .ant-modal-header-title {
+  font-size: 23px;
+  font-weight: bold;
+}
+
+.ant-modal-vietbando .ant-modal-content .ant-modal-header,
+.ant-modal-vietbando .ant-modal-content .ant-modal-body,
+.ant-modal-vietbando .ant-modal-content .ant-modal-footer {
+  padding: 10px;
 }
