@@ -94,6 +94,24 @@ class SearchCom extends Component {
         Name: "",
         TimeFrame: "",
       },
+      ActiveTab: -1,
+      ShipmentAutoDataSource: {
+        Motor: {
+          ListShipmentOrderRoute: [],
+          ListTotalDistance: [],
+          ListTotalLoad: [],
+          TotalDistance: 0,
+          TotalLoad: 0,
+        },
+        Truck: {
+          ListShipmentOrderRoute: [],
+          ListTotalDistance: [],
+          ListTotalLoad: [],
+          TotalDistance: 0,
+          TotalLoad: 0,
+        },
+        Dropped: [],
+      },
     };
 
     this.searchref = React.createRef();
@@ -119,18 +137,20 @@ class SearchCom extends Component {
     this.updateWindowDimensions();
     window.addEventListener("resize", this.updateWindowDimensions);
 
-    const active_tab = () => {
-        const currentHour = moment().hour();
-        if (currentHour >= 8 && currentHour < 10) return "1";
-        else if (currentHour >= 10 && currentHour < 12) return "2";
-        else if (currentHour >= 12 && currentHour < 14) return "3";
-        else if (currentHour >= 14 && currentHour < 16) return "4";
-        else if (currentHour >= 17 && currentHour < 19) return "5";
-        else if (currentHour >= 19 && currentHour < 21) return "6";
-        else return "7";
-      };
+    const activeTab = () => {
+      const currentHour = moment().hour();
+      if (currentHour >= 8 && currentHour < 10) return "1";
+      else if (currentHour >= 10 && currentHour < 12) return "2";
+      else if (currentHour >= 12 && currentHour < 14) return "3";
+      else if (currentHour >= 14 && currentHour < 16) return "4";
+      else if (currentHour >= 17 && currentHour < 19) return "5";
+      else if (currentHour >= 19 && currentHour < 21) return "6";
+      else return "7";
+    };
 
-    this.handleChangeActiveTab(active_tab);
+    let resultActiveTab = activeTab();
+
+    this.handleChangeActiveTab(resultActiveTab);
 
     const localShipmentOrderInfo = localStorage.getItem("SearchShipmentOrderInfo");
     let InitSearchParams = [];
@@ -292,8 +312,10 @@ class SearchCom extends Component {
       ];
     }
 
-    this.setState({ SearchData: InitSearchParams, SearchElementList: this.state.SearchElementList });
+    this.setState({ SearchData: InitSearchParams, SearchElementList: this.state.SearchElementList, ActiveTab: resultActiveTab });
+
     this.callSearchData(InitSearchParams);
+
     this.props.updatePagePath(PagePath);
 
     jQuery(window).scroll(function () {
@@ -552,7 +574,7 @@ class SearchCom extends Component {
     // }
   }
 
-  showMessage(message, isConfirm = false, textOk="", handleConfirm = undefined) {
+  showMessage(message, isConfirm = false, textOk = "", handleConfirm = undefined) {
     ModalManager.open(
       <MessageModal title="Thông báo" message={message} onRequestClose={() => true} isConfirm={isConfirm} textOk={textOk} onOkModal={handleConfirm} onCloseModal={this.handleCloseMessage} />
     );
@@ -916,297 +938,279 @@ class SearchCom extends Component {
     }
 
     this.showMessage(messageContent, true, "Xác nhận", () => {
-      let objRequest={
-        DepotRouting:{
-            Address:""
+      let objRequest = {
+        DepotRouting: {
+          Address: "Đường Thới An 19A, Tân Thới An,  Quận 12, Hồ Chí Minh",
         },
-        ListShipmentOrder:arrRequest
+        ListShipmentOrder: arrRequest,
       };
 
       this.props.callFetchAPI(APIHostName, "api/test/VehicleRouting", objRequest).then((apiResult) => {
-          if (!apiResult.IsError) {
-            
-          } else {
-              this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
-          }
+        if (!apiResult.IsError) {
+          const { MotorRoute, TruckRoute, ListDroppedShipmentOrder } = apiResult.ResultObject;
+
+          let changeState = this.state;
+          let objShipmentAutoDataSource = changeState.ShipmentAutoDataSource;
+
+          objShipmentAutoDataSource = { Motor: MotorRoute, Truck: TruckRoute, Dropped: ListDroppedShipmentOrder };
+          changeState = { ...changeState, ActiveTab: "9", ShipmentAutoDataSource: objShipmentAutoDataSource };
+
+          this.setState(changeState);
+        } else {
+          this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
+        }
       });
     });
   }
 
-  shipmentRouteAuto() {
-    const a = [
-      {
-        name: "haha",
-        km: "12000",
-        kg: "80",
-        Ds: [
-          { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "123" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "345" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "678" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "678s" },
-        ],
-      },
-      {
-        name: "hihi",
-        km: "52000",
-        kg: "80",
-        Ds: [
-          { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "111" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "222" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "333" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "112" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "221" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "331" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "1df11" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "22f2" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "3a3" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "11d2" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "22s1" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "33b1" },
-        ],
-      },
-      {
-        name: "hahasa",
-        km: "142000",
-        kg: "80",
-        Ds: [
-          { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "1a23" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "34as5" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "67c8" },
-        ],
-      },
-      {
-        name: "hahaa",
-        km: "12000",
-        kg: "80",
-        Ds: [
-          { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "1a2q3" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "3d4ass5" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "67cc8" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "1a2qa3" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "3qd4as5" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "67ccd8" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "1a2aq3" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "3d4as5" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "67cc8z" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "1a2qaa3" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "3qd4acs5" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "6a7ccd8" },
-        ],
-      },
-      {
-        name: "hashaa",
-        km: "127000",
-        kg: "80",
-        Ds: [
-          { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "1ad2q3" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "3da4ass5" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "67ccc8" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "1a2qac3" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "3qzd4as5" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "67csxcd8" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "1a2xacq3" },
-        ],
-      },
-      {
-        name: "hasshaa",
-        km: "120600",
-        kg: "80",
-        Ds: [
-          { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "1ad2qa3" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: true, ShipmentOrderID: "3da4adss5" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "67cvcc8" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "1a2aqac3" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "3qzds4as5" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "67csxcdc8" },
-          { diaChi: "dia chi", tenKH: "tenKH", finish: false, ShipmentOrderID: "1a2xaacq3" },
-        ],
-      },
-    ];
-    var randomColor;
+  renderShipmentRouteAuto() {
     const pickRandomColor = ["#1f5ff4", "#c55d53", "#cb68c5", "#65b411", "#f4b323", "#420e3e", "#e80024", "#585ccc", "#d44371", "#14915f", "#e79940", "#6be54"];
+    let randomColor="";
 
     return (
-      <div>
-        <Tabs defaultActiveKey="1" style={{ padding: "15px", backgroundColor: "white" }}>
-          <Tabs.TabPane tab="Xe máy" key="1">
-            <h5>
-              Tổng cộng số km các tuyến: <i style={{ fontWeight: "700" }}>{a.reduce((t, v) => t + (v.km * 1) / 1000, 0)}</i> km
-            </h5>
-            <div style={{ width: "100%", backgroundColor: "white", padding: "20px", height: "57vh", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
-              <div style={{}}>
-                {a &&
-                  a.map((line, i) => (
-                    <div key={line.name}>
-                      <p style={{ display: "none" }}>{(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}</p>
-                      <div style={{ display: "flex" }}>
-                        <span style={{ fontWeight: "700", fontSize: "15px" }}>{i}</span>&ensp;
-                        <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
-                          <div style={{ width: "90%", marginBottom: "30px" }}>
-                            <div>
-                              <i>Số km: {(line.km * 1) / 1000}</i>&ensp;
-                              <i>Tổng khối lượng: {line.kg}</i>
-                            </div>
-                            <div style={{ display: "flex" }}>
-                              {line.Ds.map((a, i, row) => (
-                                <div key={a.ShipmentOrderID} style={{ display: "flex", width: i != 0 && "100%" }}>
-                                  {i != 0 &&
-                                    (a.finish ? (
-                                      <div style={{ width: "100%", height: "10px", borderBottom: `3px solid ${randomColor}` }}></div>
-                                    ) : (
-                                      <div style={{ width: "100%", height: "10px", borderBottom: `3px solid #80808030` }}></div>
-                                    ))}
-                                  <Popover
-                                    content={
-                                      <div>
-                                        <p>{a.tenKH}</p>
-                                        <p>{a.diaChi}</p>
-                                      </div>
-                                    }
-                                    title={a.ShipmentOrderID}
-                                  >
-                                    <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
-                                      {a.finish ? (
-                                        <div
-                                          style={{
-                                            position: "relative",
-                                            width: "12px",
-                                            height: "12px",
-                                            border: `3px solid ${randomColor}`,
-                                            backgroundColor: `${randomColor}`,
-                                            borderRadius: "50%",
-                                            cursor: "pointer",
-                                          }}
-                                        >
-                                          <div style={{ position: "absolute", top: "10px", left: "-8px" }}>{a.ShipmentOrderID}</div>
-                                        </div>
+      this.state.ShipmentAutoDataSource != null && (
+        <div style={{ width: "100%" }}>
+          <Tabs defaultActiveKey="1" style={{ padding: "15px", backgroundColor: "white" }}>
+            {/* Tab xe máy */}
+
+            <Tabs.TabPane tab="Xe máy" key="1">
+              <div style={{ width: "100%", backgroundColor: "white", padding: "20px", height: "57vh", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
+                <h5>Danh sách các tuyến đề xuất</h5>
+                <h6>
+                  Tổng cộng số km: <i style={{ fontWeight: "700" }}>{parseInt(this.state.ShipmentAutoDataSource.Motor.TotalDistance / 1000)}</i> km
+                </h6>
+                <h6>
+                  Tổng cộng số tải: <i style={{ fontWeight: "700" }}>{this.state.ShipmentAutoDataSource.Motor.TotalLoad}</i> kg
+                </h6>
+                <div style={{ width: "100%", backgroundColor: "white", padding: "20px", height: "60vh", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
+                  {this.state.ShipmentAutoDataSource.Motor.ListShipmentOrderRoute &&
+                    this.state.ShipmentAutoDataSource.Motor.ListShipmentOrderRoute.map((line, index) => (
+                      <div key={index}>
+                        <p style={{ display: "none" }}>{(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}</p>
+                        <div style={{ display: "flex" }}>
+                          <span style={{ fontWeight: "700", fontSize: "15px" }}>{index}</span>&ensp;
+                          <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
+                            <div style={{ width: "90%", marginBottom: "30px" }}>
+                              <div>
+                                <i>Số km: {parseInt(this.state.ShipmentAutoDataSource.Motor.ListTotalDistance[index] / 1000)}</i>&ensp;
+                                <i>Tổng khối lượng: {this.state.ShipmentAutoDataSource.Motor.ListTotalLoad[index]}</i>
+                              </div>
+                              <div style={{ display: "flex" }}>
+                                {this.state.ShipmentAutoDataSource.Motor.ListShipmentOrderRoute[index].map((objShipmentOrder, i) => (
+                                  <div key={objShipmentOrder.PartnerSaleOrderID} style={{ display: "flex", width: i != 0 && "100%" }}>
+                                    {i != 0 &&
+                                      (objShipmentOrder.IsCompleteDeliverIed ? (
+                                        <div style={{ width: "100%", height: "10px", borderBottom: `3px solid ${randomColor}` }}></div>
                                       ) : (
-                                        <div
-                                          style={{
-                                            position: "relative",
-                                            width: "12px",
-                                            height: "12px",
-                                            border: `3px solid ${randomColor}`,
-                                            backgroundColor: "white",
-                                            borderRadius: "50%",
-                                            cursor: "pointer",
-                                          }}
-                                        >
-                                          <div style={{ position: "absolute", top: "10px", left: "-8px" }}>{a.ShipmentOrderID}</div>
+                                        <div style={{ width: "100%", height: "10px", borderBottom: `3px solid #80808030` }}></div>
+                                      ))}
+                                    {i != 0 ? (
+                                      <Popover
+                                        content={
+                                          <div>
+                                            <p>{objShipmentOrder.ReceiverFullName}</p>
+                                            <p>{objShipmentOrder.ReceiverFullAddress}</p>
+                                            <p>{objShipmentOrder.Weight}</p>
+                                          </div>
+                                        }
+                                        title={objShipmentOrder.PartnerSaleOrderID}
+                                      >
+                                        <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
+                                          {objShipmentOrder.IsCompleteDeliverIed ? (
+                                            <div
+                                              style={{
+                                                position: "relative",
+                                                width: "12px",
+                                                height: "12px",
+                                                border: `3px solid ${randomColor}`,
+                                                backgroundColor: `${randomColor}`,
+                                                borderRadius: "50%",
+                                                cursor: "pointer",
+                                              }}
+                                            >
+                                              <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
+                                            </div>
+                                          ) : (
+                                            <div
+                                              style={{
+                                                position: "relative",
+                                                width: "12px",
+                                                height: "12px",
+                                                border: `3px solid ${randomColor}`,
+                                                backgroundColor: "white",
+                                                borderRadius: "50%",
+                                                cursor: "pointer",
+                                              }}
+                                            >
+                                              <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
+                                            </div>
+                                          )}
                                         </div>
-                                      )}
-                                    </div>
-                                  </Popover>
-                                </div>
-                              ))}
+                                      </Popover>
+                                    ) : (
+                                      <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
+                                        {
+                                          <div
+                                            style={{
+                                              position: "relative",
+                                              width: "12px",
+                                              height: "12px",
+                                              border: `3px solid ${randomColor}`,
+                                              backgroundColor: `${randomColor}`,
+                                              borderRadius: "50%",
+                                              cursor: "pointer",
+                                            }}
+                                          >
+                                            <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>0</div>
+                                          </div>
+                                        }
+                                      </div>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
                             </div>
-                          </div>
-                          <div style={{ width: "10%", textAlign: "right", paddingTop: "18px" }}>
-                            <Tooltip title="Xem bản đồ">
-                              <Button type="primary" shape="circle" icon={<EyeOutlined />} />
-                            </Tooltip>
-                            &nbsp;
-                            <Tooltip title="Phân tuyến">
-                              <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
-                            </Tooltip>
+                            <div style={{ width: "10%", textAlign: "right", paddingTop: "18px" }}>
+                              <Tooltip title="Xem bản đồ">
+                                <Button type="primary" shape="circle" icon={<EyeOutlined />} onClick={() => this.handleShowModalMapMotorRoute(index)} />
+                              </Tooltip>
+                              &nbsp;
+                              <Tooltip title="Phân tuyến">
+                                <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
+                              </Tooltip>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                </div>
               </div>
-            </div>
-          </Tabs.TabPane>
-          <Tabs.TabPane tab="Xe tải" key="2">
-            <h5>
-              Tổng cộng số km các tuyến: <i style={{ fontWeight: "700" }}>{a.reduce((t, v) => t + (v.km * 1) / 1000, 0)}</i> km
-            </h5>
-            <div style={{ width: "100%", backgroundColor: "white", padding: "20px", height: "57vh", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
-              <div style={{}}>
-                {a &&
-                  a.map((line, i) => (
-                    <div key={line.name}>
-                      <p style={{ display: "none" }}>{(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}</p>
-                      <div style={{ display: "flex" }}>
-                        <span style={{ fontWeight: "700", fontSize: "15px" }}>{i}</span>&ensp;
-                        <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
-                          <div style={{ width: "90%", marginBottom: "30px" }}>
-                            <div>
-                              <i>Số km: {(line.km * 1) / 1000}</i>&ensp;
-                              <i>Tổng khối lượng: {line.kg}</i>
-                            </div>
-                            <div style={{ display: "flex" }}>
-                              {line.Ds.map((a, i, row) => (
-                                <div key={a.ShipmentOrderID} style={{ display: "flex", width: i != 0 && "100%" }}>
-                                  {i != 0 &&
-                                    (a.finish ? (
-                                      <div style={{ width: "100%", height: "10px", borderBottom: `3px solid ${randomColor}` }}></div>
-                                    ) : (
-                                      <div style={{ width: "100%", height: "10px", borderBottom: `3px solid #80808030` }}></div>
-                                    ))}
-                                  <Popover
-                                    content={
-                                      <div>
-                                        <p>{a.tenKH}</p>
-                                        <p>{a.diaChi}</p>
-                                      </div>
-                                    }
-                                    title={a.ShipmentOrderID}
-                                  >
-                                    <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
-                                      {a.finish ? (
-                                        <div
-                                          style={{
-                                            position: "relative",
-                                            width: "12px",
-                                            height: "12px",
-                                            border: `3px solid ${randomColor}`,
-                                            backgroundColor: `${randomColor}`,
-                                            borderRadius: "50%",
-                                            cursor: "pointer",
-                                          }}
-                                        >
-                                          <div style={{ position: "absolute", top: "10px", left: "-8px" }}>{a.ShipmentOrderID}</div>
-                                        </div>
+            </Tabs.TabPane>
+
+            {/* Tab xe tải */}
+
+            <Tabs.TabPane tab="Xe tải" key="2">
+              <div style={{ width: "100%", backgroundColor: "white", padding: "20px", height: "57vh", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
+                <h5>Danh sách các tuyến đề xuất</h5>
+                <h6>
+                  Tổng cộng số km: <i style={{ fontWeight: "700" }}>{parseInt(this.state.ShipmentAutoDataSource.Truck.TotalDistance / 1000)}</i> km
+                </h6>
+                <h6>
+                  Tổng cộng số tải: <i style={{ fontWeight: "700" }}>{this.state.ShipmentAutoDataSource.Truck.TotalLoad}</i> kg
+                </h6>
+                <div style={{ width: "100%", backgroundColor: "white", padding: "20px", height: "60vh", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
+                  {this.state.ShipmentAutoDataSource.Truck.ListShipmentOrderRoute &&
+                    this.state.ShipmentAutoDataSource.Truck.ListShipmentOrderRoute.map((line, index) => (
+                      <div key={index}>
+                        <p style={{ display: "none" }}>{(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}</p>
+                        <div style={{ display: "flex" }}>
+                          <span style={{ fontWeight: "700", fontSize: "15px" }}>{index}</span>&ensp;
+                          <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
+                            <div style={{ width: "90%", marginBottom: "30px" }}>
+                              <div>
+                                <i>Số km: {parseInt(this.state.ShipmentAutoDataSource.Truck.ListTotalDistance[index] / 1000)}</i>&ensp;
+                                <i>Tổng khối lượng: {this.state.ShipmentAutoDataSource.Truck.ListTotalLoad[index]}</i>
+                              </div>
+                              <div style={{ display: "flex" }}>
+                                {this.state.ShipmentAutoDataSource.Truck.ListShipmentOrderRoute[index].map((objShipmentOrder, i) => (
+                                  <div key={objShipmentOrder.PartnerSaleOrderID} style={{ display: "flex", width: i != 0 && "100%" }}>
+                                    {i != 0 &&
+                                      (objShipmentOrder.IsCompleteDeliverIed ? (
+                                        <div style={{ width: "100%", height: "10px", borderBottom: `3px solid ${randomColor}` }}></div>
                                       ) : (
-                                        <div
-                                          style={{
-                                            position: "relative",
-                                            width: "12px",
-                                            height: "12px",
-                                            border: `3px solid ${randomColor}`,
-                                            backgroundColor: "white",
-                                            borderRadius: "50%",
-                                            cursor: "pointer",
-                                          }}
-                                        >
-                                          <div style={{ position: "absolute", top: "10px", left: "-8px" }}>{a.ShipmentOrderID}</div>
+                                        <div style={{ width: "100%", height: "10px", borderBottom: `3px solid #80808030` }}></div>
+                                      ))}
+                                    {i != 0 ? (
+                                      <Popover
+                                        content={
+                                          <div>
+                                            <p>{objShipmentOrder.ReceiverFullName}</p>
+                                            <p>{objShipmentOrder.ReceiverFullAddress}</p>
+                                            <p>{objShipmentOrder.Weight}</p>
+                                          </div>
+                                        }
+                                        title={objShipmentOrder.PartnerSaleOrderID}
+                                      >
+                                        <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
+                                          {objShipmentOrder.IsCompleteDeliverIed ? (
+                                            <div
+                                              style={{
+                                                position: "relative",
+                                                width: "12px",
+                                                height: "12px",
+                                                border: `3px solid ${randomColor}`,
+                                                backgroundColor: `${randomColor}`,
+                                                borderRadius: "50%",
+                                                cursor: "pointer",
+                                              }}
+                                            >
+                                              <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
+                                            </div>
+                                          ) : (
+                                            <div
+                                              style={{
+                                                position: "relative",
+                                                width: "12px",
+                                                height: "12px",
+                                                border: `3px solid ${randomColor}`,
+                                                backgroundColor: "white",
+                                                borderRadius: "50%",
+                                                cursor: "pointer",
+                                              }}
+                                            >
+                                              <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
+                                            </div>
+                                          )}
                                         </div>
-                                      )}
-                                    </div>
-                                  </Popover>
-                                </div>
-                              ))}
+                                      </Popover>
+                                    ) : (
+                                      <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
+                                        {
+                                          <div
+                                            style={{
+                                              position: "relative",
+                                              width: "12px",
+                                              height: "12px",
+                                              border: `3px solid ${randomColor}`,
+                                              backgroundColor: `${randomColor}`,
+                                              borderRadius: "50%",
+                                              cursor: "pointer",
+                                            }}
+                                          >
+                                            <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>0</div>
+                                          </div>
+                                        }
+                                      </div>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
                             </div>
-                          </div>
-                          <div style={{ width: "10%", textAlign: "right", paddingTop: "18px" }}>
-                            <Tooltip title="Xem bản đồ">
-                              <Button type="primary" shape="circle" icon={<EyeOutlined />} />
-                            </Tooltip>
-                            &nbsp;
-                            <Tooltip title="Phân tuyến">
-                              <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
-                            </Tooltip>
+                            <div style={{ width: "10%", textAlign: "right", paddingTop: "18px" }}>
+                              <Tooltip title="Xem bản đồ">
+                                <Button type="primary" shape="circle" icon={<EyeOutlined />} onClick={() => this.handleShowModalMapTruckRoute(index)} />
+                              </Tooltip>
+                              &nbsp;
+                              <Tooltip title="Phân tuyến">
+                                <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
+                              </Tooltip>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                </div>
               </div>
-            </div>
-          </Tabs.TabPane>
-        </Tabs>
-      </div>
+            </Tabs.TabPane>
+
+            <Tabs.TabPane tab="Đơn chưa điều phối" key="3">
+              {this.state.ShipmentAutoDataSource.Dropped.map((item) => (
+                <div>{item.PartnerSaleOrderID}</div>
+              ))}
+            </Tabs.TabPane>
+          </Tabs>
+        </div>
+      )
     );
   }
 
@@ -1242,38 +1246,37 @@ class SearchCom extends Component {
     }, 2000);
   }
 
-  handleChangeActiveTab(activeKey) {
+  handleChangeActiveTab(paramActiveKey) {
     let objActiveTimeFrame = {
       Name: "",
       TimeFrame: "",
     };
-
-    if (activeKey == 1) {
+    if (paramActiveKey == 1) {
       objActiveTimeFrame = {
         Name: "08h00 - 10h00",
         TimeFrame: "TimeFrame8to10",
       };
-    } else if (activeKey == 2) {
+    } else if (paramActiveKey == 2) {
       objActiveTimeFrame = {
         Name: "10h00 - 12h00",
         TimeFrame: "TimeFrame10to12",
       };
-    } else if (activeKey == 3) {
+    } else if (paramActiveKey == 3) {
       objActiveTimeFrame = {
         Name: "12h00 - 14h00",
         TimeFrame: "TimeFrame12to14",
       };
-    } else if (activeKey == 4) {
+    } else if (paramActiveKey == 4) {
       objActiveTimeFrame = {
         Name: "14h00 - 16h00",
         TimeFrame: "TimeFrame14to16",
       };
-    } else if (activeKey == 5) {
+    } else if (paramActiveKey == 5) {
       objActiveTimeFrame = {
         Name: "17h00 - 19h00",
         TimeFrame: "TimeFrame17to19",
       };
-    } else if (activeKey == 6) {
+    } else if (paramActiveKey == 6) {
       objActiveTimeFrame = {
         Name: "19h00 - 21h00",
         TimeFrame: "TimeFrame19to21",
@@ -1287,25 +1290,13 @@ class SearchCom extends Component {
 
     let changeState = this.state;
 
-    changeState = { ...changeState, ActiveTimeFrame: objActiveTimeFrame };
+    changeState = { ...changeState, ActiveTimeFrame: objActiveTimeFrame, ActiveTab: paramActiveKey };
 
     this.setState(changeState);
   }
 
   render() {
-    const currentHour = moment().hour();
-
-    const renderPhanTuyenTuDong = this.shipmentRouteAuto();
-
-    const active_tab = (time) => {
-      if (time >= 8 && time < 10) return "1";
-      else if (time >= 10 && time < 12) return "2";
-      else if (time >= 12 && time < 14) return "3";
-      else if (time >= 14 && time < 16) return "4";
-      else if (time >= 17 && time < 19) return "5";
-      else if (time >= 19 && time < 21) return "6";
-      else return "7";
-    };
+    const renderShipmentRouteAuto = this.renderShipmentRouteAuto();
 
     return (
       <React.Fragment>
@@ -1337,18 +1328,9 @@ class SearchCom extends Component {
              /> */}
         </div>
 
-        {/* <div className="menu-options" style={{marginTop: "10px"}}>
-                <Space>
-                    <Button type="primary" onClick={() => this.handleUserCoordinator()}>
-                    Phân tuyến
-                    </Button>
-                    <Button type="primary" onClick={() => this.shipmentRouteAuto()}>Phân tuyến tự động</Button>
-                </Space>
-            </div> */}
-
         {this.state.IsLoadDataComplete && (
           <div className="col-lg-12" style={{ backgroundColor: "aliceblue", border: "1px solid #03a9f4" }}>
-            <Tabs defaultActiveKey={active_tab(currentHour)} size="large" onChange={(activeKey) => this.handleChangeActiveTab(activeKey)}>
+            <Tabs defaultActiveKey={this.state.ActiveTab} activeKey={this.state.ActiveTab} size="large" onChange={(activeKey) => this.handleChangeActiveTab(activeKey)}>
               <Tabs.TabPane tab="08h00 - 10h00" key="1">
                 <Collapsible
                   className="CollapsibleCustom"
@@ -2024,7 +2006,7 @@ class SearchCom extends Component {
                 </Collapsible>
               </Tabs.TabPane>
               <Tabs.TabPane tab="Phân tuyến tự động" key="9">
-                {renderPhanTuyenTuDong}
+                {renderShipmentRouteAuto}
               </Tabs.TabPane>
               <Tabs.TabPane
                 tab={

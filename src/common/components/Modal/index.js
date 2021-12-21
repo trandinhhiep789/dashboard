@@ -79,8 +79,8 @@ export class MessageModal extends React.Component {
                         </React.Fragment>
                     </div>
                     <div className="modal-footer">
-                       {isConfirm && <button className="btn btn-w-md btn-round btn-secondary" onClick={this.handleOkButton}>{textOk==""?"Ok":textOk}</button>}
-                        <button className="btn btn-w-md btn-round btn-secondary" onClick={this.handleCloseButton}>Đóng</button>
+                       {isConfirm && <button className="btn btn-w-md btn-round" style={{color:"white", backgroundColor:"#3498db"}} onClick={this.handleOkButton}>{textOk==""?"Ok":textOk}</button>}
+                        <button className="btn btn-w-md btn-round" onClick={this.handleCloseButton}>Đóng</button>
                     </div>
                 </div>
             </Modal>
