@@ -28,6 +28,10 @@ export const dataSearch = [
         SearchValue: -1
     },
     {
+        SearchKey: "@QUALITYASSESSGROUPID",
+        SearchValue: -1
+    },
+    {
         SearchKey: "@PAGENUMBER",
         SearchValue: 1
     },
@@ -45,6 +49,7 @@ export const listElement = [
         value: "",
         placeholder: "",
         icon: "",
+        colspan: 2,
         listoption: {}
     },
     {
@@ -88,6 +93,22 @@ export const listElement = [
         filterValue: 10,
         filterobj: "CompanyID",
         classNameCol: "col-custom"
+    },
+    {
+        type: "ComboBox",
+        name: "cbQualityAssessGroupID",
+        DataSourceMember: "QualityAssessGroupID",
+        label: "Nhóm tiêu chí",
+        colspan: 2,
+        value: -1,
+        isMultiSelect: false,
+        placeholder: "---Nhóm tiêu chí---",
+        listoption: [],
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.QUALITYASSESSGROUP",
+        ValueMember: "QualityAssessGroupID",
+        NameMember: "QualityAssessGroupName",
+        classNameCol: "col-custom"
     }
 ]
 
@@ -111,6 +132,11 @@ export const MLObjectDefinition = [
         Name: "CoordinatorStoreID",
         DefaultValue: "",
         BindControlName: "cbCoordinatorStoreID"
+    },
+    {
+        Name: "QualityAssessGroupID",
+        DefaultValue: "",
+        BindControlName: "cbQualityAssessGroupID"
     },
 ]
 
