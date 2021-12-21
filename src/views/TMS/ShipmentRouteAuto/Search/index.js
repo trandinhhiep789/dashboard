@@ -22,14 +22,16 @@ import "react-notifications-component/dist/theme.css";
 import Collapsible from "react-collapsible";
 import DataGridShipmentRouteAuto from "./../Components/DataGridShipmentRouteAuto";
 import SearchFormShipmentRouteAuto from "../Components/SearchFormShipmentRouteAuto";
-import SearchForm from "../Components/SearchFormShipmentRouteAutoOldUI";
 import "../../../../css/DataGridShipmentRouteAuto.scss";
 import moment from "moment";
-import { Button, Card, Col, Row, Space, Statistic, Tabs, Collapse, Popover, Tooltip, Input } from "antd";
+import { Button, Card, Col, Row, Space, Statistic, Tabs, Collapse, Popover, Tooltip, Input, Tag } from "antd";
 import { EyeOutlined, PartitionOutlined } from "@ant-design/icons";
 import { hideModal, showModal } from "../../../../actions/modal";
 import ModalSearchFormShipmentRouteAuto from "../Components/ModalSearchFormShipmentRouteAuto";
 import ModalVietBanDoShipmentRouteAuto from "../Components/ModalVietBanDoShipmentRouteAuto";
+import { formatMonthDate } from "../../../../common/library/CommonLib";
+import { Link } from "react-router-dom";
+import ReactHtmlParser from "react-html-parser";
 
 class SearchCom extends Component {
   constructor(props) {
@@ -90,12 +92,13 @@ class SearchCom extends Component {
       TimeFrame17to19: [],
       TimeFrame19to21: [],
       ObjectDescription: {},
+      DataSourceMap: [],
       ActiveTimeFrame: {
         Name: "",
         TimeFrame: "",
       },
       ActiveTab: -1,
-      ShipmentAutoDataSource: {
+      ShipmentRouteAutoDataSource: {
         Motor: {
           ListShipmentOrderRoute: [],
           ListTotalDistance: [],
@@ -111,6 +114,11 @@ class SearchCom extends Component {
           TotalLoad: 0,
         },
         Dropped: [],
+      },
+      UIEffect: {
+        ButtonShipmentRouteAuto: {
+          IsLoading: false,
+        },
       },
     };
 
@@ -131,6 +139,8 @@ class SearchCom extends Component {
     this.handleClickShipmentRoute = this.handleClickShipmentRoute.bind(this);
     this.handleClickShip = this.handleClickShip.bind(this);
     this.addNotification = this.addNotification.bind(this);
+    this.handleShowModalMapMotorRoute = this.handleShowModalMapMotorRoute.bind(this);
+    this.handleShowModalMapTruckRoute = this.handleShowModalMapTruckRoute.bind(this);
   }
 
   componentDidMount() {
@@ -938,6 +948,16 @@ class SearchCom extends Component {
     }
 
     this.showMessage(messageContent, true, "Xác nhận", () => {
+      let changeState = this.state;
+      let objUIEffect = changeState.UIEffect;
+      let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
+
+      objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: true };
+      objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
+      changeState = { ...changeState, UIEffect: objUIEffect };
+
+      this.setState(changeState);
+
       let objRequest = {
         DepotRouting: {
           Address: "Đường Thới An 19A, Tân Thới An,  Quận 12, Hồ Chí Minh",
@@ -950,73 +970,233 @@ class SearchCom extends Component {
           const { MotorRoute, TruckRoute, ListDroppedShipmentOrder } = apiResult.ResultObject;
 
           let changeState = this.state;
-          let objShipmentAutoDataSource = changeState.ShipmentAutoDataSource;
+          let objShipmentRouteAutoDataSource = changeState.ShipmentRouteAutoDataSource;
+          let objUIEffect = changeState.UIEffect;
+          let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
 
-          objShipmentAutoDataSource = { Motor: MotorRoute, Truck: TruckRoute, Dropped: ListDroppedShipmentOrder };
-          changeState = { ...changeState, ActiveTab: "9", ShipmentAutoDataSource: objShipmentAutoDataSource };
+          objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: false };
+          objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
+          changeState = { ...changeState, UIEffect: objUIEffect };
+          objShipmentRouteAutoDataSource = { Motor: MotorRoute, Truck: TruckRoute, Dropped: ListDroppedShipmentOrder };
+          changeState = { ...changeState, ActiveTab: "9", ShipmentRouteAutoDataSource: objShipmentRouteAutoDataSource };
 
           this.setState(changeState);
         } else {
-          this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
+          let changeState = this.state;
+          let objUIEffect = changeState.UIEffect;
+          let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
+
+          objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: false };
+          objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
+          changeState = { ...changeState, UIEffect: objUIEffect };
+
+          this.setState(changeState);
+          this.addNotification(apiResult.Message, apiResult.IsError);
         }
       });
     });
   }
 
+  _CheckTime(dates) {
+    const date = new Date(Date.parse(dates));
+    let currentDate = new Date();
+    // var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
+    var timeDiff = date.getTime() - currentDate.getTime();
+    var diffMinutes = parseInt(timeDiff / (3600 * 24));
+    if (diffMinutes < 60) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  _genCommentCarrierPartner(CarrierTypeID, CarrierTypeName) {
+    if (CarrierTypeID < 1) {
+      return (
+        <label className="item vehicle">
+          <span>Chưa chọn phương tiện</span>
+        </label>
+      );
+    } else if (CarrierTypeID == 1) {
+      return (
+        <label className="item vehicle">
+          <i className="fa fa-motorcycle"></i>
+          <span>{CarrierTypeName}</span>
+        </label>
+      );
+    } else {
+      return (
+        <label className="item vehicle">
+          <i className="fa fa-truck"></i>
+          <span>{CarrierTypeName}</span>
+        </label>
+      );
+    }
+  }
+
+  _genCommentTime(dates) {
+    const date = new Date(Date.parse(dates));
+    //let currentDate = new Date();
+    let hour = date.getHours();
+    let minute = date.getMinutes();
+    let timeDisplay = (hour < 10 ? "0" + hour : hour) + ":" + (minute < 10 ? "0" + minute : minute);
+    let month = date.getMonth() + 1;
+    return date.getDate() + "/" + (month < 10 ? "0" + month : month) + "/" + date.getFullYear() + " " + timeDisplay;
+  }
+
+  copyToClipboard(e) {
+    const PartnerSaleOrderID = e.target.attributes["data-id"].value;
+    let temponaryInput = $("<input>").val(PartnerSaleOrderID).appendTo("body").select();
+    document.execCommand("copy");
+    temponaryInput.remove();
+  }
+
+  copyToClipboardShipmentOrder(e) {
+    const ShipmentOrderID = e.target.attributes["data-id"].value;
+    let temponaryInput = $("<input>").val(ShipmentOrderID).appendTo("body").select();
+    document.execCommand("copy");
+    temponaryInput.remove();
+  }
+
+  handleShowModalMapMotorRoute(index) {
+    this.setState({ DataSourceMap: this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute[index], IsShowModelMap: true });
+  }
+
+  handleShowModalMapTruckRoute(index) {
+    this.setState({ DataSourceMap: this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute[index], IsShowModelMap: true });
+  }
+
   renderShipmentRouteAuto() {
     const pickRandomColor = ["#1f5ff4", "#c55d53", "#cb68c5", "#65b411", "#f4b323", "#420e3e", "#e80024", "#585ccc", "#d44371", "#14915f", "#e79940", "#6be54"];
-    let randomColor="";
+    let randomColor = "";
+
+    let reactNodeTab = (title, length) => (
+      <div style={{ position: "relative" }}>
+        <span style={{ marginRight: "16px", lineHeight: "30px" }}>{title}</span>
+        <span
+          style={{
+            height: "15px",
+            width: "15px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: "7.5px",
+            backgroundColor: "#eb4d4b",
+            position: "absolute",
+            top: "0",
+            right: "0",
+            color: "white",
+            fontSize: "11px",
+          }}
+        >
+          {length}
+        </span>
+      </div>
+    );
+
+    let length_motor =
+      this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.length == 1 &&
+      this.state.ShipmentRouteAutoDataSource.Motor.TotalDistance == 0 &&
+      this.state.ShipmentRouteAutoDataSource.Motor.TotalLoad == 0
+        ? 0
+        : this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.length;
+
+    let length_truck =
+      this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute.length == 1 &&
+      this.state.ShipmentRouteAutoDataSource.Truck.TotalDistance == 0 &&
+      this.state.ShipmentRouteAutoDataSource.Truck.TotalLoad == 0
+        ? 0
+        : this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute.length;
 
     return (
-      this.state.ShipmentAutoDataSource != null && (
+      this.state.ShipmentRouteAutoDataSource != null && (
         <div style={{ width: "100%" }}>
-          <Tabs defaultActiveKey="1" style={{ padding: "15px", backgroundColor: "white" }}>
+          <Tabs defaultActiveKey="1" style={{ padding: "15px", backgroundColor: "white" }} className="ant-tabs">
             {/* Tab xe máy */}
 
-            <Tabs.TabPane tab="Xe máy" key="1">
-              <div style={{ width: "100%", backgroundColor: "white", padding: "20px", height: "57vh", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
+            <Tabs.TabPane tab={reactNodeTab("Xe máy", length_motor)} key="1" className="ant-tabs-child-1">
+              <div style={{ width: "100%", backgroundColor: "white", padding: "10px", maxheight: "57vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
                 <h5>Danh sách các tuyến đề xuất</h5>
                 <h6>
-                  Tổng cộng số km: <i style={{ fontWeight: "700" }}>{parseInt(this.state.ShipmentAutoDataSource.Motor.TotalDistance / 1000)}</i> km
+                  Tổng cộng số km: <span style={{ fontWeight: "700" }}>{parseInt(this.state.ShipmentRouteAutoDataSource.Motor.TotalDistance / 1000)}</span> km
                 </h6>
                 <h6>
-                  Tổng cộng số tải: <i style={{ fontWeight: "700" }}>{this.state.ShipmentAutoDataSource.Motor.TotalLoad}</i> kg
+                  Tổng cộng số tải: <span style={{ fontWeight: "700" }}>{this.state.ShipmentRouteAutoDataSource.Motor.TotalLoad}</span> kg
                 </h6>
-                <div style={{ width: "100%", backgroundColor: "white", padding: "20px", height: "60vh", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
-                  {this.state.ShipmentAutoDataSource.Motor.ListShipmentOrderRoute &&
-                    this.state.ShipmentAutoDataSource.Motor.ListShipmentOrderRoute.map((line, index) => (
-                      <div key={index}>
-                        <p style={{ display: "none" }}>{(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}</p>
-                        <div style={{ display: "flex" }}>
-                          <span style={{ fontWeight: "700", fontSize: "15px" }}>{index}</span>&ensp;
-                          <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
-                            <div style={{ width: "90%", marginBottom: "30px" }}>
-                              <div>
-                                <i>Số km: {parseInt(this.state.ShipmentAutoDataSource.Motor.ListTotalDistance[index] / 1000)}</i>&ensp;
-                                <i>Tổng khối lượng: {this.state.ShipmentAutoDataSource.Motor.ListTotalLoad[index]}</i>
-                              </div>
-                              <div style={{ display: "flex" }}>
-                                {this.state.ShipmentAutoDataSource.Motor.ListShipmentOrderRoute[index].map((objShipmentOrder, i) => (
-                                  <div key={objShipmentOrder.PartnerSaleOrderID} style={{ display: "flex", width: i != 0 && "100%" }}>
-                                    {i != 0 &&
-                                      (objShipmentOrder.IsCompleteDeliverIed ? (
-                                        <div style={{ width: "100%", height: "10px", borderBottom: `3px solid ${randomColor}` }}></div>
-                                      ) : (
-                                        <div style={{ width: "100%", height: "10px", borderBottom: `3px solid #80808030` }}></div>
-                                      ))}
-                                    {i != 0 ? (
-                                      <Popover
-                                        content={
-                                          <div>
-                                            <p>{objShipmentOrder.ReceiverFullName}</p>
-                                            <p>{objShipmentOrder.ReceiverFullAddress}</p>
-                                            <p>{objShipmentOrder.Weight}</p>
+                {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute &&
+                  this.state.ShipmentRouteAutoDataSource.Motor.TotalDistance > 0 &&
+                  this.state.ShipmentRouteAutoDataSource.Motor.TotalLoad > 0 && (
+                    <div style={{ width: "100%", backgroundColor: "white", padding: "20px", maxHeight: "60vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
+                      {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.map((line, index) => (
+                        <div key={index}>
+                          <p style={{ display: "none" }}>{(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}</p>
+                          <div style={{ display: "flex" }}>
+                            {/* <span style={{ fontWeight: "700", fontSize: "15px" }}>{index}</span>&ensp; */}
+                            <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
+                              <div style={{ width: "90%", marginBottom: "30px" }}>
+                                <div style={{ marginBottom: "10px" }}>
+                                  <Tag color="#108ee9">Tuyến: {index}</Tag>
+                                  <Tag color="#2db7f5">Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Motor.ListTotalDistance[index] / 1000)}</Tag>
+                                  <Tag color="#87d068">Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Motor.ListTotalLoad[index]}</Tag>
+
+                                  {/* <span>Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Motor.ListTotalDistance[index] / 1000)}</span>&ensp;
+                                  <span>Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Motor.ListTotalLoad[index]}</span> */}
+                                </div>
+                                <div style={{ display: "flex" }}>
+                                  {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute[index].map((objShipmentOrder, i) => (
+                                    <div key={objShipmentOrder.PartnerSaleOrderID} style={{ display: "flex", width: i != 0 && "100%" }}>
+                                      {i != 0 &&
+                                        (objShipmentOrder.IsCompleteDeliverIed ? (
+                                          <div style={{ width: "100%", height: "10px", borderBottom: `3px solid ${randomColor}` }}></div>
+                                        ) : (
+                                          <div style={{ width: "100%", height: "10px", borderBottom: `3px solid #80808030` }}></div>
+                                        ))}
+                                      {i != 0 ? (
+                                        <Popover
+                                          content={
+                                            <div>
+                                              <p>{objShipmentOrder.ReceiverFullName}</p>
+                                              <p>{objShipmentOrder.ReceiverFullAddress}</p>
+                                              <p>{objShipmentOrder.Weight}</p>
+                                            </div>
+                                          }
+                                          title={objShipmentOrder.PartnerSaleOrderID}
+                                        >
+                                          <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
+                                            {objShipmentOrder.IsCompleteDeliverIed ? (
+                                              <div
+                                                style={{
+                                                  position: "relative",
+                                                  width: "12px",
+                                                  height: "12px",
+                                                  border: `3px solid ${randomColor}`,
+                                                  backgroundColor: `${randomColor}`,
+                                                  borderRadius: "50%",
+                                                  cursor: "pointer",
+                                                }}
+                                              >
+                                                <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
+                                              </div>
+                                            ) : (
+                                              <div
+                                                style={{
+                                                  position: "relative",
+                                                  width: "12px",
+                                                  height: "12px",
+                                                  border: `3px solid ${randomColor}`,
+                                                  backgroundColor: "white",
+                                                  borderRadius: "50%",
+                                                  cursor: "pointer",
+                                                }}
+                                              >
+                                                <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
+                                              </div>
+                                            )}
                                           </div>
-                                        }
-                                        title={objShipmentOrder.PartnerSaleOrderID}
-                                      >
+                                        </Popover>
+                                      ) : (
                                         <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
-                                          {objShipmentOrder.IsCompleteDeliverIed ? (
+                                          {
                                             <div
                                               style={{
                                                 position: "relative",
@@ -1028,111 +1208,119 @@ class SearchCom extends Component {
                                                 cursor: "pointer",
                                               }}
                                             >
-                                              <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
+                                              <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>0</div>
                                             </div>
-                                          ) : (
-                                            <div
-                                              style={{
-                                                position: "relative",
-                                                width: "12px",
-                                                height: "12px",
-                                                border: `3px solid ${randomColor}`,
-                                                backgroundColor: "white",
-                                                borderRadius: "50%",
-                                                cursor: "pointer",
-                                              }}
-                                            >
-                                              <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
-                                            </div>
-                                          )}
+                                          }
                                         </div>
-                                      </Popover>
-                                    ) : (
-                                      <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
-                                        {
-                                          <div
-                                            style={{
-                                              position: "relative",
-                                              width: "12px",
-                                              height: "12px",
-                                              border: `3px solid ${randomColor}`,
-                                              backgroundColor: `${randomColor}`,
-                                              borderRadius: "50%",
-                                              cursor: "pointer",
-                                            }}
-                                          >
-                                            <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>0</div>
-                                          </div>
-                                        }
-                                      </div>
-                                    )}
-                                  </div>
-                                ))}
+                                      )}
+                                    </div>
+                                  ))}
+                                </div>
                               </div>
-                            </div>
-                            <div style={{ width: "10%", textAlign: "right", paddingTop: "18px" }}>
-                              <Tooltip title="Xem bản đồ">
-                                <Button type="primary" shape="circle" icon={<EyeOutlined />} onClick={() => this.handleShowModalMapMotorRoute(index)} />
-                              </Tooltip>
-                              &nbsp;
-                              <Tooltip title="Phân tuyến">
-                                <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
-                              </Tooltip>
+                              <div style={{ width: "10%", textAlign: "right", paddingTop: "18px" }}>
+                                <Tooltip title="Xem bản đồ">
+                                  <Button type="primary" shape="circle" icon={<EyeOutlined />} onClick={() => this.handleShowModalMapMotorRoute(index)} />
+                                </Tooltip>
+                                &nbsp;
+                                <Tooltip title="Phân tuyến">
+                                  <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
+                                </Tooltip>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
-                </div>
+                      ))}
+                    </div>
+                  )}
               </div>
             </Tabs.TabPane>
 
             {/* Tab xe tải */}
 
-            <Tabs.TabPane tab="Xe tải" key="2">
-              <div style={{ width: "100%", backgroundColor: "white", padding: "20px", height: "57vh", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
+            <Tabs.TabPane tab={reactNodeTab("Xe tải", length_truck)} key="2" className="ant-tabs-child-2">
+              <div style={{ width: "100%", backgroundColor: "white", padding: "10px", maxheight: "57vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
                 <h5>Danh sách các tuyến đề xuất</h5>
                 <h6>
-                  Tổng cộng số km: <i style={{ fontWeight: "700" }}>{parseInt(this.state.ShipmentAutoDataSource.Truck.TotalDistance / 1000)}</i> km
+                  Tổng cộng số km: <span style={{ fontWeight: "700" }}>{parseInt(this.state.ShipmentRouteAutoDataSource.Truck.TotalDistance / 1000)}</span> km
                 </h6>
                 <h6>
-                  Tổng cộng số tải: <i style={{ fontWeight: "700" }}>{this.state.ShipmentAutoDataSource.Truck.TotalLoad}</i> kg
+                  Tổng cộng số tải: <span style={{ fontWeight: "700" }}>{this.state.ShipmentRouteAutoDataSource.Truck.TotalLoad}</span> kg
                 </h6>
-                <div style={{ width: "100%", backgroundColor: "white", padding: "20px", height: "60vh", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
-                  {this.state.ShipmentAutoDataSource.Truck.ListShipmentOrderRoute &&
-                    this.state.ShipmentAutoDataSource.Truck.ListShipmentOrderRoute.map((line, index) => (
-                      <div key={index}>
-                        <p style={{ display: "none" }}>{(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}</p>
-                        <div style={{ display: "flex" }}>
-                          <span style={{ fontWeight: "700", fontSize: "15px" }}>{index}</span>&ensp;
-                          <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
-                            <div style={{ width: "90%", marginBottom: "30px" }}>
-                              <div>
-                                <i>Số km: {parseInt(this.state.ShipmentAutoDataSource.Truck.ListTotalDistance[index] / 1000)}</i>&ensp;
-                                <i>Tổng khối lượng: {this.state.ShipmentAutoDataSource.Truck.ListTotalLoad[index]}</i>
-                              </div>
-                              <div style={{ display: "flex" }}>
-                                {this.state.ShipmentAutoDataSource.Truck.ListShipmentOrderRoute[index].map((objShipmentOrder, i) => (
-                                  <div key={objShipmentOrder.PartnerSaleOrderID} style={{ display: "flex", width: i != 0 && "100%" }}>
-                                    {i != 0 &&
-                                      (objShipmentOrder.IsCompleteDeliverIed ? (
-                                        <div style={{ width: "100%", height: "10px", borderBottom: `3px solid ${randomColor}` }}></div>
-                                      ) : (
-                                        <div style={{ width: "100%", height: "10px", borderBottom: `3px solid #80808030` }}></div>
-                                      ))}
-                                    {i != 0 ? (
-                                      <Popover
-                                        content={
-                                          <div>
-                                            <p>{objShipmentOrder.ReceiverFullName}</p>
-                                            <p>{objShipmentOrder.ReceiverFullAddress}</p>
-                                            <p>{objShipmentOrder.Weight}</p>
+                {this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute &&
+                  this.state.ShipmentRouteAutoDataSource.Truck.TotalDistance > 0 &&
+                  this.state.ShipmentRouteAutoDataSource.Truck.TotalLoad > 0 && (
+                    <div style={{ width: "100%", backgroundColor: "white", padding: "20px", maxHeight: "60vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
+                      {this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute.map((line, index) => (
+                        <div key={index}>
+                          <p style={{ display: "none" }}>{(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}</p>
+                          <div style={{ display: "flex" }}>
+                            {/* <span style={{ fontWeight: "700", fontSize: "15px" }}>{index}</span>&ensp; */}
+                            <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
+                              <div style={{ width: "90%", marginBottom: "30px" }}>
+                                {/* <div>
+                                  <span>Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Truck.ListTotalDistance[index] / 1000)}</span>&ensp;
+                                  <span>Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Truck.ListTotalLoad[index]}</span>
+                                </div> */}
+                                <div style={{ marginBottom: "10px" }}>
+                                  <Tag color="#108ee9">Tuyến: {index}</Tag>
+                                  <Tag color="#2db7f5">Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Truck.ListTotalDistance[index] / 1000)}</Tag>
+                                  <Tag color="#87d068">Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Truck.ListTotalLoad[index]}</Tag>
+                                </div>
+                                <div style={{ display: "flex" }}>
+                                  {this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute[index].map((objShipmentOrder, i) => (
+                                    <div key={objShipmentOrder.PartnerSaleOrderID} style={{ display: "flex", width: i != 0 && "100%" }}>
+                                      {i != 0 &&
+                                        (objShipmentOrder.IsCompleteDeliverIed ? (
+                                          <div style={{ width: "100%", height: "10px", borderBottom: `3px solid ${randomColor}` }}></div>
+                                        ) : (
+                                          <div style={{ width: "100%", height: "10px", borderBottom: `3px solid #80808030` }}></div>
+                                        ))}
+                                      {i != 0 ? (
+                                        <Popover
+                                          content={
+                                            <div>
+                                              <p>{objShipmentOrder.ReceiverFullName}</p>
+                                              <p>{objShipmentOrder.ReceiverFullAddress}</p>
+                                              <p>{objShipmentOrder.Weight}</p>
+                                            </div>
+                                          }
+                                          title={objShipmentOrder.PartnerSaleOrderID}
+                                        >
+                                          <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
+                                            {objShipmentOrder.IsCompleteDeliverIed ? (
+                                              <div
+                                                style={{
+                                                  position: "relative",
+                                                  width: "12px",
+                                                  height: "12px",
+                                                  border: `3px solid ${randomColor}`,
+                                                  backgroundColor: `${randomColor}`,
+                                                  borderRadius: "50%",
+                                                  cursor: "pointer",
+                                                }}
+                                              >
+                                                <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
+                                              </div>
+                                            ) : (
+                                              <div
+                                                style={{
+                                                  position: "relative",
+                                                  width: "12px",
+                                                  height: "12px",
+                                                  border: `3px solid ${randomColor}`,
+                                                  backgroundColor: "white",
+                                                  borderRadius: "50%",
+                                                  cursor: "pointer",
+                                                }}
+                                              >
+                                                <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
+                                              </div>
+                                            )}
                                           </div>
-                                        }
-                                        title={objShipmentOrder.PartnerSaleOrderID}
-                                      >
+                                        </Popover>
+                                      ) : (
                                         <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
-                                          {objShipmentOrder.IsCompleteDeliverIed ? (
+                                          {
                                             <div
                                               style={{
                                                 position: "relative",
@@ -1144,69 +1332,250 @@ class SearchCom extends Component {
                                                 cursor: "pointer",
                                               }}
                                             >
-                                              <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
+                                              <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>0</div>
                                             </div>
-                                          ) : (
-                                            <div
-                                              style={{
-                                                position: "relative",
-                                                width: "12px",
-                                                height: "12px",
-                                                border: `3px solid ${randomColor}`,
-                                                backgroundColor: "white",
-                                                borderRadius: "50%",
-                                                cursor: "pointer",
-                                              }}
-                                            >
-                                              <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
-                                            </div>
-                                          )}
+                                          }
                                         </div>
-                                      </Popover>
-                                    ) : (
-                                      <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
-                                        {
-                                          <div
-                                            style={{
-                                              position: "relative",
-                                              width: "12px",
-                                              height: "12px",
-                                              border: `3px solid ${randomColor}`,
-                                              backgroundColor: `${randomColor}`,
-                                              borderRadius: "50%",
-                                              cursor: "pointer",
-                                            }}
-                                          >
-                                            <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>0</div>
-                                          </div>
-                                        }
-                                      </div>
-                                    )}
-                                  </div>
-                                ))}
+                                      )}
+                                    </div>
+                                  ))}
+                                </div>
                               </div>
-                            </div>
-                            <div style={{ width: "10%", textAlign: "right", paddingTop: "18px" }}>
-                              <Tooltip title="Xem bản đồ">
-                                <Button type="primary" shape="circle" icon={<EyeOutlined />} onClick={() => this.handleShowModalMapTruckRoute(index)} />
-                              </Tooltip>
-                              &nbsp;
-                              <Tooltip title="Phân tuyến">
-                                <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
-                              </Tooltip>
+                              <div style={{ width: "10%", textAlign: "right", paddingTop: "18px" }}>
+                                <Tooltip title="Xem bản đồ">
+                                  <Button type="primary" shape="circle" icon={<EyeOutlined />} onClick={() => this.handleShowModalMapTruckRoute(index)} />
+                                </Tooltip>
+                                &nbsp;
+                                <Tooltip title="Phân tuyến">
+                                  <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
+                                </Tooltip>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
-                </div>
+                      ))}
+                    </div>
+                  )}
               </div>
             </Tabs.TabPane>
 
-            <Tabs.TabPane tab="Đơn chưa điều phối" key="3">
-              {this.state.ShipmentAutoDataSource.Dropped.map((item) => (
-                <div>{item.PartnerSaleOrderID}</div>
-              ))}
+            {/* Tab chưa điều phối */}
+
+            <Tabs.TabPane tab={reactNodeTab("Chưa điều phối", this.state.ShipmentRouteAutoDataSource.Dropped.length)} key="3" className="ant-tabs-child-3">
+              <div className="table-responsive">
+                <table
+                  className="table table-sm table-striped table-bordered table-hover table-condensed datagirdshippingorder
+          table-custom"
+                  cellSpacing="0"
+                >
+                  <thead className="thead-light">
+                    <tr>
+                      <th className="jsgrid-header-cell" style={{ width: "15%" }}>
+                        Thời gian giao
+                      </th>
+                      <th className="jsgrid-header-cell" style={{ width: "34%" }}>
+                        Địa chỉ
+                      </th>
+                      <th className="jsgrid-header-cell" style={{ width: "15%" }}>
+                        Mã/Loại yêu cầu vận chuyển
+                      </th>
+                      <th className="jsgrid-header-cell" style={{ width: "24%" }}>
+                        Tên sản phẩm/Ghi chú
+                      </th>
+                      <th className="jsgrid-header-cell" style={{ width: "9%" }}>
+                        Thanh toán
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td colSpan={7} style={{ margin: 0, padding: 0 }}>
+                        <div className="table-custom-scroll" style={{ width: "100%", maxHeight: "500px", overflowY: "auto" }}>
+                          <table>
+                            <tbody>
+                              {this.state.ShipmentRouteAutoDataSource.Dropped != null &&
+                                this.state.ShipmentRouteAutoDataSource.Dropped.map((rowItem, rowIndex) => {
+                                  let rowClass = "jsgrid-row";
+                                  if (index % 2 != 0) {
+                                    rowClass = "jsgrid-alt-row";
+                                  }
+                                  let rowtrClass = "unReadingItem";
+                                  if (rowItem.SelectedUser != "" || rowItem.IsView == true) {
+                                    rowtrClass = "noReadingItem readingItem";
+                                  }
+
+                                  let rowUndelivery = "btngroupleft";
+                                  if (this._CheckTime(rowItem.ExpectedDeliveryDate) == true && rowItem.CurrentShipmentOrderStepID < 105) {
+                                    rowUndelivery = "btngroupleft Undelivery";
+                                  } else {
+                                    if (rowItem.CoordinatorUser == "") {
+                                      rowUndelivery = "btngroupleft Uncoordinated";
+                                    } else {
+                                      rowUndelivery = "btngroupleft WaitingDelivery";
+                                    }
+                                  }
+                                  // console.log("check",rowItem.ShipmentOrderID,this.state.GridDataShip,this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
+                                  return (
+                                    <tr key={rowIndex} className={rowtrClass}>
+                                      <td className="groupInfoAction" style={{ width: "15%" }}>
+                                        <div className="group-info-row">
+                                          <label className="item time">
+                                            <i className="ti ti-timer "></i>
+                                            <span className="fw-600">{rowItem.ExpectedDeliveryDate != null ? this._genCommentTime(rowItem.ExpectedDeliveryDate) : ""}</span>
+                                          </label>
+                                          <label className="item status">
+                                            <i className="fa fa-location-arrow"></i>
+                                            <span>{rowItem.ShipmentOrderStatusName}</span>
+                                          </label>
+                                          <label className="item vehicle">{this._genCommentCarrierPartner(rowItem.CarrierTypeID, rowItem.CarrierTypeName)}</label>
+                                          <label className="item printing">
+                                            {rowItem.IsOutputGoods == false && rowItem.IsHandoverGoods == false ? <span className="badge badge-danger">Chưa xuất </span> : ""}
+                                            {rowItem.IsOutputGoods == true && rowItem.IsHandoverGoods == false ? <span className="badge badge-info">Đã xuất </span> : ""}
+                                            {rowItem.IsHandoverGoods == true ? <span className="badge badge-success">NV đã nhận </span> : ""}
+                                          </label>
+                                        </div>
+                                      </td>
+                                      <td className="group-address" style={{ width: "34%" }}>
+                                        <div className="group-info-row">
+                                          <label className="item person">
+                                            <i className="fa fa-user"></i>
+                                            <div className="person-info">
+                                              <span className="name" style={{ wordBreak: "break-all" }}>
+                                                {rowItem.ReceiverFullName}
+                                              </span>
+                                              <span className="line">-</span>
+                                              <span className={rowItem.PhoneCount > 1 ? "phone  phonered" : "phone"}>({rowItem.ReceiverPhoneNumber})</span>
+                                              {rowItem.PartnerSaleOrderID != "" ? <span className="line">-</span> : ""}
+                                              <span className="phone partner-sale-Order fw-600">{rowItem.PartnerSaleOrderID}</span>
+                                              <button className="btn-copy-clipboard" data-id={rowItem.PartnerSaleOrderID} onClick={this.copyToClipboard.bind(this)}>
+                                                <i className="fa fa-copy" data-id={rowItem.PartnerSaleOrderID}></i>
+                                              </button>
+                                            </div>
+                                          </label>
+                                          {/* <label className="item address-receiver">
+                                      <span>{rowItem.ReceiverFullAddress}</span>
+                                    </label> */}
+                                          <label className="item address-repository-created">
+                                            <span>{rowItem.SenderFullName}</span>
+                                          </label>
+                                          <label className="item creacte-time">
+                                            <span className="times group-times">
+                                              <span className="time-item itemCreatedOrderTime">
+                                                <span className="txtCreatedOrderTime">Tạo: {formatMonthDate(rowItem.CreatedOrderTime)}</span>
+                                                <span className="txtCreatedOrderTime">Xuất: {formatMonthDate(rowItem.OutputGoodsDate)}</span>
+                                              </span>
+                                              <span className="time-item itemEstimat">
+                                                <span className="intervale itemDistance">
+                                                  <i className="fa fa-paper-plane-o"></i>
+                                                  <span className="txtintervale">{rowItem.EstimateDeliveryDistance + "Km/" + rowItem.ActualDeliveryDistance.toFixed(2) + "Km"}</span>
+                                                </span>
+                                                <span className="intervale itemLong">
+                                                  <i className="ti ti-timer"></i>
+                                                  <span className="txtintervale">{rowItem.EstimateDeliveryLong + "'"}</span>
+                                                </span>
+                                              </span>
+                                            </span>
+                                          </label>
+                                        </div>
+                                      </td>
+                                      <td className="group-infoShipmentOrder" style={{ width: "15%" }}>
+                                        <div className="group-info-row">
+                                          <label className="item person">
+                                            <span className="person-info fw-600" style={{ fontSize: 12 }}>
+                                              <Link className="linktext blank" target="_blank" to={{ pathname: "/ShipmentOrder/Detail/" + rowItem.ShipmentOrderID }}>
+                                                {rowItem.ShipmentOrderID}
+                                              </Link>
+                                            </span>
+                                            <button
+                                              className="btn-copy-clipboard"
+                                              style={{ border: "none", backgroundColor: "transparent", cursor: "pointer", outline: "none" }}
+                                              data-id={rowItem.ShipmentOrderID}
+                                              onClick={this.copyToClipboardShipmentOrder.bind(this)}
+                                            >
+                                              <i className="fa fa-copy" data-id={rowItem.ShipmentOrderID}></i>
+                                            </button>
+                                          </label>
+                                          <label className="item address-receiver">
+                                            <span>{rowItem.ShipmentOrderTypeName}</span>
+                                          </label>
+                                          {rowItem.CoordinatorUser != "" ? (
+                                            <React.Fragment>
+                                              <label className="item address-receiver">
+                                                <span>
+                                                  ĐP: <span className="coordinatorUser">{rowItem.CoordinatorUser + "-" + rowItem.CoordinatorUserName}</span>
+                                                </span>
+                                              </label>
+                                              {rowItem.DeliverUserFullNameList != "" ? (
+                                                <label className="item address-receiver">
+                                                  <span>{rowItem.DeliverUserFullNameList}</span>
+                                                </label>
+                                              ) : (
+                                                ""
+                                              )}
+
+                                              <label className="item address-receiver">
+                                                <span className="receiverred">{rowItem.CoordinatorNote != "" ? "Ghi chú: " + rowItem.CoordinatorNote : ""}</span>
+                                              </label>
+                                            </React.Fragment>
+                                          ) : (
+                                            <label className="item address-receiver">
+                                              <span className="receiverred">{rowItem.CoordinatorNote != "" ? "Ghi chú: " + rowItem.CoordinatorNote : ""}</span>
+                                            </label>
+                                          )}
+                                        </div>
+                                      </td>
+                                      <td className="group-address" style={{ width: "24%" }}>
+                                        <div className="group-info-row">
+                                          <label className={rowItem.IsInputReturn == true ? "item address-repository-created lblReturns" : "item address-repository-created"}>
+                                            <span className="coordinatorUser">
+                                              {rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(/;/g, "<br/>"))}
+                                            </span>
+                                          </label>
+                                          <label className="item address-receiver">
+                                            <span className="price-debt">{rowItem.OrderNote != "" ? "Ghi chú: " + rowItem.OrderNote : ""}</span>
+                                          </label>
+                                        </div>
+                                      </td>
+                                      <td className="group-price" style={{ width: "9%" }}>
+                                        <div className="group-row">
+                                          <span className="item price3">{rowItem.IsCancelDelivery == true ? <span className="badge badge-danger">Đã hủy</span> : ""}</span>
+                                          {rowItem.TotalCOD > 0 ? <span className="item pricecod">COD:{formatMoney(rowItem.TotalCOD, 0)}</span> : ""}
+                                          {rowItem.TotalSaleMaterialMoney > 0 ? <span className="item price-supplies">Vật tư:{formatMoney(rowItem.TotalSaleMaterialMoney, 0)}</span> : ""}
+                                          {rowItem.IsInputReturn == true ? <span className="item price-supplies">Nhập trả:{formatMoney(rowItem.TotalReturnPrice, 0)}</span> : ""}
+                                          {rowItem.IsPaidIn == true || rowItem.TotalSaleMaterialMoney + rowItem.TotalCOD - rowItem.TotalReturnPrice == 0 ? (
+                                            <span className="item price3 price-success">
+                                              <span className="price-title ">Nợ: </span>
+                                              <span className="price-debt">0đ</span>
+                                            </span>
+                                          ) : rowItem.TotalPaidInMoney + rowItem.TotalUnPaidInMoney > 0 ? (
+                                            <div className="item price3">
+                                              <span className="price-title">Nợ: </span>
+                                              <span className="price-debt">-{rowItem.TotalUnPaidInMoney >= 0 ? formatMoney(rowItem.TotalUnPaidInMoney, 0) : 0}đ</span>
+                                            </div>
+                                          ) : (
+                                            <div className="item price3">
+                                              <span className="price-title">Nợ: </span>
+                                              <span className="price-debt">
+                                                -
+                                                {rowItem.TotalCOD - rowItem.TotalReturnPrice <= 0
+                                                  ? formatMoney(rowItem.TotalSaleMaterialMoney)
+                                                  : formatMoney(rowItem.TotalCOD + rowItem.TotalSaleMaterialMoney - rowItem.TotalReturnPrice, 0)}
+                                              </span>
+                                            </div>
+                                          )}
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
+                            </tbody>
+                          </table>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </Tabs.TabPane>
           </Tabs>
         </div>
@@ -2014,7 +2383,7 @@ class SearchCom extends Component {
                     <Button type="primary" onClick={() => this.handleUserCoordinator()}>
                       Phân tuyến
                     </Button>
-                    <Button type="primary" onClick={(_) => this.handleShipmentRouteAuto()}>
+                    <Button loading={this.state.UIEffect.ButtonShipmentRouteAuto.IsLoading} type="primary" onClick={(_) => this.handleShipmentRouteAuto()}>
                       Phân tuyến tự động
                     </Button>
                   </Space>
@@ -2042,6 +2411,8 @@ class SearchCom extends Component {
             onShowNotification={this.addNotification}
           />
         )}
+
+        {this.state.IsShowModelMap && <ModalVietBanDoShipmentRouteAuto ListShipmentOrder={this.state.DataSourceMap} onClose={() => this.setState({ IsShowModelMap: false })} />}
       </React.Fragment>
     );
   }

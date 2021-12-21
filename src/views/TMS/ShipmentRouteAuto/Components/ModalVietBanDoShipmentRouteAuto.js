@@ -144,8 +144,8 @@ class ModalVietBanDoShipmentRouteAuto extends Component {
           let infoWindow = new vbd.InfoWindow({
             content: templateContent(
               item.PartnerSaleOrderID == 0
-                ? { content: "Kho", location: `Vị trí ${Latitude},${Longitude}` }
-                : { content: `Vận đơn ${item.PartnerSaleOrderID}`, location: `Vị trí ${Latitude},${Longitude}` }
+                ? { content: "Kho", location: `Vị trí: ${Latitude},${Longitude}` }
+                : { content: `Vận đơn: ${item.PartnerSaleOrderID}`, location: `Vị trí: ${Latitude},${Longitude}` }
             ),
           });
 

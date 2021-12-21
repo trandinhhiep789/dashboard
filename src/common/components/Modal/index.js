@@ -50,6 +50,7 @@ export class MessageModal extends React.Component {
     }
 
     handleOkButton(){
+        document.body.classList.remove('modal-open');
         ModalManager.close();
         if(this.props.onOkModal){
             this.props.onOkModal();
