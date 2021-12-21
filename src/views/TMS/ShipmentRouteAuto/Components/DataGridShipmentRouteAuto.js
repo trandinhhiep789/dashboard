@@ -705,15 +705,20 @@ class DataGridShipmentRouteAutoCom extends Component {
   handleCheckShip(name, value, checked, isSinger = false) {
     const strShipmentOrderValue = value;
     const objShipmentOrder = this.state.DataSource.find((n) => n[name] == strShipmentOrderValue);
+
+    // let objShip = {
+    //   ShipmentOrderID: objShipmentOrder.ShipmentOrderID,
+    //   ShipmentOrderTypeID: objShipmentOrder.ShipmentOrderTypeID,
+    //   CarrierPartnerID: objShipmentOrder.CarrierPartnerID,
+    //   CarrierTypeID: objShipmentOrder.CarrierTypeID,
+    //   DeliverUserList: [],
+    //   CurrentShipmentOrderStepID: objShipmentOrder.CurrentShipmentOrderStepID,
+    //   ShipItemNameList: objShipmentOrder.ShipItemNameList,
+    //   PrimaryShipItemName: objShipmentOrder.PrimaryShipItemName,
+    // };
     let objShip = {
-      ShipmentOrderID: objShipmentOrder.ShipmentOrderID,
-      ShipmentOrderTypeID: objShipmentOrder.ShipmentOrderTypeID,
-      CarrierPartnerID: objShipmentOrder.CarrierPartnerID,
-      CarrierTypeID: objShipmentOrder.CarrierTypeID,
+      ...objShipmentOrder,
       DeliverUserList: [],
-      CurrentShipmentOrderStepID: objShipmentOrder.CurrentShipmentOrderStepID,
-      ShipItemNameList: objShipmentOrder.ShipItemNameList,
-      PrimaryShipItemName: objShipmentOrder.PrimaryShipItemName,
     };
     let changeState = this.state;
     let gridDataShip = changeState.GridDataShip;
@@ -722,10 +727,7 @@ class DataGridShipmentRouteAutoCom extends Component {
       gridDataShip.push(objShip);
       this.props.onCheckShip({ TimeFrame: this.props.TimeFrame, GridDataShip: gridDataShip, ShipmentOrderID: strShipmentOrderValue, IsSinger: isSinger });
     } else {
-      gridDataShip.splice(
-        gridDataShip.findIndex((n) => n[name] == strShipmentOrderValue),
-        1
-      );
+      gridDataShip.splice(gridDataShip.findIndex((n) => n[name] == strShipmentOrderValue), 1);
       this.props.onCheckShip({ TimeFrame: this.props.TimeFrame, GridDataShip: gridDataShip, ShipmentOrderID: strShipmentOrderValue, IsSinger: isSinger });
     }
 

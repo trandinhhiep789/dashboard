@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { Modal, ModalManager, Effect } from 'react-dynamic-modal';
 
 const MessageModelStyle = {
@@ -38,15 +37,23 @@ const modalBody = {
 export class MessageModal extends React.Component {
     constructor(props) {
         super(props);
-        this.handleCLoseButton = this.handleCLoseButton.bind(this);
+        this.handleCloseButton = this.handleCloseButton.bind(this);
+        this.handleOkButton = this.handleOkButton.bind(this);
     }
 
-    handleCLoseButton() {
+    handleCloseButton() {
         document.body.classList.remove('modal-open');
         ModalManager.close();
         //console.log("MessageModal this.props:", this.props);
         if (this.props.onCloseModal != null)
             this.props.onCloseModal();
+    }
+
+    handleOkButton(){
+        ModalManager.close();
+        if(this.props.onOkModal){
+            this.props.onOkModal();
+        }
     }
     
     componentDidMount(){
@@ -54,7 +61,7 @@ export class MessageModal extends React.Component {
     }
 
     render() {
-        const { title, message, onRequestClose } = this.props;
+        const { title, message, onRequestClose, isConfirm, textOk } = this.props;
         return (
             <Modal style={MessageModelStyle}
                 onRequestClose={onRequestClose}
@@ -62,7 +69,7 @@ export class MessageModal extends React.Component {
                 <div className="modal-content">
                     <div className="modal-header">
                         <h4 className="modal-title" id="myModalLabel">{title}</h4>
-                        <button type="button" className="close" onClick={this.handleCLoseButton}>
+                        <button type="button" className="close" onClick={this.handleCloseButton}>
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
@@ -72,7 +79,8 @@ export class MessageModal extends React.Component {
                         </React.Fragment>
                     </div>
                     <div className="modal-footer">
-                        <button className="btn btn-w-md btn-round btn-secondary" onClick={this.handleCLoseButton}>Đóng</button>
+                       {isConfirm && <button className="btn btn-w-md btn-round btn-secondary" onClick={this.handleOkButton}>{textOk==""?"Ok":textOk}</button>}
+                        <button className="btn btn-w-md btn-round btn-secondary" onClick={this.handleCloseButton}>Đóng</button>
                     </div>
                 </div>
             </Modal>

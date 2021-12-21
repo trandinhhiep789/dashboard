@@ -1,9 +1,15 @@
 .vContent {
   max-height: 200px;
   height: auto;
-  width: 200px;
+  max-width: 400px;
+  width: 300px;
   display: flex;
-  justify-content: center;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  &__item{
+    line-height: 25px;
+  }
 }
 
 .ant-modal-vietbando .ant-modal-content .ant-modal-header .ant-modal-header-title {
