@@ -221,6 +221,7 @@ class SearchCom extends React.Component {
                                                                                                 <div>
                                                                                                     <p>{objShipmentOrder.ReceiverFullName}</p>
                                                                                                     <p>{objShipmentOrder.ReceiverFullAddress}</p>
+                                                                                                    <p>{objShipmentOrder.Weight}</p>
                                                                                                 </div>
                                                                                             }
                                                                                             title={objShipmentOrder.PartnerSaleOrderID}>
@@ -230,12 +231,12 @@ class SearchCom extends React.Component {
                                                                                                         <div
                                                                                                             style={{ position: "relative", width: "12px", height: "12px", border: `3px solid ${randomColor}`, backgroundColor: `${randomColor}`, borderRadius: "50%", cursor: "pointer" }}
                                                                                                         >
-                                                                                                            <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{objShipmentOrder.PartnerSaleOrderID}</div>
+                                                                                                            <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
                                                                                                         </div> :
                                                                                                         <div
                                                                                                             style={{ position: "relative", width: "12px", height: "12px", border: `3px solid ${randomColor}`, backgroundColor: "white", borderRadius: "50%", cursor: "pointer" }}
                                                                                                         >
-                                                                                                            <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{objShipmentOrder.PartnerSaleOrderID}</div>
+                                                                                                            <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
                                                                                                         </div>
                                                                                                 }
                                                                                             </div>
@@ -308,6 +309,7 @@ class SearchCom extends React.Component {
                                                                                                 <div>
                                                                                                     <p>{objShipmentOrder.ReceiverFullName}</p>
                                                                                                     <p>{objShipmentOrder.ReceiverFullAddress}</p>
+                                                                                                    <p>{objShipmentOrder.Weight}</p>
                                                                                                 </div>
                                                                                             }
                                                                                             title={objShipmentOrder.PartnerSaleOrderID}>
@@ -317,12 +319,12 @@ class SearchCom extends React.Component {
                                                                                                         <div
                                                                                                             style={{ position: "relative", width: "12px", height: "12px", border: `3px solid ${randomColor}`, backgroundColor: `${randomColor}`, borderRadius: "50%", cursor: "pointer" }}
                                                                                                         >
-                                                                                                            <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{objShipmentOrder.PartnerSaleOrderID}</div>
+                                                                                                            <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
                                                                                                         </div> :
                                                                                                         <div
                                                                                                             style={{ position: "relative", width: "12px", height: "12px", border: `3px solid ${randomColor}`, backgroundColor: "white", borderRadius: "50%", cursor: "pointer" }}
                                                                                                         >
-                                                                                                            <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{objShipmentOrder.PartnerSaleOrderID}</div>
+                                                                                                            <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
                                                                                                         </div>
                                                                                                 }
                                                                                             </div>
