@@ -132,9 +132,16 @@ class SearchCom extends React.Component {
                     }
                 })
 
-                console.log("input", input);
+                const input_1 = {
+                    DepotRouting: {
+                        Address: "Đường Thới An 19A, Tân Thới An,  Quận 12, Hồ Chí Minh"
+                    },
+                    ListShipmentOrder: input
+                }
 
-                this.props.callFetchAPI("TMSAPI", "api/test/VehicleRouting", input).then(apiResult => {
+                console.log("input_1", input_1);
+
+                this.props.callFetchAPI("TMSAPI", "api/test/VehicleRouting", input_1).then(apiResult => {
                     console.log('output', apiResult);
                     if (apiResult.IsError) {
                         alert("Lỗi gọi api");
