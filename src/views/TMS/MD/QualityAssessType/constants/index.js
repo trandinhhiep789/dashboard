@@ -315,6 +315,12 @@ export const MLObjectDefinition = [
         DataSourceMember: "QualityAssessTypeName"
     },
     {
+        Name: "QualityAssessPoint",
+        DefaultValue: "",
+        BindControlName: "txtQualityAssessPoint",
+        DataSourceMember: "QualityAssessPoint"
+    },
+    {
         Name: "QualityAssessGroupID",
         DefaultValue: "",
         BindControlName: "txtQualityAssessGroupID",
