@@ -929,83 +929,6 @@ class SearchCom extends Component {
     // this.setState(changeState);
   }
 
-  // Xử lý phân tuyến tự động
-  handleShipmentRouteAuto() {
-    let arrRequest = [];
-    for (const [key, value] of Object.entries(this.state.GridDataShip)) {
-      if (value.length > 0) {
-        arrRequest = value.reduce((curArray, curValue) => {
-          return [...curArray, { ...curValue }];
-        }, []);
-      }
-    }
-
-    if (arrRequest.length > 0 && arrRequest.length < 2) {
-      this.showMessage("Phải chọn ít nhất là 2 vận đơn");
-      return;
-    }
-
-    let messageContent =
-      arrRequest.length === 0
-        ? `Muốn phân tuyến tự động tất cả các đơn trong khung thời gian ${this.state.ActiveTimeFrame.Name}`
-        : `Muốn phân tuyến tự động ${arrRequest.length} đơn trong khung thời gian ${this.state.ActiveTimeFrame.Name}`;
-
-    if (arrRequest.length == 0) {
-      arrRequest = [...this.state[this.state.ActiveTimeFrame.TimeFrame]];
-    }
-
-    this.showMessage(messageContent, true, "Xác nhận", () => {
-      let changeState = this.state;
-      let objUIEffect = changeState.UIEffect;
-      let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
-      let objTabShipmentRouteAuto = objUIEffect.TabShipmentRouteAuto;
-
-      objTabShipmentRouteAuto = { ...objTabShipmentRouteAuto, Content: this.state.ActiveTimeFrame.Name };
-      objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: true };
-      objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto, TabShipmentRouteAuto: objTabShipmentRouteAuto };
-      changeState = { ...changeState, UIEffect: objUIEffect };
-
-      this.setState(changeState);
-
-      let objRequest = {
-        DepotRouting: {
-          Address: "Đường Thới An 19A, Tân Thới An,  Quận 12, Hồ Chí Minh",
-        },
-        ListShipmentOrder: arrRequest,
-      };
-
-      this.props.callFetchAPI(APIHostName, "api/test/VehicleRouting", objRequest).then((apiResult) => {
-        if (!apiResult.IsError) {
-          const { MotorRoute, TruckRoute, ListDroppedShipmentOrder } = apiResult.ResultObject;
-
-          let changeState = this.state;
-          let objShipmentRouteAutoDataSource = changeState.ShipmentRouteAutoDataSource;
-          let objUIEffect = changeState.UIEffect;
-          let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
-
-          objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: false, IsDisabled: true };
-          objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
-          changeState = { ...changeState, UIEffect: objUIEffect };
-          objShipmentRouteAutoDataSource = { Motor: MotorRoute, Truck: TruckRoute, Dropped: ListDroppedShipmentOrder };
-          changeState = { ...changeState, ActiveTab: "9", ShipmentRouteAutoDataSource: objShipmentRouteAutoDataSource };
-
-          this.setState(changeState);
-        } else {
-          let changeState = this.state;
-          let objUIEffect = changeState.UIEffect;
-          let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
-
-          objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: false };
-          objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
-          changeState = { ...changeState, UIEffect: objUIEffect };
-
-          this.setState(changeState);
-          this.addNotification(apiResult.Message, apiResult.IsError);
-        }
-      });
-    });
-  }
-
   _CheckTime(dates) {
     const date = new Date(Date.parse(dates));
     let currentDate = new Date();
@@ -1065,6 +988,80 @@ class SearchCom extends Component {
     let temponaryInput = $("<input>").val(ShipmentOrderID).appendTo("body").select();
     document.execCommand("copy");
     temponaryInput.remove();
+  }
+
+  // Xử lý phân tuyến tự động
+  handleShipmentRouteAuto() {
+    let arrRequest = [];
+    for (const [key, value] of Object.entries(this.state.GridDataShip)) {
+      if (value.length > 0) {
+        arrRequest = value.reduce((curArray, curValue) => {
+          return [...curArray, { ...curValue }];
+        }, []);
+      }
+    }
+
+    if (arrRequest.length > 0 && arrRequest.length < 2) {
+      this.showMessage("Phải chọn ít nhất là 2 vận đơn");
+      return;
+    }
+
+    let messageContent =
+      arrRequest.length === 0
+        ? `Muốn phân tuyến tự động tất cả các đơn trong khung thời gian ${this.state.ActiveTimeFrame.Name}`
+        : `Muốn phân tuyến tự động ${arrRequest.length} đơn trong khung thời gian ${this.state.ActiveTimeFrame.Name}`;
+
+    if (arrRequest.length == 0) {
+      arrRequest = [...this.state[this.state.ActiveTimeFrame.TimeFrame]];
+    }
+
+    this.showMessage(messageContent, true, "Xác nhận", () => {
+      let changeState = this.state;
+      let objUIEffect = changeState.UIEffect;
+      let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
+      let objTabShipmentRouteAuto = objUIEffect.TabShipmentRouteAuto;
+
+      objTabShipmentRouteAuto = { ...objTabShipmentRouteAuto, Content: this.state.ActiveTimeFrame.Name };
+      objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: true };
+      objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto, TabShipmentRouteAuto: objTabShipmentRouteAuto };
+      changeState = { ...changeState, UIEffect: objUIEffect };
+
+      this.setState(changeState);
+
+      let objRequest = {
+        ListShipmentOrder: arrRequest,
+      };
+
+      this.props.callFetchAPI(APIHostName, "api/test/VehicleRouting", objRequest).then((apiResult) => {
+        if (!apiResult.IsError) {
+          const { MotorRoute, TruckRoute, ListDroppedShipmentOrder } = apiResult.ResultObject;
+
+          let changeState = this.state;
+          let objShipmentRouteAutoDataSource = changeState.ShipmentRouteAutoDataSource;
+          let objUIEffect = changeState.UIEffect;
+          let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
+
+          objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: false, IsDisabled: true };
+          objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
+          changeState = { ...changeState, UIEffect: objUIEffect };
+          objShipmentRouteAutoDataSource = { Motor: MotorRoute, Truck: TruckRoute, Dropped: ListDroppedShipmentOrder };
+          changeState = { ...changeState, ActiveTab: "9", ShipmentRouteAutoDataSource: objShipmentRouteAutoDataSource };
+
+          this.setState(changeState);
+        } else {
+          let changeState = this.state;
+          let objUIEffect = changeState.UIEffect;
+          let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
+
+          objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: false };
+          objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
+          changeState = { ...changeState, UIEffect: objUIEffect };
+
+          this.setState(changeState);
+          this.addNotification(apiResult.Message, apiResult.IsError);
+        }
+      });
+    });
   }
 
   // Xử lý gán data source xe máy cho vietbando

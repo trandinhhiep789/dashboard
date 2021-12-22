@@ -20,7 +20,7 @@ class ModalVietBanDoShipmentRouteAuto extends Component {
 
   componentDidMount() {
     let lstLocation = this.props.ListShipmentOrder.map((item, index) => {
-      if(index==0){
+      if (index == 0) {
         let [Latitude, Longitude] = item.CoordinatorStoreGeo.split(",");
         return { Latitude, Longitude };
       }
@@ -61,11 +61,12 @@ class ModalVietBanDoShipmentRouteAuto extends Component {
           zoomControl: true,
         };
         let map = new vbd.Map(mapContainer, mapProp);
-        let templateContent = ({ content, location }) => {
+        let templateContent = ({ content, receiverFullAddress, receiverFullName }) => {
           var html = `
           <div class="vContent">
-            <span class="vContent_item">${content}</span>
-            <span class="vContent_item">${location}</span>
+            <span class="vContent_item"><b>${content}</b></span>
+            <span class="vContent_item"><b>${receiverFullName}</b></span>
+            <span class="vContent_item"><b>${receiverFullAddress}</b></span>
           </div>`;
           return html;
         };
@@ -82,10 +83,9 @@ class ModalVietBanDoShipmentRouteAuto extends Component {
         this.props.ListShipmentOrder.map((item, index) => {
           let location;
 
-          if(index==0){
+          if (index == 0) {
             location = item.CoordinatorStoreGeo.split(",");
-          }
-          else{
+          } else {
             location = item.ReceiverGeoLocation.split(",");
           }
 
@@ -101,9 +101,9 @@ class ModalVietBanDoShipmentRouteAuto extends Component {
 
           let infoWindow = new vbd.InfoWindow({
             content: templateContent(
-              item.PartnerSaleOrderID == 0
-                ? { content: "Kho", location: `Vị trí: ${location[0]},${location[1]}` }
-                : { content: `Vận đơn: ${item.PartnerSaleOrderID}`, location: `Vị trí: ${location[0]},${location[1]}` }
+              item.ShipmentOrderID == 0
+                ? { content: `Kho ${item.CoordinatorStoreID}` }
+                : { content: `Vận đơn: ${item.ShipmentOrderID}`, receiverFullAddress: `Địa chỉ người nhận: ${item.ReceiverFullAddress}`, receiverFullName: `Tên người nhận: ${item.ReceiverFullName}` }
             ),
           });
 
