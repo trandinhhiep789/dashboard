@@ -25,12 +25,14 @@ class EditCom extends React.Component {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
+        this.onValueChange = this.onValueChange.bind(this);
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
             FormContent: "",
             IsLoadDataComplete: false,
-            IsCloseForm: false
+            IsCloseForm: false,
+            ProductID: ""
         };
     }
 
@@ -44,7 +46,7 @@ class EditCom extends React.Component {
                 });
                 this.showMessage(apiResult.Message);
             } else {
-                this.setState({ DataSource: apiResult.ResultObject });
+                this.setState({ DataSource: apiResult.ResultObject, ProductID: apiResult.ResultObject.ProductID });
             }
             this.setState({
                 IsLoadDataComplete: true
@@ -52,25 +54,34 @@ class EditCom extends React.Component {
         });
     }
 
+    onValueChange(elementname, elementvalue, formData) {
+        //console.log(elementname, elementvalue);
+        if (elementname == "txtProductID") {
+            this.setState({ ProductID: elementvalue[0].ProductID })
+        }
+    }
+
     handleSubmit(formData, MLObject) {
         //console.log("MLObject", MLObject);
-        if (MLObject.ArchitechtureTypeID == -1 && MLObject.ProjectTypeID == -1) {
+        let ProductID = this.state.ProductID;
+        if (MLObject.ArchitectureID == -1 && MLObject.ProjectTypeID == -1) {
             this.setState({ IsCallAPIError: true });
             this.showMessage("Bạn phải nhập vào ít nhất 1 mã loại công trình hoặc mã loại mô hình");
             return;
-        } else if (!MLObject.ProductID || MLObject.ProductID == undefined || MLObject.ProductID[0].ProductID == null) {
+        } else if (!ProductID || ProductID == undefined || ProductID == null) {
             this.setState({ IsCallAPIError: true });
             this.showMessage("Vui lòng nhập mã sản phẩm.");
             return;
         }
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        MLObject.ProductID = MLObject.ProductID && Array.isArray(MLObject.ProductID) ? MLObject.ProductID[0].ProductID : MLObject.ProductID;
+        MLObject.ProductID = ProductID;
+        //MLObject.ProductID = MLObject.ProductID && Array.isArray(MLObject.ProductID) ? MLObject.ProductID[0].ProductID : MLObject.ProductID;
         // MLObject.SubGroupID = MLObject.SubGroupID && Array.isArray(MLObject.SubGroupID) ? MLObject.SubGroupID[0] : MLObject.SubGroupID;
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
-                this.props.callClearLocalCache(ERPCOMMONCACHE_SYMPTOM);
+                //this.props.callClearLocalCache(ERPCOMMONCACHE_SYMPTOM);
                 // this.handleSubmitInsertLog(MLObject);
             }
             this.showMessage(apiResult.Message);
@@ -103,6 +114,7 @@ class EditCom extends React.Component {
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={EditElementList}
                     onSubmit={this.handleSubmit}
+                    onValueChange={this.onValueChange}
                     FormMessage={this.state.CallAPIMessage}
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={this.state.DataSource}

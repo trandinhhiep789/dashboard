@@ -17,7 +17,7 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_CONSTRUCSERVICETYPE, ERPCOMMONCACHE_MAINTAINCONSTRUCTLST, ERPCOMMONCACHE_MAINTAINPROLIST, ERPCOMMONCACHE_PROJECTARCHITECHTURE, ERPCOMMONCACHE_PROJECTTYPE, ERPCOMMONCACHE_SYMPTOM } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_CONSTRUCSERVICETYPE, ERPCOMMONCACHE_CONSTRUCTREVENUE, ERPCOMMONCACHE_MAINTAINCONSTRUCTLST, ERPCOMMONCACHE_MAINTAINPROLIST, ERPCOMMONCACHE_PROJECTARCHITECHTURE, ERPCOMMONCACHE_PROJECTTYPE, ERPCOMMONCACHE_SYMPTOM } from "../../../../../constants/keyCache";
 import { MAINTAINCONSTRUCT_UPDATE, SYMPTOM_UPDATE } from "../../../../../constants/functionLists";
 
 class EditCom extends React.Component {
@@ -63,7 +63,8 @@ class EditCom extends React.Component {
                     this.props.callClearLocalCache(ERPCOMMONCACHE_MAINTAINPROLIST);
                     this.props.callClearLocalCache(ERPCOMMONCACHE_PROJECTARCHITECHTURE);
                     this.props.callClearLocalCache(ERPCOMMONCACHE_PROJECTTYPE);
-                    this.props.callClearLocalCache(ERPCOMMONCACHE_CONSTRUCSERVICETYPE);
+                    this.props.callClearLocalCache(ERPCOMMONCACHE_CONSTRUCTREVENUE);
+                    this.props.callClearLocalCache(ERPCOMMONCACHE_CONSTRUCSERVICETYPE);           
                 }      
                 this.showMessage(apiResult.Message);
             });

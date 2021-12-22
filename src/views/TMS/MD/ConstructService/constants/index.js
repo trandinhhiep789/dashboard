@@ -89,13 +89,13 @@ export const AddElementList = [
     },
     {
         type: "select",
-        name: "txtArchitechtureTypeID",
-        label: "mã loại mô hình",
+        name: "txtArchitectureID",
+        label: "mã mô hình",
         value: -1,
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "ArchitechtureTypeID",
+        DataSourceMember: "ArchitectureID",
         readonly: false,
         validatonList: [],
         isMulti: false,
@@ -232,13 +232,13 @@ export const EditElementList = [
     },
     {
         type: "select",
-        name: "txtArchitechtureTypeID",
-        label: "mã loại mô hình",
+        name: "txtArchitectureID",
+        label: "mã mô hình",
         value: -1,
         placeholder: "",
         icon: "",
         listoption: [],
-        DataSourceMember: "ArchitechtureTypeID",
+        DataSourceMember: "ArchitectureID",
         readonly: false,
         validatonList: [],
         isMulti: false,
@@ -365,10 +365,10 @@ export const MLObjectDefinition = [
         DataSourceMember: "ConstrucServiceTypeName"
     },
     {
-        Name: "ArchitechtureTypeID",
+        Name: "ArchitectureID",
         DefaultValue: "",
-        BindControlName: "txtArchitechtureTypeID",
-        DataSourceMember: "ArchitechtureTypeID"
+        BindControlName: "txtArchitectureID",
+        DataSourceMember: "ArchitectureID"
     },
     {
         Name: "OldProjectTypeID",
