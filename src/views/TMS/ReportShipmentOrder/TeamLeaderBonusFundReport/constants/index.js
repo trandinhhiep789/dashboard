@@ -72,5 +72,12 @@ export const GridColumnList = [
     DataSourceMember: "TotalWarrantyReward",
     Width: 200,
   },
+  {
+    Name: "TotalAll",
+    Type: "text",
+    Caption: "Tổng thưởng",
+    DataSourceMember: "TotalAll",
+    Width: 200,
+  },
 
 ];

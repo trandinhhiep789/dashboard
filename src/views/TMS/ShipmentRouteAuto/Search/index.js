@@ -22,13 +22,17 @@ import "react-notifications-component/dist/theme.css";
 import Collapsible from "react-collapsible";
 import DataGridShipmentRouteAuto from "./../Components/DataGridShipmentRouteAuto";
 import SearchFormShipmentRouteAuto from "../Components/SearchFormShipmentRouteAuto";
-import SearchForm from "../Components/SearchFormShipmentRouteAutoOldUI";
 import "../../../../css/DataGridShipmentRouteAuto.scss";
 import moment from "moment";
-import { Button, Card, Col, Row, Space, Statistic, Tabs, Collapse, Steps, Popover } from "antd";
+import { Button, Card, Col, Row, Space, Statistic, Tabs, Collapse, Popover, Tooltip, Input, Tag } from "antd";
+import { EyeOutlined, PartitionOutlined } from "@ant-design/icons";
 import { hideModal, showModal } from "../../../../actions/modal";
 import ModalSearchFormShipmentRouteAuto from "../Components/ModalSearchFormShipmentRouteAuto";
 import ModalVietBanDoShipmentRouteAuto from "../Components/ModalVietBanDoShipmentRouteAuto";
+import { formatMonthDate } from "../../../../common/library/CommonLib";
+import { Link } from "react-router-dom";
+import ReactHtmlParser from "react-html-parser";
+import { formatMoney } from "../../../../utils/function";
 
 class SearchCom extends Component {
   constructor(props) {
@@ -63,7 +67,24 @@ class SearchCom extends Component {
       IsShowModel: false,
       IsShowModelMap: false,
       ShipmentOrderSame: [],
-
+      ObjectIsDisabled: {
+        diffTimeFrame: false,
+        TimeFrame8to10: false,
+        TimeFrame10to12: false,
+        TimeFrame12to14: false,
+        TimeFrame14to16: false,
+        TimeFrame17to19: false,
+        TimeFrame19to21: false,
+      },
+      ObjectTimeFrameDataSource: {
+        diffTimeFrame: [],
+        TimeFrame8to10: [],
+        TimeFrame10to12: [],
+        TimeFrame12to14: [],
+        TimeFrame14to16: [],
+        TimeFrame17to19: [],
+        TimeFrame19to21: [],
+      },
       diffTimeFrame: [],
       TimeFrame8to10: [],
       TimeFrame10to12: [],
@@ -71,13 +92,39 @@ class SearchCom extends Component {
       TimeFrame14to16: [],
       TimeFrame17to19: [],
       TimeFrame19to21: [],
-
       ObjectDescription: {},
+      DataSourceMap: [],
+      ActiveTimeFrame: {
+        Name: "",
+        TimeFrame: "",
+      },
+      ActiveTab: -1,
+      ShipmentRouteAutoDataSource: {
+        Motor: {
+          ListShipmentOrderRoute: [],
+          ListTotalDistance: [],
+          ListTotalLoad: [],
+          TotalDistance: 0,
+          TotalLoad: 0,
+        },
+        Truck: {
+          ListShipmentOrderRoute: [],
+          ListTotalDistance: [],
+          ListTotalLoad: [],
+          TotalDistance: 0,
+          TotalLoad: 0,
+        },
+        Dropped: [],
+      },
+      UIEffect: {
+        ButtonShipmentRouteAuto: {
+          IsLoading: false,
+        },
+      },
     };
 
     this.searchref = React.createRef();
     this.notificationDOMRef = React.createRef();
-    this.refShipmentAuto = React.createRef();
 
     this.handleCloseMessage = this.handleCloseMessage.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
@@ -93,14 +140,32 @@ class SearchCom extends Component {
     this.handleClickShipmentRoute = this.handleClickShipmentRoute.bind(this);
     this.handleClickShip = this.handleClickShip.bind(this);
     this.addNotification = this.addNotification.bind(this);
+    this.handleShowModalMapMotorRoute = this.handleShowModalMapMotorRoute.bind(this);
+    this.handleShowModalMapTruckRoute = this.handleShowModalMapTruckRoute.bind(this);
   }
 
   componentDidMount() {
     this.updateWindowDimensions();
     window.addEventListener("resize", this.updateWindowDimensions);
 
+    const activeTab = () => {
+      const currentHour = moment().hour();
+      if (currentHour >= 8 && currentHour < 10) return "1";
+      else if (currentHour >= 10 && currentHour < 12) return "2";
+      else if (currentHour >= 12 && currentHour < 14) return "3";
+      else if (currentHour >= 14 && currentHour < 16) return "4";
+      else if (currentHour >= 17 && currentHour < 19) return "5";
+      else if (currentHour >= 19 && currentHour < 21) return "6";
+      else return "7";
+    };
+
+    let resultActiveTab = activeTab();
+
+    this.handleChangeActiveTab(resultActiveTab);
+
     const localShipmentOrderInfo = localStorage.getItem("SearchShipmentOrderInfo");
     let InitSearchParams = [];
+
     if (localShipmentOrderInfo == null) {
       InitSearchParams = [
         {
@@ -258,8 +323,10 @@ class SearchCom extends Component {
       ];
     }
 
-    this.setState({ SearchData: InitSearchParams, SearchElementList: this.state.SearchElementList });
+    this.setState({ SearchData: InitSearchParams, SearchElementList: this.state.SearchElementList, ActiveTab: resultActiveTab });
+
     this.callSearchData(InitSearchParams);
+
     this.props.updatePagePath(PagePath);
 
     jQuery(window).scroll(function () {
@@ -332,6 +399,15 @@ class SearchCom extends Component {
       TimeFrame14to16,
       TimeFrame17to19,
       TimeFrame19to21,
+      ObjectTimeFrameDataSource: {
+        diffTimeFrame,
+        TimeFrame8to10,
+        TimeFrame10to12,
+        TimeFrame12to14,
+        TimeFrame14to16,
+        TimeFrame17to19,
+        TimeFrame19to21,
+      },
     });
   }
 
@@ -362,7 +438,7 @@ class SearchCom extends Component {
     this.setState(changeState);
   }
 
-  handleonSearchEvent(Keywordid) {
+  handleOnSearchEvent(Keywordid) {
     if (Keywordid != "") {
       if (Keywordid.trim().length == 15) {
         this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/SearchByKeyword", String(Keywordid).trim()).then((apiResult) => {
@@ -509,8 +585,10 @@ class SearchCom extends Component {
     // }
   }
 
-  showMessage(message) {
-    ModalManager.open(<MessageModal title="Thông báo" message={message} onRequestClose={() => true} onCloseModal={this.handleCloseMessage} />);
+  showMessage(message, isConfirm = false, textOk = "", handleConfirm = undefined) {
+    ModalManager.open(
+      <MessageModal title="Thông báo" message={message} onRequestClose={() => true} isConfirm={isConfirm} textOk={textOk} onOkModal={handleConfirm} onCloseModal={this.handleCloseMessage} />
+    );
   }
 
   addNotification(message, isError) {
@@ -617,15 +695,7 @@ class SearchCom extends Component {
     this.props.hideModal();
   };
 
-  // handleShipmentOrder(apiResult) {
-  //   this.addNotification(apiResult.Message, apiResult.IsError);
-  //   if (!apiResult.IsError) {
-  //     this.setState({ ShipmentRouteID: "", GridDataShip: [], ChangeGird: false });
-  //     if (this.props.onChangePageLoad != null) this.props.onChangePageLoad();
-  //   }
-  // }
-
-  //Xử lý thêm nút checked
+  // Xử lý thêm nút checked
   handleCheckShip({ TimeFrame, GridDataShip, ShipmentOrderID, IsSinger }) {
     let changeState = this.state;
     let gridDataShip = changeState.GridDataShip;
@@ -643,6 +713,7 @@ class SearchCom extends Component {
     });
   }
 
+  // Tính khoảng thời gian
   calculateTimeFrame(paramShipmentOrderID) {
     let objShipmentOrder = this.state.GridDataSource.filter((item) => item.ShipmentOrderID === paramShipmentOrderID);
     const uptExpectedDeliveryDate = new Date(objShipmentOrder[0].ExpectedDeliveryDate);
@@ -659,7 +730,6 @@ class SearchCom extends Component {
 
   // Xử lý bỏ checked khi nhấn xoá trong modal
   handleRemoveCheckShip(paramShipmentOrderID) {
-    console.log("paramShipmentOrderID", paramShipmentOrderID);
     let isExistInGridDataShipModalTemp = this.state.GridDataShipFormModalTemp.some((item) => item.ShipmentOrderID == paramShipmentOrderID);
 
     if (isExistInGridDataShipModalTemp) {
@@ -678,49 +748,9 @@ class SearchCom extends Component {
     }
   }
 
-  // handleUserCoordinator() {
-  //   this.props.hideModal();
-
-  //   if (this.state.GridDataShip.length > 0) {
-  //     this.state.GridDataShip[0].ShipmentOrderTypelst = this.state.SearchData[2].SearchValue;
-
-  //     this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderNewLst", this.state.GridDataShip).then((apiResult) => {
-  //       if (!apiResult.IsError) {
-  //         this.setState({ GridDataShip: apiResult.ResultObject.ShipmentOrderDeliverList, ChangeGird: true });
-  //         this.props.showModal(MODAL_TYPE_VIEW, {
-  //           title: "Phân tuyến điều phối vận đơn",
-  //           isShowOverlay: false,
-  //           onhideModal: this.handleClose,
-  //           content: {
-  //             text: (
-  //               <ListShipCoordinatorRoute
-  //                 ShipmentOrderID={0}
-  //                 ShipmentRouteID={this.state.ShipmentRouteID}
-  //                 InfoCoordinator={this.state.GridDataShip}
-  //                 ShipmentOrderSame={apiResult.ResultObject.ShipmentOrderDeliverSameList}
-  //                 IsUserCoordinator={true}
-  //                 IsCoordinator={true}
-  //                 IsCancelDelivery={true}
-  //                 onChangeValue={this.handleShipmentOrder.bind(this)}
-  //                 onChangeClose={this.handleCloseModal.bind(this)}
-  //               />
-  //             ),
-  //           },
-  //           maxWidth: this.state.widthPercent + "px",
-  //         });
-  //       } else {
-  //         this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
-  //       }
-  //     });
-  //   } else {
-  //     this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
-  //   }
-  // }
-
+  // Kiểm tra GridDataShip có phần tử không
   handleCheckGirdDataShipIsEmpty() {
     const { diffTimeFrame, TimeFrame8to10, TimeFrame10to12, TimeFrame12to14, TimeFrame14to16, TimeFrame17to19, TimeFrame19to21 } = this.state.GridDataShip;
-
-    console.log({ diffTimeFrame, TimeFrame8to10, TimeFrame10to12, TimeFrame12to14, TimeFrame14to16, TimeFrame17to19, TimeFrame19to21 });
 
     return diffTimeFrame.length > 0
       ? "diffTimeFrame"
@@ -852,7 +882,7 @@ class SearchCom extends Component {
     });
   }
 
-  //Xử lý hiện/ản modal
+  // Xử lý hiện/ản modal
   handleShowModel(paramObjectChangeState) {
     let changeState = this.state;
 
@@ -875,6 +905,7 @@ class SearchCom extends Component {
     });
   }
 
+  // Xử lý ghi chú
   handleMapObjectDescription(paramDataSource) {
     return paramDataSource.reduce((a, v) => {
       return {
@@ -892,107 +923,756 @@ class SearchCom extends Component {
     // this.setState(changeState);
   }
 
-  shipmentRouteAuto() {
-    const a = [
-      {
-        name: "haha",
-        Ds: [{ ShipmentOrderID: "123" }, { ShipmentOrderID: "345" }, { ShipmentOrderID: "678" }],
-      },
-      {
-        name: "hihi",
-        Ds: [
-          { ShipmentOrderID: "111" },
-          { ShipmentOrderID: "222" },
-          { ShipmentOrderID: "333" },
-          { ShipmentOrderID: "112" },
-          { ShipmentOrderID: "221" },
-          { ShipmentOrderID: "331" },
-          { ShipmentOrderID: "1df11" },
-          { ShipmentOrderID: "22f2" },
-          { ShipmentOrderID: "3a3" },
-          { ShipmentOrderID: "11d2" },
-          { ShipmentOrderID: "22s1" },
-          { ShipmentOrderID: "33b1" },
-        ],
-      },
-      {
-        name: "hahasa",
-        Ds: [{ ShipmentOrderID: "1a23" }, { ShipmentOrderID: "34as5" }, { ShipmentOrderID: "67c8" }],
-      },
-      {
-        name: "hahaa",
-        Ds: [
-          { ShipmentOrderID: "1a2q3" },
-          { ShipmentOrderID: "3d4ass5" },
-          { ShipmentOrderID: "67cc8" },
-          { ShipmentOrderID: "1a2qa3" },
-          { ShipmentOrderID: "3qd4as5" },
-          { ShipmentOrderID: "67ccd8" },
-          { ShipmentOrderID: "1a2aq3" },
-          { ShipmentOrderID: "3d4as5" },
-          { ShipmentOrderID: "67cc8z" },
-          { ShipmentOrderID: "1a2qaa3" },
-          { ShipmentOrderID: "3qd4acs5" },
-          { ShipmentOrderID: "6a7ccd8" },
-        ],
-      },
-    ];
+  // Xử lý phân tuyến tự động
+  handleShipmentRouteAuto() {
+    let arrRequest = [];
+    for (const [key, value] of Object.entries(this.state.GridDataShip)) {
+      if (value.length > 0) {
+        arrRequest = value.reduce((curArray, curValue) => {
+          return [...curArray, { ...curValue }];
+        }, []);
+      }
+    }
 
-    var randomColor;
+    if (arrRequest.length > 0 && arrRequest.length < 2) {
+      this.showMessage("Phải chọn ít nhất là 2 vận đơn");
+      return;
+    }
+
+    let messageContent =
+      arrRequest.length === 0
+        ? `Muốn phân tuyến tự động tất cả các đơn trong khung thời gian ${this.state.ActiveTimeFrame.Name}`
+        : `Muốn phân tuyến tự động ${arrRequest.length} đơn trong khung thời gian ${this.state.ActiveTimeFrame.Name}`;
+
+    if (arrRequest.length == 0) {
+      arrRequest = [...this.state[this.state.ActiveTimeFrame.TimeFrame]];
+    }
+
+    this.showMessage(messageContent, true, "Xác nhận", () => {
+      let changeState = this.state;
+      let objUIEffect = changeState.UIEffect;
+      let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
+
+      objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: true };
+      objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
+      changeState = { ...changeState, UIEffect: objUIEffect };
+
+      this.setState(changeState);
+
+      let objRequest = {
+        DepotRouting: {
+          Address: "Đường Thới An 19A, Tân Thới An,  Quận 12, Hồ Chí Minh",
+        },
+        ListShipmentOrder: arrRequest,
+      };
+
+      this.props.callFetchAPI(APIHostName, "api/test/VehicleRouting", objRequest).then((apiResult) => {
+        if (!apiResult.IsError) {
+          const { MotorRoute, TruckRoute, ListDroppedShipmentOrder } = apiResult.ResultObject;
+
+          let changeState = this.state;
+          let objShipmentRouteAutoDataSource = changeState.ShipmentRouteAutoDataSource;
+          let objUIEffect = changeState.UIEffect;
+          let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
+
+          objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: false };
+          objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
+          changeState = { ...changeState, UIEffect: objUIEffect };
+          objShipmentRouteAutoDataSource = { Motor: MotorRoute, Truck: TruckRoute, Dropped: ListDroppedShipmentOrder };
+          changeState = { ...changeState, ActiveTab: "9", ShipmentRouteAutoDataSource: objShipmentRouteAutoDataSource };
+
+          this.setState(changeState);
+        } else {
+          let changeState = this.state;
+          let objUIEffect = changeState.UIEffect;
+          let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
+
+          objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: false };
+          objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
+          changeState = { ...changeState, UIEffect: objUIEffect };
+
+          this.setState(changeState);
+          this.addNotification(apiResult.Message, apiResult.IsError);
+        }
+      });
+    });
+  }
+
+  _CheckTime(dates) {
+    const date = new Date(Date.parse(dates));
+    let currentDate = new Date();
+    // var timeDiff = Math.abs(currentDate.getTime() - date.getTime());
+    var timeDiff = date.getTime() - currentDate.getTime();
+    var diffMinutes = parseInt(timeDiff / (3600 * 24));
+    if (diffMinutes < 60) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  _genCommentCarrierPartner(CarrierTypeID, CarrierTypeName) {
+    if (CarrierTypeID < 1) {
+      return (
+        <label className="item vehicle">
+          <span>Chưa chọn phương tiện</span>
+        </label>
+      );
+    } else if (CarrierTypeID == 1) {
+      return (
+        <label className="item vehicle">
+          <i className="fa fa-motorcycle"></i>
+          <span>{CarrierTypeName}</span>
+        </label>
+      );
+    } else {
+      return (
+        <label className="item vehicle">
+          <i className="fa fa-truck"></i>
+          <span>{CarrierTypeName}</span>
+        </label>
+      );
+    }
+  }
+
+  _genCommentTime(dates) {
+    const date = new Date(Date.parse(dates));
+    //let currentDate = new Date();
+    let hour = date.getHours();
+    let minute = date.getMinutes();
+    let timeDisplay = (hour < 10 ? "0" + hour : hour) + ":" + (minute < 10 ? "0" + minute : minute);
+    let month = date.getMonth() + 1;
+    return date.getDate() + "/" + (month < 10 ? "0" + month : month) + "/" + date.getFullYear() + " " + timeDisplay;
+  }
+
+  copyToClipboard(e) {
+    const PartnerSaleOrderID = e.target.attributes["data-id"].value;
+    let temponaryInput = $("<input>").val(PartnerSaleOrderID).appendTo("body").select();
+    document.execCommand("copy");
+    temponaryInput.remove();
+  }
+
+  copyToClipboardShipmentOrder(e) {
+    const ShipmentOrderID = e.target.attributes["data-id"].value;
+    let temponaryInput = $("<input>").val(ShipmentOrderID).appendTo("body").select();
+    document.execCommand("copy");
+    temponaryInput.remove();
+  }
+
+  handleShowModalMapMotorRoute(index) {
+    this.setState({ DataSourceMap: this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute[index], IsShowModelMap: true });
+  }
+
+  handleShowModalMapTruckRoute(index) {
+    this.setState({ DataSourceMap: this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute[index], IsShowModelMap: true });
+  }
+
+  renderShipmentRouteAuto() {
     const pickRandomColor = ["#1f5ff4", "#c55d53", "#cb68c5", "#65b411", "#f4b323", "#420e3e", "#e80024", "#585ccc", "#d44371", "#14915f", "#e79940", "#6be54"];
-    return (
-      <div style={{ width: "100%", backgroundColor: "white", padding: "20px", minHeight: "50vh", border: "1px solid blue" }}>
-        <h4>Danh sách các tuyến đề xuất</h4>
-        {a &&
-          a.map((line) => (
-            <div key={line.name}>
-              {(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}
-              <div style={{ display: "flex", width: "100%" }}>
-                <div style={{ display: "flex", height: "9px", width: "90%", justifyContent: "space-between", borderBottom: `3px solid ${randomColor}`, marginBottom: "30px" }}>
-                  {line.Ds.map((a) => (
-                    <Popover key={a.ShipmentOrderID} content={a.ShipmentOrderID} title={a.ShipmentOrderID}>
-                      <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
-                        <div
-                          style={{ position: "relative", width: "12px", height: "12px", border: `3px solid ${randomColor}`, backgroundColor: `${randomColor}`, borderRadius: "50%", cursor: "pointer" }}
-                        >
-                          <div style={{ position: "absolute", top: "10px", left: "-8px" }}>{a.ShipmentOrderID}</div>
-                        </div>
-                      </div>
-                    </Popover>
-                  ))}
-                </div>
-                <div style={{ width: "10%", textAlign: "right" }}>
-                  <Button type="primary" size="small">
-                    Xem bản đồ
-                  </Button>
-                </div>
-              </div>
-            </div>
-          ))}
+    let randomColor = "";
+
+    let reactNodeTab = (title, length) => (
+      <div style={{ position: "relative" }}>
+        <span style={{ marginRight: "16px", lineHeight: "30px" }}>{title}</span>
+        <span
+          style={{
+            height: "15px",
+            width: "15px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: "7.5px",
+            backgroundColor: "#eb4d4b",
+            position: "absolute",
+            top: "0",
+            right: "0",
+            color: "white",
+            fontSize: "11px",
+          }}
+        >
+          {length}
+        </span>
       </div>
+    );
+
+    let length_motor =
+      this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.length == 1 &&
+      this.state.ShipmentRouteAutoDataSource.Motor.TotalDistance == 0 &&
+      this.state.ShipmentRouteAutoDataSource.Motor.TotalLoad == 0
+        ? 0
+        : this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.length;
+
+    let length_truck =
+      this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute.length == 1 &&
+      this.state.ShipmentRouteAutoDataSource.Truck.TotalDistance == 0 &&
+      this.state.ShipmentRouteAutoDataSource.Truck.TotalLoad == 0
+        ? 0
+        : this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute.length;
+
+    return (
+      this.state.ShipmentRouteAutoDataSource != null && (
+        <div style={{ width: "100%" }}>
+          <Tabs defaultActiveKey="1" style={{ padding: "15px", backgroundColor: "white" }} className="ant-tabs">
+            {/* Tab xe máy */}
+
+            <Tabs.TabPane tab={reactNodeTab("Xe máy", length_motor)} key="1" className="ant-tabs-child-1">
+              <div style={{ width: "100%", backgroundColor: "white", padding: "10px", maxheight: "57vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
+                <h5>Danh sách các tuyến đề xuất</h5>
+                <h6>
+                  Tổng cộng số km: <span style={{ fontWeight: "700" }}>{parseInt(this.state.ShipmentRouteAutoDataSource.Motor.TotalDistance / 1000)}</span> km
+                </h6>
+                <h6>
+                  Tổng cộng số tải: <span style={{ fontWeight: "700" }}>{this.state.ShipmentRouteAutoDataSource.Motor.TotalLoad}</span> kg
+                </h6>
+                {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute &&
+                  this.state.ShipmentRouteAutoDataSource.Motor.TotalDistance > 0 &&
+                  this.state.ShipmentRouteAutoDataSource.Motor.TotalLoad > 0 && (
+                    <div style={{ width: "100%", backgroundColor: "white", padding: "20px", maxHeight: "60vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
+                      {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.map((line, index) => (
+                        <div key={index}>
+                          <p style={{ display: "none" }}>{(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}</p>
+                          <div style={{ display: "flex" }}>
+                            {/* <span style={{ fontWeight: "700", fontSize: "15px" }}>{index}</span>&ensp; */}
+                            <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
+                              <div style={{ width: "90%", marginBottom: "30px" }}>
+                                <div style={{ marginBottom: "10px" }}>
+                                  <Tag color="#108ee9">Tuyến: {index}</Tag>
+                                  <Tag color="#2db7f5">Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Motor.ListTotalDistance[index] / 1000)}</Tag>
+                                  <Tag color="#87d068">Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Motor.ListTotalLoad[index]}</Tag>
+
+                                  {/* <span>Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Motor.ListTotalDistance[index] / 1000)}</span>&ensp;
+                                  <span>Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Motor.ListTotalLoad[index]}</span> */}
+                                </div>
+                                <div style={{ display: "flex" }}>
+                                  {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute[index].map((objShipmentOrder, i) => (
+                                    <div key={objShipmentOrder.PartnerSaleOrderID} style={{ display: "flex", width: i != 0 && "100%" }}>
+                                      {i != 0 &&
+                                        (objShipmentOrder.IsCompleteDeliverIed ? (
+                                          <div style={{ width: "100%", height: "10px", borderBottom: `3px solid ${randomColor}` }}></div>
+                                        ) : (
+                                          <div style={{ width: "100%", height: "10px", borderBottom: `3px solid #80808030` }}></div>
+                                        ))}
+                                      {i != 0 ? (
+                                        <Popover
+                                          content={
+                                            <div>
+                                              <p>{objShipmentOrder.ReceiverFullName}</p>
+                                              <p>{objShipmentOrder.ReceiverFullAddress}</p>
+                                              <p>{objShipmentOrder.Weight}</p>
+                                            </div>
+                                          }
+                                          title={objShipmentOrder.PartnerSaleOrderID}
+                                        >
+                                          <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
+                                            {objShipmentOrder.IsCompleteDeliverIed ? (
+                                              <div
+                                                style={{
+                                                  position: "relative",
+                                                  width: "12px",
+                                                  height: "12px",
+                                                  border: `3px solid ${randomColor}`,
+                                                  backgroundColor: `${randomColor}`,
+                                                  borderRadius: "50%",
+                                                  cursor: "pointer",
+                                                }}
+                                              >
+                                                <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
+                                              </div>
+                                            ) : (
+                                              <div
+                                                style={{
+                                                  position: "relative",
+                                                  width: "12px",
+                                                  height: "12px",
+                                                  border: `3px solid ${randomColor}`,
+                                                  backgroundColor: "white",
+                                                  borderRadius: "50%",
+                                                  cursor: "pointer",
+                                                }}
+                                              >
+                                                <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
+                                              </div>
+                                            )}
+                                          </div>
+                                        </Popover>
+                                      ) : (
+                                        <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
+                                          {
+                                            <div
+                                              style={{
+                                                position: "relative",
+                                                width: "12px",
+                                                height: "12px",
+                                                border: `3px solid ${randomColor}`,
+                                                backgroundColor: `${randomColor}`,
+                                                borderRadius: "50%",
+                                                cursor: "pointer",
+                                              }}
+                                            >
+                                              <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>0</div>
+                                            </div>
+                                          }
+                                        </div>
+                                      )}
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                              <div style={{ width: "10%", textAlign: "right", paddingTop: "18px" }}>
+                                <Tooltip title="Xem bản đồ">
+                                  <Button type="primary" shape="circle" icon={<EyeOutlined />} onClick={() => this.handleShowModalMapMotorRoute(index)} />
+                                </Tooltip>
+                                &nbsp;
+                                <Tooltip title="Phân tuyến">
+                                  <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
+                                </Tooltip>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+              </div>
+            </Tabs.TabPane>
+
+            {/* Tab xe tải */}
+
+            <Tabs.TabPane tab={reactNodeTab("Xe tải", length_truck)} key="2" className="ant-tabs-child-2">
+              <div style={{ width: "100%", backgroundColor: "white", padding: "10px", maxheight: "57vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
+                <h5>Danh sách các tuyến đề xuất</h5>
+                <h6>
+                  Tổng cộng số km: <span style={{ fontWeight: "700" }}>{parseInt(this.state.ShipmentRouteAutoDataSource.Truck.TotalDistance / 1000)}</span> km
+                </h6>
+                <h6>
+                  Tổng cộng số tải: <span style={{ fontWeight: "700" }}>{this.state.ShipmentRouteAutoDataSource.Truck.TotalLoad}</span> kg
+                </h6>
+                {this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute &&
+                  this.state.ShipmentRouteAutoDataSource.Truck.TotalDistance > 0 &&
+                  this.state.ShipmentRouteAutoDataSource.Truck.TotalLoad > 0 && (
+                    <div style={{ width: "100%", backgroundColor: "white", padding: "20px", maxHeight: "60vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
+                      {this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute.map((line, index) => (
+                        <div key={index}>
+                          <p style={{ display: "none" }}>{(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}</p>
+                          <div style={{ display: "flex" }}>
+                            {/* <span style={{ fontWeight: "700", fontSize: "15px" }}>{index}</span>&ensp; */}
+                            <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
+                              <div style={{ width: "90%", marginBottom: "30px" }}>
+                                {/* <div>
+                                  <span>Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Truck.ListTotalDistance[index] / 1000)}</span>&ensp;
+                                  <span>Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Truck.ListTotalLoad[index]}</span>
+                                </div> */}
+                                <div style={{ marginBottom: "10px" }}>
+                                  <Tag color="#108ee9">Tuyến: {index}</Tag>
+                                  <Tag color="#2db7f5">Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Truck.ListTotalDistance[index] / 1000)}</Tag>
+                                  <Tag color="#87d068">Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Truck.ListTotalLoad[index]}</Tag>
+                                </div>
+                                <div style={{ display: "flex" }}>
+                                  {this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute[index].map((objShipmentOrder, i) => (
+                                    <div key={objShipmentOrder.PartnerSaleOrderID} style={{ display: "flex", width: i != 0 && "100%" }}>
+                                      {i != 0 &&
+                                        (objShipmentOrder.IsCompleteDeliverIed ? (
+                                          <div style={{ width: "100%", height: "10px", borderBottom: `3px solid ${randomColor}` }}></div>
+                                        ) : (
+                                          <div style={{ width: "100%", height: "10px", borderBottom: `3px solid #80808030` }}></div>
+                                        ))}
+                                      {i != 0 ? (
+                                        <Popover
+                                          content={
+                                            <div>
+                                              <p>{objShipmentOrder.ReceiverFullName}</p>
+                                              <p>{objShipmentOrder.ReceiverFullAddress}</p>
+                                              <p>{objShipmentOrder.Weight}</p>
+                                            </div>
+                                          }
+                                          title={objShipmentOrder.PartnerSaleOrderID}
+                                        >
+                                          <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
+                                            {objShipmentOrder.IsCompleteDeliverIed ? (
+                                              <div
+                                                style={{
+                                                  position: "relative",
+                                                  width: "12px",
+                                                  height: "12px",
+                                                  border: `3px solid ${randomColor}`,
+                                                  backgroundColor: `${randomColor}`,
+                                                  borderRadius: "50%",
+                                                  cursor: "pointer",
+                                                }}
+                                              >
+                                                <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
+                                              </div>
+                                            ) : (
+                                              <div
+                                                style={{
+                                                  position: "relative",
+                                                  width: "12px",
+                                                  height: "12px",
+                                                  border: `3px solid ${randomColor}`,
+                                                  backgroundColor: "white",
+                                                  borderRadius: "50%",
+                                                  cursor: "pointer",
+                                                }}
+                                              >
+                                                <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
+                                              </div>
+                                            )}
+                                          </div>
+                                        </Popover>
+                                      ) : (
+                                        <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
+                                          {
+                                            <div
+                                              style={{
+                                                position: "relative",
+                                                width: "12px",
+                                                height: "12px",
+                                                border: `3px solid ${randomColor}`,
+                                                backgroundColor: `${randomColor}`,
+                                                borderRadius: "50%",
+                                                cursor: "pointer",
+                                              }}
+                                            >
+                                              <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>0</div>
+                                            </div>
+                                          }
+                                        </div>
+                                      )}
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                              <div style={{ width: "10%", textAlign: "right", paddingTop: "18px" }}>
+                                <Tooltip title="Xem bản đồ">
+                                  <Button type="primary" shape="circle" icon={<EyeOutlined />} onClick={() => this.handleShowModalMapTruckRoute(index)} />
+                                </Tooltip>
+                                &nbsp;
+                                <Tooltip title="Phân tuyến">
+                                  <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
+                                </Tooltip>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+              </div>
+            </Tabs.TabPane>
+
+            {/* Tab chưa điều phối */}
+
+            <Tabs.TabPane tab={reactNodeTab("Chưa điều phối", this.state.ShipmentRouteAutoDataSource.Dropped.length)} key="3" className="ant-tabs-child-3">
+              <div className="table-responsive">
+                <table
+                  className="table table-sm table-striped table-bordered table-hover table-condensed datagirdshippingorder
+          table-custom"
+                  cellSpacing="0"
+                >
+                  <thead className="thead-light">
+                    <tr>
+                      <th className="jsgrid-header-cell" style={{ width: "15%" }}>
+                        Thời gian giao
+                      </th>
+                      <th className="jsgrid-header-cell" style={{ width: "34%" }}>
+                        Địa chỉ
+                      </th>
+                      <th className="jsgrid-header-cell" style={{ width: "15%" }}>
+                        Mã/Loại yêu cầu vận chuyển
+                      </th>
+                      <th className="jsgrid-header-cell" style={{ width: "24%" }}>
+                        Tên sản phẩm/Ghi chú
+                      </th>
+                      <th className="jsgrid-header-cell" style={{ width: "9%" }}>
+                        Thanh toán
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td colSpan={7} style={{ margin: 0, padding: 0 }}>
+                        <div className="table-custom-scroll" style={{ width: "100%", maxHeight: "500px", overflowY: "auto" }}>
+                          <table>
+                            <tbody>
+                              {this.state.ShipmentRouteAutoDataSource.Dropped != null &&
+                                this.state.ShipmentRouteAutoDataSource.Dropped.map((rowItem, rowIndex) => {
+                                  let rowClass = "jsgrid-row";
+                                  if (index % 2 != 0) {
+                                    rowClass = "jsgrid-alt-row";
+                                  }
+                                  let rowtrClass = "unReadingItem";
+                                  if (rowItem.SelectedUser != "" || rowItem.IsView == true) {
+                                    rowtrClass = "noReadingItem readingItem";
+                                  }
+
+                                  let rowUndelivery = "btngroupleft";
+                                  if (this._CheckTime(rowItem.ExpectedDeliveryDate) == true && rowItem.CurrentShipmentOrderStepID < 105) {
+                                    rowUndelivery = "btngroupleft Undelivery";
+                                  } else {
+                                    if (rowItem.CoordinatorUser == "") {
+                                      rowUndelivery = "btngroupleft Uncoordinated";
+                                    } else {
+                                      rowUndelivery = "btngroupleft WaitingDelivery";
+                                    }
+                                  }
+                                  // console.log("check",rowItem.ShipmentOrderID,this.state.GridDataShip,this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
+                                  return (
+                                    <tr key={rowIndex} className={rowtrClass}>
+                                      <td className="groupInfoAction" style={{ width: "15%" }}>
+                                        <div className="group-info-row">
+                                          <label className="item time">
+                                            <i className="ti ti-timer "></i>
+                                            <span className="fw-600">{rowItem.ExpectedDeliveryDate != null ? this._genCommentTime(rowItem.ExpectedDeliveryDate) : ""}</span>
+                                          </label>
+                                          <label className="item status">
+                                            <i className="fa fa-location-arrow"></i>
+                                            <span>{rowItem.ShipmentOrderStatusName}</span>
+                                          </label>
+                                          <label className="item vehicle">{this._genCommentCarrierPartner(rowItem.CarrierTypeID, rowItem.CarrierTypeName)}</label>
+                                          <label className="item printing">
+                                            {rowItem.IsOutputGoods == false && rowItem.IsHandoverGoods == false ? <span className="badge badge-danger">Chưa xuất </span> : ""}
+                                            {rowItem.IsOutputGoods == true && rowItem.IsHandoverGoods == false ? <span className="badge badge-info">Đã xuất </span> : ""}
+                                            {rowItem.IsHandoverGoods == true ? <span className="badge badge-success">NV đã nhận </span> : ""}
+                                          </label>
+                                        </div>
+                                      </td>
+                                      <td className="group-address" style={{ width: "34%" }}>
+                                        <div className="group-info-row">
+                                          <label className="item person">
+                                            <i className="fa fa-user"></i>
+                                            <div className="person-info">
+                                              <span className="name" style={{ wordBreak: "break-all" }}>
+                                                {rowItem.ReceiverFullName}
+                                              </span>
+                                              <span className="line">-</span>
+                                              <span className={rowItem.PhoneCount > 1 ? "phone  phonered" : "phone"}>({rowItem.ReceiverPhoneNumber})</span>
+                                              {rowItem.PartnerSaleOrderID != "" ? <span className="line">-</span> : ""}
+                                              <span className="phone partner-sale-Order fw-600">{rowItem.PartnerSaleOrderID}</span>
+                                              <button className="btn-copy-clipboard" data-id={rowItem.PartnerSaleOrderID} onClick={this.copyToClipboard.bind(this)}>
+                                                <i className="fa fa-copy" data-id={rowItem.PartnerSaleOrderID}></i>
+                                              </button>
+                                            </div>
+                                          </label>
+                                          {/* <label className="item address-receiver">
+                                      <span>{rowItem.ReceiverFullAddress}</span>
+                                    </label> */}
+                                          <label className="item address-repository-created">
+                                            <span>{rowItem.SenderFullName}</span>
+                                          </label>
+                                          <label className="item creacte-time">
+                                            <span className="times group-times">
+                                              <span className="time-item itemCreatedOrderTime">
+                                                <span className="txtCreatedOrderTime">Tạo: {formatMonthDate(rowItem.CreatedOrderTime)}</span>
+                                                <span className="txtCreatedOrderTime">Xuất: {formatMonthDate(rowItem.OutputGoodsDate)}</span>
+                                              </span>
+                                              <span className="time-item itemEstimat">
+                                                <span className="intervale itemDistance">
+                                                  <i className="fa fa-paper-plane-o"></i>
+                                                  <span className="txtintervale">{rowItem.EstimateDeliveryDistance + "Km/" + rowItem.ActualDeliveryDistance.toFixed(2) + "Km"}</span>
+                                                </span>
+                                                <span className="intervale itemLong">
+                                                  <i className="ti ti-timer"></i>
+                                                  <span className="txtintervale">{rowItem.EstimateDeliveryLong + "'"}</span>
+                                                </span>
+                                              </span>
+                                            </span>
+                                          </label>
+                                        </div>
+                                      </td>
+                                      <td className="group-infoShipmentOrder" style={{ width: "15%" }}>
+                                        <div className="group-info-row">
+                                          <label className="item person">
+                                            <span className="person-info fw-600" style={{ fontSize: 12 }}>
+                                              <Link className="linktext blank" target="_blank" to={{ pathname: "/ShipmentOrder/Detail/" + rowItem.ShipmentOrderID }}>
+                                                {rowItem.ShipmentOrderID}
+                                              </Link>
+                                            </span>
+                                            <button
+                                              className="btn-copy-clipboard"
+                                              style={{ border: "none", backgroundColor: "transparent", cursor: "pointer", outline: "none" }}
+                                              data-id={rowItem.ShipmentOrderID}
+                                              onClick={this.copyToClipboardShipmentOrder.bind(this)}
+                                            >
+                                              <i className="fa fa-copy" data-id={rowItem.ShipmentOrderID}></i>
+                                            </button>
+                                          </label>
+                                          <label className="item address-receiver">
+                                            <span>{rowItem.ShipmentOrderTypeName}</span>
+                                          </label>
+                                          {rowItem.CoordinatorUser != "" ? (
+                                            <React.Fragment>
+                                              <label className="item address-receiver">
+                                                <span>
+                                                  ĐP: <span className="coordinatorUser">{rowItem.CoordinatorUser + "-" + rowItem.CoordinatorUserName}</span>
+                                                </span>
+                                              </label>
+                                              {rowItem.DeliverUserFullNameList != "" ? (
+                                                <label className="item address-receiver">
+                                                  <span>{rowItem.DeliverUserFullNameList}</span>
+                                                </label>
+                                              ) : (
+                                                ""
+                                              )}
+
+                                              <label className="item address-receiver">
+                                                <span className="receiverred">{rowItem.CoordinatorNote != "" ? "Ghi chú: " + rowItem.CoordinatorNote : ""}</span>
+                                              </label>
+                                            </React.Fragment>
+                                          ) : (
+                                            <label className="item address-receiver">
+                                              <span className="receiverred">{rowItem.CoordinatorNote != "" ? "Ghi chú: " + rowItem.CoordinatorNote : ""}</span>
+                                            </label>
+                                          )}
+                                        </div>
+                                      </td>
+                                      <td className="group-address" style={{ width: "24%" }}>
+                                        <div className="group-info-row">
+                                          <label className={rowItem.IsInputReturn == true ? "item address-repository-created lblReturns" : "item address-repository-created"}>
+                                            <span className="coordinatorUser">
+                                              {rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(/;/g, "<br/>"))}
+                                            </span>
+                                          </label>
+                                          <label className="item address-receiver">
+                                            <span className="price-debt">{rowItem.OrderNote != "" ? "Ghi chú: " + rowItem.OrderNote : ""}</span>
+                                          </label>
+                                        </div>
+                                      </td>
+                                      <td className="group-price" style={{ width: "9%" }}>
+                                        <div className="group-row">
+                                          <span className="item price3">{rowItem.IsCancelDelivery == true ? <span className="badge badge-danger">Đã hủy</span> : ""}</span>
+                                          {rowItem.TotalCOD > 0 ? <span className="item pricecod">COD:{formatMoney(rowItem.TotalCOD, 0)}</span> : ""}
+                                          {rowItem.TotalSaleMaterialMoney > 0 ? <span className="item price-supplies">Vật tư:{formatMoney(rowItem.TotalSaleMaterialMoney, 0)}</span> : ""}
+                                          {rowItem.IsInputReturn == true ? <span className="item price-supplies">Nhập trả:{formatMoney(rowItem.TotalReturnPrice, 0)}</span> : ""}
+                                          {rowItem.IsPaidIn == true || rowItem.TotalSaleMaterialMoney + rowItem.TotalCOD - rowItem.TotalReturnPrice == 0 ? (
+                                            <span className="item price3 price-success">
+                                              <span className="price-title ">Nợ: </span>
+                                              <span className="price-debt">0đ</span>
+                                            </span>
+                                          ) : rowItem.TotalPaidInMoney + rowItem.TotalUnPaidInMoney > 0 ? (
+                                            <div className="item price3">
+                                              <span className="price-title">Nợ: </span>
+                                              <span className="price-debt">-{rowItem.TotalUnPaidInMoney >= 0 ? formatMoney(rowItem.TotalUnPaidInMoney, 0) : 0}đ</span>
+                                            </div>
+                                          ) : (
+                                            <div className="item price3">
+                                              <span className="price-title">Nợ: </span>
+                                              <span className="price-debt">
+                                                -
+                                                {rowItem.TotalCOD - rowItem.TotalReturnPrice <= 0
+                                                  ? formatMoney(rowItem.TotalSaleMaterialMoney)
+                                                  : formatMoney(rowItem.TotalCOD + rowItem.TotalSaleMaterialMoney - rowItem.TotalReturnPrice, 0)}
+                                              </span>
+                                            </div>
+                                          )}
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
+                            </tbody>
+                          </table>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </Tabs.TabPane>
+          </Tabs>
+        </div>
+      )
     );
   }
 
-  render() {
-    const currentHour = moment().hour();
+  // Disable Collapse
+  handleDisabled(keyCollapse, isCollapse) {
+    let changeState = this.state;
+    let objIsDisabled = changeState.ObjectIsDisabled;
 
-    const phanTuyenTuDong = this.shipmentRouteAuto();
+    objIsDisabled = { ...objIsDisabled, [keyCollapse]: isCollapse };
+    changeState = { ...changeState, ObjectIsDisabled: objIsDisabled };
 
-    const active_tab = (time) => {
-      if (time >= 8 && time < 10) return "1";
-      else if (time >= 10 && time < 12) return "2";
-      else if (time >= 12 && time < 14) return "3";
-      else if (time >= 14 && time < 16) return "4";
-      else if (time >= 17 && time < 19) return "5";
-      else if (time >= 19 && time < 21) return "6";
-      else return "7";
+    this.setState(changeState);
+  }
+
+  // Xử lý tìm kiếm
+  handleInputChange(value, timeFrame) {
+    let dispose = setTimeout(() => {
+      if (value == "") {
+        this.setState({ [timeFrame]: this.state.ObjectTimeFrameDataSource[timeFrame] });
+      } else {
+        let resultSearch = this.state.ObjectTimeFrameDataSource[timeFrame].filter(
+          (n) =>
+            n.ShipmentOrderID.toLowerCase().includes(value.toLowerCase()) ||
+            n.ReceiverFullName.toLowerCase().includes(value.toLowerCase()) ||
+            n.ReceiverPhoneNumber.toLowerCase().includes(value.toLowerCase()) ||
+            n.PartnerSaleOrderID.toLowerCase().includes(value.toLowerCase()) ||
+            n.PrimaryShipItemName.toLowerCase().includes(value.toLowerCase()) ||
+            n.ReceiverFullAddress.toLowerCase().includes(value.toLowerCase()) ||
+            n.ShipItemNameList.toLowerCase().includes(value.toLowerCase())
+        );
+        this.setState({ [timeFrame]: resultSearch });
+      }
+    }, 2000);
+  }
+
+  handleChangeActiveTab(paramActiveKey) {
+    let objActiveTimeFrame = {
+      Name: "",
+      TimeFrame: "",
     };
+    if (paramActiveKey == 1) {
+      objActiveTimeFrame = {
+        Name: "08h00 - 10h00",
+        TimeFrame: "TimeFrame8to10",
+      };
+    } else if (paramActiveKey == 2) {
+      objActiveTimeFrame = {
+        Name: "10h00 - 12h00",
+        TimeFrame: "TimeFrame10to12",
+      };
+    } else if (paramActiveKey == 3) {
+      objActiveTimeFrame = {
+        Name: "12h00 - 14h00",
+        TimeFrame: "TimeFrame12to14",
+      };
+    } else if (paramActiveKey == 4) {
+      objActiveTimeFrame = {
+        Name: "14h00 - 16h00",
+        TimeFrame: "TimeFrame14to16",
+      };
+    } else if (paramActiveKey == 5) {
+      objActiveTimeFrame = {
+        Name: "17h00 - 19h00",
+        TimeFrame: "TimeFrame17to19",
+      };
+    } else if (paramActiveKey == 6) {
+      objActiveTimeFrame = {
+        Name: "19h00 - 21h00",
+        TimeFrame: "TimeFrame19to21",
+      };
+    } else {
+      objActiveTimeFrame = {
+        Name: "Thời gian khác",
+        TimeFrame: "diffTimeFrame",
+      };
+    }
+
+    let changeState = this.state;
+
+    changeState = { ...changeState, ActiveTimeFrame: objActiveTimeFrame, ActiveTab: paramActiveKey };
+
+    this.setState(changeState);
+  }
+
+  render() {
+    const renderShipmentRouteAuto = this.renderShipmentRouteAuto();
 
     return (
       <React.Fragment>
         <ReactNotification ref={this.notificationDOMRef} />
-        <div className="col-lg-12 SearchFormCustom" id="SearchFormCustom">
-          <Collapse style={{ backgroundColor: "white", marginBottom: "10px" }}>
+        <div className="col-lg-12 SearchFormCustom" id="SearchFormCustom" style={{ padding: 0 }}>
+          <Collapse className="ant-collapse-search" style={{ backgroundColor: "white", marginBottom: "10px" }}>
             <Collapse.Panel header="Tim kiếm, lọc dữ liệu phân tuyến vận chuyển" key="1">
               <SearchFormShipmentRouteAuto
                 FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
@@ -1008,45 +1688,37 @@ class SearchCom extends Component {
           </Collapse>
 
           {/* <SearchForm
-            FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
-            MLObjectDefinition={SearchMLObjectDefinition}
-            listelement={this.state.SearchElementList}
-            onSubmit={this.handleSearchSubmit}
-            ref={this.searchref}
-            btnGroup="btnSearch btncustom btnGroup"
-            className="multiple multiple-custom multiple-custom-display"
-          /> */}
+                FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
+                MLObjectDefinition={SearchMLObjectDefinition}
+                listelement={this.state.SearchElementList}
+                onSubmit={this.handleSearchSubmit}
+                ref={this.searchref}
+                btnGroup="btnSearch btncustom btnGroup"
+                className="multiple multiple-custom multiple-custom-display"
+             /> */}
         </div>
-
-        {/* <div className="menu-options" style={{marginTop: "10px"}}>
-          <Space>
-            <Button type="primary" onClick={() => this.handleUserCoordinator()}>
-              Phân tuyến
-            </Button>
-            <Button type="primary" onClick={() => this.shipmentRouteAuto()}>Phân tuyến tự động</Button>
-          </Space>
-        </div> */}
 
         {this.state.IsLoadDataComplete && (
           <div className="col-lg-12" style={{ backgroundColor: "aliceblue", border: "1px solid #03a9f4" }}>
-            <Tabs defaultActiveKey={active_tab(currentHour)} size="large">
+            <Tabs defaultActiveKey={this.state.ActiveTab} activeKey={this.state.ActiveTab} size="large" onChange={(activeKey) => this.handleChangeActiveTab(activeKey)}>
               <Tabs.TabPane tab="08h00 - 10h00" key="1">
                 <Collapsible
                   className="CollapsibleCustom"
+                  triggerDisabled={this.state.ObjectIsDisabled.TimeFrame8to10}
                   trigger={
                     <Fragment>
                       <Row gutter={24}>
-                        <Col span={5}>
+                        <Col span={4}>
                           <Card size="small" bordered={false}>
                             <Statistic title="Thời gian" value="08h00 - 10h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                           </Card>
                         </Col>
-                        <Col span={5}>
+                        <Col span={4}>
                           <Card size="small" bordered={false}>
                             <Statistic title="Tổng số đơn" value={this.state.TimeFrame8to10.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                           </Card>
                         </Col>
-                        <Col span={5}>
+                        <Col span={4}>
                           <Card size="small" bordered={false}>
                             <Statistic
                               title="Khởi tạo và chờ phân bổ"
@@ -1055,12 +1727,30 @@ class SearchCom extends Component {
                             />
                           </Card>
                         </Col>
-                        <Col span={5}>
+                        <Col span={4}>
                           <Card size="small" bordered={false}>
                             <Statistic
                               title="Giao hàng thành công"
                               value={this.state.TimeFrame8to10.filter((item) => item.ShipmentOrderStatusID === 28).length}
                               valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                            />
+                          </Card>
+                        </Col>
+                        <Col span={8}>
+                          <Card size="small" bordered={false}>
+                            <Statistic
+                              title="Tìm kiếm"
+                              valueRender={(node) => {
+                                return (
+                                  <Input
+                                    placeholder="Tìm kiếm"
+                                    onMouseEnter={(_) => this.handleDisabled("TimeFrame8to10", true)}
+                                    onMouseLeave={(_) => this.handleDisabled("TimeFrame8to10", false)}
+                                    onChange={(event) => this.handleInputChange(event.target.value, "TimeFrame8to10")}
+                                    style={{ width: "100%" }}
+                                  />
+                                );
+                              }}
                             />
                           </Card>
                         </Col>
@@ -1070,6 +1760,9 @@ class SearchCom extends Component {
                   triggerStyle={{ backgroundColor: "white" }}
                   triggerOpenedClassName="collapsible-open-custom"
                   easing="ease-in"
+                  onClick={(_) => {
+                    this.handleCollapse("TimeFrame8to10", false);
+                  }}
                   // open={currentHour >= 8 && currentHour < 10 ? true : false}
                   open={true}
                 >
@@ -1086,7 +1779,7 @@ class SearchCom extends Component {
                     onDeleteClick={this.handleDelete}
                     onChangePage={this.handleOnChangePage}
                     onChangeView={this.handleOnChangeView.bind(this)}
-                    onSearchEvent={this.handleonSearchEvent.bind(this)}
+                    onSearchEvent={this.handleOnSearchEvent.bind(this)}
                     onChangePageLoad={this.onChangePageLoad.bind(this)}
                     onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
                     onCheckShip={this.handleCheckShip}
@@ -1109,20 +1802,21 @@ class SearchCom extends Component {
               <Tabs.TabPane tab="10h00 - 12h00" key="2">
                 <Collapsible
                   className="CollapsibleCustom"
+                  triggerDisabled={this.state.ObjectIsDisabled.TimeFrame10to12}
                   trigger={
                     <React.Fragment>
                       <Row gutter={24}>
-                        <Col span={5}>
+                        <Col span={4}>
                           <Card size="small" bordered={false}>
                             <Statistic title="Thời gian" value="10h00 - 12h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                           </Card>
                         </Col>
-                        <Col span={5}>
+                        <Col span={4}>
                           <Card size="small" bordered={false}>
                             <Statistic title="Tổng số đơn" value={this.state.TimeFrame10to12.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                           </Card>
                         </Col>
-                        <Col span={5}>
+                        <Col span={4}>
                           <Card size="small" bordered={false}>
                             <Statistic
                               title="Khởi tạo và chờ phân bổ"
@@ -1131,12 +1825,30 @@ class SearchCom extends Component {
                             />
                           </Card>
                         </Col>
-                        <Col span={5}>
+                        <Col span={4}>
                           <Card size="small" bordered={false}>
                             <Statistic
                               title="Giao hàng thành công"
                               value={this.state.TimeFrame10to12.filter((item) => item.ShipmentOrderStatusID === 28).length}
                               valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                            />
+                          </Card>
+                        </Col>
+                        <Col span={8}>
+                          <Card size="small" bordered={false}>
+                            <Statistic
+                              title="Tìm kiếm"
+                              valueRender={(node) => {
+                                return (
+                                  <Input
+                                    placeholder="Tìm kiếm"
+                                    onMouseEnter={(_) => this.handleDisabled("TimeFrame10to12", true)}
+                                    onMouseLeave={(_) => this.handleDisabled("TimeFrame10to12", false)}
+                                    onChange={(event) => this.handleInputChange(event.target.value, "TimeFrame10to12")}
+                                    style={{ width: "100%" }}
+                                  />
+                                );
+                              }}
                             />
                           </Card>
                         </Col>
@@ -1162,7 +1874,7 @@ class SearchCom extends Component {
                     onDeleteClick={this.handleDelete}
                     onChangePage={this.handleOnChangePage}
                     onChangeView={this.handleOnChangeView.bind(this)}
-                    onSearchEvent={this.handleonSearchEvent.bind(this)}
+                    onSearchEvent={this.handleOnSearchEvent.bind(this)}
                     onChangePageLoad={this.onChangePageLoad.bind(this)}
                     onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
                     onShowModel={this.handleShowModel}
@@ -1185,20 +1897,21 @@ class SearchCom extends Component {
               <Tabs.TabPane tab="12h00 - 14h00" key="3">
                 <Collapsible
                   className="CollapsibleCustom"
+                  triggerDisabled={this.state.ObjectIsDisabled.TimeFrame12to14}
                   trigger={
                     <React.Fragment>
                       <Row gutter={24}>
-                        <Col span={5}>
+                        <Col span={4}>
                           <Card size="small" bordered={false}>
                             <Statistic title="Thời gian" value="12h00 - 14h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                           </Card>
                         </Col>
-                        <Col span={5}>
+                        <Col span={4}>
                           <Card size="small" bordered={false}>
                             <Statistic title="Tổng số đơn" value={this.state.TimeFrame12to14.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                           </Card>
                         </Col>
-                        <Col span={5}>
+                        <Col span={4}>
                           <Card size="small" bordered={false}>
                             <Statistic
                               title="Khởi tạo và chờ phân bổ"
@@ -1207,12 +1920,30 @@ class SearchCom extends Component {
                             />
                           </Card>
                         </Col>
-                        <Col span={5}>
+                        <Col span={4}>
                           <Card size="small" bordered={false}>
                             <Statistic
                               title="Giao hàng thành công"
                               value={this.state.TimeFrame12to14.filter((item) => item.ShipmentOrderStatusID === 28).length}
                               valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                            />
+                          </Card>
+                        </Col>
+                        <Col span={8}>
+                          <Card size="small" bordered={false}>
+                            <Statistic
+                              title="Tìm kiếm"
+                              valueRender={(node) => {
+                                return (
+                                  <Input
+                                    placeholder="Tìm kiếm"
+                                    onMouseEnter={(_) => this.handleDisabled("TimeFrame12to14", true)}
+                                    onMouseLeave={(_) => this.handleDisabled("TimeFrame12to14", false)}
+                                    onChange={(event) => this.handleInputChange(event.target.value, "TimeFrame12to14")}
+                                    style={{ width: "100%" }}
+                                  />
+                                );
+                              }}
                             />
                           </Card>
                         </Col>
@@ -1238,7 +1969,7 @@ class SearchCom extends Component {
                     onDeleteClick={this.handleDelete}
                     onChangePage={this.handleOnChangePage}
                     onChangeView={this.handleOnChangeView.bind(this)}
-                    onSearchEvent={this.handleonSearchEvent.bind(this)}
+                    onSearchEvent={this.handleOnSearchEvent.bind(this)}
                     onChangePageLoad={this.onChangePageLoad.bind(this)}
                     onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
                     onShowModel={this.handleShowModel}
@@ -1261,20 +1992,21 @@ class SearchCom extends Component {
               <Tabs.TabPane tab="14h00 - 16h00" key="4">
                 <Collapsible
                   className="CollapsibleCustom"
+                  triggerDisabled={this.state.ObjectIsDisabled.TimeFrame14to16}
                   trigger={
                     <React.Fragment>
                       <Row gutter={24}>
-                        <Col span={5}>
+                        <Col span={4}>
                           <Card size="small" bordered={false}>
                             <Statistic title="Thời gian" value="14h00 - 16h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                           </Card>
                         </Col>
-                        <Col span={5}>
+                        <Col span={4}>
                           <Card size="small" bordered={false}>
                             <Statistic title="Tổng số đơn" value={this.state.TimeFrame14to16.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                           </Card>
                         </Col>
-                        <Col span={5}>
+                        <Col span={4}>
                           <Card size="small" bordered={false}>
                             <Statistic
                               title="Khởi tạo và chờ phân bổ"
@@ -1283,12 +2015,30 @@ class SearchCom extends Component {
                             />
                           </Card>
                         </Col>
-                        <Col span={5}>
+                        <Col span={4}>
                           <Card size="small" bordered={false}>
                             <Statistic
                               title="Giao hàng thành công"
                               value={this.state.TimeFrame14to16.filter((item) => item.ShipmentOrderStatusID === 28).length}
                               valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                            />
+                          </Card>
+                        </Col>
+                        <Col span={8}>
+                          <Card size="small" bordered={false}>
+                            <Statistic
+                              title="Tìm kiếm"
+                              valueRender={(node) => {
+                                return (
+                                  <Input
+                                    placeholder="Tìm kiếm"
+                                    onMouseEnter={(_) => this.handleDisabled("TimeFrame14to16", true)}
+                                    onMouseLeave={(_) => this.handleDisabled("TimeFrame14to16", false)}
+                                    onChange={(event) => this.handleInputChange(event.target.value, "TimeFrame14to16")}
+                                    style={{ width: "100%" }}
+                                  />
+                                );
+                              }}
                             />
                           </Card>
                         </Col>
@@ -1314,7 +2064,7 @@ class SearchCom extends Component {
                     onDeleteClick={this.handleDelete}
                     onChangePage={this.handleOnChangePage}
                     onChangeView={this.handleOnChangeView.bind(this)}
-                    onSearchEvent={this.handleonSearchEvent.bind(this)}
+                    onSearchEvent={this.handleOnSearchEvent.bind(this)}
                     onChangePageLoad={this.onChangePageLoad.bind(this)}
                     onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
                     onShowModel={this.handleShowModel}
@@ -1337,20 +2087,21 @@ class SearchCom extends Component {
               <Tabs.TabPane tab="17h00 - 19h00" key="5">
                 <Collapsible
                   className="CollapsibleCustom"
+                  triggerDisabled={this.state.ObjectIsDisabled.TimeFrame17to19}
                   trigger={
                     <React.Fragment>
                       <Row gutter={24}>
-                        <Col span={5}>
+                        <Col span={4}>
                           <Card size="small" bordered={false}>
                             <Statistic title="Thời gian" value="17h00 - 19h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                           </Card>
                         </Col>
-                        <Col span={5}>
+                        <Col span={4}>
                           <Card size="small" bordered={false}>
                             <Statistic title="Tổng số đơn" value={this.state.TimeFrame17to19.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                           </Card>
                         </Col>
-                        <Col span={5}>
+                        <Col span={4}>
                           <Card size="small" bordered={false}>
                             <Statistic
                               title="Khởi tạo và chờ phân bổ"
@@ -1360,13 +2111,31 @@ class SearchCom extends Component {
                             />
                           </Card>
                         </Col>
-                        <Col span={5}>
+                        <Col span={4}>
                           <Card size="small" bordered={false}>
                             <Statistic
                               title="Giao hàng thành công"
                               value={this.state.TimeFrame17to19.filter((item) => item.ShipmentOrderStatusID === 29).length}
                               valueStyle={{ color: "#3f8600", fontSize: "20px" }}
                               valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                            />
+                          </Card>
+                        </Col>
+                        <Col span={8}>
+                          <Card size="small" bordered={false}>
+                            <Statistic
+                              title="Tìm kiếm"
+                              valueRender={(node) => {
+                                return (
+                                  <Input
+                                    placeholder="Tìm kiếm"
+                                    onMouseEnter={(_) => this.handleDisabled("TimeFrame17to19", true)}
+                                    onMouseLeave={(_) => this.handleDisabled("TimeFrame17to19", false)}
+                                    onChange={(event) => this.handleInputChange(event.target.value, "TimeFrame17to19")}
+                                    style={{ width: "100%" }}
+                                  />
+                                );
+                              }}
                             />
                           </Card>
                         </Col>
@@ -1392,7 +2161,7 @@ class SearchCom extends Component {
                     onDeleteClick={this.handleDelete}
                     onChangePage={this.handleOnChangePage}
                     onChangeView={this.handleOnChangeView.bind(this)}
-                    onSearchEvent={this.handleonSearchEvent.bind(this)}
+                    onSearchEvent={this.handleOnSearchEvent.bind(this)}
                     onChangePageLoad={this.onChangePageLoad.bind(this)}
                     onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
                     onShowModel={this.handleShowModel}
@@ -1415,20 +2184,21 @@ class SearchCom extends Component {
               <Tabs.TabPane tab="19h00 - 21h00" key="6">
                 <Collapsible
                   className="CollapsibleCustom"
+                  triggerDisabled={this.state.ObjectIsDisabled.TimeFrame19to21}
                   trigger={
                     <React.Fragment>
                       <Row gutter={24}>
-                        <Col span={5}>
+                        <Col span={4}>
                           <Card size="small" bordered={false}>
                             <Statistic title="Thời gian" value="19h00 - 21h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                           </Card>
                         </Col>
-                        <Col span={5}>
+                        <Col span={4}>
                           <Card size="small" bordered={false}>
                             <Statistic title="Tổng số đơn" value={this.state.TimeFrame19to21.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                           </Card>
                         </Col>
-                        <Col span={5}>
+                        <Col span={4}>
                           <Card size="small" bordered={false}>
                             <Statistic
                               title="Khởi tạo và chờ phân bổ"
@@ -1438,13 +2208,31 @@ class SearchCom extends Component {
                             />
                           </Card>
                         </Col>
-                        <Col span={5}>
+                        <Col span={4}>
                           <Card size="small" bordered={false}>
                             <Statistic
                               title="Giao hàng thành công"
                               value={this.state.TimeFrame19to21.filter((item) => item.ShipmentOrderStatusID === 28).length}
                               valueStyle={{ color: "#3f8600", fontSize: "20px" }}
                               valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                            />
+                          </Card>
+                        </Col>
+                        <Col span={8}>
+                          <Card size="small" bordered={false}>
+                            <Statistic
+                              title="Tìm kiếm"
+                              valueRender={(node) => {
+                                return (
+                                  <Input
+                                    placeholder="Tìm kiếm"
+                                    onMouseEnter={(_) => this.handleDisabled("TimeFrame19to21", true)}
+                                    onMouseLeave={(_) => this.handleDisabled("TimeFrame19to21", false)}
+                                    onChange={(event) => this.handleInputChange(event.target.value, "TimeFrame19to21")}
+                                    style={{ width: "100%" }}
+                                  />
+                                );
+                              }}
                             />
                           </Card>
                         </Col>
@@ -1470,7 +2258,7 @@ class SearchCom extends Component {
                     onDeleteClick={this.handleDelete}
                     onChangePage={this.handleOnChangePage}
                     onChangeView={this.handleOnChangeView.bind(this)}
-                    onSearchEvent={this.handleonSearchEvent.bind(this)}
+                    onSearchEvent={this.handleOnSearchEvent.bind(this)}
                     onChangePageLoad={this.onChangePageLoad.bind(this)}
                     onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
                     onShowModel={this.handleShowModel}
@@ -1493,20 +2281,21 @@ class SearchCom extends Component {
               <Tabs.TabPane tab="Thời gian khác" key="7">
                 <Collapsible
                   className="CollapsibleCustom"
+                  triggerDisabled={this.state.ObjectIsDisabled.diffTimeFrame}
                   trigger={
                     <React.Fragment>
                       <Row gutter={24}>
-                        <Col span={5}>
+                        <Col span={4}>
                           <Card size="small" bordered={false}>
                             <Statistic title="Thời gian khác" value="" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                           </Card>
                         </Col>
-                        <Col span={5}>
+                        <Col span={4}>
                           <Card size="small" bordered={false}>
                             <Statistic title="Tổng số đơn" value={this.state.diffTimeFrame.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                           </Card>
                         </Col>
-                        <Col span={5}>
+                        <Col span={4}>
                           <Card size="small" bordered={false}>
                             <Statistic
                               title="Khởi tạo và chờ phân bổ"
@@ -1516,13 +2305,31 @@ class SearchCom extends Component {
                             />
                           </Card>
                         </Col>
-                        <Col span={5}>
+                        <Col span={4}>
                           <Card size="small" bordered={false}>
                             <Statistic
                               title="Giao hàng thành công"
                               value={this.state.diffTimeFrame.filter((item) => item.ShipmentOrderStatusID === 28).length}
                               valueStyle={{ color: "#3f8600", fontSize: "20px" }}
                               valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                            />
+                          </Card>
+                        </Col>
+                        <Col span={8}>
+                          <Card size="small" bordered={false}>
+                            <Statistic
+                              title="Tìm kiếm"
+                              valueRender={(node) => {
+                                return (
+                                  <Input
+                                    placeholder="Tìm kiếm"
+                                    onMouseEnter={(_) => this.handleDisabled("diffTimeFrame", true)}
+                                    onMouseLeave={(_) => this.handleDisabled("diffTimeFrame", false)}
+                                    onChange={(event) => this.handleInputChange(event.target.value, "diffTimeFrame")}
+                                    style={{ width: "100%" }}
+                                  />
+                                );
+                              }}
                             />
                           </Card>
                         </Col>
@@ -1548,7 +2355,7 @@ class SearchCom extends Component {
                     onDeleteClick={this.handleDelete}
                     onChangePage={this.handleOnChangePage}
                     onChangeView={this.handleOnChangeView.bind(this)}
-                    onSearchEvent={this.handleonSearchEvent.bind(this)}
+                    onSearchEvent={this.handleOnSearchEvent.bind(this)}
                     onChangePageLoad={this.onChangePageLoad.bind(this)}
                     onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
                     onShowModel={this.handleShowModel}
@@ -1568,13 +2375,16 @@ class SearchCom extends Component {
                   />
                 </Collapsible>
               </Tabs.TabPane>
+              <Tabs.TabPane tab="Phân tuyến tự động" key="9">
+                {renderShipmentRouteAuto}
+              </Tabs.TabPane>
               <Tabs.TabPane
                 tab={
                   <Space>
                     <Button type="primary" onClick={() => this.handleUserCoordinator()}>
                       Phân tuyến
                     </Button>
-                    <Button type="primary" onClick={() => this.refShipmentAuto.current.scrollIntoView({ behavior: "smooth", block: "start" })}>
+                    <Button loading={this.state.UIEffect.ButtonShipmentRouteAuto.IsLoading} type="primary" onClick={(_) => this.handleShipmentRouteAuto()}>
                       Phân tuyến tự động
                     </Button>
                   </Space>
@@ -1585,8 +2395,6 @@ class SearchCom extends Component {
             </Tabs>
           </div>
         )}
-        <div ref={this.refShipmentAuto}>.</div>
-        {this.state.IsLoadDataComplete && phanTuyenTuDong}
 
         {this.state.IsShowModel && (
           <ModalSearchFormShipmentRouteAuto
@@ -1605,7 +2413,7 @@ class SearchCom extends Component {
           />
         )}
 
-
+        {this.state.IsShowModelMap && <ModalVietBanDoShipmentRouteAuto ListShipmentOrder={this.state.DataSourceMap} onClose={() => this.setState({ IsShowModelMap: false })} />}
       </React.Fragment>
     );
   }

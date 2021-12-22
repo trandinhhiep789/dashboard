@@ -306,7 +306,9 @@ class InfoProductCom extends Component {
         if (this.state.ShipmentOrder.ShipmentOrder_Material2List != undefined && this.state.ShipmentOrder.ShipmentOrder_Material2List.length > 0) {
             objgroupByInstallBundleID = this.groupByNew(this.state.ShipmentOrder.ShipmentOrder_Material2List, ['InstallProductID', 'InstallProductName', 'InstallBundleID', 'InstallSaleOrderDetailID']);
         }
-
+        let objShipmentOrderQualityAssessData = this.props.ShipmentOrderQualityAssessData;
+        let totalShipmentOrderQualityAssessData = 0 ;
+        console.log('hieu',this.props.ShipmentOrderQualityAssessData);
         console.log("objgroupByInstallBundleID", objgroupByInstallBundleID)
         return (
             <React.Fragment>
@@ -710,6 +712,53 @@ class InfoProductCom extends Component {
                                                         <span className="item txttotalCurrency">{formatMoney(this.state.ShipmentOrder.TotalSaleMaterialMoney, 0)}đ</span>
                                                     </div>
                                                 </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Collapsible>
+                <Collapsible trigger="Đánh giá chất lượng giao hàng" easing="ease-in" open={true}>
+                    <div className="card-body">
+                        <div className="form-row">
+                            <div className="col-md-12">
+                                <div className="table-responsive">
+                                    <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                        <thead className="thead-light">
+                                            <tr>
+                                                <th className="jsgrid-header-cell">Loại tiêu chí đánh giá</th>
+                                                {objShipmentOrderQualityAssessData != null && 
+                                                    objShipmentOrderQualityAssessData.map((item,index) =>{
+                                                        return(
+                                                            <React.Fragment key={index}>
+                                                                <th className="jsgrid-header-cell">{item.QualityAssessTypeName}</th>
+                                                            </React.Fragment>
+                                                        )
+                                                    })
+                                                }
+                                                <th className="jsgrid-header-cell">Tổng điểm đánh giá</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Giá trị đánh giá</td>
+                                                {objShipmentOrderQualityAssessData != null && 
+                                                    objShipmentOrderQualityAssessData.map((item,index) =>{
+                                                        if(item.QualityAssessvalue == 1){
+                                                            totalShipmentOrderQualityAssessData = totalShipmentOrderQualityAssessData + item.QualityAssessPoint;
+                                                        }
+                                                        return(
+                                                            <React.Fragment key={index}>
+                                                                <td>{item.QualityAssessvalue == 1 ? `Đạt(${item.QualityAssessPoint})` : (item.QualityAssessvalue == 0 ? 'Không đạt(0)':'')}</td>
+                                                            </React.Fragment>
+                                                        )
+                                                    })
+                                                }
+                                               
+                                                <td>{totalShipmentOrderQualityAssessData}</td>
                                             </tr>
                                         </tbody>
                                     </table>

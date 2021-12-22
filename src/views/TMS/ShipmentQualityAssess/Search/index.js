@@ -134,6 +134,11 @@ class SearchCom extends Component {
                         SearchKey: element.SearchKey,
                         SearchValue: MLObject.CoordinatorStoreID
                     }
+                case "@QUALITYASSESSGROUPID":
+                    return {
+                        SearchKey: element.SearchKey,
+                        SearchValue: MLObject.QualityAssessGroupID
+                    }
                 default:
                     return element;
             }
@@ -271,6 +276,7 @@ class SearchCom extends Component {
                                                 <th className="jsgrid-header-cell">Ngày tạo</th>
                                                 <th className="jsgrid-header-cell">Người tạo</th>
                                                 <th className="jsgrid-header-cell">Loại tiêu chí đánh giá</th>
+                                                <th className="jsgrid-header-cell">Giá trị đánh giá</th>
                                                 <th className="jsgrid-header-cell">Ghi chú đánh giá</th>
                                                 <th className="jsgrid-header-cell">Đã duyệt gỡ đánh giá</th>
                                                 <th className="jsgrid-header-cell">Tác vụ</th>
@@ -286,6 +292,7 @@ class SearchCom extends Component {
                                                         <td>{moment(item.CreatedDate).format("DD/MM/YYYY")}</td>
                                                         <td>{item.CreatedUserFullName}</td>
                                                         <td>{item.QualityAssessTypeIDName}</td>
+                                                        <td>{item.QualityAssessValue == 0 ? 'Chưa đạt' : (item.QualityAssessValue == 1 ? 'Đạt' : '')}</td>
                                                         <td>{item.QualityAssessNote}</td>
                                                         <td>{item.IsRevokeAssessReview == 0 ? <span className='lblstatus text-warning'>Chưa duyệt</span> : (<span className='lblstatus text-success'>Đã duyệt</span>)}</td>
                                                         <td><Link to={`/ShipmentQualityAssess/Detail/${item.ShipmentQualityAssessID}`} target='_blank'>Chi tiết</Link></td>

@@ -1,8 +1,24 @@
-.vContent{
-    max-height: 200px;
-    height: auto;
-    width: 200px;
-    display: flex;
-    justify-content: center;
-   
+.vContent {
+  max-height: 200px;
+  height: auto;
+  max-width: 400px;
+  width: 300px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  &__item{
+    line-height: 25px;
+  }
+}
+
+.ant-modal-vietbando .ant-modal-content .ant-modal-header .ant-modal-header-title {
+  font-size: 23px;
+  font-weight: bold;
+}
+
+.ant-modal-vietbando .ant-modal-content .ant-modal-header,
+.ant-modal-vietbando .ant-modal-content .ant-modal-body,
+.ant-modal-vietbando .ant-modal-content .ant-modal-footer {
+  padding: 10px;
 }

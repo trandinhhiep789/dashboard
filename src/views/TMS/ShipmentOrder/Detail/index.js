@@ -20,6 +20,7 @@ import { MessageModal } from "../../../../common/components/Modal";
 import {
     APIHostName,
     LoadAPIPath,
+    LoadShipmentOrderQualityAssessAPIPath,
     PagePath,
     DetailAPIPath
 } from "../constants";
@@ -37,6 +38,7 @@ class DetailCom extends React.Component {
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.state = {
             DataSource: {},
+            ShipmentOrderQualityAssessData : {},
             ShipmentOrderType_WorkFlowList: null,
             CurrentShipmentOrderStepID: 0,
             IsCancelDelivery: false,
@@ -91,6 +93,20 @@ class DetailCom extends React.Component {
                     CurrentShipmentOrderStepID: apiResult.ResultObject.CurrentShipmentOrderStepID,
                     IsLoadDataComplete: true,
                     IsCancelDelivery: apiResult.ResultObject.IsCancelDelivery
+                });
+            }
+        });
+        this.props.callFetchAPI(APIHostName, LoadShipmentOrderQualityAssessAPIPath, id).then((apiResult) => {
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: !apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            }
+            else {
+                this.setState({
+                    ShipmentOrderQualityAssessData: apiResult.ResultObject
+                   
                 });
             }
         });
@@ -151,6 +167,7 @@ class DetailCom extends React.Component {
                     <InfoProduct
                         ShipmentOrderID={this.props.match.params.id}
                         InfoProduct={this.state.DataSource}
+                        ShipmentOrderQualityAssessData={this.state.ShipmentOrderQualityAssessData}
                     />
                     <InfoHistoryWF
                         ShipmentOrderID={this.props.match.params.id}

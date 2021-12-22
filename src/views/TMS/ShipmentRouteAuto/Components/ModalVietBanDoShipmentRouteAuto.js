@@ -5,6 +5,7 @@ import { callGetCache } from "../../../../actions/cacheAction.js";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction.js";
 import { connect } from "react-redux";
 import "../../../../css/ModalVietBanDoShipmentRouteAuto.scss";
+import { styled } from "styled-components";
 
 class ModalVietBanDoShipmentRouteAuto extends Component {
   constructor(props) {
@@ -14,12 +15,12 @@ class ModalVietBanDoShipmentRouteAuto extends Component {
       Geometry: "",
     };
 
-    this.handleGetGeometry = this.handleGetGeometry.bind(this);
+    this.handleInit = this.handleInit.bind(this);
   }
 
   componentDidMount() {
     let lstLocation = this.props.ListShipmentOrder.map((item) => {
-      let [Latitude, Longitude] = item.split(",");
+      let [Latitude, Longitude] = item.ReceiverGeoLocation.split(",");
       return { Latitude, Longitude };
     });
 
@@ -28,14 +29,14 @@ class ModalVietBanDoShipmentRouteAuto extends Component {
 
   handleInit(parmLstLocation) {
     let paramsRequest = {
-      Alternative: 2147483647,
+      // Alternative: 2147483647,
       Distance: true,
       Duration: true,
       Geometry: true,
       Instructions: true,
       Points: parmLstLocation,
       RouteCriteria: 0,
-      Uturn: true,
+      // Uturn: true,
       VehicleType: 2,
     };
 
@@ -43,85 +44,181 @@ class ModalVietBanDoShipmentRouteAuto extends Component {
       if (!apiResult.IsError) {
         let objResult = JSON.parse(apiResult.ResultObject);
 
+        let geometryToCoordinates = function (encodedPoints, COORDINATE_PRECISION) {
+          COORDINATE_PRECISION = COORDINATE_PRECISION || 1e6;
+
+          var polylineChars = encodedPoints;
+          var index = 0;
+
+          var currentLat = 0;
+          var currentLng = 0;
+          var next5bits;
+          var sum;
+          var shifter;
+
+          var length = polylineChars.length;
+          var coords = [];
+          while (index < length) {
+            // calculate next latitude
+            sum = 0;
+            shifter = 0;
+            do {
+              next5bits = polylineChars.charCodeAt(index++) - 63;
+              sum |= (next5bits & 31) << shifter;
+              shifter += 5;
+            } while (next5bits >= 32 && index < length);
+
+            if (index >= length) break;
+
+            currentLat += (sum & 1) === 1 ? ~(sum >> 1) : sum >> 1;
+
+            //calculate next longitude
+            sum = 0;
+            shifter = 0;
+            do {
+              next5bits = polylineChars.charCodeAt(index++) - 63;
+              sum |= (next5bits & 31) << shifter;
+              shifter += 5;
+            } while (next5bits >= 32 && index < length);
+
+            if (index >= length && next5bits >= 32) break;
+
+            currentLng += (sum & 1) === 1 ? ~(sum >> 1) : sum >> 1;
+
+            coords.push({
+              lat: currentLat / COORDINATE_PRECISION,
+              lng: currentLng / COORDINATE_PRECISION,
+            });
+          }
+
+          return coords;
+        };
+
+        // let result = geometryToCoordinates(objResult.Value.Routes[0].Geometry);
+        console.log({ objResult });
+
         this.setState({
           Geometry: objResult.Value.Routes[0].Geometry,
         });
 
         const mapContainer = document.getElementById("map-container");
-
         const mapProp = {
           maxZoom: 19,
           minZoom: 2,
-          zoom: 5,
           registerKey: "563f09d1-4fb8-4fe6-8307-0effd4e06de4",
           scaleControlOptions: { showScale: true },
           zoomControl: true,
         };
-
         let map = new vbd.Map(mapContainer, mapProp);
-        let templateContent = (content) => {
-          var html = `<div class="vContent"><span>${content}</span></div>`;
+        let templateContent = ({ content, location }) => {
+          var html = `
+          <div class="vContent">
+            <span class="vContent_item">${content}</span>
+            <span class="vContent_item">${location}</span>
+          </div>`;
+          return html;
+        };
+        let content = (index) => {
+          let html = `<div style="height: 44px; width: 26px; position: absolute; left: 0; top: 0;">
+                <i class="fa fa-map-marker fa-3x" style="position: absolute; left: 0; top: 0; z-index: 999; color: #b71540;">
+                    <span style="height: 20px; width: 20px; display: flex; justify-content: center; align-items: center; border-radius: 10px 10px; font-size: 10px; position: absolute; top: 5px; left: 50%; z-index: 9999; transform: translateX(-50%); color: white; background-color: #b71540;">${index}</span>
+                </i>
+            </div>`;
+
           return html;
         };
 
-        map.zoomFit();
-        map.setZoom(13);
-
         this.props.ListShipmentOrder.map((item, index) => {
-          const {
-            ReceiverGeoLocation: [Latitude, Longitude],
-            ShipmentOderID,
-          } = item;
+          let [Latitude, Longitude] = item.ReceiverGeoLocation.split(",");
 
-          let marker = new vbd.Marker({
+          let marker = new vbd.CustomMarker({
             position: new vbd.LatLng(Latitude, Longitude),
+            content: content(index),
+            icon: new vbd.Icon({ size: new vbd.Size(26, 44), anchor: new vbd.Point(14, 42) }),
           });
 
-          let infoWindow = new vbd.InfoWindow({ content: templateContent(`Vận đơn ${ShipmentOderID}`) });
-          infoWindow.open(map, marker);
+          // let marker = new vbd.Marker({
+          //   position: new vbd.LatLng(Latitude, Longitude),
+          // });
+
+          let infoWindow = new vbd.InfoWindow({
+            content: templateContent(
+              item.PartnerSaleOrderID == 0
+                ? { content: "Kho", location: `Vị trí: ${Latitude},${Longitude}` }
+                : { content: `Vận đơn: ${item.PartnerSaleOrderID}`, location: `Vị trí: ${Latitude},${Longitude}` }
+            ),
+          });
 
           vbd.event.addListener(marker, "click", function (param) {
             infoWindow.open(map, marker);
           });
 
-          map.addMarker(marker);
+          // let start = this.props.ListShipmentOrder[0];
+          // vbd.event.addListener(marker, "mouseover", function (param) {
+            
+          //   let pointStart = start.ReceiverGeoLocation.split(",");
+          //   console.log(pointStart);
+          //   let polyline_1 = new vbd.Polyline({
+          //     path: [new vbd.LatLng(pointStart[0], pointStart[1]), new vbd.LatLng(Latitude, Longitude)],
+          //     strokeOpacity: 2,
+          //     strokeWidth: 2,
+          //     strokeColor:"#74b9ff"
+          //   });
 
-          var polyline = new vbd.Polyline({
+          //   polyline_1.setMap(map);
+          // });
+
+          map.addMarker(marker);
+          map.zoomFit();
+
+          let polyline = new vbd.Polyline({
             path: objResult.Value.Routes[0].Geometry,
-            strokeOpacity: 6,
+            strokeOpacity: 2,
             strokeWidth: 2,
           });
 
           polyline.setMap(map);
+          vbd.event.addListener(polyline, "mouseover", function (param) {});
         });
       }
     });
   }
 
-  handleClose(){
-      if(this.props.onClose){
-          this.props.onClose();
-      }
+  handleClose() {
+    if (this.props.onClose) {
+      this.props.onClose();
+    }
   }
 
   render() {
     return (
       <Modal
-        title="Bản đồ"
+        className="ant-modal-vietbando"
         visible={true}
+        centered={true}
+        width="90vw"
+        closable={false}
+        onCancel={(event) => this.handleClose()}
+        title={<span className="ant-modal-header-title">Bản đồ</span>}
         footer={[
           <Button key="1" onClick={(event) => this.handleClose()}>
-              Đống
+            Đóng
           </Button>,
         ]}
-        centered={true}
-        width="80vw"
       >
-        <div id="map-container" style={{ height: "60vh", width: "100%" }}></div>
+        <div id="map-container" style={{ height: "70vh", width: "100%", position: "relative" }}>
+          {/* <div
+            style={{ height: "300px", width: "250px", position: "absolute", right: "5px", top: "50%", transform: "translateY(-50%)", backgroundColor: "#fad390", zIndex: 999999, opacity: 0.6 }}
+          ></div> */}
+        </div>
       </Modal>
     );
   }
 }
+
+ModalVietBanDoShipmentRouteAuto.defaultProps = {
+  ListShipmentOrder: [],
+};
 
 const mapStateToProps = (state) => {
   return {

@@ -1,6 +1,7 @@
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/ShipmentOrder/Search";
 export const LoadAPIPath = "api/ShipmentOrder/LoadInfoNew";
+export const LoadShipmentOrderQualityAssessAPIPath = "api/ShipmentOrder/LoadShipmentOrderQualityAssessById";
 export const AddAPIPath = "api/ShipmentOrder/Add";
 export const UpdateAPIPath = "api/ShipmentOrder/UpdateWeb";
 export const DeleteAPIPath = "api/ShipmentOrder/Delete";
