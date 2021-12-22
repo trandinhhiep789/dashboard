@@ -1332,7 +1332,7 @@ class DataGridShipmentRouteAutoCom extends Component {
           >
             <thead className="thead-light">
               <tr>
-                <th className="jsgrid-header-cell" style={{ width: "3%" }}></th>
+                {/* <th className="jsgrid-header-cell" style={{ width: "3%" }}></th> */}
                 <th className="jsgrid-header-cell" style={{ width: "15%" }}>
                   Thời gian giao
                 </th>
@@ -1380,7 +1380,7 @@ class DataGridShipmentRouteAutoCom extends Component {
                             // console.log("check",rowItem.ShipmentOrderID,this.state.GridDataShip,this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
                             return (
                               <tr key={rowIndex} className={rowtrClass}>
-                                <td className={rowUndelivery} style={{ width: "3%" }}>
+                                {/* <td className={rowUndelivery} style={{ width: "3%" }}>
                                   <ul>
                                     {rowItem.ShipmentRouteID == "" ? (
                                       <React.Fragment>
@@ -1417,13 +1417,13 @@ class DataGridShipmentRouteAutoCom extends Component {
                                         </button>
                                       </li>
                                     )}
-                                    {/* <li className="item printing">
+                                    <li className="item printing">
                                       <button className="btn" onClick={this.handlePrintClickNew.bind(this)}>
                                         <i className="ti ti-printer" data-id={rowItem.ShipmentOrderID}></i>
                                       </button>
-                                    </li> */}
+                                    </li>
                                   </ul>
-                                </td>
+                                </td> */}
 
                                 <td className="groupInfoAction" style={{ width: "15%" }}>
                                   <div className="group-info-row">

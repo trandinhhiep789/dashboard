@@ -489,9 +489,9 @@ class SearchFormShipmentRouteAuto extends Component {
     ));
 
     return (
-      <div style={{ height: "auto", backgroundColor: "white", margin: "5px 0", padding: "10px 5px" }}>
+      <div style={{ height: "auto", backgroundColor: "white", margin: " 0", padding: "15px"}}>
         <Row gutter={[8, 8]}>
-          <Col key={1}>
+          {/* <Col key={1}>
             <Input
               name="Keyword"
               size="middle"
@@ -503,9 +503,9 @@ class SearchFormShipmentRouteAuto extends Component {
               }
               onChange={(event) => this.handleInputTuKhoaChange(event)}
             />
-          </Col>
+          </Col> */}
 
-          <Col key={2}>
+          {/* <Col key={2}>
             <Select
               mode="multiple"
               style={{ width: "330px" }}
@@ -523,9 +523,9 @@ class SearchFormShipmentRouteAuto extends Component {
                 </Select.Option>
               ))}
             </Select>
-          </Col>
+          </Col> */}
 
-          <Col key={3}>
+          {/* <Col key={3}>
             <DatePicker.RangePicker
               locale={{ lang: { locale: "vi_VN", yearFormat: "YYYY" } }}
               allowEmpty={false}
@@ -538,9 +538,9 @@ class SearchFormShipmentRouteAuto extends Component {
                 "Ngày hôm nay": [moment(), moment()],
               }}
             />
-          </Col>
+          </Col> */}
 
-          <Col key={4}>
+          {/* <Col key={4}>
             <Select defaultValue={-1} style={{ width: "170px" }} onChange={(value) => this.handleSelectTinhChange(value)} dropdownMatchSelectWidth={200}>
               <Select.Option key={1} value={-1}>
                 Tỉnh / Thành phố
@@ -551,9 +551,9 @@ class SearchFormShipmentRouteAuto extends Component {
                 </Select.Option>
               ))}
             </Select>
-          </Col>
+          </Col> */}
 
-          <Col key={5}>
+          {/* <Col key={5}>
             <Select defaultValue={-1} style={{ width: "200px" }} onChange={(value) => this.handleSelectHuyenChange(value)} dropdownMatchSelectWidth={250}>
               <Select.Option key={1} value={-1}>
                 Quận / Huyện
@@ -564,9 +564,9 @@ class SearchFormShipmentRouteAuto extends Component {
                 </Select.Option>
               ))}
             </Select>
-          </Col>
+          </Col> */}
 
-          <Col key={6}>
+          {/* <Col key={6}>
             <Select defaultValue={-1} style={{ width: "200px" }} onChange={(value) => this.handleSelectXaChange(value)}>
               <Select.Option key={1} value={-1}>
                 Phường / Xã
@@ -577,9 +577,9 @@ class SearchFormShipmentRouteAuto extends Component {
                 </Select.Option>
               ))}
             </Select>
-          </Col>
+          </Col> */}
 
-          <Col key={7}>
+          {/* <Col key={7}>
             <Select defaultValue={-1} style={{ width: "200px" }} dropdownMatchSelectWidth={400} onChange={(value) => this.handleSelectKhoGuiChange(value)}>
               <Select.Option key={1} value={-1}>
                 Kho gửi
@@ -590,7 +590,7 @@ class SearchFormShipmentRouteAuto extends Component {
                 </Select.Option>
               ))}
             </Select>
-          </Col>
+          </Col> */}
 
           <Col key={8}>
             <Select defaultValue={-1} style={{ width: "200px" }} dropdownMatchSelectWidth={400} onChange={(value) => this.handleSelectKhoDieuPhoiChange(value)}>
@@ -605,7 +605,7 @@ class SearchFormShipmentRouteAuto extends Component {
             </Select>
           </Col>
 
-          <Col key={9}>
+          {/* <Col key={9}>
             <Select
               mode="multiple"
               style={{ width: "200px" }}
@@ -622,13 +622,13 @@ class SearchFormShipmentRouteAuto extends Component {
                 </Select.Option>
               ))}
             </Select>
-          </Col>
+          </Col> */}
 
-          <Col key={10}>
+          {/* <Col key={10}>
             <Select defaultValue={-1} style={{ width: "180px" }} onChange={(value) => this.handleSelectTrangThaiDieuPhoiChange(value)}>
               {renderSelect2}
             </Select>
-          </Col>
+          </Col> */}
 
           <Col key={11}>
             <Select defaultValue={-1} style={{ width: "160px" }} onChange={(value) => this.handleSelectPhuongTienChange(value)}>

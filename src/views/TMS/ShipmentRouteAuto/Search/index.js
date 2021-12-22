@@ -1109,7 +1109,7 @@ class SearchCom extends Component {
 
     return (
       this.state.ShipmentRouteAutoDataSource != null && (
-        <div style={{ width: "100%" }}>
+        <div style={{ width: "100%", border: "1px solid #8080804a"}}>
           <Tabs defaultActiveKey="key_1" style={{ padding: "15px", backgroundColor: "white" }} className="ant-tabs">
             {/* Tab xe máy */}
 
@@ -1533,11 +1533,11 @@ class SearchCom extends Component {
     );
 
     return (
-      <React.Fragment>
+      <div style={{padding: "0 14px 14px 14px", width: "100%"}}>
         <ReactNotification ref={this.notificationDOMRef} />
-        <div className="col-lg-12 SearchFormCustom" id="SearchFormCustom" style={{ padding: 0 }}>
-          <Collapse className="ant-collapse-search" style={{ backgroundColor: "white", marginBottom: "10px" }}>
-            <Collapse.Panel header="Tim kiếm, lọc dữ liệu phân tuyến vận chuyển" key="1">
+        <div className="col-lg-12 SearchFormCustom" id="SearchFormCustom" style={{ padding: "0"}}>
+          {/* <Collapse className="ant-collapse-search" style={{ backgroundColor: "white", marginBottom: "10px" }}>
+            <Collapse.Panel header="Tim kiếm, lọc dữ liệu phân tuyến vận chuyển" key="1"> */}
               <SearchFormShipmentRouteAuto
                 FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
                 MLObjectDefinition={SearchMLObjectDefinition}
@@ -1548,8 +1548,8 @@ class SearchCom extends Component {
                 IsSetting={true}
                 className="multiple multiple-custom multiple-custom-display"
               />
-            </Collapse.Panel>
-          </Collapse>
+            {/* </Collapse.Panel>
+          </Collapse> */}
 
           {/* <SearchForm
                 FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
@@ -1563,7 +1563,7 @@ class SearchCom extends Component {
         </div>
 
         {this.state.IsLoadDataComplete && (
-          <div className="col-lg-12" style={{ backgroundColor: "aliceblue", border: "1px solid #03a9f4" }}>
+          <div className="col-lg-12" style={{ backgroundColor: "aliceblue", border: "1px solid #03a9f4", padding: "0"}}>
             <Tabs className="ant-tabs-parent" key="tabs_1" defaultActiveKey={this.state.ActiveTab} activeKey={this.state.ActiveTab} size="large" onChange={(activeKey) => this.handleChangeActiveTab(activeKey)}>
               <Tabs.TabPane tab={reactNodeTab("08h - 10h", this.state.TimeFrame8to10.length)} key="1" tabKey="tabs_1_1">
                 <Collapsible
@@ -2245,9 +2245,9 @@ class SearchCom extends Component {
               <Tabs.TabPane
                 tab={
                   <Space>
-                    <Button type="primary" onClick={() => this.handleUserCoordinator()}>
+                    {/* <Button type="primary" onClick={() => this.handleUserCoordinator()}>
                       Phân tuyến
-                    </Button>
+                    </Button> */}
                     <Button
                       loading={this.state.UIEffect.ButtonShipmentRouteAuto.IsLoading}
                       disabled={this.state.UIEffect.ButtonShipmentRouteAuto.IsDisabled}
@@ -2284,7 +2284,7 @@ class SearchCom extends Component {
         )}
 
         {this.state.IsShowModelMap && <ModalVietBanDoShipmentRouteAuto ListShipmentOrder={this.state.DataSourceMap} onClose={() => this.setState({ IsShowModelMap: false })} />}
-      </React.Fragment>
+      </div>
     );
   }
 }
