@@ -1485,11 +1485,9 @@ class SearchCom extends Component {
     if (paramActiveKey == 9) {
       let objUIEffect = changeState.UIEffect;
       let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
-      let objTabShipmentRouteAuto = objUIEffect.TabShipmentRouteAuto;
 
       objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsDisabled: true };
-      objTabShipmentRouteAuto = { ...objTabShipmentRouteAuto, Content: "" };
-      objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto, TabShipmentRouteAuto: objTabShipmentRouteAuto };
+      objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
       changeState = { ...changeState, UIEffect: objUIEffect };
     } else {
       let objUIEffect = changeState.UIEffect;
@@ -1566,7 +1564,7 @@ class SearchCom extends Component {
 
         {this.state.IsLoadDataComplete && (
           <div className="col-lg-12" style={{ backgroundColor: "aliceblue", border: "1px solid #03a9f4" }}>
-            <Tabs key="tabs_1" defaultActiveKey={this.state.ActiveTab} activeKey={this.state.ActiveTab} size="large" onChange={(activeKey) => this.handleChangeActiveTab(activeKey)}>
+            <Tabs className="ant-tabs-parent" key="tabs_1" defaultActiveKey={this.state.ActiveTab} activeKey={this.state.ActiveTab} size="large" onChange={(activeKey) => this.handleChangeActiveTab(activeKey)}>
               <Tabs.TabPane tab={reactNodeTab("08h - 10h", this.state.TimeFrame8to10.length)} key="1" tabKey="tabs_1_1">
                 <Collapsible
                   className="CollapsibleCustom"
