@@ -92,6 +92,19 @@ export const AddElementList = [
 
     },
     {
+        type: "text",
+        name: "txtQualityAssessPoint",
+        label: "điểm đánh giá:",
+        value: "0",
+        maxSize: "2",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "QualityAssessPoint",
+        readonly: false,
+        validatonList: ["number"]
+    },
+    {
         type: "select",
         name: "GetFeeType",
         label: "Kiểu lấy chi phí",
@@ -199,6 +212,19 @@ export const EditElementList = [
         ValueMember: "QualityAssessGroupID",
         NameMember: "QualityAssessGroupName"
 
+    },
+    {
+        type: "text",
+        name: "txtQualityAssessPoint",
+        label: "điểm đánh giá:",
+        value: "0",
+        maxSize: "2",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "QualityAssessPoint",
+        readonly: false,
+        validatonList: ["number"]
     },
     {
         type: "select",
