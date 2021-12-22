@@ -1765,8 +1765,6 @@ class DataGridShipmentRouteAutoCom extends Component {
   }
 
   render() {
-    console.log(this.props.TimeFrame);
-
     const dataGrid = this.renderDataGrid();
 
     return (

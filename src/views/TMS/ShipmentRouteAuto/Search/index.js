@@ -121,6 +121,9 @@ class SearchCom extends Component {
           IsLoading: false,
           IsDisabled: false,
         },
+        TabShipmentRouteAuto: {
+          Content: "",
+        },
       },
     };
 
@@ -955,9 +958,11 @@ class SearchCom extends Component {
       let changeState = this.state;
       let objUIEffect = changeState.UIEffect;
       let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
+      let objTabShipmentRouteAuto = objUIEffect.TabShipmentRouteAuto;
 
+      objTabShipmentRouteAuto = { ...objTabShipmentRouteAuto, Content: this.state.ActiveTimeFrame.Name };
       objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: true };
-      objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
+      objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto, TabShipmentRouteAuto: objTabShipmentRouteAuto };
       changeState = { ...changeState, UIEffect: objUIEffect };
 
       this.setState(changeState);
@@ -1108,10 +1113,10 @@ class SearchCom extends Component {
     return (
       this.state.ShipmentRouteAutoDataSource != null && (
         <div style={{ width: "100%" }}>
-          <Tabs defaultActiveKey="1" style={{ padding: "15px", backgroundColor: "white" }} className="ant-tabs">
+          <Tabs defaultActiveKey="key_1" style={{ padding: "15px", backgroundColor: "white" }} className="ant-tabs">
             {/* Tab xe máy */}
 
-            <Tabs.TabPane tab={reactNodeTab("Xe máy", length_motor)} key="1" className="ant-tabs-child-1">
+            <Tabs.TabPane tabKey="key_1_1" tab={reactNodeTab("Xe máy", length_motor)} key="1" className="ant-tabs-child-1">
               <div style={{ width: "100%", backgroundColor: "white", padding: "10px", maxheight: "57vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
                 <h5>Danh sách các tuyến đề xuất</h5>
                 <h6>
@@ -1120,81 +1125,47 @@ class SearchCom extends Component {
                 <h6>
                   Tổng cộng số tải: <span style={{ fontWeight: "700" }}>{this.state.ShipmentRouteAutoDataSource.Motor.TotalLoad}</span> kg
                 </h6>
-                {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute &&
+                {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute && (
                   // this.state.ShipmentRouteAutoDataSource.Motor.TotalDistance > 0 &&
-                  // this.state.ShipmentRouteAutoDataSource.Motor.TotalLoad > 0 && 
-                  (
-                    <div style={{ width: "100%", backgroundColor: "white", padding: "20px", maxHeight: "60vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
-                      {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.map((line, index) => (
-                        <div key={index}>
-                          <p style={{ display: "none" }}>{(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}</p>
-                          <div style={{ display: "flex" }}>
-                            {/* <span style={{ fontWeight: "700", fontSize: "15px" }}>{index}</span>&ensp; */}
-                            <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
-                              <div style={{ width: "90%", marginBottom: "30px" }}>
-                                <div style={{ marginBottom: "10px" }}>
-                                  <Tag color="#108ee9">Tuyến: {index}</Tag>
-                                  <Tag color="#2db7f5">Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Motor.ListTotalDistance[index] / 1000)}</Tag>
-                                  <Tag color="#87d068">Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Motor.ListTotalLoad[index]}</Tag>
+                  // this.state.ShipmentRouteAutoDataSource.Motor.TotalLoad > 0 &&
+                  <div style={{ width: "100%", backgroundColor: "white", padding: "20px", maxHeight: "60vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
+                    {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.map((line, index) => (
+                      <div key={index}>
+                        <p style={{ display: "none" }}>{(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}</p>
+                        <div style={{ display: "flex" }}>
+                          {/* <span style={{ fontWeight: "700", fontSize: "15px" }}>{index}</span>&ensp; */}
+                          <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
+                            <div style={{ width: "90%", marginBottom: "30px" }}>
+                              <div style={{ marginBottom: "10px" }}>
+                                <Tag color="#108ee9">Tuyến: {index}</Tag>
+                                <Tag color="#2db7f5">Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Motor.ListTotalDistance[index] / 1000)}</Tag>
+                                <Tag color="#87d068">Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Motor.ListTotalLoad[index]}</Tag>
 
-                                  {/* <span>Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Motor.ListTotalDistance[index] / 1000)}</span>&ensp;
+                                {/* <span>Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Motor.ListTotalDistance[index] / 1000)}</span>&ensp;
                                   <span>Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Motor.ListTotalLoad[index]}</span> */}
-                                </div>
-                                <div style={{ display: "flex" }}>
-                                  {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute[index].map((objShipmentOrder, i) => (
-                                    <div key={objShipmentOrder.PartnerSaleOrderID} style={{ display: "flex", width: i != 0 && "100%" }}>
-                                      {i != 0 &&
-                                        (objShipmentOrder.IsCompleteDeliverIed ? (
-                                          <div style={{ width: "100%", height: "10px", borderBottom: `3px solid ${randomColor}` }}></div>
-                                        ) : (
-                                          <div style={{ width: "100%", height: "10px", borderBottom: `3px solid #80808030` }}></div>
-                                        ))}
-                                      {i != 0 ? (
-                                        <Popover
-                                          content={
-                                            <div>
-                                              <p>{objShipmentOrder.ReceiverFullName}</p>
-                                              <p>{objShipmentOrder.ReceiverFullAddress}</p>
-                                              <p>{objShipmentOrder.Weight}</p>
-                                            </div>
-                                          }
-                                          title={objShipmentOrder.PartnerSaleOrderID}
-                                        >
-                                          <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
-                                            {objShipmentOrder.IsCompleteDeliverIed ? (
-                                              <div
-                                                style={{
-                                                  position: "relative",
-                                                  width: "12px",
-                                                  height: "12px",
-                                                  border: `3px solid ${randomColor}`,
-                                                  backgroundColor: `${randomColor}`,
-                                                  borderRadius: "50%",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
-                                              </div>
-                                            ) : (
-                                              <div
-                                                style={{
-                                                  position: "relative",
-                                                  width: "12px",
-                                                  height: "12px",
-                                                  border: `3px solid ${randomColor}`,
-                                                  backgroundColor: "white",
-                                                  borderRadius: "50%",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
-                                              </div>
-                                            )}
-                                          </div>
-                                        </Popover>
+                              </div>
+                              <div style={{ display: "flex" }}>
+                                {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute[index].map((objShipmentOrder, i) => (
+                                  <div key={objShipmentOrder.PartnerSaleOrderID} style={{ display: "flex", width: i != 0 && "100%" }}>
+                                    {i != 0 &&
+                                      (objShipmentOrder.IsCompleteDeliverIed ? (
+                                        <div style={{ width: "100%", height: "10px", borderBottom: `3px solid ${randomColor}` }}></div>
                                       ) : (
+                                        <div style={{ width: "100%", height: "10px", borderBottom: `3px solid #80808030` }}></div>
+                                      ))}
+                                    {i != 0 ? (
+                                      <Popover
+                                        content={
+                                          <div>
+                                            <p>{objShipmentOrder.ReceiverFullName}</p>
+                                            <p>{objShipmentOrder.ReceiverFullAddress}</p>
+                                            <p>{objShipmentOrder.Weight}</p>
+                                          </div>
+                                        }
+                                        title={objShipmentOrder.PartnerSaleOrderID}
+                                      >
                                         <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
-                                          {
+                                          {objShipmentOrder.IsCompleteDeliverIed ? (
                                             <div
                                               style={{
                                                 position: "relative",
@@ -1206,36 +1177,69 @@ class SearchCom extends Component {
                                                 cursor: "pointer",
                                               }}
                                             >
-                                              <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>0</div>
+                                              <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
                                             </div>
-                                          }
+                                          ) : (
+                                            <div
+                                              style={{
+                                                position: "relative",
+                                                width: "12px",
+                                                height: "12px",
+                                                border: `3px solid ${randomColor}`,
+                                                backgroundColor: "white",
+                                                borderRadius: "50%",
+                                                cursor: "pointer",
+                                              }}
+                                            >
+                                              <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
+                                            </div>
+                                          )}
                                         </div>
-                                      )}
-                                    </div>
-                                  ))}
-                                </div>
+                                      </Popover>
+                                    ) : (
+                                      <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
+                                        {
+                                          <div
+                                            style={{
+                                              position: "relative",
+                                              width: "12px",
+                                              height: "12px",
+                                              border: `3px solid ${randomColor}`,
+                                              backgroundColor: `${randomColor}`,
+                                              borderRadius: "50%",
+                                              cursor: "pointer",
+                                            }}
+                                          >
+                                            <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>0</div>
+                                          </div>
+                                        }
+                                      </div>
+                                    )}
+                                  </div>
+                                ))}
                               </div>
-                              <div style={{ width: "10%", textAlign: "right", paddingTop: "18px" }}>
-                                <Tooltip title="Xem bản đồ">
-                                  <Button type="primary" shape="circle" icon={<EyeOutlined />} onClick={() => this.handleShowModalMapMotorRoute(index)} />
-                                </Tooltip>
-                                &nbsp;
-                                <Tooltip title="Phân tuyến">
-                                  <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
-                                </Tooltip>
-                              </div>
+                            </div>
+                            <div style={{ width: "10%", textAlign: "right", paddingTop: "18px" }}>
+                              <Tooltip title="Xem bản đồ">
+                                <Button type="primary" shape="circle" icon={<EyeOutlined />} onClick={() => this.handleShowModalMapMotorRoute(index)} />
+                              </Tooltip>
+                              &nbsp;
+                              <Tooltip title="Phân tuyến">
+                                <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
+                              </Tooltip>
                             </div>
                           </div>
                         </div>
-                      ))}
-                    </div>
-                  )}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </Tabs.TabPane>
 
             {/* Tab xe tải */}
 
-            <Tabs.TabPane tab={reactNodeTab("Xe tải", length_truck)} key="2" className="ant-tabs-child-2">
+            <Tabs.TabPane tabKey="key_1_2" tab={reactNodeTab("Xe tải", length_truck)} key="2" className="ant-tabs-child-2">
               <div style={{ width: "100%", backgroundColor: "white", padding: "10px", maxheight: "57vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
                 <h5>Danh sách các tuyến đề xuất</h5>
                 <h6>
@@ -1244,82 +1248,48 @@ class SearchCom extends Component {
                 <h6>
                   Tổng cộng số tải: <span style={{ fontWeight: "700" }}>{this.state.ShipmentRouteAutoDataSource.Truck.TotalLoad}</span> kg
                 </h6>
-                {this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute &&
+                {this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute && (
                   // this.state.ShipmentRouteAutoDataSource.Truck.TotalDistance > 0 &&
                   // this.state.ShipmentRouteAutoDataSource.Truck.TotalLoad > 0 &&
-                   (
-                    <div style={{ width: "100%", backgroundColor: "white", padding: "20px", maxHeight: "60vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
-                      {this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute.map((line, index) => (
-                        <div key={index}>
-                          <p style={{ display: "none" }}>{(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}</p>
-                          <div style={{ display: "flex" }}>
-                            {/* <span style={{ fontWeight: "700", fontSize: "15px" }}>{index}</span>&ensp; */}
-                            <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
-                              <div style={{ width: "90%", marginBottom: "30px" }}>
-                                {/* <div>
+                  <div style={{ width: "100%", backgroundColor: "white", padding: "20px", maxHeight: "60vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
+                    {this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute.map((line, index) => (
+                      <div key={index}>
+                        <p style={{ display: "none" }}>{(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}</p>
+                        <div style={{ display: "flex" }}>
+                          {/* <span style={{ fontWeight: "700", fontSize: "15px" }}>{index}</span>&ensp; */}
+                          <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
+                            <div style={{ width: "90%", marginBottom: "30px" }}>
+                              {/* <div>
                                   <span>Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Truck.ListTotalDistance[index] / 1000)}</span>&ensp;
                                   <span>Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Truck.ListTotalLoad[index]}</span>
                                 </div> */}
-                                <div style={{ marginBottom: "10px" }}>
-                                  <Tag color="#108ee9">Tuyến: {index}</Tag>
-                                  <Tag color="#2db7f5">Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Truck.ListTotalDistance[index] / 1000)}</Tag>
-                                  <Tag color="#87d068">Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Truck.ListTotalLoad[index]}</Tag>
-                                </div>
-                                <div style={{ display: "flex" }}>
-                                  {this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute[index].map((objShipmentOrder, i) => (
-                                    <div key={objShipmentOrder.PartnerSaleOrderID} style={{ display: "flex", width: i != 0 && "100%" }}>
-                                      {i != 0 &&
-                                        (objShipmentOrder.IsCompleteDeliverIed ? (
-                                          <div style={{ width: "100%", height: "10px", borderBottom: `3px solid ${randomColor}` }}></div>
-                                        ) : (
-                                          <div style={{ width: "100%", height: "10px", borderBottom: `3px solid #80808030` }}></div>
-                                        ))}
-                                      {i != 0 ? (
-                                        <Popover
-                                          content={
-                                            <div>
-                                              <p>{objShipmentOrder.ReceiverFullName}</p>
-                                              <p>{objShipmentOrder.ReceiverFullAddress}</p>
-                                              <p>{objShipmentOrder.Weight}</p>
-                                            </div>
-                                          }
-                                          title={objShipmentOrder.PartnerSaleOrderID}
-                                        >
-                                          <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
-                                            {objShipmentOrder.IsCompleteDeliverIed ? (
-                                              <div
-                                                style={{
-                                                  position: "relative",
-                                                  width: "12px",
-                                                  height: "12px",
-                                                  border: `3px solid ${randomColor}`,
-                                                  backgroundColor: `${randomColor}`,
-                                                  borderRadius: "50%",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
-                                              </div>
-                                            ) : (
-                                              <div
-                                                style={{
-                                                  position: "relative",
-                                                  width: "12px",
-                                                  height: "12px",
-                                                  border: `3px solid ${randomColor}`,
-                                                  backgroundColor: "white",
-                                                  borderRadius: "50%",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
-                                              </div>
-                                            )}
-                                          </div>
-                                        </Popover>
+                              <div style={{ marginBottom: "10px" }}>
+                                <Tag color="#108ee9">Tuyến: {index}</Tag>
+                                <Tag color="#2db7f5">Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Truck.ListTotalDistance[index] / 1000)}</Tag>
+                                <Tag color="#87d068">Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Truck.ListTotalLoad[index]}</Tag>
+                              </div>
+                              <div style={{ display: "flex" }}>
+                                {this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute[index].map((objShipmentOrder, i) => (
+                                  <div key={objShipmentOrder.PartnerSaleOrderID} style={{ display: "flex", width: i != 0 && "100%" }}>
+                                    {i != 0 &&
+                                      (objShipmentOrder.IsCompleteDeliverIed ? (
+                                        <div style={{ width: "100%", height: "10px", borderBottom: `3px solid ${randomColor}` }}></div>
                                       ) : (
+                                        <div style={{ width: "100%", height: "10px", borderBottom: `3px solid #80808030` }}></div>
+                                      ))}
+                                    {i != 0 ? (
+                                      <Popover
+                                        content={
+                                          <div>
+                                            <p>{objShipmentOrder.ReceiverFullName}</p>
+                                            <p>{objShipmentOrder.ReceiverFullAddress}</p>
+                                            <p>{objShipmentOrder.Weight}</p>
+                                          </div>
+                                        }
+                                        title={objShipmentOrder.PartnerSaleOrderID}
+                                      >
                                         <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
-                                          {
+                                          {objShipmentOrder.IsCompleteDeliverIed ? (
                                             <div
                                               style={{
                                                 position: "relative",
@@ -1331,36 +1301,69 @@ class SearchCom extends Component {
                                                 cursor: "pointer",
                                               }}
                                             >
-                                              <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>0</div>
+                                              <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
                                             </div>
-                                          }
+                                          ) : (
+                                            <div
+                                              style={{
+                                                position: "relative",
+                                                width: "12px",
+                                                height: "12px",
+                                                border: `3px solid ${randomColor}`,
+                                                backgroundColor: "white",
+                                                borderRadius: "50%",
+                                                cursor: "pointer",
+                                              }}
+                                            >
+                                              <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
+                                            </div>
+                                          )}
                                         </div>
-                                      )}
-                                    </div>
-                                  ))}
-                                </div>
+                                      </Popover>
+                                    ) : (
+                                      <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
+                                        {
+                                          <div
+                                            style={{
+                                              position: "relative",
+                                              width: "12px",
+                                              height: "12px",
+                                              border: `3px solid ${randomColor}`,
+                                              backgroundColor: `${randomColor}`,
+                                              borderRadius: "50%",
+                                              cursor: "pointer",
+                                            }}
+                                          >
+                                            <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>0</div>
+                                          </div>
+                                        }
+                                      </div>
+                                    )}
+                                  </div>
+                                ))}
                               </div>
-                              <div style={{ width: "10%", textAlign: "right", paddingTop: "18px" }}>
-                                <Tooltip title="Xem bản đồ">
-                                  <Button type="primary" shape="circle" icon={<EyeOutlined />} onClick={() => this.handleShowModalMapTruckRoute(index)} />
-                                </Tooltip>
-                                &nbsp;
-                                <Tooltip title="Phân tuyến">
-                                  <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
-                                </Tooltip>
-                              </div>
+                            </div>
+                            <div style={{ width: "10%", textAlign: "right", paddingTop: "18px" }}>
+                              <Tooltip title="Xem bản đồ">
+                                <Button type="primary" shape="circle" icon={<EyeOutlined />} onClick={() => this.handleShowModalMapTruckRoute(index)} />
+                              </Tooltip>
+                              &nbsp;
+                              <Tooltip title="Phân tuyến">
+                                <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
+                              </Tooltip>
                             </div>
                           </div>
                         </div>
-                      ))}
-                    </div>
-                  )}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </Tabs.TabPane>
 
             {/* Tab chưa điều phối */}
 
-            <Tabs.TabPane tab={reactNodeTab("Chưa điều phối", this.state.ShipmentRouteAutoDataSource.Dropped.length)} key="3" className="ant-tabs-child-3">
+            <Tabs.TabPane tabKey="key_1_3" tab={reactNodeTab("Chưa điều phối", this.state.ShipmentRouteAutoDataSource.Dropped.length)} key="3" className="ant-tabs-child-3">
               <DataGridShipmentRouteAuto
                 key={1}
                 listColumn={DataGridColumnList}
@@ -1440,32 +1443,32 @@ class SearchCom extends Component {
 
     if (paramActiveKey == 1) {
       objActiveTimeFrame = {
-        Name: "08h00 - 10h00",
+        Name: "08h - 10h",
         TimeFrame: "TimeFrame8to10",
       };
     } else if (paramActiveKey == 2) {
       objActiveTimeFrame = {
-        Name: "10h00 - 12h00",
+        Name: "10h - 12h",
         TimeFrame: "TimeFrame10to12",
       };
     } else if (paramActiveKey == 3) {
       objActiveTimeFrame = {
-        Name: "12h00 - 14h00",
+        Name: "12h - 14h",
         TimeFrame: "TimeFrame12to14",
       };
     } else if (paramActiveKey == 4) {
       objActiveTimeFrame = {
-        Name: "14h00 - 16h00",
+        Name: "14h - 16h",
         TimeFrame: "TimeFrame14to16",
       };
     } else if (paramActiveKey == 5) {
       objActiveTimeFrame = {
-        Name: "17h00 - 19h00",
+        Name: "17h - 19h",
         TimeFrame: "TimeFrame17to19",
       };
     } else if (paramActiveKey == 6) {
       objActiveTimeFrame = {
-        Name: "19h00 - 21h00",
+        Name: "19h - 21h",
         TimeFrame: "TimeFrame19to21",
       };
     } else if (paramActiveKey == 7) {
@@ -1485,9 +1488,11 @@ class SearchCom extends Component {
     if (paramActiveKey == 9) {
       let objUIEffect = changeState.UIEffect;
       let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
+      let objTabShipmentRouteAuto = objUIEffect.TabShipmentRouteAuto;
 
       objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsDisabled: true };
-      objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
+      objTabShipmentRouteAuto = { ...objTabShipmentRouteAuto, Content: "" };
+      objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto, TabShipmentRouteAuto: objTabShipmentRouteAuto };
       changeState = { ...changeState, UIEffect: objUIEffect };
     } else {
       let objUIEffect = changeState.UIEffect;
@@ -1508,20 +1513,21 @@ class SearchCom extends Component {
     let reactNodeTab = (title, length) => (
       <div style={{ position: "relative" }}>
         <span style={{ marginRight: "16px", lineHeight: "30px" }}>{title}</span>
-        {length > 0 && (
+        {(length > 0 || length.length > 0) && (
           <span
             style={{
               height: "15px",
-              width: "15px",
+              width: "auto",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
               borderRadius: "7.5px",
               backgroundColor: "#eb4d4b",
               position: "absolute",
-              top: "0",
+              top: "-10px",
               right: "0",
               color: "white",
+              padding: "0 5px",
               fontSize: "11px",
             }}
           >
@@ -1563,8 +1569,8 @@ class SearchCom extends Component {
 
         {this.state.IsLoadDataComplete && (
           <div className="col-lg-12" style={{ backgroundColor: "aliceblue", border: "1px solid #03a9f4" }}>
-            <Tabs defaultActiveKey={this.state.ActiveTab} activeKey={this.state.ActiveTab} size="large" onChange={(activeKey) => this.handleChangeActiveTab(activeKey)}>
-              <Tabs.TabPane tab={reactNodeTab("08h00 - 10h00", this.state.TimeFrame8to10.length)} key="1">
+            <Tabs key="tabs_1" defaultActiveKey={this.state.ActiveTab} activeKey={this.state.ActiveTab} size="large" onChange={(activeKey) => this.handleChangeActiveTab(activeKey)}>
+              <Tabs.TabPane tab={reactNodeTab("08h - 10h", this.state.TimeFrame8to10.length)} key="1" tabKey="tabs_1_1">
                 <Collapsible
                   className="CollapsibleCustom"
                   triggerDisabled={this.state.ObjectIsDisabled.TimeFrame8to10}
@@ -1573,7 +1579,7 @@ class SearchCom extends Component {
                       <Row gutter={24}>
                         <Col span={4}>
                           <Card size="small" bordered={false}>
-                            <Statistic title="Thời gian" value="08h00 - 10h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                            <Statistic title="Thời gian" value="08h - 10h" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                           </Card>
                         </Col>
                         <Col span={4}>
@@ -1662,7 +1668,7 @@ class SearchCom extends Component {
                   />
                 </Collapsible>
               </Tabs.TabPane>
-              <Tabs.TabPane tab={reactNodeTab("10h00 - 12h00", this.state.TimeFrame10to12.length)} key="2">
+              <Tabs.TabPane tab={reactNodeTab("10h - 12h", this.state.TimeFrame10to12.length)} key="2" tabKey="tabs_1_2">
                 <Collapsible
                   className="CollapsibleCustom"
                   triggerDisabled={this.state.ObjectIsDisabled.TimeFrame10to12}
@@ -1671,7 +1677,7 @@ class SearchCom extends Component {
                       <Row gutter={24}>
                         <Col span={4}>
                           <Card size="small" bordered={false}>
-                            <Statistic title="Thời gian" value="10h00 - 12h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                            <Statistic title="Thời gian" value="10h - 12h" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                           </Card>
                         </Col>
                         <Col span={4}>
@@ -1757,7 +1763,7 @@ class SearchCom extends Component {
                   />
                 </Collapsible>
               </Tabs.TabPane>
-              <Tabs.TabPane tab={reactNodeTab("12h00 - 14h00", this.state.TimeFrame12to14.length)} key="3">
+              <Tabs.TabPane tab={reactNodeTab("12h - 14h", this.state.TimeFrame12to14.length)} key="3" tabKey="tabs_1_3">
                 <Collapsible
                   className="CollapsibleCustom"
                   triggerDisabled={this.state.ObjectIsDisabled.TimeFrame12to14}
@@ -1766,7 +1772,7 @@ class SearchCom extends Component {
                       <Row gutter={24}>
                         <Col span={4}>
                           <Card size="small" bordered={false}>
-                            <Statistic title="Thời gian" value="12h00 - 14h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                            <Statistic title="Thời gian" value="12h - 14h" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                           </Card>
                         </Col>
                         <Col span={4}>
@@ -1852,7 +1858,7 @@ class SearchCom extends Component {
                   />
                 </Collapsible>
               </Tabs.TabPane>
-              <Tabs.TabPane tab={reactNodeTab("14h00 - 16h00", this.state.TimeFrame14to16.length)} key="4">
+              <Tabs.TabPane tab={reactNodeTab("14h - 16h", this.state.TimeFrame14to16.length)} key="4" tabKey="tabs_1_4">
                 <Collapsible
                   className="CollapsibleCustom"
                   triggerDisabled={this.state.ObjectIsDisabled.TimeFrame14to16}
@@ -1861,7 +1867,7 @@ class SearchCom extends Component {
                       <Row gutter={24}>
                         <Col span={4}>
                           <Card size="small" bordered={false}>
-                            <Statistic title="Thời gian" value="14h00 - 16h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                            <Statistic title="Thời gian" value="14h - 16h" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                           </Card>
                         </Col>
                         <Col span={4}>
@@ -1947,7 +1953,7 @@ class SearchCom extends Component {
                   />
                 </Collapsible>
               </Tabs.TabPane>
-              <Tabs.TabPane tab={reactNodeTab("17h00 - 19h00", this.state.TimeFrame17to19.length)} key="5">
+              <Tabs.TabPane tab={reactNodeTab("17h - 19h", this.state.TimeFrame17to19.length)} key="5" tabKey="tabs_1_5">
                 <Collapsible
                   className="CollapsibleCustom"
                   triggerDisabled={this.state.ObjectIsDisabled.TimeFrame17to19}
@@ -1956,7 +1962,7 @@ class SearchCom extends Component {
                       <Row gutter={24}>
                         <Col span={4}>
                           <Card size="small" bordered={false}>
-                            <Statistic title="Thời gian" value="17h00 - 19h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                            <Statistic title="Thời gian" value="17h - 19h" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                           </Card>
                         </Col>
                         <Col span={4}>
@@ -2044,7 +2050,7 @@ class SearchCom extends Component {
                   />
                 </Collapsible>
               </Tabs.TabPane>
-              <Tabs.TabPane tab={reactNodeTab("19h00 - 21h00", this.state.TimeFrame19to21.length)} key="6">
+              <Tabs.TabPane tab={reactNodeTab("19h - 21h", this.state.TimeFrame19to21.length)} key="6" tabKey="tabs_1_6">
                 <Collapsible
                   className="CollapsibleCustom"
                   triggerDisabled={this.state.ObjectIsDisabled.TimeFrame19to21}
@@ -2053,7 +2059,7 @@ class SearchCom extends Component {
                       <Row gutter={24}>
                         <Col span={4}>
                           <Card size="small" bordered={false}>
-                            <Statistic title="Thời gian" value="19h00 - 21h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                            <Statistic title="Thời gian" value="19h - 21h" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                           </Card>
                         </Col>
                         <Col span={4}>
@@ -2141,7 +2147,7 @@ class SearchCom extends Component {
                   />
                 </Collapsible>
               </Tabs.TabPane>
-              <Tabs.TabPane tab={reactNodeTab("Thời gian khác", this.state.diffTimeFrame.length)} key="7">
+              <Tabs.TabPane tab={reactNodeTab("Thời gian khác", this.state.diffTimeFrame.length)} key="7" tabKey="tabs_1_7">
                 <Collapsible
                   className="CollapsibleCustom"
                   triggerDisabled={this.state.ObjectIsDisabled.diffTimeFrame}
@@ -2238,7 +2244,7 @@ class SearchCom extends Component {
                   />
                 </Collapsible>
               </Tabs.TabPane>
-              <Tabs.TabPane tab="Phân tuyến tự động" key="9">
+              <Tabs.TabPane tab={reactNodeTab("Phân tuyến tự động", this.state.UIEffect.TabShipmentRouteAuto.Content)} key="9" tabKey="tabs_1_9">
                 {renderShipmentRouteAuto}
               </Tabs.TabPane>
               <Tabs.TabPane
@@ -2259,6 +2265,7 @@ class SearchCom extends Component {
                 }
                 disabled
                 key="8"
+                tabKey="tabs_1_8"
               ></Tabs.TabPane>
             </Tabs>
           </div>

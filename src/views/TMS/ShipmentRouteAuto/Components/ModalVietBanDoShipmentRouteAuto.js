@@ -40,67 +40,13 @@ class ModalVietBanDoShipmentRouteAuto extends Component {
       Instructions: true,
       Points: parmLstLocation,
       RouteCriteria: 0,
-      // Uturn: true,
+      Uturn: true,
       VehicleType: 2,
     };
 
     this.props.callFetchAPI("TMSAPI", "api/Maps/FindPathViaRoute", paramsRequest).then((apiResult) => {
       if (!apiResult.IsError) {
         let objResult = JSON.parse(apiResult.ResultObject);
-
-        // let geometryToCoordinates = function (encodedPoints, COORDINATE_PRECISION) {
-        //   COORDINATE_PRECISION = COORDINATE_PRECISION || 1e6;
-
-        //   var polylineChars = encodedPoints;
-        //   var index = 0;
-
-        //   var currentLat = 0;
-        //   var currentLng = 0;
-        //   var next5bits;
-        //   var sum;
-        //   var shifter;
-
-        //   var length = polylineChars.length;
-        //   var coords = [];
-        //   while (index < length) {
-        //     // calculate next latitude
-        //     sum = 0;
-        //     shifter = 0;
-        //     do {
-        //       next5bits = polylineChars.charCodeAt(index++) - 63;
-        //       sum |= (next5bits & 31) << shifter;
-        //       shifter += 5;
-        //     } while (next5bits >= 32 && index < length);
-
-        //     if (index >= length) break;
-
-        //     currentLat += (sum & 1) === 1 ? ~(sum >> 1) : sum >> 1;
-
-        //     //calculate next longitude
-        //     sum = 0;
-        //     shifter = 0;
-        //     do {
-        //       next5bits = polylineChars.charCodeAt(index++) - 63;
-        //       sum |= (next5bits & 31) << shifter;
-        //       shifter += 5;
-        //     } while (next5bits >= 32 && index < length);
-
-        //     if (index >= length && next5bits >= 32) break;
-
-        //     currentLng += (sum & 1) === 1 ? ~(sum >> 1) : sum >> 1;
-
-        //     coords.push({
-        //       lat: currentLat / COORDINATE_PRECISION,
-        //       lng: currentLng / COORDINATE_PRECISION,
-        //     });
-        //   }
-
-        //   return coords;
-        // };
-
-        // let result = geometryToCoordinates(objResult.Value.Routes[0].Geometry);
-
-        console.log("objResult", objResult);
 
         this.setState({
           Geometry: objResult.Value.Routes[0].Geometry,
@@ -134,10 +80,17 @@ class ModalVietBanDoShipmentRouteAuto extends Component {
         };
 
         this.props.ListShipmentOrder.map((item, index) => {
-          let [Latitude, Longitude] = item.ReceiverGeoLocation.split(",");
+          let location;
+
+          if(index==0){
+            location = item.CoordinatorStoreGeo.split(",");
+          }
+          else{
+            location = item.ReceiverGeoLocation.split(",");
+          }
 
           let marker = new vbd.CustomMarker({
-            position: new vbd.LatLng(Latitude, Longitude),
+            position: new vbd.LatLng(location[0], location[1]),
             content: content(index),
             icon: new vbd.Icon({ size: new vbd.Size(26, 44), anchor: new vbd.Point(14, 42) }),
           });
@@ -149,29 +102,14 @@ class ModalVietBanDoShipmentRouteAuto extends Component {
           let infoWindow = new vbd.InfoWindow({
             content: templateContent(
               item.PartnerSaleOrderID == 0
-                ? { content: "Kho", location: `Vị trí: ${Latitude},${Longitude}` }
-                : { content: `Vận đơn: ${item.PartnerSaleOrderID}`, location: `Vị trí: ${Latitude},${Longitude}` }
+                ? { content: "Kho", location: `Vị trí: ${location[0]},${location[1]}` }
+                : { content: `Vận đơn: ${item.PartnerSaleOrderID}`, location: `Vị trí: ${location[0]},${location[1]}` }
             ),
           });
 
           vbd.event.addListener(marker, "click", function (param) {
             infoWindow.open(map, marker);
           });
-
-          // let start = this.props.ListShipmentOrder[0];
-          // vbd.event.addListener(marker, "mouseover", function (param) {
-            
-          //   let pointStart = start.ReceiverGeoLocation.split(",");
-          //   console.log(pointStart);
-          //   let polyline_1 = new vbd.Polyline({
-          //     path: [new vbd.LatLng(pointStart[0], pointStart[1]), new vbd.LatLng(Latitude, Longitude)],
-          //     strokeOpacity: 2,
-          //     strokeWidth: 2,
-          //     strokeColor:"#74b9ff"
-          //   });
-
-          //   polyline_1.setMap(map);
-          // });
 
           map.addMarker(marker);
           map.zoomFit();
