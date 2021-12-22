@@ -32,7 +32,6 @@ import ModalVietBanDoShipmentRouteAuto from "../Components/ModalVietBanDoShipmen
 import { formatMonthDate } from "../../../../common/library/CommonLib";
 import { Link } from "react-router-dom";
 import ReactHtmlParser from "react-html-parser";
-import { formatMoney } from "../../../../utils/function";
 
 class SearchCom extends Component {
   constructor(props) {
@@ -62,6 +61,7 @@ class SearchCom extends Component {
         TimeFrame14to16: [],
         TimeFrame17to19: [],
         TimeFrame19to21: [],
+        Dropped: [],
       },
       ShipmentRouteID: "",
       IsShowModel: false,
@@ -119,6 +119,7 @@ class SearchCom extends Component {
       UIEffect: {
         ButtonShipmentRouteAuto: {
           IsLoading: false,
+          IsDisabled: false,
         },
       },
     };
@@ -750,7 +751,7 @@ class SearchCom extends Component {
 
   // Kiểm tra GridDataShip có phần tử không
   handleCheckGirdDataShipIsEmpty() {
-    const { diffTimeFrame, TimeFrame8to10, TimeFrame10to12, TimeFrame12to14, TimeFrame14to16, TimeFrame17to19, TimeFrame19to21 } = this.state.GridDataShip;
+    const { diffTimeFrame, TimeFrame8to10, TimeFrame10to12, TimeFrame12to14, TimeFrame14to16, TimeFrame17to19, TimeFrame19to21, Dropped } = this.state.GridDataShip;
 
     return diffTimeFrame.length > 0
       ? "diffTimeFrame"
@@ -766,6 +767,8 @@ class SearchCom extends Component {
       ? "TimeFrame17to19"
       : TimeFrame19to21.length > 0
       ? "TimeFrame19to21"
+      : Dropped.length > 0
+      ? "Dropped"
       : "";
   }
 
@@ -975,7 +978,7 @@ class SearchCom extends Component {
           let objUIEffect = changeState.UIEffect;
           let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
 
-          objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: false };
+          objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: false, IsDisabled:true };
           objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
           changeState = { ...changeState, UIEffect: objUIEffect };
           objShipmentRouteAutoDataSource = { Motor: MotorRoute, Truck: TruckRoute, Dropped: ListDroppedShipmentOrder };
@@ -1059,14 +1062,17 @@ class SearchCom extends Component {
     temponaryInput.remove();
   }
 
+  // Xử lý gán data source xe máy cho vietbando
   handleShowModalMapMotorRoute(index) {
     this.setState({ DataSourceMap: this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute[index], IsShowModelMap: true });
   }
 
+  // Xử lý gán data source xe tải cho vietbando
   handleShowModalMapTruckRoute(index) {
     this.setState({ DataSourceMap: this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute[index], IsShowModelMap: true });
   }
 
+  // Xử lý render phân tuyến tự động
   renderShipmentRouteAuto() {
     const pickRandomColor = ["#1f5ff4", "#c55d53", "#cb68c5", "#65b411", "#f4b323", "#420e3e", "#e80024", "#585ccc", "#d44371", "#14915f", "#e79940", "#6be54"];
     let randomColor = "";
@@ -1363,220 +1369,37 @@ class SearchCom extends Component {
             {/* Tab chưa điều phối */}
 
             <Tabs.TabPane tab={reactNodeTab("Chưa điều phối", this.state.ShipmentRouteAutoDataSource.Dropped.length)} key="3" className="ant-tabs-child-3">
-              <div className="table-responsive">
-                <table
-                  className="table table-sm table-striped table-bordered table-hover table-condensed datagirdshippingorder
-          table-custom"
-                  cellSpacing="0"
-                >
-                  <thead className="thead-light">
-                    <tr>
-                      <th className="jsgrid-header-cell" style={{ width: "15%" }}>
-                        Thời gian giao
-                      </th>
-                      <th className="jsgrid-header-cell" style={{ width: "34%" }}>
-                        Địa chỉ
-                      </th>
-                      <th className="jsgrid-header-cell" style={{ width: "15%" }}>
-                        Mã/Loại yêu cầu vận chuyển
-                      </th>
-                      <th className="jsgrid-header-cell" style={{ width: "24%" }}>
-                        Tên sản phẩm/Ghi chú
-                      </th>
-                      <th className="jsgrid-header-cell" style={{ width: "9%" }}>
-                        Thanh toán
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td colSpan={7} style={{ margin: 0, padding: 0 }}>
-                        <div className="table-custom-scroll" style={{ width: "100%", maxHeight: "500px", overflowY: "auto" }}>
-                          <table>
-                            <tbody>
-                              {this.state.ShipmentRouteAutoDataSource.Dropped != null &&
-                                this.state.ShipmentRouteAutoDataSource.Dropped.map((rowItem, rowIndex) => {
-                                  let rowClass = "jsgrid-row";
-                                  if (index % 2 != 0) {
-                                    rowClass = "jsgrid-alt-row";
-                                  }
-                                  let rowtrClass = "unReadingItem";
-                                  if (rowItem.SelectedUser != "" || rowItem.IsView == true) {
-                                    rowtrClass = "noReadingItem readingItem";
-                                  }
-
-                                  let rowUndelivery = "btngroupleft";
-                                  if (this._CheckTime(rowItem.ExpectedDeliveryDate) == true && rowItem.CurrentShipmentOrderStepID < 105) {
-                                    rowUndelivery = "btngroupleft Undelivery";
-                                  } else {
-                                    if (rowItem.CoordinatorUser == "") {
-                                      rowUndelivery = "btngroupleft Uncoordinated";
-                                    } else {
-                                      rowUndelivery = "btngroupleft WaitingDelivery";
-                                    }
-                                  }
-                                  // console.log("check",rowItem.ShipmentOrderID,this.state.GridDataShip,this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
-                                  return (
-                                    <tr key={rowIndex} className={rowtrClass}>
-                                      <td className="groupInfoAction" style={{ width: "15%" }}>
-                                        <div className="group-info-row">
-                                          <label className="item time">
-                                            <i className="ti ti-timer "></i>
-                                            <span className="fw-600">{rowItem.ExpectedDeliveryDate != null ? this._genCommentTime(rowItem.ExpectedDeliveryDate) : ""}</span>
-                                          </label>
-                                          <label className="item status">
-                                            <i className="fa fa-location-arrow"></i>
-                                            <span>{rowItem.ShipmentOrderStatusName}</span>
-                                          </label>
-                                          <label className="item vehicle">{this._genCommentCarrierPartner(rowItem.CarrierTypeID, rowItem.CarrierTypeName)}</label>
-                                          <label className="item printing">
-                                            {rowItem.IsOutputGoods == false && rowItem.IsHandoverGoods == false ? <span className="badge badge-danger">Chưa xuất </span> : ""}
-                                            {rowItem.IsOutputGoods == true && rowItem.IsHandoverGoods == false ? <span className="badge badge-info">Đã xuất </span> : ""}
-                                            {rowItem.IsHandoverGoods == true ? <span className="badge badge-success">NV đã nhận </span> : ""}
-                                          </label>
-                                        </div>
-                                      </td>
-                                      <td className="group-address" style={{ width: "34%" }}>
-                                        <div className="group-info-row">
-                                          <label className="item person">
-                                            <i className="fa fa-user"></i>
-                                            <div className="person-info">
-                                              <span className="name" style={{ wordBreak: "break-all" }}>
-                                                {rowItem.ReceiverFullName}
-                                              </span>
-                                              <span className="line">-</span>
-                                              <span className={rowItem.PhoneCount > 1 ? "phone  phonered" : "phone"}>({rowItem.ReceiverPhoneNumber})</span>
-                                              {rowItem.PartnerSaleOrderID != "" ? <span className="line">-</span> : ""}
-                                              <span className="phone partner-sale-Order fw-600">{rowItem.PartnerSaleOrderID}</span>
-                                              <button className="btn-copy-clipboard" data-id={rowItem.PartnerSaleOrderID} onClick={this.copyToClipboard.bind(this)}>
-                                                <i className="fa fa-copy" data-id={rowItem.PartnerSaleOrderID}></i>
-                                              </button>
-                                            </div>
-                                          </label>
-                                          {/* <label className="item address-receiver">
-                                      <span>{rowItem.ReceiverFullAddress}</span>
-                                    </label> */}
-                                          <label className="item address-repository-created">
-                                            <span>{rowItem.SenderFullName}</span>
-                                          </label>
-                                          <label className="item creacte-time">
-                                            <span className="times group-times">
-                                              <span className="time-item itemCreatedOrderTime">
-                                                <span className="txtCreatedOrderTime">Tạo: {formatMonthDate(rowItem.CreatedOrderTime)}</span>
-                                                <span className="txtCreatedOrderTime">Xuất: {formatMonthDate(rowItem.OutputGoodsDate)}</span>
-                                              </span>
-                                              <span className="time-item itemEstimat">
-                                                <span className="intervale itemDistance">
-                                                  <i className="fa fa-paper-plane-o"></i>
-                                                  <span className="txtintervale">{rowItem.EstimateDeliveryDistance + "Km/" + rowItem.ActualDeliveryDistance.toFixed(2) + "Km"}</span>
-                                                </span>
-                                                <span className="intervale itemLong">
-                                                  <i className="ti ti-timer"></i>
-                                                  <span className="txtintervale">{rowItem.EstimateDeliveryLong + "'"}</span>
-                                                </span>
-                                              </span>
-                                            </span>
-                                          </label>
-                                        </div>
-                                      </td>
-                                      <td className="group-infoShipmentOrder" style={{ width: "15%" }}>
-                                        <div className="group-info-row">
-                                          <label className="item person">
-                                            <span className="person-info fw-600" style={{ fontSize: 12 }}>
-                                              <Link className="linktext blank" target="_blank" to={{ pathname: "/ShipmentOrder/Detail/" + rowItem.ShipmentOrderID }}>
-                                                {rowItem.ShipmentOrderID}
-                                              </Link>
-                                            </span>
-                                            <button
-                                              className="btn-copy-clipboard"
-                                              style={{ border: "none", backgroundColor: "transparent", cursor: "pointer", outline: "none" }}
-                                              data-id={rowItem.ShipmentOrderID}
-                                              onClick={this.copyToClipboardShipmentOrder.bind(this)}
-                                            >
-                                              <i className="fa fa-copy" data-id={rowItem.ShipmentOrderID}></i>
-                                            </button>
-                                          </label>
-                                          <label className="item address-receiver">
-                                            <span>{rowItem.ShipmentOrderTypeName}</span>
-                                          </label>
-                                          {rowItem.CoordinatorUser != "" ? (
-                                            <React.Fragment>
-                                              <label className="item address-receiver">
-                                                <span>
-                                                  ĐP: <span className="coordinatorUser">{rowItem.CoordinatorUser + "-" + rowItem.CoordinatorUserName}</span>
-                                                </span>
-                                              </label>
-                                              {rowItem.DeliverUserFullNameList != "" ? (
-                                                <label className="item address-receiver">
-                                                  <span>{rowItem.DeliverUserFullNameList}</span>
-                                                </label>
-                                              ) : (
-                                                ""
-                                              )}
-
-                                              <label className="item address-receiver">
-                                                <span className="receiverred">{rowItem.CoordinatorNote != "" ? "Ghi chú: " + rowItem.CoordinatorNote : ""}</span>
-                                              </label>
-                                            </React.Fragment>
-                                          ) : (
-                                            <label className="item address-receiver">
-                                              <span className="receiverred">{rowItem.CoordinatorNote != "" ? "Ghi chú: " + rowItem.CoordinatorNote : ""}</span>
-                                            </label>
-                                          )}
-                                        </div>
-                                      </td>
-                                      <td className="group-address" style={{ width: "24%" }}>
-                                        <div className="group-info-row">
-                                          <label className={rowItem.IsInputReturn == true ? "item address-repository-created lblReturns" : "item address-repository-created"}>
-                                            <span className="coordinatorUser">
-                                              {rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(/;/g, "<br/>"))}
-                                            </span>
-                                          </label>
-                                          <label className="item address-receiver">
-                                            <span className="price-debt">{rowItem.OrderNote != "" ? "Ghi chú: " + rowItem.OrderNote : ""}</span>
-                                          </label>
-                                        </div>
-                                      </td>
-                                      <td className="group-price" style={{ width: "9%" }}>
-                                        <div className="group-row">
-                                          <span className="item price3">{rowItem.IsCancelDelivery == true ? <span className="badge badge-danger">Đã hủy</span> : ""}</span>
-                                          {rowItem.TotalCOD > 0 ? <span className="item pricecod">COD:{formatMoney(rowItem.TotalCOD, 0)}</span> : ""}
-                                          {rowItem.TotalSaleMaterialMoney > 0 ? <span className="item price-supplies">Vật tư:{formatMoney(rowItem.TotalSaleMaterialMoney, 0)}</span> : ""}
-                                          {rowItem.IsInputReturn == true ? <span className="item price-supplies">Nhập trả:{formatMoney(rowItem.TotalReturnPrice, 0)}</span> : ""}
-                                          {rowItem.IsPaidIn == true || rowItem.TotalSaleMaterialMoney + rowItem.TotalCOD - rowItem.TotalReturnPrice == 0 ? (
-                                            <span className="item price3 price-success">
-                                              <span className="price-title ">Nợ: </span>
-                                              <span className="price-debt">0đ</span>
-                                            </span>
-                                          ) : rowItem.TotalPaidInMoney + rowItem.TotalUnPaidInMoney > 0 ? (
-                                            <div className="item price3">
-                                              <span className="price-title">Nợ: </span>
-                                              <span className="price-debt">-{rowItem.TotalUnPaidInMoney >= 0 ? formatMoney(rowItem.TotalUnPaidInMoney, 0) : 0}đ</span>
-                                            </div>
-                                          ) : (
-                                            <div className="item price3">
-                                              <span className="price-title">Nợ: </span>
-                                              <span className="price-debt">
-                                                -
-                                                {rowItem.TotalCOD - rowItem.TotalReturnPrice <= 0
-                                                  ? formatMoney(rowItem.TotalSaleMaterialMoney)
-                                                  : formatMoney(rowItem.TotalCOD + rowItem.TotalSaleMaterialMoney - rowItem.TotalReturnPrice, 0)}
-                                              </span>
-                                            </div>
-                                          )}
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  );
-                                })}
-                            </tbody>
-                          </table>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+              <DataGridShipmentRouteAuto
+                key={1}
+                listColumn={DataGridColumnList}
+                dataSource={this.state.ShipmentRouteAutoDataSource.Dropped}
+                IsLoadData={this.state.IsLoadData}
+                TimeFrame="Dropped"
+                GridDataShip={this.state.GridDataShip.Dropped}
+                AddLink={AddLink}
+                IDSelectColumnName={IDSelectColumnName}
+                PKColumnName={PKColumnName}
+                onDeleteClick={this.handleDelete}
+                onChangePage={this.handleOnChangePage}
+                onChangeView={this.handleOnChangeView.bind(this)}
+                onSearchEvent={this.handleOnSearchEvent.bind(this)}
+                onChangePageLoad={this.onChangePageLoad.bind(this)}
+                onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
+                onCheckShip={this.handleCheckShip}
+                onClickShip={this.handleClickShip}
+                onShipmentRoute={this.handleClickShipmentRoute}
+                onShowModel={this.handleShowModel}
+                onPrint={this.handlePrint.bind(this)}
+                IsDelete={false}
+                ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
+                IsAdd={false}
+                IsDataGridSmallSize={this.state.IsDataGridSmallSize}
+                PageNumber={this.state.PageNumber}
+                DeletePermission={"SHIPMENTORDER_DELETE"}
+                EditPermission={"SHIPMENTORDER_UPDATE"}
+                IsAutoPaging={true}
+                RowsPerPage={10000}
+              />
             </Tabs.TabPane>
           </Tabs>
         </div>
@@ -1616,11 +1439,13 @@ class SearchCom extends Component {
     }, 2000);
   }
 
+  // Xử lý sự kiện thay đổi tab
   handleChangeActiveTab(paramActiveKey) {
     let objActiveTimeFrame = {
       Name: "",
       TimeFrame: "",
     };
+
     if (paramActiveKey == 1) {
       objActiveTimeFrame = {
         Name: "08h00 - 10h00",
@@ -1651,17 +1476,37 @@ class SearchCom extends Component {
         Name: "19h00 - 21h00",
         TimeFrame: "TimeFrame19to21",
       };
-    } else {
+    } else if (paramActiveKey == 7) {
       objActiveTimeFrame = {
         Name: "Thời gian khác",
         TimeFrame: "diffTimeFrame",
+      };
+    } else {
+      objActiveTimeFrame = {
+        Name: "",
+        TimeFrame: "",
       };
     }
 
     let changeState = this.state;
 
-    changeState = { ...changeState, ActiveTimeFrame: objActiveTimeFrame, ActiveTab: paramActiveKey };
+    if (paramActiveKey == 9) {
+      let objUIEffect = changeState.UIEffect;
+      let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
 
+      objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsDisabled: true };
+      objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
+      changeState = { ...changeState, UIEffect: objUIEffect };
+    } else {
+      let objUIEffect = changeState.UIEffect;
+      let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
+
+      objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsDisabled: false };
+      objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
+      changeState = { ...changeState, UIEffect: objUIEffect };
+    }
+
+    changeState = { ...changeState, ActiveTimeFrame: objActiveTimeFrame, ActiveTab: paramActiveKey };
     this.setState(changeState);
   }
 
@@ -2384,7 +2229,7 @@ class SearchCom extends Component {
                     <Button type="primary" onClick={() => this.handleUserCoordinator()}>
                       Phân tuyến
                     </Button>
-                    <Button loading={this.state.UIEffect.ButtonShipmentRouteAuto.IsLoading} type="primary" onClick={(_) => this.handleShipmentRouteAuto()}>
+                    <Button loading={this.state.UIEffect.ButtonShipmentRouteAuto.IsLoading} disabled={this.state.UIEffect.ButtonShipmentRouteAuto.IsDisabled} type="primary" onClick={(_) => this.handleShipmentRouteAuto()}>
                       Phân tuyến tự động
                     </Button>
                   </Space>

@@ -101,8 +101,6 @@ class DataGridShipmentRouteAutoCom extends Component {
   recursiveDataSource = () => {
     setTimeout(() => {
       let hasMore = this.state.DataSource.length + 1 < this.props.dataSource.length;
-      console.log(this.props.TimeFrame)
-      console.log("this.state.DataSource.length ======= ", this.state.DataSource.length)
       this.setState((prev, props) => ({
         DataSource: props.dataSource.slice(0, prev.DataSource.length + 20)
       }));
@@ -702,6 +700,8 @@ class DataGridShipmentRouteAutoCom extends Component {
     this.props.hideModal();
   };
 
+
+  // Xử lý nút checked, isSinger = true => xử lý thêm từng cái, ngược lại xử lý bằng checked
   handleCheckShip(name, value, checked, isSinger = false) {
     const strShipmentOrderValue = value;
     const objShipmentOrder = this.state.DataSource.find((n) => n[name] == strShipmentOrderValue);
