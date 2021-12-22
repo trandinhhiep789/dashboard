@@ -35,7 +35,7 @@ class AddCom extends React.Component {
 
     handleSubmit(formData, MLObject) {
         //console.log("MLObject", MLObject);
-        if (MLObject.ArchitechtureTypeID == -1 && MLObject.ProjectTypeID == -1) {
+        if (MLObject.ArchitectureID == -1 && MLObject.ProjectTypeID == -1) {
             this.setState({ IsCallAPIError: true });
             this.showMessage("Bạn phải nhập vào ít nhất 1 mã loại công trình hoặc mã loại mô hình");
             return;
@@ -50,7 +50,7 @@ class AddCom extends React.Component {
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
-                this.props.callClearLocalCache(ERPCOMMONCACHE_SYMPTOM);
+                //this.props.callClearLocalCache(ERPCOMMONCACHE_SYMPTOM);
                 //this.handleSubmitInsertLog(MLObject);
             }
             this.showMessage(apiResult.Message);

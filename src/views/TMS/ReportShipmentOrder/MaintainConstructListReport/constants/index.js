@@ -47,13 +47,13 @@ export const InitSearchParams = [
 
 export const SearchElementList = [
     {
-        type: "ComboBox",
+        type: "ComboBoxNewChange",
         name: "cbConstructID",
         DataSourceMember: "ConstructID",
         label: "Mã công trình",
         colspan: 2,
-        value: -1,
-        isMultiSelect: false,
+        value: "",
+        isMultiSelect: true,
         placeholder: "Mã công trình",
         listoption: [],
         IsAutoLoadItemFromCache: true,

@@ -1,4 +1,4 @@
-import { ERPCOMMONCACHE_SERVICEGROUP, ERPCOMMONCACHE_MAINGROUP, ERPCOMMONCACHE_SUBGROUP, ERPCOMMONCACHE_BRAND, ERPCOMMONCACHE_BRAND_MAINGROUP, ERPCOMMONCACHE_MAINTAINCONSTRUCTLST, ERPCOMMONCACHE_MAINTAINPROLIST } from '../../../../../constants/keyCache';
+import { ERPCOMMONCACHE_SERVICEGROUP, ERPCOMMONCACHE_MAINGROUP, ERPCOMMONCACHE_SUBGROUP, ERPCOMMONCACHE_BRAND, ERPCOMMONCACHE_BRAND_MAINGROUP, ERPCOMMONCACHE_MAINTAINCONSTRUCTLST, ERPCOMMONCACHE_MAINTAINPROLIST, ERPCOMMONCACHE_CONSTRUCTREVENUE } from '../../../../../constants/keyCache';
 import { toIsoStringCus } from '../../../../../utils/function';
 
 export const APIHostName = "TMSAPI";
@@ -16,7 +16,9 @@ export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "", Title: "Danh sách các công trình xây dựng bảo trì đang tính doanh thu" }
 ];
-var dateNow = new Date();  
+//var dateNow = new Date();  
+const dtFromdate = new Date()
+dtFromdate.setDate(new Date().getDate() - 1);
 
 export const InitSearchParams = [
     // {
@@ -41,12 +43,20 @@ export const InitSearchParams = [
     },
     {
         SearchKey: "@FROMDATE",
-        SearchValue: new Date((dateNow.getMonth()) + "/" + '01' + "/" + dateNow.getFullYear()),
+        SearchValue: dtFromdate,
     },
     {
         SearchKey: "@TODATE",
-        SearchValue: new Date(dateNow.getFullYear(), dateNow.getMonth(), 0),
+        SearchValue: new Date(),
     }
+    // {
+    //     SearchKey: "@FROMDATE",
+    //     SearchValue: new Date((dateNow.getMonth()) + "/" + '01' + "/" + dateNow.getFullYear()),
+    // },
+    // {
+    //     SearchKey: "@TODATE",
+    //     SearchValue: new Date(dateNow.getFullYear(), dateNow.getMonth(), 0),
+    // }
 ];
 
 export const SearchElementList = [
@@ -61,9 +71,9 @@ export const SearchElementList = [
         placeholder: "Mã công trình",
         listoption: [],
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: ERPCOMMONCACHE_MAINTAINCONSTRUCTLST,
-        ValueMember: "ConstructID",
-        NameMember: "MaintainConstructName",
+        LoadItemCacheKeyID: ERPCOMMONCACHE_CONSTRUCTREVENUE,
+        ValueMember: "ConstructConcern",
+        NameMember: "ConstructName",
         classNameCol: "col-custom"
     },
     {
@@ -87,7 +97,7 @@ export const SearchElementList = [
         name: "dtFromDate",
         DataSourceMember: "FromDate",
         label: "Từ Ngày",
-        value: new Date((dateNow.getMonth()) + "/" + '01' + "/" + dateNow.getFullYear()),
+        value: dtFromdate,
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
@@ -97,7 +107,7 @@ export const SearchElementList = [
         name: "dtToDate",
         DataSourceMember: "ToDate",
         label: "Đến Ngày",
-        value: new Date(dateNow.getFullYear(), dateNow.getMonth(), 0),
+        value: new Date(),
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,

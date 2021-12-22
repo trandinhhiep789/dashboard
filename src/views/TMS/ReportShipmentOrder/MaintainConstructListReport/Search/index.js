@@ -119,7 +119,7 @@ class SearchCom extends React.Component {
         const postData = [
             {
                 SearchKey: "@CONSTRUCTID",
-                SearchValue: MLObject.ConstructID
+                SearchValue: MLObject.ConstructID.toString()
             },
             {
                 SearchKey: "@FROMDATE",
@@ -434,7 +434,7 @@ class SearchCom extends React.Component {
         const searchData = [
             {
                 SearchKey: "@CONSTRUCTID",
-                SearchValue: MLObject.ConstructID
+                SearchValue: MLObject.ConstructID.toString()
             },
             {
                 SearchKey: "@FROMDATE",
@@ -515,7 +515,7 @@ class SearchCom extends React.Component {
                     TitleButtonExport="Xuất dữ liệu"
                     ref={this.searchref}
                     className="multiple"
-                    classNamebtnSearch="groupAction"
+                    //classNamebtnSearch="groupAction"
                 />
             </React.Fragment>
         );

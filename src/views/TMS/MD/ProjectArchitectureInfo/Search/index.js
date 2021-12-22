@@ -29,6 +29,14 @@ import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache, callGetUserCache } from "../../../../../actions/cacheAction";
 import { toIsoStringCus } from "../../../../../utils/function";
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+import readXlsxFile from 'read-excel-file'
+import { formatDate } from "../../../../../common/library/CommonLib";
+
+const divStyle = {
+    marginLeft: '4px',
+};
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -37,7 +45,7 @@ class SearchCom extends React.Component {
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleOnValueChange = this.handleOnValueChange.bind(this);
         this.handleExportCSV = this.handleExportCSV.bind(this);
-        this.checkAddPermission =  this.checkAddPermission.bind(this);
+        this.checkAddPermission = this.checkAddPermission.bind(this);
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
@@ -62,17 +70,17 @@ class SearchCom extends React.Component {
         this.props.callGetUserCache(GET_CACHE_USER_FUNCTION_LIST).then((result) => {
             if (result && !result.IsError && result.ResultObject) {
                 let _export = result.ResultObject.CacheData.filter(x => x.FunctionID == MAINTAINCONSTRUCT_ADD);
-                console.log("handleGetCache: ", _export);
+                //console.log("handleGetCache: ", _export);
                 if (_export && _export.length > 0) {
                     this.setState({ IsAllowExport: true });
                 }
             }
-            
+
         });
     }
 
     handleOnValueChange(FormDataContolLstd, MLObject) {
-        console.log("FormDataContolLstd", FormDataContolLstd, MLObject);
+        //console.log("FormDataContolLstd", FormDataContolLstd, MLObject);
         const postData = [
             {
                 SearchKey: "@FROMDATE",
@@ -85,11 +93,11 @@ class SearchCom extends React.Component {
         ];
 
         this.setState({ SearchData: postData });
-        console.log("postData",postData);
+        //console.log("postData", postData);
     }
 
 
-    
+
 
     handleSearchSubmit(formData, MLObject) {
         const postData = [
@@ -150,32 +158,143 @@ class SearchCom extends React.Component {
     //Xuất Excel các công trình nâng cấp
     SearchProjectUpgrade() {
         this.props.callFetchAPI(APIHostName, "api/ArchitechtureType_PRJType/SearchProjectUpgradeA", this.state.SearchData).then(apiResult => {
+            //console.log("apiResult", apiResult);
+            if (!apiResult.IsError && apiResult.ResultObject != null) {
+                const exelData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Mã công trình nâng cấp": item.ProjectUpgradeID,
+                        "Mã loại mô hình": item.ArchitectureID,
+                        "Mã kênh": item.ChannelID,
+                        "Mã siêu thị": item.StoreID,
+                        "Số ngày đêm": item.NumberOfDay,
+                        "Ngày bắt đầu": item.StartDate,
+                        "Trưởng phòng": item.ManagerUser,
+                        "Trưởng nhóm": item.vIceManagerUser,
+                        "Nhân viên": item.StaffUser,
+                        "Ngày kết thúc": item.EndDate,
+                        "Trạng thái duyệt": item.ApprovedStatus,
+                        "Ngày duyệt": item.ApprovedDate,
+                        "Mã đối tác": item.PartnerID,
+                        "Loại đối tác": item.PartnerType,
+                        "Người nhận": item.ReceivedUser,
+                        "Trạng thái nhận": item.ReceivedStatus,
+                        "Ngày nhận": item.ReceivedDate
+                    };
+                    return element;
+
+                })
+                this.handleExportCSV(exelData, "Danh sách các công trình nâng cấp");
+                // this.setState({
+                //     DataExport: exelData
+                // });
+            } else {
+                this.addNotification(apiResult.Message, apiResult.IsError);
+            }
+        });
+    }
+
+
+    //Xuất Excel các loại mô hình nâng cấp
+    SearchProjectArchitecture() {
+        this.props.callFetchAPI(APIHostName, "api/ArchitechtureType_PRJType/SearchProjectArchitecture", this.state.SearchData).then(apiResult => {
+            //console.log("apiResult", apiResult);
+            if (!apiResult.IsError && apiResult.ResultObject != null) {
+                const exelData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Mã loại mô hình": item.ArchitectureID,
+                        "Tên loại mô hình": item.ArchitectureName,
+                        "Mã kênh": item.ChannelID,
+                        "Số ngày đêm": item.NumberOfDay
+                    };
+                    return element;
+
+                })
+                this.handleExportCSV(exelData, "Danh sách các loại mô hình nâng cấp");
+                // this.setState({
+                //     DataExport: exelData
+                // });
+            } else {
+                this.addNotification(apiResult.Message, apiResult.IsError);
+            }
+        });
+    }
+
+    //Xuất Excel các công trình xây dựng
+    SearchProject() {
+        this.props.callFetchAPI(APIHostName, "api/ArchitechtureType_PRJType/SearchProject", this.state.SearchData).then(apiResult => {
             console.log("apiResult", apiResult);
             if (!apiResult.IsError && apiResult.ResultObject != null) {
                 const exelData = apiResult.ResultObject.map((item, index) => {
                     let element = {
-                        "Mã nhân viên": item.UserName,
-                        "Tên nhân viên": item.FullName,
-                        "Mã vị trí thưởng": item.RewardPositionID,
-                        "Tên vị trí thưởng": item.RewardPositionName,
-                        "Loại nhân viên": item.StaffTypeName
+                        "Mã công trình mở mới": item.ProjectID,
+                        "Tên công trình": item.ProjectName,
+                        "Mã loại công trình": item.ProjectTypeID,
+                        "Mã tỉnh": item.ProvinceID,
+                        "Mã siêu thị": item.StoreID,
+                        "Tình trạng": item.Status,
+                        "Số ngày": item.ProjectDay,
+                        "Ngày bắt đầu thi công": formatDate(item.StartDate, true),
+                        "Đã kết thúc": item.ISend,
+                        "Ngày bàn giao dự kiến": formatDate(item.EndDate, true),
+                        "Giám đốc phòng xây dựng và sau bán hàng": item.DirectUser,
+                        "Trưởng phòng": item.ManagerUser,
+                        "Trưởng nhóm": item.vIceManagerUser,
+                        "Nhân viên": item.StaffUser,
+                        "Mã đối tác": item.PartnerID,
+                        "Trạng thái duyệt": item.ApprovedStatus,
+                        "Ngày duyệt": formatDate(item.ApprovedDate, true),
+                        "Ngày bàn giao dự kiến": formatDate(item.FinalPayDeadLine, true),
+                        "Người nhận": item.ReceivedUser,
+                        "Trạng thái nhận": item.ReceivedStatus,
+                        "Ngày nhận": item.ReceivedDate,
+                        "Mã mô hình": item.ArchitectureID
+
                     };
                     return element;
 
-                })           
-                this.handleExportCSV(exelData);
+                })
+                this.handleExportCSV(exelData, "Danh sách các công trình xây dựng");
                 // this.setState({
                 //     DataExport: exelData
                 // });
-            }else{
-                this.addNotification(apiResult.Message, apiResult.IsErro);
+            } else {
+                this.addNotification(apiResult.Message, apiResult.IsError);
+            }
+        });
+    }
+
+
+    //Xuất Excel các loại công trình xây dựng
+    SearchProjectType() {
+        this.props.callFetchAPI(APIHostName, "api/ArchitechtureType_PRJType/SearchProjectType", this.state.SearchData).then(apiResult => {
+            console.log("apiResult", apiResult);
+            if (!apiResult.IsError && apiResult.ResultObject != null) {
+                const exelData = apiResult.ResultObject.map((item, index) => {
+                    let element = {
+                        "Mã loại công trình": item.ProjecTypeID,
+                        "Tên loại công trình": item.ProjectTypeName,
+                        "Xây mới : Số ngày hoàn tất": item.BuildDay,
+                        "Sửa chữa - Số ngày hoàn tất": item.RepairDay,
+                        "Nâng cấp - Số ngày hoàn tất": item.UpgradeDay,
+                        "Mô tả": item.Description,
+                        "BrainId của siêu thị": item.BrandID
+                    };
+                    return element;
+
+                })
+                this.handleExportCSV(exelData, "Danh sách các loại công trình xây dựng ");
+                // this.setState({
+                //     DataExport: exelData
+                // });
+            } else {
+                this.addNotification(apiResult.Message, apiResult.IsError);
             }
         });
     }
 
 
 
-    handleExportCSV(DataExport) {
+    handleExportCSV(DataExport, title) {
         const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
         const fileExtension = '.xlsx';
         let result;
@@ -199,7 +318,7 @@ class SearchCom extends React.Component {
             const data = new Blob([excelBuffer], { type: fileType });
 
 
-            FileSaver.saveAs(data, "Danh sách vị trí thưởng của nhân viên" + fileExtension);
+            FileSaver.saveAs(data, title + fileExtension);
 
             result = {
                 IsError: false,
@@ -281,9 +400,21 @@ class SearchCom extends React.Component {
                         classNamebtnSearch="groupAction"
                     />
 
-                    <div className="btn-group btn-group-sm">
+                    <div className="btn-group btn-group-sm" style={divStyle}>
                         <button type="button" className="btn btn-success ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.SearchProjectUpgrade.bind(this)}>
                             <span className="fa fa-file-excel-o"> Xuất Excel các công trình nâng cấp</span>
+                        </button>
+
+                        <button type="button" className="btn btn-success ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.SearchProjectArchitecture.bind(this)}>
+                            <span className="fa fa-file-excel-o"> Xuất Excel các loại mô hình nâng cấp</span>
+                        </button>
+
+                        <button type="button" className="btn btn-success ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.SearchProject.bind(this)}>
+                            <span className="fa fa-file-excel-o"> Xuất Excel các công trình xây dựng</span>
+                        </button>
+
+                        <button type="button" className="btn btn-success ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.SearchProjectType.bind(this)}>
+                            <span className="fa fa-file-excel-o"> Xuất Excel các loại công trình xây dựng</span>
                         </button>
                     </div>
 
