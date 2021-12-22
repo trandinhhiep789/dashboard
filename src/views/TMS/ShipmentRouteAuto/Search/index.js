@@ -1,37 +1,37 @@
 import React, { Fragment, Component } from "react";
 import { connect } from "react-redux";
+import "react-notifications-component/dist/theme.css";
+import { Button, Card, Col, Row, Space, Statistic, Tabs, Popover, Tooltip, Input, Tag } from "antd";
+import { EyeOutlined, PartitionOutlined } from "@ant-design/icons";
 import { ModalManager } from "react-dynamic-modal";
-import { MessageModal } from "../../../../common/components/Modal";
+import Collapsible from "react-collapsible";
+import moment from "moment";
+import ReactNotification from "react-notifications-component";
+
 import {
-    SearchElementList,
-    SearchMLObjectDefinition,
-    DataGridColumnList,
     AddLink,
     APIHostName,
-    SearchAPIPath,
+    DataGridColumnList,
     DeleteAPIPath,
     IDSelectColumnName,
-    PKColumnName,
     InitSearchParams,
     PagePath,
+    PKColumnName,
+    SearchAPIPath,
+    SearchElementList,
+    SearchMLObjectDefinition,
 } from "../../ShipmentRoute/constants";
-import { callFetchAPI } from "../../../../actions/fetchAPIAction";
-import { updatePagePath } from "../../../../actions/pageAction";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
-import Collapsible from "react-collapsible";
-import DataGridShipmentRouteAuto from "./../Components/DataGridShipmentRouteAuto";
-import SearchFormShipmentRouteAuto from "../Components/SearchFormShipmentRouteAuto";
+
 import "../../../../css/DataGridShipmentRouteAuto.scss";
-import moment from "moment";
-import { Button, Card, Col, Row, Space, Statistic, Tabs, Collapse, Popover, Tooltip, Input, Tag } from "antd";
-import { EyeOutlined, PartitionOutlined } from "@ant-design/icons";
+import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { hideModal, showModal } from "../../../../actions/modal";
+import { MessageModal } from "../../../../common/components/Modal";
+import { updatePagePath } from "../../../../actions/pageAction";
+import DataGridShipmentRouteAuto from "./../Components/DataGridShipmentRouteAuto";
 import ModalSearchFormShipmentRouteAuto from "../Components/ModalSearchFormShipmentRouteAuto";
 import ModalVietBanDoShipmentRouteAuto from "../Components/ModalVietBanDoShipmentRouteAuto";
-import { formatMonthDate } from "../../../../common/library/CommonLib";
-import { Link } from "react-router-dom";
-import ReactHtmlParser from "react-html-parser";
+import SearchFormShipmentRouteAuto from "../Components/SearchFormShipmentRouteAuto";
+
 
 class SearchCom extends Component {
     constructor(props) {
@@ -169,6 +169,15 @@ class SearchCom extends Component {
 
         const localShipmentOrderInfo = localStorage.getItem("SearchShipmentOrderInfo");
         let InitSearchParams = [];
+        const today = new Date(), tomorrow = new Date();
+        today.setHours(7);
+        today.setMinutes(0);
+        today.setSeconds(0);
+
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        tomorrow.setHours(7);
+        tomorrow.setMinutes(0);
+        tomorrow.setSeconds(0);
 
         if (localShipmentOrderInfo == null) {
             InitSearchParams = [
@@ -180,17 +189,25 @@ class SearchCom extends Component {
                     SearchKey: "@RECEIVERPHONENUMBER",
                     SearchValue: "",
                 },
+                // {
+                //     SearchKey: "@SHIPMENTORDERTYPEID",
+                //     SearchValue: "",
+                // },
                 {
                     SearchKey: "@SHIPMENTORDERTYPEID",
-                    SearchValue: "",
+                    SearchValue: "1026", // Dịch vụ giao hàng công nghệ BHX online
                 },
                 {
                     SearchKey: "@FromDate",
-                    SearchValue: new Date(),
+                    SearchValue: today,
                 },
+                // {
+                //     SearchKey: "@ToDate",
+                //     SearchValue: new Date(),
+                // },
                 {
                     SearchKey: "@ToDate",
-                    SearchValue: new Date(),
+                    SearchValue: tomorrow,
                 },
                 {
                     SearchKey: "@RECEIVERPROVINCEID",
@@ -212,13 +229,21 @@ class SearchCom extends Component {
                     SearchKey: "@COORDINATORSTOREID",
                     SearchValue: -1,
                 },
+                // {
+                //     SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
+                //     SearchValue: this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : "1,2,3",
+                // },
                 {
                     SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
-                    SearchValue: this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : "1,2,3",
+                    SearchValue: "1,2",
                 },
+                // {
+                //     SearchKey: "@IsCoordinator",
+                //     SearchValue: 2,
+                // },
                 {
                     SearchKey: "@IsCoordinator",
-                    SearchValue: 2,
+                    SearchValue: -1,
                 },
                 {
                     SearchKey: "@Typename",
@@ -264,17 +289,25 @@ class SearchCom extends Component {
                     SearchKey: "@RECEIVERPHONENUMBER",
                     SearchValue: "",
                 },
+                // {
+                //     SearchKey: "@SHIPMENTORDERTYPEID",
+                //     SearchValue: ShipmentOrderInfo.ShipmentOrderTypeID,
+                // },
                 {
                     SearchKey: "@SHIPMENTORDERTYPEID",
-                    SearchValue: ShipmentOrderInfo.ShipmentOrderTypeID,
+                    SearchValue: "1026", // Dịch vụ giao hàng công nghệ BHX online
                 },
                 {
                     SearchKey: "@FromDate",
-                    SearchValue: new Date(),
+                    SearchValue: today,
                 },
+                // {
+                //     SearchKey: "@ToDate",
+                //     SearchValue: new Date(),
+                // },
                 {
                     SearchKey: "@ToDate",
-                    SearchValue: new Date(),
+                    SearchValue: tomorrow,
                 },
                 {
                     SearchKey: "@RECEIVERPROVINCEID",
@@ -296,13 +329,21 @@ class SearchCom extends Component {
                     SearchKey: "@COORDINATORSTOREID",
                     SearchValue: ShipmentOrderInfo.CoordinatorStoreID,
                 },
+                // {
+                //     SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
+                //     SearchValue: ShipmentOrderInfo.ShipmentOrderStatusGroupID,
+                // },
                 {
                     SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
-                    SearchValue: ShipmentOrderInfo.ShipmentOrderStatusGroupID,
+                    SearchValue: "1,2",
                 },
+                // {
+                //     SearchKey: "@IsCoordinator",
+                //     SearchValue: ShipmentOrderInfo.IsCoordinator,
+                // },
                 {
                     SearchKey: "@IsCoordinator",
-                    SearchValue: ShipmentOrderInfo.IsCoordinator,
+                    SearchValue: -1,
                 },
                 {
                     SearchKey: "@Typename",
@@ -487,6 +528,16 @@ class SearchCom extends Component {
     }
 
     handleSearchSubmit(MLObject) {
+        const today = new Date(), tomorrow = new Date();
+        today.setHours(7);
+        today.setMinutes(0);
+        today.setSeconds(0);
+
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        tomorrow.setHours(7);
+        tomorrow.setMinutes(0);
+        tomorrow.setSeconds(0);
+
         const postData = [
             {
                 SearchKey: "@Keyword",
@@ -496,17 +547,29 @@ class SearchCom extends Component {
                 SearchKey: "@RECEIVERPHONENUMBER",
                 SearchValue: "",
             },
+            // {
+            //     SearchKey: "@SHIPMENTORDERTYPEID",
+            //     SearchValue: MLObject.ShipmentOrderTypeID,
+            // },
             {
                 SearchKey: "@SHIPMENTORDERTYPEID",
-                SearchValue: MLObject.ShipmentOrderTypeID,
+                SearchValue: "1026", // Dịch vụ giao hàng công nghệ BHX online
             },
+            // {
+            //     SearchKey: "@FromDate",
+            //     SearchValue: MLObject.CreatedOrderTimeFo,
+            // },
             {
                 SearchKey: "@FromDate",
-                SearchValue: MLObject.CreatedOrderTimeFo,
+                SearchValue: today,
             },
+            // {
+            //     SearchKey: "@ToDate",
+            //     SearchValue: MLObject.CreatedOrderTimeTo,
+            // },
             {
                 SearchKey: "@ToDate",
-                SearchValue: MLObject.CreatedOrderTimeTo,
+                SearchValue: tomorrow,
             },
             {
                 SearchKey: "@RECEIVERPROVINCEID",
@@ -528,13 +591,21 @@ class SearchCom extends Component {
                 SearchKey: "@COORDINATORSTOREID",
                 SearchValue: MLObject.CoordinatorStoreID,
             },
+            // {
+            //     SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
+            //     SearchValue: MLObject.ShipmentOrderStatusGroupID,
+            // },
             {
                 SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
-                SearchValue: MLObject.ShipmentOrderStatusGroupID,
+                SearchValue: "1,2",
             },
+            // {
+            //     SearchKey: "@IsCoordinator",
+            //     SearchValue: MLObject.IsCoordinator,
+            // },
             {
                 SearchKey: "@IsCoordinator",
-                SearchValue: MLObject.IsCoordinator,
+                SearchValue: -1,
             },
             {
                 SearchKey: "@CARRIERTYPEID",
