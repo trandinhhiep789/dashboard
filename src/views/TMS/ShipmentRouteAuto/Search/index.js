@@ -32,6 +32,7 @@ import ModalVietBanDoShipmentRouteAuto from "../Components/ModalVietBanDoShipmen
 import { formatMonthDate } from "../../../../common/library/CommonLib";
 import { Link } from "react-router-dom";
 import ReactHtmlParser from "react-html-parser";
+import { formatMoney } from "../../../../utils/function";
 
 class SearchCom extends Component {
   constructor(props) {
