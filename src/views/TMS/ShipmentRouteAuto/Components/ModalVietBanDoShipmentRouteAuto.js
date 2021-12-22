@@ -19,7 +19,11 @@ class ModalVietBanDoShipmentRouteAuto extends Component {
   }
 
   componentDidMount() {
-    let lstLocation = this.props.ListShipmentOrder.map((item) => {
+    let lstLocation = this.props.ListShipmentOrder.map((item, index) => {
+      if(index==0){
+        let [Latitude, Longitude] = item.CoordinatorStoreGeo.split(",");
+        return { Latitude, Longitude };
+      }
       let [Latitude, Longitude] = item.ReceiverGeoLocation.split(",");
       return { Latitude, Longitude };
     });
@@ -44,58 +48,59 @@ class ModalVietBanDoShipmentRouteAuto extends Component {
       if (!apiResult.IsError) {
         let objResult = JSON.parse(apiResult.ResultObject);
 
-        let geometryToCoordinates = function (encodedPoints, COORDINATE_PRECISION) {
-          COORDINATE_PRECISION = COORDINATE_PRECISION || 1e6;
+        // let geometryToCoordinates = function (encodedPoints, COORDINATE_PRECISION) {
+        //   COORDINATE_PRECISION = COORDINATE_PRECISION || 1e6;
 
-          var polylineChars = encodedPoints;
-          var index = 0;
+        //   var polylineChars = encodedPoints;
+        //   var index = 0;
 
-          var currentLat = 0;
-          var currentLng = 0;
-          var next5bits;
-          var sum;
-          var shifter;
+        //   var currentLat = 0;
+        //   var currentLng = 0;
+        //   var next5bits;
+        //   var sum;
+        //   var shifter;
 
-          var length = polylineChars.length;
-          var coords = [];
-          while (index < length) {
-            // calculate next latitude
-            sum = 0;
-            shifter = 0;
-            do {
-              next5bits = polylineChars.charCodeAt(index++) - 63;
-              sum |= (next5bits & 31) << shifter;
-              shifter += 5;
-            } while (next5bits >= 32 && index < length);
+        //   var length = polylineChars.length;
+        //   var coords = [];
+        //   while (index < length) {
+        //     // calculate next latitude
+        //     sum = 0;
+        //     shifter = 0;
+        //     do {
+        //       next5bits = polylineChars.charCodeAt(index++) - 63;
+        //       sum |= (next5bits & 31) << shifter;
+        //       shifter += 5;
+        //     } while (next5bits >= 32 && index < length);
 
-            if (index >= length) break;
+        //     if (index >= length) break;
 
-            currentLat += (sum & 1) === 1 ? ~(sum >> 1) : sum >> 1;
+        //     currentLat += (sum & 1) === 1 ? ~(sum >> 1) : sum >> 1;
 
-            //calculate next longitude
-            sum = 0;
-            shifter = 0;
-            do {
-              next5bits = polylineChars.charCodeAt(index++) - 63;
-              sum |= (next5bits & 31) << shifter;
-              shifter += 5;
-            } while (next5bits >= 32 && index < length);
+        //     //calculate next longitude
+        //     sum = 0;
+        //     shifter = 0;
+        //     do {
+        //       next5bits = polylineChars.charCodeAt(index++) - 63;
+        //       sum |= (next5bits & 31) << shifter;
+        //       shifter += 5;
+        //     } while (next5bits >= 32 && index < length);
 
-            if (index >= length && next5bits >= 32) break;
+        //     if (index >= length && next5bits >= 32) break;
 
-            currentLng += (sum & 1) === 1 ? ~(sum >> 1) : sum >> 1;
+        //     currentLng += (sum & 1) === 1 ? ~(sum >> 1) : sum >> 1;
 
-            coords.push({
-              lat: currentLat / COORDINATE_PRECISION,
-              lng: currentLng / COORDINATE_PRECISION,
-            });
-          }
+        //     coords.push({
+        //       lat: currentLat / COORDINATE_PRECISION,
+        //       lng: currentLng / COORDINATE_PRECISION,
+        //     });
+        //   }
 
-          return coords;
-        };
+        //   return coords;
+        // };
 
         // let result = geometryToCoordinates(objResult.Value.Routes[0].Geometry);
-        console.log({ objResult });
+
+        console.log("objResult", objResult);
 
         this.setState({
           Geometry: objResult.Value.Routes[0].Geometry,
@@ -178,7 +183,6 @@ class ModalVietBanDoShipmentRouteAuto extends Component {
           });
 
           polyline.setMap(map);
-          vbd.event.addListener(polyline, "mouseover", function (param) {});
         });
       }
     });

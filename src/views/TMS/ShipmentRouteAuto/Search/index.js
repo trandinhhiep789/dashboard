@@ -978,7 +978,7 @@ class SearchCom extends Component {
           let objUIEffect = changeState.UIEffect;
           let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
 
-          objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: false, IsDisabled:true };
+          objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: false, IsDisabled: true };
           objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
           changeState = { ...changeState, UIEffect: objUIEffect };
           objShipmentRouteAutoDataSource = { Motor: MotorRoute, Truck: TruckRoute, Dropped: ListDroppedShipmentOrder };
@@ -1101,19 +1101,9 @@ class SearchCom extends Component {
       </div>
     );
 
-    let length_motor =
-      this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.length == 1 &&
-      this.state.ShipmentRouteAutoDataSource.Motor.TotalDistance == 0 &&
-      this.state.ShipmentRouteAutoDataSource.Motor.TotalLoad == 0
-        ? 0
-        : this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.length;
+    let length_motor = this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.length;
 
-    let length_truck =
-      this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute.length == 1 &&
-      this.state.ShipmentRouteAutoDataSource.Truck.TotalDistance == 0 &&
-      this.state.ShipmentRouteAutoDataSource.Truck.TotalLoad == 0
-        ? 0
-        : this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute.length;
+    let length_truck = this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute.length;
 
     return (
       this.state.ShipmentRouteAutoDataSource != null && (
@@ -1131,8 +1121,9 @@ class SearchCom extends Component {
                   Tổng cộng số tải: <span style={{ fontWeight: "700" }}>{this.state.ShipmentRouteAutoDataSource.Motor.TotalLoad}</span> kg
                 </h6>
                 {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute &&
-                  this.state.ShipmentRouteAutoDataSource.Motor.TotalDistance > 0 &&
-                  this.state.ShipmentRouteAutoDataSource.Motor.TotalLoad > 0 && (
+                  // this.state.ShipmentRouteAutoDataSource.Motor.TotalDistance > 0 &&
+                  // this.state.ShipmentRouteAutoDataSource.Motor.TotalLoad > 0 && 
+                  (
                     <div style={{ width: "100%", backgroundColor: "white", padding: "20px", maxHeight: "60vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
                       {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.map((line, index) => (
                         <div key={index}>
@@ -1254,8 +1245,9 @@ class SearchCom extends Component {
                   Tổng cộng số tải: <span style={{ fontWeight: "700" }}>{this.state.ShipmentRouteAutoDataSource.Truck.TotalLoad}</span> kg
                 </h6>
                 {this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute &&
-                  this.state.ShipmentRouteAutoDataSource.Truck.TotalDistance > 0 &&
-                  this.state.ShipmentRouteAutoDataSource.Truck.TotalLoad > 0 && (
+                  // this.state.ShipmentRouteAutoDataSource.Truck.TotalDistance > 0 &&
+                  // this.state.ShipmentRouteAutoDataSource.Truck.TotalLoad > 0 &&
+                   (
                     <div style={{ width: "100%", backgroundColor: "white", padding: "20px", maxHeight: "60vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
                       {this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute.map((line, index) => (
                         <div key={index}>
@@ -1513,6 +1505,32 @@ class SearchCom extends Component {
   render() {
     const renderShipmentRouteAuto = this.renderShipmentRouteAuto();
 
+    let reactNodeTab = (title, length) => (
+      <div style={{ position: "relative" }}>
+        <span style={{ marginRight: "16px", lineHeight: "30px" }}>{title}</span>
+        {length > 0 && (
+          <span
+            style={{
+              height: "15px",
+              width: "15px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: "7.5px",
+              backgroundColor: "#eb4d4b",
+              position: "absolute",
+              top: "0",
+              right: "0",
+              color: "white",
+              fontSize: "11px",
+            }}
+          >
+            {length}
+          </span>
+        )}
+      </div>
+    );
+
     return (
       <React.Fragment>
         <ReactNotification ref={this.notificationDOMRef} />
@@ -1546,7 +1564,7 @@ class SearchCom extends Component {
         {this.state.IsLoadDataComplete && (
           <div className="col-lg-12" style={{ backgroundColor: "aliceblue", border: "1px solid #03a9f4" }}>
             <Tabs defaultActiveKey={this.state.ActiveTab} activeKey={this.state.ActiveTab} size="large" onChange={(activeKey) => this.handleChangeActiveTab(activeKey)}>
-              <Tabs.TabPane tab="08h00 - 10h00" key="1">
+              <Tabs.TabPane tab={reactNodeTab("08h00 - 10h00", this.state.TimeFrame8to10.length)} key="1">
                 <Collapsible
                   className="CollapsibleCustom"
                   triggerDisabled={this.state.ObjectIsDisabled.TimeFrame8to10}
@@ -1644,7 +1662,7 @@ class SearchCom extends Component {
                   />
                 </Collapsible>
               </Tabs.TabPane>
-              <Tabs.TabPane tab="10h00 - 12h00" key="2">
+              <Tabs.TabPane tab={reactNodeTab("10h00 - 12h00", this.state.TimeFrame10to12.length)} key="2">
                 <Collapsible
                   className="CollapsibleCustom"
                   triggerDisabled={this.state.ObjectIsDisabled.TimeFrame10to12}
@@ -1739,7 +1757,7 @@ class SearchCom extends Component {
                   />
                 </Collapsible>
               </Tabs.TabPane>
-              <Tabs.TabPane tab="12h00 - 14h00" key="3">
+              <Tabs.TabPane tab={reactNodeTab("12h00 - 14h00", this.state.TimeFrame12to14.length)} key="3">
                 <Collapsible
                   className="CollapsibleCustom"
                   triggerDisabled={this.state.ObjectIsDisabled.TimeFrame12to14}
@@ -1834,7 +1852,7 @@ class SearchCom extends Component {
                   />
                 </Collapsible>
               </Tabs.TabPane>
-              <Tabs.TabPane tab="14h00 - 16h00" key="4">
+              <Tabs.TabPane tab={reactNodeTab("14h00 - 16h00", this.state.TimeFrame14to16.length)} key="4">
                 <Collapsible
                   className="CollapsibleCustom"
                   triggerDisabled={this.state.ObjectIsDisabled.TimeFrame14to16}
@@ -1929,7 +1947,7 @@ class SearchCom extends Component {
                   />
                 </Collapsible>
               </Tabs.TabPane>
-              <Tabs.TabPane tab="17h00 - 19h00" key="5">
+              <Tabs.TabPane tab={reactNodeTab("17h00 - 19h00", this.state.TimeFrame17to19.length)} key="5">
                 <Collapsible
                   className="CollapsibleCustom"
                   triggerDisabled={this.state.ObjectIsDisabled.TimeFrame17to19}
@@ -2026,7 +2044,7 @@ class SearchCom extends Component {
                   />
                 </Collapsible>
               </Tabs.TabPane>
-              <Tabs.TabPane tab="19h00 - 21h00" key="6">
+              <Tabs.TabPane tab={reactNodeTab("19h00 - 21h00", this.state.TimeFrame19to21.length)} key="6">
                 <Collapsible
                   className="CollapsibleCustom"
                   triggerDisabled={this.state.ObjectIsDisabled.TimeFrame19to21}
@@ -2123,7 +2141,7 @@ class SearchCom extends Component {
                   />
                 </Collapsible>
               </Tabs.TabPane>
-              <Tabs.TabPane tab="Thời gian khác" key="7">
+              <Tabs.TabPane tab={reactNodeTab("Thời gian khác", this.state.diffTimeFrame.length)} key="7">
                 <Collapsible
                   className="CollapsibleCustom"
                   triggerDisabled={this.state.ObjectIsDisabled.diffTimeFrame}
@@ -2229,7 +2247,12 @@ class SearchCom extends Component {
                     <Button type="primary" onClick={() => this.handleUserCoordinator()}>
                       Phân tuyến
                     </Button>
-                    <Button loading={this.state.UIEffect.ButtonShipmentRouteAuto.IsLoading} disabled={this.state.UIEffect.ButtonShipmentRouteAuto.IsDisabled} type="primary" onClick={(_) => this.handleShipmentRouteAuto()}>
+                    <Button
+                      loading={this.state.UIEffect.ButtonShipmentRouteAuto.IsLoading}
+                      disabled={this.state.UIEffect.ButtonShipmentRouteAuto.IsDisabled}
+                      type="primary"
+                      onClick={(_) => this.handleShipmentRouteAuto()}
+                    >
                       Phân tuyến tự động
                     </Button>
                   </Space>
