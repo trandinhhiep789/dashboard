@@ -401,20 +401,20 @@ class SearchCom extends React.Component {
                     />
 
                     <div className="btn-group btn-group-sm" style={divStyle}>
-                        <button type="button" className="btn btn-success ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.SearchProjectUpgrade.bind(this)}>
-                            <span className="fa fa-file-excel-o"> Xuất Excel các công trình nâng cấp</span>
-                        </button>
-
-                        <button type="button" className="btn btn-success ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.SearchProjectArchitecture.bind(this)}>
-                            <span className="fa fa-file-excel-o"> Xuất Excel các loại mô hình nâng cấp</span>
-                        </button>
-
                         <button type="button" className="btn btn-success ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.SearchProject.bind(this)}>
                             <span className="fa fa-file-excel-o"> Xuất Excel các công trình xây dựng</span>
                         </button>
 
                         <button type="button" className="btn btn-success ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.SearchProjectType.bind(this)}>
                             <span className="fa fa-file-excel-o"> Xuất Excel các loại công trình xây dựng</span>
+                        </button>
+
+                        <button type="button" className="btn btn-success ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.SearchProjectUpgrade.bind(this)}>
+                            <span className="fa fa-file-excel-o"> Xuất Excel các công trình nâng cấp</span>
+                        </button>
+
+                        <button type="button" className="btn btn-success ml-10" title="" data-provide="tooltip" data-original-title="Xuất file" onClick={this.SearchProjectArchitecture.bind(this)}>
+                            <span className="fa fa-file-excel-o"> Xuất Excel các loại mô hình nâng cấp</span>
                         </button>
                     </div>
 

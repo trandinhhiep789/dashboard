@@ -1690,13 +1690,13 @@ const AppMenu = [
             MenuIcon: "",
             SubMenu: [],
           },
-          // {
-          //   MenuName: "ProjectArchitectureInfo",
-          //   MenuTitle: "Danh sách công trình xây dựng",
-          //   LinkTo: "/ProjectArchitectureInfo",
-          //   MenuIcon: "",
-          //   SubMenu: [],
-          // },
+          {
+            MenuName: "ProjectArchitectureInfo",
+            MenuTitle: "Danh sách công trình xây dựng",
+            LinkTo: "/ProjectArchitectureInfo",
+            MenuIcon: "",
+            SubMenu: [],
+          },
         ],
       },
       {
