@@ -94,7 +94,7 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtQualityAssessPoint",
-        label: "điểm đánh giá:",
+        label: "Điểm đánh giá chất lượng:",
         value: "0",
         maxSize: "2",
         placeholder: "",
@@ -216,7 +216,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtQualityAssessPoint",
-        label: "điểm đánh giá:",
+        label: "Điểm đánh giá chất lượng:",
         value: "0",
         maxSize: "2",
         placeholder: "",
