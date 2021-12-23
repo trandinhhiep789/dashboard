@@ -450,10 +450,10 @@ export const DataGridColumnList = [
         Width: 250
     },
     {
-        Name: "ConstrucServiceTypeName",
+        Name: "ConstructServiceTypeName",
         Type: "text",
         Caption: "Tên loại công việc",
-        DataSourceMember: "ConstrucServiceTypeName",
+        DataSourceMember: "ConstructServiceTypeName",
         Width: 250
     },
     // {

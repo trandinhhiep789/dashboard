@@ -168,6 +168,24 @@ export const AddModalColumnList = [
         value: false
     },
     {
+        Name: "IsHasReward",
+        type: "checkbox",
+        label: "Có được phép tính thưởng",
+        DataSourceMember: "IsHasReward",
+        readonly: false,
+        validatonList: [],
+        value: false
+    },
+    {
+        Name: "IsCanReturnItem",
+        type: "checkbox",
+        label: "Có được nhập trả",
+        DataSourceMember: "IsCanReturnItem",
+        readonly: false,
+        validatonList: [],
+        value: false
+    },
+    {
         Name: "MTOuputPayableTypeID",
         type: "select",
         label: "Hình thức thanh toán của yêu cầu xuất dịch vụ",
@@ -368,6 +386,18 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "IsOnlyCollectionBehalf",
         DataSourceMember: "IsOnlyCollectionBehalf"
+    },
+    {
+        Name: "IsHasReward",
+        DefaultValue: "",
+        BindControlName: "IsHasReward",
+        DataSourceMember: "IsHasReward"
+    },
+    {
+        Name: "IsCanReturnItem",
+        DefaultValue: "",
+        BindControlName: "IsCanReturnItem",
+        DataSourceMember: "IsCanReturnItem"
     },
     {
         Name: "MTOuputPayableTypeID",
