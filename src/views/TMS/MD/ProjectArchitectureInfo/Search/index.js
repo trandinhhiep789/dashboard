@@ -246,7 +246,7 @@ class SearchCom extends React.Component {
                         "Ngày bàn giao dự kiến": formatDate(item.FinalPayDeadLine, true),
                         "Người nhận": item.ReceivedUser,
                         "Trạng thái nhận": item.ReceivedStatus,
-                        "Ngày nhận": item.ReceivedDate,
+                        "Ngày nhận": formatDate(item.ReceivedDate, true),
                         "Mã mô hình": item.ArchitectureID
 
                     };

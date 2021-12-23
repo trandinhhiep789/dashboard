@@ -719,6 +719,14 @@ class EditCom extends React.Component {
                                 datasourcemember="IsConverSvTimeToSvProduct" controltype="InputControl"
                                 labelcolspan={4} colspan={8} rowspan={8}
                             />
+                            <FormControl.CheckBox label="Có được phép tính thưởng" name="IsHasReward"
+                                datasourcemember="IsHasReward" controltype="InputControl"
+                                labelcolspan={4} colspan={8} rowspan={8}
+                            />
+                            <FormControl.CheckBox label="Có được nhập trả" name="IsCanReturnItem"
+                                datasourcemember="IsCanReturnItem" controltype="InputControl"
+                                labelcolspan={4} colspan={8} rowspan={8}
+                            />
 
                             {/* ------------------------------------------------------------------ */}
 
