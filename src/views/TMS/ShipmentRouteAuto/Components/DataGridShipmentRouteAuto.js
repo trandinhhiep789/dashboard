@@ -101,14 +101,12 @@ class DataGridShipmentRouteAutoCom extends Component {
   recursiveDataSource = () => {
     setTimeout(() => {
       let hasMore = this.state.DataSource.length + 1 < this.props.dataSource.length;
-      console.log(this.props.TimeFrame)
-      console.log("this.state.DataSource.length ======= ", this.state.DataSource.length)
       this.setState((prev, props) => ({
-        DataSource: props.dataSource.slice(0, prev.DataSource.length + 20)
+        DataSource: props.dataSource.slice(0, prev.DataSource.length + 20),
       }));
       if (hasMore) this.recursiveDataSource();
-    }, 0)
-  }
+    }, 0);
+  };
 
   componentDidMount() {
     this.recursiveDataSource();
@@ -702,6 +700,7 @@ class DataGridShipmentRouteAutoCom extends Component {
     this.props.hideModal();
   };
 
+  // Xử lý nút checked, isSinger = true => xử lý thêm từng cái, ngược lại xử lý bằng checked
   handleCheckShip(name, value, checked, isSinger = false) {
     const strShipmentOrderValue = value;
     const objShipmentOrder = this.state.DataSource.find((n) => n[name] == strShipmentOrderValue);
@@ -727,7 +726,10 @@ class DataGridShipmentRouteAutoCom extends Component {
       gridDataShip.push(objShip);
       this.props.onCheckShip({ TimeFrame: this.props.TimeFrame, GridDataShip: gridDataShip, ShipmentOrderID: strShipmentOrderValue, IsSinger: isSinger });
     } else {
-      gridDataShip.splice(gridDataShip.findIndex((n) => n[name] == strShipmentOrderValue), 1);
+      gridDataShip.splice(
+        gridDataShip.findIndex((n) => n[name] == strShipmentOrderValue),
+        1
+      );
       this.props.onCheckShip({ TimeFrame: this.props.TimeFrame, GridDataShip: gridDataShip, ShipmentOrderID: strShipmentOrderValue, IsSinger: isSinger });
     }
 
@@ -1332,7 +1334,7 @@ class DataGridShipmentRouteAutoCom extends Component {
           >
             <thead className="thead-light">
               <tr>
-                <th className="jsgrid-header-cell" style={{ width: "3%" }}></th>
+                {this.props.IsColumnChecked && <th className="jsgrid-header-cell" style={{ width: "3%" }}></th>}
                 <th className="jsgrid-header-cell" style={{ width: "15%" }}>
                   Thời gian giao
                 </th>
@@ -1380,50 +1382,52 @@ class DataGridShipmentRouteAutoCom extends Component {
                             // console.log("check",rowItem.ShipmentOrderID,this.state.GridDataShip,this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
                             return (
                               <tr key={rowIndex} className={rowtrClass}>
-                                <td className={rowUndelivery} style={{ width: "3%" }}>
-                                  <ul>
-                                    {rowItem.ShipmentRouteID == "" ? (
-                                      <React.Fragment>
-                                        <li className="item">
-                                          <div className="group-action">
-                                            <div className="checkbox item-action">
-                                              <label>
-                                                <input
-                                                  type="checkbox"
-                                                  readOnly
-                                                  className="form-control form-control-sm"
-                                                  name={"ShipmentOrderID"}
-                                                  onChange={(event) => this.handleCheckShip(event.target.name, event.target.value, event.target.checked)}
-                                                  value={rowItem.ShipmentOrderID}
-                                                  checked={this.state.GridDataShip === undefined ? false : this.state.GridDataShip.some((n) => n.ShipmentOrderID == rowItem.ShipmentOrderID)}
-                                                />
-                                                <span className="cr">
-                                                  <i className="cr-icon fa fa-check"></i>
-                                                </span>
-                                              </label>
+                                {this.props.IsColumnChecked && (
+                                  <td className={rowUndelivery} style={{ width: "3%" }}>
+                                    <ul>
+                                      {rowItem.ShipmentRouteID == "" ? (
+                                        <React.Fragment>
+                                          <li className="item">
+                                            <div className="group-action">
+                                              <div className="checkbox item-action">
+                                                <label>
+                                                  <input
+                                                    type="checkbox"
+                                                    readOnly
+                                                    className="form-control form-control-sm"
+                                                    name={"ShipmentOrderID"}
+                                                    onChange={(event) => this.handleCheckShip(event.target.name, event.target.value, event.target.checked)}
+                                                    value={rowItem.ShipmentOrderID}
+                                                    checked={this.state.GridDataShip === undefined ? false : this.state.GridDataShip.some((n) => n.ShipmentOrderID == rowItem.ShipmentOrderID)}
+                                                  />
+                                                  <span className="cr">
+                                                    <i className="cr-icon fa fa-check"></i>
+                                                  </span>
+                                                </label>
+                                              </div>
                                             </div>
-                                          </div>
-                                        </li>
+                                          </li>
+                                          <li className="item ">
+                                            <button className="btn" onClick={() => this.handleClickShip(rowItem.ShipmentOrderID)}>
+                                              <i className="fa fa-user-plus"></i>
+                                            </button>
+                                          </li>
+                                        </React.Fragment>
+                                      ) : (
                                         <li className="item ">
-                                          <button className="btn" onClick={() => this.handleClickShip(rowItem.ShipmentOrderID)}>
+                                          <button onClick={() => this.handleClickShipmentRoute(rowItem.ShipmentRouteID)} className="btn btn-user-plus" title="Đã được phân tuyến">
                                             <i className="fa fa-user-plus"></i>
                                           </button>
                                         </li>
-                                      </React.Fragment>
-                                    ) : (
-                                      <li className="item ">
-                                        <button onClick={() => this.handleClickShipmentRoute(rowItem.ShipmentRouteID)} className="btn btn-user-plus" title="Đã được phân tuyến">
-                                          <i className="fa fa-user-plus"></i>
+                                      )}
+                                      <li className="item printing">
+                                        <button className="btn" onClick={this.handlePrintClickNew.bind(this)}>
+                                          <i className="ti ti-printer" data-id={rowItem.ShipmentOrderID}></i>
                                         </button>
                                       </li>
-                                    )}
-                                    {/* <li className="item printing">
-                                      <button className="btn" onClick={this.handlePrintClickNew.bind(this)}>
-                                        <i className="ti ti-printer" data-id={rowItem.ShipmentOrderID}></i>
-                                      </button>
-                                    </li> */}
-                                  </ul>
-                                </td>
+                                    </ul>
+                                  </td>
+                                )}
 
                                 <td className="groupInfoAction" style={{ width: "15%" }}>
                                   <div className="group-info-row">
@@ -1765,8 +1769,6 @@ class DataGridShipmentRouteAutoCom extends Component {
   }
 
   render() {
-    console.log(this.props.TimeFrame);
-
     const dataGrid = this.renderDataGrid();
 
     return (

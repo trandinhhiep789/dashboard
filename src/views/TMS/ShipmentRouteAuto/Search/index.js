@@ -1,38 +1,36 @@
 import React, { Fragment, Component } from "react";
 import { connect } from "react-redux";
+import "react-notifications-component/dist/theme.css";
+import { Button, Card, Col, Row, Space, Statistic, Tabs, Popover, Tooltip, Input, Tag, Select } from "antd";
+import { EyeOutlined, PartitionOutlined } from "@ant-design/icons";
 import { ModalManager } from "react-dynamic-modal";
-import { MessageModal } from "../../../../common/components/Modal";
+import Collapsible from "react-collapsible";
+import moment from "moment";
+import ReactNotification from "react-notifications-component";
+
 import {
-  SearchElementList,
-  SearchMLObjectDefinition,
-  DataGridColumnList,
   AddLink,
   APIHostName,
-  SearchAPIPath,
+  DataGridColumnList,
   DeleteAPIPath,
   IDSelectColumnName,
-  PKColumnName,
   InitSearchParams,
   PagePath,
+  PKColumnName,
+  SearchAPIPath,
+  SearchElementList,
+  SearchMLObjectDefinition,
 } from "../../ShipmentRoute/constants";
-import { callFetchAPI } from "../../../../actions/fetchAPIAction";
-import { updatePagePath } from "../../../../actions/pageAction";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
-import Collapsible from "react-collapsible";
-import DataGridShipmentRouteAuto from "./../Components/DataGridShipmentRouteAuto";
-import SearchFormShipmentRouteAuto from "../Components/SearchFormShipmentRouteAuto";
+
 import "../../../../css/DataGridShipmentRouteAuto.scss";
-import moment from "moment";
-import { Button, Card, Col, Row, Space, Statistic, Tabs, Collapse, Popover, Tooltip, Input, Tag } from "antd";
-import { EyeOutlined, PartitionOutlined } from "@ant-design/icons";
+import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { hideModal, showModal } from "../../../../actions/modal";
+import { MessageModal } from "../../../../common/components/Modal";
+import { updatePagePath } from "../../../../actions/pageAction";
+import DataGridShipmentRouteAuto from "./../Components/DataGridShipmentRouteAuto";
 import ModalSearchFormShipmentRouteAuto from "../Components/ModalSearchFormShipmentRouteAuto";
 import ModalVietBanDoShipmentRouteAuto from "../Components/ModalVietBanDoShipmentRouteAuto";
-import { formatMonthDate } from "../../../../common/library/CommonLib";
-import { Link } from "react-router-dom";
-import ReactHtmlParser from "react-html-parser";
-import { formatMoney } from "../../../../utils/function";
+import SearchFormShipmentRouteAuto from "../Components/SearchFormShipmentRouteAuto";
 
 class SearchCom extends Component {
   constructor(props) {
@@ -62,6 +60,7 @@ class SearchCom extends Component {
         TimeFrame14to16: [],
         TimeFrame17to19: [],
         TimeFrame19to21: [],
+        Dropped: [],
       },
       ShipmentRouteID: "",
       IsShowModel: false,
@@ -119,6 +118,17 @@ class SearchCom extends Component {
       UIEffect: {
         ButtonShipmentRouteAuto: {
           IsLoading: false,
+          IsDisabled: false,
+        },
+        TabShipmentRouteAuto: {
+          Content: "",
+        },
+      },
+
+      ObjectControlValue: {
+        NhanVienGiao: {
+          Value: -1,
+          ListOption: [],
         },
       },
     };
@@ -165,6 +175,16 @@ class SearchCom extends Component {
 
     const localShipmentOrderInfo = localStorage.getItem("SearchShipmentOrderInfo");
     let InitSearchParams = [];
+    const today = new Date(),
+      tomorrow = new Date();
+    today.setHours(7);
+    today.setMinutes(0);
+    today.setSeconds(0);
+
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(7);
+    tomorrow.setMinutes(0);
+    tomorrow.setSeconds(0);
 
     if (localShipmentOrderInfo == null) {
       InitSearchParams = [
@@ -176,17 +196,25 @@ class SearchCom extends Component {
           SearchKey: "@RECEIVERPHONENUMBER",
           SearchValue: "",
         },
+        // {
+        //     SearchKey: "@SHIPMENTORDERTYPEID",
+        //     SearchValue: "",
+        // },
         {
           SearchKey: "@SHIPMENTORDERTYPEID",
-          SearchValue: "",
+          SearchValue: "1026", // Dịch vụ giao hàng công nghệ BHX online
         },
         {
           SearchKey: "@FromDate",
-          SearchValue: new Date(),
+          SearchValue: today,
         },
+        // {
+        //     SearchKey: "@ToDate",
+        //     SearchValue: new Date(),
+        // },
         {
           SearchKey: "@ToDate",
-          SearchValue: new Date(),
+          SearchValue: tomorrow,
         },
         {
           SearchKey: "@RECEIVERPROVINCEID",
@@ -208,13 +236,21 @@ class SearchCom extends Component {
           SearchKey: "@COORDINATORSTOREID",
           SearchValue: -1,
         },
+        // {
+        //     SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
+        //     SearchValue: this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : "1,2,3",
+        // },
         {
           SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
-          SearchValue: this.props.location.state != undefined ? this.props.location.state.ShipmentOrderStatusGroupID : "1,2,3",
+          SearchValue: "1,2",
         },
+        // {
+        //     SearchKey: "@IsCoordinator",
+        //     SearchValue: 2,
+        // },
         {
           SearchKey: "@IsCoordinator",
-          SearchValue: 2,
+          SearchValue: -1,
         },
         {
           SearchKey: "@Typename",
@@ -260,17 +296,25 @@ class SearchCom extends Component {
           SearchKey: "@RECEIVERPHONENUMBER",
           SearchValue: "",
         },
+        // {
+        //     SearchKey: "@SHIPMENTORDERTYPEID",
+        //     SearchValue: ShipmentOrderInfo.ShipmentOrderTypeID,
+        // },
         {
           SearchKey: "@SHIPMENTORDERTYPEID",
-          SearchValue: ShipmentOrderInfo.ShipmentOrderTypeID,
+          SearchValue: "1026", // Dịch vụ giao hàng công nghệ BHX online
         },
         {
           SearchKey: "@FromDate",
-          SearchValue: new Date(),
+          SearchValue: today,
         },
+        // {
+        //     SearchKey: "@ToDate",
+        //     SearchValue: new Date(),
+        // },
         {
           SearchKey: "@ToDate",
-          SearchValue: new Date(),
+          SearchValue: tomorrow,
         },
         {
           SearchKey: "@RECEIVERPROVINCEID",
@@ -292,13 +336,21 @@ class SearchCom extends Component {
           SearchKey: "@COORDINATORSTOREID",
           SearchValue: ShipmentOrderInfo.CoordinatorStoreID,
         },
+        // {
+        //     SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
+        //     SearchValue: ShipmentOrderInfo.ShipmentOrderStatusGroupID,
+        // },
         {
           SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
-          SearchValue: ShipmentOrderInfo.ShipmentOrderStatusGroupID,
+          SearchValue: "1,2",
         },
+        // {
+        //     SearchKey: "@IsCoordinator",
+        //     SearchValue: ShipmentOrderInfo.IsCoordinator,
+        // },
         {
           SearchKey: "@IsCoordinator",
-          SearchValue: ShipmentOrderInfo.IsCoordinator,
+          SearchValue: -1,
         },
         {
           SearchKey: "@Typename",
@@ -483,6 +535,17 @@ class SearchCom extends Component {
   }
 
   handleSearchSubmit(MLObject) {
+    const today = new Date(),
+      tomorrow = new Date();
+    today.setHours(7);
+    today.setMinutes(0);
+    today.setSeconds(0);
+
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(7);
+    tomorrow.setMinutes(0);
+    tomorrow.setSeconds(0);
+
     const postData = [
       {
         SearchKey: "@Keyword",
@@ -492,17 +555,29 @@ class SearchCom extends Component {
         SearchKey: "@RECEIVERPHONENUMBER",
         SearchValue: "",
       },
+      // {
+      //     SearchKey: "@SHIPMENTORDERTYPEID",
+      //     SearchValue: MLObject.ShipmentOrderTypeID,
+      // },
       {
         SearchKey: "@SHIPMENTORDERTYPEID",
-        SearchValue: MLObject.ShipmentOrderTypeID,
+        SearchValue: "1026", // Dịch vụ giao hàng công nghệ BHX online
       },
+      // {
+      //     SearchKey: "@FromDate",
+      //     SearchValue: MLObject.CreatedOrderTimeFo,
+      // },
       {
         SearchKey: "@FromDate",
-        SearchValue: MLObject.CreatedOrderTimeFo,
+        SearchValue: today,
       },
+      // {
+      //     SearchKey: "@ToDate",
+      //     SearchValue: MLObject.CreatedOrderTimeTo,
+      // },
       {
         SearchKey: "@ToDate",
-        SearchValue: MLObject.CreatedOrderTimeTo,
+        SearchValue: tomorrow,
       },
       {
         SearchKey: "@RECEIVERPROVINCEID",
@@ -524,13 +599,21 @@ class SearchCom extends Component {
         SearchKey: "@COORDINATORSTOREID",
         SearchValue: MLObject.CoordinatorStoreID,
       },
+      // {
+      //     SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
+      //     SearchValue: MLObject.ShipmentOrderStatusGroupID,
+      // },
       {
         SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
-        SearchValue: MLObject.ShipmentOrderStatusGroupID,
+        SearchValue: "1,2",
       },
+      // {
+      //     SearchKey: "@IsCoordinator",
+      //     SearchValue: MLObject.IsCoordinator,
+      // },
       {
         SearchKey: "@IsCoordinator",
-        SearchValue: MLObject.IsCoordinator,
+        SearchValue: -1,
       },
       {
         SearchKey: "@CARRIERTYPEID",
@@ -750,7 +833,7 @@ class SearchCom extends Component {
 
   // Kiểm tra GridDataShip có phần tử không
   handleCheckGirdDataShipIsEmpty() {
-    const { diffTimeFrame, TimeFrame8to10, TimeFrame10to12, TimeFrame12to14, TimeFrame14to16, TimeFrame17to19, TimeFrame19to21 } = this.state.GridDataShip;
+    const { diffTimeFrame, TimeFrame8to10, TimeFrame10to12, TimeFrame12to14, TimeFrame14to16, TimeFrame17to19, TimeFrame19to21, Dropped } = this.state.GridDataShip;
 
     return diffTimeFrame.length > 0
       ? "diffTimeFrame"
@@ -766,6 +849,8 @@ class SearchCom extends Component {
       ? "TimeFrame17to19"
       : TimeFrame19to21.length > 0
       ? "TimeFrame19to21"
+      : Dropped.length > 0
+      ? "Dropped"
       : "";
   }
 
@@ -923,81 +1008,6 @@ class SearchCom extends Component {
     // this.setState(changeState);
   }
 
-  // Xử lý phân tuyến tự động
-  handleShipmentRouteAuto() {
-    let arrRequest = [];
-    for (const [key, value] of Object.entries(this.state.GridDataShip)) {
-      if (value.length > 0) {
-        arrRequest = value.reduce((curArray, curValue) => {
-          return [...curArray, { ...curValue }];
-        }, []);
-      }
-    }
-
-    if (arrRequest.length > 0 && arrRequest.length < 2) {
-      this.showMessage("Phải chọn ít nhất là 2 vận đơn");
-      return;
-    }
-
-    let messageContent =
-      arrRequest.length === 0
-        ? `Muốn phân tuyến tự động tất cả các đơn trong khung thời gian ${this.state.ActiveTimeFrame.Name}`
-        : `Muốn phân tuyến tự động ${arrRequest.length} đơn trong khung thời gian ${this.state.ActiveTimeFrame.Name}`;
-
-    if (arrRequest.length == 0) {
-      arrRequest = [...this.state[this.state.ActiveTimeFrame.TimeFrame]];
-    }
-
-    this.showMessage(messageContent, true, "Xác nhận", () => {
-      let changeState = this.state;
-      let objUIEffect = changeState.UIEffect;
-      let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
-
-      objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: true };
-      objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
-      changeState = { ...changeState, UIEffect: objUIEffect };
-
-      this.setState(changeState);
-
-      let objRequest = {
-        DepotRouting: {
-          Address: "Đường Thới An 19A, Tân Thới An,  Quận 12, Hồ Chí Minh",
-        },
-        ListShipmentOrder: arrRequest,
-      };
-
-      this.props.callFetchAPI(APIHostName, "api/test/VehicleRouting", objRequest).then((apiResult) => {
-        if (!apiResult.IsError) {
-          const { MotorRoute, TruckRoute, ListDroppedShipmentOrder } = apiResult.ResultObject;
-
-          let changeState = this.state;
-          let objShipmentRouteAutoDataSource = changeState.ShipmentRouteAutoDataSource;
-          let objUIEffect = changeState.UIEffect;
-          let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
-
-          objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: false };
-          objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
-          changeState = { ...changeState, UIEffect: objUIEffect };
-          objShipmentRouteAutoDataSource = { Motor: MotorRoute, Truck: TruckRoute, Dropped: ListDroppedShipmentOrder };
-          changeState = { ...changeState, ActiveTab: "9", ShipmentRouteAutoDataSource: objShipmentRouteAutoDataSource };
-
-          this.setState(changeState);
-        } else {
-          let changeState = this.state;
-          let objUIEffect = changeState.UIEffect;
-          let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
-
-          objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: false };
-          objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
-          changeState = { ...changeState, UIEffect: objUIEffect };
-
-          this.setState(changeState);
-          this.addNotification(apiResult.Message, apiResult.IsError);
-        }
-      });
-    });
-  }
-
   _CheckTime(dates) {
     const date = new Date(Date.parse(dates));
     let currentDate = new Date();
@@ -1059,14 +1069,238 @@ class SearchCom extends Component {
     temponaryInput.remove();
   }
 
+  // Xử lý phân tuyến tự động
+  handleShipmentRouteAuto() {
+    let arrRequest = [];
+    for (const [key, value] of Object.entries(this.state.GridDataShip)) {
+      if (value.length > 0) {
+        arrRequest = value.reduce((curArray, curValue) => {
+          return [...curArray, { ...curValue }];
+        }, []);
+      }
+    }
+
+    if (arrRequest.length > 0 && arrRequest.length < 2) {
+      this.showMessage("Phải chọn ít nhất là 2 vận đơn");
+      return;
+    }
+
+    let messageContent =
+      arrRequest.length === 0
+        ? `Muốn phân tuyến tự động tất cả các đơn trong khung thời gian ${this.state.ActiveTimeFrame.Name}`
+        : `Muốn phân tuyến tự động ${arrRequest.length} đơn trong khung thời gian ${this.state.ActiveTimeFrame.Name}`;
+
+    if (arrRequest.length == 0) {
+      arrRequest = [...this.state[this.state.ActiveTimeFrame.TimeFrame]];
+    }
+
+    this.showMessage(messageContent, true, "Xác nhận", () => {
+      let changeState = this.state;
+      let objUIEffect = changeState.UIEffect;
+      let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
+      let objTabShipmentRouteAuto = objUIEffect.TabShipmentRouteAuto;
+
+      objTabShipmentRouteAuto = { ...objTabShipmentRouteAuto, Content: this.state.ActiveTimeFrame.Name };
+      objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: true };
+      objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto, TabShipmentRouteAuto: objTabShipmentRouteAuto };
+      changeState = { ...changeState, UIEffect: objUIEffect };
+
+      this.setState(changeState);
+
+      let objRequest = {
+        ListShipmentOrder: arrRequest,
+      };
+
+      this.props.callFetchAPI(APIHostName, "api/test/VehicleRouting", objRequest).then((apiResult) => {
+        if (!apiResult.IsError) {
+          const { MotorRoute, TruckRoute, ListDroppedShipmentOrder } = apiResult.ResultObject;
+
+          let changeState = this.state;
+          let objShipmentRouteAutoDataSource = changeState.ShipmentRouteAutoDataSource;
+          let objUIEffect = changeState.UIEffect;
+          let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
+
+          objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: false, IsDisabled: true };
+          objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
+          changeState = { ...changeState, UIEffect: objUIEffect };
+          objShipmentRouteAutoDataSource = { Motor: MotorRoute, Truck: TruckRoute, Dropped: ListDroppedShipmentOrder };
+          changeState = { ...changeState, ActiveTab: "9", ShipmentRouteAutoDataSource: objShipmentRouteAutoDataSource };
+
+          this.setState(changeState);
+        } else {
+          let changeState = this.state;
+          let objUIEffect = changeState.UIEffect;
+          let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
+
+          objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: false };
+          objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
+          changeState = { ...changeState, UIEffect: objUIEffect };
+
+          this.setState(changeState);
+          this.addNotification(apiResult.Message, apiResult.IsError);
+        }
+      });
+    });
+  }
+
+  // Xử lý gán data source xe máy cho vietbando
   handleShowModalMapMotorRoute(index) {
     this.setState({ DataSourceMap: this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute[index], IsShowModelMap: true });
   }
 
+  // Xử lý gán data source xe tải cho vietbando
   handleShowModalMapTruckRoute(index) {
     this.setState({ DataSourceMap: this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute[index], IsShowModelMap: true });
   }
 
+  // Xử lý nhập tìm kiếm nhân viên giao
+  handleSelectNhanVienGiaoInputValueChange(e) {
+    let value = e.target.value;
+
+    if (value.length > 3 && e.keyCode != 40 && e.keyCode != 38 && value.substr(0, 3) != "004") {
+      this.handleSearchDataNhanVienGiao("*" + value + "*");
+    }
+  } 
+
+  // Xử lý tìm kiếm nhân viên giao
+  handleSearchDataNhanVienGiao(KeyWord) {
+    let listMLObject = {
+      IndexName: "user",
+      TypeName: "user",
+      Top: 10,
+      IsCompressResultData: false,
+      QueryParamList: [
+        {
+          QueryKey: "",
+          QueryValue: "",
+          QueryType: 18,
+          IsNotQuery: false,
+          SubQueryParamList: [
+            {
+              QueryKey: "uSERNAME",
+              QueryValue: KeyWord,
+              QueryType: 2,
+              IsNotQuery: false,
+            },
+
+            {
+              QueryKey: "fULLNAME",
+              QueryValue: KeyWord,
+              QueryType: 2,
+              IsNotQuery: false,
+            },
+          ],
+        },
+      ],
+    };
+
+    this.props.callFetchAPI("ERPAPI", "api/UserSearch/Search", listMLObject).then((apiResult) => {
+      let listOptionNew1 = [];
+      for (let i = 0; i < apiResult.ResultObject.length; i++) {
+        if (this.props.isCheckPartner == undefined) {
+          if (apiResult.ResultObject[i].UserName.substr(0, 3) != "004") {
+            let isExist = this.state.ObjectControlValue.NhanVienGiao.ListOption.some((item) => item.value == apiResult.ResultObject[i].UserName);
+            if (!isExist) {
+              listOptionNew1.push({
+                value: apiResult.ResultObject[i].UserName,
+                name: apiResult.ResultObject[i].UserName + "-" + apiResult.ResultObject[i].FullName,
+                FullName: apiResult.ResultObject[i].FullName,
+                DepartmentName: apiResult.ResultObject[i].DepartmentName,
+                PositionName: apiResult.ResultObject[i].PositionName,
+                Address: apiResult.ResultObject[i].Address,
+              });
+            }
+          }
+        } else {
+          let isExist = this.state.ObjectControlValue.NhanVienGiao.ListOption.some((item) => item.value === apiResult.ResultObject[i].UserName);
+          if (!isExist) {
+            listOptionNew1.push({
+              value: apiResult.ResultObject[i].UserName,
+              name: apiResult.ResultObject[i].UserName + "-" + apiResult.ResultObject[i].FullName,
+              FullName: apiResult.ResultObject[i].FullName,
+              DepartmentName: apiResult.ResultObject[i].DepartmentName,
+              PositionName: apiResult.ResultObject[i].PositionName,
+              Address: apiResult.ResultObject[i].Address,
+            });
+          }
+        }
+      }
+
+      let changeState = this.state;
+      let objSelectValue = changeState.ObjectControlValue;
+      let objNhanVienGiao = objSelectValue.NhanVienGiao;
+      let lstNhanVienGiaoListOption = objNhanVienGiao.ListOption;
+      let lstNhanVienGiaoValue = objNhanVienGiao.Value;
+
+      lstNhanVienGiaoListOption = [...lstNhanVienGiaoListOption, ...listOptionNew1];
+      objNhanVienGiao = { ...objNhanVienGiao, ListOption: lstNhanVienGiaoListOption, Value: lstNhanVienGiaoValue };
+      objSelectValue = { ...objSelectValue, NhanVienGiao: objNhanVienGiao };
+      changeState = { ...changeState, ObjectControlValue: objSelectValue };
+
+      this.setState(changeState);
+    });
+  }
+
+  // Xử lý chọn nhân viên giao
+  handleSelectNhanVienGiaoValueChange_1(value, options) {
+    // let objDeliverUser = [];
+    // let listStaffDebtObject = [];
+
+    // options &&
+    //   options.map((item, index) => {
+    //     let objShip_DeliverUser = { UserName: item.user.value, FullName: item.user.FullName };
+
+    //     objDeliverUser.push(objShip_DeliverUser);
+    //     listStaffDebtObject.push({
+    //       UserName: item.value,
+    //     //   StoreID: this.state.ShipmentOrder.length > 0 ? this.state.ShipmentOrder[0].CoordinatorStoreID : 0,
+    //     });
+    //   });
+
+    // if (options) {
+    //   this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/UserIsLockDelivery", listStaffDebtObject).then((apiResult) => {
+    //     if (!apiResult.IsError) {
+    //       this.state.ShipmentOrder.map((row, indexRow) => {
+    //         if ((this.state.objCoordinator.IsRoute == true || !row.IsCoordinator) && row.IsPermission == true && row.CarrierPartnerID <= 0) {
+    //           row["ShipmentOrder_DeliverUserList"] = objDeliverUser || [];
+    //         }
+    //       });
+
+    //       let stateChange = this.state;
+    //       let objControlValue = stateChange.ObjectControlValue;
+    //       let objNhanVienGiao = objControlValue.NhanVienGiao;
+    //       let lstNhanVienGiao = options.map((item) => item.user.value);
+
+    //       objNhanVienGiao = { ...objNhanVienGiao, Value: lstNhanVienGiao };
+    //       objControlValue = { ...objControlValue, NhanVienGiao: objNhanVienGiao };
+    //       stateChange = { ...stateChange, objDeliverUser: value, ShipmentOrder: this.state.ShipmentOrder, ShipmentRouteLst: apiResult.ResultObject, ObjectControlValue: objControlValue };
+
+    //       this.setState(stateChange);
+    //     } else {
+    //       this.props.onShowNotification(apiResult.Message, apiResult.IsError);
+    //     }
+    //   });
+    // } else {
+    //   this.state.ShipmentOrder.map((row, indexRow) => {
+    //     if (row.IsPermission == true) {
+    //       row["ShipmentOrder_DeliverUserList"] = objDeliverUser || [];
+    //     }
+    //   });
+
+    //   let changeState = this.state;
+    //   let objControlValue = stateChange.ObjectControlValue;
+    //   let objNhanVienGiao = objControlValue.NhanVienGiao;
+    //   let lstNhanVienGiao = options.map((item) => item.user.value);
+
+    //   objNhanVienGiao = { ...objNhanVienGiao, Value: lstNhanVienGiao };
+    //   objControlValue = { ...objControlValue, NhanVienGiao: objNhanVienGiao };
+    //   changeState = { ...changeState, ObjectControlValue: objControlValue, ShipmentRouteLst: [] };
+
+    //   this.setState(changeState);
+    // }
+  }
+
+  // Xử lý render phân tuyến tự động
   renderShipmentRouteAuto() {
     const pickRandomColor = ["#1f5ff4", "#c55d53", "#cb68c5", "#65b411", "#f4b323", "#420e3e", "#e80024", "#585ccc", "#d44371", "#14915f", "#e79940", "#6be54"];
     let randomColor = "";
@@ -1095,27 +1329,17 @@ class SearchCom extends Component {
       </div>
     );
 
-    let length_motor =
-      this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.length == 1 &&
-      this.state.ShipmentRouteAutoDataSource.Motor.TotalDistance == 0 &&
-      this.state.ShipmentRouteAutoDataSource.Motor.TotalLoad == 0
-        ? 0
-        : this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.length;
+    let length_motor = this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.length;
 
-    let length_truck =
-      this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute.length == 1 &&
-      this.state.ShipmentRouteAutoDataSource.Truck.TotalDistance == 0 &&
-      this.state.ShipmentRouteAutoDataSource.Truck.TotalLoad == 0
-        ? 0
-        : this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute.length;
+    let length_truck = this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute.length;
 
     return (
       this.state.ShipmentRouteAutoDataSource != null && (
-        <div style={{ width: "100%" }}>
-          <Tabs defaultActiveKey="1" style={{ padding: "15px", backgroundColor: "white" }} className="ant-tabs">
+        <div style={{ width: "100%", border: "1px solid #8080804a" }}>
+          <Tabs defaultActiveKey="key_1" style={{ padding: "15px", backgroundColor: "white" }} className="ant-tabs">
             {/* Tab xe máy */}
 
-            <Tabs.TabPane tab={reactNodeTab("Xe máy", length_motor)} key="1" className="ant-tabs-child-1">
+            <Tabs.TabPane tabKey="key_1_1" tab={reactNodeTab("Xe máy", length_motor)} key="1" className="ant-tabs-child-1">
               <div style={{ width: "100%", backgroundColor: "white", padding: "10px", maxheight: "57vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
                 <h5>Danh sách các tuyến đề xuất</h5>
                 <h6>
@@ -1124,80 +1348,63 @@ class SearchCom extends Component {
                 <h6>
                   Tổng cộng số tải: <span style={{ fontWeight: "700" }}>{this.state.ShipmentRouteAutoDataSource.Motor.TotalLoad}</span> kg
                 </h6>
-                {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute &&
-                  this.state.ShipmentRouteAutoDataSource.Motor.TotalDistance > 0 &&
-                  this.state.ShipmentRouteAutoDataSource.Motor.TotalLoad > 0 && (
-                    <div style={{ width: "100%", backgroundColor: "white", padding: "20px", maxHeight: "60vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
-                      {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.map((line, index) => (
-                        <div key={index}>
-                          <p style={{ display: "none" }}>{(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}</p>
-                          <div style={{ display: "flex" }}>
-                            {/* <span style={{ fontWeight: "700", fontSize: "15px" }}>{index}</span>&ensp; */}
-                            <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
-                              <div style={{ width: "90%", marginBottom: "30px" }}>
-                                <div style={{ marginBottom: "10px" }}>
-                                  <Tag color="#108ee9">Tuyến: {index}</Tag>
-                                  <Tag color="#2db7f5">Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Motor.ListTotalDistance[index] / 1000)}</Tag>
-                                  <Tag color="#87d068">Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Motor.ListTotalLoad[index]}</Tag>
+                {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute && (
+                  // this.state.ShipmentRouteAutoDataSource.Motor.TotalDistance > 0 &&
+                  // this.state.ShipmentRouteAutoDataSource.Motor.TotalLoad > 0 &&
+                  <div style={{ width: "100%", backgroundColor: "white", padding: "20px", maxHeight: "60vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
+                    {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.map((line, index) => (
+                      <div key={index}>
+                        <p style={{ display: "none" }}>{(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}</p>
+                        <div style={{ display: "flex" }}>
+                          {/* <span style={{ fontWeight: "700", fontSize: "15px" }}>{index}</span>&ensp; */}
+                          <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
+                            <div style={{ width: "90%", marginBottom: "30px" }}>
+                              <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
+                                <Tag color="#108ee9">Tuyến: {index}</Tag>
+                                <Tag color="#2db7f5">Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Motor.ListTotalDistance[index] / 1000)}</Tag>
+                                <Tag color="#87d068">Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Motor.ListTotalLoad[index]}</Tag>
+                                <Select
+                                  style={{ width: "40%" }}
+                                  mode="multiple"
+                                  optionLabelProp="label"
+                                  dropdownAlign="center"
+                                  maxTagCount={3}
+                                  placeholder="Nhân viên giao"
+                                  onInputKeyDown={(event) => this.handleSelectNhanVienGiaoInputValueChange(event)}
+                                  onChange={(value, options) => this.handleSelectNhanVienGiaoValueChange_1(value, options)}
+                                >
+                                  {this.state.ObjectControlValue.NhanVienGiao.ListOption.map((item, index) => (
+                                    <Select.Option key={index} value={item.value} label={item.name} user={item}>
+                                      {item.name}
+                                    </Select.Option>
+                                  ))}
+                                </Select>
 
-                                  {/* <span>Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Motor.ListTotalDistance[index] / 1000)}</span>&ensp;
+                                {/* <span>Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Motor.ListTotalDistance[index] / 1000)}</span>&ensp;
                                   <span>Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Motor.ListTotalLoad[index]}</span> */}
-                                </div>
-                                <div style={{ display: "flex" }}>
-                                  {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute[index].map((objShipmentOrder, i) => (
-                                    <div key={objShipmentOrder.PartnerSaleOrderID} style={{ display: "flex", width: i != 0 && "100%" }}>
-                                      {i != 0 &&
-                                        (objShipmentOrder.IsCompleteDeliverIed ? (
-                                          <div style={{ width: "100%", height: "10px", borderBottom: `3px solid ${randomColor}` }}></div>
-                                        ) : (
-                                          <div style={{ width: "100%", height: "10px", borderBottom: `3px solid #80808030` }}></div>
-                                        ))}
-                                      {i != 0 ? (
-                                        <Popover
-                                          content={
-                                            <div>
-                                              <p>{objShipmentOrder.ReceiverFullName}</p>
-                                              <p>{objShipmentOrder.ReceiverFullAddress}</p>
-                                              <p>{objShipmentOrder.Weight}</p>
-                                            </div>
-                                          }
-                                          title={objShipmentOrder.PartnerSaleOrderID}
-                                        >
-                                          <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
-                                            {objShipmentOrder.IsCompleteDeliverIed ? (
-                                              <div
-                                                style={{
-                                                  position: "relative",
-                                                  width: "12px",
-                                                  height: "12px",
-                                                  border: `3px solid ${randomColor}`,
-                                                  backgroundColor: `${randomColor}`,
-                                                  borderRadius: "50%",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
-                                              </div>
-                                            ) : (
-                                              <div
-                                                style={{
-                                                  position: "relative",
-                                                  width: "12px",
-                                                  height: "12px",
-                                                  border: `3px solid ${randomColor}`,
-                                                  backgroundColor: "white",
-                                                  borderRadius: "50%",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
-                                              </div>
-                                            )}
-                                          </div>
-                                        </Popover>
+                              </div>
+                              <div style={{ display: "flex" }}>
+                                {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute[index].map((objShipmentOrder, i) => (
+                                  <div key={objShipmentOrder.PartnerSaleOrderID} style={{ display: "flex", width: i != 0 && "100%" }}>
+                                    {i != 0 &&
+                                      (objShipmentOrder.IsCompleteDeliverIed ? (
+                                        <div style={{ width: "100%", height: "10px", borderBottom: `3px solid ${randomColor}` }}></div>
                                       ) : (
+                                        <div style={{ width: "100%", height: "10px", borderBottom: `3px solid #80808030` }}></div>
+                                      ))}
+                                    {i != 0 ? (
+                                      <Popover
+                                        content={
+                                          <div>
+                                            <p>{objShipmentOrder.ReceiverFullName}</p>
+                                            <p>{objShipmentOrder.ReceiverFullAddress}</p>
+                                            <p>{objShipmentOrder.Weight}</p>
+                                          </div>
+                                        }
+                                        title={objShipmentOrder.PartnerSaleOrderID}
+                                      >
                                         <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
-                                          {
+                                          {objShipmentOrder.IsCompleteDeliverIed ? (
                                             <div
                                               style={{
                                                 position: "relative",
@@ -1209,36 +1416,69 @@ class SearchCom extends Component {
                                                 cursor: "pointer",
                                               }}
                                             >
-                                              <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>0</div>
+                                              <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
                                             </div>
-                                          }
+                                          ) : (
+                                            <div
+                                              style={{
+                                                position: "relative",
+                                                width: "12px",
+                                                height: "12px",
+                                                border: `3px solid ${randomColor}`,
+                                                backgroundColor: "white",
+                                                borderRadius: "50%",
+                                                cursor: "pointer",
+                                              }}
+                                            >
+                                              <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
+                                            </div>
+                                          )}
                                         </div>
-                                      )}
-                                    </div>
-                                  ))}
-                                </div>
+                                      </Popover>
+                                    ) : (
+                                      <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
+                                        {
+                                          <div
+                                            style={{
+                                              position: "relative",
+                                              width: "12px",
+                                              height: "12px",
+                                              border: `3px solid ${randomColor}`,
+                                              backgroundColor: `${randomColor}`,
+                                              borderRadius: "50%",
+                                              cursor: "pointer",
+                                            }}
+                                          >
+                                            <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>0</div>
+                                          </div>
+                                        }
+                                      </div>
+                                    )}
+                                  </div>
+                                ))}
                               </div>
-                              <div style={{ width: "10%", textAlign: "right", paddingTop: "18px" }}>
-                                <Tooltip title="Xem bản đồ">
-                                  <Button type="primary" shape="circle" icon={<EyeOutlined />} onClick={() => this.handleShowModalMapMotorRoute(index)} />
-                                </Tooltip>
-                                &nbsp;
-                                <Tooltip title="Phân tuyến">
-                                  <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
-                                </Tooltip>
-                              </div>
+                            </div>
+                            <div style={{ width: "10%", textAlign: "right", paddingTop: "18px" }}>
+                              <Tooltip title="Xem bản đồ">
+                                <Button type="primary" shape="circle" icon={<EyeOutlined />} onClick={() => this.handleShowModalMapMotorRoute(index)} />
+                              </Tooltip>
+                              &nbsp;
+                              <Tooltip title="Phân tuyến">
+                                <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
+                              </Tooltip>
                             </div>
                           </div>
                         </div>
-                      ))}
-                    </div>
-                  )}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </Tabs.TabPane>
 
             {/* Tab xe tải */}
 
-            <Tabs.TabPane tab={reactNodeTab("Xe tải", length_truck)} key="2" className="ant-tabs-child-2">
+            <Tabs.TabPane tabKey="key_1_2" tab={reactNodeTab("Xe tải", length_truck)} key="2" className="ant-tabs-child-2">
               <div style={{ width: "100%", backgroundColor: "white", padding: "10px", maxheight: "57vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
                 <h5>Danh sách các tuyến đề xuất</h5>
                 <h6>
@@ -1247,81 +1487,64 @@ class SearchCom extends Component {
                 <h6>
                   Tổng cộng số tải: <span style={{ fontWeight: "700" }}>{this.state.ShipmentRouteAutoDataSource.Truck.TotalLoad}</span> kg
                 </h6>
-                {this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute &&
-                  this.state.ShipmentRouteAutoDataSource.Truck.TotalDistance > 0 &&
-                  this.state.ShipmentRouteAutoDataSource.Truck.TotalLoad > 0 && (
-                    <div style={{ width: "100%", backgroundColor: "white", padding: "20px", maxHeight: "60vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
-                      {this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute.map((line, index) => (
-                        <div key={index}>
-                          <p style={{ display: "none" }}>{(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}</p>
-                          <div style={{ display: "flex" }}>
-                            {/* <span style={{ fontWeight: "700", fontSize: "15px" }}>{index}</span>&ensp; */}
-                            <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
-                              <div style={{ width: "90%", marginBottom: "30px" }}>
-                                {/* <div>
+                {this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute && (
+                  // this.state.ShipmentRouteAutoDataSource.Truck.TotalDistance > 0 &&
+                  // this.state.ShipmentRouteAutoDataSource.Truck.TotalLoad > 0 &&
+                  <div style={{ width: "100%", backgroundColor: "white", padding: "20px", maxHeight: "60vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
+                    {this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute.map((line, index) => (
+                      <div key={index}>
+                        <p style={{ display: "none" }}>{(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}</p>
+                        <div style={{ display: "flex" }}>
+                          {/* <span style={{ fontWeight: "700", fontSize: "15px" }}>{index}</span>&ensp; */}
+                          <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
+                            <div style={{ width: "90%", marginBottom: "30px" }}>
+                              {/* <div>
                                   <span>Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Truck.ListTotalDistance[index] / 1000)}</span>&ensp;
                                   <span>Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Truck.ListTotalLoad[index]}</span>
                                 </div> */}
-                                <div style={{ marginBottom: "10px" }}>
-                                  <Tag color="#108ee9">Tuyến: {index}</Tag>
-                                  <Tag color="#2db7f5">Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Truck.ListTotalDistance[index] / 1000)}</Tag>
-                                  <Tag color="#87d068">Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Truck.ListTotalLoad[index]}</Tag>
-                                </div>
-                                <div style={{ display: "flex" }}>
-                                  {this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute[index].map((objShipmentOrder, i) => (
-                                    <div key={objShipmentOrder.PartnerSaleOrderID} style={{ display: "flex", width: i != 0 && "100%" }}>
-                                      {i != 0 &&
-                                        (objShipmentOrder.IsCompleteDeliverIed ? (
-                                          <div style={{ width: "100%", height: "10px", borderBottom: `3px solid ${randomColor}` }}></div>
-                                        ) : (
-                                          <div style={{ width: "100%", height: "10px", borderBottom: `3px solid #80808030` }}></div>
-                                        ))}
-                                      {i != 0 ? (
-                                        <Popover
-                                          content={
-                                            <div>
-                                              <p>{objShipmentOrder.ReceiverFullName}</p>
-                                              <p>{objShipmentOrder.ReceiverFullAddress}</p>
-                                              <p>{objShipmentOrder.Weight}</p>
-                                            </div>
-                                          }
-                                          title={objShipmentOrder.PartnerSaleOrderID}
-                                        >
-                                          <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
-                                            {objShipmentOrder.IsCompleteDeliverIed ? (
-                                              <div
-                                                style={{
-                                                  position: "relative",
-                                                  width: "12px",
-                                                  height: "12px",
-                                                  border: `3px solid ${randomColor}`,
-                                                  backgroundColor: `${randomColor}`,
-                                                  borderRadius: "50%",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
-                                              </div>
-                                            ) : (
-                                              <div
-                                                style={{
-                                                  position: "relative",
-                                                  width: "12px",
-                                                  height: "12px",
-                                                  border: `3px solid ${randomColor}`,
-                                                  backgroundColor: "white",
-                                                  borderRadius: "50%",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
-                                              </div>
-                                            )}
-                                          </div>
-                                        </Popover>
+                              <div style={{display:"flex", alignItems:"center", marginBottom: "10px" }}>
+                                <Tag color="#108ee9">Tuyến: {index}</Tag>
+                                <Tag color="#2db7f5">Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Truck.ListTotalDistance[index] / 1000)}</Tag>
+                                <Tag color="#87d068">Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Truck.ListTotalLoad[index]}</Tag>
+                                <Select
+                                  style={{ width: "40%" }}
+                                  mode="multiple"
+                                  optionLabelProp="label"
+                                  dropdownAlign="center"
+                                  maxTagCount={3}
+                                  placeholder="Nhân viên giao"
+                                  onInputKeyDown={(event) => this.handleSelectNhanVienGiaoInputValueChange(event)}
+                                  onChange={(value, options) => this.handleSelectNhanVienGiaoValueChange_1(value, options)}
+                                >
+                                  {this.state.ObjectControlValue.NhanVienGiao.ListOption.map((item, index) => (
+                                    <Select.Option key={index} value={item.value} label={item.name} user={item}>
+                                      {item.name}
+                                    </Select.Option>
+                                  ))}
+                                </Select>
+                              </div>
+                              <div style={{ display: "flex" }}>
+                                {this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute[index].map((objShipmentOrder, i) => (
+                                  <div key={objShipmentOrder.PartnerSaleOrderID} style={{ display: "flex", width: i != 0 && "100%" }}>
+                                    {i != 0 &&
+                                      (objShipmentOrder.IsCompleteDeliverIed ? (
+                                        <div style={{ width: "100%", height: "10px", borderBottom: `3px solid ${randomColor}` }}></div>
                                       ) : (
+                                        <div style={{ width: "100%", height: "10px", borderBottom: `3px solid #80808030` }}></div>
+                                      ))}
+                                    {i != 0 ? (
+                                      <Popover
+                                        content={
+                                          <div>
+                                            <p>{objShipmentOrder.ReceiverFullName}</p>
+                                            <p>{objShipmentOrder.ReceiverFullAddress}</p>
+                                            <p>{objShipmentOrder.Weight}</p>
+                                          </div>
+                                        }
+                                        title={objShipmentOrder.PartnerSaleOrderID}
+                                      >
                                         <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
-                                          {
+                                          {objShipmentOrder.IsCompleteDeliverIed ? (
                                             <div
                                               style={{
                                                 position: "relative",
@@ -1333,250 +1556,101 @@ class SearchCom extends Component {
                                                 cursor: "pointer",
                                               }}
                                             >
-                                              <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>0</div>
+                                              <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
                                             </div>
-                                          }
+                                          ) : (
+                                            <div
+                                              style={{
+                                                position: "relative",
+                                                width: "12px",
+                                                height: "12px",
+                                                border: `3px solid ${randomColor}`,
+                                                backgroundColor: "white",
+                                                borderRadius: "50%",
+                                                cursor: "pointer",
+                                              }}
+                                            >
+                                              <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>{i}</div>
+                                            </div>
+                                          )}
                                         </div>
-                                      )}
-                                    </div>
-                                  ))}
-                                </div>
+                                      </Popover>
+                                    ) : (
+                                      <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
+                                        {
+                                          <div
+                                            style={{
+                                              position: "relative",
+                                              width: "12px",
+                                              height: "12px",
+                                              border: `3px solid ${randomColor}`,
+                                              backgroundColor: `${randomColor}`,
+                                              borderRadius: "50%",
+                                              cursor: "pointer",
+                                            }}
+                                          >
+                                            <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)" }}>0</div>
+                                          </div>
+                                        }
+                                      </div>
+                                    )}
+                                  </div>
+                                ))}
                               </div>
-                              <div style={{ width: "10%", textAlign: "right", paddingTop: "18px" }}>
-                                <Tooltip title="Xem bản đồ">
-                                  <Button type="primary" shape="circle" icon={<EyeOutlined />} onClick={() => this.handleShowModalMapTruckRoute(index)} />
-                                </Tooltip>
-                                &nbsp;
-                                <Tooltip title="Phân tuyến">
-                                  <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
-                                </Tooltip>
-                              </div>
+                            </div>
+                            <div style={{ width: "10%", textAlign: "right", paddingTop: "18px" }}>
+                              <Tooltip title="Xem bản đồ">
+                                <Button type="primary" shape="circle" icon={<EyeOutlined />} onClick={() => this.handleShowModalMapTruckRoute(index)} />
+                              </Tooltip>
+                              &nbsp;
+                              <Tooltip title="Phân tuyến">
+                                <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
+                              </Tooltip>
                             </div>
                           </div>
                         </div>
-                      ))}
-                    </div>
-                  )}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </Tabs.TabPane>
 
             {/* Tab chưa điều phối */}
 
-            <Tabs.TabPane tab={reactNodeTab("Chưa điều phối", this.state.ShipmentRouteAutoDataSource.Dropped.length)} key="3" className="ant-tabs-child-3">
-              <div className="table-responsive">
-                <table
-                  className="table table-sm table-striped table-bordered table-hover table-condensed datagirdshippingorder
-          table-custom"
-                  cellSpacing="0"
-                >
-                  <thead className="thead-light">
-                    <tr>
-                      <th className="jsgrid-header-cell" style={{ width: "15%" }}>
-                        Thời gian giao
-                      </th>
-                      <th className="jsgrid-header-cell" style={{ width: "34%" }}>
-                        Địa chỉ
-                      </th>
-                      <th className="jsgrid-header-cell" style={{ width: "15%" }}>
-                        Mã/Loại yêu cầu vận chuyển
-                      </th>
-                      <th className="jsgrid-header-cell" style={{ width: "24%" }}>
-                        Tên sản phẩm/Ghi chú
-                      </th>
-                      <th className="jsgrid-header-cell" style={{ width: "9%" }}>
-                        Thanh toán
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td colSpan={7} style={{ margin: 0, padding: 0 }}>
-                        <div className="table-custom-scroll" style={{ width: "100%", maxHeight: "500px", overflowY: "auto" }}>
-                          <table>
-                            <tbody>
-                              {this.state.ShipmentRouteAutoDataSource.Dropped != null &&
-                                this.state.ShipmentRouteAutoDataSource.Dropped.map((rowItem, rowIndex) => {
-                                  let rowClass = "jsgrid-row";
-                                  if (index % 2 != 0) {
-                                    rowClass = "jsgrid-alt-row";
-                                  }
-                                  let rowtrClass = "unReadingItem";
-                                  if (rowItem.SelectedUser != "" || rowItem.IsView == true) {
-                                    rowtrClass = "noReadingItem readingItem";
-                                  }
-
-                                  let rowUndelivery = "btngroupleft";
-                                  if (this._CheckTime(rowItem.ExpectedDeliveryDate) == true && rowItem.CurrentShipmentOrderStepID < 105) {
-                                    rowUndelivery = "btngroupleft Undelivery";
-                                  } else {
-                                    if (rowItem.CoordinatorUser == "") {
-                                      rowUndelivery = "btngroupleft Uncoordinated";
-                                    } else {
-                                      rowUndelivery = "btngroupleft WaitingDelivery";
-                                    }
-                                  }
-                                  // console.log("check",rowItem.ShipmentOrderID,this.state.GridDataShip,this.state.GridDataShip.some(n => n.ShipmentOrderID == rowItem.ShipmentOrderID))
-                                  return (
-                                    <tr key={rowIndex} className={rowtrClass}>
-                                      <td className="groupInfoAction" style={{ width: "15%" }}>
-                                        <div className="group-info-row">
-                                          <label className="item time">
-                                            <i className="ti ti-timer "></i>
-                                            <span className="fw-600">{rowItem.ExpectedDeliveryDate != null ? this._genCommentTime(rowItem.ExpectedDeliveryDate) : ""}</span>
-                                          </label>
-                                          <label className="item status">
-                                            <i className="fa fa-location-arrow"></i>
-                                            <span>{rowItem.ShipmentOrderStatusName}</span>
-                                          </label>
-                                          <label className="item vehicle">{this._genCommentCarrierPartner(rowItem.CarrierTypeID, rowItem.CarrierTypeName)}</label>
-                                          <label className="item printing">
-                                            {rowItem.IsOutputGoods == false && rowItem.IsHandoverGoods == false ? <span className="badge badge-danger">Chưa xuất </span> : ""}
-                                            {rowItem.IsOutputGoods == true && rowItem.IsHandoverGoods == false ? <span className="badge badge-info">Đã xuất </span> : ""}
-                                            {rowItem.IsHandoverGoods == true ? <span className="badge badge-success">NV đã nhận </span> : ""}
-                                          </label>
-                                        </div>
-                                      </td>
-                                      <td className="group-address" style={{ width: "34%" }}>
-                                        <div className="group-info-row">
-                                          <label className="item person">
-                                            <i className="fa fa-user"></i>
-                                            <div className="person-info">
-                                              <span className="name" style={{ wordBreak: "break-all" }}>
-                                                {rowItem.ReceiverFullName}
-                                              </span>
-                                              <span className="line">-</span>
-                                              <span className={rowItem.PhoneCount > 1 ? "phone  phonered" : "phone"}>({rowItem.ReceiverPhoneNumber})</span>
-                                              {rowItem.PartnerSaleOrderID != "" ? <span className="line">-</span> : ""}
-                                              <span className="phone partner-sale-Order fw-600">{rowItem.PartnerSaleOrderID}</span>
-                                              <button className="btn-copy-clipboard" data-id={rowItem.PartnerSaleOrderID} onClick={this.copyToClipboard.bind(this)}>
-                                                <i className="fa fa-copy" data-id={rowItem.PartnerSaleOrderID}></i>
-                                              </button>
-                                            </div>
-                                          </label>
-                                          {/* <label className="item address-receiver">
-                                      <span>{rowItem.ReceiverFullAddress}</span>
-                                    </label> */}
-                                          <label className="item address-repository-created">
-                                            <span>{rowItem.SenderFullName}</span>
-                                          </label>
-                                          <label className="item creacte-time">
-                                            <span className="times group-times">
-                                              <span className="time-item itemCreatedOrderTime">
-                                                <span className="txtCreatedOrderTime">Tạo: {formatMonthDate(rowItem.CreatedOrderTime)}</span>
-                                                <span className="txtCreatedOrderTime">Xuất: {formatMonthDate(rowItem.OutputGoodsDate)}</span>
-                                              </span>
-                                              <span className="time-item itemEstimat">
-                                                <span className="intervale itemDistance">
-                                                  <i className="fa fa-paper-plane-o"></i>
-                                                  <span className="txtintervale">{rowItem.EstimateDeliveryDistance + "Km/" + rowItem.ActualDeliveryDistance.toFixed(2) + "Km"}</span>
-                                                </span>
-                                                <span className="intervale itemLong">
-                                                  <i className="ti ti-timer"></i>
-                                                  <span className="txtintervale">{rowItem.EstimateDeliveryLong + "'"}</span>
-                                                </span>
-                                              </span>
-                                            </span>
-                                          </label>
-                                        </div>
-                                      </td>
-                                      <td className="group-infoShipmentOrder" style={{ width: "15%" }}>
-                                        <div className="group-info-row">
-                                          <label className="item person">
-                                            <span className="person-info fw-600" style={{ fontSize: 12 }}>
-                                              <Link className="linktext blank" target="_blank" to={{ pathname: "/ShipmentOrder/Detail/" + rowItem.ShipmentOrderID }}>
-                                                {rowItem.ShipmentOrderID}
-                                              </Link>
-                                            </span>
-                                            <button
-                                              className="btn-copy-clipboard"
-                                              style={{ border: "none", backgroundColor: "transparent", cursor: "pointer", outline: "none" }}
-                                              data-id={rowItem.ShipmentOrderID}
-                                              onClick={this.copyToClipboardShipmentOrder.bind(this)}
-                                            >
-                                              <i className="fa fa-copy" data-id={rowItem.ShipmentOrderID}></i>
-                                            </button>
-                                          </label>
-                                          <label className="item address-receiver">
-                                            <span>{rowItem.ShipmentOrderTypeName}</span>
-                                          </label>
-                                          {rowItem.CoordinatorUser != "" ? (
-                                            <React.Fragment>
-                                              <label className="item address-receiver">
-                                                <span>
-                                                  ĐP: <span className="coordinatorUser">{rowItem.CoordinatorUser + "-" + rowItem.CoordinatorUserName}</span>
-                                                </span>
-                                              </label>
-                                              {rowItem.DeliverUserFullNameList != "" ? (
-                                                <label className="item address-receiver">
-                                                  <span>{rowItem.DeliverUserFullNameList}</span>
-                                                </label>
-                                              ) : (
-                                                ""
-                                              )}
-
-                                              <label className="item address-receiver">
-                                                <span className="receiverred">{rowItem.CoordinatorNote != "" ? "Ghi chú: " + rowItem.CoordinatorNote : ""}</span>
-                                              </label>
-                                            </React.Fragment>
-                                          ) : (
-                                            <label className="item address-receiver">
-                                              <span className="receiverred">{rowItem.CoordinatorNote != "" ? "Ghi chú: " + rowItem.CoordinatorNote : ""}</span>
-                                            </label>
-                                          )}
-                                        </div>
-                                      </td>
-                                      <td className="group-address" style={{ width: "24%" }}>
-                                        <div className="group-info-row">
-                                          <label className={rowItem.IsInputReturn == true ? "item address-repository-created lblReturns" : "item address-repository-created"}>
-                                            <span className="coordinatorUser">
-                                              {rowItem.ShipItemNameList == "" ? rowItem.PrimaryShipItemName : ReactHtmlParser(rowItem.ShipItemNameList.replace(/;/g, "<br/>"))}
-                                            </span>
-                                          </label>
-                                          <label className="item address-receiver">
-                                            <span className="price-debt">{rowItem.OrderNote != "" ? "Ghi chú: " + rowItem.OrderNote : ""}</span>
-                                          </label>
-                                        </div>
-                                      </td>
-                                      <td className="group-price" style={{ width: "9%" }}>
-                                        <div className="group-row">
-                                          <span className="item price3">{rowItem.IsCancelDelivery == true ? <span className="badge badge-danger">Đã hủy</span> : ""}</span>
-                                          {rowItem.TotalCOD > 0 ? <span className="item pricecod">COD:{formatMoney(rowItem.TotalCOD, 0)}</span> : ""}
-                                          {rowItem.TotalSaleMaterialMoney > 0 ? <span className="item price-supplies">Vật tư:{formatMoney(rowItem.TotalSaleMaterialMoney, 0)}</span> : ""}
-                                          {rowItem.IsInputReturn == true ? <span className="item price-supplies">Nhập trả:{formatMoney(rowItem.TotalReturnPrice, 0)}</span> : ""}
-                                          {rowItem.IsPaidIn == true || rowItem.TotalSaleMaterialMoney + rowItem.TotalCOD - rowItem.TotalReturnPrice == 0 ? (
-                                            <span className="item price3 price-success">
-                                              <span className="price-title ">Nợ: </span>
-                                              <span className="price-debt">0đ</span>
-                                            </span>
-                                          ) : rowItem.TotalPaidInMoney + rowItem.TotalUnPaidInMoney > 0 ? (
-                                            <div className="item price3">
-                                              <span className="price-title">Nợ: </span>
-                                              <span className="price-debt">-{rowItem.TotalUnPaidInMoney >= 0 ? formatMoney(rowItem.TotalUnPaidInMoney, 0) : 0}đ</span>
-                                            </div>
-                                          ) : (
-                                            <div className="item price3">
-                                              <span className="price-title">Nợ: </span>
-                                              <span className="price-debt">
-                                                -
-                                                {rowItem.TotalCOD - rowItem.TotalReturnPrice <= 0
-                                                  ? formatMoney(rowItem.TotalSaleMaterialMoney)
-                                                  : formatMoney(rowItem.TotalCOD + rowItem.TotalSaleMaterialMoney - rowItem.TotalReturnPrice, 0)}
-                                              </span>
-                                            </div>
-                                          )}
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  );
-                                })}
-                            </tbody>
-                          </table>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+            <Tabs.TabPane tabKey="key_1_3" tab={reactNodeTab("Chưa điều phối", this.state.ShipmentRouteAutoDataSource.Dropped.length)} key="3" className="ant-tabs-child-3">
+              <DataGridShipmentRouteAuto
+                key={1}
+                listColumn={DataGridColumnList}
+                dataSource={this.state.ShipmentRouteAutoDataSource.Dropped}
+                IsLoadData={this.state.IsLoadData}
+                TimeFrame="Dropped"
+                GridDataShip={this.state.GridDataShip.Dropped}
+                AddLink={AddLink}
+                IDSelectColumnName={IDSelectColumnName}
+                PKColumnName={PKColumnName}
+                onDeleteClick={this.handleDelete}
+                onChangePage={this.handleOnChangePage}
+                onChangeView={this.handleOnChangeView.bind(this)}
+                onSearchEvent={this.handleOnSearchEvent.bind(this)}
+                onChangePageLoad={this.onChangePageLoad.bind(this)}
+                onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
+                onCheckShip={this.handleCheckShip}
+                onClickShip={this.handleClickShip}
+                onShipmentRoute={this.handleClickShipmentRoute}
+                onShowModel={this.handleShowModel}
+                onPrint={this.handlePrint.bind(this)}
+                IsDelete={false}
+                ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
+                IsAdd={false}
+                IsDataGridSmallSize={this.state.IsDataGridSmallSize}
+                PageNumber={this.state.PageNumber}
+                DeletePermission={"SHIPMENTORDER_DELETE"}
+                EditPermission={"SHIPMENTORDER_UPDATE"}
+                IsAutoPaging={true}
+                RowsPerPage={10000}
+                IsColumnChecked={true}
+              />
             </Tabs.TabPane>
           </Tabs>
         </div>
@@ -1616,76 +1690,125 @@ class SearchCom extends Component {
     }, 2000);
   }
 
+  // Xử lý sự kiện thay đổi tab
   handleChangeActiveTab(paramActiveKey) {
     let objActiveTimeFrame = {
       Name: "",
       TimeFrame: "",
     };
+
     if (paramActiveKey == 1) {
       objActiveTimeFrame = {
-        Name: "08h00 - 10h00",
+        Name: "08h - 10h",
         TimeFrame: "TimeFrame8to10",
       };
     } else if (paramActiveKey == 2) {
       objActiveTimeFrame = {
-        Name: "10h00 - 12h00",
+        Name: "10h - 12h",
         TimeFrame: "TimeFrame10to12",
       };
     } else if (paramActiveKey == 3) {
       objActiveTimeFrame = {
-        Name: "12h00 - 14h00",
+        Name: "12h - 14h",
         TimeFrame: "TimeFrame12to14",
       };
     } else if (paramActiveKey == 4) {
       objActiveTimeFrame = {
-        Name: "14h00 - 16h00",
+        Name: "14h - 16h",
         TimeFrame: "TimeFrame14to16",
       };
     } else if (paramActiveKey == 5) {
       objActiveTimeFrame = {
-        Name: "17h00 - 19h00",
+        Name: "17h - 19h",
         TimeFrame: "TimeFrame17to19",
       };
     } else if (paramActiveKey == 6) {
       objActiveTimeFrame = {
-        Name: "19h00 - 21h00",
+        Name: "19h - 21h",
         TimeFrame: "TimeFrame19to21",
       };
-    } else {
+    } else if (paramActiveKey == 7) {
       objActiveTimeFrame = {
         Name: "Thời gian khác",
         TimeFrame: "diffTimeFrame",
+      };
+    } else {
+      objActiveTimeFrame = {
+        Name: "",
+        TimeFrame: "",
       };
     }
 
     let changeState = this.state;
 
-    changeState = { ...changeState, ActiveTimeFrame: objActiveTimeFrame, ActiveTab: paramActiveKey };
+    if (paramActiveKey == 9) {
+      let objUIEffect = changeState.UIEffect;
+      let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
 
+      objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsDisabled: true };
+      objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
+      changeState = { ...changeState, UIEffect: objUIEffect };
+    } else {
+      let objUIEffect = changeState.UIEffect;
+      let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
+
+      objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsDisabled: false };
+      objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
+      changeState = { ...changeState, UIEffect: objUIEffect };
+    }
+
+    changeState = { ...changeState, ActiveTimeFrame: objActiveTimeFrame, ActiveTab: paramActiveKey };
     this.setState(changeState);
   }
 
   render() {
     const renderShipmentRouteAuto = this.renderShipmentRouteAuto();
 
+    let reactNodeTab = (title, length) => (
+      <div style={{ position: "relative" }}>
+        <span style={{ marginRight: "16px", lineHeight: "30px" }}>{title}</span>
+        {(length > 0 || length.length > 0) && (
+          <span
+            style={{
+              height: "15px",
+              width: "auto",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: "7.5px",
+              backgroundColor: "#eb4d4b",
+              position: "absolute",
+              top: "-10px",
+              right: "0",
+              color: "white",
+              padding: "0 5px",
+              fontSize: "11px",
+            }}
+          >
+            {length}
+          </span>
+        )}
+      </div>
+    );
+
     return (
-      <React.Fragment>
+      <div style={{ padding: "0 14px 14px 14px", width: "100%" }}>
         <ReactNotification ref={this.notificationDOMRef} />
-        <div className="col-lg-12 SearchFormCustom" id="SearchFormCustom" style={{ padding: 0 }}>
-          <Collapse className="ant-collapse-search" style={{ backgroundColor: "white", marginBottom: "10px" }}>
-            <Collapse.Panel header="Tim kiếm, lọc dữ liệu phân tuyến vận chuyển" key="1">
-              <SearchFormShipmentRouteAuto
-                FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
-                MLObjectDefinition={SearchMLObjectDefinition}
-                listelement={this.state.SearchElementList}
-                onSubmit={(object) => this.handleSearchSubmit(object)}
-                ref={this.searchref}
-                btnGroup="btnSearch btncustom btnGroup"
-                IsSetting={true}
-                className="multiple multiple-custom multiple-custom-display"
-              />
-            </Collapse.Panel>
-          </Collapse>
+        <div className="col-lg-12 SearchFormCustom" id="SearchFormCustom" style={{ padding: "0" }}>
+          {/* <Collapse className="ant-collapse-search" style={{ backgroundColor: "white", marginBottom: "10px" }}>
+                            <Collapse.Panel header="Tim kiếm, lọc dữ liệu phân tuyến vận chuyển" key="1"> */}
+          <SearchFormShipmentRouteAuto
+            FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
+            MLObjectDefinition={SearchMLObjectDefinition}
+            listelement={this.state.SearchElementList}
+            onSubmit={(object) => this.handleSearchSubmit(object)}
+            ref={this.searchref}
+            btnGroup="btnSearch btncustom btnGroup"
+            IsSetting={true}
+            className="multiple multiple-custom multiple-custom-display"
+          />
+          {/* </Collapse.Panel>
+                        </Collapse> */}
 
           {/* <SearchForm
                 FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
@@ -1699,9 +1822,16 @@ class SearchCom extends Component {
         </div>
 
         {this.state.IsLoadDataComplete && (
-          <div className="col-lg-12" style={{ backgroundColor: "aliceblue", border: "1px solid #03a9f4" }}>
-            <Tabs defaultActiveKey={this.state.ActiveTab} activeKey={this.state.ActiveTab} size="large" onChange={(activeKey) => this.handleChangeActiveTab(activeKey)}>
-              <Tabs.TabPane tab="08h00 - 10h00" key="1">
+          <div className="col-lg-12" style={{ backgroundColor: "aliceblue", border: "1px solid #03a9f4", padding: "0" }}>
+            <Tabs
+              className="ant-tabs-parent"
+              key="tabs_1"
+              defaultActiveKey={this.state.ActiveTab}
+              activeKey={this.state.ActiveTab}
+              size="large"
+              onChange={(activeKey) => this.handleChangeActiveTab(activeKey)}
+            >
+              <Tabs.TabPane tab={reactNodeTab("08h - 10h", this.state.TimeFrame8to10.length)} key="1" tabKey="tabs_1_1">
                 <Collapsible
                   className="CollapsibleCustom"
                   triggerDisabled={this.state.ObjectIsDisabled.TimeFrame8to10}
@@ -1710,7 +1840,7 @@ class SearchCom extends Component {
                       <Row gutter={24}>
                         <Col span={4}>
                           <Card size="small" bordered={false}>
-                            <Statistic title="Thời gian" value="08h00 - 10h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                            <Statistic title="Thời gian" value="08h - 10h" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                           </Card>
                         </Col>
                         <Col span={4}>
@@ -1799,7 +1929,7 @@ class SearchCom extends Component {
                   />
                 </Collapsible>
               </Tabs.TabPane>
-              <Tabs.TabPane tab="10h00 - 12h00" key="2">
+              <Tabs.TabPane tab={reactNodeTab("10h - 12h", this.state.TimeFrame10to12.length)} key="2" tabKey="tabs_1_2">
                 <Collapsible
                   className="CollapsibleCustom"
                   triggerDisabled={this.state.ObjectIsDisabled.TimeFrame10to12}
@@ -1808,7 +1938,7 @@ class SearchCom extends Component {
                       <Row gutter={24}>
                         <Col span={4}>
                           <Card size="small" bordered={false}>
-                            <Statistic title="Thời gian" value="10h00 - 12h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                            <Statistic title="Thời gian" value="10h - 12h" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                           </Card>
                         </Col>
                         <Col span={4}>
@@ -1894,7 +2024,7 @@ class SearchCom extends Component {
                   />
                 </Collapsible>
               </Tabs.TabPane>
-              <Tabs.TabPane tab="12h00 - 14h00" key="3">
+              <Tabs.TabPane tab={reactNodeTab("12h - 14h", this.state.TimeFrame12to14.length)} key="3" tabKey="tabs_1_3">
                 <Collapsible
                   className="CollapsibleCustom"
                   triggerDisabled={this.state.ObjectIsDisabled.TimeFrame12to14}
@@ -1903,7 +2033,7 @@ class SearchCom extends Component {
                       <Row gutter={24}>
                         <Col span={4}>
                           <Card size="small" bordered={false}>
-                            <Statistic title="Thời gian" value="12h00 - 14h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                            <Statistic title="Thời gian" value="12h - 14h" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                           </Card>
                         </Col>
                         <Col span={4}>
@@ -1989,7 +2119,7 @@ class SearchCom extends Component {
                   />
                 </Collapsible>
               </Tabs.TabPane>
-              <Tabs.TabPane tab="14h00 - 16h00" key="4">
+              <Tabs.TabPane tab={reactNodeTab("14h - 16h", this.state.TimeFrame14to16.length)} key="4" tabKey="tabs_1_4">
                 <Collapsible
                   className="CollapsibleCustom"
                   triggerDisabled={this.state.ObjectIsDisabled.TimeFrame14to16}
@@ -1998,7 +2128,7 @@ class SearchCom extends Component {
                       <Row gutter={24}>
                         <Col span={4}>
                           <Card size="small" bordered={false}>
-                            <Statistic title="Thời gian" value="14h00 - 16h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                            <Statistic title="Thời gian" value="14h - 16h" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                           </Card>
                         </Col>
                         <Col span={4}>
@@ -2084,7 +2214,7 @@ class SearchCom extends Component {
                   />
                 </Collapsible>
               </Tabs.TabPane>
-              <Tabs.TabPane tab="17h00 - 19h00" key="5">
+              <Tabs.TabPane tab={reactNodeTab("17h - 19h", this.state.TimeFrame17to19.length)} key="5" tabKey="tabs_1_5">
                 <Collapsible
                   className="CollapsibleCustom"
                   triggerDisabled={this.state.ObjectIsDisabled.TimeFrame17to19}
@@ -2093,7 +2223,7 @@ class SearchCom extends Component {
                       <Row gutter={24}>
                         <Col span={4}>
                           <Card size="small" bordered={false}>
-                            <Statistic title="Thời gian" value="17h00 - 19h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                            <Statistic title="Thời gian" value="17h - 19h" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                           </Card>
                         </Col>
                         <Col span={4}>
@@ -2181,7 +2311,7 @@ class SearchCom extends Component {
                   />
                 </Collapsible>
               </Tabs.TabPane>
-              <Tabs.TabPane tab="19h00 - 21h00" key="6">
+              <Tabs.TabPane tab={reactNodeTab("19h - 21h", this.state.TimeFrame19to21.length)} key="6" tabKey="tabs_1_6">
                 <Collapsible
                   className="CollapsibleCustom"
                   triggerDisabled={this.state.ObjectIsDisabled.TimeFrame19to21}
@@ -2190,7 +2320,7 @@ class SearchCom extends Component {
                       <Row gutter={24}>
                         <Col span={4}>
                           <Card size="small" bordered={false}>
-                            <Statistic title="Thời gian" value="19h00 - 21h00" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                            <Statistic title="Thời gian" value="19h - 21h" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
                           </Card>
                         </Col>
                         <Col span={4}>
@@ -2278,7 +2408,7 @@ class SearchCom extends Component {
                   />
                 </Collapsible>
               </Tabs.TabPane>
-              <Tabs.TabPane tab="Thời gian khác" key="7">
+              <Tabs.TabPane tab={reactNodeTab("Thời gian khác", this.state.diffTimeFrame.length)} key="7" tabKey="tabs_1_7">
                 <Collapsible
                   className="CollapsibleCustom"
                   triggerDisabled={this.state.ObjectIsDisabled.diffTimeFrame}
@@ -2375,22 +2505,28 @@ class SearchCom extends Component {
                   />
                 </Collapsible>
               </Tabs.TabPane>
-              <Tabs.TabPane tab="Phân tuyến tự động" key="9">
+              <Tabs.TabPane tab={reactNodeTab("Phân tuyến tự động", this.state.UIEffect.TabShipmentRouteAuto.Content)} key="9" tabKey="tabs_1_9">
                 {renderShipmentRouteAuto}
               </Tabs.TabPane>
               <Tabs.TabPane
                 tab={
                   <Space>
-                    <Button type="primary" onClick={() => this.handleUserCoordinator()}>
+                    {/* <Button type="primary" onClick={() => this.handleUserCoordinator()}>
                       Phân tuyến
-                    </Button>
-                    <Button loading={this.state.UIEffect.ButtonShipmentRouteAuto.IsLoading} type="primary" onClick={(_) => this.handleShipmentRouteAuto()}>
+                    </Button> */}
+                    <Button
+                      loading={this.state.UIEffect.ButtonShipmentRouteAuto.IsLoading}
+                      disabled={this.state.UIEffect.ButtonShipmentRouteAuto.IsDisabled}
+                      type="primary"
+                      onClick={(_) => this.handleShipmentRouteAuto()}
+                    >
                       Phân tuyến tự động
                     </Button>
                   </Space>
                 }
                 disabled
                 key="8"
+                tabKey="tabs_1_8"
               ></Tabs.TabPane>
             </Tabs>
           </div>
@@ -2414,7 +2550,7 @@ class SearchCom extends Component {
         )}
 
         {this.state.IsShowModelMap && <ModalVietBanDoShipmentRouteAuto ListShipmentOrder={this.state.DataSourceMap} onClose={() => this.setState({ IsShowModelMap: false })} />}
-      </React.Fragment>
+      </div>
     );
   }
 }

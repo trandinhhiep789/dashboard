@@ -839,7 +839,7 @@ class DataGridShipmentOderNewCom extends Component {
                                 <div className="item">
                                   <i className="fa fa-user"></i>
                                   <div className="person-info">
-                                    <span className="name">{rowItem.ReceiverFullName}</span>
+                                    <span className="name" style={{wordBreak:"break-all"}}>{rowItem.ReceiverFullName}</span>
                                     <span className="line">-</span>
                                     <span className={rowItem.PhoneCount > 1 ? "phone  phonered" : "phone"}>({rowItem.ReceiverPhoneNumber})</span>
                                     <span className="line">-</span>
@@ -1021,7 +1021,7 @@ class DataGridShipmentOderNewCom extends Component {
                           <label className="item person">
                             <i className="fa fa-user"></i>
                             <div className="person-info">
-                              <span className="name">{rowItem.ReceiverFullName}</span>
+                              <span className="name" style={{wordBreak:"break-all"}}>{rowItem.ReceiverFullName}</span>
                               <span className="line">-</span>
                               <span className={rowItem.PhoneCount > 1 ? "phone  phonered" : "phone"}>({rowItem.ReceiverPhoneNumber})</span>
                               {rowItem.PartnerSaleOrderID != "" ? <span className="line">-</span> : ""}
@@ -1247,7 +1247,7 @@ class DataGridShipmentOderNewCom extends Component {
                       <div className="group-address">
                         {/* <i className="fa fa-user"></i> */}
                         <div className="person-info">
-                          <span className="name">{ReceiverFullName}</span>
+                          <span className="name" style={{wordBreak:"break-all"}}>{ReceiverFullName}</span>
                           <span className="line">-</span>
                           <span className={PhoneCount > 1 ? "phone  phonered" : "phone"}>({ReceiverPhoneNumber.substr(0, 4)}****)</span>
                           {PartnerSaleOrderID != "" ? <span className="line">-</span> : ""}

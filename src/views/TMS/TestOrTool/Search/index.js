@@ -116,7 +116,23 @@ class SearchCom extends React.Component {
             'TOTALWEIGHT': {
                 prop: 'TOTALWEIGHT',
                 type: Number,
-            }
+            },
+            'CARRIERTYPEID': {
+                prop: 'CARRIERTYPEID',
+                type: Number,
+            },
+            'COORDINATORSTOREID': {
+                prop: 'COORDINATORSTOREID',
+                type: Number,
+            },
+            'COORDINATORSTOREADDRESS': {
+                prop: 'COORDINATORSTOREADDRESS',
+                type: String,
+            },
+            'SHIPMENTORDERSTATUSID': {
+                prop: 'SHIPMENTORDERSTATUSID',
+                type: Number,
+            },
         }
 
         const input = document.getElementById('buttonImportFile');
@@ -129,14 +145,15 @@ class SearchCom extends React.Component {
                     return {
                         PartnerSaleOrderID: item.SALEORDERID ? item.SALEORDERID : 0,
                         ReceiverFullAddress: `${item.DELIVERYADDRESS}, ${item.WARDNAME}, ${item.DISTRICTNAME}, ${item.PROVINCENAME}`,
-                        Weight: item.TOTALWEIGHT ? item.TOTALWEIGHT : 0
+                        Weight: item.TOTALWEIGHT ? item.TOTALWEIGHT : 0,
+                        CarrierTypeID: item.CARRIERTYPEID ? item.CARRIERTYPEID : "",
+                        CoordinatorStoreID: item.COORDINATORSTOREID,
+                        CoordinatorStoreAddress: item.COORDINATORSTOREADDRESS,
+                        ShipmentOrderStatusID: item.SHIPMENTORDERSTATUSID
                     }
                 })
 
                 const input_1 = {
-                    DepotRouting: {
-                        Address: "Đường Thới An 19A, Tân Thới An,  Quận 12, Hồ Chí Minh"
-                    },
                     ListShipmentOrder: input
                 }
 

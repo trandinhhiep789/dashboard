@@ -92,6 +92,19 @@ export const AddElementList = [
 
     },
     {
+        type: "text",
+        name: "txtQualityAssessPoint",
+        label: "Điểm đánh giá chất lượng:",
+        value: "0",
+        maxSize: "2",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "QualityAssessPoint",
+        readonly: false,
+        validatonList: ["number"]
+    },
+    {
         type: "select",
         name: "GetFeeType",
         label: "Kiểu lấy chi phí",
@@ -201,6 +214,19 @@ export const EditElementList = [
 
     },
     {
+        type: "text",
+        name: "txtQualityAssessPoint",
+        label: "Điểm đánh giá chất lượng:",
+        value: "0",
+        maxSize: "2",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "QualityAssessPoint",
+        readonly: false,
+        validatonList: ["number"]
+    },
+    {
         type: "select",
         name: "GetFeeType",
         label: "Kiểu lấy chi phí",
@@ -287,6 +313,12 @@ export const MLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "txtQualityAssessTypeName",
         DataSourceMember: "QualityAssessTypeName"
+    },
+    {
+        Name: "QualityAssessPoint",
+        DefaultValue: "",
+        BindControlName: "txtQualityAssessPoint",
+        DataSourceMember: "QualityAssessPoint"
     },
     {
         Name: "QualityAssessGroupID",

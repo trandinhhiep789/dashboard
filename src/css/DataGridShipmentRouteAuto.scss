@@ -1,6 +1,5 @@
 .SearchForm .card .card-body.card-body-custom {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
+  padding: 0 !important;
 }
 
 .SearchForm .card .card-title.card-title-custom {
@@ -109,12 +108,12 @@
     padding: 0px !important;
   }
 
-  .Collapsible__trigger.is-disabled{
+  .Collapsible__trigger.is-disabled {
     opacity: 1 !important;
   }
 }
 
-.ant-collapse-search .ant-collapse-content-box{
+.ant-collapse-search .ant-collapse-content-box {
   padding: 0 !important;
 }
 
@@ -122,8 +121,12 @@
   margin: auto;
 }
 
-.ant-tabs{
+.ant-tabs {
   padding: 8px !important;
+}
+
+.ant-tabs-parent .ant-tabs-tab + .ant-tabs-tab {
+  margin: 0 0 0 10px;
 }
 
 .ant-dropdown-custom-300 {
