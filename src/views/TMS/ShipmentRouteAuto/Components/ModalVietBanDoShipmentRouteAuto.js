@@ -5,11 +5,13 @@ import { callGetCache } from "../../../../actions/cacheAction.js";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction.js";
 import { connect } from "react-redux";
 import "../../../../css/ModalVietBanDoShipmentRouteAuto.scss";
-import { styled } from "styled-components";
+import { InfoWindow } from "google-maps-react";
 
 class ModalVietBanDoShipmentRouteAuto extends Component {
   constructor(props) {
     super(props);
+
+    let map = null;
 
     this.state = {
       Geometry: "",
@@ -53,6 +55,7 @@ class ModalVietBanDoShipmentRouteAuto extends Component {
         });
 
         const mapContainer = document.getElementById("map-container");
+
         const mapProp = {
           maxZoom: 19,
           minZoom: 2,
@@ -60,7 +63,9 @@ class ModalVietBanDoShipmentRouteAuto extends Component {
           scaleControlOptions: { showScale: true },
           zoomControl: true,
         };
+
         let map = new vbd.Map(mapContainer, mapProp);
+
         let templateContent = ({ content, receiverFullAddress, receiverFullName }) => {
           var html = `
           <div class="vContent">
@@ -70,6 +75,7 @@ class ModalVietBanDoShipmentRouteAuto extends Component {
           </div>`;
           return html;
         };
+
         let content = (index) => {
           let html = `<div style="height: 44px; width: 26px; position: absolute; left: 0; top: 0;">
                 <i class="fa fa-map-marker fa-3x" style="position: absolute; left: 0; top: 0; z-index: 999; color: #b71540;">
@@ -95,10 +101,6 @@ class ModalVietBanDoShipmentRouteAuto extends Component {
             icon: new vbd.Icon({ size: new vbd.Size(26, 44), anchor: new vbd.Point(14, 42) }),
           });
 
-          // let marker = new vbd.Marker({
-          //   position: new vbd.LatLng(Latitude, Longitude),
-          // });
-
           let infoWindow = new vbd.InfoWindow({
             content: templateContent(
               item.ShipmentOrderID == 0
@@ -112,18 +114,25 @@ class ModalVietBanDoShipmentRouteAuto extends Component {
           });
 
           map.addMarker(marker);
-          map.zoomFit();
-
-          let polyline = new vbd.Polyline({
-            path: objResult.Value.Routes[0].Geometry,
-            strokeOpacity: 2,
-            strokeWidth: 2,
-          });
-
-          polyline.setMap(map);
         });
+
+        map.zoomFit();
+
+        let polyline = new vbd.Polyline({
+          path: objResult.Value.Routes[0].Geometry,
+          strokeOpacity: 2,
+          strokeWidth: 2,
+        });
+
+        polyline.setMap(map);
+
+        this.map = map;
       }
     });
+  }
+
+  hanhleSelectMapListItem(location) {
+    this.map.setCenter(new vbd.LatLng(location[0], location[1]));
   }
 
   handleClose() {
@@ -133,6 +142,28 @@ class ModalVietBanDoShipmentRouteAuto extends Component {
   }
 
   render() {
+    const renderMapList = () => {
+      return this.props.ListShipmentOrder.map((item, index) => (
+        <React.Fragment>
+          <div
+            className="map-list__item"
+            onClick={(_) => {
+              if (index == 0) {
+                this.hanhleSelectMapListItem(item.CoordinatorStoreGeo.split(","));
+              } else {
+                this.hanhleSelectMapListItem(item.ReceiverGeoLocation.split(","));
+              }
+            }}
+          >
+            <i className="fa fa-map-marker fa-2x item-icon">
+              <span className="item-icon__content">{index}</span>
+            </i>
+            <span className="item-content">{index == 0 ? "Kho" : item.ShipmentOrderID}</span>
+          </div>
+        </React.Fragment>
+      ));
+    };
+
     return (
       <Modal
         className="ant-modal-vietbando"
@@ -149,9 +180,17 @@ class ModalVietBanDoShipmentRouteAuto extends Component {
         ]}
       >
         <div id="map-container" style={{ height: "70vh", width: "100%", position: "relative" }}>
-          {/* <div
-            style={{ height: "300px", width: "250px", position: "absolute", right: "5px", top: "50%", transform: "translateY(-50%)", backgroundColor: "#fad390", zIndex: 999999, opacity: 0.6 }}
-          ></div> */}
+          <div className="map-list">
+            {renderMapList()}
+            {/* <div className="map-list__item">
+              <i className="fa fa-map-marker fa-2x item-icon">
+                <span className="item-icon__content">
+                  1
+                </span>
+              </i>
+              <span className="item-content">1231311212312321</span>
+            </div> */}
+          </div>
         </div>
       </Modal>
     );

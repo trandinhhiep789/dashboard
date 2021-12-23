@@ -1119,9 +1119,11 @@ class SearchCom extends Component {
           let objShipmentRouteAutoDataSource = changeState.ShipmentRouteAutoDataSource;
           let objUIEffect = changeState.UIEffect;
           let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
+          let objTabShipmentRouteAuto = objUIEffect.TabShipmentRouteAuto;
 
+          objTabShipmentRouteAuto = { ...objTabShipmentRouteAuto, Content: this.state.ActiveTimeFrame.Name };
           objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: false, IsDisabled: true };
-          objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
+          objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto, TabShipmentRouteAuto: objTabShipmentRouteAuto };
           changeState = { ...changeState, UIEffect: objUIEffect };
           objShipmentRouteAutoDataSource = { Motor: MotorRoute, Truck: TruckRoute, Dropped: ListDroppedShipmentOrder };
           changeState = { ...changeState, ActiveTab: "9", ShipmentRouteAutoDataSource: objShipmentRouteAutoDataSource };
@@ -1131,9 +1133,11 @@ class SearchCom extends Component {
           let changeState = this.state;
           let objUIEffect = changeState.UIEffect;
           let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
+          let objTabShipmentRouteAuto = objUIEffect.TabShipmentRouteAuto;
 
+          objTabShipmentRouteAuto = { ...objTabShipmentRouteAuto, Content: "" };
           objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: false };
-          objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
+          objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto, TabShipmentRouteAuto: objTabShipmentRouteAuto };
           changeState = { ...changeState, UIEffect: objUIEffect };
 
           this.setState(changeState);
@@ -1160,7 +1164,7 @@ class SearchCom extends Component {
     if (value.length > 3 && e.keyCode != 40 && e.keyCode != 38 && value.substr(0, 3) != "004") {
       this.handleSearchDataNhanVienGiao("*" + value + "*");
     }
-  } 
+  }
 
   // Xử lý tìm kiếm nhân viên giao
   handleSearchDataNhanVienGiao(KeyWord) {
@@ -1245,18 +1249,15 @@ class SearchCom extends Component {
   handleSelectNhanVienGiaoValueChange_1(value, options) {
     // let objDeliverUser = [];
     // let listStaffDebtObject = [];
-
     // options &&
     //   options.map((item, index) => {
     //     let objShip_DeliverUser = { UserName: item.user.value, FullName: item.user.FullName };
-
     //     objDeliverUser.push(objShip_DeliverUser);
     //     listStaffDebtObject.push({
     //       UserName: item.value,
     //     //   StoreID: this.state.ShipmentOrder.length > 0 ? this.state.ShipmentOrder[0].CoordinatorStoreID : 0,
     //     });
     //   });
-
     // if (options) {
     //   this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/UserIsLockDelivery", listStaffDebtObject).then((apiResult) => {
     //     if (!apiResult.IsError) {
@@ -1265,16 +1266,13 @@ class SearchCom extends Component {
     //           row["ShipmentOrder_DeliverUserList"] = objDeliverUser || [];
     //         }
     //       });
-
     //       let stateChange = this.state;
     //       let objControlValue = stateChange.ObjectControlValue;
     //       let objNhanVienGiao = objControlValue.NhanVienGiao;
     //       let lstNhanVienGiao = options.map((item) => item.user.value);
-
     //       objNhanVienGiao = { ...objNhanVienGiao, Value: lstNhanVienGiao };
     //       objControlValue = { ...objControlValue, NhanVienGiao: objNhanVienGiao };
     //       stateChange = { ...stateChange, objDeliverUser: value, ShipmentOrder: this.state.ShipmentOrder, ShipmentRouteLst: apiResult.ResultObject, ObjectControlValue: objControlValue };
-
     //       this.setState(stateChange);
     //     } else {
     //       this.props.onShowNotification(apiResult.Message, apiResult.IsError);
@@ -1286,16 +1284,13 @@ class SearchCom extends Component {
     //       row["ShipmentOrder_DeliverUserList"] = objDeliverUser || [];
     //     }
     //   });
-
     //   let changeState = this.state;
     //   let objControlValue = stateChange.ObjectControlValue;
     //   let objNhanVienGiao = objControlValue.NhanVienGiao;
     //   let lstNhanVienGiao = options.map((item) => item.user.value);
-
     //   objNhanVienGiao = { ...objNhanVienGiao, Value: lstNhanVienGiao };
     //   objControlValue = { ...objControlValue, NhanVienGiao: objNhanVienGiao };
     //   changeState = { ...changeState, ObjectControlValue: objControlValue, ShipmentRouteLst: [] };
-
     //   this.setState(changeState);
     // }
   }
@@ -1348,7 +1343,7 @@ class SearchCom extends Component {
                 <h6>
                   Tổng cộng số tải: <span style={{ fontWeight: "700" }}>{this.state.ShipmentRouteAutoDataSource.Motor.TotalLoad}</span> kg
                 </h6>
-                {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute && (
+                {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute && length_motor > 0 && (
                   // this.state.ShipmentRouteAutoDataSource.Motor.TotalDistance > 0 &&
                   // this.state.ShipmentRouteAutoDataSource.Motor.TotalLoad > 0 &&
                   <div style={{ width: "100%", backgroundColor: "white", padding: "20px", maxHeight: "60vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
@@ -1360,7 +1355,7 @@ class SearchCom extends Component {
                           <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
                             <div style={{ width: "90%", marginBottom: "30px" }}>
                               <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
-                                <Tag color="#108ee9">Tuyến: {index}</Tag>
+                                <Tag color="#108ee9">Tuyến: {index + 1}</Tag>
                                 <Tag color="#2db7f5">Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Motor.ListTotalDistance[index] / 1000)}</Tag>
                                 <Tag color="#87d068">Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Motor.ListTotalLoad[index]}</Tag>
                                 <Select
@@ -1458,7 +1453,7 @@ class SearchCom extends Component {
                                 ))}
                               </div>
                             </div>
-                            <div style={{ width: "10%", textAlign: "right", paddingTop: "18px" }}>
+                            <div style={{ width: "10%", display: "flex", justifyContent: "center", alignItems: "center", textAlign: "right", paddingTop: "18px" }}>
                               <Tooltip title="Xem bản đồ">
                                 <Button type="primary" shape="circle" icon={<EyeOutlined />} onClick={() => this.handleShowModalMapMotorRoute(index)} />
                               </Tooltip>
@@ -1487,7 +1482,7 @@ class SearchCom extends Component {
                 <h6>
                   Tổng cộng số tải: <span style={{ fontWeight: "700" }}>{this.state.ShipmentRouteAutoDataSource.Truck.TotalLoad}</span> kg
                 </h6>
-                {this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute && (
+                {this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute && length_truck > 0 && (
                   // this.state.ShipmentRouteAutoDataSource.Truck.TotalDistance > 0 &&
                   // this.state.ShipmentRouteAutoDataSource.Truck.TotalLoad > 0 &&
                   <div style={{ width: "100%", backgroundColor: "white", padding: "20px", maxHeight: "60vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
@@ -1502,8 +1497,8 @@ class SearchCom extends Component {
                                   <span>Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Truck.ListTotalDistance[index] / 1000)}</span>&ensp;
                                   <span>Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Truck.ListTotalLoad[index]}</span>
                                 </div> */}
-                              <div style={{display:"flex", alignItems:"center", marginBottom: "10px" }}>
-                                <Tag color="#108ee9">Tuyến: {index}</Tag>
+                              <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
+                                <Tag color="#108ee9">Tuyến: {index + 1}</Tag>
                                 <Tag color="#2db7f5">Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Truck.ListTotalDistance[index] / 1000)}</Tag>
                                 <Tag color="#87d068">Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Truck.ListTotalLoad[index]}</Tag>
                                 <Select
@@ -1598,7 +1593,7 @@ class SearchCom extends Component {
                                 ))}
                               </div>
                             </div>
-                            <div style={{ width: "10%", textAlign: "right", paddingTop: "18px" }}>
+                            <div style={{ width: "10%", display: "flex", justifyContent: "center", alignItems: "center", textAlign: "right", paddingTop: "18px" }}>
                               <Tooltip title="Xem bản đồ">
                                 <Button type="primary" shape="circle" icon={<EyeOutlined />} onClick={() => this.handleShowModalMapTruckRoute(index)} />
                               </Tooltip>
@@ -1618,7 +1613,7 @@ class SearchCom extends Component {
 
             {/* Tab chưa điều phối */}
 
-            <Tabs.TabPane tabKey="key_1_3" tab={reactNodeTab("Chưa điều phối", this.state.ShipmentRouteAutoDataSource.Dropped.length)} key="3" className="ant-tabs-child-3">
+            <Tabs.TabPane tabKey="key_1_3" tab={reactNodeTab("Chưa phân tuyến", this.state.ShipmentRouteAutoDataSource.Dropped.length)} key="3" className="ant-tabs-child-3">
               <DataGridShipmentRouteAuto
                 key={1}
                 listColumn={DataGridColumnList}
