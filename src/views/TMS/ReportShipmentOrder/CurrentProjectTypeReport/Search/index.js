@@ -459,7 +459,7 @@ class SearchCom extends React.Component {
 
         const postData = {
             DataExportTemplateID: exportTemplateID,
-            LoadDataStoreName: 'TMS.TMS_CURSTOREPROJECTTYPE_RP',
+            LoadDataStoreName: 'TMS.TMS_MONTHLYSTOREPROJECTTYPE_RP',
             KeyCached: "MAINTAINCONSTRUCT_VIEW",
             SearchParamList: searchData,
             ExportDataParamsDescription: "" 
