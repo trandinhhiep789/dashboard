@@ -180,6 +180,7 @@ class SearchCom extends Component {
     today.setHours(7);
     today.setMinutes(0);
     today.setSeconds(0);
+    today.setMonth(10);
 
     tomorrow.setDate(tomorrow.getDate() + 1);
     tomorrow.setHours(7);
@@ -540,6 +541,7 @@ class SearchCom extends Component {
     today.setHours(7);
     today.setMinutes(0);
     today.setSeconds(0);
+    today.setMonth(10);
 
     tomorrow.setDate(tomorrow.getDate() + 1);
     tomorrow.setHours(7);
@@ -1300,28 +1302,29 @@ class SearchCom extends Component {
   renderShipmentRouteAuto() {
     const pickRandomColor = ["#1f5ff4", "#c55d53", "#cb68c5", "#65b411", "#f4b323", "#420e3e", "#e80024", "#585ccc", "#d44371", "#14915f", "#e79940", "#6be54"];
     let randomColor = "";
-
     let reactNodeTab = (title, length) => (
       <div style={{ position: "relative" }}>
         <span style={{ marginRight: "16px", lineHeight: "30px" }}>{title}</span>
-        <span
-          style={{
-            height: "15px",
-            width: "15px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: "7.5px",
-            backgroundColor: "#eb4d4b",
-            position: "absolute",
-            top: "0",
-            right: "0",
-            color: "white",
-            fontSize: "11px",
-          }}
-        >
-          {length}
-        </span>
+        {(length > 0 || length.length > 0) && (
+          <span
+            style={{
+              height: "15px",
+              width: "15px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: "7.5px",
+              backgroundColor: "#eb4d4b",
+              position: "absolute",
+              top: "0",
+              right: "0",
+              color: "white",
+              fontSize: "11px",
+            }}
+          >
+            {length}
+          </span>
+        )}
       </div>
     );
 
@@ -1501,9 +1504,9 @@ class SearchCom extends Component {
                                 <Button type="primary" shape="circle" icon={<EyeOutlined />} onClick={() => this.handleShowModalMapMotorRoute(index)} />
                               </Tooltip>
                               &nbsp;
-                              <Tooltip title="Phân tuyến">
+                              {/* <Tooltip title="Phân tuyến">
                                 <Button type="primary" shape="circle" icon={<PartitionOutlined />} onClick={(_) => this.handleConfirm(index, 1)} />
-                              </Tooltip>
+                              </Tooltip> */}
                             </div>
                           </div>
                         </div>
@@ -1624,9 +1627,9 @@ class SearchCom extends Component {
                                 <Button type="primary" shape="circle" icon={<EyeOutlined />} onClick={() => this.handleShowModalMapTruckRoute(index)} />
                               </Tooltip>
                               &nbsp;
-                              <Tooltip title="Phân tuyến">
+                              {/* <Tooltip title="Phân tuyến">
                                 <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
-                              </Tooltip>
+                              </Tooltip> */}
                             </div>
                           </div>
                         </div>
