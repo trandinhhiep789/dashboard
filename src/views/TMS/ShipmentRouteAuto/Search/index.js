@@ -1330,7 +1330,7 @@ class SearchCom extends Component {
 
     const renderDeliverUserSelect = (index, vehicleType) => {
       if (vehicleType == 1) {
-        let deliverUserFullNameList = this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute[index][0]["DeliverUserFullNameList"];
+        let deliverUserFullNameList = this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute[index][1]["DeliverUserFullNameList"];
         let [userName, fullName] = deliverUserFullNameList.split("-");
         let changeState = this.state;
         let objControlValue = changeState.ObjectControlValue;
