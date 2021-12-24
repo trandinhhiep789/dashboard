@@ -127,8 +127,8 @@ class SearchCom extends Component {
 
       ObjectControlValue: {
         NhanVienGiao: {
-          Value: -1,
-          ListOption: [],
+          Values: {},
+          Options: {},
         },
       },
     };
@@ -1158,16 +1158,16 @@ class SearchCom extends Component {
   }
 
   // Xử lý nhập tìm kiếm nhân viên giao
-  handleSelectNhanVienGiaoInputValueChange(e) {
-    let value = e.target.value;
+  handleSelectNhanVienGiaoInputValueChange(event, index) {
+    let value = event.target.value;
 
-    if (value.length > 3 && e.keyCode != 40 && e.keyCode != 38 && value.substr(0, 3) != "004") {
-      this.handleSearchDataNhanVienGiao("*" + value + "*");
+    if (value.length > 3 && event.keyCode != 40 && event.keyCode != 38 && value.substr(0, 3) != "004") {
+      this.handleSearchDataNhanVienGiao("*" + value + "*", index);
     }
   }
 
   // Xử lý tìm kiếm nhân viên giao
-  handleSearchDataNhanVienGiao(KeyWord) {
+  handleSearchDataNhanVienGiao(keyword, index) {
     let listMLObject = {
       IndexName: "user",
       TypeName: "user",
@@ -1182,14 +1182,14 @@ class SearchCom extends Component {
           SubQueryParamList: [
             {
               QueryKey: "uSERNAME",
-              QueryValue: KeyWord,
+              QueryValue: keyword,
               QueryType: 2,
               IsNotQuery: false,
             },
 
             {
               QueryKey: "fULLNAME",
-              QueryValue: KeyWord,
+              QueryValue: keyword,
               QueryType: 2,
               IsNotQuery: false,
             },
@@ -1203,7 +1203,10 @@ class SearchCom extends Component {
       for (let i = 0; i < apiResult.ResultObject.length; i++) {
         if (this.props.isCheckPartner == undefined) {
           if (apiResult.ResultObject[i].UserName.substr(0, 3) != "004") {
-            let isExist = this.state.ObjectControlValue.NhanVienGiao.ListOption.some((item) => item.value == apiResult.ResultObject[i].UserName);
+            let isExist =
+              this.state.ObjectControlValue.NhanVienGiao.Options &&
+              this.state.ObjectControlValue.NhanVienGiao.Options[index] &&
+              this.state.ObjectControlValue.NhanVienGiao.Options[index].some((item) => item.value == apiResult.ResultObject[i].UserName);
             if (!isExist) {
               listOptionNew1.push({
                 value: apiResult.ResultObject[i].UserName,
@@ -1216,7 +1219,10 @@ class SearchCom extends Component {
             }
           }
         } else {
-          let isExist = this.state.ObjectControlValue.NhanVienGiao.ListOption.some((item) => item.value === apiResult.ResultObject[i].UserName);
+          let isExist =
+            this.state.ObjectControlValue.NhanVienGiao.Options &&
+            this.state.ObjectControlValue.NhanVienGiao.Options[index] &&
+            this.state.ObjectControlValue.NhanVienGiao.Options[index].some((item) => item.value === apiResult.ResultObject[i].UserName);
           if (!isExist) {
             listOptionNew1.push({
               value: apiResult.ResultObject[i].UserName,
@@ -1233,11 +1239,10 @@ class SearchCom extends Component {
       let changeState = this.state;
       let objSelectValue = changeState.ObjectControlValue;
       let objNhanVienGiao = objSelectValue.NhanVienGiao;
-      let lstNhanVienGiaoListOption = objNhanVienGiao.ListOption;
-      let lstNhanVienGiaoValue = objNhanVienGiao.Value;
+      let objOptions = objNhanVienGiao.Options;
 
-      lstNhanVienGiaoListOption = [...lstNhanVienGiaoListOption, ...listOptionNew1];
-      objNhanVienGiao = { ...objNhanVienGiao, ListOption: lstNhanVienGiaoListOption, Value: lstNhanVienGiaoValue };
+      objOptions[index] = [...objOptions[index], ...listOptionNew1];
+      objNhanVienGiao = { ...objNhanVienGiao, Options: objOptions };
       objSelectValue = { ...objSelectValue, NhanVienGiao: objNhanVienGiao };
       changeState = { ...changeState, ObjectControlValue: objSelectValue };
 
@@ -1246,52 +1251,48 @@ class SearchCom extends Component {
   }
 
   // Xử lý chọn nhân viên giao
-  handleSelectNhanVienGiaoValueChange_1(value, options) {
-    // let objDeliverUser = [];
-    // let listStaffDebtObject = [];
-    // options &&
-    //   options.map((item, index) => {
-    //     let objShip_DeliverUser = { UserName: item.user.value, FullName: item.user.FullName };
-    //     objDeliverUser.push(objShip_DeliverUser);
-    //     listStaffDebtObject.push({
-    //       UserName: item.value,
-    //     //   StoreID: this.state.ShipmentOrder.length > 0 ? this.state.ShipmentOrder[0].CoordinatorStoreID : 0,
-    //     });
-    //   });
-    // if (options) {
-    //   this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/UserIsLockDelivery", listStaffDebtObject).then((apiResult) => {
-    //     if (!apiResult.IsError) {
-    //       this.state.ShipmentOrder.map((row, indexRow) => {
-    //         if ((this.state.objCoordinator.IsRoute == true || !row.IsCoordinator) && row.IsPermission == true && row.CarrierPartnerID <= 0) {
-    //           row["ShipmentOrder_DeliverUserList"] = objDeliverUser || [];
-    //         }
-    //       });
-    //       let stateChange = this.state;
-    //       let objControlValue = stateChange.ObjectControlValue;
-    //       let objNhanVienGiao = objControlValue.NhanVienGiao;
-    //       let lstNhanVienGiao = options.map((item) => item.user.value);
-    //       objNhanVienGiao = { ...objNhanVienGiao, Value: lstNhanVienGiao };
-    //       objControlValue = { ...objControlValue, NhanVienGiao: objNhanVienGiao };
-    //       stateChange = { ...stateChange, objDeliverUser: value, ShipmentOrder: this.state.ShipmentOrder, ShipmentRouteLst: apiResult.ResultObject, ObjectControlValue: objControlValue };
-    //       this.setState(stateChange);
-    //     } else {
-    //       this.props.onShowNotification(apiResult.Message, apiResult.IsError);
-    //     }
+  handleSelectNhanVienGiaoValueChange_1(value, options, index) {
+    let changeState = this.state;
+    let objControlValue = changeState.ObjectControlValue;
+    let objNhanVienGiao = objControlValue.NhanVienGiao;
+    let objValues = objNhanVienGiao.Values;
+
+    objValues[index] = [...value];
+    objNhanVienGiao = { ...objNhanVienGiao, Values: objValues };
+    objControlValue = { ...objControlValue, NhanVienGiao: objNhanVienGiao };
+    changeState = { ...changeState, ObjectControlValue: objControlValue };
+
+    this.setState(changeState);
+  }
+
+  // Xử lý thêm nhân viên giao
+  handleConfirm(pIndex, pVerticalType) {
+    let elementDeliverUserList = [];
+    let elementDeliverUserFullList = [];
+    let arrDeliverUser = this.state.ObjectControlValue.NhanVienGiao.Values[0];
+
+    arrDeliverUser.map((item, index) => {
+      let objUser = this.state.ObjectControlValue.NhanVienGiao.Options[pIndex].find((x) => x.value == item);
+      elementDeliverUserList.push(item);
+      elementDeliverUserFullList.push(objUser.name);
+    });
+
+    this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute[pIndex].map((row, indexRow) => {
+      row.OrderIndex = indexRow;
+      row.DeliverUserLst = elementDeliverUserList.join();
+      row.DeliverUserFullNameList = elementDeliverUserFullList.join();
+    });
+
+    // if (this.state.ShipmentRouteID != "") {
+    //   this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddShipmentRouteLstNew", this.state.ShipmentOrder).then((apiResult) => {
+    //     this.addNotification(apiResult.Message, apiResult.IsError);
+    //     if (this.props.onChangeValue != null) this.props.onChangeValue(apiResult);
     //   });
     // } else {
-    //   this.state.ShipmentOrder.map((row, indexRow) => {
-    //     if (row.IsPermission == true) {
-    //       row["ShipmentOrder_DeliverUserList"] = objDeliverUser || [];
-    //     }
+    //   this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNew", this.state.ShipmentOrder).then((apiResult) => {
+    //     this.addNotification(apiResult.Message, apiResult.IsError);
+    //     if (this.props.onChangeValue != null) this.props.onChangeValue(apiResult);
     //   });
-    //   let changeState = this.state;
-    //   let objControlValue = stateChange.ObjectControlValue;
-    //   let objNhanVienGiao = objControlValue.NhanVienGiao;
-    //   let lstNhanVienGiao = options.map((item) => item.user.value);
-    //   objNhanVienGiao = { ...objNhanVienGiao, Value: lstNhanVienGiao };
-    //   objControlValue = { ...objControlValue, NhanVienGiao: objNhanVienGiao };
-    //   changeState = { ...changeState, ObjectControlValue: objControlValue, ShipmentRouteLst: [] };
-    //   this.setState(changeState);
     // }
   }
 
@@ -1323,6 +1324,66 @@ class SearchCom extends Component {
         </span>
       </div>
     );
+
+    const renderDeliverUserSelect = (index, vehicleType) => {
+      if (vehicleType == 1) {
+        let deliverUserFullNameList = this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute[index][0]["DeliverUserFullNameList"];
+        let [userName, fullName] = deliverUserFullNameList.split("-");
+        let changeState = this.state;
+        let objControlValue = changeState.ObjectControlValue;
+        let objNhanVienGiao = objControlValue.NhanVienGiao;
+        let objOptions = objNhanVienGiao.Options;
+        let objValue = objNhanVienGiao.Values;
+
+        userName = userName.trim();
+        fullName = fullName.trim();
+
+        let isExist = objOptions && objOptions[index] && objOptions[index].find((item) => item.value == userName);
+
+        if (!isExist) {
+          let arrOptions = (objOptions && objOptions[index]) || [];
+          let arrValues = (objValue && objValue[index]) || [];
+
+          arrOptions.push({
+            value: userName,
+            name: userName + "-" + fullName,
+            FullName: fullName,
+            DepartmentName: "",
+            PositionName: "",
+            Address: "",
+          });
+          arrValues.push(userName);
+          objOptions[index] = arrOptions;
+          objValue[index] = arrValues;
+          objNhanVienGiao = { ...objNhanVienGiao, Options: objOptions, Values: objValue };
+          objControlValue = { ...objControlValue, NhanVienGiao: objNhanVienGiao };
+          changeState = { ...changeState, ObjectControlValue: objControlValue };
+          this.setState(changeState);
+        }
+      }
+
+      return (
+        <Select
+          style={{ width: "40%" }}
+          value={this.state.ObjectControlValue.NhanVienGiao.Values && this.state.ObjectControlValue.NhanVienGiao.Values[index]}
+          mode="multiple"
+          optionLabelProp="label"
+          dropdownAlign="center"
+          maxTagCount={3}
+          placeholder="Nhân viên giao"
+          onInputKeyDown={(event) => this.handleSelectNhanVienGiaoInputValueChange(event, index)}
+          onChange={(value, options) => this.handleSelectNhanVienGiaoValueChange_1(value, options, index)}
+        >
+          {this.state.ObjectControlValue.NhanVienGiao.Options &&
+            this.state.ObjectControlValue.NhanVienGiao.Options[index] &&
+            this.state.ObjectControlValue.NhanVienGiao.Options[index].map((item, index) => (
+              <Select.Option key={index} value={item.value} label={item.name} user={item}>
+                {item.name}
+              </Select.Option>
+            ))}
+        </Select>
+      );
+    };
 
     let length_motor = this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.length;
 
@@ -1358,25 +1419,7 @@ class SearchCom extends Component {
                                 <Tag color="#108ee9">Tuyến: {index + 1}</Tag>
                                 <Tag color="#2db7f5">Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Motor.ListTotalDistance[index] / 1000)}</Tag>
                                 <Tag color="#87d068">Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Motor.ListTotalLoad[index]}</Tag>
-                                <Select
-                                  style={{ width: "40%" }}
-                                  mode="multiple"
-                                  optionLabelProp="label"
-                                  dropdownAlign="center"
-                                  maxTagCount={3}
-                                  placeholder="Nhân viên giao"
-                                  onInputKeyDown={(event) => this.handleSelectNhanVienGiaoInputValueChange(event)}
-                                  onChange={(value, options) => this.handleSelectNhanVienGiaoValueChange_1(value, options)}
-                                >
-                                  {this.state.ObjectControlValue.NhanVienGiao.ListOption.map((item, index) => (
-                                    <Select.Option key={index} value={item.value} label={item.name} user={item}>
-                                      {item.name}
-                                    </Select.Option>
-                                  ))}
-                                </Select>
-
-                                {/* <span>Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Motor.ListTotalDistance[index] / 1000)}</span>&ensp;
-                                  <span>Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Motor.ListTotalLoad[index]}</span> */}
+                                {renderDeliverUserSelect(index, 1)}
                               </div>
                               <div style={{ display: "flex" }}>
                                 {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute[index].map((objShipmentOrder, i) => (
@@ -1459,7 +1502,7 @@ class SearchCom extends Component {
                               </Tooltip>
                               &nbsp;
                               <Tooltip title="Phân tuyến">
-                                <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
+                                <Button type="primary" shape="circle" icon={<PartitionOutlined />} onClick={(_) => this.handleConfirm(index, 1)} />
                               </Tooltip>
                             </div>
                           </div>
@@ -1483,8 +1526,6 @@ class SearchCom extends Component {
                   Tổng cộng số tải: <span style={{ fontWeight: "700" }}>{this.state.ShipmentRouteAutoDataSource.Truck.TotalLoad}</span> kg
                 </h6>
                 {this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute && length_truck > 0 && (
-                  // this.state.ShipmentRouteAutoDataSource.Truck.TotalDistance > 0 &&
-                  // this.state.ShipmentRouteAutoDataSource.Truck.TotalLoad > 0 &&
                   <div style={{ width: "100%", backgroundColor: "white", padding: "20px", maxHeight: "60vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
                     {this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute.map((line, index) => (
                       <div key={index}>
@@ -1501,22 +1542,7 @@ class SearchCom extends Component {
                                 <Tag color="#108ee9">Tuyến: {index + 1}</Tag>
                                 <Tag color="#2db7f5">Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Truck.ListTotalDistance[index] / 1000)}</Tag>
                                 <Tag color="#87d068">Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Truck.ListTotalLoad[index]}</Tag>
-                                <Select
-                                  style={{ width: "40%" }}
-                                  mode="multiple"
-                                  optionLabelProp="label"
-                                  dropdownAlign="center"
-                                  maxTagCount={3}
-                                  placeholder="Nhân viên giao"
-                                  onInputKeyDown={(event) => this.handleSelectNhanVienGiaoInputValueChange(event)}
-                                  onChange={(value, options) => this.handleSelectNhanVienGiaoValueChange_1(value, options)}
-                                >
-                                  {this.state.ObjectControlValue.NhanVienGiao.ListOption.map((item, index) => (
-                                    <Select.Option key={index} value={item.value} label={item.name} user={item}>
-                                      {item.name}
-                                    </Select.Option>
-                                  ))}
-                                </Select>
+                                {index < 2 && renderDeliverUserSelect(line[0].DeliverUserFullNameList, index)}
                               </div>
                               <div style={{ display: "flex" }}>
                                 {this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute[index].map((objShipmentOrder, i) => (
