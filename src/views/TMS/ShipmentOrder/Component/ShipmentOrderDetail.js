@@ -374,7 +374,7 @@ class ShipmentOrderDetailCom extends Component {
 
     showFindStoreDeliveryTime() {
         const { ListSuggestTime, _ExpectedDeliveryDateEdit, ShipmentOrder } = this.state;
-
+        console.log("this.state.ShipmentOrder.", this.state.ShipmentOrder);
         this.checkPermission('SHIPMENTORDER_EXPECTEDDELIVERYDATE').then((result) => {
             if (result) {
                 const dtFromdate = new Date()
@@ -393,9 +393,12 @@ class ShipmentOrderDetailCom extends Component {
                             OldExpectedDeliveryDate: this.props.ShipmentOrderDetail.ExpectedDeliveryDate,
                             NewExpectedDeliveryDate: formData.NewExpectedDeliveryDate,//formData.NewExpectedDeliveryDate,
                             DeliverydateUpdateReasonNote: formData.DeliverydateUpdateReasonNote,
+                            CreatedUserForNotify:this.props.ShipmentOrderDetail.CreatedUser // Dùng cho gửi notify qua cho app
                             // NewExpectedDeliveryDateNew: new Date(formData.NewExpectedDeliveryDate),
                             // NewExpectedDeliveryDateNew: toIsoStringCus(new Date(formData.NewExpectedDeliveryDate).toISOString()),
                         }
+
+                       
                         
                         this.props.callFetchAPI(APIHostName, 'api/ShipmentOrder_DLDateLog/Add', objDLDateLog).then((apiResult) => {
                             this.addNotification(apiResult.Message, apiResult.IsError);
