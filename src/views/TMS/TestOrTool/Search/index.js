@@ -159,7 +159,7 @@ class SearchCom extends React.Component {
 
                 console.log("input_1", input_1);
 
-                this.props.callFetchAPI("TMSAPI", "api/test/VehicleRouting", input_1).then(apiResult => {
+                this.props.callFetchAPI("TMSAPI", "api/Routing/CapacityConstraints", input_1).then(apiResult => {
                     console.log('output', apiResult);
                     if (apiResult.IsError) {
                         alert("Lỗi gọi api");
