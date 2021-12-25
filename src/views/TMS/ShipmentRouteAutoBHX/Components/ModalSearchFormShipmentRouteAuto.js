@@ -5,9 +5,9 @@ import { Fragment } from "react";
 import { connect } from "react-redux";
 import { callGetCache, callGetUserCache } from "../../../../actions/cacheAction";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
-import { formatMoney } from "./../../../../utils/function";
+import { formatMoney } from "../../../../utils/function";
 import { Link } from "react-router-dom";
-import { APIHostName } from "./../constants/index";
+import { APIHostName } from "../constants/index";
 
 class ModalSearchFormShipmentRouteAutoCom extends Component {
   constructor(props) {

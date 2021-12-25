@@ -27,7 +27,7 @@ import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { hideModal, showModal } from "../../../../actions/modal";
 import { MessageModal } from "../../../../common/components/Modal";
 import { updatePagePath } from "../../../../actions/pageAction";
-import DataGridShipmentRouteAuto from "./../Components/DataGridShipmentRouteAuto";
+import DataGridShipmentRouteAuto from "../Components/DataGridShipmentRouteAuto";
 import ModalSearchFormShipmentRouteAuto from "../Components/ModalSearchFormShipmentRouteAuto";
 import ModalVietBanDoShipmentRouteAuto from "../Components/ModalVietBanDoShipmentRouteAuto";
 import SearchFormShipmentRouteAuto from "../Components/SearchFormShipmentRouteAuto";
@@ -1400,17 +1400,24 @@ class SearchCom extends Component {
 
             <Tabs.TabPane tabKey="key_1_1" tab={reactNodeTab("Xe máy", length_motor)} key="1" className="ant-tabs-child-1">
               <div style={{ width: "100%", backgroundColor: "white", padding: "10px", maxheight: "57vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
-                <h5>Danh sách các tuyến đề xuất</h5>
-                <h6>
-                  Tổng cộng số km: <span style={{ fontWeight: "700" }}>{parseInt(this.state.ShipmentRouteAutoDataSource.Motor.TotalDistance / 1000)}</span> km
-                </h6>
-                <h6>
-                  Tổng cộng số tải: <span style={{ fontWeight: "700" }}>{this.state.ShipmentRouteAutoDataSource.Motor.TotalLoad}</span> kg
-                </h6>
+                <div style={{ width: "100%", display: "flex" }}>
+                  <div style={{ width: "80%" }}>
+                    <h5>Danh sách các tuyến đề xuất</h5>
+                    <h6>
+                      Tổng cộng số km: <span style={{ fontWeight: "700" }}>{parseInt(this.state.ShipmentRouteAutoDataSource.Motor.TotalDistance / 1000)}</span> km
+                    </h6>
+                    <h6>
+                      Tổng cộng số tải: <span style={{ fontWeight: "700" }}>{this.state.ShipmentRouteAutoDataSource.Motor.TotalLoad}</span> kg
+                    </h6>
+                  </div>
+                  <div style={{ width: "20%", display: "flex", justifyContent: "flex-end" }}>
+                    <Button type="primary" disabled={length_motor == 0}>Áp dụng</Button>
+                  </div>
+                </div>
                 {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute && length_motor > 0 && (
                   // this.state.ShipmentRouteAutoDataSource.Motor.TotalDistance > 0 &&
                   // this.state.ShipmentRouteAutoDataSource.Motor.TotalLoad > 0 &&
-                  <div style={{ width: "100%", backgroundColor: "white", padding: "20px", maxHeight: "60vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
+                  <div style={{ width: "100%", backgroundColor: "white", padding: "10px 0px", maxHeight: "60vh", height: "auto", overflow: "auto" }}>
                     {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.map((line, index) => (
                       <div key={index}>
                         <p style={{ display: "none" }}>{(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}</p>
@@ -1521,13 +1528,20 @@ class SearchCom extends Component {
 
             <Tabs.TabPane tabKey="key_1_2" tab={reactNodeTab("Xe tải", length_truck)} key="2" className="ant-tabs-child-2">
               <div style={{ width: "100%", backgroundColor: "white", padding: "10px", maxheight: "57vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
-                <h5>Danh sách các tuyến đề xuất</h5>
-                <h6>
-                  Tổng cộng số km: <span style={{ fontWeight: "700" }}>{parseInt(this.state.ShipmentRouteAutoDataSource.Truck.TotalDistance / 1000)}</span> km
-                </h6>
-                <h6>
-                  Tổng cộng số tải: <span style={{ fontWeight: "700" }}>{this.state.ShipmentRouteAutoDataSource.Truck.TotalLoad}</span> kg
-                </h6>
+                <div style={{ width: "100%", display: "flex" }}>
+                  <div style={{ width: "80%" }}>
+                    <h5>Danh sách các tuyến đề xuất</h5>
+                    <h6>
+                      Tổng cộng số km: <span style={{ fontWeight: "700" }}>{parseInt(this.state.ShipmentRouteAutoDataSource.Truck.TotalDistance / 1000)}</span> km
+                    </h6>
+                    <h6>
+                      Tổng cộng số tải: <span style={{ fontWeight: "700" }}>{this.state.ShipmentRouteAutoDataSource.Truck.TotalLoad}</span> kg
+                    </h6>
+                  </div>
+                  <div style={{ width: "20%", display: "flex", justifyContent: "flex-end" }}>
+                    <Button type="primary" disabled={length_truck == 0}>Áp dụng</Button>
+                  </div>
+                </div>
                 {this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute && length_truck > 0 && (
                   <div style={{ width: "100%", backgroundColor: "white", padding: "20px", maxHeight: "60vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
                     {this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute.map((line, index) => (
@@ -1819,8 +1833,6 @@ class SearchCom extends Component {
       <div style={{ padding: "0 14px 14px 14px", width: "100%" }}>
         <ReactNotification ref={this.notificationDOMRef} />
         <div className="col-lg-12 SearchFormCustom" id="SearchFormCustom" style={{ padding: "0" }}>
-          {/* <Collapse className="ant-collapse-search" style={{ backgroundColor: "white", marginBottom: "10px" }}>
-                            <Collapse.Panel header="Tim kiếm, lọc dữ liệu phân tuyến vận chuyển" key="1"> */}
           <SearchFormShipmentRouteAuto
             FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
             MLObjectDefinition={SearchMLObjectDefinition}
@@ -1831,18 +1843,6 @@ class SearchCom extends Component {
             IsSetting={true}
             className="multiple multiple-custom multiple-custom-display"
           />
-          {/* </Collapse.Panel>
-                        </Collapse> */}
-
-          {/* <SearchForm
-                FormName="Tìm kiếm danh sách loại phương tiện vận chuyển"
-                MLObjectDefinition={SearchMLObjectDefinition}
-                listelement={this.state.SearchElementList}
-                onSubmit={this.handleSearchSubmit}
-                ref={this.searchref}
-                btnGroup="btnSearch btncustom btnGroup"
-                className="multiple multiple-custom multiple-custom-display"
-             /> */}
         </div>
 
         {this.state.IsLoadDataComplete && (

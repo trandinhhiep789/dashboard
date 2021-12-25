@@ -5,7 +5,7 @@ import { callFetchAPI } from "../../../actions/fetchAPIAction";
 import NotFound from "../../NotFound";
 import Search from "./Search";
 
-class ShipmentRouteAutoCom extends React.Component {
+class ShipmentRouteAutoGHLDCom extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -13,7 +13,7 @@ class ShipmentRouteAutoCom extends React.Component {
   render() {
     return (
       <Switch>
-        <Route exact path="/ShipmentRouteAuto" component={Search} />
+        <Route exact path="/ShipmentRouteAutoGHLD" component={Search} />
         <Route path="*" component={NotFound} />
       </Switch>
     );
@@ -35,5 +35,5 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-const ShipmentRouteAuto = connect(mapStateToProps, mapDispatchToProps)(ShipmentRouteAutoCom);
-export default ShipmentRouteAuto;
+const ShipmentRouteAutoGHLD = connect(mapStateToProps, mapDispatchToProps)(ShipmentRouteAutoGHLDCom);
+export default ShipmentRouteAutoGHLD;

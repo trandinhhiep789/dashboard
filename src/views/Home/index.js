@@ -214,7 +214,6 @@ import BaseDeliveryAbility from "../TMS/MD/BaseDeliveryAbility";
 import SymptomApply from "../TMS/MD/SymptomApply";
 import SymptomGroup from "../TMS/MD/SymptomGroup";
 import Symptom from "../TMS/MD/Symptom";
-import ShipmentRouteAuto from "./../TMS/ShipmentRouteAuto/index";
 import MaintainConstructListReport from "../TMS/ReportShipmentOrder/MaintainConstructListReport";
 import ConstructRevenueReport from "../TMS/ReportShipmentOrder/ConstructRevenueReport";
 import ArchitechtureType_PRJType from "../TMS/MD/ArchitechtureType_PRJType";
@@ -226,6 +225,8 @@ import ListNoteRewardReport from "../TMS/Reward/ListNoteRewardReport";
 import TeamLeaderBonusFundReport from "../TMS/ReportShipmentOrder/TeamLeaderBonusFundReport";
 
 import TestOrTools from '../TMS/TestOrTool';
+import ShipmentRouteAutoBHX from "../TMS/ShipmentRouteAutoBHX";
+import ShipmentRouteAutoGHLD from "../TMS/ShipmentRouteAutoGHLD";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -433,7 +434,8 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/Area" component={Area} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ShipmentOrder" component={ShipmentOrder} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ShipmentRoute" component={ShipmentRoute} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
-                                    <PrivateRoute path="/ShipmentRouteAuto" component={ShipmentRouteAuto} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/ShipmentRouteAutoBHX" component={ShipmentRouteAutoBHX} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/ShipmentRouteAutoGHLD" component={ShipmentRouteAutoGHLD} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ShipmentRouteNew" component={ShipmentRoute} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ManagerShipmentOrder" component={ManagerShipmentOrder} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ShipmentOrderControl" component={ShipmentOrderControl} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />

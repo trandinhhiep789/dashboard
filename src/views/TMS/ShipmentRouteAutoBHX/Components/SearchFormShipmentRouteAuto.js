@@ -3,7 +3,7 @@ import moment from "moment";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
-import { callGetCache } from "./../../../../actions/cacheAction";
+import { callGetCache } from "../../../../actions/cacheAction";
 
 class SearchFormShipmentRouteAuto extends Component {
   constructor(props) {

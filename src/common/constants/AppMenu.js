@@ -1351,11 +1351,17 @@ const AppMenu = [
                 MenuIcon: "",
                 SubMenu: [],
             },
-
             {
-                MenuName: "ShipmentRouteAuto",
+                MenuName: "ShipmentRouteAutoBHX",
                 MenuTitle: "Phân tuyến tự động BHX",
-                LinkTo: "/ShipmentRouteAuto",
+                LinkTo: "/ShipmentRouteAutoBHX",
+                MenuIcon: "",
+                SubMenu: [],
+            },
+            {
+                MenuName: "ShipmentRouteAutoGHLD",
+                MenuTitle: "Phân tuyến tự động GHLĐ",
+                LinkTo: "/ShipmentRouteAutoGHLD",
                 MenuIcon: "",
                 SubMenu: [],
             },

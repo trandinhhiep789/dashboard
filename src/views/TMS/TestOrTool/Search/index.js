@@ -8,8 +8,8 @@ import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
-import ModalVietBanDoShipmentRouteAuto from "../../ShipmentRouteAuto/Components/ModalVietBanDoShipmentRouteAuto";
-
+import ModalVietBanDoShipmentRouteAuto from "../../ShipmentRouteAutoBHX/Components/ModalVietBanDoShipmentRouteAuto";
+ModalVietBanDoShipmentRouteAuto
 class SearchCom extends React.Component {
     constructor(props) {
         super(props);
