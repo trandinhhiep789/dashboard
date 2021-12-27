@@ -186,7 +186,6 @@ class SearchCom extends Component {
     today.setHours(7);
     today.setMinutes(0);
     today.setSeconds(0);
-    today.setMonth(10);
 
     tomorrow.setDate(tomorrow.getDate() + 1);
     tomorrow.setHours(7);
@@ -211,18 +210,22 @@ class SearchCom extends Component {
           SearchKey: "@SHIPMENTORDERTYPEID",
           SearchValue: "1026", // Dịch vụ giao hàng công nghệ BHX online
         },
-        {
-          SearchKey: "@FromDate",
-          SearchValue: today,
-        },
         // {
-        //     SearchKey: "@ToDate",
-        //     SearchValue: new Date(),
+        //   SearchKey: "@FromDate",
+        //   SearchValue: today,
         // },
         {
-          SearchKey: "@ToDate",
-          SearchValue: tomorrow,
+          SearchKey: "@FromDate",
+          SearchValue: new Date(),
         },
+        {
+          SearchKey: "@ToDate",
+          SearchValue: new Date(),
+        },
+        // {
+        //   SearchKey: "@ToDate",
+        //   SearchValue: tomorrow,
+        // },
         {
           SearchKey: "@RECEIVERPROVINCEID",
           SearchValue: -1,
@@ -249,7 +252,7 @@ class SearchCom extends Component {
         // },
         {
           SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
-          SearchValue: "1,2",
+          SearchValue: "1",
         },
         // {
         //     SearchKey: "@IsCoordinator",
@@ -257,7 +260,7 @@ class SearchCom extends Component {
         // },
         {
           SearchKey: "@IsCoordinator",
-          SearchValue: -1,
+          SearchValue: 2,
         },
         {
           SearchKey: "@Typename",
@@ -311,18 +314,22 @@ class SearchCom extends Component {
           SearchKey: "@SHIPMENTORDERTYPEID",
           SearchValue: "1026", // Dịch vụ giao hàng công nghệ BHX online
         },
-        {
-          SearchKey: "@FromDate",
-          SearchValue: today,
-        },
         // {
-        //     SearchKey: "@ToDate",
-        //     SearchValue: new Date(),
+        //   SearchKey: "@FromDate",
+        //   SearchValue: today,
         // },
         {
-          SearchKey: "@ToDate",
-          SearchValue: tomorrow,
+          SearchKey: "@FromDate",
+          SearchValue: new Date(),
         },
+        {
+          SearchKey: "@ToDate",
+          SearchValue: new Date(),
+        },
+        // {
+        //   SearchKey: "@ToDate",
+        //   SearchValue: tomorrow,
+        // },
         {
           SearchKey: "@RECEIVERPROVINCEID",
           SearchValue: ShipmentOrderInfo.ReceiverProvinceID,
@@ -349,7 +356,7 @@ class SearchCom extends Component {
         // },
         {
           SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
-          SearchValue: "1,2",
+          SearchValue: "1",
         },
         // {
         //     SearchKey: "@IsCoordinator",
@@ -357,7 +364,7 @@ class SearchCom extends Component {
         // },
         {
           SearchKey: "@IsCoordinator",
-          SearchValue: -1,
+          SearchValue: 2,
         },
         {
           SearchKey: "@Typename",
@@ -401,7 +408,7 @@ class SearchCom extends Component {
     window.removeEventListener("resize", this.updateWindowDimensions);
   }
 
-  updateWindowDimensions = () => {
+  updateWindowDimensions() {
     const widthModal = (window.innerWidth * 55) / 100;
     const clientWidth = document.getElementById("SearchFormCustom").clientWidth;
 
@@ -409,7 +416,7 @@ class SearchCom extends Component {
       widthPercent: widthModal,
       maxWidthGird: clientWidth,
     });
-  };
+  }
 
   handleTimeDivision(dataResultObject) {
     let TimeFrame8to10 = [],
@@ -547,7 +554,6 @@ class SearchCom extends Component {
     today.setHours(7);
     today.setMinutes(0);
     today.setSeconds(0);
-    today.setMonth(10);
 
     tomorrow.setDate(tomorrow.getDate() + 1);
     tomorrow.setHours(7);
@@ -571,22 +577,22 @@ class SearchCom extends Component {
         SearchKey: "@SHIPMENTORDERTYPEID",
         SearchValue: "1026", // Dịch vụ giao hàng công nghệ BHX online
       },
-      // {
-      //     SearchKey: "@FromDate",
-      //     SearchValue: MLObject.CreatedOrderTimeFo,
-      // },
       {
         SearchKey: "@FromDate",
-        SearchValue: today,
+        SearchValue: MLObject.CreatedOrderTimeFo,
       },
       // {
-      //     SearchKey: "@ToDate",
-      //     SearchValue: MLObject.CreatedOrderTimeTo,
+      //   SearchKey: "@FromDate",
+      //   SearchValue: today,
       // },
       {
         SearchKey: "@ToDate",
-        SearchValue: tomorrow,
+        SearchValue: MLObject.CreatedOrderTimeTo,
       },
+      // {
+      //   SearchKey: "@ToDate",
+      //   SearchValue: tomorrow,
+      // },
       {
         SearchKey: "@RECEIVERPROVINCEID",
         SearchValue: MLObject.ReceiverProvinceID,
@@ -613,7 +619,7 @@ class SearchCom extends Component {
       // },
       {
         SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
-        SearchValue: "1,2",
+        SearchValue: "1",
       },
       // {
       //     SearchKey: "@IsCoordinator",
@@ -621,7 +627,7 @@ class SearchCom extends Component {
       // },
       {
         SearchKey: "@IsCoordinator",
-        SearchValue: -1,
+        SearchValue: 2,
       },
       {
         SearchKey: "@CARRIERTYPEID",
@@ -1405,7 +1411,6 @@ class SearchCom extends Component {
   // }
 
   // Xử lý render phân tuyến tự động
-
   handleConfirm(pVerticalType) {
     if (pVerticalType == 1) {
       let objRequest = [];
@@ -1448,12 +1453,14 @@ class SearchCom extends Component {
             //  }
             let arrUserFullName = arrUser.map((x) => x.name);
             let arrDeliverUser = arrUser.map((item) => ({ UserName: item.value, FullName: item.FullName }));
+
             return {
               ...item,
               DeliverUserLst: arrUserRoute ? arrUserRoute.join() : "",
               DeliverUserFullNameList: arrUserFullName ? arrUserFullName.join() : "",
               ShipmentOrder_DeliverUserList: arrDeliverUser,
               IsRoute: false,
+              VehicleID: -1,
             };
           });
 
@@ -1486,18 +1493,24 @@ class SearchCom extends Component {
             lstShipmentOrderDeliver[0].ShipmentRouteID = "";
           }
 
+          let countRoute = this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.length;
+          let arrRequest=[];
+          for (let index = 0; index < countRoute; index++) {
+            let arrFilter = lstShipmentOrderDeliver.filter((x) => x.ShipmentRouteIndex == index);
+            arrRequest.push(arrFilter);
+          }
+          
           if (this.state.ShipmentRouteID != "") {
-            this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddShipmentRouteLstNew", lstShipmentOrderDeliver).then((apiResult) => {
+            this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNewAuto", arrRequest).then((apiResult) => {
               this.addNotification(apiResult.Message, apiResult.IsError);
               if (this.props.onChangeValue != null) this.props.onChangeValue(apiResult);
             });
           } else {
-            this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNew", lstShipmentOrderDeliver).then((apiResult) => {
+            this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNewAuto", arrRequest).then((apiResult) => {
               this.addNotification(apiResult.Message, apiResult.IsError);
               if (this.props.onChangeValue != null) this.props.onChangeValue(apiResult);
             });
           }
-
         } else {
           showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
         }
@@ -1505,6 +1518,7 @@ class SearchCom extends Component {
     }
   }
 
+  // Render phân tuyến tự động
   renderShipmentRouteAuto() {
     const pickRandomColor = ["#1f5ff4", "#c55d53", "#cb68c5", "#65b411", "#f4b323", "#420e3e", "#e80024", "#585ccc", "#d44371", "#14915f", "#e79940", "#6be54"];
     let randomColor = "";
@@ -1646,6 +1660,42 @@ class SearchCom extends Component {
       );
     };
 
+    // const renderVehicleID=(index)=>{
+    //   return(
+    //     <Select
+    //       style={{ width: "40%" }}
+    //       value={
+    //         (vehicleType == 1 && this.state.ObjectControlValue.NhanVienGiao.XeMay.Values && this.state.ObjectControlValue.NhanVienGiao.XeMay.Values[index]) ||
+    //         (vehicleType == 2 && this.state.ObjectControlValue.NhanVienGiao.XeTai.Values && this.state.ObjectControlValue.NhanVienGiao.XeTai.Values[index])
+    //       }
+    //       mode="multiple"
+    //       optionLabelProp="label"
+    //       dropdownAlign="center"
+    //       maxTagCount={3}
+    //       placeholder="Nhân viên giao"
+    //       onInputKeyDown={(event) => this.handleSelectNhanVienGiaoInputValueChange(event, index, vehicleType)}
+    //       onChange={(value, options) => this.handleSelectNhanVienGiaoValueChange_1(value, options, index, vehicleType)}
+    //     >
+    //       {(vehicleType == 1 &&
+    //         this.state.ObjectControlValue.NhanVienGiao.XeMay.Options &&
+    //         this.state.ObjectControlValue.NhanVienGiao.XeMay.Options[index] &&
+    //         this.state.ObjectControlValue.NhanVienGiao.XeMay.Options[index].map((item, index) => (
+    //           <Select.Option key={index} value={item.value} label={item.name} user={item}>
+    //             {item.name}
+    //           </Select.Option>
+    //         ))) ||
+    //         (vehicleType == 2 &&
+    //           this.state.ObjectControlValue.NhanVienGiao.XeTai.Options &&
+    //           this.state.ObjectControlValue.NhanVienGiao.XeTai.Options[index] &&
+    //           this.state.ObjectControlValue.NhanVienGiao.XeTai.Options[index].map((item, index) => (
+    //             <Select.Option key={index} value={item.value} label={item.name} user={item}>
+    //               {item.name}
+    //             </Select.Option>
+    //           )))}
+    //     </Select>
+    //   )
+    // }
+
     let length_motor = this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.length;
 
     let length_truck = this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute.length;
@@ -1709,7 +1759,7 @@ class SearchCom extends Component {
                                             <p>{objShipmentOrder.Weight}</p>
                                           </div>
                                         }
-                                        title={objShipmentOrder.PartnerSaleOrderID}
+                                        title={objShipmentOrder.ShipmentOrderID}
                                       >
                                         <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
                                           {objShipmentOrder.IsCompleteDeliverIed ? (
@@ -1842,7 +1892,7 @@ class SearchCom extends Component {
                                             <p>{objShipmentOrder.Weight}</p>
                                           </div>
                                         }
-                                        title={objShipmentOrder.PartnerSaleOrderID}
+                                        title={objShipmentOrder.ShipmentOrderID}
                                       >
                                         <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
                                           {objShipmentOrder.IsCompleteDeliverIed ? (
