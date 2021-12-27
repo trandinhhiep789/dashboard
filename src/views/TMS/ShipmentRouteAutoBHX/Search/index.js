@@ -1330,54 +1330,181 @@ class SearchCom extends Component {
   }
 
   // Xử lý phân tuyến
-  handleConfirm(pVerticalType) {
-    let lstShipmentOrderRoute = [];
-    if (pVerticalType == 1) {
-      lstShipmentOrderRoute = this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute;
+  // handleConfirm(pVerticalType) {
+  //   let lstShipmentOrderRoute = [];
+  //   let element = [];
 
-      for (let indexParent = 0; indexParent < lstShipmentOrderRoute.length; indexParent++) {
-        let arrUserRoute = this.state.ObjectControlValue.NhanVienGiao.XeMay.Values[indexParent];
-        let arrUser = this.state.ObjectControlValue.NhanVienGiao.XeMay.Options[indexParent].filter((x) => arrUserRoute.includes(x.value));
-        arrUser = arrUser.map((x) => x.name);
-        for (let indexChild = 0; indexChild < lstShipmentOrderRoute[indexParent].length; indexChild++) {
-          lstShipmentOrderRoute[indexParent][indexChild].DeliverUserLst = arrUserRoute ? arrUserRoute.join() : "";
-          lstShipmentOrderRoute[indexParent][indexChild].DeliverUserFullNameList = arrUser ? arrUser.join() : "";
-        }
-      }
+  //   if (pVerticalType == 1) {
+  //     lstShipmentOrderRoute = this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute;
 
-      
-    }
+  //     for (let indexParent = 0; indexParent < lstShipmentOrderRoute.length; indexParent++) {
+  //       let arrUserRoute = this.state.ObjectControlValue.NhanVienGiao.XeMay.Values[indexParent];
 
-    if (pVerticalType == 2) {
-      lstShipmentOrderRoute = this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute;
+  //       let arrUser = this.state.ObjectControlValue.NhanVienGiao.XeMay.Options[indexParent].filter((x) => arrUserRoute.includes(x.value));
 
-      for (let indexParent = 0; indexParent < lstShipmentOrderRoute.length; indexParent++) {
-        let arrUserRoute = this.state.ObjectControlValue.NhanVienGiao.XeTai.Values[indexParent];
-        let arrUser = this.state.ObjectControlValue.NhanVienGiao.XeTai.Options[indexParent].filter((x) => arrUserRoute.includes(x.value));
-        arrUser = arrUser.map((x) => x.name);
-        for (let indexChild = 0; indexChild < lstShipmentOrderRoute[indexParent].length; indexChild++) {
-          lstShipmentOrderRoute[indexParent][indexChild].DeliverUserLst = arrUserRoute ? arrUserRoute.join() : "";
-          lstShipmentOrderRoute[indexParent][indexChild].DeliverUserFullNameList = arrUser ? arrUser.join() : "";
-        }
-      }
-    }
+  //         // Kiểu dữ liệu trả về của arrUser
+  //         //   {
+  //         //     "value": "0041005",
+  //         //     "name": "0041005-Nguyễn Văn A",
+  //         //     "FullName": "Nguyễn Văn A",
+  //         //     "DepartmentName": "",
+  //         //     "PositionName": "",
+  //         //     "Address": ""
+  //         // }
 
-    lstShipmentOrderRoute = lstShipmentOrderRoute.flat(Infinity);
+  //       for (let indexChild = 1; indexChild < lstShipmentOrderRoute[indexParent].length; indexChild++) {
+  //         // if (lstShipmentOrderRoute[indexParent][indexChild]["TotalCOD"] > 0 && lstShipmentOrderRoute[indexParent][indexChild]["IsPaidIn"] == false) {
+  //         //   row["ShipmentOrder_DeliverUserList"].map((item, indexRow) => {
+  //         //     if (row["ShipmentOrder_DeliverUserList"][indexRow] !== row["ShipmentOrder_DeliverUserList"][indexRow - 1]) {
+  //         //       let objMultDeliverUser = { UserName: item.UserName, CarrierTypeID: row["CarrierTypeID"], TotalCOD: row["TotalCOD"] / row["ShipmentOrder_DeliverUserList"].length };
+  //         //       element.push(objMultDeliverUser);
+  //         //     }
+  //         //   });
+  //         // }
+  //       }
+  //     }
 
-      if (this.state.ShipmentRouteID != "") {
-        this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddShipmentRouteLstNew", lstShipmentOrderRoute).then((apiResult) => {
-          this.addNotification(apiResult.Message, apiResult.IsError);
-          if (this.props.onChangeValue != null) this.props.onChangeValue(apiResult);
-        });
-      } else {
-        this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNew", lstShipmentOrderRoute).then((apiResult) => {
-          this.addNotification(apiResult.Message, apiResult.IsError);
-          if (this.props.onChangeValue != null) this.props.onChangeValue(apiResult);
-        });
-      }
-  }
+  //     for (let indexParent = 0; indexParent < lstShipmentOrderRoute.length; indexParent++) {
+  //       let arrUserRoute = this.state.ObjectControlValue.NhanVienGiao.XeMay.Values[indexParent];
+  //       let arrUser = this.state.ObjectControlValue.NhanVienGiao.XeMay.Options[indexParent].filter((x) => arrUserRoute.includes(x.value));
+  //       arrUser = arrUser.map((x) => x.name);
+  //       for (let indexChild = 0; indexChild < lstShipmentOrderRoute[indexParent].length; indexChild++) {
+  //         lstShipmentOrderRoute[indexParent][indexChild].DeliverUserLst = arrUserRoute ? arrUserRoute.join() : "";
+  //         lstShipmentOrderRoute[indexParent][indexChild].DeliverUserFullNameList = arrUser ? arrUser.join() : "";
+  //       }
+  //     }
+  //   }
+
+  //   if (pVerticalType == 2) {
+  //     lstShipmentOrderRoute = this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute;
+
+  //     for (let indexParent = 0; indexParent < lstShipmentOrderRoute.length; indexParent++) {
+  //       let arrUserRoute = this.state.ObjectControlValue.NhanVienGiao.XeTai.Values[indexParent];
+  //       let arrUser = this.state.ObjectControlValue.NhanVienGiao.XeTai.Options[indexParent].filter((x) => arrUserRoute.includes(x.value));
+  //       arrUser = arrUser.map((x) => x.name);
+  //       for (let indexChild = 0; indexChild < lstShipmentOrderRoute[indexParent].length; indexChild++) {
+  //         lstShipmentOrderRoute[indexParent][indexChild].DeliverUserLst = arrUserRoute ? arrUserRoute.join() : "";
+  //         lstShipmentOrderRoute[indexParent][indexChild].DeliverUserFullNameList = arrUser ? arrUser.join() : "";
+  //       }
+  //     }
+  //   }
+
+  //   lstShipmentOrderRoute = lstShipmentOrderRoute.flat(Infinity);
+
+  //   if (this.state.ShipmentRouteID != "") {
+  //     this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddShipmentRouteLstNew", lstShipmentOrderRoute).then((apiResult) => {
+  //       this.addNotification(apiResult.Message, apiResult.IsError);
+  //       if (this.props.onChangeValue != null) this.props.onChangeValue(apiResult);
+  //     });
+  //   } else {
+  //     this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNew", lstShipmentOrderRoute).then((apiResult) => {
+  //       this.addNotification(apiResult.Message, apiResult.IsError);
+  //       if (this.props.onChangeValue != null) this.props.onChangeValue(apiResult);
+  //     });
+  //   }
+  // }
 
   // Xử lý render phân tuyến tự động
+
+  handleConfirm(pVerticalType) {
+    if (pVerticalType == 1) {
+      let objRequest = [];
+      let element = [];
+      let lstShipmentOrderRoute = this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute;
+      let ShipmentOrderTypelst = "1026";
+
+      for (let indexParent = 0; indexParent < lstShipmentOrderRoute.length; indexParent++) {
+        for (let indexChild = 1; indexChild < lstShipmentOrderRoute[indexParent].length; indexChild++) {
+          let item = lstShipmentOrderRoute[indexParent][indexChild];
+          objRequest.push({
+            CarrierTypeID: item.CarrierTypeID,
+            CurrentShipmentOrderStepID: item.CurrentShipmentOrderStepID,
+            PrimaryShipItemName: item.PrimaryShipItemName,
+            ShipItemNameList: item.ShipItemNameList,
+            ShipmentOrderID: item.ShipmentOrderID,
+            ShipmentOrderTypeID: item.ShipmentOrderTypeID,
+            DeliverUserList: [],
+            ShipmentRouteIndex: indexParent, // Thứ tự tuyến trong phân tuyến tự động
+          });
+        }
+      }
+
+      objRequest[0].ShipmentOrderTypelst = ShipmentOrderTypelst;
+
+      this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderNewLst", objRequest).then((apiResult) => {
+        if (!apiResult.IsError) {
+          let lstShipmentOrderDeliver = apiResult.ResultObject.ShipmentOrderDeliverList;
+          lstShipmentOrderDeliver = lstShipmentOrderDeliver.map((item) => {
+            let arrUserRoute = this.state.ObjectControlValue.NhanVienGiao.XeMay.Values[item.ShipmentRouteIndex];
+            let arrUser = this.state.ObjectControlValue.NhanVienGiao.XeMay.Options[item.ShipmentRouteIndex].filter((x) => arrUserRoute.includes(x.value));
+            // Kiểu dữ liệu trả về của arrUser
+            //   {
+            //     "value": "0041005",
+            //     "name": "0041005-Nguyễn Văn A",
+            //     "FullName": "Nguyễn Văn A",
+            //     "DepartmentName": "",
+            //     "PositionName": "",
+            //     "Address": ""
+            //  }
+            let arrUserFullName = arrUser.map((x) => x.name);
+            let arrDeliverUser = arrUser.map((item) => ({ UserName: item.value, FullName: item.FullName }));
+            return {
+              ...item,
+              DeliverUserLst: arrUserRoute ? arrUserRoute.join() : "",
+              DeliverUserFullNameList: arrUserFullName ? arrUserFullName.join() : "",
+              ShipmentOrder_DeliverUserList: arrDeliverUser,
+              IsRoute: false,
+            };
+          });
+
+          const groupByNew = (data, fields, sumBy = "TotalCOD") => {
+            let r = [],
+              cmp = (x, y) => fields.reduce((a, b) => a && x[b] == y[b], true);
+            data.forEach((x) => {
+              let y = r.find((z) => cmp(x, z));
+              let w = [...fields, sumBy].reduce((a, b) => ((a[b] = x[b]), a), {});
+              y ? (y[sumBy] = +y[sumBy] + +x[sumBy]) : r.push(w);
+            });
+            return r;
+          };
+
+          lstShipmentOrderDeliver.map((row) => {
+            if (row["TotalCOD"] > 0 && row["IsPaidIn"] == false) {
+              if (Array.isArray(row["ShipmentOrder_DeliverUserList"])) {
+                row["ShipmentOrder_DeliverUserList"].map((item, indexRow) => {
+                  if (row["ShipmentOrder_DeliverUserList"][indexRow] !== row["ShipmentOrder_DeliverUserList"][indexRow - 1]) {
+                    let objMultDeliverUser = { UserName: item.UserName, CarrierTypeID: row["CarrierTypeID"], TotalCOD: row["TotalCOD"] / row["ShipmentOrder_DeliverUserList"].length };
+                    element.push(objMultDeliverUser);
+                  }
+                });
+              }
+            }
+          });
+
+          if (lstShipmentOrderDeliver.length > 0) {
+            lstShipmentOrderDeliver[0].DeliverUserTotalCODList = groupByNew(element, ["UserName", "CarrierTypeID"]);
+            lstShipmentOrderDeliver[0].ShipmentRouteID = "";
+          }
+
+          if (this.state.ShipmentRouteID != "") {
+            this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddShipmentRouteLstNew", lstShipmentOrderDeliver).then((apiResult) => {
+              this.addNotification(apiResult.Message, apiResult.IsError);
+              if (this.props.onChangeValue != null) this.props.onChangeValue(apiResult);
+            });
+          } else {
+            this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNew", lstShipmentOrderDeliver).then((apiResult) => {
+              this.addNotification(apiResult.Message, apiResult.IsError);
+              if (this.props.onChangeValue != null) this.props.onChangeValue(apiResult);
+            });
+          }
+
+        } else {
+          showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
+        }
+      });
+    }
+  }
+
   renderShipmentRouteAuto() {
     const pickRandomColor = ["#1f5ff4", "#c55d53", "#cb68c5", "#65b411", "#f4b323", "#420e3e", "#e80024", "#585ccc", "#d44371", "#14915f", "#e79940", "#6be54"];
     let randomColor = "";
@@ -1672,7 +1799,7 @@ class SearchCom extends Component {
                     </h6>
                   </div>
                   <div style={{ width: "20%", display: "flex", justifyContent: "flex-end" }}>
-                    <Button type="primary" disabled={length_truck == 0} onClick={(_)=>this.handleConfirm(2)}>
+                    <Button type="primary" disabled={length_truck == 0} onClick={(_) => this.handleConfirm(2)}>
                       Áp dụng
                     </Button>
                   </div>
