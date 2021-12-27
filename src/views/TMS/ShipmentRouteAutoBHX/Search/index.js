@@ -1494,12 +1494,12 @@ class SearchCom extends Component {
           }
 
           let countRoute = this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.length;
-          let arrRequest=[];
+          let arrRequest = [];
           for (let index = 0; index < countRoute; index++) {
             let arrFilter = lstShipmentOrderDeliver.filter((x) => x.ShipmentRouteIndex == index);
             arrRequest.push(arrFilter);
           }
-          
+
           if (this.state.ShipmentRouteID != "") {
             this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNewAuto", arrRequest).then((apiResult) => {
               this.addNotification(apiResult.Message, apiResult.IsError);
@@ -1550,78 +1550,90 @@ class SearchCom extends Component {
 
     const renderDeliverUserSelect = (index, vehicleType) => {
       if (vehicleType == 1) {
-        let deliverUserFullNameList = this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute[index][1]["DeliverUserFullNameList"];
-        let [userName, fullName] = deliverUserFullNameList.split("-");
-        let changeState = this.state;
-        let objControlValue = changeState.ObjectControlValue;
-        let objNhanVienGiao = objControlValue.NhanVienGiao;
-        let objXeMay = objNhanVienGiao.XeMay;
-        let objOptions = objXeMay.Options;
-        let objValue = objXeMay.Values;
+        let deliverUserFullNameList =
+          this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute &&
+          this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute[index] &&
+          this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute[index][1] &&
+          this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute[index][1]["DeliverUserFullNameList"];
+        if (!!deliverUserFullNameList) {
+          let [userName, fullName] = deliverUserFullNameList.split("-");
+          let changeState = this.state;
+          let objControlValue = changeState.ObjectControlValue;
+          let objNhanVienGiao = objControlValue.NhanVienGiao;
+          let objXeMay = objNhanVienGiao.XeMay;
+          let objOptions = objXeMay.Options;
+          let objValue = objXeMay.Values;
 
-        userName = userName.trim();
-        fullName = fullName.trim();
+          userName = userName.trim();
+          fullName = fullName.trim();
 
-        let isExist = objOptions && objOptions[index] && objOptions[index].find((item) => item.value == userName);
+          let isExist = objOptions && objOptions[index] && objOptions[index].find((item) => item.value == userName);
 
-        if (!isExist) {
-          let arrOptions = (objOptions && objOptions[index]) || [];
-          let arrValues = (objValue && objValue[index]) || [];
+          if (!isExist) {
+            let arrOptions = (objOptions && objOptions[index]) || [];
+            let arrValues = (objValue && objValue[index]) || [];
 
-          arrOptions.push({
-            value: userName,
-            name: userName + "-" + fullName,
-            FullName: fullName,
-            DepartmentName: "",
-            PositionName: "",
-            Address: "",
-          });
-          arrValues.push(userName);
-          objOptions[index] = arrOptions;
-          objValue[index] = arrValues;
-          objXeMay = { Options: objOptions, Values: objValue };
-          objNhanVienGiao = { ...objNhanVienGiao, XeMay: objXeMay };
-          objControlValue = { ...objControlValue, NhanVienGiao: objNhanVienGiao };
-          changeState = { ...changeState, ObjectControlValue: objControlValue };
-          this.setState(changeState);
+            arrOptions.push({
+              value: userName,
+              name: userName + "-" + fullName,
+              FullName: fullName,
+              DepartmentName: "",
+              PositionName: "",
+              Address: "",
+            });
+            arrValues.push(userName);
+            objOptions[index] = arrOptions;
+            objValue[index] = arrValues;
+            objXeMay = { Options: objOptions, Values: objValue };
+            objNhanVienGiao = { ...objNhanVienGiao, XeMay: objXeMay };
+            objControlValue = { ...objControlValue, NhanVienGiao: objNhanVienGiao };
+            changeState = { ...changeState, ObjectControlValue: objControlValue };
+            this.setState(changeState);
+          }
         }
       }
 
       if (vehicleType == 2) {
-        let deliverUserFullNameList = this.state.ShipmentRouteAutoDataSource.XeTai.ListShipmentOrderRoute[index][1]["DeliverUserFullNameList"];
-        let [userName, fullName] = deliverUserFullNameList.split("-");
-        let changeState = this.state;
-        let objControlValue = changeState.ObjectControlValue;
-        let objNhanVienGiao = objControlValue.NhanVienGiao;
-        let objXeTai = objNhanVienGiao.XeTai;
-        let objOptions = objXeTai.Options;
-        let objValue = objXeTai.Values;
+        let deliverUserFullNameList =
+          this.state.ShipmentRouteAutoDataSource.XeTai.ListShipmentOrderRoute &&
+          this.state.ShipmentRouteAutoDataSource.XeTai.ListShipmentOrderRoute[index] &&
+          this.state.ShipmentRouteAutoDataSource.XeTai.ListShipmentOrderRoute[index][1] &&
+          this.state.ShipmentRouteAutoDataSource.XeTai.ListShipmentOrderRoute[index][1]["DeliverUserFullNameList"];
+        if (!!deliverUserFullNameList) {
+          let [userName, fullName] = deliverUserFullNameList.split("-");
+          let changeState = this.state;
+          let objControlValue = changeState.ObjectControlValue;
+          let objNhanVienGiao = objControlValue.NhanVienGiao;
+          let objXeTai = objNhanVienGiao.XeTai;
+          let objOptions = objXeTai.Options;
+          let objValue = objXeTai.Values;
 
-        userName = userName.trim();
-        fullName = fullName.trim();
+          userName = userName.trim();
+          fullName = fullName.trim();
 
-        let isExist = objOptions && objOptions[index] && objOptions[index].find((item) => item.value == userName);
+          let isExist = objOptions && objOptions[index] && objOptions[index].find((item) => item.value == userName);
 
-        if (!isExist) {
-          let arrOptions = (objOptions && objOptions[index]) || [];
-          let arrValues = (objValue && objValue[index]) || [];
+          if (!isExist) {
+            let arrOptions = (objOptions && objOptions[index]) || [];
+            let arrValues = (objValue && objValue[index]) || [];
 
-          arrOptions.push({
-            value: userName,
-            name: userName + "-" + fullName,
-            FullName: fullName,
-            DepartmentName: "",
-            PositionName: "",
-            Address: "",
-          });
-          arrValues.push(userName);
-          objOptions[index] = arrOptions;
-          objValue[index] = arrValues;
-          objXeTai = { Options: objOptions, Values: objValue };
-          objNhanVienGiao = { ...objNhanVienGiao, XeTai: objXeTai };
-          objControlValue = { ...objControlValue, NhanVienGiao: objNhanVienGiao };
-          changeState = { ...changeState, ObjectControlValue: objControlValue };
-          this.setState(changeState);
+            arrOptions.push({
+              value: userName,
+              name: userName + "-" + fullName,
+              FullName: fullName,
+              DepartmentName: "",
+              PositionName: "",
+              Address: "",
+            });
+            arrValues.push(userName);
+            objOptions[index] = arrOptions;
+            objValue[index] = arrValues;
+            objXeTai = { Options: objOptions, Values: objValue };
+            objNhanVienGiao = { ...objNhanVienGiao, XeTai: objXeTai };
+            objControlValue = { ...objControlValue, NhanVienGiao: objNhanVienGiao };
+            changeState = { ...changeState, ObjectControlValue: objControlValue };
+            this.setState(changeState);
+          }
         }
       }
 
@@ -1629,8 +1641,8 @@ class SearchCom extends Component {
         <Select
           style={{ width: "40%" }}
           value={
-            (vehicleType == 1 && this.state.ObjectControlValue.NhanVienGiao.XeMay.Values && this.state.ObjectControlValue.NhanVienGiao.XeMay.Values[index]) ||
-            (vehicleType == 2 && this.state.ObjectControlValue.NhanVienGiao.XeTai.Values && this.state.ObjectControlValue.NhanVienGiao.XeTai.Values[index])
+            (vehicleType == 1 && this.state.ObjectControlValue.NhanVienGiao.XeMay.Values && this.state.ObjectControlValue.NhanVienGiao.XeMay.Values[index] || []) ||
+            (vehicleType == 2 && this.state.ObjectControlValue.NhanVienGiao.XeTai.Values && this.state.ObjectControlValue.NhanVienGiao.XeTai.Values[index] || [])
           }
           mode="multiple"
           optionLabelProp="label"
@@ -1660,41 +1672,9 @@ class SearchCom extends Component {
       );
     };
 
-    // const renderVehicleID=(index)=>{
-    //   return(
-    //     <Select
-    //       style={{ width: "40%" }}
-    //       value={
-    //         (vehicleType == 1 && this.state.ObjectControlValue.NhanVienGiao.XeMay.Values && this.state.ObjectControlValue.NhanVienGiao.XeMay.Values[index]) ||
-    //         (vehicleType == 2 && this.state.ObjectControlValue.NhanVienGiao.XeTai.Values && this.state.ObjectControlValue.NhanVienGiao.XeTai.Values[index])
-    //       }
-    //       mode="multiple"
-    //       optionLabelProp="label"
-    //       dropdownAlign="center"
-    //       maxTagCount={3}
-    //       placeholder="Nhân viên giao"
-    //       onInputKeyDown={(event) => this.handleSelectNhanVienGiaoInputValueChange(event, index, vehicleType)}
-    //       onChange={(value, options) => this.handleSelectNhanVienGiaoValueChange_1(value, options, index, vehicleType)}
-    //     >
-    //       {(vehicleType == 1 &&
-    //         this.state.ObjectControlValue.NhanVienGiao.XeMay.Options &&
-    //         this.state.ObjectControlValue.NhanVienGiao.XeMay.Options[index] &&
-    //         this.state.ObjectControlValue.NhanVienGiao.XeMay.Options[index].map((item, index) => (
-    //           <Select.Option key={index} value={item.value} label={item.name} user={item}>
-    //             {item.name}
-    //           </Select.Option>
-    //         ))) ||
-    //         (vehicleType == 2 &&
-    //           this.state.ObjectControlValue.NhanVienGiao.XeTai.Options &&
-    //           this.state.ObjectControlValue.NhanVienGiao.XeTai.Options[index] &&
-    //           this.state.ObjectControlValue.NhanVienGiao.XeTai.Options[index].map((item, index) => (
-    //             <Select.Option key={index} value={item.value} label={item.name} user={item}>
-    //               {item.name}
-    //             </Select.Option>
-    //           )))}
-    //     </Select>
-    //   )
-    // }
+    const renderVehicleID = (index) => {
+      return <Select style={{ width: "40%" }} mode="multiple" optionLabelProp="label" dropdownAlign="center" maxTagCount={3} placeholder="Biển số xe"></Select>;
+    };
 
     let length_motor = this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.length;
 
