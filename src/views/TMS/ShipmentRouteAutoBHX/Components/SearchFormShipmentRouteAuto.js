@@ -525,7 +525,7 @@ class SearchFormShipmentRouteAuto extends Component {
             </Select>
           </Col> */}
 
-          {/* <Col key={3}>
+          <Col key={3}>
             <DatePicker.RangePicker
               locale={{ lang: { locale: "vi_VN", yearFormat: "YYYY" } }}
               allowEmpty={false}
@@ -538,7 +538,7 @@ class SearchFormShipmentRouteAuto extends Component {
                 "Ngày hôm nay": [moment(), moment()],
               }}
             />
-          </Col> */}
+          </Col>
 
           {/* <Col key={4}>
             <Select defaultValue={-1} style={{ width: "170px" }} onChange={(value) => this.handleSelectTinhChange(value)} dropdownMatchSelectWidth={200}>
@@ -630,11 +630,11 @@ class SearchFormShipmentRouteAuto extends Component {
             </Select>
           </Col> */}
 
-          <Col key={11}>
+          {/* <Col key={11}>
             <Select defaultValue={-1} style={{ width: "160px" }} onChange={(value) => this.handleSelectPhuongTienChange(value)}>
               {renderSelect3}
             </Select>
-          </Col>
+          </Col> */}
 
           <Col key={12}>
             <Button size="middle" type="primary" onClick={this.handleSearch}>

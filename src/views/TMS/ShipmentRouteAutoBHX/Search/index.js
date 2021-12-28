@@ -123,6 +123,12 @@ class SearchCom extends Component {
         TabShipmentRouteAuto: {
           Content: "",
         },
+        ButtonMotorApply: {
+          IsDisabled: false,
+        },
+        ButtonTruckApply: {
+          IsDisabled: false,
+        },
       },
 
       ObjectControlValue: {
@@ -134,6 +140,12 @@ class SearchCom extends Component {
           XeTai: {
             Values: {},
             Options: {},
+          },
+          ButtonMotorApply: {
+            IsDisabled: false,
+          },
+          ButtonTruckApply: {
+            IsDisabled: false,
           },
         },
       },
@@ -186,7 +198,6 @@ class SearchCom extends Component {
     today.setHours(7);
     today.setMinutes(0);
     today.setSeconds(0);
-    today.setMonth(10);
 
     tomorrow.setDate(tomorrow.getDate() + 1);
     tomorrow.setHours(7);
@@ -216,8 +227,12 @@ class SearchCom extends Component {
           SearchValue: today,
         },
         // {
-        //     SearchKey: "@ToDate",
-        //     SearchValue: new Date(),
+        //   SearchKey: "@FromDate",
+        //   SearchValue: new Date(),
+        // },
+        // {
+        //   SearchKey: "@ToDate",
+        //   SearchValue: new Date(),
         // },
         {
           SearchKey: "@ToDate",
@@ -249,7 +264,7 @@ class SearchCom extends Component {
         // },
         {
           SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
-          SearchValue: "1,2",
+          SearchValue: "1",
         },
         // {
         //     SearchKey: "@IsCoordinator",
@@ -257,7 +272,7 @@ class SearchCom extends Component {
         // },
         {
           SearchKey: "@IsCoordinator",
-          SearchValue: -1,
+          SearchValue: 2,
         },
         {
           SearchKey: "@Typename",
@@ -269,7 +284,7 @@ class SearchCom extends Component {
         },
         {
           SearchKey: "@CarrierTypeID",
-          SearchValue: -1,
+          SearchValue: 1,
         },
         {
           SearchKey: "@PAGESIZE",
@@ -316,8 +331,12 @@ class SearchCom extends Component {
           SearchValue: today,
         },
         // {
-        //     SearchKey: "@ToDate",
-        //     SearchValue: new Date(),
+        //   SearchKey: "@FromDate",
+        //   SearchValue: new Date(),
+        // },
+        // {
+        //   SearchKey: "@ToDate",
+        //   SearchValue: new Date(),
         // },
         {
           SearchKey: "@ToDate",
@@ -349,7 +368,7 @@ class SearchCom extends Component {
         // },
         {
           SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
-          SearchValue: "1,2",
+          SearchValue: "1",
         },
         // {
         //     SearchKey: "@IsCoordinator",
@@ -357,7 +376,7 @@ class SearchCom extends Component {
         // },
         {
           SearchKey: "@IsCoordinator",
-          SearchValue: -1,
+          SearchValue: 2,
         },
         {
           SearchKey: "@Typename",
@@ -369,7 +388,7 @@ class SearchCom extends Component {
         },
         {
           SearchKey: "@CarrierTypeID",
-          SearchValue: ShipmentOrderInfo.CarrierTypeID,
+          SearchValue: 1,
         },
         {
           SearchKey: "@PAGESIZE",
@@ -401,7 +420,7 @@ class SearchCom extends Component {
     window.removeEventListener("resize", this.updateWindowDimensions);
   }
 
-  updateWindowDimensions = () => {
+  updateWindowDimensions() {
     const widthModal = (window.innerWidth * 55) / 100;
     const clientWidth = document.getElementById("SearchFormCustom").clientWidth;
 
@@ -409,7 +428,7 @@ class SearchCom extends Component {
       widthPercent: widthModal,
       maxWidthGird: clientWidth,
     });
-  };
+  }
 
   handleTimeDivision(dataResultObject) {
     let TimeFrame8to10 = [],
@@ -547,7 +566,6 @@ class SearchCom extends Component {
     today.setHours(7);
     today.setMinutes(0);
     today.setSeconds(0);
-    today.setMonth(10);
 
     tomorrow.setDate(tomorrow.getDate() + 1);
     tomorrow.setHours(7);
@@ -572,16 +590,16 @@ class SearchCom extends Component {
         SearchValue: "1026", // Dịch vụ giao hàng công nghệ BHX online
       },
       // {
-      //     SearchKey: "@FromDate",
-      //     SearchValue: MLObject.CreatedOrderTimeFo,
+      //   SearchKey: "@FromDate",
+      //   SearchValue: MLObject.CreatedOrderTimeFo,
       // },
       {
         SearchKey: "@FromDate",
         SearchValue: today,
       },
       // {
-      //     SearchKey: "@ToDate",
-      //     SearchValue: MLObject.CreatedOrderTimeTo,
+      //   SearchKey: "@ToDate",
+      //   SearchValue: MLObject.CreatedOrderTimeTo,
       // },
       {
         SearchKey: "@ToDate",
@@ -613,7 +631,7 @@ class SearchCom extends Component {
       // },
       {
         SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
-        SearchValue: "1,2",
+        SearchValue: "1",
       },
       // {
       //     SearchKey: "@IsCoordinator",
@@ -621,11 +639,15 @@ class SearchCom extends Component {
       // },
       {
         SearchKey: "@IsCoordinator",
-        SearchValue: -1,
+        SearchValue: 2,
       },
+      // {
+      //   SearchKey: "@CARRIERTYPEID",
+      //   SearchValue: MLObject.CarrierTypeID,
+      // },
       {
         SearchKey: "@CARRIERTYPEID",
-        SearchValue: MLObject.CarrierTypeID,
+        SearchValue: 1,
       },
       {
         SearchKey: "@Typename",
@@ -846,20 +868,20 @@ class SearchCom extends Component {
     return diffTimeFrame.length > 0
       ? "diffTimeFrame"
       : TimeFrame8to10.length > 0
-      ? "TimeFrame8to10"
-      : TimeFrame10to12.length > 0
-      ? "TimeFrame10to12"
-      : TimeFrame12to14.length > 0
-      ? "TimeFrame12to14"
-      : TimeFrame14to16.length > 0
-      ? "TimeFrame14to16"
-      : TimeFrame17to19.length > 0
-      ? "TimeFrame17to19"
-      : TimeFrame19to21.length > 0
-      ? "TimeFrame19to21"
-      : Dropped.length > 0
-      ? "Dropped"
-      : "";
+        ? "TimeFrame8to10"
+        : TimeFrame10to12.length > 0
+          ? "TimeFrame10to12"
+          : TimeFrame12to14.length > 0
+            ? "TimeFrame12to14"
+            : TimeFrame14to16.length > 0
+              ? "TimeFrame14to16"
+              : TimeFrame17to19.length > 0
+                ? "TimeFrame17to19"
+                : TimeFrame19to21.length > 0
+                  ? "TimeFrame19to21"
+                  : Dropped.length > 0
+                    ? "Dropped"
+                    : "";
   }
 
   // Xử lý phân tuyến bằng checked
@@ -1405,7 +1427,6 @@ class SearchCom extends Component {
   // }
 
   // Xử lý render phân tuyến tự động
-
   handleConfirm(pVerticalType) {
     if (pVerticalType == 1) {
       let objRequest = [];
@@ -1448,12 +1469,14 @@ class SearchCom extends Component {
             //  }
             let arrUserFullName = arrUser.map((x) => x.name);
             let arrDeliverUser = arrUser.map((item) => ({ UserName: item.value, FullName: item.FullName }));
+
             return {
               ...item,
               DeliverUserLst: arrUserRoute ? arrUserRoute.join() : "",
               DeliverUserFullNameList: arrUserFullName ? arrUserFullName.join() : "",
               ShipmentOrder_DeliverUserList: arrDeliverUser,
               IsRoute: false,
+              VehicleID: -1,
             };
           });
 
@@ -1486,18 +1509,59 @@ class SearchCom extends Component {
             lstShipmentOrderDeliver[0].ShipmentRouteID = "";
           }
 
-          if (this.state.ShipmentRouteID != "") {
-            this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddShipmentRouteLstNew", lstShipmentOrderDeliver).then((apiResult) => {
-              this.addNotification(apiResult.Message, apiResult.IsError);
-              if (this.props.onChangeValue != null) this.props.onChangeValue(apiResult);
-            });
-          } else {
-            this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNew", lstShipmentOrderDeliver).then((apiResult) => {
-              this.addNotification(apiResult.Message, apiResult.IsError);
-              if (this.props.onChangeValue != null) this.props.onChangeValue(apiResult);
-            });
+          let countRoute = this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.length;
+          let arrRequest = [];
+          for (let index = 0; index < countRoute; index++) {
+            let arrFilter = lstShipmentOrderDeliver.filter((x) => x.ShipmentRouteIndex == index);
+            arrRequest.push(arrFilter);
           }
 
+          if (this.state.ShipmentRouteID != "") {
+            this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNewAuto", arrRequest).then((apiResult) => {
+              this.addNotification(apiResult.Message, apiResult.IsError);
+              let changeState = this.state;
+              let objUIEffect = changeState.UIEffect;
+              let objButtonMotorApply = objUIEffect.ButtonMotorApply;
+              let objButtonTruckApply = objUIEffect.ButtonTruckApply;
+
+              if (!apiResult.IsError) {
+                objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: true };
+                objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: true };
+                objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
+                changeState = { ...changeState, UIEffect: objUIEffect };
+              } else {
+                objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: false };
+                objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: false };
+                objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
+                changeState = { ...changeState, UIEffect: objUIEffect };
+              }
+
+              this.setState(changeState);
+            });
+          } else {
+            this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNewAuto", arrRequest).then((apiResult) => {
+              this.addNotification(apiResult.Message, apiResult.IsError);
+
+              let changeState = this.state;
+              let objUIEffect = changeState.UIEffect;
+              let objButtonMotorApply = objUIEffect.ButtonMotorApply;
+              let objButtonTruckApply = objUIEffect.ButtonTruckApply;
+
+              if (!apiResult.IsError) {
+                objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: true };
+                objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: true };
+                objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
+                changeState = { ...changeState, UIEffect: objUIEffect };
+              } else {
+                objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: false };
+                objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: false };
+                objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
+                changeState = { ...changeState, UIEffect: objUIEffect };
+              }
+
+              this.setState(changeState);
+            });
+          }
         } else {
           showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
         }
@@ -1505,6 +1569,7 @@ class SearchCom extends Component {
     }
   }
 
+  // Render phân tuyến tự động
   renderShipmentRouteAuto() {
     const pickRandomColor = ["#1f5ff4", "#c55d53", "#cb68c5", "#65b411", "#f4b323", "#420e3e", "#e80024", "#585ccc", "#d44371", "#14915f", "#e79940", "#6be54"];
     let randomColor = "";
@@ -1536,78 +1601,90 @@ class SearchCom extends Component {
 
     const renderDeliverUserSelect = (index, vehicleType) => {
       if (vehicleType == 1) {
-        let deliverUserFullNameList = this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute[index][1]["DeliverUserFullNameList"];
-        let [userName, fullName] = deliverUserFullNameList.split("-");
-        let changeState = this.state;
-        let objControlValue = changeState.ObjectControlValue;
-        let objNhanVienGiao = objControlValue.NhanVienGiao;
-        let objXeMay = objNhanVienGiao.XeMay;
-        let objOptions = objXeMay.Options;
-        let objValue = objXeMay.Values;
+        let deliverUserFullNameList =
+          this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute &&
+          this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute[index] &&
+          this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute[index][1] &&
+          this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute[index][1]["DeliverUserFullNameList"];
+        if (!!deliverUserFullNameList) {
+          let [userName, fullName] = deliverUserFullNameList.split("-");
+          let changeState = this.state;
+          let objControlValue = changeState.ObjectControlValue;
+          let objNhanVienGiao = objControlValue.NhanVienGiao;
+          let objXeMay = objNhanVienGiao.XeMay;
+          let objOptions = objXeMay.Options;
+          let objValue = objXeMay.Values;
 
-        userName = userName.trim();
-        fullName = fullName.trim();
+          userName = userName.trim();
+          fullName = fullName.trim();
 
-        let isExist = objOptions && objOptions[index] && objOptions[index].find((item) => item.value == userName);
+          let isExist = objOptions && objOptions[index] && objOptions[index].find((item) => item.value == userName);
 
-        if (!isExist) {
-          let arrOptions = (objOptions && objOptions[index]) || [];
-          let arrValues = (objValue && objValue[index]) || [];
+          if (!isExist) {
+            let arrOptions = (objOptions && objOptions[index]) || [];
+            let arrValues = (objValue && objValue[index]) || [];
 
-          arrOptions.push({
-            value: userName,
-            name: userName + "-" + fullName,
-            FullName: fullName,
-            DepartmentName: "",
-            PositionName: "",
-            Address: "",
-          });
-          arrValues.push(userName);
-          objOptions[index] = arrOptions;
-          objValue[index] = arrValues;
-          objXeMay = { Options: objOptions, Values: objValue };
-          objNhanVienGiao = { ...objNhanVienGiao, XeMay: objXeMay };
-          objControlValue = { ...objControlValue, NhanVienGiao: objNhanVienGiao };
-          changeState = { ...changeState, ObjectControlValue: objControlValue };
-          this.setState(changeState);
+            arrOptions.push({
+              value: userName,
+              name: userName + "-" + fullName,
+              FullName: fullName,
+              DepartmentName: "",
+              PositionName: "",
+              Address: "",
+            });
+            arrValues.push(userName);
+            objOptions[index] = arrOptions;
+            objValue[index] = arrValues;
+            objXeMay = { Options: objOptions, Values: objValue };
+            objNhanVienGiao = { ...objNhanVienGiao, XeMay: objXeMay };
+            objControlValue = { ...objControlValue, NhanVienGiao: objNhanVienGiao };
+            changeState = { ...changeState, ObjectControlValue: objControlValue };
+            this.setState(changeState);
+          }
         }
       }
 
       if (vehicleType == 2) {
-        let deliverUserFullNameList = this.state.ShipmentRouteAutoDataSource.XeTai.ListShipmentOrderRoute[index][1]["DeliverUserFullNameList"];
-        let [userName, fullName] = deliverUserFullNameList.split("-");
-        let changeState = this.state;
-        let objControlValue = changeState.ObjectControlValue;
-        let objNhanVienGiao = objControlValue.NhanVienGiao;
-        let objXeTai = objNhanVienGiao.XeTai;
-        let objOptions = objXeTai.Options;
-        let objValue = objXeTai.Values;
+        let deliverUserFullNameList =
+          this.state.ShipmentRouteAutoDataSource.XeTai.ListShipmentOrderRoute &&
+          this.state.ShipmentRouteAutoDataSource.XeTai.ListShipmentOrderRoute[index] &&
+          this.state.ShipmentRouteAutoDataSource.XeTai.ListShipmentOrderRoute[index][1] &&
+          this.state.ShipmentRouteAutoDataSource.XeTai.ListShipmentOrderRoute[index][1]["DeliverUserFullNameList"];
+        if (!!deliverUserFullNameList) {
+          let [userName, fullName] = deliverUserFullNameList.split("-");
+          let changeState = this.state;
+          let objControlValue = changeState.ObjectControlValue;
+          let objNhanVienGiao = objControlValue.NhanVienGiao;
+          let objXeTai = objNhanVienGiao.XeTai;
+          let objOptions = objXeTai.Options;
+          let objValue = objXeTai.Values;
 
-        userName = userName.trim();
-        fullName = fullName.trim();
+          userName = userName.trim();
+          fullName = fullName.trim();
 
-        let isExist = objOptions && objOptions[index] && objOptions[index].find((item) => item.value == userName);
+          let isExist = objOptions && objOptions[index] && objOptions[index].find((item) => item.value == userName);
 
-        if (!isExist) {
-          let arrOptions = (objOptions && objOptions[index]) || [];
-          let arrValues = (objValue && objValue[index]) || [];
+          if (!isExist) {
+            let arrOptions = (objOptions && objOptions[index]) || [];
+            let arrValues = (objValue && objValue[index]) || [];
 
-          arrOptions.push({
-            value: userName,
-            name: userName + "-" + fullName,
-            FullName: fullName,
-            DepartmentName: "",
-            PositionName: "",
-            Address: "",
-          });
-          arrValues.push(userName);
-          objOptions[index] = arrOptions;
-          objValue[index] = arrValues;
-          objXeTai = { Options: objOptions, Values: objValue };
-          objNhanVienGiao = { ...objNhanVienGiao, XeTai: objXeTai };
-          objControlValue = { ...objControlValue, NhanVienGiao: objNhanVienGiao };
-          changeState = { ...changeState, ObjectControlValue: objControlValue };
-          this.setState(changeState);
+            arrOptions.push({
+              value: userName,
+              name: userName + "-" + fullName,
+              FullName: fullName,
+              DepartmentName: "",
+              PositionName: "",
+              Address: "",
+            });
+            arrValues.push(userName);
+            objOptions[index] = arrOptions;
+            objValue[index] = arrValues;
+            objXeTai = { Options: objOptions, Values: objValue };
+            objNhanVienGiao = { ...objNhanVienGiao, XeTai: objXeTai };
+            objControlValue = { ...objControlValue, NhanVienGiao: objNhanVienGiao };
+            changeState = { ...changeState, ObjectControlValue: objControlValue };
+            this.setState(changeState);
+          }
         }
       }
 
@@ -1616,9 +1693,12 @@ class SearchCom extends Component {
           style={{ width: "40%" }}
           value={
             (vehicleType == 1 && this.state.ObjectControlValue.NhanVienGiao.XeMay.Values && this.state.ObjectControlValue.NhanVienGiao.XeMay.Values[index]) ||
-            (vehicleType == 2 && this.state.ObjectControlValue.NhanVienGiao.XeTai.Values && this.state.ObjectControlValue.NhanVienGiao.XeTai.Values[index])
+            [] ||
+            (vehicleType == 2 && this.state.ObjectControlValue.NhanVienGiao.XeTai.Values && this.state.ObjectControlValue.NhanVienGiao.XeTai.Values[index]) ||
+            []
           }
           mode="multiple"
+          disabled={(vehicleType == 1 ? this.state.UIEffect.ButtonMotorApply.IsDisabled : false) || (vehicleType == 2 ? this.state.UIEffect.ButtonTruckApply.IsDisabled : false)}
           optionLabelProp="label"
           dropdownAlign="center"
           maxTagCount={3}
@@ -1646,9 +1726,14 @@ class SearchCom extends Component {
       );
     };
 
-    let length_motor = this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.length;
+    const renderVehicleID = (index) => {
+      return <Select style={{ width: "40%" }} mode="multiple" optionLabelProp="label" dropdownAlign="center" maxTagCount={3} placeholder="Biển số xe"></Select>;
+    };
 
+    let length_motor = this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.length;
     let length_truck = this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute.length;
+
+    let isMotorDisable = length_motor == 0 ? true : this.state.UIEffect.ButtonMotorApply.IsDisabled;
 
     return (
       this.state.ShipmentRouteAutoDataSource != null && (
@@ -1669,14 +1754,12 @@ class SearchCom extends Component {
                     </h6>
                   </div>
                   <div style={{ width: "20%", display: "flex", justifyContent: "flex-end" }}>
-                    <Button type="primary" disabled={length_motor == 0} onClick={(_) => this.handleConfirm(1)}>
+                    <Button type="primary" disabled={isMotorDisable} onClick={(_) => this.handleConfirm(1)}>
                       Áp dụng
                     </Button>
                   </div>
                 </div>
                 {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute && length_motor > 0 && (
-                  // this.state.ShipmentRouteAutoDataSource.Motor.TotalDistance > 0 &&
-                  // this.state.ShipmentRouteAutoDataSource.Motor.TotalLoad > 0 &&
                   <div style={{ width: "100%", backgroundColor: "white", padding: "10px 0px", maxHeight: "60vh", height: "auto", overflow: "auto" }}>
                     {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.map((line, index) => (
                       <div key={index}>
@@ -1709,7 +1792,7 @@ class SearchCom extends Component {
                                             <p>{objShipmentOrder.Weight}</p>
                                           </div>
                                         }
-                                        title={objShipmentOrder.PartnerSaleOrderID}
+                                        title={objShipmentOrder.ShipmentOrderID}
                                       >
                                         <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
                                           {objShipmentOrder.IsCompleteDeliverIed ? (
@@ -1786,7 +1869,7 @@ class SearchCom extends Component {
 
             {/* Tab xe tải */}
 
-            <Tabs.TabPane tabKey="key_1_2" tab={reactNodeTab("Xe tải", length_truck)} key="2" className="ant-tabs-child-2">
+            {/* <Tabs.TabPane tabKey="key_1_2" tab={reactNodeTab("Xe tải", length_truck)} key="2" className="ant-tabs-child-2">
               <div style={{ width: "100%", backgroundColor: "white", padding: "10px", maxheight: "57vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
                 <div style={{ width: "100%", display: "flex" }}>
                   <div style={{ width: "80%" }}>
@@ -1810,18 +1893,12 @@ class SearchCom extends Component {
                       <div key={index}>
                         <p style={{ display: "none" }}>{(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}</p>
                         <div style={{ display: "flex" }}>
-                          {/* <span style={{ fontWeight: "700", fontSize: "15px" }}>{index}</span>&ensp; */}
                           <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
                             <div style={{ width: "90%", marginBottom: "30px" }}>
-                              {/* <div>
-                                  <span>Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Truck.ListTotalDistance[index] / 1000)}</span>&ensp;
-                                  <span>Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Truck.ListTotalLoad[index]}</span>
-                                </div> */}
                               <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
                                 <Tag color="#108ee9">Tuyến: {index + 1}</Tag>
                                 <Tag color="#2db7f5">Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Truck.ListTotalDistance[index] / 1000)}</Tag>
                                 <Tag color="#87d068">Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Truck.ListTotalLoad[index]}</Tag>
-                                {/* {index < 2 && renderDeliverUserSelect(line[0].DeliverUserFullNameList, index)} */}
                                 {renderDeliverUserSelect(index, 2)}
                               </div>
                               <div style={{ display: "flex" }}>
@@ -1842,7 +1919,7 @@ class SearchCom extends Component {
                                             <p>{objShipmentOrder.Weight}</p>
                                           </div>
                                         }
-                                        title={objShipmentOrder.PartnerSaleOrderID}
+                                        title={objShipmentOrder.ShipmentOrderID}
                                       >
                                         <div style={{ width: "16px", height: "16px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
                                           {objShipmentOrder.IsCompleteDeliverIed ? (
@@ -1903,10 +1980,6 @@ class SearchCom extends Component {
                               <Tooltip title="Xem bản đồ">
                                 <Button type="primary" shape="circle" icon={<EyeOutlined />} onClick={() => this.handleShowModalMapTruckRoute(index)} />
                               </Tooltip>
-                              &nbsp;
-                              {/* <Tooltip title="Phân tuyến">
-                                <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
-                              </Tooltip> */}
                             </div>
                           </div>
                         </div>
@@ -1915,7 +1988,7 @@ class SearchCom extends Component {
                   </div>
                 )}
               </div>
-            </Tabs.TabPane>
+            </Tabs.TabPane> */}
 
             {/* Tab chưa điều phối */}
 
