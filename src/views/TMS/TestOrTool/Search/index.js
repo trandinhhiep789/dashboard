@@ -290,7 +290,7 @@ class SearchCom extends React.Component {
                                 </div>
                             </Tabs.TabPane>
 
-                            <Tabs.TabPane tab="Xe tải" key="2">
+                            {/* <Tabs.TabPane tab="Xe tải" key="2">
                                 <div style={{ width: "100%", backgroundColor: "white", padding: "20px", height: "57vh", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
                                     <h5>Danh sách các tuyến đề xuất</h5>
                                     <h6>Tổng cộng số km: <i style={{ fontWeight: "700" }}>{parseInt(this.state.dataSource.TruckRoute.TotalDistance / 1000)}</i> km</h6>
@@ -376,7 +376,7 @@ class SearchCom extends React.Component {
                                         }
                                     </div>
                                 </div>
-                            </Tabs.TabPane>
+                            </Tabs.TabPane> */}
 
                             <Tabs.TabPane tab="Đơn chưa điều phối" key="3">
                                 {
