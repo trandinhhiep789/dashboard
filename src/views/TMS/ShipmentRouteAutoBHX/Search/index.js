@@ -123,6 +123,12 @@ class SearchCom extends Component {
         TabShipmentRouteAuto: {
           Content: "",
         },
+        ButtonMotorApply: {
+          IsDisabled: false,
+        },
+        ButtonTruckApply: {
+          IsDisabled: false,
+        },
       },
 
       ObjectControlValue: {
@@ -134,6 +140,12 @@ class SearchCom extends Component {
           XeTai: {
             Values: {},
             Options: {},
+          },
+          ButtonMotorApply: {
+            IsDisabled: false,
+          },
+          ButtonTruckApply: {
+            IsDisabled: false,
           },
         },
       },
@@ -210,22 +222,22 @@ class SearchCom extends Component {
           SearchKey: "@SHIPMENTORDERTYPEID",
           SearchValue: "1026", // Dịch vụ giao hàng công nghệ BHX online
         },
-        // {
-        //   SearchKey: "@FromDate",
-        //   SearchValue: today,
-        // },
         {
           SearchKey: "@FromDate",
-          SearchValue: new Date(),
-        },
-        {
-          SearchKey: "@ToDate",
-          SearchValue: new Date(),
+          SearchValue: today,
         },
         // {
-        //   SearchKey: "@ToDate",
-        //   SearchValue: tomorrow,
+        //   SearchKey: "@FromDate",
+        //   SearchValue: new Date(),
         // },
+        // {
+        //   SearchKey: "@ToDate",
+        //   SearchValue: new Date(),
+        // },
+        {
+          SearchKey: "@ToDate",
+          SearchValue: tomorrow,
+        },
         {
           SearchKey: "@RECEIVERPROVINCEID",
           SearchValue: -1,
@@ -272,7 +284,7 @@ class SearchCom extends Component {
         },
         {
           SearchKey: "@CarrierTypeID",
-          SearchValue: -1,
+          SearchValue: 1,
         },
         {
           SearchKey: "@PAGESIZE",
@@ -314,22 +326,22 @@ class SearchCom extends Component {
           SearchKey: "@SHIPMENTORDERTYPEID",
           SearchValue: "1026", // Dịch vụ giao hàng công nghệ BHX online
         },
-        // {
-        //   SearchKey: "@FromDate",
-        //   SearchValue: today,
-        // },
         {
           SearchKey: "@FromDate",
-          SearchValue: new Date(),
-        },
-        {
-          SearchKey: "@ToDate",
-          SearchValue: new Date(),
+          SearchValue: today,
         },
         // {
-        //   SearchKey: "@ToDate",
-        //   SearchValue: tomorrow,
+        //   SearchKey: "@FromDate",
+        //   SearchValue: new Date(),
         // },
+        // {
+        //   SearchKey: "@ToDate",
+        //   SearchValue: new Date(),
+        // },
+        {
+          SearchKey: "@ToDate",
+          SearchValue: tomorrow,
+        },
         {
           SearchKey: "@RECEIVERPROVINCEID",
           SearchValue: ShipmentOrderInfo.ReceiverProvinceID,
@@ -376,7 +388,7 @@ class SearchCom extends Component {
         },
         {
           SearchKey: "@CarrierTypeID",
-          SearchValue: ShipmentOrderInfo.CarrierTypeID,
+          SearchValue: 1,
         },
         {
           SearchKey: "@PAGESIZE",
@@ -577,22 +589,22 @@ class SearchCom extends Component {
         SearchKey: "@SHIPMENTORDERTYPEID",
         SearchValue: "1026", // Dịch vụ giao hàng công nghệ BHX online
       },
-      {
-        SearchKey: "@FromDate",
-        SearchValue: MLObject.CreatedOrderTimeFo,
-      },
       // {
       //   SearchKey: "@FromDate",
-      //   SearchValue: today,
+      //   SearchValue: MLObject.CreatedOrderTimeFo,
       // },
       {
-        SearchKey: "@ToDate",
-        SearchValue: MLObject.CreatedOrderTimeTo,
+        SearchKey: "@FromDate",
+        SearchValue: today,
       },
       // {
       //   SearchKey: "@ToDate",
-      //   SearchValue: tomorrow,
+      //   SearchValue: MLObject.CreatedOrderTimeTo,
       // },
+      {
+        SearchKey: "@ToDate",
+        SearchValue: tomorrow,
+      },
       {
         SearchKey: "@RECEIVERPROVINCEID",
         SearchValue: MLObject.ReceiverProvinceID,
@@ -629,9 +641,13 @@ class SearchCom extends Component {
         SearchKey: "@IsCoordinator",
         SearchValue: 2,
       },
+      // {
+      //   SearchKey: "@CARRIERTYPEID",
+      //   SearchValue: MLObject.CarrierTypeID,
+      // },
       {
         SearchKey: "@CARRIERTYPEID",
-        SearchValue: MLObject.CarrierTypeID,
+        SearchValue: 1,
       },
       {
         SearchKey: "@Typename",
@@ -852,20 +868,20 @@ class SearchCom extends Component {
     return diffTimeFrame.length > 0
       ? "diffTimeFrame"
       : TimeFrame8to10.length > 0
-      ? "TimeFrame8to10"
-      : TimeFrame10to12.length > 0
-      ? "TimeFrame10to12"
-      : TimeFrame12to14.length > 0
-      ? "TimeFrame12to14"
-      : TimeFrame14to16.length > 0
-      ? "TimeFrame14to16"
-      : TimeFrame17to19.length > 0
-      ? "TimeFrame17to19"
-      : TimeFrame19to21.length > 0
-      ? "TimeFrame19to21"
-      : Dropped.length > 0
-      ? "Dropped"
-      : "";
+        ? "TimeFrame8to10"
+        : TimeFrame10to12.length > 0
+          ? "TimeFrame10to12"
+          : TimeFrame12to14.length > 0
+            ? "TimeFrame12to14"
+            : TimeFrame14to16.length > 0
+              ? "TimeFrame14to16"
+              : TimeFrame17to19.length > 0
+                ? "TimeFrame17to19"
+                : TimeFrame19to21.length > 0
+                  ? "TimeFrame19to21"
+                  : Dropped.length > 0
+                    ? "Dropped"
+                    : "";
   }
 
   // Xử lý phân tuyến bằng checked
@@ -1503,12 +1519,47 @@ class SearchCom extends Component {
           if (this.state.ShipmentRouteID != "") {
             this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNewAuto", arrRequest).then((apiResult) => {
               this.addNotification(apiResult.Message, apiResult.IsError);
-              if (this.props.onChangeValue != null) this.props.onChangeValue(apiResult);
+              let changeState = this.state;
+              let objUIEffect = changeState.UIEffect;
+              let objButtonMotorApply = objUIEffect.ButtonMotorApply;
+              let objButtonTruckApply = objUIEffect.ButtonTruckApply;
+
+              if (!apiResult.IsError) {
+                objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: true };
+                objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: true };
+                objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
+                changeState = { ...changeState, UIEffect: objUIEffect };
+              } else {
+                objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: false };
+                objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: false };
+                objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
+                changeState = { ...changeState, UIEffect: objUIEffect };
+              }
+
+              this.setState(changeState);
             });
           } else {
             this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNewAuto", arrRequest).then((apiResult) => {
               this.addNotification(apiResult.Message, apiResult.IsError);
-              if (this.props.onChangeValue != null) this.props.onChangeValue(apiResult);
+
+              let changeState = this.state;
+              let objUIEffect = changeState.UIEffect;
+              let objButtonMotorApply = objUIEffect.ButtonMotorApply;
+              let objButtonTruckApply = objUIEffect.ButtonTruckApply;
+
+              if (!apiResult.IsError) {
+                objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: true };
+                objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: true };
+                objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
+                changeState = { ...changeState, UIEffect: objUIEffect };
+              } else {
+                objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: false };
+                objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: false };
+                objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
+                changeState = { ...changeState, UIEffect: objUIEffect };
+              }
+
+              this.setState(changeState);
             });
           }
         } else {
@@ -1641,10 +1692,13 @@ class SearchCom extends Component {
         <Select
           style={{ width: "40%" }}
           value={
-            (vehicleType == 1 && this.state.ObjectControlValue.NhanVienGiao.XeMay.Values && this.state.ObjectControlValue.NhanVienGiao.XeMay.Values[index] || []) ||
-            (vehicleType == 2 && this.state.ObjectControlValue.NhanVienGiao.XeTai.Values && this.state.ObjectControlValue.NhanVienGiao.XeTai.Values[index] || [])
+            (vehicleType == 1 && this.state.ObjectControlValue.NhanVienGiao.XeMay.Values && this.state.ObjectControlValue.NhanVienGiao.XeMay.Values[index]) ||
+            [] ||
+            (vehicleType == 2 && this.state.ObjectControlValue.NhanVienGiao.XeTai.Values && this.state.ObjectControlValue.NhanVienGiao.XeTai.Values[index]) ||
+            []
           }
           mode="multiple"
+          disabled={(vehicleType == 1 ? this.state.UIEffect.ButtonMotorApply.IsDisabled : false) || (vehicleType == 2 ? this.state.UIEffect.ButtonTruckApply.IsDisabled : false)}
           optionLabelProp="label"
           dropdownAlign="center"
           maxTagCount={3}
@@ -1677,8 +1731,9 @@ class SearchCom extends Component {
     };
 
     let length_motor = this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.length;
-
     let length_truck = this.state.ShipmentRouteAutoDataSource.Truck.ListShipmentOrderRoute.length;
+
+    let isMotorDisable = length_motor == 0 ? true : this.state.UIEffect.ButtonMotorApply.IsDisabled;
 
     return (
       this.state.ShipmentRouteAutoDataSource != null && (
@@ -1699,14 +1754,12 @@ class SearchCom extends Component {
                     </h6>
                   </div>
                   <div style={{ width: "20%", display: "flex", justifyContent: "flex-end" }}>
-                    <Button type="primary" disabled={length_motor == 0} onClick={(_) => this.handleConfirm(1)}>
+                    <Button type="primary" disabled={isMotorDisable} onClick={(_) => this.handleConfirm(1)}>
                       Áp dụng
                     </Button>
                   </div>
                 </div>
                 {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute && length_motor > 0 && (
-                  // this.state.ShipmentRouteAutoDataSource.Motor.TotalDistance > 0 &&
-                  // this.state.ShipmentRouteAutoDataSource.Motor.TotalLoad > 0 &&
                   <div style={{ width: "100%", backgroundColor: "white", padding: "10px 0px", maxHeight: "60vh", height: "auto", overflow: "auto" }}>
                     {this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.map((line, index) => (
                       <div key={index}>
@@ -1816,7 +1869,7 @@ class SearchCom extends Component {
 
             {/* Tab xe tải */}
 
-            <Tabs.TabPane tabKey="key_1_2" tab={reactNodeTab("Xe tải", length_truck)} key="2" className="ant-tabs-child-2">
+            {/* <Tabs.TabPane tabKey="key_1_2" tab={reactNodeTab("Xe tải", length_truck)} key="2" className="ant-tabs-child-2">
               <div style={{ width: "100%", backgroundColor: "white", padding: "10px", maxheight: "57vh", height: "auto", overflow: "auto", border: "1px solid #0000ff3d", marginBottom: "15px" }}>
                 <div style={{ width: "100%", display: "flex" }}>
                   <div style={{ width: "80%" }}>
@@ -1840,18 +1893,12 @@ class SearchCom extends Component {
                       <div key={index}>
                         <p style={{ display: "none" }}>{(randomColor = pickRandomColor[Math.floor(Math.random() * 11)])}</p>
                         <div style={{ display: "flex" }}>
-                          {/* <span style={{ fontWeight: "700", fontSize: "15px" }}>{index}</span>&ensp; */}
                           <div style={{ display: "flex", width: "100%", marginBottom: "12px" }}>
                             <div style={{ width: "90%", marginBottom: "30px" }}>
-                              {/* <div>
-                                  <span>Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Truck.ListTotalDistance[index] / 1000)}</span>&ensp;
-                                  <span>Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Truck.ListTotalLoad[index]}</span>
-                                </div> */}
                               <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
                                 <Tag color="#108ee9">Tuyến: {index + 1}</Tag>
                                 <Tag color="#2db7f5">Số km: {parseInt(this.state.ShipmentRouteAutoDataSource.Truck.ListTotalDistance[index] / 1000)}</Tag>
                                 <Tag color="#87d068">Tổng khối lượng: {this.state.ShipmentRouteAutoDataSource.Truck.ListTotalLoad[index]}</Tag>
-                                {/* {index < 2 && renderDeliverUserSelect(line[0].DeliverUserFullNameList, index)} */}
                                 {renderDeliverUserSelect(index, 2)}
                               </div>
                               <div style={{ display: "flex" }}>
@@ -1933,10 +1980,6 @@ class SearchCom extends Component {
                               <Tooltip title="Xem bản đồ">
                                 <Button type="primary" shape="circle" icon={<EyeOutlined />} onClick={() => this.handleShowModalMapTruckRoute(index)} />
                               </Tooltip>
-                              &nbsp;
-                              {/* <Tooltip title="Phân tuyến">
-                                <Button type="primary" shape="circle" icon={<PartitionOutlined />} />
-                              </Tooltip> */}
                             </div>
                           </div>
                         </div>
@@ -1945,7 +1988,7 @@ class SearchCom extends Component {
                   </div>
                 )}
               </div>
-            </Tabs.TabPane>
+            </Tabs.TabPane> */}
 
             {/* Tab chưa điều phối */}
 

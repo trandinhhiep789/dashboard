@@ -630,11 +630,11 @@ class SearchFormShipmentRouteAuto extends Component {
             </Select>
           </Col> */}
 
-          <Col key={11}>
+          {/* <Col key={11}>
             <Select defaultValue={-1} style={{ width: "160px" }} onChange={(value) => this.handleSelectPhuongTienChange(value)}>
               {renderSelect3}
             </Select>
-          </Col>
+          </Col> */}
 
           <Col key={12}>
             <Button size="middle" type="primary" onClick={this.handleSearch}>
