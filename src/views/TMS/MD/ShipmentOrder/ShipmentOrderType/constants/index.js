@@ -176,15 +176,15 @@ export const AddModalColumnList = [
         validatonList: [],
         value: false
     },
-    {
-        Name: "IsCanReturnItem",
-        type: "checkbox",
-        label: "Có được nhập trả",
-        DataSourceMember: "IsCanReturnItem",
-        readonly: false,
-        validatonList: [],
-        value: false
-    },
+    // {
+    //     Name: "IsCanReturnItem",
+    //     type: "checkbox",
+    //     label: "Có được nhập trả",
+    //     DataSourceMember: "IsCanReturnItem",
+    //     readonly: false,
+    //     validatonList: [],
+    //     value: false
+    // },
     {
         Name: "MTOuputPayableTypeID",
         type: "select",
@@ -393,12 +393,12 @@ export const MLObjectDefinition = [
         BindControlName: "IsHasReward",
         DataSourceMember: "IsHasReward"
     },
-    {
-        Name: "IsCanReturnItem",
-        DefaultValue: "",
-        BindControlName: "IsCanReturnItem",
-        DataSourceMember: "IsCanReturnItem"
-    },
+    // {
+    //     Name: "IsCanReturnItem",
+    //     DefaultValue: "",
+    //     BindControlName: "IsCanReturnItem",
+    //     DataSourceMember: "IsCanReturnItem"
+    // },
     {
         Name: "MTOuputPayableTypeID",
         DefaultValue: "",

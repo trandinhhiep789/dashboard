@@ -1684,7 +1684,7 @@ const AppMenu = [
                     },
                     {
                         MenuName: "ConstructRevenueReport",
-                        MenuTitle: "Danh sách công trình bảo trì đang tính doanh thu",
+                        MenuTitle: "Xuất doanh thu xây dựng bảo trì",
                         LinkTo: "/ConstructRevenueReport",
                         MenuIcon: "",
                         SubMenu: [],

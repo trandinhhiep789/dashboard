@@ -1,4 +1,4 @@
-import { ERPCOMMONCACHE_SERVICEGROUP, ERPCOMMONCACHE_MAINGROUP, ERPCOMMONCACHE_SUBGROUP, ERPCOMMONCACHE_BRAND, ERPCOMMONCACHE_BRAND_MAINGROUP, ERPCOMMONCACHE_MAINTAINCONSTRUCTLST, ERPCOMMONCACHE_MAINTAINPROLIST, ERPCOMMONCACHE_CONSTRUCTREVENUE } from '../../../../../constants/keyCache';
+import { ERPCOMMONCACHE_SERVICEGROUP, ERPCOMMONCACHE_MAINGROUP, ERPCOMMONCACHE_SUBGROUP, ERPCOMMONCACHE_BRAND, ERPCOMMONCACHE_BRAND_MAINGROUP, ERPCOMMONCACHE_MAINTAINCONSTRUCTLST, ERPCOMMONCACHE_MAINTAINPROLIST, ERPCOMMONCACHE_CONSTRUCTREVENUE, ERPCOMMONCACHE_CONSTRUCSERVICETYPE } from '../../../../../constants/keyCache';
 import { toIsoStringCus } from '../../../../../utils/function';
 
 export const APIHostName = "TMSAPI";
@@ -34,7 +34,7 @@ export const InitSearchParams = [
     //     SearchValue: toIsoStringCus(new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()).toISOString())
     // },
     {
-        SearchKey: "@CONSTRUCTCONCERN",
+        SearchKey: "@CONSTRUCTSERVICETYPEID",
         SearchValue: -1
     },
     {
@@ -62,18 +62,18 @@ export const InitSearchParams = [
 export const SearchElementList = [
     {
         type: "ComboBox",
-        name: "cbConstructConcern",
-        DataSourceMember: "ConstructConcern",
-        label: "Mã công trình",
+        name: "cbConstructServiceTypeID",
+        DataSourceMember: "ConstructServiceTypeID",
+        label: "Mã loại công việc",
         colspan: 2,
         value: -1,
         isMultiSelect: false,
-        placeholder: "Mã công trình",
+        placeholder: "Mã loại công việc",
         listoption: [],
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: ERPCOMMONCACHE_CONSTRUCTREVENUE,
-        ValueMember: "ConstructConcern",
-        NameMember: "ConstructName",
+        LoadItemCacheKeyID: ERPCOMMONCACHE_CONSTRUCSERVICETYPE,
+        ValueMember: "ConstructServiceTypeID",
+        NameMember: "ConstructServiceTypeName",
         classNameCol: "col-custom"
     },
     {
@@ -230,9 +230,9 @@ export const SearchMLObjectDefinition = [
         BindControlName: "dtToDate"
     },
     {
-        Name: "ConstructConcern",
+        Name: "ConstructServiceTypeID",
         DefaultValue: "",
-        BindControlName: "cbConstructConcern"
+        BindControlName: "cbConstructServiceTypeID"
     },
     {
         Name: "ProductID",

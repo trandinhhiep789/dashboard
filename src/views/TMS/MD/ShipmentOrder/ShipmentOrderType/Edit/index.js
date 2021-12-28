@@ -723,10 +723,10 @@ class EditCom extends React.Component {
                                 datasourcemember="IsHasReward" controltype="InputControl"
                                 labelcolspan={4} colspan={8} rowspan={8}
                             />
-                            <FormControl.CheckBox label="Có được nhập trả" name="IsCanReturnItem"
+                            {/* <FormControl.CheckBox label="Có được nhập trả" name="IsCanReturnItem"
                                 datasourcemember="IsCanReturnItem" controltype="InputControl"
                                 labelcolspan={4} colspan={8} rowspan={8}
-                            />
+                            /> */}
 
                             {/* ------------------------------------------------------------------ */}
 

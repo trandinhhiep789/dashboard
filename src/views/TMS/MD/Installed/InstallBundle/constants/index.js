@@ -1444,3 +1444,198 @@ export const InstallBundle_MateriaColumnListEdit = [
         iputpop: false
     }
 ];
+
+
+
+export const schema = {
+    'Mã gói lắp đặt': {
+        prop: 'InstallBundleID',
+        type: String,
+        required: true
+    },
+    'Mã nhóm vật tư': {
+        prop: 'MaterialGroupID',
+        type: String,
+        required: true
+    },
+    'Số lượng sử dụng chuẩn': {
+        prop: 'StandardUsAgeQuantity',
+        type: Number,
+        required: true
+    },
+    'Số lượng sử dụng tối đa': {
+        prop: 'MaxUsAgeQuantity',
+        type: Number,
+        required: true
+    },
+    'Hình thức ghi nhận sử dụng(1: Nhập tay, 2: Quy đổi)': {
+        prop: 'UsAgeRecordType',
+        type: Number,
+        required: true
+    },
+    'Mã nhóm vật tư muốn quy đổi': {
+        prop: 'ConvertToMaterialGroupID',
+        type: String,
+        required: true
+    },
+    'Tỷ lệ quy đổi': {
+        prop: 'ConvertRatio',
+        type: Number,
+        required: true
+    },
+    'Hình thức xuất sử dụng': {
+        prop: 'OutputUsAgeType',
+        type: Number,
+        required: true
+    },
+    'Có khuyến mãi hay không?': {
+        prop: 'IsHasPromotion',
+        type: Number,
+        required: true
+    },
+    'Số lượng khuyến mãi': {
+        prop: 'PromotionQuantity',
+        type: Number,
+        required: true
+    },
+    'Loại giới hạn tạm ứng; 1: Giới hạn theo số lượng, 2: Giới hạn theo tổng tiền, 3: Không giới hạn': {
+        prop: 'AdvanceLimitType',
+        type: Number,
+        required: true
+    },
+    'Số lượng giới hạn tạm ứng': {
+        prop: 'AdvanceLimitQuantity',
+        type: String,
+        required: true
+    },
+    'Số lượng tồn được phép tạm ứng': {
+        prop: 'AllowAdvanceMaxStockQuantity',
+        type: Number,
+        required: true
+    },
+    'Có làm tròn số lượng hay không?': {
+        prop: 'IsRoundIngQuantity',
+        type: Number,
+        required: true
+    },
+    'Ghi chú': {
+        prop: 'Note',
+        type: String
+    },
+    'Bội số làm tròn': {
+        prop: 'RoundingMultiple',
+        type: Number
+    },
+    'Là vật tư dịch vụ': {
+        prop: 'IsServiceMaterial',
+        type: Number
+    },
+    'Là vật tư sử dụng cho từng sản phẩm lắp đặt': {
+        prop: 'IsMaterialForEachpRoduct',
+        type: Number
+    },
+    'Kiểm tra tồn kho tại nhóm vật tư khác': {
+        prop: 'IsCheckStockInanotheRGroup',
+        type: Number
+    },
+    'Nhóm vật tư kiểm tra tồn kho': {
+        prop: 'InStockMaterialGroupID',
+        type: Number
+    },
+    'Là nhóm vật tư không xuất kho': {
+        prop: 'IsNonOutputMaterial',
+        type: Number
+    },
+    'Cho phép tạm ứng': {
+        prop: 'IsAllowAdvance',
+        type: Number
+    },
+    'Cho phép tạm ứng nhiều sản phẩm trong một nhóm': {
+        prop: 'IsCanMultiAdvance',
+        type: Number
+    },
+    'Cho phép sử dụng nhiều sản phẩm trong một nhóm': {
+        prop: 'IsCanMultiUsage',
+        type: Number
+    },
+    'Hiển thị đầu tiên khi tạm ứng': {
+        prop: 'IsShowTopWhenAdvance',
+        type: Number
+    },
+    'Thứ tự hiển thị khi tạm ứng': {
+        prop: 'AdvanceShowOrderindex',
+        type: Number
+    },
+    'Hiển thị đầu tiên khi sử dụng': {
+        prop: 'IsShowTopWhenUsage',
+        type: Number
+    },
+    'Thứ tự hiển thị khi sử dụng': {
+        prop: 'UsageShowOrderindex',
+        type: Number
+    },
+    'Có kiểm tra số lượng tồn tối thiểu không': {
+        prop: 'IsCheckMinInStock',
+        type: Number
+    },
+    'Số lượng tồn tối thiểu cần kiểm tra': {
+        prop: 'MinInStockQuantity',
+        type: Number
+    },
+    'Có kiểm tra số lượng sử dụng tối thiểu không': {
+        prop: 'IsCheckMinUsage',
+        type: Number
+    },
+    'Số lượng sử dụng tối thiểu cần kiểm tra': {
+        prop: 'MinUsageQuantity',
+        type: Number
+    },
+    'Kích hoạt': {
+        prop: 'IsActived',
+        type: Number
+    },
+    'Hệ thống': {
+        prop: 'IsSystem',
+        type: Number
+    },
+}
+
+export const DataTemplateExport = [
+    {
+        "Mã gói lắp đặt": 1253,
+        "Mã nhóm vật tư": 1253,
+        "Số lượng sử dụng chuẩn": 1253,
+        "Số lượng sử dụng tối đa": 1253,
+        "Hình thức ghi nhận sử dụng(1: Nhập tay, 2: Quy đổi)": 1253,
+        "Mã nhóm vật tư muốn quy đổi": 1253,
+        "Tỷ lệ quy đổi": 1253,
+        "Hình thức xuất sử dụng": 1253,
+        "Có khuyến mãi hay không?": 1253,
+        "Số lượng khuyến mãi": 1253,
+        "Loại giới hạn tạm ứng; 1: Giới hạn theo số lượng, 2: Giới hạn theo tổng tiền, 3: Không giới hạn": 1253,
+        "Số lượng giới hạn tạm ứng": 1253,
+        "Số lượng tồn được phép tạm ứng": 1253,
+        "Có làm tròn số lượng hay không?": 1253,
+        "Ghi chú": 1253,
+        "Bội số làm tròn": 1253,
+        "Là vật tư dịch vụ": 1253,
+        "Là vật tư sử dụng cho từng sản phẩm lắp đặt(không nhóm theo mã sản phẩm)": 1253,
+        "Kiểm tra tồn kho tại nhóm vật tư khác": 1253,
+        "Nhóm vật tư kiểm tra tồn kho": 1253,
+        "Là nhóm vật tư không xuất kho": 1253,
+        "Cho phép tạm ứng": 1253,
+        "Cho phép tạm ứng nhiều sản phẩm trong một nhóm": 1253,
+        "Cho phép sử dụng nhiều sản phẩm trong một nhóm": 1253,
+        "Hiển thị đầu tiên khi tạm ứng": 1253,
+        "Thứ tự hiển thị khi tạm ứng": 1253,
+        "Hiển thị đầu tiên khi sử dụng": 1253,
+        "Thứ tự hiển thị khi sử dụng": 1253,
+        "Có kiểm tra số lượng tồn tối thiểu không": 1253,
+        "Số lượng tồn tối thiểu cần kiểm tra": 1253,
+        "Có kiểm tra số lượng sử dụng tối thiểu không": 1253,
+        "Số lượng sử dụng tối thiểu cần kiểm tra": 1253,
+        "Kích hoạt": 1253,
+        "Hệ thống": 1253,
+        
+    }
+];

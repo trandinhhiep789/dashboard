@@ -118,8 +118,8 @@ class SearchCom extends React.Component {
     handleSearchSubmit(formData, MLObject) {
         const postData = [
             {
-                SearchKey: "@CONSTRUCTCONCERN",
-                SearchValue: MLObject.ConstructConcern
+                SearchKey: "@CONSTRUCTSERVICETYPEID",
+                SearchValue: MLObject.ConstructServiceTypeID
             },
             {
                 SearchKey: "@PRODUCTID",
@@ -437,8 +437,8 @@ class SearchCom extends React.Component {
 
         const searchData = [
             {
-                SearchKey: "@CONSTRUCTCONCERN",
-                SearchValue: MLObject.ConstructConcern
+                SearchKey: "@CONSTRUCTSERVICETYPEID",
+                SearchValue: MLObject.ConstructServiceTypeID
             },
             {
                 SearchKey: "@PRODUCTID",
