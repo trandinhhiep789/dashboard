@@ -20,8 +20,8 @@ class SearchFormShipmentRouteAuto extends Component {
       SearchData: {
         Keyword: "",
         ShipmentOrderTypeID: "",
-        CreatedOrderTimeFo: "",
-        CreatedOrderTimeTo: "",
+        CreatedOrderTimeFo: new Date(),
+        CreatedOrderTimeTo: new Date(),
         ReceiverProvinceID: -1,
         ReceiverDistrictID: -1,
         ReceiverWardID: -1,
@@ -112,6 +112,7 @@ class SearchFormShipmentRouteAuto extends Component {
       TypeName: "store",
       IsCompressResultData: false,
     };
+
     this.props.callFetchAPI("ERPAPI", "api/CommonSearch/Search", listMLObject).then((apiResult) => {
       const objStore = JSON.parse(apiResult.ResultObject).hits.hits;
       let listOptionNew1 = [];
@@ -466,7 +467,6 @@ class SearchFormShipmentRouteAuto extends Component {
 
   handleSearch() {
     if (this.props.onSubmit) {
-      console.log(this.state.SearchData);
       this.props.onSubmit(this.state.SearchData);
     }
   }
@@ -477,13 +477,11 @@ class SearchFormShipmentRouteAuto extends Component {
         {item.label}
       </Select.Option>
     ));
-
     let renderSelect2 = this.Select2.map((item, index) => (
       <Select.Option key={index} value={item.value}>
         {item.label}
       </Select.Option>
     ));
-
     let renderSelect3 = this.Select3.map((item, index) => (
       <Select.Option key={index} value={item.value}>
         {item.label}
@@ -596,7 +594,7 @@ class SearchFormShipmentRouteAuto extends Component {
           </Col> */}
 
           <Col key={8}>
-            <Select defaultValue={-1} style={{ width: "150px" }} dropdownMatchSelectWidth={400} onChange={(value) => this.handleSelectKhoDieuPhoiChange(value)}>
+            <Select defaultValue={-1} style={{ width: "200px" }} dropdownMatchSelectWidth={400} onChange={(value) => this.handleSelectKhoDieuPhoiChange(value)}>
               <Select.Option key={1} value={-1}>
                 Kho điều phối
               </Select.Option>
@@ -634,7 +632,7 @@ class SearchFormShipmentRouteAuto extends Component {
           </Col> */}
 
           <Col key={11}>
-            <Select defaultValue={-1} style={{ width: "160px" }} onChange={(value) => this.handleSelectPhuongTienChange(value)}>
+            <Select value={this.state.SearchData.CarrierTypeID} style={{ width: "160px" }} onChange={(value) => this.handleSelectPhuongTienChange(value)}>
               {renderSelect3}
             </Select>
           </Col>
