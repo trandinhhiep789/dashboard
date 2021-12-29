@@ -51,6 +51,7 @@ class SearchCom extends Component {
       PrintID: "",
       DataPrint: {},
       IsDataGridSmallSize: false,
+      GridDataShip:[],
       GridDataShipFormModalTemp: [],
       GridDataShipFormModal: [],
       ShipmentRouteID: "",
@@ -140,7 +141,6 @@ class SearchCom extends Component {
     this.updateWindowDimensions();
 
     const localShipmentOrderInfo = localStorage.getItem("SearchShipmentOrderInfo");
-    console.log(localShipmentOrderInfo);
     let InitSearchParams = [];
 
     if (localShipmentOrderInfo == null) {
@@ -255,19 +255,11 @@ class SearchCom extends Component {
         },
         {
           SearchKey: "@FromDate",
-          SearchValue: today,
+          SearchValue: new Date(),
         },
-        // {
-        //   SearchKey: "@FromDate",
-        //   SearchValue: new Date(),
-        // },
-        // {
-        //   SearchKey: "@ToDate",
-        //   SearchValue: new Date(),
-        // },
         {
           SearchKey: "@ToDate",
-          SearchValue: tomorrow,
+          SearchValue: new Date(),
         },
         {
           SearchKey: "@RECEIVERPROVINCEID",
@@ -699,29 +691,6 @@ class SearchCom extends Component {
     }
   }
 
-  // Kiểm tra GridDataShip có phần tử không
-  handleCheckGirdDataShipIsEmpty() {
-    const { diffTimeFrame, TimeFrame8to10, TimeFrame10to12, TimeFrame12to14, TimeFrame14to16, TimeFrame17to19, TimeFrame19to21, Dropped } = this.state.GridDataShip;
-
-    return diffTimeFrame.length > 0
-      ? "diffTimeFrame"
-      : TimeFrame8to10.length > 0
-        ? "TimeFrame8to10"
-        : TimeFrame10to12.length > 0
-          ? "TimeFrame10to12"
-          : TimeFrame12to14.length > 0
-            ? "TimeFrame12to14"
-            : TimeFrame14to16.length > 0
-              ? "TimeFrame14to16"
-              : TimeFrame17to19.length > 0
-                ? "TimeFrame17to19"
-                : TimeFrame19to21.length > 0
-                  ? "TimeFrame19to21"
-                  : Dropped.length > 0
-                    ? "Dropped"
-                    : "";
-  }
-
   // Xử lý phân tuyến bằng checked
   handleUserCoordinator() {
     let checkGridDataShipEmptyResult = this.handleCheckGirdDataShipIsEmpty();
@@ -730,16 +699,10 @@ class SearchCom extends Component {
       let changeState = this.state;
       changeState = { ...changeState, IsDataGridSmallSize: true };
 
-      let arrRequest = [];
-      for (const [key, value] of Object.entries(this.state.GridDataShip)) {
-        if (value.length > 0) {
-          arrRequest = [...arrRequest, ...value];
-        }
-      }
-
-      changeState = { ...changeState, GridDataShipFormModalTemp: arrRequest };
+      changeState = { ...changeState, GridDataShipFormModalTemp: this.state.GridDataShip };
       this.setState(changeState);
 
+      let arrRequest=this.state.GridDataShip;
       arrRequest[0].ShipmentOrderTypelst = this.state.SearchData[2].SearchValue;
 
       this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderNewLst", arrRequest).then((apiResult) => {
