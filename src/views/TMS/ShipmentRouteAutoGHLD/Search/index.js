@@ -51,7 +51,7 @@ class SearchCom extends Component {
       PrintID: "",
       DataPrint: {},
       IsDataGridSmallSize: false,
-      GridDataShip:[],
+      GridDataShip: [],
       GridDataShipFormModalTemp: [],
       GridDataShipFormModal: [],
       ShipmentRouteID: "",
@@ -154,8 +154,8 @@ class SearchCom extends Component {
           SearchValue: "",
         },
         {
-            SearchKey: "@SHIPMENTORDERTYPEID",
-            SearchValue: "",
+          SearchKey: "@SHIPMENTORDERTYPEID",
+          SearchValue: "",
         },
         {
           SearchKey: "@FromDate",
@@ -193,10 +193,6 @@ class SearchCom extends Component {
           SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
           SearchValue: "1",
         },
-        // {
-        //     SearchKey: "@IsCoordinator",
-        //     SearchValue: 2,
-        // },
         {
           SearchKey: "@IsCoordinator",
           SearchValue: 2,
@@ -427,19 +423,19 @@ class SearchCom extends Component {
         SearchValue: "",
       },
       {
-          SearchKey: "@SHIPMENTORDERTYPEID",
-          SearchValue: MLObject.ShipmentOrderTypeID,
+        SearchKey: "@SHIPMENTORDERTYPEID",
+        SearchValue: MLObject.ShipmentOrderTypeID,
       },
       {
         SearchKey: "@FromDate",
         SearchValue: MLObject.CreatedOrderTimeFo,
       },
-     
+
       {
         SearchKey: "@ToDate",
         SearchValue: MLObject.CreatedOrderTimeTo,
       },
-      
+
       {
         SearchKey: "@RECEIVERPROVINCEID",
         SearchValue: MLObject.ReceiverProvinceID,
@@ -467,7 +463,7 @@ class SearchCom extends Component {
       {
         SearchKey: "@SHIPMENTORDERSTATUSGROUPID",
         SearchValue: "1",
-    },
+      },
       // {
       //     SearchKey: "@IsCoordinator",
       //     SearchValue: MLObject.IsCoordinator,
@@ -639,11 +635,11 @@ class SearchCom extends Component {
   };
 
   // Xử lý thêm nút checked
-  handleCheckShip({ TimeFrame, GridDataShip, ShipmentOrderID, IsSinger }) {
+  handleCheckShip({ GridDataShip, ShipmentOrderID, IsSinger }) {
     let changeState = this.state;
     let gridDataShip = changeState.GridDataShip;
 
-    gridDataShip = { ...gridDataShip, [TimeFrame]: GridDataShip };
+    gridDataShip = GridDataShip;
     changeState = { ...changeState, GridDataShip: gridDataShip };
 
     this.setState(changeState, () => {
@@ -656,33 +652,16 @@ class SearchCom extends Component {
     });
   }
 
-  // Tính khoảng thời gian
-  calculateTimeFrame(paramShipmentOrderID) {
-    let objShipmentOrder = this.state.GridDataSource.filter((item) => item.ShipmentOrderID === paramShipmentOrderID);
-    const uptExpectedDeliveryDate = new Date(objShipmentOrder[0].ExpectedDeliveryDate);
-    let hour = uptExpectedDeliveryDate.getHours();
-
-    if (hour >= 8 && hour < 10) return "TimeFrame8to10";
-    if (hour >= 10 && hour < 12) return "TimeFrame10to12";
-    if (hour >= 12 && hour < 14) return "TimeFrame12to14";
-    if (hour >= 14 && hour < 16) return "TimeFrame14to16";
-    if (hour >= 17 && hour < 19) return "TimeFrame17to19";
-    if (hour >= 19 && hour < 21) return "TimeFrame19to21";
-    else return "diffTimeFrame";
-  }
-
   // Xử lý bỏ checked khi nhấn xoá trong modal
   handleRemoveCheckShip(paramShipmentOrderID) {
     let isExistInGridDataShipModalTemp = this.state.GridDataShipFormModalTemp.some((item) => item.ShipmentOrderID == paramShipmentOrderID);
 
     if (isExistInGridDataShipModalTemp) {
-      let timeFrame = this.calculateTimeFrame(paramShipmentOrderID);
       let changeState = this.state;
       let gridDataShip = changeState.GridDataShip;
-      let arrTimeFrame = gridDataShip[timeFrame];
 
-      arrTimeFrame.splice(
-        arrTimeFrame.findIndex((item) => item.ShipmentOrderID === paramShipmentOrderID),
+      gridDataShip.splice(
+        gridDataShip.findIndex((item) => item.ShipmentOrderID === paramShipmentOrderID),
         1
       );
 
@@ -693,16 +672,14 @@ class SearchCom extends Component {
 
   // Xử lý phân tuyến bằng checked
   handleUserCoordinator() {
-    let checkGridDataShipEmptyResult = this.handleCheckGirdDataShipIsEmpty();
-
-    if (checkGridDataShipEmptyResult !== "") {
+    if (this.state.GridDataShip.length > 0) {
       let changeState = this.state;
       changeState = { ...changeState, IsDataGridSmallSize: true };
 
       changeState = { ...changeState, GridDataShipFormModalTemp: this.state.GridDataShip };
       this.setState(changeState);
 
-      let arrRequest=this.state.GridDataShip;
+      let arrRequest = this.state.GridDataShip;
       arrRequest[0].ShipmentOrderTypelst = this.state.SearchData[2].SearchValue;
 
       this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderNewLst", arrRequest).then((apiResult) => {
@@ -733,7 +710,6 @@ class SearchCom extends Component {
     this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetShipmentOrderRouteLst", paramRouteID).then((apiResult) => {
       if (!apiResult.IsError) {
         let changeState = this.state;
-
         let objDescription = this.handleMapObjectDescription(apiResult.ResultObject);
 
         changeState = {
@@ -807,10 +783,7 @@ class SearchCom extends Component {
     if (paramObjectChangeState.IsShowModel == false) {
       let gridDataShip = changeState.GridDataShip;
 
-      for (const [key, value] of Object.entries(gridDataShip)) {
-        gridDataShip[key] = [];
-      }
-
+      gridDataShip = [];
       changeState = { ...changeState, IsDataGridSmallSize: false, GridDataShip: gridDataShip, GridDataShipFormModal: [], GridDataShipFormModalTemp: [], ShipmentRouteID: "", ChangeGird: false };
     }
 
@@ -832,11 +805,6 @@ class SearchCom extends Component {
         },
       };
     }, {});
-
-    // let changeState = this.state;
-
-    // changeState = { ...changeState, ObjectDescription: objDescription };
-    // this.setState(changeState);
   }
 
   _CheckTime(dates) {
@@ -902,38 +870,19 @@ class SearchCom extends Component {
 
   // Xử lý phân tuyến tự động
   handleShipmentRouteAuto() {
-    let arrRequest = [];
-    for (const [key, value] of Object.entries(this.state.GridDataShip)) {
-      if (value.length > 0) {
-        arrRequest = value.reduce((curArray, curValue) => {
-          return [...curArray, { ...curValue }];
-        }, []);
-      }
-    }
-
+    let arrRequest = this.state.GridDataShip;
     if (arrRequest.length > 0 && arrRequest.length < 2) {
       this.showMessage("Phải chọn ít nhất là 2 vận đơn");
       return;
     }
 
-    let messageContent =
-      arrRequest.length === 0
-        ? `Muốn phân tuyến tự động tất cả các đơn trong khung thời gian ${this.state.ActiveTimeFrame.Name}`
-        : `Muốn phân tuyến tự động ${arrRequest.length} đơn trong khung thời gian ${this.state.ActiveTimeFrame.Name}`;
-
-    if (arrRequest.length == 0) {
-      arrRequest = [...this.state[this.state.ActiveTimeFrame.TimeFrame]];
-    }
-
-    this.showMessage(messageContent, true, "Xác nhận", () => {
+    this.showMessage("Phân tuyến tự động tất cả vận đơn", true, "Xác nhận", () => {
       let changeState = this.state;
       let objUIEffect = changeState.UIEffect;
       let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
-      let objTabShipmentRouteAuto = objUIEffect.TabShipmentRouteAuto;
 
-      objTabShipmentRouteAuto = { ...objTabShipmentRouteAuto, Content: this.state.ActiveTimeFrame.Name };
       objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: true };
-      objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto, TabShipmentRouteAuto: objTabShipmentRouteAuto };
+      objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
       changeState = { ...changeState, UIEffect: objUIEffect };
 
       this.setState(changeState);
@@ -950,11 +899,9 @@ class SearchCom extends Component {
           let objShipmentRouteAutoDataSource = changeState.ShipmentRouteAutoDataSource;
           let objUIEffect = changeState.UIEffect;
           let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
-          let objTabShipmentRouteAuto = objUIEffect.TabShipmentRouteAuto;
 
-          objTabShipmentRouteAuto = { ...objTabShipmentRouteAuto, Content: this.state.ActiveTimeFrame.Name };
           objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: false, IsDisabled: true };
-          objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto, TabShipmentRouteAuto: objTabShipmentRouteAuto };
+          objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
           changeState = { ...changeState, UIEffect: objUIEffect };
           objShipmentRouteAutoDataSource = { Motor: MotorRoute, Truck: TruckRoute, Dropped: ListDroppedShipmentOrder };
           changeState = { ...changeState, ActiveTab: "9", ShipmentRouteAutoDataSource: objShipmentRouteAutoDataSource };
@@ -964,11 +911,9 @@ class SearchCom extends Component {
           let changeState = this.state;
           let objUIEffect = changeState.UIEffect;
           let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
-          let objTabShipmentRouteAuto = objUIEffect.TabShipmentRouteAuto;
 
-          objTabShipmentRouteAuto = { ...objTabShipmentRouteAuto, Content: "" };
           objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: false };
-          objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto, TabShipmentRouteAuto: objTabShipmentRouteAuto };
+          objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
           changeState = { ...changeState, UIEffect: objUIEffect };
 
           this.setState(changeState);
@@ -1031,24 +976,6 @@ class SearchCom extends Component {
 
     this.props.callFetchAPI("ERPAPI", "api/UserSearch/Search", listMLObject).then((apiResult) => {
       for (let i = 0; i < apiResult.ResultObject.length; i++) {
-        // if (this.props.isCheckPartner == undefined) {
-        //   if (apiResult.ResultObject[i].UserName.substr(0, 3) != "004") {
-        //     let isExist =
-        //       this.state.ObjectControlValue.NhanVienGiao.XeMay.Options &&
-        //       this.state.ObjectControlValue.NhanVienGiao.XeMay.Options[index] &&
-        //       this.state.ObjectControlValue.NhanVienGiao.XeMay.Options[index].some((item) => item.value == apiResult.ResultObject[i].UserName);
-        //     if (!isExist) {
-        //       listOptionNew1.push({
-        //         value: apiResult.ResultObject[i].UserName,
-        //         name: apiResult.ResultObject[i].UserName + "-" + apiResult.ResultObject[i].FullName,
-        //         FullName: apiResult.ResultObject[i].FullName,
-        //         DepartmentName: apiResult.ResultObject[i].DepartmentName,
-        //         PositionName: apiResult.ResultObject[i].PositionName,
-        //         Address: apiResult.ResultObject[i].Address,
-        //       });
-        //     }
-        //   }
-        // } else {
         if (vehicleType == 1) {
           let listOptionNew1 = [];
           let isExist =

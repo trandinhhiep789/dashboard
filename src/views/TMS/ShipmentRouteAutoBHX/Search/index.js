@@ -698,9 +698,9 @@ class SearchCom extends Component {
         // }
     }
 
-    showMessage(message, isConfirm = false, textOk = "", handleConfirm = undefined) {
+    showMessage(message, isConfirm = false, textOk = "", handleConfirm = undefined, handleClose = this.handleCloseMessage) {
         ModalManager.open(
-            <MessageModal title="Thông báo" message={message} onRequestClose={() => true} isConfirm={isConfirm} textOk={textOk} onOkModal={handleConfirm} onCloseModal={this.handleCloseMessage} />
+            <MessageModal title="Thông báo" message={message} onRequestClose={() => true} isConfirm={isConfirm} textOk={textOk} onOkModal={handleConfirm} onCloseModal={handleClose} />
         );
     }
 
@@ -733,7 +733,7 @@ class SearchCom extends Component {
                     </div>
                 </div>
             ),
-            dismiss: { duration: 3000 },
+            dismiss: { duration: 5000 },
             dismissable: { click: true },
         });
     }
@@ -1156,7 +1156,7 @@ class SearchCom extends Component {
                     objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto, TabShipmentRouteAuto: objTabShipmentRouteAuto };
                     changeState = { ...changeState, UIEffect: objUIEffect };
                     objShipmentRouteAutoDataSource = { Motor: MotorRoute, Truck: TruckRoute, Dropped: ListDroppedShipmentOrder };
-                    changeState = { ...changeState, ActiveTab: "9", ShipmentRouteAutoDataSource: objShipmentRouteAutoDataSource };
+                    changeState = { ...changeState, ActiveTab: "9", ShipmentRouteAutoDataSource: objShipmentRouteAutoDataSource, [this.state.ActiveTimeFrame.TimeFrame]: [] };
 
                     this.setState(changeState);
                 } else {
@@ -1518,52 +1518,57 @@ class SearchCom extends Component {
 
                     if (this.state.ShipmentRouteID != "") {
                         this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNewAuto", arrRequest).then((apiResult) => {
-                            this.addNotification(apiResult.Message, apiResult.IsError);
-                            let changeState = this.state;
-                            let objUIEffect = changeState.UIEffect;
-                            let objButtonMotorApply = objUIEffect.ButtonMotorApply;
-                            let objButtonTruckApply = objUIEffect.ButtonTruckApply;
+                            this.showMessage(apiResult.Message, false, null, null, () => {
+                                window.location.reload();
+                            });
 
-                            if (!apiResult.IsError) {
-                                objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: true };
-                                objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: true };
-                                objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
-                                changeState = { ...changeState, UIEffect: objUIEffect };
-                            } else {
-                                objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: false };
-                                objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: false };
-                                objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
-                                changeState = { ...changeState, UIEffect: objUIEffect };
-                            }
+                            // let changeState = this.state;
+                            // let objUIEffect = changeState.UIEffect;
+                            // let objButtonMotorApply = objUIEffect.ButtonMotorApply;
+                            // let objButtonTruckApply = objUIEffect.ButtonTruckApply;
 
-                            this.setState(changeState);
+                            // if (!apiResult.IsError) {
+                            //     objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: true };
+                            //     objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: true };
+                            //     objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
+                            //     changeState = { ...changeState, UIEffect: objUIEffect };
+                            // } else {
+                            //     objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: false };
+                            //     objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: false };
+                            //     objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
+                            //     changeState = { ...changeState, UIEffect: objUIEffect };
+                            // }
+
+                            // this.setState(changeState);
                         });
                     } else {
                         this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNewAuto", arrRequest).then((apiResult) => {
-                            this.addNotification(apiResult.Message, apiResult.IsError);
+                            this.showMessage(apiResult.Message, false, null, null, () => {
+                                window.location.reload();
+                            });
 
-                            let changeState = this.state;
-                            let objUIEffect = changeState.UIEffect;
-                            let objButtonMotorApply = objUIEffect.ButtonMotorApply;
-                            let objButtonTruckApply = objUIEffect.ButtonTruckApply;
+                            // let changeState = this.state;
+                            // let objUIEffect = changeState.UIEffect;
+                            // let objButtonMotorApply = objUIEffect.ButtonMotorApply;
+                            // let objButtonTruckApply = objUIEffect.ButtonTruckApply;
 
-                            if (!apiResult.IsError) {
-                                objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: true };
-                                objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: true };
-                                objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
-                                changeState = { ...changeState, UIEffect: objUIEffect };
-                            } else {
-                                objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: false };
-                                objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: false };
-                                objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
-                                changeState = { ...changeState, UIEffect: objUIEffect };
-                            }
+                            // if (!apiResult.IsError) {
+                            //     objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: true };
+                            //     objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: true };
+                            //     objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
+                            //     changeState = { ...changeState, UIEffect: objUIEffect };
+                            // } else {
+                            //     objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: false };
+                            //     objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: false };
+                            //     objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
+                            //     changeState = { ...changeState, UIEffect: objUIEffect };
+                            // }
 
-                            this.setState(changeState);
+                            // this.setState(changeState);
                         });
                     }
                 } else {
-                    showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
+                    this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
                 }
             });
         }
@@ -1739,6 +1744,44 @@ class SearchCom extends Component {
             this.state.ShipmentRouteAutoDataSource != null && (
                 <div style={{ width: "100%", border: "1px solid #8080804a" }}>
                     <Tabs defaultActiveKey="key_1" style={{ padding: "15px", backgroundColor: "white" }} className="ant-tabs">
+                        {
+                            this.state.ShipmentRouteAutoDataSource.Dropped.length > 0 && (<Tabs.TabPane tabKey="key_1_3" tab={reactNodeTab("Chưa phân tuyến", this.state.ShipmentRouteAutoDataSource.Dropped.length)} key="3" className="ant-tabs-child-3">
+                                <DataGridShipmentRouteAuto
+                                    key={1}
+                                    listColumn={DataGridColumnList}
+                                    dataSource={this.state.ShipmentRouteAutoDataSource.Dropped}
+                                    IsLoadData={this.state.IsLoadData}
+                                    TimeFrame="Dropped"
+                                    GridDataShip={this.state.GridDataShip.Dropped}
+                                    AddLink={AddLink}
+                                    IDSelectColumnName={IDSelectColumnName}
+                                    PKColumnName={PKColumnName}
+                                    onDeleteClick={this.handleDelete}
+                                    onChangePage={this.handleOnChangePage}
+                                    onChangeView={this.handleOnChangeView.bind(this)}
+                                    onSearchEvent={this.handleOnSearchEvent.bind(this)}
+                                    onChangePageLoad={this.onChangePageLoad.bind(this)}
+                                    onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
+                                    onCheckShip={this.handleCheckShip}
+                                    onClickShip={this.handleClickShip}
+                                    onShipmentRoute={this.handleClickShipmentRoute}
+                                    onShowModel={this.handleShowModel}
+                                    onPrint={this.handlePrint.bind(this)}
+                                    IsDelete={false}
+                                    ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
+                                    IsAdd={false}
+                                    IsDataGridSmallSize={this.state.IsDataGridSmallSize}
+                                    PageNumber={this.state.PageNumber}
+                                    DeletePermission={"SHIPMENTORDER_DELETE"}
+                                    EditPermission={"SHIPMENTORDER_UPDATE"}
+                                    IsAutoPaging={true}
+                                    RowsPerPage={10000}
+                                    IsColumnChecked={true}
+                                />
+                            </Tabs.TabPane>)
+                        }
+
+
                         {/* Tab xe máy */}
 
                         <Tabs.TabPane tabKey="key_1_1" tab={reactNodeTab("Xe máy", length_motor)} key="1" className="ant-tabs-child-1">
@@ -1853,10 +1896,6 @@ class SearchCom extends Component {
                                                             <Tooltip title="Xem bản đồ">
                                                                 <Button type="primary" shape="circle" icon={<EyeOutlined />} onClick={() => this.handleShowModalMapMotorRoute(index)} />
                                                             </Tooltip>
-                                                            &nbsp;
-                                                            {/* <Tooltip title="Phân tuyến">
-                                <Button type="primary" shape="circle" icon={<PartitionOutlined />} onClick={(_) => this.handleConfirm(index, 1)} />
-                              </Tooltip> */}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1992,40 +2031,7 @@ class SearchCom extends Component {
 
                         {/* Tab chưa điều phối */}
 
-                        <Tabs.TabPane tabKey="key_1_3" tab={reactNodeTab("Chưa phân tuyến", this.state.ShipmentRouteAutoDataSource.Dropped.length)} key="3" className="ant-tabs-child-3">
-                            <DataGridShipmentRouteAuto
-                                key={1}
-                                listColumn={DataGridColumnList}
-                                dataSource={this.state.ShipmentRouteAutoDataSource.Dropped}
-                                IsLoadData={this.state.IsLoadData}
-                                TimeFrame="Dropped"
-                                GridDataShip={this.state.GridDataShip.Dropped}
-                                AddLink={AddLink}
-                                IDSelectColumnName={IDSelectColumnName}
-                                PKColumnName={PKColumnName}
-                                onDeleteClick={this.handleDelete}
-                                onChangePage={this.handleOnChangePage}
-                                onChangeView={this.handleOnChangeView.bind(this)}
-                                onSearchEvent={this.handleOnSearchEvent.bind(this)}
-                                onChangePageLoad={this.onChangePageLoad.bind(this)}
-                                onDataGridSmallSize={this.handleDataGridSmallSize.bind(this)}
-                                onCheckShip={this.handleCheckShip}
-                                onClickShip={this.handleClickShip}
-                                onShipmentRoute={this.handleClickShipmentRoute}
-                                onShowModel={this.handleShowModel}
-                                onPrint={this.handlePrint.bind(this)}
-                                IsDelete={false}
-                                ShipmentOrderTypelst={this.state.SearchData[2].SearchValue}
-                                IsAdd={false}
-                                IsDataGridSmallSize={this.state.IsDataGridSmallSize}
-                                PageNumber={this.state.PageNumber}
-                                DeletePermission={"SHIPMENTORDER_DELETE"}
-                                EditPermission={"SHIPMENTORDER_UPDATE"}
-                                IsAutoPaging={true}
-                                RowsPerPage={10000}
-                                IsColumnChecked={true}
-                            />
-                        </Tabs.TabPane>
+
                     </Tabs>
                 </div>
             )
@@ -2141,7 +2147,7 @@ class SearchCom extends Component {
         let reactNodeTab = (title, length) => (
             <div style={{ position: "relative" }}>
                 <span style={{ marginRight: "16px", lineHeight: "30px" }}>{title}</span>
-                {(length > 0 || length.length > 0) && (
+                {!!length && (length > 0 || length.length > 0) && (
                     <span
                         style={{
                             height: "15px",
@@ -2868,12 +2874,11 @@ class SearchCom extends Component {
                             <Tabs.TabPane tab={reactNodeTab("Phân tuyến tự động", this.state.UIEffect.TabShipmentRouteAuto.Content)} key="9" tabKey="tabs_1_9">
                                 {renderShipmentRouteAuto}
                             </Tabs.TabPane>
+                            {/* <Tabs.TabPane tab={reactNodeTab("Đã phân tuyến tự động")} key="10" tabKey="tabs_1_10">
+                            </Tabs.TabPane> */}
                             <Tabs.TabPane
                                 tab={
                                     <Space>
-                                        {/* <Button type="primary" onClick={() => this.handleUserCoordinator()}>
-                      Phân tuyến
-                    </Button> */}
                                         <Button
                                             loading={this.state.UIEffect.ButtonShipmentRouteAuto.IsLoading}
                                             disabled={this.state.UIEffect.ButtonShipmentRouteAuto.IsDisabled}
