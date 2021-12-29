@@ -1527,57 +1527,57 @@ class SearchCom extends Component {
 
                     console.log("arrRequest", arrRequest);
 
-                    // if (this.state.ShipmentRouteID != "") {
-                    //     this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNewAuto", arrRequest).then((apiResult) => {
-                    //         this.showMessage(apiResult.Message, false, null, null, () => {
-                    //             window.location.reload();
-                    //         });
+                    if (this.state.ShipmentRouteID != "") {
+                        this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNewAuto", arrRequest).then((apiResult) => {
+                            this.showMessage(apiResult.Message, false, null, null, () => {
+                                window.location.reload();
+                            });
 
-                    //         // let changeState = this.state;
-                    //         // let objUIEffect = changeState.UIEffect;
-                    //         // let objButtonMotorApply = objUIEffect.ButtonMotorApply;
-                    //         // let objButtonTruckApply = objUIEffect.ButtonTruckApply;
+                            // let changeState = this.state;
+                            // let objUIEffect = changeState.UIEffect;
+                            // let objButtonMotorApply = objUIEffect.ButtonMotorApply;
+                            // let objButtonTruckApply = objUIEffect.ButtonTruckApply;
 
-                    //         // if (!apiResult.IsError) {
-                    //         //     objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: true };
-                    //         //     objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: true };
-                    //         //     objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
-                    //         //     changeState = { ...changeState, UIEffect: objUIEffect };
-                    //         // } else {
-                    //         //     objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: false };
-                    //         //     objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: false };
-                    //         //     objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
-                    //         //     changeState = { ...changeState, UIEffect: objUIEffect };
-                    //         // }
+                            // if (!apiResult.IsError) {
+                            //     objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: true };
+                            //     objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: true };
+                            //     objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
+                            //     changeState = { ...changeState, UIEffect: objUIEffect };
+                            // } else {
+                            //     objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: false };
+                            //     objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: false };
+                            //     objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
+                            //     changeState = { ...changeState, UIEffect: objUIEffect };
+                            // }
 
-                    //         // this.setState(changeState);
-                    //     });
-                    // } else {
-                    //     this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNewAuto", arrRequest).then((apiResult) => {
-                    //         this.showMessage(apiResult.Message, false, null, null, () => {
-                    //             window.location.reload();
-                    //         });
+                            // this.setState(changeState);
+                        });
+                    } else {
+                        this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNewAuto", arrRequest).then((apiResult) => {
+                            this.showMessage(apiResult.Message, false, null, null, () => {
+                                window.location.reload();
+                            });
 
-                    //         // let changeState = this.state;
-                    //         // let objUIEffect = changeState.UIEffect;
-                    //         // let objButtonMotorApply = objUIEffect.ButtonMotorApply;
-                    //         // let objButtonTruckApply = objUIEffect.ButtonTruckApply;
+                            // let changeState = this.state;
+                            // let objUIEffect = changeState.UIEffect;
+                            // let objButtonMotorApply = objUIEffect.ButtonMotorApply;
+                            // let objButtonTruckApply = objUIEffect.ButtonTruckApply;
 
-                    //         // if (!apiResult.IsError) {
-                    //         //     objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: true };
-                    //         //     objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: true };
-                    //         //     objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
-                    //         //     changeState = { ...changeState, UIEffect: objUIEffect };
-                    //         // } else {
-                    //         //     objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: false };
-                    //         //     objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: false };
-                    //         //     objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
-                    //         //     changeState = { ...changeState, UIEffect: objUIEffect };
-                    //         // }
+                            // if (!apiResult.IsError) {
+                            //     objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: true };
+                            //     objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: true };
+                            //     objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
+                            //     changeState = { ...changeState, UIEffect: objUIEffect };
+                            // } else {
+                            //     objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: false };
+                            //     objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: false };
+                            //     objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
+                            //     changeState = { ...changeState, UIEffect: objUIEffect };
+                            // }
 
-                    //         // this.setState(changeState);
-                    //     });
-                    // }
+                            // this.setState(changeState);
+                        });
+                    }
                 } else {
                     this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
                 }
