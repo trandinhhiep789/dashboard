@@ -119,7 +119,6 @@ class SearchCom extends Component {
 
     this.searchref = React.createRef();
     this.notificationDOMRef = React.createRef();
-
     this.handleCloseMessage = this.handleCloseMessage.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleOnChangePage = this.handleOnChangePage.bind(this);
