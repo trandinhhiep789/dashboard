@@ -1318,37 +1318,39 @@ class SearchCom extends Component {
 
     // Xử lý chọn nhân viên giao
     handleSelectNhanVienGiaoValueChange_1(value, options, index, vehicleType) {
+        let changeState = this.state;
+        let objControlValue = changeState.ObjectControlValue;
+        let objNhanVienGiao = objControlValue.NhanVienGiao;
         if (vehicleType == 1) {
-            let changeState = this.state;
-            let objControlValue = changeState.ObjectControlValue;
-            let objNhanVienGiao = objControlValue.NhanVienGiao;
             let objXeMay = objNhanVienGiao.XeMay;
             let objValues = objXeMay.Values;
 
-            objValues[index] = [...value];
+            // objValues[index] = [...value];
+            objValues[index] = value;
             objXeMay = { ...objXeMay, Values: objValues };
             objNhanVienGiao = { ...objNhanVienGiao, XeMay: objXeMay };
-            objControlValue = { ...objControlValue, NhanVienGiao: objNhanVienGiao };
-            changeState = { ...changeState, ObjectControlValue: objControlValue };
-
-            this.setState(changeState);
         }
 
         if (vehicleType == 2) {
-            let changeState = this.state;
-            let objControlValue = changeState.ObjectControlValue;
-            let objNhanVienGiao = objControlValue.NhanVienGiao;
+            // let changeState = this.state;
+            // let objControlValue = changeState.ObjectControlValue;
+            // let objNhanVienGiao = objControlValue.NhanVienGiao;
             let objXeTai = objNhanVienGiao.XeTai;
             let objValues = objXeTai.Values;
 
             objValues[index] = [...value];
             objXeTai = { ...objXeTai, Values: objValues };
             objNhanVienGiao = { ...objNhanVienGiao, XeTai: objXeTai };
-            objControlValue = { ...objControlValue, NhanVienGiao: objNhanVienGiao };
-            changeState = { ...changeState, ObjectControlValue: objControlValue };
+            // objControlValue = { ...objControlValue, NhanVienGiao: objNhanVienGiao };
+            // changeState = { ...changeState, ObjectControlValue: objControlValue };
 
-            this.setState(changeState);
+            // this.setState(changeState);
         }
+
+        objControlValue = { ...objControlValue, NhanVienGiao: objNhanVienGiao };
+        changeState = { ...changeState, ObjectControlValue: objControlValue };
+
+        this.setState(changeState);
     }
 
     // Xử lý phân tuyến
@@ -1702,11 +1704,12 @@ class SearchCom extends Component {
                         (vehicleType == 2 && this.state.ObjectControlValue.NhanVienGiao.XeTai.Values && this.state.ObjectControlValue.NhanVienGiao.XeTai.Values[index]) ||
                         []
                     }
-                    mode="multiple"
+                    // mode="multiple"
                     disabled={(vehicleType == 1 ? this.state.UIEffect.ButtonMotorApply.IsDisabled : false) || (vehicleType == 2 ? this.state.UIEffect.ButtonTruckApply.IsDisabled : false)}
                     optionLabelProp="label"
                     dropdownAlign="center"
                     maxTagCount={3}
+                    showSearch
                     placeholder="Nhân viên giao"
                     onInputKeyDown={(event) => this.handleSelectNhanVienGiaoInputValueChange(event, index, vehicleType)}
                     onChange={(value, options) => this.handleSelectNhanVienGiaoValueChange_1(value, options, index, vehicleType)}
