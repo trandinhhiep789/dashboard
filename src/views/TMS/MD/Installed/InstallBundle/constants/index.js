@@ -9,7 +9,9 @@ export const BackLink = "/InstallBundle";
 export const AddLink = "/InstallBundle/add";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "InstallBundleID";
-export const SearchMcRoleAPIPath = "api/McRole/Search";
+export const SearchMcRoleAPIPath = "api/McRole/Search"; 
+export const ImportMaterialAPIPath = "api/InstallBundle/ImportInstallBundleMaterial";
+export const ExportMaterialAPIPath = "api/InstallBundle/ExportInstallBundleMaterial";
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
@@ -1602,40 +1604,40 @@ export const schema = {
 
 export const DataTemplateExport = [
     {
-        "Mã gói lắp đặt": 1253,
-        "Mã nhóm vật tư": 1253,
-        "Số lượng sử dụng chuẩn": 1253,
-        "Số lượng sử dụng tối đa": 1253,
-        "Hình thức ghi nhận sử dụng(1: Nhập tay, 2: Quy đổi)": 1253,
-        "Mã nhóm vật tư muốn quy đổi": 1253,
-        "Tỷ lệ quy đổi": 1253,
-        "Hình thức xuất sử dụng": 1253,
-        "Có khuyến mãi hay không?": 1253,
-        "Số lượng khuyến mãi": 1253,
-        "Loại giới hạn tạm ứng; 1: Giới hạn theo số lượng, 2: Giới hạn theo tổng tiền, 3: Không giới hạn": 1253,
-        "Số lượng giới hạn tạm ứng": 1253,
-        "Số lượng tồn được phép tạm ứng": 1253,
-        "Có làm tròn số lượng hay không?": 1253,
-        "Ghi chú": 1253,
-        "Bội số làm tròn": 1253,
-        "Là vật tư dịch vụ": 1253,
-        "Là vật tư sử dụng cho từng sản phẩm lắp đặt(không nhóm theo mã sản phẩm)": 1253,
-        "Kiểm tra tồn kho tại nhóm vật tư khác": 1253,
-        "Nhóm vật tư kiểm tra tồn kho": 1253,
-        "Là nhóm vật tư không xuất kho": 1253,
-        "Cho phép tạm ứng": 1253,
-        "Cho phép tạm ứng nhiều sản phẩm trong một nhóm": 1253,
-        "Cho phép sử dụng nhiều sản phẩm trong một nhóm": 1253,
-        "Hiển thị đầu tiên khi tạm ứng": 1253,
-        "Thứ tự hiển thị khi tạm ứng": 1253,
-        "Hiển thị đầu tiên khi sử dụng": 1253,
-        "Thứ tự hiển thị khi sử dụng": 1253,
-        "Có kiểm tra số lượng tồn tối thiểu không": 1253,
-        "Số lượng tồn tối thiểu cần kiểm tra": 1253,
-        "Có kiểm tra số lượng sử dụng tối thiểu không": 1253,
-        "Số lượng sử dụng tối thiểu cần kiểm tra": 1253,
-        "Kích hoạt": 1253,
-        "Hệ thống": 1253,
+        "Mã gói lắp đặt": 0,
+        "Mã nhóm vật tư": 0,
+        "Số lượng sử dụng chuẩn": 0,
+        "Số lượng sử dụng tối đa": 0,
+        "Hình thức ghi nhận sử dụng(1: Nhập tay, 2: Quy đổi)": 0,
+        "Mã nhóm vật tư muốn quy đổi": 0,
+        "Tỷ lệ quy đổi": 0,
+        "Hình thức xuất sử dụng": 0,
+        "Có khuyến mãi hay không?": 0,
+        "Số lượng khuyến mãi": 0,
+        "Loại giới hạn tạm ứng; 1: Giới hạn theo số lượng, 2: Giới hạn theo tổng tiền, 3: Không giới hạn": 0,
+        "Số lượng giới hạn tạm ứng": 0,
+        "Số lượng tồn được phép tạm ứng": 0,
+        "Có làm tròn số lượng hay không?": 0,
+        "Ghi chú": 0,
+        "Bội số làm tròn": 0,
+        "Là vật tư dịch vụ": 0,
+        "Là vật tư sử dụng cho từng sản phẩm lắp đặt": 0,
+        "Kiểm tra tồn kho tại nhóm vật tư khác": 0,
+        "Nhóm vật tư kiểm tra tồn kho": 0,
+        "Là nhóm vật tư không xuất kho": 0,
+        "Cho phép tạm ứng": 0,
+        "Cho phép tạm ứng nhiều sản phẩm trong một nhóm": 0,
+        "Cho phép sử dụng nhiều sản phẩm trong một nhóm": 0,
+        "Hiển thị đầu tiên khi tạm ứng": 0,
+        "Thứ tự hiển thị khi tạm ứng": 0,
+        "Hiển thị đầu tiên khi sử dụng": 0,
+        "Thứ tự hiển thị khi sử dụng": 0,
+        "Có kiểm tra số lượng tồn tối thiểu không": 0,
+        "Số lượng tồn tối thiểu cần kiểm tra": 0,
+        "Có kiểm tra số lượng sử dụng tối thiểu không": 0,
+        "Số lượng sử dụng tối thiểu cần kiểm tra": 0,
+        "Kích hoạt": 0,
+        "Hệ thống": 0,
         
     }
 ];
