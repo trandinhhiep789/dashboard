@@ -112,6 +112,7 @@ class DataGridShipmentRouteAutoCom extends Component {
     this.recursiveDataSource();
     this.updateWindowDimensions();
     this.handleGetDataCacheProvince();
+
     window.addEventListener("resize", this.updateWindowDimensions);
     if (this.props.dataSource) {
       const gridData = this.getCheckList(this.props.dataSource);
@@ -724,13 +725,15 @@ class DataGridShipmentRouteAutoCom extends Component {
 
     if (checked) {
       gridDataShip.push(objShip);
-      this.props.onCheckShip({ TimeFrame: this.props.TimeFrame, GridDataShip: gridDataShip, ShipmentOrderID: strShipmentOrderValue, IsSinger: isSinger });
+
+      this.props.onCheckShip({ GridDataShip: gridDataShip, ShipmentOrderID: strShipmentOrderValue, IsSinger: isSinger });
     } else {
       gridDataShip.splice(
         gridDataShip.findIndex((n) => n[name] == strShipmentOrderValue),
         1
       );
-      this.props.onCheckShip({ TimeFrame: this.props.TimeFrame, GridDataShip: gridDataShip, ShipmentOrderID: strShipmentOrderValue, IsSinger: isSinger });
+      
+      this.props.onCheckShip({ GridDataShip: gridDataShip, ShipmentOrderID: strShipmentOrderValue, IsSinger: isSinger });
     }
 
     changeState = { ...changeState, GridDataShip: gridDataShip };
@@ -1769,7 +1772,7 @@ class DataGridShipmentRouteAutoCom extends Component {
   }
 
   render() {
-    const dataGrid = this.renderDataGrid();
+    const renderDataGrid = this.renderDataGrid();
 
     return (
       <React.Fragment>
@@ -1801,7 +1804,7 @@ class DataGridShipmentRouteAutoCom extends Component {
                       />
                     </div> */}
                     <div className="card-body card-body-custom">
-                      {dataGrid}
+                      {renderDataGrid}
                       {/* {this.props.IsAutoPaging && <GridPageShipmentRouteAuto numPage={pageCount} currentPage={this.state.PageNumber} onChangePage={this.onChangePageHandle} />} */}
                     </div>
                   </div>
