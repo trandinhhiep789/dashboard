@@ -1358,13 +1358,13 @@ const AppMenu = [
                 MenuIcon: "",
                 SubMenu: [],
             },
-            {
-                MenuName: "ShipmentRouteAutoGHLD",
-                MenuTitle: "Phân tuyến tự động GHLĐ",
-                LinkTo: "/ShipmentRouteAutoGHLD",
-                MenuIcon: "",
-                SubMenu: [],
-            },
+            // {
+            //     MenuName: "ShipmentRouteAutoGHLD",
+            //     MenuTitle: "Phân tuyến tự động GHLĐ",
+            //     LinkTo: "/ShipmentRouteAutoGHLD",
+            //     MenuIcon: "",
+            //     SubMenu: [],
+            // },
         ],
     },
     {

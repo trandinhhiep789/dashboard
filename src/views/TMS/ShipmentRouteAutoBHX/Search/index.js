@@ -15,12 +15,13 @@ import {
     DeleteAPIPath,
     IDSelectColumnName,
     InitSearchParams,
-    PagePath,
     PKColumnName,
     SearchAPIPath,
     SearchElementList,
     SearchMLObjectDefinition,
 } from "../../ShipmentRoute/constants";
+
+import { PagePath } from '../constants';
 
 import "../../../../css/DataGridShipmentRouteAuto.scss";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
@@ -1717,7 +1718,7 @@ class SearchCom extends Component {
 
             return (
                 <Select
-                    style={{ width: "30%" }}
+                    style={{ width: "20%" }}
                     value={
                         (vehicleType == 1 && this.state.ObjectControlValue.NhanVienGiao.XeMay.Values && this.state.ObjectControlValue.NhanVienGiao.XeMay.Values[index]) ||
                         [] ||
