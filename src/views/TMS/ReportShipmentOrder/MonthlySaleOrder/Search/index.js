@@ -375,16 +375,25 @@ class SearchCom extends React.Component {
     // }
 
     handleExportSubmit(formData, MLObject) {
+        let newDate = new Date();
 
-        var curDate = new Date();
-        var curMonth = curDate.getMonth();
-        var mldate = new Date(MLObject.SaleMonth);
-        var mlMonth = mldate.getMonth() + 1;
-        if (mlMonth > curMonth) {
-            this.addNotification("Vui lòng chọn tháng < " + (curMonth + 1), true);
+        let curDate = new Date(newDate.getFullYear(), newDate.getMonth(), 1);
+        let curMonth = curDate.getMonth() + 1;
+        let curTime = curDate.getTime();
+
+        let mlDate = new Date(MLObject.SaleMonth);
+        // let mlMonth = mlDate.getMonth() + 1;
+        let mlTime = mlDate.getTime();
+
+        // if (mlMonth >= curMonth) {
+        //     this.addNotification("Vui lòng chọn tháng < " + curMonth, true);
+        //     return;
+        // }
+
+        if (mlTime >= curTime) {
+            this.addNotification("Vui lòng chọn tháng < " + curMonth, true);
             return;
         }
-
 
         const searchData = [
             {

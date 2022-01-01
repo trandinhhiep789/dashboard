@@ -432,7 +432,7 @@ class DataGridCom extends Component {
         const fileExtension = '.xlsx';
         let result;
 
-        if (this.props.isPaginationServer || this.props.isCustomExportFile) {
+        if (this.props.isCustomExportFile) {
             this.props.onExportFile()
         } else {
             if (this.props.DataExport.length == 0) {
