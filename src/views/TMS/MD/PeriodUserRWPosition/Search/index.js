@@ -1,35 +1,37 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
-import SearchForm from "../../../../../common/components/Form/SearchForm";
-import DataGrid from "../../../../../common/components/DataGrid";
-import { MessageModal } from "../../../../../common/components/Modal";
+import "react-notifications-component/dist/theme.css";
+
 import {
-    SearchElementList,
-    SearchMLObjectDefinition,
-    DataGridColumnList,
+    AddByFileAPIPath,
     AddLink,
     APIHostName,
-    SearchAPIPath,
+    AutoAddAPIPath,
+    DataGridColumnList,
+    DataTemplateExport,
     DeleteAPIPath,
     IDSelectColumnName,
-    PKColumnName,
     InitSearchParams,
     PagePath,
-    DataTemplateExport,
+    PKColumnName,
     schema,
-    AddByFileAPIPath,
-    AutoAddAPIPath
+    SearchAPIPath,
+    SearchElementList,
+    SearchMLObjectDefinition,
 } from "../constants";
+
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
-import { updatePagePath } from "../../../../../actions/pageAction";
-import { PERIODUSERRWPOSITION_VIEW, PERIODUSERRWPOSITION_DELETE, PERIODUSERRWPOSITION_EXPORT } from "../../../../../constants/functionLists";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
 import { callGetCache, callClearLocalCache } from "../../../../../actions/cacheAction";
-import { ERPCOMMONCACHE_AREATYPE, ERPCOMMONCACHE_MATERIALGROUP } from "../../../../../constants/keyCache";
-import { formatDate } from "../../../../../common/library/CommonLib";
+import { MessageModal } from "../../../../../common/components/Modal";
+import { MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
+import { PERIODUSERRWPOSITION_VIEW, PERIODUSERRWPOSITION_DELETE, PERIODUSERRWPOSITION_EXPORT } from "../../../../../constants/functionLists";
+import { showModal } from '../../../../../actions/modal';
 import { toIsoStringCus } from "../../../../../utils/function";
+import { updatePagePath } from "../../../../../actions/pageAction";
+import DataGrid from "../../../../../common/components/DataGrid";
+import ReactNotification from "react-notifications-component";
+import SearchForm from "../../../../../common/components/Form/SearchForm";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -43,7 +45,6 @@ class SearchCom extends React.Component {
             gridDataSource: [],
             IsCallAPIError: false,
             SearchData: InitSearchParams,
-            dataExport: [],
             DataTemplateExport,
             PageNumber: 1
         };
@@ -57,7 +58,7 @@ class SearchCom extends React.Component {
         this.props.updatePagePath(PagePath);
     }
 
-    handleAutoAdd(){
+    handleAutoAdd() {
         this.props.callFetchAPI(APIHostName, AutoAddAPIPath, {}).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
@@ -67,8 +68,29 @@ class SearchCom extends React.Component {
         });
     }
 
-    handleExportFile(result) {
-        this.addNotification(result.Message, result.IsError);
+    handleExportFile() {
+        const SearchParamList = [this.state.SearchData[0]];
+
+        const postData = {
+            DataExportTemplateID: 29,
+            LoadDataStoreName: 'TMS.TMS_PERIODUSERRWPOSITIONEXPORT',
+            KeyCached: "PERIODUSERRWPOSITION_VIEW",
+            SearchParamList,
+            ExportDataParamsDescription: ""
+        }
+
+        this.props.callFetchAPI(APIHostName, "api/DataExportQueue/AddQueueExport", postData).then(apiResult => {
+            if (apiResult.IsError) {
+                this.addNotification(apiResult.Message, apiResult.IsError);
+            }
+            else {
+                this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
+                    title: "Tải file",
+                    maxWidth: '1200px',
+                    ParamRequest: { DataExportTemplateID: 29 }
+                });
+            }
+        });
     }
 
 
@@ -225,30 +247,13 @@ class SearchCom extends React.Component {
             //this.searchref.current.changeLoadComplete();
             this.setState({ IsCallAPIError: apiResult.IsError });
             if (!apiResult.IsError) {
-                // xuất exel
-                const exelData = apiResult.ResultObject.map((item, index) => {
-                    let element = {
-                        "Người dùng": item.UserName,
-                        "Vị trí thưởng": item.RewardPositionName,
-                        "Áp dụng từ ngày": formatDate(item.ApplyFromDate),
-                        "Áp dụng đến ngày": formatDate(item.ApplyToDate),
-                        "Kích hoạt": item.IsActived ? "Có" : "Không",
-                        "Ngày cập nhật": formatDate(item.UpdatedDate),
-                        "Người cập nhật": item.UpdatedUserFullName
-                    };
-                    return element;
-
-                })
-
                 this.setState({
-                    dataExport: exelData,
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
                     IsShowForm: true
                 });
             } else {
                 this.setState({
-                    dataExport: [],
                     gridDataSource: [],
                     IsShowForm: false,
                     IsCallAPIError: !apiResult.IsError,
@@ -262,7 +267,6 @@ class SearchCom extends React.Component {
         let listMLObject = [];
         const aa = { SearchKey: "@PAGEINDEX", SearchValue: pageNum - 1 };
         listMLObject = Object.assign([], this.state.SearchData, { [2]: aa });
-        // console.log(this.state.SearchData,listMLObject)
         this.callSearchData(listMLObject)
         this.setState({
             PageNumber: pageNum
@@ -330,7 +334,7 @@ class SearchCom extends React.Component {
                         ref={this.searchref}
                     />
                     <div className="rwComputeManual">
-                        <button type="button" className="btn btn-success rwbtComputeManual" onClick={()=>{this.handleAutoAdd()}}>Chốt thưởng</button>
+                        <button type="button" className="btn btn-success rwbtComputeManual" onClick={() => { this.handleAutoAdd() }}>Chốt thưởng</button>
                     </div>
                     <DataGrid
                         listColumn={DataGridColumnList}
@@ -351,8 +355,7 @@ class SearchCom extends React.Component {
 
 
                         IsExportFile={true}
-                        DataExport={this.state.dataExport}
-                        fileName="Danh sách vị trí thưởng theo khoảng thời gian"
+                        isCustomExportFile={true}
                         onExportFile={this.handleExportFile.bind(this)}
 
                         IsImportFile={true}
@@ -397,7 +400,10 @@ const mapDispatchToProps = dispatch => {
         },
         callClearLocalCache: (cacheKeyID) => {
             return dispatch(callClearLocalCache(cacheKeyID));
-        }
+        },
+        showModal: (type, props) => {
+            dispatch(showModal(type, props));
+        },
     };
 };
 
