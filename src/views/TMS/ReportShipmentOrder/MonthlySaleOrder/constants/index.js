@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { toIsoStringCus } from '../../../../../utils/function';
 
 export const APIHostName = "TMSAPI";
@@ -11,6 +12,8 @@ export const SearchAPIPath = "api/MonthlySaleOrder/SearchReport";
 // export const UpdateUnlockDetailAPIPath = "api/MonthlySaleOrderDetail/UpdateUnlock";
 
 
+const newDate = new Date();
+
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "", Title: "Bảng kê chi tiết dịch vụ lắp đặt" }
@@ -20,7 +23,7 @@ export const PagePath = [
 export const InitSearchParams = [
     {
         SearchKey: "@SALEMONTH",
-        SearchValue: new Date((new Date().getMonth()) + "/" + '01' + "/" + new Date().getFullYear()),
+        SearchValue: new Date(newDate.getFullYear(), newDate.getMonth(), 0),
     },
     // {
     //     SearchKey: "@FROMDATE",
@@ -59,7 +62,9 @@ export const SearchElementList = [
         name: "dtSaleMonth",
         DataSourceMember: "SaleMonth",
         label: "Tháng tạo đơn hàng",
-        value: new Date((new Date().getMonth()) + "/" + '01' + "/" + new Date().getFullYear()),
+        value: new Date(newDate.getFullYear(), newDate.getMonth(), 0),
+        // value: new Date((new Date().getMonth()) + "/" + '01' + "/" + new Date().getFullYear()),
+        //value: moment().set({ 'year': new Date().getFullYear(), 'month': new Date().getMonth(), 'date': 1, 'hour': 0, 'minute': 0, 'second': 0, 'millisecond': 0 }),
         format: "MM-YYYY",
         colspan: 2,
         placeholder: "MM-YYYY",

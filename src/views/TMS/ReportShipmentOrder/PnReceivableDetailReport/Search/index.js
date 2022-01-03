@@ -403,13 +403,24 @@ class SearchCom extends React.Component {
             this.addNotification("Vui lòng chọn nhóm dịch vụ", true);
             return;
         }
-
         var curDate = new Date();
         var curMonth = curDate.getMonth();
+        var curYear = curDate.getFullYear();
         var fromdate = new Date(MLObject.FromDate).getMonth() + 1;
         var todate = new Date(MLObject.ToDate).getMonth() + 1;
+        var fromyear = new Date(MLObject.FromDate).getFullYear();
+        var toyear = new Date(MLObject.ToDate).getFullYear();
         var diffDays = parseInt((new Date(MLObject.ToDate) - new Date(MLObject.FromDate)) / (1000 * 60 * 60 * 24), 10);
-        if (fromdate > curMonth || todate > curMonth) {
+
+        if (fromyear != toyear) {
+            this.addNotification("Vui lòng chọn cùng năm", true);
+            return;
+        }
+        else if (toyear > curYear) {
+            this.addNotification("Vui lòng chọn năm <= " + curYear, true);
+            return;
+        }
+        else if ((fromdate > curMonth || todate > curMonth) && curYear == fromyear) {
             this.addNotification("Vui lòng chọn tháng < " + (curMonth + 1), true);
             return;
         } else if (MLObject.FromDate > MLObject.ToDate) {
@@ -461,7 +472,7 @@ class SearchCom extends React.Component {
             LoadDataStoreName: 'TMS.TMS_PNRECEIVABLEDETAIL_REPORT',
             KeyCached: "SHIPMENTORDER_REPORT_EXPORT",
             SearchParamList: searchData,
-            ExportDataParamsDescription: "Từ ngày: " + toIsoStringCus(new Date(MLObject.FromDate).toISOString()) + " - Đến ngày: " +toIsoStringCus(new Date(MLObject.ToDate).toISOString()) 
+            ExportDataParamsDescription: "Từ ngày: " + toIsoStringCus(new Date(MLObject.FromDate).toISOString()) + " - Đến ngày: " + toIsoStringCus(new Date(MLObject.ToDate).toISOString())
         }
         this.props.callFetchAPI(APIHostName, "api/DataExportQueue/AddQueueExport", postData).then(apiResult => {
             if (!apiResult.IsError) {

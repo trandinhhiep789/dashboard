@@ -37,7 +37,7 @@ export const InitSearchParams = [
     },
     {
         SearchKey: "@FROMDATE",
-        SearchValue: new Date((dateNow.getMonth()) + "/" + '01' + "/" + dateNow.getFullYear()),
+        SearchValue: new Date(dateNow.getFullYear(), dateNow.getMonth() - 1, 1),
     },
     {
         SearchKey: "@TODATE",
@@ -67,7 +67,7 @@ export const SearchElementList = [
         name: "dtFromDate",
         DataSourceMember: "FromDate",
         label: "Từ Ngày",
-        value: new Date((dateNow.getMonth()) + "/" + '01' + "/" + dateNow.getFullYear()),
+        value: new Date(dateNow.getFullYear(), dateNow.getMonth() - 1, 1),
         timeFormat: false,
         dateFormat: "DD/MM/YYYY",
         colspan: 2,
