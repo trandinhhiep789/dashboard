@@ -1902,53 +1902,53 @@ class SearchCom extends Component {
                                 <Collapsible
                                     className="CollapsibleCustom"
                                     triggerDisabled={this.state.UIEffect.Collapse.IsDisabled}
-                                    trigger={
-                                        <Fragment>
-                                            <Row gutter={24}>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic title="Tổng số đơn" value={this.state.GridDataSource.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic
-                                                            title="Khởi tạo và chờ phân bổ"
-                                                            value={this.state.GridDataSource.filter((item) => item.ShipmentOrderStatusID === 20).length}
-                                                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                                                        />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic
-                                                            title="Giao hàng thành công"
-                                                            value={this.state.GridDataSource.filter((item) => item.ShipmentOrderStatusID === 28).length}
-                                                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                                                        />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={8}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic
-                                                            title="Tìm kiếm"
-                                                            valueRender={(node) => {
-                                                                return (
-                                                                    <Input
-                                                                        placeholder="Tìm kiếm"
-                                                                        onMouseEnter={(_) => this.handleDisabled(true)}
-                                                                        onMouseLeave={(_) => this.handleDisabled(false)}
-                                                                        onChange={(event) => this.handleInputChange(event.target.value)}
-                                                                        style={{ width: "100%" }}
-                                                                    />
-                                                                );
-                                                            }}
-                                                        />
-                                                    </Card>
-                                                </Col>
-                                            </Row>
-                                        </Fragment>
-                                    }
+                                    // trigger={
+                                    //     <Fragment>
+                                    //         <Row gutter={24}>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic title="Tổng số đơn" value={this.state.GridDataSource.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic
+                                    //                         title="Khởi tạo và chờ phân bổ"
+                                    //                         value={this.state.GridDataSource.filter((item) => item.ShipmentOrderStatusID === 20).length}
+                                    //                         valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                    //                     />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic
+                                    //                         title="Giao hàng thành công"
+                                    //                         value={this.state.GridDataSource.filter((item) => item.ShipmentOrderStatusID === 28).length}
+                                    //                         valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                    //                     />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={8}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic
+                                    //                         title="Tìm kiếm"
+                                    //                         valueRender={(node) => {
+                                    //                             return (
+                                    //                                 <Input
+                                    //                                     placeholder="Tìm kiếm"
+                                    //                                     onMouseEnter={(_) => this.handleDisabled(true)}
+                                    //                                     onMouseLeave={(_) => this.handleDisabled(false)}
+                                    //                                     onChange={(event) => this.handleInputChange(event.target.value)}
+                                    //                                     style={{ width: "100%" }}
+                                    //                                 />
+                                    //                             );
+                                    //                         }}
+                                    //                     />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //         </Row>
+                                    //     </Fragment>
+                                    // }
                                     triggerStyle={{ backgroundColor: "white" }}
                                     triggerOpenedClassName="collapsible-open-custom"
                                     easing="ease-in"

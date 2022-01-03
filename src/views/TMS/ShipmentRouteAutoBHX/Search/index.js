@@ -2225,58 +2225,58 @@ class SearchCom extends Component {
                                 <Collapsible
                                     className="CollapsibleCustom"
                                     triggerDisabled={this.state.ObjectIsDisabled.TimeFrame8to10}
-                                    trigger={
-                                        <Fragment>
-                                            <Row gutter={24}>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic title="Thời gian" value="08h - 10h" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame8to10.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic
-                                                            title="Khởi tạo và chờ phân bổ"
-                                                            value={this.state.TimeFrame8to10.filter((item) => item.ShipmentOrderStatusID === 20).length}
-                                                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                                                        />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic
-                                                            title="Giao hàng thành công"
-                                                            value={this.state.TimeFrame8to10.filter((item) => item.ShipmentOrderStatusID === 28).length}
-                                                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                                                        />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={8}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic
-                                                            title="Tìm kiếm"
-                                                            valueRender={(node) => {
-                                                                return (
-                                                                    <Input
-                                                                        placeholder="Tìm kiếm"
-                                                                        onMouseEnter={(_) => this.handleDisabled("TimeFrame8to10", true)}
-                                                                        onMouseLeave={(_) => this.handleDisabled("TimeFrame8to10", false)}
-                                                                        onChange={(event) => this.handleInputChange(event.target.value, "TimeFrame8to10")}
-                                                                        style={{ width: "100%" }}
-                                                                    />
-                                                                );
-                                                            }}
-                                                        />
-                                                    </Card>
-                                                </Col>
-                                            </Row>
-                                        </Fragment>
-                                    }
+                                    // trigger={
+                                    //     <Fragment>
+                                    //         <Row gutter={24}>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic title="Thời gian" value="08h - 10h" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic title="Tổng số đơn" value={this.state.TimeFrame8to10.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic
+                                    //                         title="Khởi tạo và chờ phân bổ"
+                                    //                         value={this.state.TimeFrame8to10.filter((item) => item.ShipmentOrderStatusID === 20).length}
+                                    //                         valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                    //                     />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic
+                                    //                         title="Giao hàng thành công"
+                                    //                         value={this.state.TimeFrame8to10.filter((item) => item.ShipmentOrderStatusID === 28).length}
+                                    //                         valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                    //                     />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={8}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic
+                                    //                         title="Tìm kiếm"
+                                    //                         valueRender={(node) => {
+                                    //                             return (
+                                    //                                 <Input
+                                    //                                     placeholder="Tìm kiếm"
+                                    //                                     onMouseEnter={(_) => this.handleDisabled("TimeFrame8to10", true)}
+                                    //                                     onMouseLeave={(_) => this.handleDisabled("TimeFrame8to10", false)}
+                                    //                                     onChange={(event) => this.handleInputChange(event.target.value, "TimeFrame8to10")}
+                                    //                                     style={{ width: "100%" }}
+                                    //                                 />
+                                    //                             );
+                                    //                         }}
+                                    //                     />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //         </Row>
+                                    //     </Fragment>
+                                    // }
                                     triggerStyle={{ backgroundColor: "white" }}
                                     triggerOpenedClassName="collapsible-open-custom"
                                     easing="ease-in"
@@ -2323,58 +2323,58 @@ class SearchCom extends Component {
                                 <Collapsible
                                     className="CollapsibleCustom"
                                     triggerDisabled={this.state.ObjectIsDisabled.TimeFrame10to12}
-                                    trigger={
-                                        <React.Fragment>
-                                            <Row gutter={24}>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic title="Thời gian" value="10h - 12h" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame10to12.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic
-                                                            title="Khởi tạo và chờ phân bổ"
-                                                            value={this.state.TimeFrame10to12.filter((item) => item.ShipmentOrderStatusID === 20).length}
-                                                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                                                        />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic
-                                                            title="Giao hàng thành công"
-                                                            value={this.state.TimeFrame10to12.filter((item) => item.ShipmentOrderStatusID === 28).length}
-                                                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                                                        />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={8}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic
-                                                            title="Tìm kiếm"
-                                                            valueRender={(node) => {
-                                                                return (
-                                                                    <Input
-                                                                        placeholder="Tìm kiếm"
-                                                                        onMouseEnter={(_) => this.handleDisabled("TimeFrame10to12", true)}
-                                                                        onMouseLeave={(_) => this.handleDisabled("TimeFrame10to12", false)}
-                                                                        onChange={(event) => this.handleInputChange(event.target.value, "TimeFrame10to12")}
-                                                                        style={{ width: "100%" }}
-                                                                    />
-                                                                );
-                                                            }}
-                                                        />
-                                                    </Card>
-                                                </Col>
-                                            </Row>
-                                        </React.Fragment>
-                                    }
+                                    // trigger={
+                                    //     <React.Fragment>
+                                    //         <Row gutter={24}>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic title="Thời gian" value="10h - 12h" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic title="Tổng số đơn" value={this.state.TimeFrame10to12.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic
+                                    //                         title="Khởi tạo và chờ phân bổ"
+                                    //                         value={this.state.TimeFrame10to12.filter((item) => item.ShipmentOrderStatusID === 20).length}
+                                    //                         valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                    //                     />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic
+                                    //                         title="Giao hàng thành công"
+                                    //                         value={this.state.TimeFrame10to12.filter((item) => item.ShipmentOrderStatusID === 28).length}
+                                    //                         valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                    //                     />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={8}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic
+                                    //                         title="Tìm kiếm"
+                                    //                         valueRender={(node) => {
+                                    //                             return (
+                                    //                                 <Input
+                                    //                                     placeholder="Tìm kiếm"
+                                    //                                     onMouseEnter={(_) => this.handleDisabled("TimeFrame10to12", true)}
+                                    //                                     onMouseLeave={(_) => this.handleDisabled("TimeFrame10to12", false)}
+                                    //                                     onChange={(event) => this.handleInputChange(event.target.value, "TimeFrame10to12")}
+                                    //                                     style={{ width: "100%" }}
+                                    //                                 />
+                                    //                             );
+                                    //                         }}
+                                    //                     />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //         </Row>
+                                    //     </React.Fragment>
+                                    // }
                                     triggerOpenedClassName="collapsible-open-custom"
                                     triggerStyle={{ backgroundColor: "white" }}
                                     easing="ease-in"
@@ -2418,58 +2418,58 @@ class SearchCom extends Component {
                                 <Collapsible
                                     className="CollapsibleCustom"
                                     triggerDisabled={this.state.ObjectIsDisabled.TimeFrame12to14}
-                                    trigger={
-                                        <React.Fragment>
-                                            <Row gutter={24}>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic title="Thời gian" value="12h - 14h" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame12to14.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic
-                                                            title="Khởi tạo và chờ phân bổ"
-                                                            value={this.state.TimeFrame12to14.filter((item) => item.ShipmentOrderStatusID === 20).length}
-                                                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                                                        />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic
-                                                            title="Giao hàng thành công"
-                                                            value={this.state.TimeFrame12to14.filter((item) => item.ShipmentOrderStatusID === 28).length}
-                                                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                                                        />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={8}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic
-                                                            title="Tìm kiếm"
-                                                            valueRender={(node) => {
-                                                                return (
-                                                                    <Input
-                                                                        placeholder="Tìm kiếm"
-                                                                        onMouseEnter={(_) => this.handleDisabled("TimeFrame12to14", true)}
-                                                                        onMouseLeave={(_) => this.handleDisabled("TimeFrame12to14", false)}
-                                                                        onChange={(event) => this.handleInputChange(event.target.value, "TimeFrame12to14")}
-                                                                        style={{ width: "100%" }}
-                                                                    />
-                                                                );
-                                                            }}
-                                                        />
-                                                    </Card>
-                                                </Col>
-                                            </Row>
-                                        </React.Fragment>
-                                    }
+                                    // trigger={
+                                    //     <React.Fragment>
+                                    //         <Row gutter={24}>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic title="Thời gian" value="12h - 14h" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic title="Tổng số đơn" value={this.state.TimeFrame12to14.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic
+                                    //                         title="Khởi tạo và chờ phân bổ"
+                                    //                         value={this.state.TimeFrame12to14.filter((item) => item.ShipmentOrderStatusID === 20).length}
+                                    //                         valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                    //                     />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic
+                                    //                         title="Giao hàng thành công"
+                                    //                         value={this.state.TimeFrame12to14.filter((item) => item.ShipmentOrderStatusID === 28).length}
+                                    //                         valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                    //                     />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={8}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic
+                                    //                         title="Tìm kiếm"
+                                    //                         valueRender={(node) => {
+                                    //                             return (
+                                    //                                 <Input
+                                    //                                     placeholder="Tìm kiếm"
+                                    //                                     onMouseEnter={(_) => this.handleDisabled("TimeFrame12to14", true)}
+                                    //                                     onMouseLeave={(_) => this.handleDisabled("TimeFrame12to14", false)}
+                                    //                                     onChange={(event) => this.handleInputChange(event.target.value, "TimeFrame12to14")}
+                                    //                                     style={{ width: "100%" }}
+                                    //                                 />
+                                    //                             );
+                                    //                         }}
+                                    //                     />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //         </Row>
+                                    //     </React.Fragment>
+                                    // }
                                     triggerOpenedClassName="collapsible-open-custom"
                                     triggerStyle={{ backgroundColor: "white" }}
                                     easing="ease-in"
@@ -2513,58 +2513,58 @@ class SearchCom extends Component {
                                 <Collapsible
                                     className="CollapsibleCustom"
                                     triggerDisabled={this.state.ObjectIsDisabled.TimeFrame14to16}
-                                    trigger={
-                                        <React.Fragment>
-                                            <Row gutter={24}>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic title="Thời gian" value="14h - 16h" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame14to16.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic
-                                                            title="Khởi tạo và chờ phân bổ"
-                                                            value={this.state.TimeFrame14to16.filter((item) => item.ShipmentOrderStatusID === 20).length}
-                                                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                                                        />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic
-                                                            title="Giao hàng thành công"
-                                                            value={this.state.TimeFrame14to16.filter((item) => item.ShipmentOrderStatusID === 28).length}
-                                                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                                                        />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={8}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic
-                                                            title="Tìm kiếm"
-                                                            valueRender={(node) => {
-                                                                return (
-                                                                    <Input
-                                                                        placeholder="Tìm kiếm"
-                                                                        onMouseEnter={(_) => this.handleDisabled("TimeFrame14to16", true)}
-                                                                        onMouseLeave={(_) => this.handleDisabled("TimeFrame14to16", false)}
-                                                                        onChange={(event) => this.handleInputChange(event.target.value, "TimeFrame14to16")}
-                                                                        style={{ width: "100%" }}
-                                                                    />
-                                                                );
-                                                            }}
-                                                        />
-                                                    </Card>
-                                                </Col>
-                                            </Row>
-                                        </React.Fragment>
-                                    }
+                                    // trigger={
+                                    //     <React.Fragment>
+                                    //         <Row gutter={24}>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic title="Thời gian" value="14h - 16h" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic title="Tổng số đơn" value={this.state.TimeFrame14to16.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic
+                                    //                         title="Khởi tạo và chờ phân bổ"
+                                    //                         value={this.state.TimeFrame14to16.filter((item) => item.ShipmentOrderStatusID === 20).length}
+                                    //                         valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                    //                     />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic
+                                    //                         title="Giao hàng thành công"
+                                    //                         value={this.state.TimeFrame14to16.filter((item) => item.ShipmentOrderStatusID === 28).length}
+                                    //                         valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                    //                     />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={8}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic
+                                    //                         title="Tìm kiếm"
+                                    //                         valueRender={(node) => {
+                                    //                             return (
+                                    //                                 <Input
+                                    //                                     placeholder="Tìm kiếm"
+                                    //                                     onMouseEnter={(_) => this.handleDisabled("TimeFrame14to16", true)}
+                                    //                                     onMouseLeave={(_) => this.handleDisabled("TimeFrame14to16", false)}
+                                    //                                     onChange={(event) => this.handleInputChange(event.target.value, "TimeFrame14to16")}
+                                    //                                     style={{ width: "100%" }}
+                                    //                                 />
+                                    //                             );
+                                    //                         }}
+                                    //                     />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //         </Row>
+                                    //     </React.Fragment>
+                                    // }
                                     triggerOpenedClassName="collapsible-open-custom"
                                     triggerStyle={{ backgroundColor: "white" }}
                                     easing="ease-in"
@@ -2608,60 +2608,60 @@ class SearchCom extends Component {
                                 <Collapsible
                                     className="CollapsibleCustom"
                                     triggerDisabled={this.state.ObjectIsDisabled.TimeFrame17to19}
-                                    trigger={
-                                        <React.Fragment>
-                                            <Row gutter={24}>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic title="Thời gian" value="17h - 19h" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame17to19.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic
-                                                            title="Khởi tạo và chờ phân bổ"
-                                                            value={this.state.TimeFrame17to19.filter((item) => item.ShipmentOrderStatusID === 20).length}
-                                                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                                                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                                                        />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic
-                                                            title="Giao hàng thành công"
-                                                            value={this.state.TimeFrame17to19.filter((item) => item.ShipmentOrderStatusID === 29).length}
-                                                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                                                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                                                        />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={8}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic
-                                                            title="Tìm kiếm"
-                                                            valueRender={(node) => {
-                                                                return (
-                                                                    <Input
-                                                                        placeholder="Tìm kiếm"
-                                                                        onMouseEnter={(_) => this.handleDisabled("TimeFrame17to19", true)}
-                                                                        onMouseLeave={(_) => this.handleDisabled("TimeFrame17to19", false)}
-                                                                        onChange={(event) => this.handleInputChange(event.target.value, "TimeFrame17to19")}
-                                                                        style={{ width: "100%" }}
-                                                                    />
-                                                                );
-                                                            }}
-                                                        />
-                                                    </Card>
-                                                </Col>
-                                            </Row>
-                                        </React.Fragment>
-                                    }
+                                    // trigger={
+                                    //     <React.Fragment>
+                                    //         <Row gutter={24}>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic title="Thời gian" value="17h - 19h" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic title="Tổng số đơn" value={this.state.TimeFrame17to19.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic
+                                    //                         title="Khởi tạo và chờ phân bổ"
+                                    //                         value={this.state.TimeFrame17to19.filter((item) => item.ShipmentOrderStatusID === 20).length}
+                                    //                         valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                    //                         valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                    //                     />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic
+                                    //                         title="Giao hàng thành công"
+                                    //                         value={this.state.TimeFrame17to19.filter((item) => item.ShipmentOrderStatusID === 29).length}
+                                    //                         valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                    //                         valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                    //                     />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={8}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic
+                                    //                         title="Tìm kiếm"
+                                    //                         valueRender={(node) => {
+                                    //                             return (
+                                    //                                 <Input
+                                    //                                     placeholder="Tìm kiếm"
+                                    //                                     onMouseEnter={(_) => this.handleDisabled("TimeFrame17to19", true)}
+                                    //                                     onMouseLeave={(_) => this.handleDisabled("TimeFrame17to19", false)}
+                                    //                                     onChange={(event) => this.handleInputChange(event.target.value, "TimeFrame17to19")}
+                                    //                                     style={{ width: "100%" }}
+                                    //                                 />
+                                    //                             );
+                                    //                         }}
+                                    //                     />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //         </Row>
+                                    //     </React.Fragment>
+                                    // }
                                     triggerOpenedClassName="collapsible-open-custom"
                                     triggerStyle={{ backgroundColor: "white" }}
                                     easing="ease-in"
@@ -2705,60 +2705,60 @@ class SearchCom extends Component {
                                 <Collapsible
                                     className="CollapsibleCustom"
                                     triggerDisabled={this.state.ObjectIsDisabled.TimeFrame19to21}
-                                    trigger={
-                                        <React.Fragment>
-                                            <Row gutter={24}>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic title="Thời gian" value="19h - 21h" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic title="Tổng số đơn" value={this.state.TimeFrame19to21.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic
-                                                            title="Khởi tạo và chờ phân bổ"
-                                                            value={this.state.TimeFrame19to21.filter((item) => item.ShipmentOrderStatusID === 20).length}
-                                                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                                                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                                                        />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic
-                                                            title="Giao hàng thành công"
-                                                            value={this.state.TimeFrame19to21.filter((item) => item.ShipmentOrderStatusID === 28).length}
-                                                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                                                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                                                        />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={8}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic
-                                                            title="Tìm kiếm"
-                                                            valueRender={(node) => {
-                                                                return (
-                                                                    <Input
-                                                                        placeholder="Tìm kiếm"
-                                                                        onMouseEnter={(_) => this.handleDisabled("TimeFrame19to21", true)}
-                                                                        onMouseLeave={(_) => this.handleDisabled("TimeFrame19to21", false)}
-                                                                        onChange={(event) => this.handleInputChange(event.target.value, "TimeFrame19to21")}
-                                                                        style={{ width: "100%" }}
-                                                                    />
-                                                                );
-                                                            }}
-                                                        />
-                                                    </Card>
-                                                </Col>
-                                            </Row>
-                                        </React.Fragment>
-                                    }
+                                    // trigger={
+                                    //     <React.Fragment>
+                                    //         <Row gutter={24}>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic title="Thời gian" value="19h - 21h" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic title="Tổng số đơn" value={this.state.TimeFrame19to21.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic
+                                    //                         title="Khởi tạo và chờ phân bổ"
+                                    //                         value={this.state.TimeFrame19to21.filter((item) => item.ShipmentOrderStatusID === 20).length}
+                                    //                         valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                    //                         valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                    //                     />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic
+                                    //                         title="Giao hàng thành công"
+                                    //                         value={this.state.TimeFrame19to21.filter((item) => item.ShipmentOrderStatusID === 28).length}
+                                    //                         valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                    //                         valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                    //                     />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={8}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic
+                                    //                         title="Tìm kiếm"
+                                    //                         valueRender={(node) => {
+                                    //                             return (
+                                    //                                 <Input
+                                    //                                     placeholder="Tìm kiếm"
+                                    //                                     onMouseEnter={(_) => this.handleDisabled("TimeFrame19to21", true)}
+                                    //                                     onMouseLeave={(_) => this.handleDisabled("TimeFrame19to21", false)}
+                                    //                                     onChange={(event) => this.handleInputChange(event.target.value, "TimeFrame19to21")}
+                                    //                                     style={{ width: "100%" }}
+                                    //                                 />
+                                    //                             );
+                                    //                         }}
+                                    //                     />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //         </Row>
+                                    //     </React.Fragment>
+                                    // }
                                     triggerOpenedClassName="collapsible-open-custom"
                                     triggerStyle={{ backgroundColor: "white" }}
                                     easing="ease-in"
@@ -2802,60 +2802,60 @@ class SearchCom extends Component {
                                 <Collapsible
                                     className="CollapsibleCustom"
                                     triggerDisabled={this.state.ObjectIsDisabled.diffTimeFrame}
-                                    trigger={
-                                        <React.Fragment>
-                                            <Row gutter={24}>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic title="Thời gian khác" value="" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic title="Tổng số đơn" value={this.state.diffTimeFrame.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic
-                                                            title="Khởi tạo và chờ phân bổ"
-                                                            value={this.state.diffTimeFrame.filter((item) => item.ShipmentOrderStatusID === 20).length}
-                                                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                                                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                                                        />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={4}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic
-                                                            title="Giao hàng thành công"
-                                                            value={this.state.diffTimeFrame.filter((item) => item.ShipmentOrderStatusID === 28).length}
-                                                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                                                            valueStyle={{ color: "#3f8600", fontSize: "20px" }}
-                                                        />
-                                                    </Card>
-                                                </Col>
-                                                <Col span={8}>
-                                                    <Card size="small" bordered={false}>
-                                                        <Statistic
-                                                            title="Tìm kiếm"
-                                                            valueRender={(node) => {
-                                                                return (
-                                                                    <Input
-                                                                        placeholder="Tìm kiếm"
-                                                                        onMouseEnter={(_) => this.handleDisabled("diffTimeFrame", true)}
-                                                                        onMouseLeave={(_) => this.handleDisabled("diffTimeFrame", false)}
-                                                                        onChange={(event) => this.handleInputChange(event.target.value, "diffTimeFrame")}
-                                                                        style={{ width: "100%" }}
-                                                                    />
-                                                                );
-                                                            }}
-                                                        />
-                                                    </Card>
-                                                </Col>
-                                            </Row>
-                                        </React.Fragment>
-                                    }
+                                    // trigger={
+                                    //     <React.Fragment>
+                                    //         <Row gutter={24}>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic title="Thời gian khác" value="" valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic title="Tổng số đơn" value={this.state.diffTimeFrame.length} valueStyle={{ color: "#3f8600", fontSize: "20px" }} />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic
+                                    //                         title="Khởi tạo và chờ phân bổ"
+                                    //                         value={this.state.diffTimeFrame.filter((item) => item.ShipmentOrderStatusID === 20).length}
+                                    //                         valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                    //                         valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                    //                     />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={4}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic
+                                    //                         title="Giao hàng thành công"
+                                    //                         value={this.state.diffTimeFrame.filter((item) => item.ShipmentOrderStatusID === 28).length}
+                                    //                         valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                    //                         valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                                    //                     />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //             <Col span={8}>
+                                    //                 <Card size="small" bordered={false}>
+                                    //                     <Statistic
+                                    //                         title="Tìm kiếm"
+                                    //                         valueRender={(node) => {
+                                    //                             return (
+                                    //                                 <Input
+                                    //                                     placeholder="Tìm kiếm"
+                                    //                                     onMouseEnter={(_) => this.handleDisabled("diffTimeFrame", true)}
+                                    //                                     onMouseLeave={(_) => this.handleDisabled("diffTimeFrame", false)}
+                                    //                                     onChange={(event) => this.handleInputChange(event.target.value, "diffTimeFrame")}
+                                    //                                     style={{ width: "100%" }}
+                                    //                                 />
+                                    //                             );
+                                    //                         }}
+                                    //                     />
+                                    //                 </Card>
+                                    //             </Col>
+                                    //         </Row>
+                                    //     </React.Fragment>
+                                    // }
                                     triggerOpenedClassName="collapsible-open-custom"
                                     triggerStyle={{ backgroundColor: "white" }}
                                     easing="ease-in"
