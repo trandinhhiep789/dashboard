@@ -382,9 +382,15 @@ class SearchCom extends React.Component {
         
         var curDate = new Date();
         var curMonth = curDate.getMonth();
+        var curYear = curDate.getFullYear();
         var mldate = new Date(MLObject.ReceivableDate);
+        var mlmyear = mldate.getFullYear();
         var mlMonth = mldate.getMonth() + 1;
-        if (mlMonth > curMonth) {
+        if (mlmyear > curYear) {
+            this.addNotification("Vui lòng chọn năm <= " + curYear, true);
+            return;
+        }
+        else if (mlMonth > curMonth && curYear == mlmyear) {
             this.addNotification("Vui lòng chọn tháng < " + (curMonth + 1), true);
             return;
         }

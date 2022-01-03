@@ -17,6 +17,7 @@ export const PagePath = [
     { Link: "", Title: "Bảng kê dữ liệu doanh thu" }
 ];
 
+var dateNow = new Date();
 
 export const InitSearchParams = [
     {
@@ -25,7 +26,7 @@ export const InitSearchParams = [
     },
     {
         SearchKey: "@RECEIVABLEDATE",
-        SearchValue: new Date((new Date().getMonth()) + "/" + '01' + "/" + new Date().getFullYear()),
+        SearchValue: new Date(dateNow.getFullYear(), dateNow.getMonth() - 1, 1),
     },
     // {
     //     SearchKey: "@FROMDATE",
@@ -80,7 +81,7 @@ export const SearchElementList = [
         name: "dtReceivableDate",
         DataSourceMember: "ReceivableDate",
         label: "Tháng",
-        value: new Date((new Date().getMonth()) + "/" + '01' + "/" + new Date().getFullYear()),
+        value: new Date(dateNow.getFullYear(), dateNow.getMonth() - 1, 1),
         format: "MM-YYYY",
         colspan: 2,
         placeholder: "MM-YYYY"
