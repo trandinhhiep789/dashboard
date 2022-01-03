@@ -1432,168 +1432,178 @@ class SearchCom extends Component {
     // Xử lý render phân tuyến tự động
     handleConfirm(pVerticalType) {
         if (pVerticalType == 1) {
-            let objRequest = [];
-            let element = [];
-            let lstShipmentOrderRoute = this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute;
-            let ShipmentOrderTypelst = "1026";
+            let isEmptyDeliverUser = this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.findIndex((item, index) => this.state.ObjectControlValue.NhanVienGiao.XeMay.Values[index] === "");
 
-            for (let indexParent = 0; indexParent < lstShipmentOrderRoute.length; indexParent++) {
-                for (let indexChild = 1; indexChild < lstShipmentOrderRoute[indexParent].length; indexChild++) {
-                    let item = lstShipmentOrderRoute[indexParent][indexChild];
-                    objRequest.push({
-                        CarrierTypeID: item.CarrierTypeID,
-                        CurrentShipmentOrderStepID: item.CurrentShipmentOrderStepID,
-                        PrimaryShipItemName: item.PrimaryShipItemName,
-                        ShipItemNameList: item.ShipItemNameList,
-                        ShipmentOrderID: item.ShipmentOrderID,
-                        ShipmentOrderTypeID: item.ShipmentOrderTypeID,
-                        DeliverUserList: [],
-                        ShipmentRouteIndex: indexParent, // Thứ tự tuyến trong phân tuyến tự động
-                    });
-                }
+            if (isEmptyDeliverUser !== -1) {
+                this.showMessage(`Chưa gán nhân viên giao tuyến số ${isEmptyDeliverUser + 1}`);
+                return;
             }
+            else {
+                let objRequest = [];
+                let element = [];
+                let lstShipmentOrderRoute = this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute;
+                let ShipmentOrderTypelst = "1026";
 
-            objRequest[0].ShipmentOrderTypelst = ShipmentOrderTypelst;
-
-            this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderNewLst", objRequest).then((apiResult) => {
-                if (!apiResult.IsError) {
-                    let lstShipmentOrderDeliver = apiResult.ResultObject.ShipmentOrderDeliverList;
-                    lstShipmentOrderDeliver = lstShipmentOrderDeliver.map((item) => {
-                        // let arrUserRoute = this.state.ObjectControlValue.NhanVienGiao.XeMay.Values[item.ShipmentRouteIndex];
-                        // let arrUser = this.state.ObjectControlValue.NhanVienGiao.XeMay.Options[item.ShipmentRouteIndex].filter((x) => arrUserRoute.includes(x.value));
-
-                        let userID = this.state.ObjectControlValue.NhanVienGiao.XeMay.Values[item.ShipmentRouteIndex];
-                        let objUser = this.state.ObjectControlValue.NhanVienGiao.XeMay.Options[item.ShipmentRouteIndex].find((x) => x.value == userID);
-
-                        // Kiểu dữ liệu trả về của arrUser
-                        //   {
-                        //     "value": "0041005",
-                        //     "name": "0041005-Nguyễn Văn A",
-                        //     "FullName": "Nguyễn Văn A",
-                        //     "DepartmentName": "",
-                        //     "PositionName": "",
-                        //     "Address": ""
-                        //  }
-                        // let arrUserFullName = arrUser.map((x) => x.name);
-                        // let arrDeliverUser = objUser.map((item) => ({ UserName: item.value, FullName: item.FullName }));
-
-                        let userFullName = objUser.name;
-                        let deliverUser = { UserName: objUser.value, FullName: objUser.FullName };
-
-                        return {
-                            ...item,
-                            DeliverUserLst: userID,
-                            DeliverUserFullNameList: userFullName,
-                            ShipmentOrder_DeliverUserList: [deliverUser],
-                            IsRoute: false,
-                            VehicleID: -1,
-                        };
-                    });
-
-                    const groupByNew = (data, fields, sumBy = "TotalCOD") => {
-                        let r = [],
-                            cmp = (x, y) => fields.reduce((a, b) => a && x[b] == y[b], true);
-                        data.forEach((x) => {
-                            let y = r.find((z) => cmp(x, z));
-                            let w = [...fields, sumBy].reduce((a, b) => ((a[b] = x[b]), a), {});
-                            y ? (y[sumBy] = +y[sumBy] + +x[sumBy]) : r.push(w);
+                for (let indexParent = 0; indexParent < lstShipmentOrderRoute.length; indexParent++) {
+                    for (let indexChild = 1; indexChild < lstShipmentOrderRoute[indexParent].length; indexChild++) {
+                        let item = lstShipmentOrderRoute[indexParent][indexChild];
+                        objRequest.push({
+                            CarrierTypeID: item.CarrierTypeID,
+                            CurrentShipmentOrderStepID: item.CurrentShipmentOrderStepID,
+                            PrimaryShipItemName: item.PrimaryShipItemName,
+                            ShipItemNameList: item.ShipItemNameList,
+                            ShipmentOrderID: item.ShipmentOrderID,
+                            ShipmentOrderTypeID: item.ShipmentOrderTypeID,
+                            DeliverUserList: [],
+                            ShipmentRouteIndex: indexParent, // Thứ tự tuyến trong phân tuyến tự động
                         });
-                        return r;
-                    };
-
-                    lstShipmentOrderDeliver.map((row) => {
-                        if (row["TotalCOD"] > 0 && row["IsPaidIn"] == false) {
-                            if (Array.isArray(row["ShipmentOrder_DeliverUserList"])) {
-                                row["ShipmentOrder_DeliverUserList"].map((item, indexRow) => {
-                                    if (row["ShipmentOrder_DeliverUserList"][indexRow] !== row["ShipmentOrder_DeliverUserList"][indexRow - 1]) {
-                                        let objMultDeliverUser = { UserName: item.UserName, CarrierTypeID: row["CarrierTypeID"], TotalCOD: row["TotalCOD"] / row["ShipmentOrder_DeliverUserList"].length };
-                                        element.push(objMultDeliverUser);
-                                    }
-                                });
-                            }
-                        }
-                    });
-
-                    if (lstShipmentOrderDeliver.length > 0) {
-                        lstShipmentOrderDeliver[0].DeliverUserTotalCODList = groupByNew(element, ["UserName", "CarrierTypeID"]);
-                        lstShipmentOrderDeliver[0].ShipmentRouteID = "";
                     }
-
-                    let countRoute = this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.length;
-                    let arrRequest = [];
-                    for (let index = 0; index < countRoute; index++) {
-                        let arrFilter = lstShipmentOrderDeliver.filter((x) => x.ShipmentRouteIndex == index);
-                        arrRequest.push(arrFilter);
-                    }
-
-                    console.log("arrRequest", arrRequest);
-
-
-                    this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNewAuto", arrRequest).then((apiResult) => {
-                        this.showMessage(apiResult.Message, false, null, null, () => {
-                            window.location.reload();
-                        })
-                    });
-
-                    //#region Phân tuyến cữ
-
-                    // if (this.state.ShipmentRouteID != "") {
-                    //     this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNewAuto", arrRequest).then((apiResult) => {
-                    //         this.showMessage(apiResult.Message, false, null, null, () => {
-                    //             window.location.reload();
-                    //         });
-
-                    //         // let changeState = this.state;
-                    //         // let objUIEffect = changeState.UIEffect;
-                    //         // let objButtonMotorApply = objUIEffect.ButtonMotorApply;
-                    //         // let objButtonTruckApply = objUIEffect.ButtonTruckApply;
-
-                    //         // if (!apiResult.IsError) {
-                    //         //     objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: true };
-                    //         //     objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: true };
-                    //         //     objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
-                    //         //     changeState = { ...changeState, UIEffect: objUIEffect };
-                    //         // } else {
-                    //         //     objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: false };
-                    //         //     objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: false };
-                    //         //     objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
-                    //         //     changeState = { ...changeState, UIEffect: objUIEffect };
-                    //         // }
-
-                    //         // this.setState(changeState);
-                    //     });
-                    // } else {
-                    //     this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNewAuto", arrRequest).then((apiResult) => {
-                    //         this.showMessage(apiResult.Message, false, null, null, () => {
-                    //             window.location.reload();
-                    //         });
-
-                    //         // let changeState = this.state;
-                    //         // let objUIEffect = changeState.UIEffect;
-                    //         // let objButtonMotorApply = objUIEffect.ButtonMotorApply;
-                    //         // let objButtonTruckApply = objUIEffect.ButtonTruckApply;
-
-                    //         // if (!apiResult.IsError) {
-                    //         //     objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: true };
-                    //         //     objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: true };
-                    //         //     objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
-                    //         //     changeState = { ...changeState, UIEffect: objUIEffect };
-                    //         // } else {
-                    //         //     objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: false };
-                    //         //     objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: false };
-                    //         //     objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
-                    //         //     changeState = { ...changeState, UIEffect: objUIEffect };
-                    //         // }
-
-                    //         // this.setState(changeState);
-                    //     });
-                    // }
-
-                    //#endregion
-                } else {
-                    this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
                 }
-            });
+
+                objRequest[0].ShipmentOrderTypelst = ShipmentOrderTypelst;
+
+                this.props.callFetchAPI(APIHostName, "api/ShipmentOrder/GetShipmentOrderNewLst", objRequest).then((apiResult) => {
+                    if (!apiResult.IsError) {
+                        let lstShipmentOrderDeliver = apiResult.ResultObject.ShipmentOrderDeliverList;
+                        lstShipmentOrderDeliver = lstShipmentOrderDeliver.map((item) => {
+                            // let arrUserRoute = this.state.ObjectControlValue.NhanVienGiao.XeMay.Values[item.ShipmentRouteIndex];
+                            // let arrUser = this.state.ObjectControlValue.NhanVienGiao.XeMay.Options[item.ShipmentRouteIndex].filter((x) => arrUserRoute.includes(x.value));
+
+                            let userID = this.state.ObjectControlValue.NhanVienGiao.XeMay.Values[item.ShipmentRouteIndex];
+                            let objUser = this.state.ObjectControlValue.NhanVienGiao.XeMay.Options[item.ShipmentRouteIndex].find((x) => x.value == userID);
+
+                            // Kiểu dữ liệu trả về của arrUser
+                            //   {
+                            //     "value": "0041005",
+                            //     "name": "0041005-Nguyễn Văn A",
+                            //     "FullName": "Nguyễn Văn A",
+                            //     "DepartmentName": "",
+                            //     "PositionName": "",
+                            //     "Address": ""
+                            //  }
+                            // let arrUserFullName = arrUser.map((x) => x.name);
+                            // let arrDeliverUser = objUser.map((item) => ({ UserName: item.value, FullName: item.FullName }));
+
+                            let userFullName = objUser.name;
+                            let deliverUser = [{ UserName: objUser.value, FullName: objUser.FullName }];
+
+                            return {
+                                ...item,
+                                DeliverUserLst: userID[0],
+                                DeliverUserFullNameList: userFullName,
+                                ShipmentOrder_DeliverUserList: deliverUser,
+                                IsRoute: false,
+                                VehicleID: -1,
+                            };
+                        });
+
+                        const groupByNew = (data, fields, sumBy = "TotalCOD") => {
+                            let r = [],
+                                cmp = (x, y) => fields.reduce((a, b) => a && x[b] == y[b], true);
+                            data.forEach((x) => {
+                                let y = r.find((z) => cmp(x, z));
+                                let w = [...fields, sumBy].reduce((a, b) => ((a[b] = x[b]), a), {});
+                                y ? (y[sumBy] = +y[sumBy] + +x[sumBy]) : r.push(w);
+                            });
+                            return r;
+                        };
+
+                        lstShipmentOrderDeliver.map((row) => {
+                            if (row["TotalCOD"] > 0 && row["IsPaidIn"] == false) {
+                                if (Array.isArray(row["ShipmentOrder_DeliverUserList"])) {
+                                    row["ShipmentOrder_DeliverUserList"].map((item, indexRow) => {
+                                        if (row["ShipmentOrder_DeliverUserList"][indexRow] !== row["ShipmentOrder_DeliverUserList"][indexRow - 1]) {
+                                            let objMultDeliverUser = { UserName: item.UserName, CarrierTypeID: row["CarrierTypeID"], TotalCOD: row["TotalCOD"] / row["ShipmentOrder_DeliverUserList"].length };
+                                            element.push(objMultDeliverUser);
+                                        }
+                                    });
+                                }
+                            }
+                        });
+
+                        if (lstShipmentOrderDeliver.length > 0) {
+                            lstShipmentOrderDeliver[0].DeliverUserTotalCODList = groupByNew(element, ["UserName", "CarrierTypeID"]);
+                            lstShipmentOrderDeliver[0].ShipmentRouteID = "";
+                        }
+
+                        let countRoute = this.state.ShipmentRouteAutoDataSource.Motor.ListShipmentOrderRoute.length;
+                        let arrRequest = [];
+                        for (let index = 0; index < countRoute; index++) {
+                            let arrFilter = lstShipmentOrderDeliver.filter((x) => x.ShipmentRouteIndex == index);
+                            arrRequest.push(arrFilter);
+                        }
+
+                        this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNewAuto", arrRequest).then((apiResult) => {
+                            if (!apiResult.IsError) {
+                                this.showMessage(apiResult.Message, false, null, null, () => {
+                                    window.location.reload();
+                                })
+                            }
+                            else{
+                                this.showMessage(apiResult.Message)
+                            }
+                        });
+
+                        //#region Phân tuyến cữ
+
+                        // if (this.state.ShipmentRouteID != "") {
+                        //     this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNewAuto", arrRequest).then((apiResult) => {
+                        //         this.showMessage(apiResult.Message, false, null, null, () => {
+                        //             window.location.reload();
+                        //         });
+
+                        //         // let changeState = this.state;
+                        //         // let objUIEffect = changeState.UIEffect;
+                        //         // let objButtonMotorApply = objUIEffect.ButtonMotorApply;
+                        //         // let objButtonTruckApply = objUIEffect.ButtonTruckApply;
+
+                        //         // if (!apiResult.IsError) {
+                        //         //     objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: true };
+                        //         //     objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: true };
+                        //         //     objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
+                        //         //     changeState = { ...changeState, UIEffect: objUIEffect };
+                        //         // } else {
+                        //         //     objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: false };
+                        //         //     objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: false };
+                        //         //     objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
+                        //         //     changeState = { ...changeState, UIEffect: objUIEffect };
+                        //         // }
+
+                        //         // this.setState(changeState);
+                        //     });
+                        // } else {
+                        //     this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/AddInfoCoordinatorLstNewAuto", arrRequest).then((apiResult) => {
+                        //         this.showMessage(apiResult.Message, false, null, null, () => {
+                        //             window.location.reload();
+                        //         });
+
+                        //         // let changeState = this.state;
+                        //         // let objUIEffect = changeState.UIEffect;
+                        //         // let objButtonMotorApply = objUIEffect.ButtonMotorApply;
+                        //         // let objButtonTruckApply = objUIEffect.ButtonTruckApply;
+
+                        //         // if (!apiResult.IsError) {
+                        //         //     objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: true };
+                        //         //     objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: true };
+                        //         //     objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
+                        //         //     changeState = { ...changeState, UIEffect: objUIEffect };
+                        //         // } else {
+                        //         //     objButtonMotorApply = { ...objButtonMotorApply, IsDisabled: false };
+                        //         //     objButtonTruckApply = { ...objButtonTruckApply, IsDisabled: false };
+                        //         //     objUIEffect = { ...objUIEffect, ButtonMotorApply: objButtonMotorApply, ButtonTruckApply: objButtonTruckApply };
+                        //         //     changeState = { ...changeState, UIEffect: objUIEffect };
+                        //         // }
+
+                        //         // this.setState(changeState);
+                        //     });
+                        // }
+
+                        //#endregion
+                    } else {
+                        this.showMessage("Vui lòng chọn vận đơn để gán nhân viên giao!");
+                    }
+                });
+            }
         }
     }
 
@@ -1717,41 +1727,50 @@ class SearchCom extends Component {
             }
 
             return (
-                <Select
-                    style={{ width: "20%" }}
-                    value={
-                        (vehicleType == 1 && this.state.ObjectControlValue.NhanVienGiao.XeMay.Values && this.state.ObjectControlValue.NhanVienGiao.XeMay.Values[index]) ||
-                        [] ||
-                        (vehicleType == 2 && this.state.ObjectControlValue.NhanVienGiao.XeTai.Values && this.state.ObjectControlValue.NhanVienGiao.XeTai.Values[index]) ||
-                        []
-                    }
-                    // mode="multiple"
-                    disabled={(vehicleType == 1 ? this.state.UIEffect.ButtonMotorApply.IsDisabled : false) || (vehicleType == 2 ? this.state.UIEffect.ButtonTruckApply.IsDisabled : false)}
-                    optionLabelProp="label"
-                    dropdownAlign="center"
-                    maxTagCount={3}
-                    showSearch
-                    placeholder="Nhân viên giao"
-                    onInputKeyDown={(event) => this.handleSelectNhanVienGiaoInputValueChange(event, index, vehicleType)}
-                    onChange={(value, options) => this.handleSelectNhanVienGiaoValueChange_1(value, options, index, vehicleType)}
-                >
-                    {(vehicleType == 1 &&
-                        this.state.ObjectControlValue.NhanVienGiao.XeMay.Options &&
-                        this.state.ObjectControlValue.NhanVienGiao.XeMay.Options[index] &&
-                        this.state.ObjectControlValue.NhanVienGiao.XeMay.Options[index].map((item, index) => (
-                            <Select.Option key={index} value={item.value} label={item.name} user={item}>
-                                {item.name}
-                            </Select.Option>
-                        ))) ||
-                        (vehicleType == 2 &&
-                            this.state.ObjectControlValue.NhanVienGiao.XeTai.Options &&
-                            this.state.ObjectControlValue.NhanVienGiao.XeTai.Options[index] &&
-                            this.state.ObjectControlValue.NhanVienGiao.XeTai.Options[index].map((item, index) => (
-                                <Select.Option key={index} value={item.value} label={item.name} user={item}>
-                                    {item.name}
-                                </Select.Option>
-                            )))}
-                </Select>
+                <React.Fragment>
+                    <Space>
+                        <Select
+                            style={{ width: "250px" }}
+                            value={
+                                (vehicleType == 1 && this.state.ObjectControlValue.NhanVienGiao.XeMay.Values && this.state.ObjectControlValue.NhanVienGiao.XeMay.Values[index]) ||
+                                [] ||
+                                (vehicleType == 2 && this.state.ObjectControlValue.NhanVienGiao.XeTai.Values && this.state.ObjectControlValue.NhanVienGiao.XeTai.Values[index]) ||
+                                []
+                            }
+                            // mode="multiple"
+                            disabled={(vehicleType == 1 ? this.state.UIEffect.ButtonMotorApply.IsDisabled : false) || (vehicleType == 2 ? this.state.UIEffect.ButtonTruckApply.IsDisabled : false)}
+                            optionLabelProp="label"
+                            dropdownAlign="center"
+                            maxTagCount={3}
+                            showSearch
+                            placeholder="Nhân viên giao"
+                            onInputKeyDown={(event) => this.handleSelectNhanVienGiaoInputValueChange(event, index, vehicleType)}
+                            onChange={(value, options) => this.handleSelectNhanVienGiaoValueChange_1(value, options, index, vehicleType)}
+                        >
+                            {(vehicleType == 1 &&
+                                this.state.ObjectControlValue.NhanVienGiao.XeMay.Options &&
+                                this.state.ObjectControlValue.NhanVienGiao.XeMay.Options[index] &&
+                                this.state.ObjectControlValue.NhanVienGiao.XeMay.Options[index].map((item, index) => (
+                                    <Select.Option key={index} value={item.value} label={item.name} user={item}>
+                                        {item.name}
+                                    </Select.Option>
+                                ))) ||
+                                (vehicleType == 2 &&
+                                    this.state.ObjectControlValue.NhanVienGiao.XeTai.Options &&
+                                    this.state.ObjectControlValue.NhanVienGiao.XeTai.Options[index] &&
+                                    this.state.ObjectControlValue.NhanVienGiao.XeTai.Options[index].map((item, index) => (
+                                        <Select.Option key={index} value={item.value} label={item.name} user={item}>
+                                            {item.name}
+                                        </Select.Option>
+                                    )))}
+                        </Select>
+                        {
+                            this.state.ObjectControlValue.NhanVienGiao.XeMay.Values[index] == "" && (
+                                <Tag color="red">Chưa có nhân viên giao</Tag>
+                            )
+                        }
+                    </Space>
+                </React.Fragment>
             );
         };
 
