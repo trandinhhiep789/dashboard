@@ -505,25 +505,25 @@ class SearchFormShipmentRouteAuto extends Component {
                         />
                     </Col>
 
-                    <Col key={2}>
-                        <Select
-                        mode="multiple"
-                        style={{ width: "330px" }}
-                        maxTagTextLength={10}
-                        maxTagCount={2}
-                        placeholder="Loại yêu cầu vận chuyển"
-                        defaultValue={[]}
-                        dropdownMatchSelectWidth={400}
-                        optionLabelProp="label"
-                        onChange={(value) => this.handleSelectLoaiYeuCauVanChuyenChange(value)}
-                        >
-                        {this.state.ListOptionLoaiYeuCauVanChuyen.map((item, index) => (
-                            <Select.Option key={index} value={item.value} label={item.label}>
-                            {item.label}
-                            </Select.Option>
-                        ))}
-                        </Select>
-                    </Col>
+                    {/* <Col key={2}>
+            <Select
+              mode="multiple"
+              style={{ width: "330px" }}
+              maxTagTextLength={10}
+              maxTagCount={2}
+              placeholder="Loại yêu cầu vận chuyển"
+              defaultValue={[]}
+              dropdownMatchSelectWidth={400}
+              optionLabelProp="label"
+              onChange={(value) => this.handleSelectLoaiYeuCauVanChuyenChange(value)}
+            >
+              {this.state.ListOptionLoaiYeuCauVanChuyen.map((item, index) => (
+                <Select.Option key={index} value={item.value} label={item.label}>
+                  {item.label}
+                </Select.Option>
+              ))}
+            </Select>
+          </Col> */}
 
                     <Col key={3}>
                         <DatePicker.RangePicker
@@ -542,17 +542,17 @@ class SearchFormShipmentRouteAuto extends Component {
                     </Col>
 
                     {/* <Col key={4}>
-                    <Select defaultValue={-1} style={{ width: "170px" }} onChange={(value) => this.handleSelectTinhChange(value)} dropdownMatchSelectWidth={200}>
-                    <Select.Option key={1} value={-1}>
-                        Tỉnh / Thành phố
-                    </Select.Option>
-                    {this.state.ListOptionTinh.map((item, index) => (
-                        <Select.Option key={index + 1} value={item.value}>
-                        {item.label}
-                        </Select.Option>
-                    ))}
-                    </Select>
-                </Col> */}
+            <Select defaultValue={-1} style={{ width: "170px" }} onChange={(value) => this.handleSelectTinhChange(value)} dropdownMatchSelectWidth={200}>
+              <Select.Option key={1} value={-1}>
+                Tỉnh / Thành phố
+              </Select.Option>
+              {this.state.ListOptionTinh.map((item, index) => (
+                <Select.Option key={index + 1} value={item.value}>
+                  {item.label}
+                </Select.Option>
+              ))}
+            </Select>
+          </Col> */}
 
                     {/* <Col key={5}>
             <Select defaultValue={-1} style={{ width: "200px" }} onChange={(value) => this.handleSelectHuyenChange(value)} dropdownMatchSelectWidth={250}>
