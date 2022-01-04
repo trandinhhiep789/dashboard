@@ -411,6 +411,12 @@ export const GridInstallBundle_Materia = [
         DataSourceMember: "MaterialGroupName"
     },
     {
+        Name: "MaterialGroupIDName",
+        DefaultValue: "",
+        BindControlName: "MaterialGroupIDName",
+        DataSourceMember: "MaterialGroupIDName"
+    },
+    {
         Name: "StandardUsAgeQuantity",
         DefaultValue: "",
         BindControlName: "StandardUsAgeQuantity",
@@ -1472,33 +1478,27 @@ export const schema = {
     },
     'Hình thức ghi nhận sử dụng(1: Nhập tay, 2: Quy đổi)': {
         prop: 'UsAgeRecordType',
-        type: Number,
-        required: true
+        type: Number
     },
     'Mã nhóm vật tư muốn quy đổi': {
         prop: 'ConvertToMaterialGroupID',
-        type: String,
-        required: true
+        type: String
     },
     'Tỷ lệ quy đổi': {
         prop: 'ConvertRatio',
-        type: Number,
-        required: true
+        type: Number
     },
     'Hình thức xuất sử dụng': {
         prop: 'OutputUsAgeType',
-        type: Number,
-        required: true
+        type: Number
     },
     'Có khuyến mãi hay không?': {
         prop: 'IsHasPromotion',
-        type: Number,
-        required: true
+        type: Number
     },
     'Số lượng khuyến mãi': {
         prop: 'PromotionQuantity',
-        type: Number,
-        required: true
+        type: Number
     },
     'Loại giới hạn tạm ứng; 1: Giới hạn theo số lượng, 2: Giới hạn theo tổng tiền, 3: Không giới hạn': {
         prop: 'AdvanceLimitType',
@@ -1507,18 +1507,15 @@ export const schema = {
     },
     'Số lượng giới hạn tạm ứng': {
         prop: 'AdvanceLimitQuantity',
-        type: String,
-        required: true
+        type: String
     },
     'Số lượng tồn được phép tạm ứng': {
         prop: 'AllowAdvanceMaxStockQuantity',
-        type: Number,
-        required: true
+        type: Number
     },
     'Có làm tròn số lượng hay không?': {
         prop: 'IsRoundIngQuantity',
-        type: Number,
-        required: true
+        type: Number
     },
     'Ghi chú': {
         prop: 'Note',
@@ -1542,7 +1539,7 @@ export const schema = {
     },
     'Nhóm vật tư kiểm tra tồn kho': {
         prop: 'InStockMaterialGroupID',
-        type: Number
+        type: String
     },
     'Là nhóm vật tư không xuất kho': {
         prop: 'IsNonOutputMaterial',
@@ -1636,7 +1633,7 @@ export const DataTemplateExport = [
         "Số lượng tồn tối thiểu cần kiểm tra": 0,
         "Có kiểm tra số lượng sử dụng tối thiểu không": 0,
         "Số lượng sử dụng tối thiểu cần kiểm tra": 0,
-        "Kích hoạt": 0,
+        "Kích hoạt": 1,
         "Hệ thống": 0,
         
     }
