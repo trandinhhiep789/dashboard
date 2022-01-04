@@ -38,7 +38,7 @@ class DetailCom extends React.Component {
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.state = {
             DataSource: {},
-            ShipmentOrderQualityAssessData : {},
+            ShipmentOrderQualityAssessData : [],
             ShipmentOrderType_WorkFlowList: null,
             CurrentShipmentOrderStepID: 0,
             IsCancelDelivery: false,
