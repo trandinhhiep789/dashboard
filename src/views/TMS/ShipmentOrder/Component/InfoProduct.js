@@ -306,7 +306,7 @@ class InfoProductCom extends Component {
         if (this.state.ShipmentOrder.ShipmentOrder_Material2List != undefined && this.state.ShipmentOrder.ShipmentOrder_Material2List.length > 0) {
             objgroupByInstallBundleID = this.groupByNew(this.state.ShipmentOrder.ShipmentOrder_Material2List, ['InstallProductID', 'InstallProductName', 'InstallBundleID', 'InstallSaleOrderDetailID']);
         }
-        let objShipmentOrderQualityAssessData = this.props.ShipmentOrderQualityAssessData;
+        let objShipmentOrderQualityAssessData = this.props.ShipmentOrderQualityAssessData ? this.props.ShipmentOrderQualityAssessData : [];
         let totalShipmentOrderQualityAssessData = 0;
         console.log('ShipmentOrderQualityAssessData:', this.props.ShipmentOrderQualityAssessData);
         console.log("objgroupByInstallBundleID", objgroupByInstallBundleID)
