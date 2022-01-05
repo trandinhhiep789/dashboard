@@ -7,7 +7,8 @@ import { GET_CACHE_USER_FUNCTION_LIST } from "./../../../../constants/functionLi
 import { hideModal } from "../../../../actions/modal";
 import { ModalManager } from "react-dynamic-modal";
 import { MessageModal } from "./../../../../common/components/Modal/index";
-import { Button, Card, Space, Table, Modal } from "antd";
+import { Button, Space, Table, Modal } from "antd";
+import { EyeTwoTone, EyeInvisibleTwoTone } from "@ant-design/icons";
 import { APIHostName } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 
@@ -62,7 +63,7 @@ class DataGridNewUICom extends Component {
     if (this.props.listColumn) {
       console.log("this.props.listColumn: ", this.props.listColumn)
       const listColumn = this.props.listColumn.map((item, index) => {
-        return { title: <span style={{ fontWeight: "bold" }}>{item.Caption}</span>, dataIndex: item.DataSourceMember, key: item.ShipmentRouteID, width: item.Width + "px", render: item.Name == "ShipmentRouteID" && (text => <p style={{color:"#33cabb", fontWeight: "700"}}>{text}</p>) };
+        return { title: <span style={{ fontWeight: "bold" }}>{item.Caption}</span>, dataIndex: item.DataSourceMember, key: item.ShipmentRouteID, width: item.Width + "px", render: "" };
       });
       this.setState({ ListColumnTable: listColumn });
     }
@@ -300,9 +301,14 @@ class DataGridNewUICom extends Component {
               this.setState({expandedRowKeys: keys});
             }
           },
-          expandIcon: null,
+          expandIcon: ({ expanded, onExpand, record }) =>
+            expanded ? (
+                <EyeInvisibleTwoTone twoToneColor="#33cabb" onClick={e => onExpand(record, e)} />
+            ) : (
+              <EyeTwoTone twoToneColor="#33cabb" onClick={e => onExpand(record, e)} />
+          ),
           columnWidth: 0,
-          expandRowByClick: true,
+          expandRowByClick: false,
         }}
         expandedRowKeys={this.state.expandedRowKeys}
       />
