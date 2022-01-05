@@ -31,10 +31,10 @@ export const InitSearchParams = [
     //     SearchKey: "@FROMDATE",
     //     SearchValue: toIsoStringCus(new Date((new Date().getMonth() + 1) + "/" + '01' + "/" + new Date().getFullYear()).toISOString())
     // },
-    {
-        SearchKey: "@CONSTRUCTID",
-        SearchValue: -1
-    },
+    // {
+    //     SearchKey: "@CONSTRUCTID",
+    //     SearchValue: -1
+    // },
     {
         SearchKey: "@FROMDATE",
         SearchValue: new Date(dateNow.getFullYear(), dateNow.getMonth() - 1, 1),
@@ -46,22 +46,22 @@ export const InitSearchParams = [
 ];
 
 export const SearchElementList = [
-    {
-        type: "ComboBoxNewChange",
-        name: "cbConstructID",
-        DataSourceMember: "ConstructID",
-        label: "Mã công trình",
-        colspan: 2,
-        value: "",
-        isMultiSelect: true,
-        placeholder: "Mã công trình",
-        listoption: [],
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: ERPCOMMONCACHE_MAINTAINCONSTRUCTLST,
-        ValueMember: "ConstructID",
-        NameMember: "MaintainConstructName",
-        classNameCol: "col-custom"
-    },
+    // {
+    //     type: "ComboBoxNewChange",
+    //     name: "cbConstructID",
+    //     DataSourceMember: "ConstructID",
+    //     label: "Mã công trình",
+    //     colspan: 2,
+    //     value: "",
+    //     isMultiSelect: true,
+    //     placeholder: "Mã công trình",
+    //     listoption: [],
+    //     IsAutoLoadItemFromCache: true,
+    //     LoadItemCacheKeyID: ERPCOMMONCACHE_MAINTAINCONSTRUCTLST,
+    //     ValueMember: "ConstructID",
+    //     NameMember: "MaintainConstructName",
+    //     classNameCol: "col-custom"
+    // },
     {
         type: "Datetime",
         name: "dtFromDate",
@@ -199,11 +199,11 @@ export const SearchMLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "dtToDate"
     },
-    {
-        Name: "ConstructID",
-        DefaultValue: "",
-        BindControlName: "cbConstructID"
-    }
+    // {
+    //     Name: "ConstructID",
+    //     DefaultValue: "",
+    //     BindControlName: "cbConstructID"
+    // }
     
     
     // {

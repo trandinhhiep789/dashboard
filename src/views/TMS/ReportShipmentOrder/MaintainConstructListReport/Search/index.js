@@ -117,10 +117,10 @@ class SearchCom extends React.Component {
 
     handleSearchSubmit(formData, MLObject) {
         const postData = [
-            {
-                SearchKey: "@CONSTRUCTID",
-                SearchValue: MLObject.ConstructID.toString()
-            },
+            // {
+            //     SearchKey: "@CONSTRUCTID",
+            //     SearchValue: MLObject.ConstructID.toString()
+            // },
             {
                 SearchKey: "@FROMDATE",
                 SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString())
@@ -432,10 +432,10 @@ class SearchCom extends React.Component {
 
 
         const searchData = [
-            {
-                SearchKey: "@CONSTRUCTID",
-                SearchValue: MLObject.ConstructID.toString()
-            },
+            // {
+            //     SearchKey: "@CONSTRUCTID",
+            //     SearchValue: MLObject.ConstructID.toString()
+            // },
             {
                 SearchKey: "@FROMDATE",
                 SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString())
