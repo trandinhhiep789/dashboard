@@ -1045,7 +1045,7 @@ class ListShipCoordinatorRouteCom extends Component {
       <React.Fragment>
         <div className="card">
           <ReactNotification ref={this.notificationDOMRef} />
-          <div className="card-body">
+          <div className="card-body" style={{padding: "10px 10px 0 10px", backgroundColor: "aliceblue"}}>
             <div className="form-row">
               <div className="col-md-6">
                 <FormControl.ComboBoxSelect
@@ -1161,10 +1161,10 @@ class ListShipCoordinatorRouteCom extends Component {
             ) : (
               ""
             )}
-            <div className="row  mt-10 lstProductSelect">
-              <div className="col-12 group-shipingorder">
+            <div className="row lstProductSelect">
+              <div className="col-12 group-shipingorder " style={{height: '280px'}}>
                 <div className="jsgrid">
-                  <div className="jsgrid-grid-body">
+                  <div className="jsgrid-grid-body" style={{height: '280px', borderRadius: '5px', border: '1px solid #808080a3', overflow: 'auto'}}>
                     <table className="jsgrid-table">
                       <tbody>
                         {ShipmentOrder &&
@@ -1379,7 +1379,7 @@ class ListShipCoordinatorRouteCom extends Component {
               </div>
             </div>
             <div className="row  mt-10 lstProduct">
-              <div className="col-12 ">
+              <div className="col-12">
                 <div className="pull-left group-info-Route">
                   <ul>
                     {ShipmentRouteID != "" ? (
@@ -1426,7 +1426,7 @@ class ListShipCoordinatorRouteCom extends Component {
                     )}
                   </ul>
                 </div>
-                <div className="nav-group-action">
+                <div className="nav-group-action" style={{display: 'block', height: '0', position: 'absolute', top: '-14px', right: '10px'}}>
                   {ShipmentOrder.length > 1 ? (
                     <button className="btn btn-w-md btn-round btn-info" type="button" onClick={this.handleDistances.bind(this)}>
                       Tính khoảng cách
@@ -1567,7 +1567,7 @@ class ListShipCoordinatorRouteCom extends Component {
             </div>
           </div>
         </div>
-        <div className="modal-footer modal-footer-center">
+        <div className="modal-footer modal-footer-center border" style={{ backgroundColor: "aliceblue" }}>
           <button className="btn btn-w-md btn-round btn-secondary" type="button" onClick={this.handleClose.bind(this)}>
             Làm mới
           </button>
@@ -1606,6 +1606,5 @@ const mapDispatchToProps = (dispatch) => {
     },
   };
 };
-
 const ListShipCoordinatorRoute = connect(mapStateToProps, mapDispatchToProps)(ListShipCoordinatorRouteCom);
 export default ListShipCoordinatorRoute;
