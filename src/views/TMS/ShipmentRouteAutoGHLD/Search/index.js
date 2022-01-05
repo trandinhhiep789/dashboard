@@ -153,13 +153,9 @@ class SearchCom extends Component {
                     SearchKey: "@RECEIVERPHONENUMBER",
                     SearchValue: "",
                 },
-                // {
-                //     SearchKey: "@SHIPMENTORDERTYPEID",
-                //     SearchValue: "",
-                // },
                 {
                     SearchKey: "@SHIPMENTORDERTYPEID",
-                    SearchValue: "1001",
+                    SearchValue: "",
                 },
                 {
                     SearchKey: "@FromDate",
@@ -249,13 +245,9 @@ class SearchCom extends Component {
                     SearchKey: "@RECEIVERPHONENUMBER",
                     SearchValue: "",
                 },
-                // {
-                //     SearchKey: "@SHIPMENTORDERTYPEID",
-                //     SearchValue: ShipmentOrderInfo.ShipmentOrderTypeID,
-                // },
                 {
                     SearchKey: "@SHIPMENTORDERTYPEID",
-                    SearchValue: "1001", // Dịch vụ giao hàng có lắp đặt
+                    SearchValue: ShipmentOrderInfo.ShipmentOrderTypeID,
                 },
                 {
                     SearchKey: "@FromDate",
@@ -421,8 +413,6 @@ class SearchCom extends Component {
     }
 
     handleSearchSubmit(MLObject) {
-        console.log('423', MLObject);
-
         const postData = [
             {
                 SearchKey: "@Keyword",
@@ -432,19 +422,14 @@ class SearchCom extends Component {
                 SearchKey: "@RECEIVERPHONENUMBER",
                 SearchValue: "",
             },
-            //   {
-            //       SearchKey: "@SHIPMENTORDERTYPEID",
-            //       SearchValue: MLObject.ShipmentOrderTypeID,
-            //   },
             {
                 SearchKey: "@SHIPMENTORDERTYPEID",
-                SearchValue: "1001",
+                SearchValue: MLObject.ShipmentOrderTypeID,
             },
             {
                 SearchKey: "@FromDate",
                 SearchValue: MLObject.CreatedOrderTimeFo,
             },
-
             {
                 SearchKey: "@ToDate",
                 SearchValue: MLObject.CreatedOrderTimeTo,
@@ -613,9 +598,6 @@ class SearchCom extends Component {
                     itemListResult = tempItemList.concat(itemListOutside);
                     //itemListResult = tempItemList;
                 }
-
-                // console.log("itemListOutside", itemListOutside);
-                // console.log("itemListResult", itemListResult);
 
                 if (itemListOutside.length > 0) {
                     apiResult.ResultObject.ShipmentOrder_ItemList = itemListResult;
