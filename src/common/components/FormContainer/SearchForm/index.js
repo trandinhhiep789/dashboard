@@ -467,8 +467,8 @@ class SearchForm extends Component {
             // <form action="" onSubmit={this.handleSearchSubmit}>
             //     {elmentRender}
             // </form>
-            <div className={classNameCustom}>
-                <form className="card" action="" onSubmit={this.handleSearchSubmit}>
+            <div style={{padding: "0px" }} className={classNameCustom}>
+                <form className="card mb-0 pt-2 border" action="" onSubmit={this.handleSearchSubmit}>
                     <div className="card-body">
                         {elmentRender}
                     </div>

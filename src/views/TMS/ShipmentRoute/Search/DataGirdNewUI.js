@@ -7,7 +7,8 @@ import { GET_CACHE_USER_FUNCTION_LIST } from "./../../../../constants/functionLi
 import { hideModal } from "../../../../actions/modal";
 import { ModalManager } from "react-dynamic-modal";
 import { MessageModal } from "./../../../../common/components/Modal/index";
-import { Button, Card, Space, Table } from "antd";
+import { Button, Space, Table, Modal } from "antd";
+import { EyeTwoTone, EyeInvisibleTwoTone } from "@ant-design/icons";
 import { APIHostName } from "../constants";
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 
@@ -38,6 +39,8 @@ class DataGridNewUICom extends Component {
       DataSourceTable: [{}],
       DataSourceExpands: {},
       DataSourceTableRowSelect: [],
+      openModal: false,
+      expandedRowKeys: []
     };
   }
 
@@ -58,8 +61,9 @@ class DataGridNewUICom extends Component {
     }
 
     if (this.props.listColumn) {
+      console.log("this.props.listColumn: ", this.props.listColumn)
       const listColumn = this.props.listColumn.map((item, index) => {
-        return { title: <span style={{ fontWeight: "bold" }}>{item.Caption}</span>, dataIndex: item.DataSourceMember, key: item.ShipmentRouteID, width: item.Width + "px" };
+        return { title: <span style={{ fontWeight: "bold" }}>{item.Caption}</span>, dataIndex: item.DataSourceMember, key: item.ShipmentRouteID, width: item.Width + "px", render: "" };
       });
       this.setState({ ListColumnTable: listColumn });
     }
@@ -205,7 +209,8 @@ class DataGridNewUICom extends Component {
 
   renderDataGrid() {
     return (
-      <Table
+      <div>
+        <Table
         id="tableChildren"
         rowKey={(item) => item.ShipmentRouteID}
         columns={this.state.ListColumnTable}
@@ -217,6 +222,7 @@ class DataGridNewUICom extends Component {
         expandable={{
           expandedRowRender: (record) => {
             console.log(this.state.DataSourceExpands);
+            console.log("record: " + record)
 
             const columnChild = [
               { title: <span style={{ fontWeight: "bold" }}>Thời gian giao</span>, dataIndex: "ExpectedDeliveryDate", width: "20%" },
@@ -237,8 +243,19 @@ class DataGridNewUICom extends Component {
                 };
               });
             return (
-              <div style={{ border: "1px solid rgb(0, 120, 220)" }}>
-                <Card title="Thông tin phân tuyến" headStyle={{ fontWeight: "bold" }} bordered={false} style={{ width: "100%" }}>
+              <Modal
+                title="Thông tin phân tuyến"
+                centered
+                visible={this.state.openModal}
+                onOk={() => this.setState({openModal:false})}
+                onCancel={() => this.setState({openModal:false})}
+                width={1000}
+                afterClose={() => {
+                  this.setState({openModal:false})
+                  this.setState({expandedRowKeys: []});
+                }}
+              >
+                <div style={{ border: "1px solid rgb(0, 120, 220)" }}>
                   <Table
                     showHeader={false}
                     columns={[
@@ -270,22 +287,35 @@ class DataGridNewUICom extends Component {
                     pagination={false}
                   />
                   <Table id="tableChildrenDetail" columns={columnChild} dataSource={dataSourceChild} pagination={false} bordered size="small" />
-                </Card>
-              </div>
+            
+                </div>
+              </Modal>
             );
           },
           onExpand: (expanded, record) => {
+            var keys = [];
             if (expanded) {
               this.callLoadData(record.ShipmentRouteID);
+              this.setState({openModal:true})
+              keys.push(record.ShipmentRouteID);
+              this.setState({expandedRowKeys: keys});
             }
           },
-          expandIcon: null,
+          expandIcon: ({ expanded, onExpand, record }) =>
+            expanded ? (
+                <EyeInvisibleTwoTone twoToneColor="#33cabb" onClick={e => onExpand(record, e)} />
+            ) : (
+              <EyeTwoTone twoToneColor="#33cabb" onClick={e => onExpand(record, e)} />
+          ),
           columnWidth: 0,
-          expandRowByClick: true,
+          expandRowByClick: false,
         }}
+        expandedRowKeys={this.state.expandedRowKeys}
       />
+      </div>
     );
   }
+
 
   checkPermission(permissionKey) {
     return new Promise((resolve, reject) => {
@@ -345,11 +375,11 @@ class DataGridNewUICom extends Component {
     return (
       <div className={classCustom}>
         <div className="card">
-          <div className="card-title">
+          <div className="">
             {this.props.title != undefined || this.props.title != "" ? <h4 className="title">{this.props.title}</h4> : ""}
 
             {hasHeaderToolbar && (
-              <div className="flexbox mb-10 ">
+              <div className="flexbox mr-10 ">
                 {searchTextbox}
                 <div className="btn-toolbar">
                   <div className="btn-group btn-group-sm">
@@ -375,7 +405,7 @@ class DataGridNewUICom extends Component {
                     ) : (
                       ""
                     )}
-                    {this.props.IsCustomAddNew == true ? (
+                    {this.props.IsCustomAddNew == true && this.state.DataSourceTableRowSelect.length > 0 ? (
                       <Button type="primary" size="middle" shape="round" onClick={this.handleInsertCustomClick.bind(this)}>
                         <Space>
                           <i className="fa fa-plus ff"></i> Tính lại tuyến đường
@@ -384,7 +414,7 @@ class DataGridNewUICom extends Component {
                     ) : (
                       ""
                     )}
-                    {this.props.IsDelete == true || this.props.IsDelete == undefined ? (
+                    {(this.props.IsDelete == true || this.props.IsDelete == undefined) && this.state.DataSourceTableRowSelect.length > 0 ? (
                       <Button type="default" size="middle" shape="round" className="ml-10" danger onClick={this.handleDeleteClick}>
                         <Space>
                           <i className="fa fa-remove"></i> Xoá
