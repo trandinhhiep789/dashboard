@@ -196,7 +196,7 @@ class EditCom extends React.Component {
     getDataForExport() {
         const id = this.props.match.params.id;
         this.props.callFetchAPI(APIHostName, ExportMaterialAPIPath, id).then(apiResult => {
-            console.log("apiResult", apiResult);
+            //console.log("apiResult", apiResult);
             if (!apiResult.IsError && apiResult.ResultObject != null) {
                 const exelData = apiResult.ResultObject.map((item, index) => {
                     let element = {
@@ -341,6 +341,8 @@ class EditCom extends React.Component {
 
 
     onHandleImportFile(resultRows, errors) {
+        debugger;
+        const id = this.props.match.params.id;
         const CreatedUser = this.props.AppInfo.LoginInfo.Username;
         const LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         const importData = resultRows.map(item => {
@@ -355,18 +357,25 @@ class EditCom extends React.Component {
         })
 
 
-        console.log("data", importData);
+        //console.log("data", importData);
+        
 
         let _isError = false;
         importData.map((itemObject, index) => {
+            let _OutputUsAgeType = parseFloat(itemObject.OutputUsAgeType);
             if (!itemObject.InstallBundleID && _isError == false) {
                 this.addNotification("Vui lòng nhập mã gói lắp đặt.", true);
                 _isError = true;
             }
-            if (!itemObject.MaterialGroupID && _isError == false) {
+            else if (itemObject.InstallBundleID.toString() != id.toString() && _isError == false) {
+                this.addNotification("Mã gói lắp đặt không hợp lệ.", true);
+                _isError = true;
+            }
+            else if (!itemObject.MaterialGroupID && _isError == false) {
                 this.addNotification("Vui lòng nhập mã nhóm vật tư.", true);
                 _isError = true;
-            } else if (isNaN(parseFloat(itemObject.StandardUsAgeQuantity)) && _isError == false) {
+            } 
+            else if (isNaN(parseFloat(itemObject.StandardUsAgeQuantity)) && _isError == false) {
                 this.addNotification("Vui lòng nhập số lượng sử dụng chuẩn.", true);
                 _isError = true;
             }
@@ -378,12 +387,20 @@ class EditCom extends React.Component {
                 this.addNotification("Vui lòng nhập loại giới hạn tạm ứng.", true);
                 _isError = true;
             }
+            else if ((isNaN(_OutputUsAgeType) || ![1, 2, 3].includes(_OutputUsAgeType)) && _isError == false) {
+                this.addNotification("Vui lòng nhập hình thức xuất sử dụng.", true);
+                _isError = true;
+            }
         });
 
         if (_isError) {
             return;
         }
 
+        if(errors.length>0){
+            this.addNotification("File import không hợp lệ", true);
+            return;
+        }
 
         this.props.callFetchAPI(APIHostName, ImportMaterialAPIPath, importData).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
