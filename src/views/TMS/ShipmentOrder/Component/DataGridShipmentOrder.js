@@ -822,7 +822,7 @@ class DataGridShipmentOderCom extends Component {
                                             </label>
                                             <label className="item address-repository-created">
                                                 <span>
-                                                    {rowItem.SenderFullName}
+                                                    {`${rowItem.SenderStoreID} - ${rowItem.SenderFullName}`}
                                                 </span>
                                             </label>
                                             <label className="item creacte-time">
@@ -911,19 +911,19 @@ class DataGridShipmentOderCom extends Component {
                                                     </span>
                                                 ) :
                                                 (
-                                                (rowItem.TotalPaidInMoney + rowItem.TotalUnPaidInMoney) > 0 ?
-                                                    (
-                                                        <div className="item price3">
-                                                            <span className="price-title">Nợ: </span>
-                                                            <span className="price-debt">-{rowItem.TotalUnPaidInMoney >= 0 ? formatMoney(rowItem.TotalUnPaidInMoney, 0) : 0}đ</span>
-                                                        </div>
-                                                    ) :
-                                                    (
-                                                        <div className="item price3">
-                                                            <span className="price-title">Nợ: </span>
-                                                            <span className="price-debt">-{(rowItem.TotalCOD - rowItem.TotalReturnPrice) <= 0 ? formatMoney(rowItem.TotalSaleMaterialMoney) : formatMoney(rowItem.TotalCOD+rowItem.TotalSaleMaterialMoney-rowItem.TotalReturnPrice, 0)}</span>
-                                                        </div>
-                                                    )
+                                                    (rowItem.TotalPaidInMoney + rowItem.TotalUnPaidInMoney) > 0 ?
+                                                        (
+                                                            <div className="item price3">
+                                                                <span className="price-title">Nợ: </span>
+                                                                <span className="price-debt">-{rowItem.TotalUnPaidInMoney >= 0 ? formatMoney(rowItem.TotalUnPaidInMoney, 0) : 0}đ</span>
+                                                            </div>
+                                                        ) :
+                                                        (
+                                                            <div className="item price3">
+                                                                <span className="price-title">Nợ: </span>
+                                                                <span className="price-debt">-{(rowItem.TotalCOD - rowItem.TotalReturnPrice) <= 0 ? formatMoney(rowItem.TotalSaleMaterialMoney) : formatMoney(rowItem.TotalCOD + rowItem.TotalSaleMaterialMoney - rowItem.TotalReturnPrice, 0)}</span>
+                                                            </div>
+                                                        )
                                                 )
                                             }
                                         </div>
