@@ -1045,7 +1045,7 @@ class ListShipCoordinatorRouteCom extends Component {
       <React.Fragment>
         <div className="card">
           <ReactNotification ref={this.notificationDOMRef} />
-          <div className="card-body" style={{padding: "10px 10px 0 10px", backgroundColor: "aliceblue"}}>
+          <div className="card-body" style={{ backgroundColor: "aliceblue"}}>
             <div className="form-row">
               <div className="col-md-6">
                 <FormControl.ComboBoxSelect
