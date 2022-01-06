@@ -909,7 +909,6 @@ class SearchCom extends Component {
 
             this.props.callFetchAPI(APIHostName, "api/Routing/VrpTimeWindows", arrRequest).then((apiResult) => {
                 console.log('937', apiResult);
-                return;
                 if (!apiResult.IsError) {
                     const { MotorRoute, TruckRoute, ListDroppedShipmentOrder } = apiResult.ResultObject;
 
@@ -917,25 +916,21 @@ class SearchCom extends Component {
                     let objShipmentRouteAutoDataSource = changeState.ShipmentRouteAutoDataSource;
                     let objUIEffect = changeState.UIEffect;
                     let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
-                    let objTabShipmentRouteAuto = objUIEffect.TabShipmentRouteAuto;
 
-                    objTabShipmentRouteAuto = { ...objTabShipmentRouteAuto, Content: this.state.ActiveTimeFrame.Name };
                     objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: false, IsDisabled: true };
-                    objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto, TabShipmentRouteAuto: objTabShipmentRouteAuto };
+                    objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto};
                     changeState = { ...changeState, UIEffect: objUIEffect };
                     objShipmentRouteAutoDataSource = { Motor: MotorRoute, Truck: TruckRoute, Dropped: ListDroppedShipmentOrder };
-                    changeState = { ...changeState, ActiveTab: "9", ShipmentRouteAutoDataSource: objShipmentRouteAutoDataSource };
+                    changeState = { ...changeState, ActiveTab: "2", ShipmentRouteAutoDataSource: objShipmentRouteAutoDataSource };
 
                     this.setState(changeState);
                 } else {
                     let changeState = this.state;
                     let objUIEffect = changeState.UIEffect;
                     let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
-                    let objTabShipmentRouteAuto = objUIEffect.TabShipmentRouteAuto;
-
-                    objTabShipmentRouteAuto = { ...objTabShipmentRouteAuto, Content: "" };
+                   
                     objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: false };
-                    objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto, TabShipmentRouteAuto: objTabShipmentRouteAuto };
+                    objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto};
                     changeState = { ...changeState, UIEffect: objUIEffect };
 
                     this.setState(changeState);
