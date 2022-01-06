@@ -1055,7 +1055,7 @@ export const InstallBundle_MateriaColumnListEdit = [
         loaditemcachekeyid: "ERPCOMMONCACHE.MATERIALGROUP",
         valuemember: "MaterialGroupID",
         nameMember: "MaterialGroupName",
-        namelabel: "MaterialGroupName",
+        namelabel: "MaterialGroupIDName",
         OrderIndex: 1,
         hideInput: false,
         Colmd: 12,
