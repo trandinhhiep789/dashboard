@@ -1813,6 +1813,13 @@ const AppMenu = [
                 MenuIcon: "",
                 SubMenu: [],
             },
+            {
+                MenuName: "PaymentImportTMSReport",
+                MenuTitle: "Báo cáo nhập trả trên TMS",
+                LinkTo: "/PaymentImportTMSReport",
+                MenuIcon: "",
+                SubMenu: [],
+            },
         ],
     },
     {
