@@ -273,7 +273,7 @@ class EditCom extends React.Component {
             const data = new Blob([excelBuffer], { type: fileType });
 
 
-            FileSaver.saveAs(data, "Danh sách vị trí thưởng của nhân viên" + fileExtension);
+            FileSaver.saveAs(data, "Danh sách vật tư của gói lắp đặt" + fileExtension);
 
             result = {
                 IsError: false,
