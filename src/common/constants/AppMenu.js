@@ -1814,9 +1814,9 @@ const AppMenu = [
                 SubMenu: [],
             },
             {
-                MenuName: "PaymentImportTMSReport",
+                MenuName: "TMSSOReturnItemReport",
                 MenuTitle: "Báo cáo nhập trả trên TMS",
-                LinkTo: "/PaymentImportTMSReport",
+                LinkTo: "/TMSSOReturnItemReport",
                 MenuIcon: "",
                 SubMenu: [],
             },

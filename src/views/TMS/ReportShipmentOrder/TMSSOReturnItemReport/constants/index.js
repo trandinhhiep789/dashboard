@@ -1,5 +1,5 @@
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "";
+export const SearchAPIPath = "api/ShipmentOrder/SearchTMSSOReturnItemReport";
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
     { Link: "", Title: "Báo cáo nhập trả trên TMS" },
@@ -65,10 +65,10 @@ export const GridColumnList = [
         Width: 100,
     },
     {
-        Name: "PartnerSaleOderID",
+        Name: "PartnerSaleOrderID",
         Type: "text",
         Caption: "Tên đơn hàng",
-        DataSourceMember: "PartnerSaleOderID",
+        DataSourceMember: "PartnerSaleOrderID",
         Width: 200,
     },
     {
@@ -101,7 +101,7 @@ export const GridColumnList = [
     },
     {
         Name: "OutputGoodsDate",
-        Type: "text",
+        Type: "datetime",
         Caption: "Ngày xuất hàng",
         DataSourceMember: "OutputGoodsDate",
         Width: 200,
@@ -121,17 +121,17 @@ export const GridColumnList = [
         Width: 200,
     },
     {
-        Name: "coordinatorStoreID",
+        Name: "CoordinatorStoreID",
         Type: "text",
         Caption: "Mã kho điều phối",
-        DataSourceMember: "coordinatorStoreID",
+        DataSourceMember: "CoordinatorStoreID",
         Width: 200,
     },
     {
-        Name: "coordinatorStoreName",
+        Name: "CoordinatorStoreName",
         Type: "text",
         Caption: "Tên kho điều phối",
-        DataSourceMember: "coordinatorStoreName",
+        DataSourceMember: "CoordinatorStoreName",
         Width: 200,
     },
     {
@@ -142,10 +142,10 @@ export const GridColumnList = [
         Width: 200,
     },
     {
-        Name: "DeliverUser",
+        Name: "DeliverUserList",
         Type: "text",
         Caption: "Nhân viên giao",
-        DataSourceMember: "DeliverUser",
+        DataSourceMember: "DeliverUserList",
         Width: 200,
     },
     {

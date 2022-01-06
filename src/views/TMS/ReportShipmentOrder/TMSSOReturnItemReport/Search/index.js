@@ -49,7 +49,7 @@ class SearchCom extends React.Component {
       if (apiResult.IsError) {
         this.showMessage(apiResult.Message);
       } else {
-        let templateID = apiResult.ResultObject.CacheData.filter((x) => x.TMSConfigID == "TEMPLATE_EXPORT_TEAMLEADERBONUSFUNDREPORT");
+        let templateID = apiResult.ResultObject.CacheData.filter((x) => x.TMSConfigID == "TEMPLATE_EXPORT_TMSSORETURNITEMREPORT");
 
         this.setState({
           TemplateID: templateID[0].TMSConfigValue,
@@ -66,8 +66,16 @@ class SearchCom extends React.Component {
   handleSearchSubmit(formData, MLObject) {
     const postData = [
       {
-        SearchKey: "@REWARDMONTH",
-        SearchValue: toIsoStringCus(new Date(MLObject.Month).toISOString()),
+        SearchKey: "@KEYWORD",
+        SearchValue: MLObject.KeyWord,
+      },
+      {
+        SearchKey: "@FROMDATE",
+        SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString()),
+      },
+      {
+        SearchKey: "@TODATE",
+        SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString()),
       },
     ];
 
@@ -87,17 +95,25 @@ class SearchCom extends React.Component {
   handleExportExcel(formData, MLObject) {
     const postData = [
       {
-        SearchKey: "@REWARDMONTH",
-        SearchValue: toIsoStringCus(new Date(MLObject.Month).toISOString()),
+        SearchKey: "@KEYWORD",
+        SearchValue: MLObject.KeyWord,
+      },
+      {
+        SearchKey: "@FROMDATE",
+        SearchValue: toIsoStringCus(new Date(MLObject.FromDate).toISOString()),
+      },
+      {
+        SearchKey: "@TODATE",
+        SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString()),
       },
     ];
 
     const postDataNew = {
       DataExportTemplateID: this.state.TemplateID,
-      LoadDataStoreName: "TMS.TMS_TMSMONTHLYREWARD_BYTYPE",
-      KeyCached: "TMS_TEAMLEADERBONUSFUNDREPORT_EXPORT",
+      LoadDataStoreName: "TMS.TMS_SO_RETURN_ITEM_REPORT",
+      KeyCached: "",
       SearchParamList: postData,
-      ExportDataParamsDescription: "REWARDMONTH: " + toIsoStringCus(new Date(MLObject.Month).toISOString())
+      ExportDataParamsDescription: "KEYWORD: " +  MLObject.KeyWord + " - FROMDATE: " + toIsoStringCus(new Date(MLObject.FromDate).toISOString()) + " - TODATE: " + toIsoStringCus(new Date(MLObject.ToDate).toISOString())
     };
 
     this.callSearchDataExportExcel(postDataNew);
