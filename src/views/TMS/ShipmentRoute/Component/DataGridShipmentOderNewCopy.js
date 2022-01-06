@@ -1033,7 +1033,7 @@ const dataGridShipmentOderNewCom = (props) => {
                                 <div id="changeMaxWidthNew" className="card cardShipmentOrder ShipmentRouteCus" style={{ maxWidth: !changeGird ? maxWidthGird : maxWidthGird - widthPercent }}>
                                     <ReactNotification ref={notificationDOMRef} />
 
-                                    <div id="fixedCard" className={classhearderFix} style={{ maxWidth: !changeGird ? maxWidthGird : maxWidthGird - widthPercent }}>
+                                    <div id="fixedCard" className={classhearderFix} style={{ maxWidth: !changeGird ? maxWidthGird : maxWidthGird - widthPercent, zIndex: '100', boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px' }}>
                                         <h4 className="title">{props.title}</h4>
 
                                         {hasHeaderToolbar && (

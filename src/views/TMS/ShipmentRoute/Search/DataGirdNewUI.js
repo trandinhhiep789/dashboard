@@ -250,13 +250,15 @@ class DataGridNewUICom extends Component {
                 onOk={() => this.setState({openModal:false})}
                 onCancel={() => this.setState({openModal:false})}
                 width={1000}
+                maskClosable={false}
                 afterClose={() => {
                   this.setState({openModal:false})
                   this.setState({expandedRowKeys: []});
                 }}
               >
-                <div style={{ border: "1px solid rgb(0, 120, 220)" }}>
+                <div>
                   <Table
+                    bordered
                     showHeader={false}
                     columns={[
                       { title: "", dataIndex: "Title1", width: "16.6%" },
@@ -285,7 +287,7 @@ class DataGridNewUICom extends Component {
                       },
                     ]}
                     pagination={false}
-                  />
+                  /><br/>
                   <Table id="tableChildrenDetail" columns={columnChild} dataSource={dataSourceChild} pagination={false} bordered size="small" />
             
                 </div>
