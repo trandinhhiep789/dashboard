@@ -485,7 +485,7 @@ class DataGridShipmentOderCom extends Component {
         this.props.onSubmitItem(listMLObject);
     }
     handleUserCoordinator() {
-       
+
     }
 
     handleSelected() {
@@ -704,7 +704,7 @@ class DataGridShipmentOderCom extends Component {
                                     rowClass = "jsgrid-alt-row";
                                 }
                                 let rowtrClass = "unReadingItem";
-                                if (rowItem.SelectedUser != ""||rowItem.IsView ==true) {
+                                if (rowItem.SelectedUser != "" || rowItem.IsView == true) {
                                     rowtrClass = "noReadingItem readingItem";
                                 }
 
@@ -796,7 +796,7 @@ class DataGridShipmentOderCom extends Component {
                                             </label>
                                             <label className="item address-repository-created">
                                                 <span>
-                                                    {rowItem.SenderFullName}
+                                                    {`${rowItem.SenderStoreID} - ${rowItem.SenderFullName}`}
                                                 </span>
                                             </label>
                                             <label className="item creacte-time">
@@ -1118,7 +1118,7 @@ class DataGridShipmentOderCom extends Component {
                                                                     <i className="fa fa-plus">Thêm vận đơn</i>
                                                                 </button>
                                                                 <div className="groupActionRemember ml-10">
-                                                                        {/* <button type="button" onClick={this.handleSelected.bind(this)} className="btn " title="" data-provide="tooltip" data-original-title="Ghi nhớ">
+                                                                    {/* <button type="button" onClick={this.handleSelected.bind(this)} className="btn " title="" data-provide="tooltip" data-original-title="Ghi nhớ">
                                                                             <i className="fa fa-save"></i>
                                                                         </button>
 

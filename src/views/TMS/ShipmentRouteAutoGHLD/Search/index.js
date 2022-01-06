@@ -120,21 +120,22 @@ class SearchCom extends Component {
 
         this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
+        this.addNotification = this.addNotification.bind(this);
+        this.handleCheckShip = this.handleCheckShip.bind(this);
+        this.handleClickShip = this.handleClickShip.bind(this);
+        this.handleClickShipmentRoute = this.handleClickShipmentRoute.bind(this);
+        this.handleClose = this.handleClose.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleOnChangePage = this.handleOnChangePage.bind(this);
-        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
-        this.handleUserCoordinator = this.handleUserCoordinator.bind(this);
-        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
-        this.handleCheckShip = this.handleCheckShip.bind(this);
-        this.handleClose = this.handleClose.bind(this);
-        this.handleShowModel = this.handleShowModel.bind(this);
         this.handleRemoveCheckShip = this.handleRemoveCheckShip.bind(this);
-        this.handleClickShipmentRoute = this.handleClickShipmentRoute.bind(this);
-        this.handleClickShip = this.handleClickShip.bind(this);
-        this.addNotification = this.addNotification.bind(this);
+        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+        this.handleShipmentRouteAuto = this.handleShipmentRouteAuto.bind();
         this.handleShowModalMapMotorRoute = this.handleShowModalMapMotorRoute.bind(this);
         this.handleShowModalMapTruckRoute = this.handleShowModalMapTruckRoute.bind(this);
+        this.handleShowModel = this.handleShowModel.bind(this);
+        this.handleUserCoordinator = this.handleUserCoordinator.bind(this);
+        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
 
     componentDidMount() {
@@ -153,13 +154,9 @@ class SearchCom extends Component {
                     SearchKey: "@RECEIVERPHONENUMBER",
                     SearchValue: "",
                 },
-                // {
-                //     SearchKey: "@SHIPMENTORDERTYPEID",
-                //     SearchValue: "",
-                // },
                 {
                     SearchKey: "@SHIPMENTORDERTYPEID",
-                    SearchValue: "1001",
+                    SearchValue: "",
                 },
                 {
                     SearchKey: "@FromDate",
@@ -249,13 +246,9 @@ class SearchCom extends Component {
                     SearchKey: "@RECEIVERPHONENUMBER",
                     SearchValue: "",
                 },
-                // {
-                //     SearchKey: "@SHIPMENTORDERTYPEID",
-                //     SearchValue: ShipmentOrderInfo.ShipmentOrderTypeID,
-                // },
                 {
                     SearchKey: "@SHIPMENTORDERTYPEID",
-                    SearchValue: "1001", // Dịch vụ giao hàng có lắp đặt
+                    SearchValue: ShipmentOrderInfo.ShipmentOrderTypeID,
                 },
                 {
                     SearchKey: "@FromDate",
@@ -421,8 +414,6 @@ class SearchCom extends Component {
     }
 
     handleSearchSubmit(MLObject) {
-        console.log('423', MLObject);
-
         const postData = [
             {
                 SearchKey: "@Keyword",
@@ -432,19 +423,14 @@ class SearchCom extends Component {
                 SearchKey: "@RECEIVERPHONENUMBER",
                 SearchValue: "",
             },
-            //   {
-            //       SearchKey: "@SHIPMENTORDERTYPEID",
-            //       SearchValue: MLObject.ShipmentOrderTypeID,
-            //   },
             {
                 SearchKey: "@SHIPMENTORDERTYPEID",
-                SearchValue: "1001",
+                SearchValue: MLObject.ShipmentOrderTypeID,
             },
             {
                 SearchKey: "@FromDate",
                 SearchValue: MLObject.CreatedOrderTimeFo,
             },
-
             {
                 SearchKey: "@ToDate",
                 SearchValue: MLObject.CreatedOrderTimeTo,
@@ -613,9 +599,6 @@ class SearchCom extends Component {
                     itemListResult = tempItemList.concat(itemListOutside);
                     //itemListResult = tempItemList;
                 }
-
-                // console.log("itemListOutside", itemListOutside);
-                // console.log("itemListResult", itemListResult);
 
                 if (itemListOutside.length > 0) {
                     apiResult.ResultObject.ShipmentOrder_ItemList = itemListResult;
@@ -948,11 +931,9 @@ class SearchCom extends Component {
 
             this.setState(changeState);
 
-            let objRequest = {
-                ListShipmentOrder: arrRequest,
-            };
-
-            this.props.callFetchAPI(APIHostName, "api/Routing/CapacityConstraints", objRequest).then((apiResult) => {
+            this.props.callFetchAPI(APIHostName, "api/Routing/VrpTimeWindows", arrRequest).then((apiResult) => {
+                console.log('937', apiResult);
+                return;
                 if (!apiResult.IsError) {
                     const { MotorRoute, TruckRoute, ListDroppedShipmentOrder } = apiResult.ResultObject;
 

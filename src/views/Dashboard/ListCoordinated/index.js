@@ -151,7 +151,7 @@ class ListCoordinatedCom extends Component {
                                                             </label>
                                                             <label className="item address-repository-created">
                                                                 <span>
-                                                                    {rowItem.SenderFullName}
+                                                                    {`${rowItem.SenderStoreID} - ${rowItem.SenderFullName}`}
                                                                 </span>
                                                             </label>
                                                             <label className="item creacte-time">
