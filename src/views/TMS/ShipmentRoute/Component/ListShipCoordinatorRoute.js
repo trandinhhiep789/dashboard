@@ -1045,7 +1045,7 @@ class ListShipCoordinatorRouteCom extends Component {
       <React.Fragment>
         <div className="card">
           <ReactNotification ref={this.notificationDOMRef} />
-          <div className="card-body" style={{padding: "10px 10px 0 10px", backgroundColor: "aliceblue"}}>
+          <div className="card-body" style={{ backgroundColor: "aliceblue"}}>
             <div className="form-row">
               <div className="col-md-6">
                 <FormControl.ComboBoxSelect
@@ -1434,10 +1434,10 @@ class ListShipCoordinatorRouteCom extends Component {
                   ) : (
                     ""
                   )}
-                  <button type="button" onClick={() => this.HandleChangeGird(1)}>
+                  <button style={{boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px'}} type="button" onClick={() => this.HandleChangeGird(1)}>
                     <i className="ti-menu-alt"></i>
                   </button>
-                  <button type="button" onClick={() => this.HandleChangeGird(2)}>
+                  <button style={{boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px'}} type="button" onClick={() => this.HandleChangeGird(2)}>
                     <i className="ti-menu"></i>
                   </button>
                 </div>
@@ -1450,7 +1450,7 @@ class ListShipCoordinatorRouteCom extends Component {
                         {resultShipmentRoute.map((item, index) => {
                           return (
                             <div key={"Route" + index} className="col-md-6 col-lg-4 each-slide">
-                              <div className="card card-secondary">
+                              <div className="card card-secondary" style={{boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px'}}>
                                 <div className="card-body">
                                   <ul onClick={this.handleClickRoute(item.ShipmentRouteID)}>
                                     <li className="item infoOder">
@@ -1488,7 +1488,7 @@ class ListShipCoordinatorRouteCom extends Component {
                         {resultShipmentRouteSame.map((item, index) => {
                           return (
                             <div key={"Route" + index} className="col-md-6 col-lg-4 each-slide">
-                              <div className="card card-secondary">
+                              <div className="card card-secondary" style={{boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px'}}>
                                 <div className="card-body">
                                   <ul onClick={this.handleClickRoute(item.ShipmentRouteID)}>
                                     <li className="item infoOder">
@@ -1528,7 +1528,7 @@ class ListShipCoordinatorRouteCom extends Component {
                           if (resultdd == undefined) {
                             return (
                               <div key={"Same" + index} className="col-md-6 col-lg-4 each-slide">
-                                <div className="card card-secondary">
+                                <div className="card card-secondary" style={{boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px'}}>
                                   <div className="card-body">
                                     <ul onClick={this.handleClickShipmentOrderSame(item.ShipmentOrderID)}>
                                       <li className="item infoOder">
