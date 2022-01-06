@@ -130,7 +130,7 @@ class SearchCom extends Component {
         this.handleOnChangePage = this.handleOnChangePage.bind(this);
         this.handleRemoveCheckShip = this.handleRemoveCheckShip.bind(this);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
-        this.handleShipmentRouteAuto = this.handleShipmentRouteAuto.bind();
+        this.handleShipmentRouteAuto = this.handleShipmentRouteAuto.bind(this);
         this.handleShowModalMapMotorRoute = this.handleShowModalMapMotorRoute.bind(this);
         this.handleShowModalMapTruckRoute = this.handleShowModalMapTruckRoute.bind(this);
         this.handleShowModel = this.handleShowModel.bind(this);
@@ -895,45 +895,20 @@ class SearchCom extends Component {
 
     // Xử lý phân tuyến tự động
     handleShipmentRouteAuto() {
-        let arrRequest = [];
-        for (const [key, value] of Object.entries(this.state.GridDataShip)) {
-            if (value.length > 0) {
-                arrRequest = value.reduce((curArray, curValue) => {
-                    return [...curArray, { ...curValue }];
-                }, []);
-            }
-        }
-
-        if (arrRequest.length > 0 && arrRequest.length < 2) {
-            this.showMessage("Phải chọn ít nhất là 2 vận đơn");
-            return;
-        }
-
-        let messageContent =
-            arrRequest.length === 0
-                ? `Muốn phân tuyến tự động tất cả các đơn trong khung thời gian ${this.state.ActiveTimeFrame.Name}`
-                : `Muốn phân tuyến tự động ${arrRequest.length} đơn trong khung thời gian ${this.state.ActiveTimeFrame.Name}`;
-
-        if (arrRequest.length == 0) {
-            arrRequest = [...this.state[this.state.ActiveTimeFrame.TimeFrame]];
-        }
-
-        this.showMessage(messageContent, true, "Xác nhận", () => {
+        let arrRequest = this.state.GridDataSource;
+    
+        this.showMessage("Phân tuyến tự động tất cả vận đơn", true, "Xác nhận", () => {
             let changeState = this.state;
             let objUIEffect = changeState.UIEffect;
             let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
-            let objTabShipmentRouteAuto = objUIEffect.TabShipmentRouteAuto;
-
-            objTabShipmentRouteAuto = { ...objTabShipmentRouteAuto, Content: this.state.ActiveTimeFrame.Name };
             objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: true };
-            objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto, TabShipmentRouteAuto: objTabShipmentRouteAuto };
+            objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto };
             changeState = { ...changeState, UIEffect: objUIEffect };
 
             this.setState(changeState);
 
             this.props.callFetchAPI(APIHostName, "api/Routing/VrpTimeWindows", arrRequest).then((apiResult) => {
                 console.log('937', apiResult);
-                return;
                 if (!apiResult.IsError) {
                     const { MotorRoute, TruckRoute, ListDroppedShipmentOrder } = apiResult.ResultObject;
 
@@ -941,25 +916,21 @@ class SearchCom extends Component {
                     let objShipmentRouteAutoDataSource = changeState.ShipmentRouteAutoDataSource;
                     let objUIEffect = changeState.UIEffect;
                     let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
-                    let objTabShipmentRouteAuto = objUIEffect.TabShipmentRouteAuto;
 
-                    objTabShipmentRouteAuto = { ...objTabShipmentRouteAuto, Content: this.state.ActiveTimeFrame.Name };
                     objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: false, IsDisabled: true };
-                    objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto, TabShipmentRouteAuto: objTabShipmentRouteAuto };
+                    objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto};
                     changeState = { ...changeState, UIEffect: objUIEffect };
                     objShipmentRouteAutoDataSource = { Motor: MotorRoute, Truck: TruckRoute, Dropped: ListDroppedShipmentOrder };
-                    changeState = { ...changeState, ActiveTab: "9", ShipmentRouteAutoDataSource: objShipmentRouteAutoDataSource };
+                    changeState = { ...changeState, ActiveTab: "2", ShipmentRouteAutoDataSource: objShipmentRouteAutoDataSource };
 
                     this.setState(changeState);
                 } else {
                     let changeState = this.state;
                     let objUIEffect = changeState.UIEffect;
                     let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
-                    let objTabShipmentRouteAuto = objUIEffect.TabShipmentRouteAuto;
-
-                    objTabShipmentRouteAuto = { ...objTabShipmentRouteAuto, Content: "" };
+                   
                     objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: false };
-                    objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto, TabShipmentRouteAuto: objTabShipmentRouteAuto };
+                    objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto};
                     changeState = { ...changeState, UIEffect: objUIEffect };
 
                     this.setState(changeState);
