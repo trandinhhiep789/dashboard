@@ -930,11 +930,11 @@ class SearchCom extends Component {
 
             this.setState(changeState);
 
-            let objRequest = {
-                ListShipmentOrder: arrRequest,
-            };
+            // let objRequest = {
+            //     ListShipmentOrder: arrRequest,
+            // };
 
-            this.props.callFetchAPI(APIHostName, "api/Routing/CapacityConstraints", objRequest).then((apiResult) => {
+            this.props.callFetchAPI(APIHostName, "api/Routing/CapacityConstraints", arrRequest).then((apiResult) => {
                 if (!apiResult.IsError) {
                     const { MotorRoute, TruckRoute, ListDroppedShipmentOrder } = apiResult.ResultObject;
 
