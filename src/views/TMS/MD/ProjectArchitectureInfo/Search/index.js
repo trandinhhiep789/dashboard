@@ -271,7 +271,7 @@ class SearchCom extends React.Component {
             if (!apiResult.IsError && apiResult.ResultObject != null) {
                 const exelData = apiResult.ResultObject.map((item, index) => {
                     let element = {
-                        "Mã loại công trình": item.ProjecTypeID,
+                        "Mã loại công trình": item.ProjectTypeID,
                         "Tên loại công trình": item.ProjectTypeName,
                         "Xây mới : Số ngày hoàn tất": item.BuildDay,
                         "Sửa chữa - Số ngày hoàn tất": item.RepairDay,
