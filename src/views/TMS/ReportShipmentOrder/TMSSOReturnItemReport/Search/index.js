@@ -15,7 +15,7 @@ import { toIsoStringCus } from "../../../../../utils/function";
 import { showModal, hideModal } from "../../../../../actions/modal";
 import { MODAL_TYPE_DOWNLOAD_EXCEL, MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
 import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../../constants/keyCache";
-import { TMS_TEAMLEADERBONUSFUNDREPORT_EXPORT } from "../../../../../constants/functionLists";
+import { TMSSORETURNITEMREPORT_EXPORT, TMSSORETURNITEMREPORT_VIEW, TMS_TEAMLEADERBONUSFUNDREPORT_EXPORT } from "../../../../../constants/functionLists";
 
 class SearchCom extends React.Component {
   constructor(props) {
@@ -111,7 +111,7 @@ class SearchCom extends React.Component {
     const postDataNew = {
       DataExportTemplateID: this.state.TemplateID,
       LoadDataStoreName: "TMS.TMS_SO_RETURN_ITEM_REPORT",
-      KeyCached: "",
+      KeyCached: TMSSORETURNITEMREPORT_EXPORT,
       SearchParamList: postData,
       ExportDataParamsDescription: "KEYWORD: " +  MLObject.KeyWord + " - FROMDATE: " + toIsoStringCus(new Date(MLObject.FromDate).toISOString()) + " - TODATE: " + toIsoStringCus(new Date(MLObject.ToDate).toISOString())
     };
@@ -186,7 +186,7 @@ class SearchCom extends React.Component {
           listColumn={GridColumnList}
           PKColumnName={"ShipmentOrderID"}
           ref={this.gridref}
-        //   RequirePermission={TMS_TEAMLEADERBONUSFUNDREPORT_EXPORT}
+          RequirePermission={TMSSORETURNITEMREPORT_VIEW}
           RowsPerPage={50}
         />
       </React.Fragment>
