@@ -120,11 +120,11 @@ class SearchCom extends React.Component {
       },
       {
         SearchKey: "@PAGEINDEX",
-        SearchValue: this.state.PageIndex,
+        SearchValue: 1,
       },
       {
         SearchKey: "@PAGESIZE",
-        SearchValue: this.state.PageSize,
+        SearchValue: -1,
       },
     ];
 
@@ -133,7 +133,7 @@ class SearchCom extends React.Component {
       LoadDataStoreName: "TMS.RPT_DYN_SO_RETURNITEM",
       KeyCached: TMSSORETURNITEMREPORT_EXPORT,
       SearchParamList: postData,
-      ExportDataParamsDescription: "SHIPMENTORDERIDLIST: " + MLObject.KeyWord + " - FROMDATE: " + toIsoStringCus(new Date(MLObject.FromDate).toISOString()) + " - TODATE: " + toIsoStringCus(new Date(MLObject.ToDate).toISOString()) + " - PAGEINDEX: " + this.state.PageIndex + " - PAGESIZE: " + this.state.PageSize
+      ExportDataParamsDescription: "SHIPMENTORDERIDLIST: " + MLObject.KeyWord + " - FROMDATE: " + toIsoStringCus(new Date(MLObject.FromDate).toISOString()) + " - TODATE: " + toIsoStringCus(new Date(MLObject.ToDate).toISOString()) + " - PAGEINDEX: " + 1 + " - PAGESIZE: " + -1
     };
 
     this.callSearchDataExportExcel(postDataNew);
