@@ -8,7 +8,6 @@ import { PagePath, SearchMLObjectDefinition, SearchElementList, GridColumnList, 
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
-
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import { toIsoStringCus } from "../../../../../utils/function";
@@ -16,10 +15,14 @@ import { showModal, hideModal } from "../../../../../actions/modal";
 import { MODAL_TYPE_DOWNLOAD_EXCEL, MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from "../../../../../constants/actionTypes";
 import { ERPCOMMONCACHE_TMSCONFIG } from "../../../../../constants/keyCache";
 import { TMSSORETURNITEMREPORT_EXPORT, TMSSORETURNITEMREPORT_VIEW, TMS_TEAMLEADERBONUSFUNDREPORT_EXPORT } from "../../../../../constants/functionLists";
+import moment from "moment";
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 
 class SearchCom extends React.Component {
   constructor(props) {
     super(props);
+
     this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
     this.callSearchData = this.callSearchData.bind(this);
     this.handleExportExcel = this.handleExportExcel.bind(this);
@@ -28,6 +31,8 @@ class SearchCom extends React.Component {
     this.handleHistorySearch = this.handleHistorySearch.bind(this);
     this.getCacheKeyConfig = this.getCacheKeyConfig.bind(this);
     this.handleOnChangePage = this.handleOnChangePage.bind(this);
+    this.addNotification = this.addNotification.bind(this);
+
 
     this.state = {
       IsCallAPIError: false,
@@ -38,8 +43,11 @@ class SearchCom extends React.Component {
       PageIndex: 1,
       PageSize: 500
     };
+
     this.gridref = React.createRef();
     this.searchref = React.createRef();
+    this.notificationDOMRef = React.createRef();
+
   }
 
   componentDidMount() {
@@ -67,6 +75,23 @@ class SearchCom extends React.Component {
   }
 
   handleSearchSubmit(formData, MLObject) {
+    let fromDate = moment(formData.dtFromDate.value);
+    let toDate = moment(formData.dtToDate.value);
+
+    if (!fromDate.isValid()) {
+      this.addNotification("Từ ngày không hợp lệ", true);
+      return;
+    }
+
+    if (!toDate.isValid()) {
+      this.addNotification("Đến ngày không hợp lệ", true);
+      return;
+    }
+
+    if (fromDate > toDate) {
+      this.addNotification("Từ ngày không lớn hơn đến ngày", true);
+      return;
+    }
 
     const postData = [
       {
@@ -105,6 +130,26 @@ class SearchCom extends React.Component {
   }
 
   handleExportExcel(formData, MLObject) {
+
+    let fromDate = moment(formData.dtFromDate.value);
+    let toDate = moment(formData.dtToDate.value);
+
+    if (!fromDate.isValid()) {
+      this.addNotification("Từ ngày không hợp lệ", true);
+      return;
+    }
+
+    if (!toDate.isValid()) {
+      this.addNotification("Đến ngày không hợp lệ", true);
+      return;
+    }
+
+    if (fromDate > toDate) {
+      this.addNotification("Từ ngày không lớn hơn đến ngày", true);
+      return;
+    }
+
+
     const postData = [
       {
         SearchKey: "@SHIPMENTORDERIDLIST",
@@ -180,9 +225,43 @@ class SearchCom extends React.Component {
     this.setState(changeState);
   }
 
+  addNotification(message1, IsError) {
+    if (!IsError) {
+      this.setState({
+        cssNotification: "notification-custom-success",
+        iconNotification: "fa fa-check"
+      });
+    } else {
+      this.setState({
+        cssNotification: "notification-danger",
+        iconNotification: "fa fa-exclamation"
+      });
+    }
+    this.notificationDOMRef.current.addNotification({
+      container: "bottom-right",
+      content: (
+        <div className={this.state.cssNotification}>
+          <div className="notification-custom-icon">
+            <i className={this.state.iconNotification} />
+          </div>
+          <div className="notification-custom-content">
+            <div className="notification-close">
+              <span>×</span>
+            </div>
+            <h4 className="notification-title">Thông Báo</h4>
+            <p className="notification-message">{message1}</p>
+          </div>
+        </div>
+      ),
+      dismiss: { duration: 6000 },
+      dismissable: { click: true }
+    });
+  }
+
   render() {
     return (
       <React.Fragment>
+        <ReactNotification ref={this.notificationDOMRef} />
         <SearchForm
           className="multiple"
           classNamebtnSearch="groupAction"
