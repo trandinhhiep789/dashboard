@@ -27,6 +27,7 @@ class SearchCom extends React.Component {
     this.handleCallData = this.handleCallData.bind(this);
     this.handleHistorySearch = this.handleHistorySearch.bind(this);
     this.getCacheKeyConfig = this.getCacheKeyConfig.bind(this);
+    this.handleOnChangePage = this.handleOnChangePage.bind(this);
 
     this.state = {
       IsCallAPIError: false,
@@ -34,6 +35,8 @@ class SearchCom extends React.Component {
       IsLoadDataComplete: false,
       DataExport: [],
       TemplateID: "",
+      PageIndex: 1,
+      PageSize: 500
     };
     this.gridref = React.createRef();
     this.searchref = React.createRef();
@@ -64,9 +67,10 @@ class SearchCom extends React.Component {
   }
 
   handleSearchSubmit(formData, MLObject) {
+
     const postData = [
       {
-        SearchKey: "@KEYWORD",
+        SearchKey: "@SHIPMENTORDERIDLIST",
         SearchValue: MLObject.KeyWord,
       },
       {
@@ -76,6 +80,14 @@ class SearchCom extends React.Component {
       {
         SearchKey: "@TODATE",
         SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString()),
+      },
+      {
+        SearchKey: "@PAGEINDEX",
+        SearchValue: this.state.PageIndex,
+      },
+      {
+        SearchKey: "@PAGESIZE",
+        SearchValue: this.state.PageSize,
       },
     ];
 
@@ -95,7 +107,7 @@ class SearchCom extends React.Component {
   handleExportExcel(formData, MLObject) {
     const postData = [
       {
-        SearchKey: "@KEYWORD",
+        SearchKey: "@SHIPMENTORDERIDLIST",
         SearchValue: MLObject.KeyWord,
       },
       {
@@ -106,14 +118,22 @@ class SearchCom extends React.Component {
         SearchKey: "@TODATE",
         SearchValue: toIsoStringCus(new Date(MLObject.ToDate).toISOString()),
       },
+      {
+        SearchKey: "@PAGEINDEX",
+        SearchValue: this.state.PageIndex,
+      },
+      {
+        SearchKey: "@PAGESIZE",
+        SearchValue: this.state.PageSize,
+      },
     ];
 
     const postDataNew = {
       DataExportTemplateID: this.state.TemplateID,
-      LoadDataStoreName: "TMS.TMS_SO_RETURN_ITEM_REPORT",
+      LoadDataStoreName: "TMS.RPT_DYN_SO_RETURNITEM",
       KeyCached: TMSSORETURNITEMREPORT_EXPORT,
       SearchParamList: postData,
-      ExportDataParamsDescription: "KEYWORD: " +  MLObject.KeyWord + " - FROMDATE: " + toIsoStringCus(new Date(MLObject.FromDate).toISOString()) + " - TODATE: " + toIsoStringCus(new Date(MLObject.ToDate).toISOString())
+      ExportDataParamsDescription: "SHIPMENTORDERIDLIST: " + MLObject.KeyWord + " - FROMDATE: " + toIsoStringCus(new Date(MLObject.FromDate).toISOString()) + " - TODATE: " + toIsoStringCus(new Date(MLObject.ToDate).toISOString()) + " - PAGEINDEX: " + this.state.PageIndex + " - PAGESIZE: " + this.state.PageSize
     };
 
     this.callSearchDataExportExcel(postDataNew);
@@ -153,6 +173,13 @@ class SearchCom extends React.Component {
     });
   }
 
+  handleOnChangePage(pageNumber) {
+    let changeState = this.state;
+
+    changeState = { ...changeState, PageIndex: pageNumber };
+    this.setState(changeState);
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -187,7 +214,8 @@ class SearchCom extends React.Component {
           PKColumnName={"ShipmentOrderID"}
           ref={this.gridref}
           RequirePermission={TMSSORETURNITEMREPORT_VIEW}
-          RowsPerPage={50}
+          RowsPerPage={this.state.PageSize}
+          onChangePage={this.handleOnChangePage}
         />
       </React.Fragment>
     );
