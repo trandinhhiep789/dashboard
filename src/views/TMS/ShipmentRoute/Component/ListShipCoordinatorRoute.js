@@ -1045,7 +1045,7 @@ class ListShipCoordinatorRouteCom extends Component {
       <React.Fragment>
         <div className="card">
           <ReactNotification ref={this.notificationDOMRef} />
-          <div className="card-body" style={{ backgroundColor: "aliceblue"}}>
+          <div className="card-body" style={{ backgroundColor: "aliceblue", padding: "10px" }}>
             <div className="form-row">
               <div className="col-md-6">
                 <FormControl.ComboBoxSelect
@@ -1162,9 +1162,9 @@ class ListShipCoordinatorRouteCom extends Component {
               ""
             )}
             <div className="row lstProductSelect">
-              <div className="col-12 group-shipingorder " style={{height: '280px'}}>
+              <div className="col-12 group-shipingorder " style={{height: '265px'}}>
                 <div className="jsgrid">
-                  <div className="jsgrid-grid-body" style={{height: '280px', borderRadius: '5px', border: '1px solid #808080a3', overflow: 'auto'}}>
+                  <div className="jsgrid-grid-body" style={{height: '265px', borderRadius: '5px', border: '1px solid #808080a3', overflow: 'auto'}}>
                     <table className="jsgrid-table">
                       <tbody>
                         {ShipmentOrder &&
@@ -1567,7 +1567,7 @@ class ListShipCoordinatorRouteCom extends Component {
             </div>
           </div>
         </div>
-        <div className="modal-footer modal-footer-center border" style={{ backgroundColor: "aliceblue" }}>
+        <div className="modal-footer modal-footer-center border" style={{ backgroundColor: "aliceblue", padding: "0", border: "none !important" }}>
           <button className="btn btn-w-md btn-round btn-secondary" type="button" onClick={this.handleClose.bind(this)}>
             Làm mới
           </button>
