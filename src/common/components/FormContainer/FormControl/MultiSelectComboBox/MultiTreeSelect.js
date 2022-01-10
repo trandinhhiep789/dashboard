@@ -82,7 +82,6 @@ class MultiTreeSelectCom extends React.Component {
     }
 
     handleValueChange(selectedOption) {
-
         let comboValues = [];
         if (Array.isArray(selectedOption)) {
             comboValues = this.getComboValue(selectedOption);
@@ -141,7 +140,17 @@ class MultiTreeSelectCom extends React.Component {
                 width: '100%',
             },
             filterTreeNode: (search, item) => {
-                return item.title.toLowerCase().indexOf(search.toLowerCase()) >= 0;
+                try{
+                    if(item.title){
+                        return item.title.toLowerCase().indexOf(search.toLowerCase()) >= 0;
+                    }
+                    else{
+                        return item.label.toLowerCase().indexOf(search.toLowerCase()) >= 0;
+                    }
+                }catch (error) {
+                    console.log(error)
+                    return false;
+                }
             }
         };
 
