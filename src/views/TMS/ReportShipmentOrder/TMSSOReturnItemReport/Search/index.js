@@ -41,7 +41,7 @@ class SearchCom extends React.Component {
       DataExport: [],
       TemplateID: "",
       PageIndex: 1,
-      PageSize: 500
+      PageSize: 20,
     };
 
     this.gridref = React.createRef();
@@ -108,11 +108,11 @@ class SearchCom extends React.Component {
       },
       {
         SearchKey: "@PAGEINDEX",
-        SearchValue: this.state.PageIndex,
+        SearchValue: 1,
       },
       {
         SearchKey: "@PAGESIZE",
-        SearchValue: this.state.PageSize,
+        SearchValue: -1,
       },
     ];
 
@@ -122,7 +122,7 @@ class SearchCom extends React.Component {
   callSearchData(searchData) {
     this.props.callFetchAPI(APIHostName, SearchAPIPath, searchData).then((apiResult) => {
       if (!apiResult.IsError) {
-        this.setState({ GridDataSource: apiResult.ResultObject });
+        this.setState({ GridDataSource: apiResult.ResultObject});
       } else {
         this.showMessage(apiResult.Message);
       }
@@ -293,8 +293,10 @@ class SearchCom extends React.Component {
           PKColumnName={"ShipmentOrderID"}
           ref={this.gridref}
           RequirePermission={TMSSORETURNITEMREPORT_VIEW}
+          // isPaginationServer={true}
+          // IsAutoPaging={true}
           RowsPerPage={this.state.PageSize}
-          onChangePage={this.handleOnChangePage}
+          // onChangePage={this.handleOnChangePage}
         />
       </React.Fragment>
     );

@@ -29,7 +29,7 @@ export const SearchElementList = [
         name: "txtKeyword",
         label: "Từ khóa:",
         value: "",
-        placeholder: "",
+        placeholder: "Nhiều vận đơn cách nhau dấu ,",
         icon: "",
         listoption: {},
         colspan: 2,
@@ -101,7 +101,7 @@ export const GridColumnList = [
     },
     {
         Name: "OutputGoodsDate",
-        Type: "datetime",
+        Type: "text",
         Caption: "Ngày xuất hàng",
         DataSourceMember: "OutputGoodsDate",
         Width: 200,
