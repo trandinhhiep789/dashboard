@@ -1820,6 +1820,13 @@ const AppMenu = [
                 MenuIcon: "",
                 SubMenu: [],
             },
+            {
+                MenuName: "OrderStatisticsReport",
+                MenuTitle: "Thống kê đơn hàng",
+                LinkTo: "/OrderStatisticsReport",
+                MenuIcon: "",
+                SubMenu: [],
+            },
         ],
     },
     {
