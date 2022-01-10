@@ -228,6 +228,7 @@ import TestOrTools from '../TMS/TestOrTool';
 import ShipmentRouteAutoBHX from "../TMS/ShipmentRouteAutoBHX";
 import ShipmentRouteAutoGHLD from "../TMS/ShipmentRouteAutoGHLD";
 import TMSSOReturnItemReport from './../TMS/ReportShipmentOrder/TMSSOReturnItemReport/index';
+import OrderStatisticsReport from "../TMS/ReportShipmentOrder/OrderStatisticsReport";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -559,6 +560,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/ArchitechtureType_PRJType" component={ArchitechtureType_PRJType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ConstructServiceType" component={ConstructServiceType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ConstructService" component={ConstructService} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/OrderStatisticsReport" component={OrderStatisticsReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="/TestOrTools" component={TestOrTools} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
