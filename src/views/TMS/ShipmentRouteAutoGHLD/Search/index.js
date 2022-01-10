@@ -896,7 +896,7 @@ class SearchCom extends Component {
     // Xử lý phân tuyến tự động
     handleShipmentRouteAuto() {
         let arrRequest = this.state.GridDataSource;
-    
+
         this.showMessage("Phân tuyến tự động tất cả vận đơn", true, "Xác nhận", () => {
             let changeState = this.state;
             let objUIEffect = changeState.UIEffect;
@@ -909,33 +909,33 @@ class SearchCom extends Component {
 
             this.props.callFetchAPI(APIHostName, "api/Routing/VrpTimeWindows", arrRequest).then((apiResult) => {
                 console.log('937', apiResult);
-                if (!apiResult.IsError) {
-                    const { MotorRoute, TruckRoute, ListDroppedShipmentOrder } = apiResult.ResultObject;
+                // if (!apiResult.IsError) {
+                //     const { MotorRoute, TruckRoute, ListDroppedShipmentOrder } = apiResult.ResultObject;
 
-                    let changeState = this.state;
-                    let objShipmentRouteAutoDataSource = changeState.ShipmentRouteAutoDataSource;
-                    let objUIEffect = changeState.UIEffect;
-                    let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
+                //     let changeState = this.state;
+                //     let objShipmentRouteAutoDataSource = changeState.ShipmentRouteAutoDataSource;
+                //     let objUIEffect = changeState.UIEffect;
+                //     let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
 
-                    objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: false, IsDisabled: true };
-                    objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto};
-                    changeState = { ...changeState, UIEffect: objUIEffect };
-                    objShipmentRouteAutoDataSource = { Motor: MotorRoute, Truck: TruckRoute, Dropped: ListDroppedShipmentOrder };
-                    changeState = { ...changeState, ActiveTab: "2", ShipmentRouteAutoDataSource: objShipmentRouteAutoDataSource };
+                //     objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: false, IsDisabled: true };
+                //     objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto};
+                //     changeState = { ...changeState, UIEffect: objUIEffect };
+                //     objShipmentRouteAutoDataSource = { Motor: MotorRoute, Truck: TruckRoute, Dropped: ListDroppedShipmentOrder };
+                //     changeState = { ...changeState, ActiveTab: "2", ShipmentRouteAutoDataSource: objShipmentRouteAutoDataSource };
 
-                    this.setState(changeState);
-                } else {
-                    let changeState = this.state;
-                    let objUIEffect = changeState.UIEffect;
-                    let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
-                   
-                    objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: false };
-                    objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto};
-                    changeState = { ...changeState, UIEffect: objUIEffect };
+                //     this.setState(changeState);
+                // } else {
+                //     let changeState = this.state;
+                //     let objUIEffect = changeState.UIEffect;
+                //     let objButtonShipmentRouteAuto = objUIEffect.ButtonShipmentRouteAuto;
 
-                    this.setState(changeState);
-                    this.addNotification(apiResult.Message, apiResult.IsError);
-                }
+                //     objButtonShipmentRouteAuto = { ...objButtonShipmentRouteAuto, IsLoading: false };
+                //     objUIEffect = { ...objUIEffect, ButtonShipmentRouteAuto: objButtonShipmentRouteAuto};
+                //     changeState = { ...changeState, UIEffect: objUIEffect };
+
+                //     this.setState(changeState);
+                //     this.addNotification(apiResult.Message, apiResult.IsError);
+                // }
             });
         });
     }

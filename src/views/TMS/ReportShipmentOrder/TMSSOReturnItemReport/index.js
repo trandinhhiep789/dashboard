@@ -9,7 +9,7 @@ import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import Search from "./Search";
 import NotFound from '../../../NotFound';
 
-class PaymentImportTMSReportCom extends React.Component {
+class TMSSOReturnItemReportCom extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -17,7 +17,7 @@ class PaymentImportTMSReportCom extends React.Component {
     render() {
         return (
             <Switch>
-                <Route exact path="/PaymentImportTMSReport" component={Search} />
+                <Route exact path="/TMSSOReturnItemReport" component={Search} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );
@@ -39,5 +39,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const PaymentImportTMSReport = connect(mapStateToProps,mapDispatchToProps)(PaymentImportTMSReportCom);
-export default PaymentImportTMSReport;
+const TMSSOReturnItemReport = connect(mapStateToProps,mapDispatchToProps)(TMSSOReturnItemReportCom);
+export default TMSSOReturnItemReport;
