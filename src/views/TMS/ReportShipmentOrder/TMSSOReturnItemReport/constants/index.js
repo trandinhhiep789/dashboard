@@ -7,9 +7,9 @@ export const PagePath = [
 
 export const SearchMLObjectDefinition = [
     {
-        Name: "KeyWord",
+        Name: "ShipmentOrderList",
         DefaultValue: "",
-        BindControlName: "txtKeyword",
+        BindControlName: "txtShipmentOrderList",
     },
     {
         Name: "FromDate",
@@ -26,8 +26,8 @@ export const SearchMLObjectDefinition = [
 export const SearchElementList = [
     {
         type: "text",
-        name: "txtKeyword",
-        label: "Từ khóa:",
+        name: "txtShipmentOrderList",
+        label: "Tìm mã vận đơn:",
         value: "",
         placeholder: "Nhiều vận đơn cách nhau dấu ,",
         icon: "",
@@ -59,15 +59,16 @@ export const SearchElementList = [
 export const GridColumnList = [
     {
         Name: "ShipmentOrderID",
-        Type: "text",
+        Type: "texttolink",
         Caption: "Mã vận đơn",
         DataSourceMember: "ShipmentOrderID",
         Width: 100,
+        Link: "/ShipmentOrder/Detail/",
     },
     {
         Name: "PartnerSaleOrderID",
         Type: "text",
-        Caption: "Tên đơn hàng",
+        Caption: "Mã đơn hàng",
         DataSourceMember: "PartnerSaleOrderID",
         Width: 200,
     },

@@ -96,7 +96,7 @@ class SearchCom extends React.Component {
     const postData = [
       {
         SearchKey: "@SHIPMENTORDERIDLIST",
-        SearchValue: MLObject.KeyWord,
+        SearchValue: MLObject.ShipmentOrderList,
       },
       {
         SearchKey: "@FROMDATE",
@@ -153,7 +153,7 @@ class SearchCom extends React.Component {
     const postData = [
       {
         SearchKey: "@SHIPMENTORDERIDLIST",
-        SearchValue: MLObject.KeyWord,
+        SearchValue: MLObject.ShipmentOrderList,
       },
       {
         SearchKey: "@FROMDATE",
@@ -293,10 +293,7 @@ class SearchCom extends React.Component {
           PKColumnName={"ShipmentOrderID"}
           ref={this.gridref}
           RequirePermission={TMSSORETURNITEMREPORT_VIEW}
-          // isPaginationServer={true}
-          // IsAutoPaging={true}
           RowsPerPage={this.state.PageSize}
-          // onChangePage={this.handleOnChangePage}
         />
       </React.Fragment>
     );
