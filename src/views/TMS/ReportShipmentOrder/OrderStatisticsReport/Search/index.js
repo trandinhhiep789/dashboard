@@ -396,7 +396,7 @@ class SearchCom extends React.Component {
                     ExportPermission={SHIPMENTORDER_REPORT_EXPORT}
                     IsExportFile={true}
                     DataExport={this.state.dataExport}
-                    fileName="Thống kê thống kê đơn hàng TMS"
+                    fileName="Thống kê đơn hàng TMS"
                     onExportFile={this.handleExportFile.bind(this)}
                 />
             </React.Fragment>
