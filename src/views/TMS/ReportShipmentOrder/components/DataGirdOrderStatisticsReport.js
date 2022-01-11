@@ -117,14 +117,14 @@ class DataGirdOrderStatisticsReportCom extends Component {
                     <table className="table table-sm table-striped table-bordered table-hover table-condensed dataGirdReportShipment" cellSpacing="0">
                         <thead className="thead-light">
                             <tr>
-                                <th className="jsgrid-header-cell " style={{ width: '15%' }}>Mã đơn hàng</th>
-                                <th className="jsgrid-header-cell " style={{ width: '15%' }}>Mã vận đơn</th>
-                                <th className="jsgrid-header-cell " style={{ width: '15%' }}>User nhân viên tạo đơn hàng</th>
-                                <th className="jsgrid-header-cell " style={{ width: '12%' }}>Ngày tạo đơn</th>
+                                <th className="jsgrid-header-cell " style={{ width: '12%' }}>Mã đơn hàng</th>
+                                <th className="jsgrid-header-cell " style={{ width: '12%' }}>Mã vận đơn</th>
+                                <th className="jsgrid-header-cell " style={{ width: '12%' }}>User NV tạo đơn hàng</th>
+                                <th className="jsgrid-header-cell " style={{ width: '10%' }}>Ngày tạo đơn</th>
                                 <th className="jsgrid-header-cell " style={{ width: '15%' }}>User nhân viên hủy</th>
                                 <th className="jsgrid-header-cell " style={{ width: '10%' }}>Ngày hủy</th>
-                                <th className="jsgrid-header-cell " style={{ width: '10%' }}>Lý do hủy</th>
-                                <th className="jsgrid-header-cell " style={{ width: '10%' }}>Đã xuất hàng</th>
+                                <th className="jsgrid-header-cell " style={{ width: '17%' }}>Lý do hủy</th>
+                                <th className="jsgrid-header-cell " style={{ width: '8%' }}>Đã xuất hàng</th>
                             </tr>
                         </thead>
                         <tbody>
