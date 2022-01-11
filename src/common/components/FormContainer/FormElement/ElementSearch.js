@@ -749,13 +749,30 @@ class ElementComboBoxCom extends Component {
             if (typeof filterobj != undefined) {
                 let listoptionnew = [{ value: -1, label: this.props.placeholder }];
                 //  console.log(filterobj,this.state.Data.filter(n => n[filterobj] == nextProps.filterValue))
-                this.state.Data.filter(n => n[filterobj] == nextProps.filterValue).map((cacheItem) => {
-                    listoptionnew.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
+                
+                var abc = nextProps.filterValue 
+                abc = abc + ""
+                abc = abc.split(',')
+                for(let i = 0; i < abc.length; i++)
+                {
+                    try{
+                        if(abc[i]){
+                            if(this.state.Data.filter(n => n[filterobj] == abc[i])[0].ProvinceName){
+                                listoptionnew.push({value: -1, label: "------ " + this.state.Data.filter(n => n[filterobj] == abc[i])[0].ProvinceName + " ------"})
+                            }
+                        }
+                    }catch (error) {
+                        console.log(error)
+                    }
+                    
+                    this.state.Data.filter(n => n[filterobj] == abc[i]).map((cacheItem) => {
+                        listoptionnew.push({ value: cacheItem[ValueMember], label: cacheItem[ValueMember] + " - " + cacheItem[NameMember] });
+                    }
+                    );
+
                 }
-                );
                 this.setState({ ListOption: listoptionnew });
             }
-
         }
         if (JSON.stringify(this.props.value) !== JSON.stringify(nextProps.value)) // Check if it's a new user, you can also use some unique property, like the ID
         {
@@ -1930,7 +1947,17 @@ class ElementTreeSelectCom extends Component {
                 width: '100%',
             },
             filterTreeNode: (search, item) => {
-                return item.title.toLowerCase().indexOf(search.toLowerCase()) >= 0;
+                try{
+                    if(item.title){
+                        return item.title.toLowerCase().indexOf(search.toLowerCase()) >= 0;
+                    }
+                    else{
+                        return item.label.toLowerCase().indexOf(search.toLowerCase()) >= 0;
+                    }
+                }catch (error) {
+                    console.log(error)
+                    return false;
+                }
             }
         };
 

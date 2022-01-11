@@ -219,14 +219,32 @@ class SearchForm extends Component {
                                 }
 
                                 return (
-                                    <ElementSearch.ElementComboBox
-                                        onValueChange={this.onValueChange}
-                                        ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
-                                        inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
-                                        {...elementItem}
-                                        value={this.state.FormData[elementItem.name].value}
-                                        key={index}
-                                    />
+                                    <React.Fragment>
+                                        {elementItem.name === "cbReceiverProvinceID" && <div style={{display: "none"}}>{elementItem.colspan = 12}</div> }
+                                        {elementItem.name === "cbReceiverProvinceID" && (elementItem.value = "") }
+                                        {elementItem.name === "cbReceiverProvinceID" && <div style={{display: "none"}}>{elementItem.maxTagCount = 1}</div>}
+                                        {elementItem.name === "cbReceiverProvinceID" && <div style={{display: "none"}}>{elementItem.rowspan = 2}</div>}
+                                        {elementItem.name === "cbReceiverProvinceID" ? 
+                                            <MultiTreeSelect
+                                                style={{width: '100%'}}
+                                                onValueChange={this.onValueChange}
+                                                ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                                inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
+                                                {...elementItem}
+                                                value={this.state.FormData[elementItem.name].value}
+                                                key={index}
+                                            />
+                                            :
+                                            <ElementSearch.ElementComboBox
+                                                onValueChange={this.onValueChange}
+                                                ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                                inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
+                                                {...elementItem}
+                                                value={this.state.FormData[elementItem.name].value}
+                                                key={index}
+                                            />
+                                        }
+                                    </React.Fragment>
                                 );
                             case "ComboTreeSelect":
                                 if (typeof elementItem.filterName != "undefined") {
