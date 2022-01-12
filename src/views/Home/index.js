@@ -229,6 +229,7 @@ import ShipmentRouteAutoBHX from "../TMS/ShipmentRouteAutoBHX";
 import ShipmentRouteAutoGHLD from "../TMS/ShipmentRouteAutoGHLD";
 import TMSSOReturnItemReport from './../TMS/ReportShipmentOrder/TMSSOReturnItemReport/index';
 import OrderStatisticsReport from "../TMS/ReportShipmentOrder/OrderStatisticsReport";
+import LeadAdvice from './../TMS/MD/LeadAdvice/index';
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -563,6 +564,11 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/OrderStatisticsReport" component={OrderStatisticsReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
                                     <PrivateRoute path="/TestOrTools" component={TestOrTools} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+
+                                    {/* Đơn hàng VSML 4 tháng */}
+
+                                    <PrivateRoute path="/LeadAdvice" component={LeadAdvice} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+
 
                                     <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                 </Switch>
