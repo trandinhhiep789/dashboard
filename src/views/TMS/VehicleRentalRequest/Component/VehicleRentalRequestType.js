@@ -129,7 +129,7 @@ class VehicleRentalRequestTypeCom extends Component {
                         AddFunctionID: VehicleRentalReqTypeItem.AddFunctionID
                     })
                 } else {
-                    this.showMessage("Bạn không có quyền xóa!")
+                    this.showMessage("Bạn không có quyền thêm!")
                 }
             })
         }

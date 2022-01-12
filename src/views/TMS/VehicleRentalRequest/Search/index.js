@@ -196,10 +196,10 @@ class SearchCom extends React.Component {
 
         console.log("submit", formData, MLObject)
         console.log("compare", StartTime < EndTime)
-        if(StartTime < EndTime){
+        if (StartTime < EndTime) {
             this.callSearchData(DataSearch);
         }
-        else{
+        else {
             this.showMessage("Thời gian tìm Từ ngày phải nhỏ hơn Đến ngày.")
         }
     }
@@ -250,7 +250,7 @@ class SearchCom extends React.Component {
 
     handleInputGridInsert(MLObjectDefinition, modalElementList, dataSource) {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: 'yêu cầu thuê xe',
+            title: 'Yêu cầu thuê xe',
             content: {
                 text: <VehicleRentalRequestType />
             },
