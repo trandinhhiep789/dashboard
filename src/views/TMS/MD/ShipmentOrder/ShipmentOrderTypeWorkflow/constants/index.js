@@ -370,6 +370,12 @@ export const MLObjectDefinition = [
         DataSourceMember: "AutoCallOutputGoods"
     },
     {
+        Name: "IsAdviseLeadOrder",
+        DefaultValue: "",
+        BindControlName: "IsAdviseLeadOrder",
+        DataSourceMember: "IsAdviseLeadOrder"
+    },
+    {
         Name: "WebAppHelpDocumentID",
         DefaultValue: "",
         BindControlName: "WebAppHelpDocumentID",

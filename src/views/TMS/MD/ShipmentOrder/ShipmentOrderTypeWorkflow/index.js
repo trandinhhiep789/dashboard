@@ -831,6 +831,11 @@ class ShipmentOrderTypeWorkflowCom extends React.Component {
                                         swaplabelModal={true}
                                     />
 
+                                    <FormControl.CheckBox labelcolspan={1} colspan={11} label="Là bước có tư vấn đơn hàng tương lai" name="IsAdviseLeadOrder"
+                                        controltype="InputControl" datasourcemember="IsAdviseLeadOrder"
+                                        swaplabelModal={true}
+                                    />
+
                                 </div>
                             </div>
                         </TabPage>
