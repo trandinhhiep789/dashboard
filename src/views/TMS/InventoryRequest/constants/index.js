@@ -97,6 +97,11 @@ export const SearchMLObjectDefinition = [
         BindControlName: "cbInventoryRequestTypeID"
     },
     {
+        Name: "InventorytermID",
+        DefaultValue: "",
+        BindControlName: "cbInventorytermID"
+    },
+    {
         Name: "RequestStoreID",
         DefaultValue: "",
         BindControlName: "cbRequestStoreID"
@@ -220,6 +225,28 @@ export const SearchElementList = [
  
 
     },
+    {
+        type: "ComboBox",
+        name: "cbInventorytermID",
+        DataSourceMember: "InventorytermID",
+        label: "Mã kỳ kiểm kê",
+        colspan: 2,
+        value: -1,
+        placeholder: "---Vui lòng chọn---",
+        listoption: [
+            { value: -1, label: '--Vui lòng chọn--' },
+            { value: 1001, label: 'Mã 1' },
+            { value: 1002, label: 'Mã 2' },
+        ],
+        //listoption: [],
+        //IsAutoLoadItemFromCache: true,
+        //LoadItemCacheKeyID: "ERPCOMMONCACHE.INVENTORYREQUESTTYPE",
+        //ValueMember: "InventorytermID",
+        //NameMember: "InventorytermID",
+        //ValueMember: "InventoryRequestTypeID",
+        //NameMember: "InventoryRequestTypeName",
+
+    },
 ];
 
 export const DataGridColumnList = [
@@ -239,19 +266,26 @@ export const DataGridColumnList = [
         Width: 140
     },
     {
-        Name: "InventoryRequestTypeName",
+        Name: "InventorytermID",
         Type: "text",
-        Caption: "Loại yêu cầu kiểm kê",
-        DataSourceMember: "InventoryRequestTypeName",
-        Width: 300
+        Caption: "Mã kỳ kiểm kê",
+        DataSourceMember: "InventorytermID",
+        Width: 140
     },
-    {
-        Name: "StoreName",
-        Type: "text",
-        Caption: "Kho yêu cầu",
-        DataSourceMember: "StoreName",
-        Width: 180
-    },
+    // {
+    //     Name: "InventoryRequestTypeName",
+    //     Type: "text",
+    //     Caption: "Loại yêu cầu kiểm kê",
+    //     DataSourceMember: "InventoryRequestTypeName",
+    //     Width: 300
+    // },
+    // {
+    //     Name: "StoreName",
+    //     Type: "text",
+    //     Caption: "Kho yêu cầu",
+    //     DataSourceMember: "StoreName",
+    //     Width: 180
+    // },
     {
         Name: "RequestDate",
         Type: "date",

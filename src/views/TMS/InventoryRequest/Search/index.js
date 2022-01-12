@@ -190,6 +190,10 @@ class SearchCom extends React.Component {
                 SearchValue: MLObject.InventoryRequestTypeID
             },
             {
+                SearchKey: "@INVENTORYTERMID",
+                SearchValue: MLObject.InventorytermID
+            },
+            {
                 SearchKey: "@REQUESTSTOREID",
                 SearchValue: MLObject.RequestStoreID
             },
