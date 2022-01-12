@@ -376,6 +376,12 @@ export const MLObjectDefinition = [
         DataSourceMember: "IsAdviseLeadOrder"
     },
     {
+        Name: "IsMaterialQuotationStep",
+        DefaultValue: "",
+        BindControlName: "IsMaterialQuotationStep",
+        DataSourceMember: "IsMaterialQuotationStep"
+    },
+    {
         Name: "WebAppHelpDocumentID",
         DefaultValue: "",
         BindControlName: "WebAppHelpDocumentID",
