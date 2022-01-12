@@ -112,7 +112,7 @@ class EditCom extends React.Component {
         const { InventoryRequestDetail,
             InventoryRequestRVLst,
             InventoryRequest } = this.state;
-
+        console.log({InventoryRequest});
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
@@ -165,11 +165,11 @@ class EditCom extends React.Component {
 
                             </div>
 
-                            <div className="col-md-12">
+                            <div className="col-md-6">
                                 <FormControl.TextBox
                                     name="txtInventoryRequestTitle"
-                                    labelcolspan={2}
-                                    colspan={10}
+                                    labelcolspan={4}
+                                    colspan={8}
                                     readOnly={InventoryRequest.IsreViewed}
                                     label="tiêu đề"
                                     placeholder="Tiêu đề"
@@ -180,7 +180,29 @@ class EditCom extends React.Component {
                                     classNameCustom="customcontrol"
                                 />
                             </div>
+                            <div className="col-md-6">
+                                <FormControl.FormControlComboBox
+                                    name="cboInventorytermID"
+                                    colspan="8"
+                                    labelcolspan="4"
+                                    label="Mã kỳ kiểm kê"
+                                    disabled={true}
+                                    //validatonList={["Comborequired"]}
+                                    placeholder="-- Vui lòng chọn --"
+                                    //isautoloaditemfromcache={true}
+                                    //loaditemcachekeyid="ERPCOMMONCACHE.USER_COOSTORE_BYUSER"
+                                    //valuemember="StoreID"
+                                    //nameMember="StoreName"
+                                    controltype="InputControl"
+                                    value={-1}
+                                    listoption={[
+                                        { value: -1, label: '--Vui lòng chọn--' },
+                                        { value: 1001, label: 'Mã 1' },
+                                        { value: 1002, label: 'Mã 2' },
+                                    ]}
+                                    datasourcemember="InventorytermID" />
 
+                            </div>
                             <div className="col-md-6">
                                 <FormControl.FormControlComboBox
                                     name="cboRequestStore"

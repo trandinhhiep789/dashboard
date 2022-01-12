@@ -427,6 +427,12 @@ export const MLObjectDefinition = [
         DataSourceMember: "InventoryRequestTypeID"
     },
     {
+        Name: "InventorytermID",
+        DefaultValue: "",
+        BindControlName: "cboInventorytermID",
+        DataSourceMember: "InventorytermID"
+    },
+    {
         Name: "InventoryRequestTitle",
         DefaultValue: "",
         BindControlName: "txtInventoryRequestTitle",
