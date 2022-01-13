@@ -230,6 +230,11 @@ import ShipmentRouteAutoGHLD from "../TMS/ShipmentRouteAutoGHLD";
 import TMSSOReturnItemReport from './../TMS/ReportShipmentOrder/TMSSOReturnItemReport/index';
 import OrderStatisticsReport from "../TMS/ReportShipmentOrder/OrderStatisticsReport";
 import LeadAdvice from './../TMS/MD/LeadAdvice/index';
+import FailAdviceReason from './../TMS/MD/FailAdviceReason/index';
+import LeadOrderType from './../TMS/MD/LeadOrderType/index';
+import LeadOrderTypeProcess from './../TMS/MD/LeadOrderTypeProcess/index';
+import LeadOrderStatus from "../TMS/MD/LeadOrderStatus";
+import LeadOrderStep from "../TMS/MD/LeadOrderStep";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -568,6 +573,11 @@ class HomeCom extends React.Component {
                                     {/* Đơn hàng VSML 4 tháng */}
 
                                     <PrivateRoute path="/LeadAdvice" component={LeadAdvice} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/FailAdviceReason" component={FailAdviceReason} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/LeadOrderType" component={LeadOrderType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/LeadOrderTypeProcess" component={LeadOrderTypeProcess} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/LeadOrderStatus" component={LeadOrderStatus} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/LeadOrderStep" component={LeadOrderStep} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
 
                                     <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
