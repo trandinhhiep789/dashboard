@@ -220,13 +220,13 @@ class SearchForm extends Component {
 
                                 return (
                                     <React.Fragment>
-                                        {elementItem.name === "cbReceiverProvinceID" && <div style={{display: "none"}}>{elementItem.colspan = 12}</div> }
-                                        {elementItem.name === "cbReceiverProvinceID" && (elementItem.value = "") }
-                                        {elementItem.name === "cbReceiverProvinceID" && <div style={{display: "none"}}>{elementItem.maxTagCount = 1}</div>}
-                                        {elementItem.name === "cbReceiverProvinceID" && <div style={{display: "none"}}>{elementItem.rowspan = 2}</div>}
-                                        {elementItem.name === "cbReceiverProvinceID" ? 
+                                        {elementItem.name === "cbReceiverProvinceID" && <div style={{ display: "none" }}>{elementItem.colspan = 12}</div>}
+                                        {elementItem.name === "cbReceiverProvinceID" && (elementItem.value = "")}
+                                        {elementItem.name === "cbReceiverProvinceID" && <div style={{ display: "none" }}>{elementItem.maxTagCount = 1}</div>}
+                                        {elementItem.name === "cbReceiverProvinceID" && <div style={{ display: "none" }}>{elementItem.rowspan = 2}</div>}
+                                        {elementItem.name === "cbReceiverProvinceID" ?
                                             <MultiTreeSelect
-                                                style={{width: '100%'}}
+                                                style={{ width: '100%' }}
                                                 onValueChange={this.onValueChange}
                                                 ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
                                                 inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
@@ -236,6 +236,39 @@ class SearchForm extends Component {
                                             />
                                             :
                                             <ElementSearch.ElementComboBox
+                                                onValueChange={this.onValueChange}
+                                                ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                                inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
+                                                {...elementItem}
+                                                value={this.state.FormData[elementItem.name].value}
+                                                key={index}
+                                            />
+                                        }
+                                    </React.Fragment>
+                                );
+                            case "ComboBoxNewMID":
+                                if (typeof elementItem.filterName != "undefined") {
+                                    elementItem.filterValue = this.state.FormData[elementItem.filterName].value;
+                                }
+
+                                return (
+                                    <React.Fragment>
+                                        {elementItem.name === "cbReceiverProvinceID" && <div style={{ display: "none" }}>{elementItem.colspan = 12}</div>}
+                                        {elementItem.name === "cbReceiverProvinceID" && (elementItem.value = "")}
+                                        {elementItem.name === "cbReceiverProvinceID" && <div style={{ display: "none" }}>{elementItem.maxTagCount = 1}</div>}
+                                        {elementItem.name === "cbReceiverProvinceID" && <div style={{ display: "none" }}>{elementItem.rowspan = 2}</div>}
+                                        {elementItem.name === "cbReceiverProvinceID" ?
+                                            <MultiTreeSelect
+                                                style={{ width: '100%' }}
+                                                onValueChange={this.onValueChange}
+                                                ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
+                                                inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
+                                                {...elementItem}
+                                                value={this.state.FormData[elementItem.name].value}
+                                                key={index}
+                                            />
+                                            :
+                                            <ElementSearch.ElementComboBoxNewMID
                                                 onValueChange={this.onValueChange}
                                                 ValidatonErrorMessage={this.state.FormData[elementItem.name].ErrorLst.ValidatonErrorMessage}
                                                 inputRef={ref => this.elementItemRefs[elementItem.name] = ref}
@@ -485,7 +518,7 @@ class SearchForm extends Component {
             // <form action="" onSubmit={this.handleSearchSubmit}>
             //     {elmentRender}
             // </form>
-            <div style={{padding: "0px" }} className={classNameCustom}>
+            <div style={{ padding: "0px" }} className={classNameCustom}>
                 <form className="card mb-0 pt-2 border" action="" onSubmit={this.handleSearchSubmit}>
                     <div className="card-body">
                         {elmentRender}

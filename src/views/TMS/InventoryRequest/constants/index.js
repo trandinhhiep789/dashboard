@@ -226,7 +226,7 @@ export const SearchElementList = [
 
     },
     {
-        type: "ComboBox",
+        type: "ComboBoxNewMID",
         name: "cbInventorytermID",
         DataSourceMember: "InventorytermID",
         label: "Mã kỳ kiểm kê",
@@ -238,13 +238,13 @@ export const SearchElementList = [
             { value: 1001, label: 'Mã 1' },
             { value: 1002, label: 'Mã 2' },
         ],
-        //listoption: [],
-        //IsAutoLoadItemFromCache: true,
-        //LoadItemCacheKeyID: "ERPCOMMONCACHE.INVENTORYREQUESTTYPE",
-        //ValueMember: "InventorytermID",
-        //NameMember: "InventorytermID",
-        //ValueMember: "InventoryRequestTypeID",
-        //NameMember: "InventoryRequestTypeName",
+        // listoption: [],
+        // IsAutoLoadItemFromCache: true,
+        // LoadItemCacheKeyID: "ERPCOMMONCACHE.INVENTORYREQUESTTYPE",
+        // // ValueMember: "InventorytermID",
+        // // NameMember: "InventorytermID",
+        // ValueMember: "InventoryRequestTypeID",
+        // NameMember: "InventoryRequestTypeName",
 
     },
 ];
