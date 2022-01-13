@@ -9,9 +9,8 @@ import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import Search from "./Search";
 import Add from "./Add";
 import Edit from "./Edit";
-import Detail from "./Detail";
 import NotFound from '../../../NotFound';
-class LeadAdviceCom extends React.Component {
+class LeadOrderStatusCom extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -19,10 +18,9 @@ class LeadAdviceCom extends React.Component {
     render() {
         return (
             <Switch>
-                <Route exact path="/LeadAdvice" component={Search} />
-                <Route exact path="/LeadAdvice/Add" component={Add} />
-                <Route exact path="/LeadAdvice/Edit/:id" component={Edit} />
-                <Route exact path="/LeadAdvice/Detail/:id" component={Detail} />
+                <Route exact path="/LeadOrderStatus" component={Search} />
+                <Route exact path="/LeadOrderStatus/Add" component={Add} />
+                <Route exact path="/LeadOrderStatus/Edit/:id" component={Edit} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );
@@ -44,8 +42,8 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const LeadAdvice = connect(
+const LeadOrderStatus = connect(
     mapStateToProps,
     mapDispatchToProps
-)(LeadAdviceCom);
-export default LeadAdvice;
+)(LeadOrderStatusCom);
+export default LeadOrderStatus;
