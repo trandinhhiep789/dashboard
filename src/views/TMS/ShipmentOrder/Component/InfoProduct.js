@@ -769,6 +769,57 @@ class InfoProductCom extends Component {
                         </div>
                     </Collapsible>
                 }
+
+                {/* thông tin báo giá sửa chữa */}
+                {(this.state.ShipmentOrder.ShipmentOrderQuoteList && this.state.ShipmentOrder.ShipmentOrderQuoteList.length > 0) &&
+                    <Collapsible trigger="Thông tin báo giá sửa chữa" easing="ease-in" open={true}>
+                        <div className="card-body">
+                            <div className="form-row">
+                                <div className="col-md-12">
+                                    <div className="table-responsive">
+                                        <table className="table table-sm table-striped table-bordered table-hover table-condensed">
+                                            <thead className="thead-light">
+                                                <tr>
+                                                    <th className="jsgrid-header-cell">Mã sản phẩm</th>
+                                                    <th className="jsgrid-header-cell">Sản phẩm</th>
+                                                    <th className="jsgrid-header-cell">Giá bán</th>
+                                                    <th className="jsgrid-header-cell">Số lượng sử dụng</th>
+                                                    <th className="jsgrid-header-cell">Đơn vị tính</th>
+                                                    <th className="jsgrid-header-cell">Thành tiền</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {this.state.ShipmentOrder.ShipmentOrderQuoteList && this.state.ShipmentOrder.ShipmentOrderQuoteList.map((item, index) => {
+                                                    return (<tr key={index}>
+                                                        <td>{item.ProductID}</td>
+                                                        <td>{item.ProductName}</td>
+                                                        <td>{formatMoney(item.Price,0)}</td>
+                                                        <td>{item.Quantity}</td>
+                                                        <td>{item.QuantityUnitName}</td>
+                                                        <td>{formatMoney(item.TotalAmount, 0)}</td>
+                                                    </tr>)
+                                                })
+                                                }
+                                                <tr className="totalCurrency">
+                                                    <td colSpan={5}>
+                                                        <div className="groupTotalCurrency">
+                                                            <span className="item txtTotal">Tổng</span>
+                                                        </div>
+                                                    </td>
+                                                    <td colSpan="1">
+                                                        <div className="groupTotalCurrency">
+                                                            <span className="item txttotalCurrency">{formatMoney(this.state.ShipmentOrder.ShipmentOrderQuoteList[0].SumTotal, 0)}</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </Collapsible>
+                }
             </React.Fragment>
         );
     }
