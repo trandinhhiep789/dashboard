@@ -1,5 +1,6 @@
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/InventoryRequest/Search";
+export const GetInventoryTerm = "api/InventoryRequest/GetInventoryTerm";
 export const LoadAPIPath = "api/InventoryRequest/Load";
 export const LoadNewAPIPath = "api/InventoryRequest/LoadInfoNew";
 export const LoadInfoEditAPIPath = "api/InventoryRequest/LoadInfoEdit";
@@ -205,7 +206,7 @@ export const SearchElementList = [
             { value: 1, label: 'Chưa duyệt' },
             { value: 2, label: 'Đã duyệt' },
         ],
-       
+
 
     },
     {
@@ -222,30 +223,19 @@ export const SearchElementList = [
             { value: 1, label: 'Chưa Xuất hủy vật tư' },
             { value: 2, label: 'Đã xuất hủy vật tư' },
         ],
- 
+
 
     },
     {
-        type: "ComboBoxNewMID",
+        type: "ComboBox",
         name: "cbInventorytermID",
         DataSourceMember: "InventorytermID",
         label: "Mã kỳ kiểm kê",
         colspan: 2,
         value: -1,
+        isMultiSelect: false,
         placeholder: "---Vui lòng chọn---",
-        listoption: [
-            { value: -1, label: '--Vui lòng chọn--' },
-            { value: 1001, label: 'Mã 1' },
-            { value: 1002, label: 'Mã 2' },
-        ],
-        // listoption: [],
-        // IsAutoLoadItemFromCache: true,
-        // LoadItemCacheKeyID: "ERPCOMMONCACHE.INVENTORYREQUESTTYPE",
-        // // ValueMember: "InventorytermID",
-        // // NameMember: "InventorytermID",
-        // ValueMember: "InventoryRequestTypeID",
-        // NameMember: "InventoryRequestTypeName",
-
+        listoption: [],
     },
 ];
 
@@ -479,7 +469,7 @@ export const MLObjectDefinition = [
 
 
 export const GridInventoryRequestRLMLObjectDefinition = [
-    
+
     {
         Name: "ReviewLevelID",
         DefaultValue: "",
@@ -498,7 +488,7 @@ export const GridInventoryRequestRLMLObjectDefinition = [
         BindControlName: "cboUserName",
         DataSourceMember: "UserName"
     },
-   
+
 ];
 
 export const InputInventoryRequestRLColumnList = [
@@ -519,13 +509,13 @@ export const InputInventoryRequestRLColumnList = [
         LoadItemCacheKeyID: "ERPCOMMONCACHE.SERVICETYPE",
         ValueMember: "ServiceTypeID",
         NameMember: "ServiceTypeName",
-        listoption:[],
+        listoption: [],
         validatonList: ["Comborequired"],
     },
-   
+
 ];
 
-export const GirdInventoryRequestDetailColumnList =[
+export const GirdInventoryRequestDetailColumnList = [
     {
         Name: "MaterialGroupID",
         Type: "text",
@@ -570,7 +560,7 @@ export const GirdInventoryRequestDetailColumnList =[
     },
 ]
 
-export const GirdInventoryRequestRVLColumnList =[
+export const GirdInventoryRequestRVLColumnList = [
     {
         Name: "ReviewLevelName",
         Type: "text",
