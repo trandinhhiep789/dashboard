@@ -47,6 +47,14 @@ class InventoryRequestInfoCom extends Component {
                             {InventoryRequest.InventoryRequestTypeName}
                         </label>
                     </div> */}
+                    <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Mã kỳ kiểm kê:</label>
+                    </div>
+                    <div className="form-group col-md-4">
+                        <label className="col-form-label">
+                            {InventoryRequest.InventorytermID}
+                        </label>
+                    </div>
                 </div>
 
                 <div className="form-row">
