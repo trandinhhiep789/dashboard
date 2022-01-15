@@ -26,6 +26,8 @@ import { updatePagePath } from "../../../../actions/pageAction";
 import DataGrid from "../../../../common/components/DataGrid";
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
 import { LEADORDER_VIEW } from "../../../../constants/functionLists";
+import { MODAL_TYPE_DOWNLOAD_EXCEL, MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from "../../../../constants/actionTypes";
+import { ERPCOMMONCACHE_TMSCONFIG } from '../../../../constants/keyCache';
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -34,8 +36,7 @@ class SearchCom extends React.Component {
         this.state = {
             gridData: [],
             IsDisabledBtn: false,
-            PageIndex: 1,
-            PageSize: 20,
+            exportTemplateID: ""
         };
 
         this.gridref = React.createRef();
@@ -48,10 +49,12 @@ class SearchCom extends React.Component {
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleChangeSearchForm = this.handleChangeSearchForm.bind(this);
         this.showMessage = this.showMessage.bind(this);
+        this.getCacheMTG = this.getCacheMTG.bind(this);
     }
 
     componentDidMount() {
         this.props.updatePagePath(PagePath);
+        this.getCacheMTG();
     }
 
     showMessage(message) {
@@ -94,17 +97,19 @@ class SearchCom extends React.Component {
         });
     }
 
-    handleExportFile(excelData) {
+    getCacheMTG() {
+        this.props.callGetCache(ERPCOMMONCACHE_TMSCONFIG).then((result) => {
+            console.log(result)
+            if (result && !result.IsError && result.ResultObject) {
+                const _configValue = result.ResultObject.CacheData.find(x => x.TMSConfigID == "TEMPLATE_LEADORDER_REPORT_EXPORT");
 
-        const ws = XLSX.utils.json_to_sheet(excelData);
-        const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
-        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-        const data = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
-
-        FileSaver.saveAs(data, "Danh sách lỗi thực tế cho dịch vụ BHUQ và sửa chữa mới.xlsx");
-
-        this.addNotification("Xuất file thành công!")
-
+                if (_configValue) {
+                    this.setState({
+                        exportTemplateID: _configValue.TMSConfigValue
+                    })
+                }
+            }
+        });
     }
 
     handleExportSubmit(formData, MLObject) {
@@ -131,36 +136,23 @@ class SearchCom extends React.Component {
             }
         ];
 
-        this.props.callFetchAPI(APIHostName, APISearchPath, SearchParamList).then(apiResult => {
+        const postData = {
+            DataExportTemplateID: this.state.exportTemplateID,
+            LoadDataStoreName: 'TMS.TMS_LEADORDER_EXPORT',
+            KeyCached: "LEADORDER_REPORT_EXPORT",
+            SearchParamList: SearchParamList,
+            ExportDataParamsDescription: ""
+        }
+        this.props.callFetchAPI(APIHostName, "api/DataExportQueue/AddQueueExport", postData).then(apiResult => {
             if (!apiResult.IsError) {
-                if (apiResult.ResultObject.length == 0) {
-                    this.addNotification("Dữ liệu trống", apiResult.IsError);
-                    this.setState({
-                        gridData: []
-                    })
-                } else {
-                    const uptResultObject = apiResult.ResultObject.map(item => {
-                        return {
-                            // "Mã vận đơn": `${item.} - ${item.}`,
-                            // "Ngày hẹn giao": `${item.} - ${item.}`,
-                            // "Kho điều phối": `${item.} - ${item.}`,
-                            // "Nhân viên giao": `${item.} - ${item.}`,
-                            // "Tên sản phẩm": `${item.} - ${item.}`,
-                            // "Tên sản phẩm": `${item.} - ${item.}`,
-                            // "Mã vận đơn tương lai": `${item.} - ${item.}`,
-                            // "Ngày hẹn giao vận đơn tương lai": `${item.} - ${item.}`,
-                            // "Nhân viên tạo vận đơn tương lai": `${item.} - ${item.}`,
-                            // "Tên sản phẩm": `${item.} - ${item.}`,
-                            // "Trạng thái vận đơn tương lai": `${item.} - ${item.}`,
-                            // "Phản hồi khách hàng": `${item.} - ${item.}`,
-                            // "Lý do từ chối tạo vận đơn 4  tháng": `${item.} - ${item.}`,
-                        }
-                    })
-
-                    this.handleExportFile(uptResultObject);
-                }
-            } else {
-                this.showMessage(apiResult.Message);
+                this.props.showModal(MODAL_TYPE_SHOWDOWNLOAD_EXCEL, {
+                    title: "Tải file",
+                    maxWidth: '1200px',
+                    ParamRequest: { DataExportTemplateID: this.state.exportTemplateID }
+                });
+            }
+            else {
+                this.showMessage(apiResult.Message)
             }
         });
     }
@@ -262,6 +254,7 @@ class SearchCom extends React.Component {
                 />
 
                 <DataGrid
+                    // RequirePermission={LEADORDER_VIEW}
                     dataSource={this.state.gridData}
                     IDSelectColumnName={"chkSelect"}
                     IsAutoPaging={true}
@@ -271,7 +264,6 @@ class SearchCom extends React.Component {
                     IsShowButtonDelete={false}
                     listColumn={listColumn}
                     PKColumnName={"LeadOrderID"}
-                    // RequirePermission={LEADORDER_VIEW}
                     RowsPerPage={10}
                 />
             </React.Fragment>

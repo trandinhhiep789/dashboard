@@ -233,7 +233,7 @@ class DetailCom extends React.Component {
                         listColumn={ListLeadOrderDetailColumn}
                         PKColumnName={"LeadOrderDetailID"}
                         // RequirePermission={}
-                        RowsPerPage={10}
+                        RowsPerPage={20}
                     />
                 </React.Fragment >
             );
