@@ -228,6 +228,7 @@ class DetailCom extends React.Component {
 
     render() {
         const { IsSystem, InventoryRequest, InventoryRequestRVL, InventoryRequestDetail, isUserNameReviewLevel, CurrentReviewLevelName } = this.state;
+        console.log({InventoryRequest});
         if (this.state.IsLoadDataComplete) {
             return (
                 <div className="col-lg-12">
