@@ -376,6 +376,7 @@ class SearchCom extends React.Component {
                         IDSelectColumnName={"chkSelect"}
                         IsAutoPaging={true}
                         isCustomExportFileTemplate={true}
+                        isCustomExportFile={true}
                         isCustomImportFile={true}
                         IsDelete={true}
                         IsExportFile={true}
