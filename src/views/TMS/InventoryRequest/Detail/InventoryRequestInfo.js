@@ -39,14 +39,7 @@ class InventoryRequestInfoCom extends Component {
                     <div className="form-group col-md-4">
                         <label className="col-form-label">{InventoryRequest.InventoryRequestID}</label>
                     </div>
-                    {/* <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Loại yêu cầu kiểm kê1:</label>
-                    </div>
-                    <div className="form-group col-md-4">
-                        <label className="col-form-label">
-                            {InventoryRequest.InventoryRequestTypeName}
-                        </label>
-                    </div> */}
+                    
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Mã kỳ kiểm kê:</label>
                     </div>
@@ -59,34 +52,38 @@ class InventoryRequestInfoCom extends Component {
 
                 <div className="form-row">
                     <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Loại yêu cầu kiểm kê:</label>
+                    </div>
+                    <div className="form-group col-md-4">
+                        <label className="col-form-label">
+                            {InventoryRequest.InventoryRequestTypeName}
+                        </label>
+                    </div>
+                    <div className="form-group col-md-2">
                         <label className="col-form-label bold">Tiêu đề yêu cầu kiểm kê:</label>
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">{InventoryRequest.InventoryRequestTitle}</label>
                     </div>
+                    
+                </div>
+
+                <div className="form-row">
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Người yêu cầu:</label>
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">{InventoryRequest.RequestUser + " - " + InventoryRequest.RequestFullName}</label>
                     </div>
-                </div>
-
-                <div className="form-row">
-
-                    {/* <div className="form-group col-md-2">
+                    <div className="form-group col-md-2">
                         <label className="col-form-label bold">Kho yêu cầu:</label>
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">{InventoryRequest.RequestStoreID + " - " + InventoryRequest.StoreName}</label>
-                    </div> */}
+                    </div>
 
-                    <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Ngày yêu cầu:</label>
-                    </div>
-                    <div className="form-group col-md-4">
-                        <label className="col-form-label">{formatDate(InventoryRequest.RequestDate, true)}</label>
-                    </div>
+                    
+                    
                 </div>
 
                 <div className="form-row">
@@ -100,7 +97,12 @@ class InventoryRequestInfoCom extends Component {
                 </div>
 
                 <div className="form-row">
-
+                    <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Ngày yêu cầu:</label>
+                    </div>
+                    <div className="form-group col-md-4">
+                        <label className="col-form-label">{formatDate(InventoryRequest.RequestDate, false)}</label>
+                    </div>
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Đã duyệt:</label>
                     </div>
@@ -113,22 +115,50 @@ class InventoryRequestInfoCom extends Component {
                             </label>
                         </div>
                     </div>
+                    
+
+                </div>
+
+                <div className="form-row">
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Người duyệt:</label>
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">{InventoryRequest.RequestUser + " - " + InventoryRequest.ReViewedFullName}</label>
                     </div>
-
-                </div>
-
-                <div className="form-row">
-
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Ngày duyệt:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{formatDate(InventoryRequest.reViewedDate, true)}</label>
+                        <label className="col-form-label">{formatDate(InventoryRequest.reViewedDate, false)}</label>
+                    </div>
+
+                </div>
+                <div className="form-row">
+                    <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Đã xử lý chênh lệch:</label>
+                    </div>
+                    <div className="form-group col-md-4">
+                        <div className="checkbox customCheckbox">
+                            <label><input type="checkbox" disabled={true} defaultChecked={InventoryRequest.IsProcessInventory} />
+                                <span className="cr"><i className="cr-icon fa fa-check"></i>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Người xử lý chênh lệch:</label>
+                    </div>
+                    <div className="form-group col-md-4">
+                        <label className="col-form-label">{InventoryRequest.RequestUser + " - " + InventoryRequest.ProcessInventoryUser}</label>
+                    </div>
+                </div>
+                <div className="form-row">
+                    <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Ngày xử lý chênh lệch:</label>
+                    </div>
+                    <div className="form-group col-md-4">
+                        <label className="col-form-label">{formatDate(InventoryRequest.ProcessInventoryDate, false)}</label>
                     </div>
 
                     <div className="form-group col-md-2">
@@ -142,7 +172,6 @@ class InventoryRequestInfoCom extends Component {
                             </label>
                         </div>
                     </div>
-
                 </div>
 
                 <div className="form-row">
@@ -158,7 +187,7 @@ class InventoryRequestInfoCom extends Component {
                     </div>
                     <div className="form-group col-md-4">
                         <div className="checkbox customCheckbox">
-                            <label className="col-form-label">{formatDate(InventoryRequest.CreatedOrderDate, true)}</label>
+                            <label className="col-form-label">{formatDate(InventoryRequest.CreatedOrderDate, false)}</label>
                         </div>
 
                     </div>
@@ -197,7 +226,7 @@ class InventoryRequestInfoCom extends Component {
                         <label className="col-form-label bold">Ngày xuất:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{InventoryRequest.CreatedOrderDate}</label>
+                        <label className="col-form-label">{formatDate(InventoryRequest.CreatedOrderDate,false)}</label>
                     </div>
                 </div>
 

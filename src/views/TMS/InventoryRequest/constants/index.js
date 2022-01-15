@@ -399,6 +399,18 @@ export const GridMLObjectDefinition = [
         DefaultValue: "",
         BindControlName: "UneventQuantity",
         DataSourceMember: "UneventQuantity"
+    },
+    {
+        Name: "ProcessInputQuantity",
+        DefaultValue: "",
+        BindControlName: "ProcessInputQuantity",
+        DataSourceMember: "ProcessInputQuantity"
+    },
+    {
+        Name: "ProcessOutputQuantity",
+        DefaultValue: "",
+        BindControlName: "ProcessOutputQuantity",
+        DataSourceMember: "ProcessOutputQuantity"
     }
 ];
 
@@ -540,7 +552,7 @@ export const GirdInventoryRequestDetailColumnList = [
     {
         Name: "RecordQuantity",
         Type: "textNew",
-        Caption: " Số lượng sổ sách",
+        Caption: " Số lượng hệ thống",
         DataSourceMember: "RecordQuantity",
         Width: 150
     },
@@ -556,6 +568,20 @@ export const GirdInventoryRequestDetailColumnList = [
         Type: "text",
         Caption: "Chênh lệch",
         DataSourceMember: "UneventQuantity",
+        Width: 150,
+    },
+    {
+        Name: "ProcessInputQuantity",
+        Type: "text",
+        Caption: "Số lượng nhập",
+        DataSourceMember: "ProcessInputQuantity",
+        Width: 150,
+    },
+    {
+        Name: "ProcessOutputQuantity",
+        Type: "text",
+        Caption: "Số lượng xuất",
+        DataSourceMember: "ProcessOutputQuantity",
         Width: 150,
     },
 ]
