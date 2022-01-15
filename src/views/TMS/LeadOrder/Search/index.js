@@ -1,8 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import { ModalManager } from 'react-dynamic-modal';
-import * as FileSaver from 'file-saver';
-import * as XLSX from 'xlsx';
 import ReactNotification from "react-notifications-component";
 
 import {
@@ -14,20 +12,16 @@ import {
     APISearchPath,
 } from "../constants";
 
-import {
-    ERPCOMMONCACHE_SHIPMENTORDERTYPE,
-} from '../../../../constants/keyCache';
-
 import { callFetchAPI } from "../../../../actions/fetchAPIAction";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
+import { ERPCOMMONCACHE_TMSCONFIG } from '../../../../constants/keyCache';
+import { LEADORDER_VIEW } from "../../../../constants/functionLists";
 import { MessageModal } from "../../../../common/components/Modal";
+import { MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from "../../../../constants/actionTypes";
 import { showModal, hideModal } from '../../../../actions/modal';
 import { updatePagePath } from "../../../../actions/pageAction";
 import DataGrid from "../../../../common/components/DataGrid";
 import SearchForm from "../../../../common/components/FormContainer/SearchForm";
-import { LEADORDER_VIEW } from "../../../../constants/functionLists";
-import { MODAL_TYPE_DOWNLOAD_EXCEL, MODAL_TYPE_SHOWDOWNLOAD_EXCEL } from "../../../../constants/actionTypes";
-import { ERPCOMMONCACHE_TMSCONFIG } from '../../../../constants/keyCache';
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -254,7 +248,7 @@ class SearchCom extends React.Component {
                 />
 
                 <DataGrid
-                    // RequirePermission={LEADORDER_VIEW}
+                    RequirePermission={LEADORDER_VIEW}
                     dataSource={this.state.gridData}
                     IDSelectColumnName={"chkSelect"}
                     IsAutoPaging={true}

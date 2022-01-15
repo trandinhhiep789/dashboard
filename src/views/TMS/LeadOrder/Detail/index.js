@@ -26,11 +26,13 @@ class DetailCom extends React.Component {
         this.state = {
             CallAPIMessage: "",
             IsCloseForm: false,
-            DataSource: null
+            DataSource: null,
+            DataExportLeadOrderDetail: null
         };
 
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
         this.callLoadData = this.callLoadData.bind(this);
+        this.handleSetDataExportLeadOrderDetail = this.handleSetDataExportLeadOrderDetail.bind(this);
     }
 
     componentDidMount() {
@@ -49,6 +51,23 @@ class DetailCom extends React.Component {
             />
         );
     }
+
+    handleSetDataExportLeadOrderDetail(ListLeadOrderDetail) {
+        const result = ListLeadOrderDetail.map(item => {
+            return {
+                "Mã mối bán hàng": item.LeadOrderID,
+                "Sản phẩm": `${item.ProductID} - ${item.ProductName}`,
+                "Số lượng": item.Quantity,
+                "Đơn vị": item.QuantityUnit,
+                "Ngày hẹn giao": formatDate(item.ExpectedDeliveryDate),
+                "Mã đơn hàng": item.SaleOrderID,
+                "Người tạo": item.CreatedUserIDName
+            }
+        })
+
+        return result;
+    }
+
     callLoadData() {
         this.props.callFetchAPI(APIHostName, APILoadPath, this.props.match.params.id).then(apiResult => {
             if (apiResult.IsError) {
@@ -61,7 +80,10 @@ class DetailCom extends React.Component {
                     }
                 })
                 apiResult.ResultObject.ListLeadOrderDetail = ListLeadOrderDetail;
-                this.setState({ DataSource: apiResult.ResultObject });
+                this.setState({
+                    DataSource: apiResult.ResultObject,
+                    DataExportLeadOrderDetail: this.handleSetDataExportLeadOrderDetail(apiResult.ResultObject.ListLeadOrderDetail)
+                });
             }
         });
     }
@@ -72,7 +94,7 @@ class DetailCom extends React.Component {
 
     render() {
 
-        if (this.state.DataSource == null) {
+        if (this.state.DataSource == null || this.state.DataExportLeadOrderDetail == null) {
             return <React.Fragment>Đang nạp dữ liệu...</React.Fragment>
         } else {
             return (
@@ -222,17 +244,18 @@ class DetailCom extends React.Component {
                     </div>
 
                     <DataGrid
-                        headingTitle="Danh sách chi tiết mối bán hàng"
+                        DataExport={this.state.DataExportLeadOrderDetail}
+                        fileName="Danh sách chi tiết mối bán hàng"
                         dataSource={this.state.DataSource.ListLeadOrderDetail}
+                        headingTitle="Danh sách chi tiết mối bán hàng"
                         IDSelectColumnName={""}
                         IsAutoPaging={true}
                         IsDelete={false}
-                        IsExportFile={false}
+                        IsExportFile={true}
                         IsShowButtonAdd={false}
                         IsShowButtonDelete={false}
                         listColumn={ListLeadOrderDetailColumn}
                         PKColumnName={"LeadOrderDetailID"}
-                        // RequirePermission={}
                         RowsPerPage={20}
                     />
                 </React.Fragment >
