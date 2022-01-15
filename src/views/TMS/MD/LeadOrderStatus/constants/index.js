@@ -40,26 +40,26 @@ export const SearchElementList = [
 ];
 
 export const AddElementList = [
-    {
-        type: "text",
-        name: "txtLeadOrderStatusID",
-        label: "Mã trạng thái của mối bán hàng",
-        value: "",
-        maxSize: "9",
-        placeholder: "Mã phương thức xử lý của mối bán hàng",
-        icon: "",
-        listoption: {},
-        DataSourceMember: "LeadOrderStatusID",
-        disabled: false,
-        readonly: false,
-        validatonList: ["required", "number"]
-    },
+    // {
+    //     type: "text",
+    //     name: "txtLeadOrderStatusID",
+    //     label: "Mã trạng thái mối bán hàng",
+    //     value: "",
+    //     maxSize: "9",
+    //     placeholder: "Mã phương thức xử lý của mối bán hàng",
+    //     icon: "",
+    //     listoption: {},
+    //     DataSourceMember: "LeadOrderStatusID",
+    //     disabled: false,
+    //     readonly: false,
+    //     validatonList: ["required", "number"]
+    // },
     {
         type: "text",
         name: "txtLeadOrderStatusName",
-        label: "Tên trạng thái của mối bán hàng",
+        label: "Tên trạng thái mối bán hàng",
         value: "",
-        maxSize: "250",
+        maxSize: "150",
         placeholder: "Tên trạng thái của mối bán hàng",
         icon: "",
         listoption: {},
@@ -111,7 +111,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtLeadOrderStatusID",
-        label: "Mã trạng thái của mối bán hàng",
+        label: "Mã trạng thái mối bán hàng",
         value: "",
         maxSize: "9",
         placeholder: "Mã phương thức xử lý của mối bán hàng",
@@ -125,9 +125,9 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtLeadOrderStatusName",
-        label: "Tên trạng thái của mối bán hàng",
+        label: "Tên trạng thái mối bán hàng",
         value: "",
-        maxSize: "250",
+        maxSize: "150",
         placeholder: "Tên trạng thái của mối bán hàng",
         icon: "",
         listoption: {},
@@ -245,7 +245,7 @@ export const DataGridColumnList = [
     {
         Name: "LeadOrderStatusID",
         Type: "text",
-        Caption: "Mã trạng thái của mối bán hàng",
+        Caption: "Mã trạng thái mối bán hàng",
         DataSourceMember: "LeadOrderStatusID",
         Width: 170,
     },

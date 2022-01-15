@@ -422,6 +422,9 @@ class FormControlComboBoxCom extends Component {
                 this.props.onValueChange(this.props.name, comboValues, this.props.namelabel, selectedOption != null ? selectedOption.name : "", this.props.filterrest);
         }
 
+        if (this.props.onValueChangeCustom != null)
+            this.props.onValueChangeCustom(this.props.name, comboValues, this.props.namelabel);
+
     }
 
     bindcombox(value, listOption) {

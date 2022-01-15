@@ -47,7 +47,7 @@ export const AddElementList = [
         isMulti: false,
         label: "Phương thức xử lý của mối bán hàng",
         listoption: [],
-        LoadItemCacheKeyID: "",
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.LEADORDERTYPEPROCESS",
         name: "cbLeadOrderTypeProcessID",
         NameMember: "LeadOrderTypeProcessName",
         placeholder: "Phương thức xử lý của mối bán hàng",
@@ -146,7 +146,7 @@ export const EditElementList = [
         isMulti: false,
         label: "Phương thức xử lý của mối bán hàng",
         listoption: [],
-        LoadItemCacheKeyID: "",
+        LoadItemCacheKeyID: "ERPCOMMONCACHE.LEADORDERTYPEPROCESS",
         name: "cbLeadOrderTypeProcessID",
         NameMember: "LeadOrderTypeProcessName",
         placeholder: "Phương thức xử lý của mối bán hàng",
@@ -259,7 +259,7 @@ export const MLObjectDefinition = [
     {
         Name: "LeadOrderTypeProcessID",
         DefaultValue: "",
-        BindControlName: "txtLeadOrderTypeProcessID",
+        BindControlName: "cbLeadOrderTypeProcessID",
         DataSourceMember: "LeadOrderTypeProcessID"
     },
     {
@@ -375,3 +375,206 @@ export const DataGridColumnList = [
         LinkText: "Chỉnh sửa"
     }
 ];
+
+export const LeadOrderType_WFListColumn = [
+    {
+        Name: "chkSelect",
+        Type: "checkbox",
+        Caption: "",
+        DataSourceMember: "LeadOrderTypeID,LeadOrderStepID",
+        Width: 60
+    },
+    // {
+    //     Name: "VehicleRentalRequestStepIDName",
+    //     Type: "text",
+    //     Caption: "Mã bước",
+    //     DataSourceMember: "VehicleRentalRequestStepIDName",
+    // },
+    {
+        Name: "LeadOrderStepID",
+        Type: "text",
+        Caption: "Mã bước xử lý",
+        DataSourceMember: "LeadOrderStepID",
+    },
+    {
+        Name: "LeadOrderStepName",
+        Type: "text",
+        Caption: "Tên bước xử lý",
+        DataSourceMember: "LeadOrderStepName",
+    },
+    // {
+    //     Name: "AutoChangeToStatusID",
+    //     Type: "textNew",
+    //     Caption: "Mã trạng thái tự động chuyển",
+    //     DataSourceMember: "AutoChangeToStatusID",
+    // },
+    // {
+    //     Name: "AutoChangeToStepID",
+    //     Type: "textNew",
+    //     Caption: "Mã bước tự động chuyển",
+    //     DataSourceMember: "AutoChangeToStepID",
+    // },
+    // {
+    //     Name: "AutoChangetoStepIDName",
+    //     Type: "text",
+    //     Caption: "Bước tự động chuyển",
+    //     DataSourceMember: "AutoChangetoStepIDName",
+    // },
+    // {
+    //     Name: "AutoChangeStepTypeName",
+    //     Type: "text",
+    //     Caption: "Loại tự động chuyển bước",
+    //     DataSourceMember: "AutoChangeStepTypeName",
+    // },
+    {
+        Name: "IsInitStep",
+        Type: "checkicon",
+        Caption: "Là bước khởi tạo",
+        DataSourceMember: "IsInitStep",
+    },
+    {
+        Name: "IsFinishStep",
+        Type: "checkicon",
+        Caption: "Là bước kết thúc",
+        DataSourceMember: "IsFinishStep",
+    },
+    {
+        Name: "AutoChangeStepType",
+        Type: "checkicon",
+        Caption: "Tự động chuyển bước",
+        DataSourceMember: "AutoChangeStepType",
+    },
+    // {
+    //     Name: "Description",
+    //     Type: "text",
+    //     Caption: "Mô tả",
+    //     DataSourceMember: "Description",
+    // },
+    // {
+    //     Name: "IsAddToWorkingPlan",
+    //     Type: "checkicon",
+    //     Caption: "Tự động thêm vào lịch làm việc",
+    //     DataSourceMember: "IsAddToWorkingPlan",
+    // },
+    // {
+    //     Name: "IsCanDelete",
+    //     Type: "checkicon",
+    //     Caption: "Là bước có thể xóa yêu cầu",
+    //     DataSourceMember: "IsCanDelete",
+    // },
+    // {
+    //     Name: "IsCheckAbility",
+    //     Type: "checkicon",
+    //     Caption: "Là bước kiểm tra năng lực xe",
+    //     DataSourceMember: "IsCheckAbility",
+    // },
+    {
+        Name: "IsActived",
+        Type: "checkicon",
+        Caption: "Kích hoạt",
+        DataSourceMember: "IsActived",
+    },
+    // {
+    //     Name: "IsSystem",
+    //     Type: "checkicon",
+    //     Caption: "Hệ thống",
+    //     DataSourceMember: "IsSystem",
+    // },
+    {
+        Name: "LeadOrderType_WF",
+        Type: "edit",
+        Caption: "Sửa",
+        DataSourceMember: "LeadOrderTypeID,LeadOrderStepID",
+    }
+]
+
+export const LeadOrderType_WFMLObjectDefinition = [
+    {
+        Name: "LeadOrderTypeID",
+        DefaultValue: "",
+        BindControlName: "LeadOrderTypeID",
+        DataSourceMember: "LeadOrderTypeID"
+    },
+    {
+        Name: "LeadOrderStepID",
+        DefaultValue: "",
+        BindControlName: "LeadOrderStepID",
+        DataSourceMember: "LeadOrderStepID"
+    },
+    {
+        Name: "AutoChangeToStatusID",
+        DefaultValue: "",
+        BindControlName: "AutoChangeToStatusID",
+        DataSourceMember: "AutoChangeToStatusID"
+    },
+    {
+        Name: "AutoChangeToStepID",
+        DefaultValue: "",
+        BindControlName: "AutoChangeToStepID",
+        DataSourceMember: "AutoChangeToStepID"
+    },
+    {
+        Name: "AutoChangeStepType",
+        DefaultValue: "",
+        BindControlName: "AutoChangeStepType",
+        DataSourceMember: "AutoChangeStepType"
+    },
+    {
+        Name: "IsInitStep",
+        DefaultValue: "",
+        BindControlName: "IsInitStep",
+        DataSourceMember: "IsInitStep"
+    },
+    {
+        Name: "IsFinishStep",
+        DefaultValue: "",
+        BindControlName: "IsFinishStep",
+        DataSourceMember: "IsFinishStep"
+    },
+    {
+        Name: "Description",
+        DefaultValue: "",
+        BindControlName: "Description",
+        DataSourceMember: "Description"
+    },
+    // {
+    //     Name: "IsAddToWorkingPlan",
+    //     DefaultValue: "",
+    //     BindControlName: "IsAddToWorkingPlan",
+    //     DataSourceMember: "IsAddToWorkingPlan"
+    // },
+    {
+        Name: "IsActived",
+        DefaultValue: "",
+        BindControlName: "IsActived",
+        DataSourceMember: "IsActived"
+    },
+    {
+        Name: "IsSystem",
+        DefaultValue: "",
+        BindControlName: "IsSystem",
+        DataSourceMember: "IsSystem"
+    },
+    // {
+    //     Name: "VehicleRentalRequestStepID",
+    //     DefaultValue: "",
+    //     BindControlName: "txtVehicleRentalRequestStepID",
+    //     DataSourceMember: "VehicleRentalRequestStepID"
+    // },
+];
+
+export const EditMLObjectDefinition = [
+    {
+        Name: "LeadOrderType",
+        DefaultValue: "",
+        BindControlName: "LeadOrderType",
+        DataSourceMember: "LeadOrderType"
+    },
+    {
+        Name: "LeadOrderType_WF",
+        DefaultValue: "",
+        BindControlName: "LeadOrderType_WF",
+        DataSourceMember: "LeadOrderType_WF"
+    }
+]
+

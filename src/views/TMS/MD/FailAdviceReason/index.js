@@ -20,7 +20,7 @@ class FailAdviceReasonCom extends React.Component {
             <Switch>
                 <Route exact path="/FailAdviceReason" component={Search} />
                 <Route exact path="/FailAdviceReason/Add" component={Add} />
-                <Route exact path="/FailAdviceReason/Edit/:id" component={Edit} />
+                <Route exact path="/FailAdviceReason/Edit/:LeadOrderTypeID/:LeadOrderStepID" component={Edit} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );

@@ -100,7 +100,7 @@ export const AddElementList = [
         isMulti: false,
         DataSourceMember: "ProductID",
         readonly: false,
-        validatonList: ["Comborequired"]
+        validatonList: ["Comborequired"],
     },
     {
         type: "checkbox",
@@ -144,7 +144,7 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtLeadAdviceID",
-        label: "Khóa chính",
+        label: "Mã tư vấn mối bán hàng",
         value: "",
         maxSize: "9",
         placeholder: "",
@@ -336,7 +336,7 @@ export const DataGridColumnList = [
     {
         Name: "LeadAdviceID",
         Type: "texttolink",
-        Caption: "Mã khoá",
+        Caption: "Mã tư vấn bán hàng",
         DataSourceMember: "LeadAdviceID",
         Width: 70,
         Link: "/LeadAdvice/Detail/",
