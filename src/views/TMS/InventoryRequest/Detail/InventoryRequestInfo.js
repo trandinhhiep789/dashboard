@@ -101,7 +101,7 @@ class InventoryRequestInfoCom extends Component {
                         <label className="col-form-label bold">Ngày yêu cầu:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{formatDate(InventoryRequest.RequestDate, true)}</label>
+                        <label className="col-form-label">{formatDate(InventoryRequest.RequestDate, false)}</label>
                     </div>
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Đã duyệt:</label>
@@ -130,7 +130,7 @@ class InventoryRequestInfoCom extends Component {
                         <label className="col-form-label bold">Ngày duyệt:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{formatDate(InventoryRequest.reViewedDate, true)}</label>
+                        <label className="col-form-label">{formatDate(InventoryRequest.reViewedDate, false)}</label>
                     </div>
 
                 </div>
@@ -158,7 +158,7 @@ class InventoryRequestInfoCom extends Component {
                         <label className="col-form-label bold">Ngày xử lý chênh lệch:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{formatDate(InventoryRequest.ProcessInventoryDate, true)}</label>
+                        <label className="col-form-label">{formatDate(InventoryRequest.ProcessInventoryDate, false)}</label>
                     </div>
 
                     <div className="form-group col-md-2">
@@ -187,7 +187,7 @@ class InventoryRequestInfoCom extends Component {
                     </div>
                     <div className="form-group col-md-4">
                         <div className="checkbox customCheckbox">
-                            <label className="col-form-label">{formatDate(InventoryRequest.CreatedOrderDate, true)}</label>
+                            <label className="col-form-label">{formatDate(InventoryRequest.CreatedOrderDate, false)}</label>
                         </div>
 
                     </div>
@@ -226,7 +226,7 @@ class InventoryRequestInfoCom extends Component {
                         <label className="col-form-label bold">Ngày xuất:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{InventoryRequest.CreatedOrderDate}</label>
+                        <label className="col-form-label">{formatDate(InventoryRequest.CreatedOrderDate,false)}</label>
                     </div>
                 </div>
 
