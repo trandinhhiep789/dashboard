@@ -32,10 +32,9 @@ class AddCom extends React.Component {
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsCloseForm: false,
+            DataSource: {},
             FilterObject: {
                 GroupValue: [-1, -1],
-                // MainGroupValue: -1,
-                // SubGroupValue: -1,
                 ArrayProduct: []
             }
         };
@@ -64,36 +63,38 @@ class AddCom extends React.Component {
     }
 
     handleFormChange(formData, MLObject) {
-        console.log(formData);
-        if (!!formData.cbMainGroupID.value) {
-            let value = formData.cbMainGroupID.value;
-            let changeState = this.state;
-            let filterObject = changeState.FilterObject;
-            let arrProduct = filterObject.ArrayProduct;
-            let groupValue = filterObject.GroupValue;
-            
-            groupValue[0] = value;
-            arrProduct[0] = [value];
-            filterObject = { ...filterObject, GroupValue: groupValue, ArrayProduct: arrProduct };
-            changeState = { ...changeState, FilterObject: filterObject };
-
-            this.setState(changeState);
+        let dataSource = [];
+        for (const [key, value] of Object.entries(formData)) {
+            dataSource.push([value.datasourcemember, value.value]);
         }
 
-        if (!!formData.cbSubGroupID.value) {
-            let value = formData.cbSubGroupID.value;
-            let changeState = this.state;
-            let filterObject = changeState.FilterObject;
-            let groupValue = filterObject.GroupValue;
-            
-            groupValue[1] = value;
-            arrProduct[1] = [value];
-            filterObject = { ...filterObject, GroupValue: groupValue, ArrayProduct: arrProduct };
-            changeState = { ...changeState, FilterObject: filterObject };
+        dataSource = Object.fromEntries(dataSource);
 
-            this.setState(changeState);
+        let valueMainGroupID = formData.cbMainGroupID.value;
+        let valueSubGroupID = formData.cbSubGroupID.value;
+        let changeState = this.state;
+        let filterObject = changeState.FilterObject;
+        let arrProduct = filterObject.ArrayProduct;
+        let groupValue = filterObject.GroupValue;
+
+        groupValue[0] = valueMainGroupID;
+        groupValue[1] = valueSubGroupID;
+        arrProduct[0] = [valueMainGroupID];
+        arrProduct[1] = [valueSubGroupID];
+        filterObject = { ...filterObject, ArrayProduct: arrProduct, GroupValue: groupValue };
+
+        if (valueMainGroupID !== this.state.DataSource["MainGroupID"]) {
+            dataSource = { ...dataSource, SubGroupID: "", ProductID: "" };
+            arrProduct[1] = [];
+            groupValue[1] = -1;
         }
 
+        if (valueSubGroupID !== this.state.DataSource["SubGroupID"]) {
+            dataSource = { ...dataSource, ProductID: "" };
+        }
+
+        changeState = { ...changeState, FilterObject: filterObject, DataSource: dataSource };
+        this.setState(changeState);
 
     }
 
@@ -141,7 +142,7 @@ class AddCom extends React.Component {
                 onchange={this.handleFormChange.bind(this)}
                 MLObjectDefinition={MLObjectDefinition}
                 onSubmit={this.handleSubmit}
-            // onInputChangeList={this.handleInputChangeList}
+                dataSource={this.state.DataSource}
             >
                 <FormControl.FormControlComboBox
                     colspan="4"
@@ -160,7 +161,6 @@ class AddCom extends React.Component {
                     valuemember="ShipmentOrderTypeID"
                     validatonList={["Comborequired"]}
                     placeholder="Loại yêu cầu vận chuyển"
-                // IsSystem={this.state.DataSource.IsSystem}
                 />
                 <FormControl.FormControlComboBox
                     colspan="4"
@@ -179,7 +179,6 @@ class AddCom extends React.Component {
                     valuemember="MainGroupID"
                     validatonList={["Comborequired"]}
                     placeholder="Ngành hàng"
-                // IsSystem={this.state.DataSource.IsSystem}
                 />
                 <FormControl.FormControlComboBox
                     colspan="4"
@@ -200,9 +199,9 @@ class AddCom extends React.Component {
                     filterValue={this.state.FilterObject.GroupValue[0]}
                     filterobj="MainGroupID"
                     placeholder="Nhóm hàng"
-                // IsSystem={this.state.DataSource.IsSystem}
                 />
                 <ProductComboBox
+                    key={this.state.FilterObject.GroupValue[1]}
                     colspan="4"
                     labelcolspan="2"
                     label="sản phẩm"
@@ -210,32 +209,14 @@ class AddCom extends React.Component {
                     controltype="InputControl"
                     datasourcemember="ProductID"
                     name="cbProductID"
-                    //validatonList={[]}
                     IsLabelDiv={true}
                     isMulti={false}
-                    // disabled={IsUpdate}
+                    value={""}
                     isFilter={true}
                     arrFieldFilter={['MainGroupID', 'SubGroupID']}
                     arrValueFilter={this.state.FilterObject.ArrayProduct}
-                />
-                {/* <FormControl.FormControlComboBox
-                    colspan="4"
-                    labelcolspan="2"
-                    controltype="InputControl"
-                    datasourcemember="ProductID"
-                    isautoloaditemfromcache={true}
-                    IsLabelDiv={true}
-                    isMulti={false}
-                    label="Sản phẩm"
-                    listoption={[]}
-                    // loaditemcachekeyid={ERPCOMMONCACHE_SUBGROUP}
-                    name="cbProductID"
-                    value={""}
                     validatonList={["Comborequired"]}
-                    // validatonList={[]}
-                    placeholder="Sản phẩm"
-                // IsSystem={this.state.DataSource.IsSystem}
-                /> */}
+                />
                 <FormControl.CheckBox
                     name="chkIsAdviceOtherProduct"
                     colspan="4"
@@ -253,7 +234,7 @@ class AddCom extends React.Component {
                     name="chkIsActived"
                     colspan="4"
                     labelcolspan="2"
-                    label="Hoạt động:"
+                    label="Kích hoạt:"
                     isautoloaditemfromcache={false}
                     controltype="InputControl"
                     value={true}

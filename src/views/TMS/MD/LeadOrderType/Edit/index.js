@@ -27,7 +27,7 @@ import FormContainerAvance from './../../../../../common/components/Form/Advance
 import FormControl from './../../../../../common/components/FormContainer/FormControl/index';
 import TabContainer from './../../../../../common/components/Tabs/TabContainer/index';
 import InputGrid from './../../../../../common/components/Form/AdvanceForm/FormControl/InputGrid/index';
-import { ERPCOMMONCACHE_FUNCTION } from "../../../../../constants/keyCache";
+import { ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_LEADORDERTYPEPROCESS } from "../../../../../constants/keyCache";
 import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
 import LeadOrderType_WF_Add from "../Components/LeadOrderType_WF/Add";
 import { showModal, hideModal } from './../../../../../actions/modal';
@@ -253,7 +253,7 @@ class EditCom extends React.Component {
                                     isMulti={false}
                                     label="Phương thức xử lý của mối bán hàng"
                                     listoption={[]}
-                                    loaditemcachekeyid={"ERPCOMMONCACHE.LEADORDERTYPEPROCESS"}
+                                    loaditemcachekeyid={ERPCOMMONCACHE_LEADORDERTYPEPROCESS}
                                     name="cbLeadOrderTypeProcessID"
                                     nameMember="LeadOrderTypeProcessName"
                                     value={""}

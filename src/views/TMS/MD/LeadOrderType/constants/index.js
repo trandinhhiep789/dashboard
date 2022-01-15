@@ -1,3 +1,5 @@
+import {ERPCOMMONCACHE_FUNCTION, ERPCOMMONCACHE_LEADORDERTYPEPROCESS} from "../../../../../constants/keyCache";
+
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/LeadOrderType/Search";
 export const LoadAPIPath = "api/LeadOrderType/Load";
@@ -47,7 +49,7 @@ export const AddElementList = [
         isMulti: false,
         label: "Phương thức xử lý của mối bán hàng",
         listoption: [],
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.LEADORDERTYPEPROCESS",
+        LoadItemCacheKeyID: ERPCOMMONCACHE_LEADORDERTYPEPROCESS,
         name: "cbLeadOrderTypeProcessID",
         NameMember: "LeadOrderTypeProcessName",
         placeholder: "Phương thức xử lý của mối bán hàng",
@@ -92,7 +94,7 @@ export const AddElementList = [
         validatonList: [],
         isMulti: false,
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.FUNCTION",
+        LoadItemCacheKeyID: ERPCOMMONCACHE_FUNCTION,
         ValueMember: "FunctionID",
         NameMember: "FunctionName",
         // KeyFilter: "FunctionCategoryID",
@@ -146,7 +148,7 @@ export const EditElementList = [
         isMulti: false,
         label: "Phương thức xử lý của mối bán hàng",
         listoption: [],
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.LEADORDERTYPEPROCESS",
+        LoadItemCacheKeyID: ERPCOMMONCACHE_LEADORDERTYPEPROCESS,
         name: "cbLeadOrderTypeProcessID",
         NameMember: "LeadOrderTypeProcessName",
         placeholder: "Phương thức xử lý của mối bán hàng",
@@ -191,7 +193,7 @@ export const EditElementList = [
         validatonList: [],
         isMulti: false,
         IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.FUNCTION",
+        LoadItemCacheKeyID: ERPCOMMONCACHE_FUNCTION,
         ValueMember: "FunctionID",
         NameMember: "FunctionName",
         // KeyFilter: "FunctionCategoryID",

@@ -19,7 +19,7 @@ class AddCom extends React.Component {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
-     
+
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
@@ -35,10 +35,10 @@ class AddCom extends React.Component {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
 
-        MLObject.LeadAdviceID=this.props.LeadAdviceID;
-        MLObject.MainGroupID=MLObject.MainGroupID[0];
-        MLObject.SubGroupID=MLObject.SubGroupID[0];
-        MLObject.ProductID=MLObject.ProductID[0].ProductID;
+        MLObject.LeadAdviceID = this.props.LeadAdviceID;
+        MLObject.MainGroupID = MLObject.MainGroupID[0];
+        MLObject.SubGroupID = MLObject.SubGroupID[0];
+        MLObject.ProductID = MLObject.ProductID[0].ProductID;
 
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
@@ -50,7 +50,7 @@ class AddCom extends React.Component {
 
     handleCloseMessage() {
         if (!this.state.IsCallAPIError) {
-            if(this.props.closePopup){
+            if (this.props.closePopup) {
                 this.props.closePopup();
             }
         }
@@ -71,7 +71,7 @@ class AddCom extends React.Component {
         const dataSource = {
             IsActived: true
         };
-        
+
         return (
             <SimpleForm
                 MLObjectDefinition={MLObjectDefinition} ƒ

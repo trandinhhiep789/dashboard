@@ -1,3 +1,5 @@
+import { ERPCOMMONCACHE_LEADORDERTYPE, ERPCOMMONCACHE_SALEORDERTYPE } from './../../../../../constants/keyCache';
+
 export const APIHostName = "TMSAPI";
 export const SearchAPIPath = "api/LeadOrderTypeSoType/Search";
 export const LoadAPIPath = "api/LeadOrderTypeSoType/Load";
@@ -47,7 +49,7 @@ export const AddElementList = [
         isMulti: false,
         label: "Loại mối bán hàng",
         listoption: [],
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.LEADORDERTYPE",
+        LoadItemCacheKeyID: ERPCOMMONCACHE_LEADORDERTYPE,
         name: "cbLeadOrderTyped",
         NameMember: "LeadOrderName",
         placeholder: "Loại mối bán hàng",
@@ -63,7 +65,7 @@ export const AddElementList = [
         isMulti: false,
         label: "Loại đơn hàng",
         listoption: [],
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.SALEORDERTYPE",
+        LoadItemCacheKeyID: ERPCOMMONCACHE_SALEORDERTYPE,
         name: "cbSaleOrderTypeID",
         NameMember: "SaleOrderTypeName",
         placeholder: "Loại đơn hàng",
@@ -131,7 +133,7 @@ export const EditElementList = [
         isMulti: false,
         label: "Loại mối bán hàng",
         listoption: [],
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.LEADORDERTYPE",
+        LoadItemCacheKeyID: ERPCOMMONCACHE_LEADORDERTYPE,
         name: "cbLeadOrderTyped",
         NameMember: "LeadOrderName",
         placeholder: "Loại mối bán hàng",
@@ -148,7 +150,7 @@ export const EditElementList = [
         isMulti: false,
         label: "Loại đơn hàng",
         listoption: [],
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.SALEORDERTYPE",
+        LoadItemCacheKeyID: ERPCOMMONCACHE_SALEORDERTYPE,
         name: "cbSaleOrderTypeID",
         NameMember: "SaleOrderTypeName",
         placeholder: "Loại đơn hàng",

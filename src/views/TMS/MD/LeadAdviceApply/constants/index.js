@@ -1,4 +1,5 @@
 export const APIHostName = "TMSAPI";
+import { ERPCOMMONCACHE_MAINGROUP } from './../../../../../constants/keyCache';
 export const SearchAPIPath = "api/LeadAdviceApply/Search";
 export const LoadAPIPath = "api/LeadAdviceApply/Load";
 export const LoadInfoByLeadAdviceIDAPIPath = "api/LeadAdviceApply/LoadInfoByLeadAdviceID";
@@ -48,7 +49,7 @@ export const AddElementList = [
         isMulti: false,
         label: "Ngành hàng",
         listoption: [],
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.MAINGROUP",
+        LoadItemCacheKeyID: ERPCOMMONCACHE_MAINGROUP,
         name: "cbMainGroupID",
         NameMember: "MainGroupName",
         placeholder: "Ngành hàng",
@@ -63,7 +64,7 @@ export const AddElementList = [
         isMulti: false,
         label: "Nhóm hàng",
         listoption: [],
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.SUBGROUP",
+        LoadItemCacheKeyID: ERPCOMMONCACHE_SUBGROUP,
         name: "cbSubGroupID",
         NameMember: "SubGroupName",
         placeholder: "Nhóm hàng",
@@ -129,7 +130,7 @@ export const EditElementList = [
         isMulti: false,
         label: "Ngành hàng",
         listoption: [],
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.MAINGROUP",
+        LoadItemCacheKeyID: ERPCOMMONCACHE_MAINGROUP,
         name: "cbMainGroupID",
         NameMember: "MainGroupName",
         placeholder: "Ngành hàng",
@@ -144,7 +145,7 @@ export const EditElementList = [
         isMulti: false,
         label: "Nhóm hàng",
         listoption: [],
-        LoadItemCacheKeyID: "ERPCOMMONCACHE.SUBGROUP",
+        LoadItemCacheKeyID: ERPCOMMONCACHE_SUBGROUP,
         name: "cbSubGroupID",
         NameMember: "SubGroupName",
         placeholder: "Nhóm hàng",
