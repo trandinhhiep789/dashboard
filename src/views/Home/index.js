@@ -236,6 +236,7 @@ import LeadOrderTypeProcess from './../TMS/MD/LeadOrderTypeProcess/index';
 import LeadOrderStatus from "../TMS/MD/LeadOrderStatus";
 import LeadOrderStep from "../TMS/MD/LeadOrderStep";
 import LeadOrder from '../TMS/LeadOrder';
+import LeadOrderType_SoType from "../TMS/MD/LeadOrderType_SoType";
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -580,6 +581,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/LeadOrderStatus" component={LeadOrderStatus} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/LeadOrderStep" component={LeadOrderStep} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/LeadOrder" component={LeadOrder} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/LeadOrderTypeSoType" component={LeadOrderType_SoType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
 
                                     <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />

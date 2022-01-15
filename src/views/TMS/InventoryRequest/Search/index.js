@@ -22,6 +22,7 @@ import {
     AddLink,
     APIHostName,
     SearchAPIPath,
+    GetInventoryTerm,
     DeleteNewAPIPath,
     IDSelectColumnName,
     PKColumnName,
@@ -54,6 +55,7 @@ class SearchCom extends React.Component {
             iconNotification: "",
             PageNumber: 1,
             IsLoadDataComplete: false,
+            SearchElementlist: null,
             dataExport: []
 
         };
@@ -65,6 +67,7 @@ class SearchCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(PagePath);
         this.callSearchData(this.state.SearchData);
+        this.GetInventoryTermData();
     }
 
     callSearchData(searchData) {
@@ -88,12 +91,12 @@ class SearchCom extends React.Component {
 
                     }
                     else {
-                        item.ReviewStatusLable =<span className='lblstatus text-warning'>Chưa duyệt</span>;
+                        item.ReviewStatusLable = <span className='lblstatus text-warning'>Chưa duyệt</span>;
 
                     }
                     return item;
                 })
-                  const tempData = apiResult.ResultObject.map((item, index) => {
+                const tempData = apiResult.ResultObject.map((item, index) => {
                     let element = {
                         "Mã yêu cầu": item.InventoryRequestID,
                         "Tiêu Đề yêu cầu": item.InventoryRequestTitle,
@@ -101,7 +104,7 @@ class SearchCom extends React.Component {
                         "Kho yêu cầu": item.RequestStoreID + "-" + item.StoreName,
                         "Ngày yêu cầu": item.RequestDate,
                         "Người yêu cầu": item.RequestUser + " - " + item.FullName,
-                        "Đã duyệt": item.IsreViewed= true ? 'Đã duyệt' : 'Chưa duyệt',
+                        "Đã duyệt": item.IsreViewed = true ? 'Đã duyệt' : 'Chưa duyệt',
                         "Đã xuất": item.IsCreatedOrder = true ? 'Đã xuất' : 'Chưa xuất'
                     };
 
@@ -115,6 +118,42 @@ class SearchCom extends React.Component {
                 });
             }
         });
+    }
+    GetInventoryTermData() {
+        let _SearchElementList = SearchElementList;
+        let listOption = [{ value: "-1", label: "---Vui lòng chọn---" }];
+        let param = {};
+        this.props.callFetchAPI(APIHostName, GetInventoryTerm, param).then(apiResult => {
+            if (apiResult.IsError) {
+                listOption = listOptionNull;
+                _SearchElementList.forEach(function (objElement) {
+                    if (objElement.DataSourceMember == "InventorytermID") {
+                        objElement.listoption = listOption;
+                        objElement.value = "1";
+                    }
+                }.bind(this));
+            } else {
+                if (apiResult.ResultObject) {
+                    apiResult.ResultObject.map((cacheItem) => {
+                        listOption.push({ value: cacheItem["inventoryTermID"], label: cacheItem["inventoryTermID"] + ' - ' + cacheItem['inventoryTermName'] });
+                    });
+                }
+                _SearchElementList.forEach(function (objElement) {
+                    if (objElement.DataSourceMember == "InventorytermID") {
+                        objElement.listoption = listOption;
+                        objElement.value = "1";
+                    }
+                }.bind(this));
+            }
+           
+            this.setState({
+                SearchElementlist: _SearchElementList
+            });
+
+           
+        });
+
+
     }
 
     showMessage(message) {
@@ -138,7 +177,7 @@ class SearchCom extends React.Component {
             MLObject.DeletedUser = this.props.AppInfo.LoginInfo.Username;
             listMLObject.push(MLObject);
         });
-        console.log("listMLObject",deleteList, pkColumnName, listMLObject);
+        console.log("listMLObject", deleteList, pkColumnName, listMLObject);
         this.props.callFetchAPI(APIHostName, DeleteNewAPIPath, listMLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
             this.addNotification(apiResult.Message, apiResult.IsError);
@@ -237,40 +276,47 @@ class SearchCom extends React.Component {
     }
 
     render() {
-        return (
-            <React.Fragment>
-                <ReactNotification ref={this.notificationDOMRef} />
-                <SearchForm
-                    FormName={TitleFormSearch}
-                    MLObjectDefinition={SearchMLObjectDefinition}
-                    listelement={SearchElementList}
-                    onSubmit={this.handleSearchSubmit}
-                    ref={this.searchref}
-                    className="multiple multiple-custom multiple-custom-display"
-                    classNamebtnSearch="btn-custom-bottom"
-                />
-                <DataGrid
-                    listColumn={DataGridColumnList}
-                    dataSource={this.state.gridDataSource}
-                    //AddLink={AddLink}
-                    IDSelectColumnName={IDSelectColumnName}
-                    PKColumnName={PKColumnName}
-                    onDeleteClick={this.handleDelete}
-                    onInsertClick={this.handleInputGridInsert}
-                    IsCustomAddLink={true}
-                    IsDelete={true}
-                    IsAutoPaging={true}
-                    RowsPerPage={10}
-                    IsExportFile={true}
-                    DataExport={this.state.dataExport}
-                    RequirePermission={INVENTORYREQUEST_VIEW}
-                    DeletePermission={INVENTORYREQUEST_DELETE}
-                    ExportPermission={INVENTORYREQUEST_EXPORT}
-                    fileName="Danh sách yêu cầu kiểm kê"
-                    onExportFile={this.handleExportFile.bind(this)}
-                />
-            </React.Fragment>
-        );
+        console.log(this.state.SearchElementlist);
+        let {SearchElementlist} = this.state;
+        if (SearchElementlist == null) {
+            return <React.Fragment>Đang tải dữ liệu...</React.Fragment>
+        } else{
+            return (
+                <React.Fragment>
+                    <ReactNotification ref={this.notificationDOMRef} />
+                    <SearchForm
+                        FormName={TitleFormSearch}
+                        MLObjectDefinition={SearchMLObjectDefinition}
+                        listelement={SearchElementlist}
+                        onSubmit={this.handleSearchSubmit}
+                        ref={this.searchref}
+                        className="multiple multiple-custom multiple-custom-display"
+                        classNamebtnSearch="btn-custom-bottom"
+                    />
+                    <DataGrid
+                        listColumn={DataGridColumnList}
+                        dataSource={this.state.gridDataSource}
+                        //AddLink={AddLink}
+                        IDSelectColumnName={IDSelectColumnName}
+                        PKColumnName={PKColumnName}
+                        onDeleteClick={this.handleDelete}
+                        onInsertClick={this.handleInputGridInsert}
+                        IsCustomAddLink={true}
+                        IsDelete={true}
+                        IsAutoPaging={true}
+                        RowsPerPage={10}
+                        IsExportFile={true}
+                        DataExport={this.state.dataExport}
+                        RequirePermission={INVENTORYREQUEST_VIEW}
+                        DeletePermission={INVENTORYREQUEST_DELETE}
+                        ExportPermission={INVENTORYREQUEST_EXPORT}
+                        fileName="Danh sách yêu cầu kiểm kê"
+                        onExportFile={this.handleExportFile.bind(this)}
+                    />
+                </React.Fragment>
+            );
+        }
+        
 
     }
 }

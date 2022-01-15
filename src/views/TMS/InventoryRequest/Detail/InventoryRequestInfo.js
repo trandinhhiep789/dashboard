@@ -38,12 +38,21 @@ class InventoryRequestInfoCom extends Component {
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">{InventoryRequest.InventoryRequestID}</label>
-                    </div><div className="form-group col-md-2">
-                        <label className="col-form-label bold">Loại yêu cầu kiểm kê:</label>
+                    </div>
+                    {/* <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Loại yêu cầu kiểm kê1:</label>
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">
                             {InventoryRequest.InventoryRequestTypeName}
+                        </label>
+                    </div> */}
+                    <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Mã kỳ kiểm kê:</label>
+                    </div>
+                    <div className="form-group col-md-4">
+                        <label className="col-form-label">
+                            {InventoryRequest.InventorytermID}
                         </label>
                     </div>
                 </div>
@@ -65,12 +74,12 @@ class InventoryRequestInfoCom extends Component {
 
                 <div className="form-row">
 
-                    <div className="form-group col-md-2">
+                    {/* <div className="form-group col-md-2">
                         <label className="col-form-label bold">Kho yêu cầu:</label>
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">{InventoryRequest.RequestStoreID + " - " + InventoryRequest.StoreName}</label>
-                    </div>
+                    </div> */}
 
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Ngày yêu cầu:</label>

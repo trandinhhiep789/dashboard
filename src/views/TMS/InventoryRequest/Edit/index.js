@@ -6,7 +6,7 @@ import FormContainer from "../../../../common/components/FormContainer";
 import { MessageModal } from "../../../../common/components/Modal";
 import FormControl from "../../../../common/components/FormContainer/FormControl";
 import {
-
+    GetInventoryTerm,
     TitleFormEdit,
     EditPagePath,
     BackLink,
@@ -21,6 +21,7 @@ import { updatePagePath } from "../../../../actions/pageAction";
 import { callGetCache, callClearLocalCache } from "../../../../actions/cacheAction";
 import InventoryRequestDetailList from "../Component/InventoryRequestDetailList";
 import InventoryRequestRVList from "../Component/InventoryRequestRVList";
+import { INVENTORYREQUEST_VIEW, INVENTORYREQUEST_DELETE, INVENTORYREQUEST_EXPORT } from "../../../../constants/functionLists";
 
 
 class EditCom extends React.Component {
@@ -36,6 +37,7 @@ class EditCom extends React.Component {
             InventoryRequestDetail: [],
             InventoryRequest: {},
             InventoryRequestRVLst: [],
+            InventorytermIDListData:null,
             IsLoadDataComplete: false,
             IsSystem: false,
             IsExtended: false,
@@ -47,6 +49,7 @@ class EditCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
         this.callLoadData(this.props.match.params.id);
+        this.GetInventoryTermData();
     }
 
     handleSubmit(formData, MLObject) {
@@ -54,7 +57,35 @@ class EditCom extends React.Component {
 
     }
 
+    GetInventoryTermData() {
+        let listOption = [{ value: "-1", label: "---Vui lòng chọn---" }];
+        let param = {};
+        this.props.callFetchAPI(APIHostName, GetInventoryTerm, param).then(apiResult => {
+            if (apiResult.IsError) {
+                listOption = listOptionNull;
+                this.setState({
+                    InventorytermIDListData: listOption
+                });
+            } else {
+                if (apiResult.ResultObject) {
+                    apiResult.ResultObject.map((cacheItem) => {
+                        listOption.push({ value: cacheItem["inventoryTermID"], label: cacheItem["inventoryTermID"] + ' - ' + cacheItem['inventoryTermName'] });
+                    });
+                }
+                this.setState({
+                    InventorytermIDListData: listOption
+                });
+                console.log({listOption});
+                
+            }
+           
+            
 
+           
+        });
+
+
+    }
     handleCloseMessage() {
         if (!this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
     }
@@ -116,7 +147,7 @@ class EditCom extends React.Component {
         if (this.state.IsCloseForm) {
             return <Redirect to={BackLink} />;
         }
-        if (this.state.IsLoadDataComplete) {
+        if (this.state.IsLoadDataComplete && this.state.InventorytermIDListData != null) {
             return (
                 <React.Fragment>
                     <FormContainer
@@ -126,6 +157,7 @@ class EditCom extends React.Component {
                         listelement={[]}
                         BackLink={BackLink}
                         onSubmit={this.handleSubmit}
+                        RequirePermission={INVENTORYREQUEST_VIEW}
                     >
 
 
@@ -195,11 +227,7 @@ class EditCom extends React.Component {
                                     //nameMember="StoreName"
                                     controltype="InputControl"
                                     value={-1}
-                                    listoption={[
-                                        { value: -1, label: '--Vui lòng chọn--' },
-                                        { value: 1001, label: 'Mã 1' },
-                                        { value: 1002, label: 'Mã 2' },
-                                    ]}
+                                    listoption={this.state.InventorytermIDListData}
                                     datasourcemember="InventorytermID" />
 
                             </div>
