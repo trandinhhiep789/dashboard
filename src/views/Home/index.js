@@ -235,6 +235,7 @@ import LeadOrderType from './../TMS/MD/LeadOrderType/index';
 import LeadOrderTypeProcess from './../TMS/MD/LeadOrderTypeProcess/index';
 import LeadOrderStatus from "../TMS/MD/LeadOrderStatus";
 import LeadOrderStep from "../TMS/MD/LeadOrderStep";
+import LeadOrder from '../TMS/LeadOrder';
 
 class HomeCom extends React.Component {
     constructor(props) {
@@ -562,7 +563,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/ConstructRevenueReport" component={ConstructRevenueReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/CurrentProjectTypeReport" component={CurrentProjectTypeReport} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ProjectArchitectureInfo" component={ProjectArchitectureInfo} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
-                                    
+
                                     <PrivateRoute path="/ArchitechtureType_PRJType" component={ArchitechtureType_PRJType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ConstructServiceType" component={ConstructServiceType} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/ConstructService" component={ConstructService} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
@@ -578,6 +579,7 @@ class HomeCom extends React.Component {
                                     <PrivateRoute path="/LeadOrderTypeProcess" component={LeadOrderTypeProcess} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/LeadOrderStatus" component={LeadOrderStatus} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                                     <PrivateRoute path="/LeadOrderStep" component={LeadOrderStep} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
+                                    <PrivateRoute path="/LeadOrder" component={LeadOrder} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
 
 
                                     <PrivateRoute path="*" component={NotFound} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
