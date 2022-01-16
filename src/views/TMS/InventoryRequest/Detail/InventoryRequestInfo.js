@@ -86,15 +86,7 @@ class InventoryRequestInfoCom extends Component {
                     
                 </div>
 
-                <div className="form-row">
-                    <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Mô tả:</label>
-                    </div>
-                    <div className="form-group col-md-10">
-                        <label className="col-form-label">{InventoryRequest.Description}</label>
-                    </div>
-
-                </div>
+              
 
                 <div className="form-row">
                     <div className="form-group col-md-2">
@@ -124,7 +116,7 @@ class InventoryRequestInfoCom extends Component {
                         <label className="col-form-label bold">Người duyệt:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{InventoryRequest.RequestUser + " - " + InventoryRequest.ReViewedFullName}</label>
+                        <label className="col-form-label">{InventoryRequest.RequestUser + " - " + InventoryRequest.RequestFullName}</label>
                     </div>
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Ngày duyệt:</label>
@@ -150,7 +142,7 @@ class InventoryRequestInfoCom extends Component {
                         <label className="col-form-label bold">Người xử lý chênh lệch:</label>
                     </div>
                     <div className="form-group col-md-4">
-                        <label className="col-form-label">{InventoryRequest.RequestUser + " - " + InventoryRequest.ProcessInventoryUser}</label>
+                        <label className="col-form-label">{InventoryRequest.ProcessInventoryUser + " - " + InventoryRequest.ProcessInventoryUserFullName}</label>
                     </div>
                 </div>
                 <div className="form-row">
@@ -229,7 +221,15 @@ class InventoryRequestInfoCom extends Component {
                         <label className="col-form-label">{formatDate(InventoryRequest.CreatedOrderDate,false)}</label>
                     </div>
                 </div>
+                <div className="form-row">
+                    <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Mô tả:</label>
+                    </div>
+                    <div className="form-group col-md-10">
+                        <label className="col-form-label">{InventoryRequest.Description}</label>
+                    </div>
 
+                </div>
             </React.Fragment>
         );
     }

@@ -80,6 +80,10 @@ export const InitSearchParams = [
         SearchValue: "-1"
     },
     {
+        SearchKey: "@INVENTORYTERMID",
+        SearchValue: "-1"
+    },
+    {
         SearchKey: "@ISCREATEDORDER",
         SearchValue: "-1"
     }

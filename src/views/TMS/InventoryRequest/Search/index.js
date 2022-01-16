@@ -94,7 +94,11 @@ class SearchCom extends React.Component {
                         item.ReviewStatusLable = <span className='lblstatus text-warning'>Chưa duyệt</span>;
 
                     }
-                    return item;
+                    return {
+                        ...item,
+                        ApproverName: `${item.RequestUser} - ${item.FullName}`
+                    }
+                    
                 })
                 const tempData = apiResult.ResultObject.map((item, index) => {
                     let element = {
@@ -121,7 +125,7 @@ class SearchCom extends React.Component {
     }
     GetInventoryTermData() {
         let _SearchElementList = SearchElementList;
-        let listOption = [{ value: "-1", label: "---Vui lòng chọn---" }];
+        let listOption = [{ value: -1, label: "---Vui lòng chọn---" }];
         let param = {};
         this.props.callFetchAPI(APIHostName, GetInventoryTerm, param).then(apiResult => {
             if (apiResult.IsError) {
@@ -129,7 +133,7 @@ class SearchCom extends React.Component {
                 _SearchElementList.forEach(function (objElement) {
                     if (objElement.DataSourceMember == "InventorytermID") {
                         objElement.listoption = listOption;
-                        objElement.value = "1";
+                        objElement.value = -1;
                     }
                 }.bind(this));
             } else {
@@ -141,7 +145,7 @@ class SearchCom extends React.Component {
                 _SearchElementList.forEach(function (objElement) {
                     if (objElement.DataSourceMember == "InventorytermID") {
                         objElement.listoption = listOption;
-                        objElement.value = "1";
+                        objElement.value = -1;
                     }
                 }.bind(this));
             }
