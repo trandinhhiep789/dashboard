@@ -9,6 +9,10 @@ export const AddLink = "/LeadOrderType_WF/Add";
 export const IDSelectColumnName = "chkSelect";
 export const PKColumnName = "LeadOrderTypeID,LeadOrderStepID";
 
+
+export const LoadListInfo_WF_Next_APIPath = "api/LeadOrderTypeWFNext/LoadList";
+
+
 export const MLObjectDefinitionFormContainerLeadOrderType_WF = [
     {
         Name: "LeadOrderType_WF",
@@ -96,32 +100,26 @@ export const LeadOrderType_WF_NextListColumn = [
         Width: 60
     },
     {
-        Name: "LeadOrderStepID",
+        Name: "LeadOrderNextStepID",
         Type: "text",
         Caption: "Mã bước xử lý kế tiêp",
-        DataSourceMember: "LeadOrderStepID",
+        DataSourceMember: "LeadOrderNextStepID",
     },
     {
-        Name: "LeadOrderStepName",
+        Name: "LeadOrderNextStepName",
         Type: "text",
         Caption: "Tên bước xử lý kế tiêp",
-        DataSourceMember: "LeadOrderStepName",
+        DataSourceMember: "LeadOrderNextStepName",
     },
     {
-        Name: "FuntionName",
+        Name: "ChooseFunctionName",
         Type: "text",
         Caption: "Quyền thêm",
-        DataSourceMember: "FuntionName",
+        DataSourceMember: "ChooseFunctionName",
     }
 ]
 
 export const LeadOrderType_WF_NextMLObjectDefinition = [
-    {
-        Name: "LeadOrderTypeID",
-        DefaultValue: "",
-        BindControlName: "LeadOrderTypeID",
-        DataSourceMember: "LeadOrderTypeID"
-    },
     {
         Name: "LeadOrderStepID",
         DefaultValue: "",
@@ -129,63 +127,17 @@ export const LeadOrderType_WF_NextMLObjectDefinition = [
         DataSourceMember: "LeadOrderStepID"
     },
     {
-        Name: "AutoChangeToStatusID",
+        Name: "LeadOrderNextStepID",
         DefaultValue: "",
-        BindControlName: "AutoChangeToStatusID",
-        DataSourceMember: "AutoChangeToStatusID"
+        BindControlName: "LeadOrderNextStepID",
+        DataSourceMember: "LeadOrderNextStepID"
     },
     {
-        Name: "AutoChangeToStepID",
+        Name: "ChooseFunctionID",
         DefaultValue: "",
-        BindControlName: "AutoChangeToStepID",
-        DataSourceMember: "AutoChangeToStepID"
+        BindControlName: "ChooseFunctionID",
+        DataSourceMember: "ChooseFunctionID"
     },
-    {
-        Name: "AutoChangeStepType",
-        DefaultValue: "",
-        BindControlName: "AutoChangeStepType",
-        DataSourceMember: "AutoChangeStepType"
-    },
-    {
-        Name: "IsInitStep",
-        DefaultValue: "",
-        BindControlName: "IsInitStep",
-        DataSourceMember: "IsInitStep"
-    },
-    {
-        Name: "IsFinishStep",
-        DefaultValue: "",
-        BindControlName: "IsFinishStep",
-        DataSourceMember: "IsFinishStep"
-    },
-    {
-        Name: "Description",
-        DefaultValue: "",
-        BindControlName: "Description",
-        DataSourceMember: "Description"
-    },
-    // {
-    //     Name: "IsAddToWorkingPlan",
-    //     DefaultValue: "",
-    //     BindControlName: "IsAddToWorkingPlan",
-    //     DataSourceMember: "IsAddToWorkingPlan"
-    // },
-    {
-        Name: "IsActived",
-        DefaultValue: "",
-        BindControlName: "IsActived",
-        DataSourceMember: "IsActived"
-    },
-    {
-        Name: "IsSystem",
-        DefaultValue: "",
-        BindControlName: "IsSystem",
-        DataSourceMember: "IsSystem"
-    },
-    // {
-    //     Name: "VehicleRentalRequestStepID",
-    //     DefaultValue: "",
-    //     BindControlName: "txtVehicleRentalRequestStepID",
-    //     DataSourceMember: "VehicleRentalRequestStepID"
-    // },
 ];
+
+

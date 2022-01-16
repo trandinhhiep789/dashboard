@@ -8,6 +8,7 @@ import {
     IDSelectColumnName,
     LeadOrderType_WF_NextListColumn,
     LeadOrderType_WF_NextMLObjectDefinition,
+    LoadListInfo_WF_Next_APIPath,
     MLObjectDefinitionLeadOrderType_WF,
 } from "../constants";
 // import FormControl from "../../../../../../../common/components/Form/AdvanceForm/FormControl";
@@ -24,19 +25,14 @@ import FormControl from "../../../../../../../common/components/FormContainer/Fo
 import FormContainer from './../../../../../../../common/components/FormContainer/index';
 
 
-class AddCom extends React.Component {
+class EditCom extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            DataSourceFunctionCache: null,
             DataSourceLeadOrderTypeCache: null,
             IsDisableAutoChangeStepTypeID: true,
-            ListLeadOrderType_WF_Next: [],
-            FormData: {
-                LeadOrderNextStepID: 0,
-                AddFunctionID: ""
-            }
+            DataSource: this.props.DataSource
         };
 
         this.searchref = React.createRef();
@@ -45,15 +41,52 @@ class AddCom extends React.Component {
 
         this.addNotification = this.addNotification.bind(this);
         this.showMessage = this.showMessage.bind(this);
-        this.handleDeleteLeadOrderType_WF_Next = this.handleDeleteLeadOrderType_WF_Next.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleFormChange = this.handleFormChange.bind(this);
-        this.handleFormChange_1 = this.handleFormChange_1.bind(this);
-        this.handleInsertLeadOrderType_WF_Next = this.handleInsertLeadOrderType_WF_Next.bind(this);
-        this.handleFormAdvanceChange = this.handleFormAdvanceChange.bind(this);
+        this.handleCallLoadWFNext = this.handleCallLoadWFNext.bind(this);
+        this.handleDeleteLeadOrderType_WF_Next = this.handleDeleteLeadOrderType_WF_Next.bind(this);
     }
 
     componentDidMount() {
+        this.handleCallLoadWFNext();
+    }
+
+    handleCallLoadWFNext() {
+        let dataRequest = {
+            LeadOrderTypeID: this.props.DataSource.LeadOrderTypeID,
+            LeadOrderStepID: this.props.DataSource.LeadOrderStepID,
+            LeadOrderNextStepID: 0,
+            ChooseFunctionID: "",
+            IsActived: false,
+            IsSystem: false,
+            CreatedUser: "",
+            CreatedDate: null,
+            UpdatedUser: "",
+            UpdatedDate: null,
+            IsDeleted: false,
+            DeletedNote: "",
+            DeletedUser: "",
+            DeletedDate: null,
+        };
+
+        this.props.callFetchAPI(APIHostName, LoadListInfo_WF_Next_APIPath, dataRequest).then(apiResult => {
+            if (apiResult.IsError) {
+                this.setState({
+                    IsCallAPIError: apiResult.IsError
+                });
+                this.showMessage(apiResult.Message);
+            } else {
+                let changeState = this.setState;
+                let dataSource = changeState.DataSource;
+
+                dataSource = { ...dataSource, ListLeadOrderType_WF_Next: apiResult.ResultObject };
+                changeState = { ...changeState, DataSource: dataSource };
+                this.setState(changeState);
+            }
+            this.setState({
+                IsLoadDataComplete: true
+            });
+        });
     }
 
     addNotification(message1, IsError) {
@@ -96,24 +129,8 @@ class AddCom extends React.Component {
         );
     }
 
-    handleInsertLeadOrderType_WF_Next(MLObject, elementList, dataSource, formData) {
-        let changeState = this.state;
-        let lstLeadOrderType_WF_Next = changeState.ListLeadOrderType_WF_Next;
-
-        // lstLeadOrderType_WF_Next.push({ LeadOrderNextStepID: this.state.FormData.LeadOrderNextStepID, AddFunctionID: this.state.FormData.AddFunctionID });
-
-        lstLeadOrderType_WF_Next.push({ LeadOrderNextStepID: this.state.FormData.LeadOrderNextStepID, AddFunctionID: this.state.FormData.AddFunctionID });
-
-        changeState = { ...changeState, ListLeadOrderType_WF_Next: lstLeadOrderType_WF_Next };
-        this.setState(changeState, () => {
-            // if (this.props.handleSetListLeadOrderType_WF_Next) {
-            //     this.props.handleSetListLeadOrderType_WF_Next(lstLeadOrderType_WF_Next);
-            // }
-        })
-    }
-
     handleDeleteLeadOrderType_WF_Next(listDeleteObject, dataSource, ListDataSourceMember) {
-        let lstLeadOrderType_WF_Next = this.state.ListLeadOrderType_WF_Next;
+        let lstLeadOrderType_WF_Next = this.state.DataSource.ListLeadOrderType_WF_Next;
 
         listDeleteObject.filter(itemDelete => {
             let index = lstLeadOrderType_WF_Next.findIndex(itemSource => {
@@ -125,12 +142,12 @@ class AddCom extends React.Component {
         });
 
         let changeState = this.state;
-        changeState = { ...changeState, ListLeadOrderType_WF_Next: lstLeadOrderType_WF_Next };
-        this.setState(changeState, () => {
-            if (this.props.handleSetListLeadOrderType_WF_Next) {
-                this.props.handleSetListLeadOrderType_WF_Next(lstLeadOrderType_WF_Next);
-            }
-        });
+        let dataSource_1 = changeState.DataSource;
+
+        dataSource_1 = { ...dataSource_1, ListLeadOrderType_WF_Next: lstLeadOrderType_WF_Next };
+        changeState = { ...changeState, DataSource: dataSource_1 };
+
+        this.setState(changeState);
     }
 
     handleFormChange(formData, MLObject) {
@@ -139,19 +156,6 @@ class AddCom extends React.Component {
         changeState = { ...changeState, IsDisableAutoChangeStepTypeID: !formData.chkAutoChangeStepType.value };
         this.setState(changeState);
 
-    }
-
-    handleFormChange_1(formData, MLObject) {
-        let changeState = this.state;
-        let formData_1 = changeState.FormData;
-
-        formData_1 = { ...formData_1, LeadOrderNextStepID: formData["cbLeadOrderNextStepID"].value, AddFunctionID: formData["cbAddFunctionID"].value };
-        changeState = { ...changeState, FormData: formData_1 };
-        this.setState(changeState);
-    }
-
-    handleFormAdvanceChange(formDataTemp, tabNameList, tabMLObjectDefinitionList, formValidationTemp) {
-        console.log(formDataTemp, tabNameList, tabMLObjectDefinitionList, formValidationTemp)
     }
 
     handleSubmit(formData, MLObject) {
@@ -164,8 +168,6 @@ class AddCom extends React.Component {
         MLObject.IsSystem = 0;
         MLObject.LeadOrderStepID = 2;
         MLObject.LeadOrderTypeID = this.props.LeadOrderTypeID;
-
-        console.log(this.state.ListLeadOrderType_WF_Next);
 
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
@@ -191,15 +193,15 @@ class AddCom extends React.Component {
             }
         ];
 
-        // this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
-        //     this.setState({ IsCallAPIError: apiResult.IsError });
-        //     if (!apiResult.IsError) {
-        //         if (this.props.handleReloadData) {
-        //             this.props.handleReloadData();
-        //         }
-        //     }
-        //     this.showMessage(apiResult.Message);
-        // });
+        this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
+            this.setState({ IsCallAPIError: apiResult.IsError });
+            if (!apiResult.IsError) {
+                if (this.props.handleReloadData) {
+                    this.props.handleReloadData();
+                }
+            }
+            this.showMessage(apiResult.Message);
+        });
     }
 
     render() {
@@ -209,6 +211,7 @@ class AddCom extends React.Component {
 
                 <FormContainerAvance
                     IsAutoLayout={true}
+                    // MLObjectDefinition={MLObjectDefinitionFormContainerLeadOrderType_WF}
                     IsHideFooter={true}
                 >
                     <TabContainer
@@ -218,6 +221,7 @@ class AddCom extends React.Component {
                         IsAutoLoadDataGrid={false}
                     >
                         <TabPage
+                            // MLObjectDefinition={MLObjectDefinitionLeadOrderType_WF}
                             name="LeadOrderType_WF"
                             title="Thông tin chung"
                         >
@@ -227,6 +231,7 @@ class AddCom extends React.Component {
                                 MLObjectDefinition={MLObjectDefinitionLeadOrderType_WF}
                                 onSubmit={this.handleSubmit}
                                 onchange={(formData, MLObject) => this.handleFormChange(formData, MLObject)}
+                                dataSource={this.state.DataSource}
                             >
                                 <FormControl.FormControlComboBox
                                     labelcolspan={4}
@@ -338,69 +343,64 @@ class AddCom extends React.Component {
                         <TabPage
                             name="LeadOrderType_WF_Next"
                             title="Bước xử lý kế tiếp"
-                            MLObjectDefinition={[]}
                         >
-                            <div>
-                                <FormContainer
-                                    IsAutoLayout={true}
-                                    IsHideFooter={true}
-                                    onchange={this.handleFormChange_1}
-                                    dataSource={this.state.FormData}
-                                >
-                                    <div className="form-row">
-                                        <FormControl.FormControlComboBox
-                                            labelcolspan={4}
-                                            colspan={8}
-                                            rowspan={6}
-                                            controltype="InputControl"
-                                            datasourcemember="LeadOrderNextStepID"
-                                            isautoloaditemfromcache={true}
-                                            IsLabelDiv={true}
-                                            isMulti={false}
-                                            label="Bước xử lý kế tiếp"
-                                            listoption={[]}
-                                            loaditemcachekeyid={"ERPCOMMONCACHE.LEADORDERSTEP"}
-                                            name="cbLeadOrderNextStepID"
-                                            nameMember="LeadOrderStepName"
-                                            valuemember="LeadOrderStepID"
-                                            value={""}
-                                            validatonList={["Comborequired"]}
-                                            placeholder="Bước xử kế lý"
-                                        />
+                            <div className="form-row">
+                                <FormControl.FormControlComboBox
+                                    labelcolspan={4}
+                                    colspan={8}
+                                    rowspan={6}
+                                    controltype="InputControl"
+                                    datasourcemember="LeadOrderStepID"
+                                    isautoloaditemfromcache={true}
+                                    IsLabelDiv={true}
+                                    isMulti={false}
+                                    label="Bước xử lý kế tiếp"
+                                    listoption={[]}
+                                    loaditemcachekeyid={"ERPCOMMONCACHE.LEADORDERSTEP"}
+                                    name="cbLeadOrderStep"
+                                    nameMember="LeadOrderStepName"
+                                    value={""}
+                                    valuemember="LeadOrderStepID"
+                                    validatonList={["Comborequired"]}
+                                    placeholder="Bước xử lý kế tiếp"
+                                // IsSystem={this.state.DataSource.IsSystem}
+                                />
 
-                                        <FormControl.FormControlComboBox
-                                            labelcolspan={4}
-                                            colspan={8}
-                                            rowspan={6}
-                                            controltype="InputControl"
-                                            datasourcemember="AddFunctionID"
-                                            isautoloaditemfromcache={true}
-                                            IsLabelDiv={true}
-                                            isMulti={false}
-                                            label="Quyền thêm"
-                                            listoption={[]}
-                                            loaditemcachekeyid={ERPCOMMONCACHE_FUNCTION}
-                                            name="cbAddFunctionID"
-                                            nameMember="FunctionName"
-                                            value={""}
-                                            valuemember="FunctionID"
-                                            validatonList={["Comborequired"]}
-                                        />
-
-                                    </div>
-                                </FormContainer>
+                                <FormControl.FormControlComboBox
+                                    labelcolspan={4}
+                                    colspan={8}
+                                    rowspan={6}
+                                    controltype="InputControl"
+                                    datasourcemember="AddFunctionID"
+                                    isautoloaditemfromcache={true}
+                                    IsLabelDiv={true}
+                                    isMulti={false}
+                                    label="Quyền thêm"
+                                    listoption={[]}
+                                    loaditemcachekeyid={ERPCOMMONCACHE_FUNCTION}
+                                    name="AddFunctionID"
+                                    nameMember="FunctionName"
+                                    value={""}
+                                    valuemember="FunctionID"
+                                    validatonList={["Comborequired"]}
+                                    placeholder="Quyền thêm"
+                                // IsSystem={this.state.DataSource.IsSystem}
+                                />
                             </div>
+
                             <InputGrid
                                 controltype="GridControl"
                                 IDSelectColumnName={IDSelectColumnName}
                                 isUseValueInputControl={true}
                                 listColumn={LeadOrderType_WF_NextListColumn}
+                                dataSource={this.state.DataSource.ListLeadOrderType_WF_Next}
                                 MLObjectDefinition={LeadOrderType_WF_NextMLObjectDefinition}
-                                name="RentalRequestType_WF_Next"
+                                name="LeadOrderType_WF_Next"
                                 onDeleteClick_Customize={this.handleDeleteLeadOrderType_WF_Next}
                                 onInsertClick={this.handleInsertLeadOrderType_WF_Next}
                                 PKColumnName="NextVehicleRentalRequestTypeStep"
                             />
+
                         </TabPage>
 
                     </TabContainer>
@@ -438,6 +438,6 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const LeadOrderType_WF_Add = connect(mapStateToProps, mapDispatchToProps)(AddCom);
+const LeadOrderType_WF_Edit = connect(mapStateToProps, mapDispatchToProps)(EditCom);
 
-export default LeadOrderType_WF_Add;
+export default LeadOrderType_WF_Edit;

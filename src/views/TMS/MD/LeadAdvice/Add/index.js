@@ -139,7 +139,7 @@ class AddCom extends React.Component {
                 BackLink={BackLink}
                 IsAutoLayout={true}
                 listelement={[]}
-                onchange={this.handleFormChange.bind(this)}
+                onchange={this.handleFormChange}
                 MLObjectDefinition={MLObjectDefinition}
                 onSubmit={this.handleSubmit}
                 dataSource={this.state.DataSource}

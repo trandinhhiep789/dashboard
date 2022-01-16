@@ -32,6 +32,7 @@ import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
 import LeadOrderType_WF_Add from "../Components/LeadOrderType_WF/Add";
 import { showModal, hideModal } from './../../../../../actions/modal';
 import FormContainer from './../../../../../common/components/FormContainer/index';
+import LeadOrderType_WF_Edit from "../Components/LeadOrderType_WF/Edit";
 
 
 class EditCom extends React.Component {
@@ -126,8 +127,9 @@ class EditCom extends React.Component {
             title: 'Thêm mới bước mối bán hàng',
             content: {
                 text: <LeadOrderType_WF_Add
-
                     LeadOrderTypeID={this.props.match.params.id}
+                    // ListLeadOrderType_WF_Next={this.state.DataSource.ListLeadOrderType_WF_Next}
+                    // handleSetListLeadOrderType_WF_Next={this.handleSetListLeadOrderType_WF_Next}
                     handleReloadData={this.handleCallData}
                 />
             },
@@ -138,12 +140,13 @@ class EditCom extends React.Component {
 
     handleEditLeadOrderType_WF(index) {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: 'Chỉnh sửa bước yêu cầu thuê phương tiện',
+            title: 'Chỉnh sửa bước mối bán hàng',
             content: {
-                text: <VehicleRentalRequestType_WFEdit
-                    VehicleRentalRequestTypeID={this.props.match.params.id}
-                    objRentalRequestType_WF={this.state.objVehicleRentalRequestType.RentalRequestType_WFList[index]}
-                    fetchVehicleRentalRequestTypeInfo={() => this.fetchVehicleRentalRequestTypeInfo()}
+                text: <LeadOrderType_WF_Edit
+                    LeadOrderTypeID={this.props.match.params.id}
+                    DataSource={this.state.DataSource.ListLeadOrderType_WFItem[index]}
+                    handleSetListLeadOrderType_WF_Next={this.handleSetListLeadOrderType_WF_Next}
+                    handleReloadData={this.handleCallData}
                 />
             },
             maxWidth: '90%'
@@ -164,6 +167,15 @@ class EditCom extends React.Component {
                 this.fetchVehicleRentalRequestTypeInfo();
             }
         });
+    }
+
+    handleSetListLeadOrderType_WF_Next(lstListLeadOrderType_WF_Next) {
+        let changeState = this.state;
+        let dataSource = changeState.DataSource;
+
+        dataSource = { ...dataSource, ListLeadOrderType_WF_Next: lstListLeadOrderType_WF_Next };
+        changeState = { ...changeState, DataSource: dataSource };
+        this.setState(changeState);
     }
 
     render() {
@@ -202,7 +214,6 @@ class EditCom extends React.Component {
                     >
                         <TabPage
                             datasource={this.state.DataSource}
-                            // MLObjectDefinition={MLObjectDefinition}
                             name="LeadOrderType"
                             title="Thông tin chung"
                         >
@@ -219,9 +230,9 @@ class EditCom extends React.Component {
                                     colspan={6}
                                     controltype="InputControl"
                                     datasourcemember="LeadOrderTypeID"
-                                    label="Tên loại mối bán hàng"
+                                    label="Mã loại mối bán hàng"
                                     name="txtLeadOrderTypeID"
-                                    readonly={true}
+                                    readOnly={true}
                                     maxSize={150}
                                     value=""
                                     validatonList={["required"]}
