@@ -1,5 +1,5 @@
 export const APIHostName = "TMSAPI";
-import { ERPCOMMONCACHE_MAINGROUP } from './../../../../../constants/keyCache';
+import { ERPCOMMONCACHE_MAINGROUP,ERPCOMMONCACHE_SUBGROUP } from './../../../../../constants/keyCache';
 export const SearchAPIPath = "api/LeadAdviceApply/Search";
 export const LoadAPIPath = "api/LeadAdviceApply/Load";
 export const LoadInfoByLeadAdviceIDAPIPath = "api/LeadAdviceApply/LoadInfoByLeadAdviceID";
