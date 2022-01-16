@@ -173,6 +173,7 @@ class EditCom extends React.Component {
                     MLObjectDefinition={MLObjectDefinition}
                     onSubmit={this.handleSubmit}
                     dataSource={this.state.DataSource}
+                    IsDisabledSubmitForm={this.state.DataSource.IsSystem}
                 >
                     <FormControl.TextBox
                         controltype="InputControl"
@@ -203,6 +204,7 @@ class EditCom extends React.Component {
                         valuemember="ShipmentOrderTypeID"
                         validatonList={["Comborequired"]}
                         placeholder="Loại yêu cầu vận chuyển"
+                        disabled={this.state.DataSource.IsSystem}
                     />
                     <FormControl.FormControlComboBox
                         colspan="4"
@@ -221,7 +223,7 @@ class EditCom extends React.Component {
                         valuemember="MainGroupID"
                         validatonList={["Comborequired"]}
                         placeholder="Ngành hàng"
-
+                        disabled={this.state.DataSource.IsSystem}
                     />
                     <FormControl.FormControlComboBox
                         colspan="4"
@@ -241,6 +243,7 @@ class EditCom extends React.Component {
                         filterobj="MainGroupID"
                         filterValue={this.state.FilterObject.GroupValue[0]}
                         placeholder="Nhóm hàng"
+                        disabled={this.state.DataSource.IsSystem}
                     />
                     <ProductComboBox
                         key={this.state.FilterObject.GroupValue[1]}
@@ -251,7 +254,6 @@ class EditCom extends React.Component {
                         controltype="InputControl"
                         datasourcemember="ProductID"
                         name="cbProductID"
-                        // validatonList={["Comborequired"]}
                         IsLabelDiv={true}
                         isMulti={false}
                         isFilter={true}
@@ -259,6 +261,7 @@ class EditCom extends React.Component {
                         arrFieldFilter={['MainGroupID', 'SubGroupID']}
                         arrValueFilter={this.state.FilterObject.ArrayProduct}
                         validatonList={["Comborequired"]}
+                        disabled={this.state.DataSource.IsSystem}
                     />
                     <FormControl.CheckBox
                         name="chkIsAdviceOtherProduct"
@@ -272,6 +275,7 @@ class EditCom extends React.Component {
                         datasourcemember="IsAdviceOtherProduct"
                         placeholder="---Vui lòng chọn---"
                         isMultiSelect={false}
+                        disabled={this.state.DataSource.IsSystem}
                     />
                     <FormControl.CheckBox
                         name="chkIsActived"
@@ -285,6 +289,7 @@ class EditCom extends React.Component {
                         datasourcemember="IsActived"
                         placeholder="---Vui lòng chọn---"
                         isMultiSelect={false}
+                        disabled={this.state.DataSource.IsSystem}
                     />
                     <FormControl.CheckBox
                         name="chkIsSystem"
@@ -298,6 +303,7 @@ class EditCom extends React.Component {
                         datasourcemember="IsSystem"
                         placeholder="---Vui lòng chọn---"
                         isMultiSelect={false}
+                        disabled={this.state.DataSource.IsSystem}
                     />
                 </FormContainer>
             );

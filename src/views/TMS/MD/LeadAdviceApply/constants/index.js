@@ -271,24 +271,10 @@ export const DataGridColumnList = [
     {
         Name: "LeadAdviceApplyID",
         Type: "text",
-        Caption: "Mã khoá",
+        Caption: "Mã",
         DataSourceMember: "LeadAdviceApplyID",
         Width: 70,
     },
-    // {
-    //     Name: "MainGroupName",
-    //     Type: "text",
-    //     Caption: "Ngành hàng",
-    //     DataSourceMember: "MainGroupName",
-    //     Width: 140
-    // },
-    // {
-    //     Name: "SubGroupName",
-    //     Type: "text",
-    //     Caption: "Nhóm hàng",
-    //     DataSourceMember: "SubGroupName",
-    //     Width: 100
-    // },
     {
         Name: "ProductName",
         Type: "text",

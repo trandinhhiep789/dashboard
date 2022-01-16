@@ -338,7 +338,7 @@ export const DataGridColumnList = [
         Type: "texttolink",
         Caption: "Mã tư vấn bán hàng",
         DataSourceMember: "LeadAdviceID",
-        Width: 70,
+        Width: 110,
         Link: "/LeadAdvice/Detail/",
     },
     {
