@@ -49,6 +49,7 @@ class SearchCom extends React.Component {
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
+            listOptionInventoryTerm : [],
             IsCallAPIError: false,
             SearchData: InitSearchParams,
             cssNotification: "",
@@ -80,11 +81,11 @@ class SearchCom extends React.Component {
             }
             else {
                 const dataSource = apiResult.ResultObject.map((item, index) => {
-                    if (item.IsCreatedOrder) {
-                        item.OutputStatusLable = <span className='lblstatus text-success'>Đã xuất</span>;
+                    if (item.IsProcessInventory) {
+                        item.OutputStatusLable = <span className='lblstatus text-success'>Đã xử lý chênh lệch</span>;
                     }
                     else {
-                        item.OutputStatusLable = <span className='lblstatus text-warning'>Chưa xuất</span>;
+                        item.OutputStatusLable = <span className='lblstatus text-warning'>Chưa xử lý chênh lệch</span>;
                     }
                     if (item.IsreViewed) {
                         item.ReviewStatusLable = <span className='lblstatus text-success'>Đã duyệt</span>;
@@ -96,7 +97,7 @@ class SearchCom extends React.Component {
                     }
                     return {
                         ...item,
-                        ApproverName: `${item.RequestUser} - ${item.FullName}`
+                        ApproverName: `${item.RequestUser} - ${item.FullName}`,
                     }
                     
                 })
@@ -114,7 +115,7 @@ class SearchCom extends React.Component {
 
                     return element;
                 })
-
+                
                 this.setState({
                     gridDataSource: dataSource,
                     dataExport: tempData,
@@ -151,7 +152,8 @@ class SearchCom extends React.Component {
             }
            
             this.setState({
-                SearchElementlist: _SearchElementList
+                SearchElementlist: _SearchElementList,
+                listOptionInventoryTerm: listOption
             });
 
            
@@ -159,7 +161,7 @@ class SearchCom extends React.Component {
 
 
     }
-
+    
     showMessage(message) {
         ModalManager.open(
             <MessageModal
@@ -281,6 +283,7 @@ class SearchCom extends React.Component {
 
     render() {
         console.log(this.state.SearchElementlist);
+        console.log(this.state.listOptionInventoryTerm);
         let {SearchElementlist} = this.state;
         if (SearchElementlist == null) {
             return <React.Fragment>Đang tải dữ liệu...</React.Fragment>

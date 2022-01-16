@@ -207,8 +207,8 @@ export const SearchElementList = [
         placeholder: "--Tất cả--",
         listoption: [
             { value: -1, label: '--Tất cả--' },
-            { value: 1, label: 'Chưa duyệt' },
-            { value: 2, label: 'Đã duyệt' },
+            { value: 0, label: 'Chưa duyệt' },
+            { value: 1, label: 'Đã duyệt' },
         ],
 
 
@@ -217,15 +217,15 @@ export const SearchElementList = [
         type: "ComboBox",
         name: "cbIsCreatedOrder",
         DataSourceMember: "IsCreatedOrder",
-        label: "Trạng thái xuất",
+        label: "Trạng thái chênh lệch",
         colspan: 2,
         value: -1,
         isMultiSelect: false,
         placeholder: "--Tất cả--",
         listoption: [
             { value: -1, label: '--Tất cả--' },
-            { value: 1, label: 'Chưa Xuất hủy vật tư' },
-            { value: 2, label: 'Đã xuất hủy vật tư' },
+            { value: 0, label: 'Chưa xử lý chênh lệch' },
+            { value: 1, label: 'Đã xử lý chênh lệch' },
         ],
 
 
@@ -305,7 +305,7 @@ export const DataGridColumnList = [
     {
         Name: "OutputStatusLable",
         Type: "text",
-        Caption: " Đã xuất",
+        Caption: " Đã xử lý chênh lệch",
         DataSourceMember: "OutputStatusLable",
         Width: 130
     },
