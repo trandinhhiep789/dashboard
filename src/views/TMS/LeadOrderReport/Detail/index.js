@@ -59,8 +59,7 @@ class DetailCom extends React.Component {
                 "Sản phẩm": `${item.ProductID} - ${item.ProductName}`,
                 "Số lượng": item.Quantity,
                 "Đơn vị": item.QuantityUnit,
-                "Ngày hẹn giao": formatDate(item.ExpectedDeliveryDate),
-                "Mã đơn hàng": item.SaleOrderID,
+                "Mã đơn hàng tương lai": item.SaleOrderID,
                 "Người tạo": item.CreatedUserIDName
             }
         })
@@ -198,7 +197,7 @@ class DetailCom extends React.Component {
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <span>Lý do: </span>
-                                            <span>{this.state.DataSource.FailAdviceReasonID} - {this.state.DataSource.FailAdviseReasonName}</span>
+                                            <span>{this.state.DataSource.FailAdviceReasonID == 0 ? "" : `${this.state.DataSource.FailAdviceReasonID} - ${this.state.DataSource.FailAdviseReasonName}`}</span>
                                         </div>
                                     </div>
 
