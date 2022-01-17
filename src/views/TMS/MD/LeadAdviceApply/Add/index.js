@@ -17,6 +17,7 @@ import FormContainer from './../../../../../common/components/FormContainer/inde
 import ProductComboBox from './../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/ProductComboBox';
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
 import { ERPCOMMONCACHE_MAINGROUP, ERPCOMMONCACHE_SUBGROUP } from './../../../../../constants/keyCache';
+import { MD_LEADADVICE_ADD } from "../../../../../constants/functionLists";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -132,7 +133,6 @@ class AddCom extends React.Component {
             // />
 
             <FormContainer
-                FormName="Thêm danh mục sản phẩm tư vấn ứng với loại yêu cầu vận chuyển (khác loại)"
                 BackLink={BackLink}
                 IsAutoLayout={true}
                 listelement={[]}
@@ -140,6 +140,7 @@ class AddCom extends React.Component {
                 MLObjectDefinition={MLObjectDefinition}
                 onSubmit={this.handleSubmit}
                 dataSource={this.state.DataSource}
+                RequirePermission={MD_LEADADVICE_ADD}
             >
                 <FormControl.FormControlComboBox
                     colspan="5"

@@ -338,7 +338,7 @@ export const DataGridColumnList = [
         Type: "texttolink",
         Caption: "Mã tư vấn bán hàng",
         DataSourceMember: "LeadAdviceID",
-        Width: 110,
+        Width: 120,
         Link: "/LeadAdvice/Detail/",
     },
     {
@@ -348,20 +348,6 @@ export const DataGridColumnList = [
         DataSourceMember: "ShipmentOrderTypeName",
         Width: 170
     },
-    // {
-    //     Name: "MainGroupName",
-    //     Type: "text",
-    //     Caption: "Ngành hàng",
-    //     DataSourceMember: "MainGroupName",
-    //     Width: 140
-    // },
-    // {
-    //     Name: "SubGroupName",
-    //     Type: "text",
-    //     Caption: "Nhóm hàng",
-    //     DataSourceMember: "SubGroupName",
-    //     Width: 100
-    // },
     {
         Name: "ProductName",
         Type: "text",
@@ -374,21 +360,21 @@ export const DataGridColumnList = [
         Type: "checkicon",
         Caption: "Tư vấn sản phẩm khác",
         DataSourceMember: "IsAdviceOtherProduct",
-        Width: 120
+        Width: 130
     },
     {
         Name: "CreatedUserFullName",
         Type: "text",
         Caption: "Người tạo",
         DataSourceMember: "CreatedUserFullName",
-        Width: 150
+        Width: 120
     },
     {
         Name: "CreatedDate",
         Type: "datetime",
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
-        Width: 150
+        Width: 120
     },
     {
         Name: "IsActived",

@@ -12,18 +12,18 @@ export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách Phương thức xử lý của mối bán hàng" }
+    { Link: "", Title: "Danh sách Phương thức xử lý mối bán hàng" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/LeadOrderTypeProcess", Title: "Danh sách Phương thức xử lý của mối bán hàng" },
+    { Link: "/LeadOrderTypeProcess", Title: "Danh sách Phương thức xử lý mối bán hàng" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/LeadOrderTypeProcess", Title: "Danh sách Phương thức xử lý của mối bán hàng" },
+    { Link: "/LeadOrderTypeProcess", Title: "Danh sách Phương thức xử lý mối bán hàng" },
     { Link: "", Title: "Thêm" }
 ];
 
@@ -43,10 +43,10 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtLeadOrderTypeProcessID",
-        label: "Mã phương thức xử lý của mối bán hàng",
+        label: "Mã phương thức xử lý mối bán hàng",
         value: "",
         maxSize: "9",
-        placeholder: "Mã phương thức xử lý của mối bán hàng",
+        placeholder: "Mã phương thức xử lý mối bán hàng",
         icon: "",
         listoption: {},
         DataSourceMember: "LeadOrderTypeProcessID",
@@ -57,10 +57,10 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtLeadOrderTypeProcessName",
-        label: "Tên phương thức xử lý của mối bán hàng",
+        label: "Tên phương thức xử lý mối bán hàng",
         value: "",
         maxSize: "250",
-        placeholder: "Tên phương thức xử lý của mối bán hàng",
+        placeholder: "Tên phương thức xử lý mối bán hàng",
         icon: "",
         listoption: {},
         DataSourceMember: "LeadOrderTypeProcessName",
@@ -72,7 +72,7 @@ export const AddElementList = [
         name: "txtDescription",
         label: "Mô tả:",
         value: "",
-        maxSize: "450",
+        maxSize: "400",
         placeholder: "",
         icon: "",
         rows: "6",
@@ -111,10 +111,10 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtLeadOrderTypeProcessID",
-        label: "Mã phương thức xử lý của mối bán hàng",
+        label: "Mã phương thức xử lý mối bán hàng",
         value: "",
         maxSize: "9",
-        placeholder: "Mã phương thức xử lý của mối bán hàng",
+        placeholder: "Mã phương thức xử lý mối bán hàng",
         icon: "",
         listoption: {},
         DataSourceMember: "LeadOrderTypeProcessID",
@@ -125,10 +125,10 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtLeadOrderTypeProcessName",
-        label: "Tên phương thức xử lý của mối bán hàng",
+        label: "Tên phương thức xử lý mối bán hàng",
         value: "",
         maxSize: "250",
-        placeholder: "Tên phương thức xử lý của mối bán hàng",
+        placeholder: "Tên phương thức xử lý mối bán hàng",
         icon: "",
         listoption: {},
         DataSourceMember: "LeadOrderTypeProcessName",
@@ -140,7 +140,7 @@ export const EditElementList = [
         name: "txtDescription",
         label: "Mô tả:",
         value: "",
-        maxSize: "450",
+        maxSize: "400",
         placeholder: "",
         icon: "",
         rows: "6",
@@ -245,14 +245,14 @@ export const DataGridColumnList = [
     {
         Name: "LeadOrderTypeProcessID",
         Type: "text",
-        Caption: "Mã phương thức xử lý của mối bán hàng",
+        Caption: "Mã phương thức xử lý mối bán hàng",
         DataSourceMember: "LeadOrderTypeProcessID",
         Width: 170,
     },
     {
         Name: "LeadOrderTypeProcessName",
         Type: "text",
-        Caption: "Tên phương thức xử lý của mối bán hàng",
+        Caption: "Tên phương thức xử lý mối bán hàng",
         DataSourceMember: "LeadOrderTypeProcessName",
         Width: 170
     },
@@ -275,7 +275,7 @@ export const DataGridColumnList = [
         Type: "datetime",
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
-        Width: 80
+        Width: 130
     },
     {
         Name: "IsActived",

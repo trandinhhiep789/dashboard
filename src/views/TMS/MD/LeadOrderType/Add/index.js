@@ -16,6 +16,7 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
+import { MD_LEADORDERTYPE_ADD } from './../../../../../constants/functionLists';
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -34,12 +35,12 @@ class AddCom extends React.Component {
         this.props.updatePagePath(AddPagePath);
     }
 
-
     handleSubmit(formData, MLObject) {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
 
         MLObject.AddFunctionID = MLObject.AddFunctionID[0];
+        MLObject.LeadOrderTypeProcessID = MLObject.LeadOrderTypeProcessID[0];
 
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
@@ -74,7 +75,7 @@ class AddCom extends React.Component {
         }
         return (
             <SimpleForm
-                FormName="Thêm danh sách loại mối bán hàng"
+                FormName="Thêm mới loại mối bán hàng"
                 MLObjectDefinition={MLObjectDefinition} ƒ
                 listelement={AddElementList}
                 onSubmit={this.handleSubmit}
@@ -82,7 +83,7 @@ class AddCom extends React.Component {
                 IsErrorMessage={this.state.IsCallAPIError}
                 dataSource={dataSource}
                 BackLink={BackLink}
-                // RequirePermission={PACKAGETYPE_ADD}
+                RequirePermission={MD_LEADORDERTYPE_ADD}
                 ref={this.searchref}
             />
         );

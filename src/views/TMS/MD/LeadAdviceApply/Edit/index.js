@@ -22,6 +22,7 @@ import FormContainer from './../../../../../common/components/FormContainer/inde
 import ProductComboBox from './../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/ProductComboBox';
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
 import { ERPCOMMONCACHE_MAINGROUP, ERPCOMMONCACHE_SUBGROUP } from './../../../../../constants/keyCache';
+import { MD_LEADADVICE_UPDATE } from './../../../../../constants/functionLists';
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
@@ -174,6 +175,7 @@ class EditCom extends React.Component {
                     onSubmit={this.handleSubmit}
                     dataSource={this.state.DataSource}
                     IsDisabledSubmitForm={this.state.DataSource.IsSystem}
+                    RequirePermission={MD_LEADADVICE_UPDATE}
                 >
                     <FormControl.TextBox
                         controltype="InputControl"

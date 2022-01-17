@@ -47,12 +47,12 @@ export const AddElementList = [
         DataSourceMember: "LeadOrderTypeProcessID",
         IsAutoLoadItemFromCache: true,
         isMulti: false,
-        label: "Phương thức xử lý của mối bán hàng",
+        label: "Phương thức xử lý mối bán hàng",
         listoption: [],
         LoadItemCacheKeyID: ERPCOMMONCACHE_LEADORDERTYPEPROCESS,
         name: "cbLeadOrderTypeProcessID",
         NameMember: "LeadOrderTypeProcessName",
-        placeholder: "Phương thức xử lý của mối bán hàng",
+        placeholder: "Phương thức xử lý mối bán hàng",
         value: -1,
         ValueMember: "LeadOrderTypeProcessID",
         validatonList: ["Comborequired"],
@@ -60,7 +60,7 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtLeadOrderName",
-        label: "Tên loại mỗi bán hàng",
+        label: "Tên loại mối bán hàng",
         value: "",
         maxSize: "150",
         placeholder: "Tên loại mối bán hàng",
@@ -69,6 +69,24 @@ export const AddElementList = [
         DataSourceMember: "LeadOrderName",
         readonly: false,
         validatonList: ["required"]
+    },
+    
+    {
+        name: "cbAddFunctionID",
+        type: "multiselect",
+        label: "Quyền thêm",
+        DataSourceMember: "AddFunctionID",
+        readonly: false,
+        value: -1,
+        validatonList: [],
+        isMulti: false,
+        IsAutoLoadItemFromCache: true,
+        LoadItemCacheKeyID: ERPCOMMONCACHE_FUNCTION,
+        ValueMember: "FunctionID",
+        NameMember: "FunctionName",
+        validatonList: ["Comborequired"]
+        // KeyFilter: "FunctionCategoryID",
+        // ValueFilter: "1,2"
     },
     {
         type: "textarea",
@@ -83,22 +101,6 @@ export const AddElementList = [
         DataSourceMember: "Description",
         readonly: false,
         validatonList: []
-    },
-    {
-        name: "cbAddFunctionID",
-        type: "multiselect",
-        label: "Quyền thêm",
-        DataSourceMember: "AddFunctionID",
-        readonly: false,
-        value: -1,
-        validatonList: [],
-        isMulti: false,
-        IsAutoLoadItemFromCache: true,
-        LoadItemCacheKeyID: ERPCOMMONCACHE_FUNCTION,
-        ValueMember: "FunctionID",
-        NameMember: "FunctionName",
-        // KeyFilter: "FunctionCategoryID",
-        // ValueFilter: "1,2"
     },
     {
         type: "checkbox",
@@ -307,7 +309,7 @@ export const DataGridColumnList = [
     {
         Name: "LeadOrderTypeID",
         Type: "text",
-        Caption: "Mã loại mỗi bán hàng",
+        Caption: "Mã loại mối bán hàng",
         DataSourceMember: "LeadOrderTypeID",
         Width: 70,
     },
@@ -326,13 +328,6 @@ export const DataGridColumnList = [
         Width: 150
     },
     {
-        Name: "LeadOrderTypeProcessID",
-        Type: "text",
-        Caption: "Phương thức xử lý của loại mỗi bán hàng",
-        DataSourceMember: "LeadOrderTypeProcessID",
-        Width: 120
-    },
-    {
         Name: "LeadOrderTypeProcessName",
         Type: "text",
         Caption: "Phương thức xử lý của loại mỗi bán hàng",
@@ -344,14 +339,14 @@ export const DataGridColumnList = [
         Type: "text",
         Caption: "Người tạo",
         DataSourceMember: "CreatedUserFullName",
-        Width: 150
+        Width: 120
     },
     {
         Name: "CreatedDate",
         Type: "datetime",
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
-        Width: 150
+        Width: 120
     },
     {
         Name: "IsActived",

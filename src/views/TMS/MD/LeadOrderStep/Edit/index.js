@@ -18,6 +18,7 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
+import { MD_LEADORDERSTEP_UPDATE } from './../../../../../constants/functionLists';
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -94,7 +95,7 @@ class EditCom extends React.Component {
         if (this.state.IsLoadDataComplete) {
             return (
                 <SimpleForm
-                    FormName="Cập nhật trạng thái của mối bán hàng"
+                    FormName="Cập nhật bước xử lý mối bán hàng"
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={EditElementList}
                     onSubmit={this.handleSubmit}
@@ -102,7 +103,7 @@ class EditCom extends React.Component {
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
-                    // RequirePermission={PACKAGETYPE_UPDATE}
+                    RequirePermission={MD_LEADORDERSTEP_UPDATE}
                     ref={this.searchref}
                 />
             );

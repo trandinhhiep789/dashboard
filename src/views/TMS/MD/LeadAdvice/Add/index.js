@@ -20,6 +20,7 @@ import FormControl from "../../../../../common/components/FormContainer/FormCont
 import { ERPCOMMONCACHE_SHIPMENTORDERTYPE, ERPCOMMONCACHE_MAINGROUP, ERPCOMMONCACHE_SUBGROUP } from './../../../../../constants/keyCache';
 import FormContainer from './../../../../../common/components/FormContainer/index';
 import ProductComboBox from './../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/ProductComboBox';
+import { MD_LEADADVICE_ADD } from "../../../../../constants/functionLists";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -32,7 +33,13 @@ class AddCom extends React.Component {
             CallAPIMessage: "",
             IsCallAPIError: false,
             IsCloseForm: false,
-            DataSource: {},
+            DataSource: {
+                IsActived: true,
+                MainGroupID: "",
+                ProductID: "",
+                ShipmentOrderTypeID: "",
+                SubGroupID: ""
+            },
             FilterObject: {
                 GroupValue: [-1, -1],
                 ArrayProduct: []
@@ -47,10 +54,6 @@ class AddCom extends React.Component {
     handleSubmit(formData, MLObject) {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-
-        MLObject.ShipmentOrderTypeID = MLObject.ShipmentOrderTypeID[0];
-        MLObject.MainGroupID = MLObject.MainGroupID[0];
-        MLObject.SubGroupID = MLObject.SubGroupID[0];
         MLObject.ProductID = MLObject.ProductID[0].ProductID;
 
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
@@ -143,6 +146,7 @@ class AddCom extends React.Component {
                 MLObjectDefinition={MLObjectDefinition}
                 onSubmit={this.handleSubmit}
                 dataSource={this.state.DataSource}
+                RequirePermission={MD_LEADADVICE_ADD}
             >
                 <FormControl.FormControlComboBox
                     colspan="4"

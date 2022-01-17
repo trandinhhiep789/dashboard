@@ -15,7 +15,7 @@ import {
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
-import { PACKAGETYPE_ADD } from "../../../../../constants/functionLists";
+import { MD_FAILADVICEREASON_ADD, PACKAGETYPE_ADD } from "../../../../../constants/functionLists";
 import indexedDBLib from "../../../../../common/library/indexedDBLib.js";
 import { CACHE_OBJECT_STORENAME } from "../../../../../constants/systemVars.js";
 import { callGetCache } from "../../../../../actions/cacheAction";
@@ -75,7 +75,7 @@ class AddCom extends React.Component {
         }
         return (
             <SimpleForm
-                FormName="Thêm danh sách lý do tư vấn thất bại"
+                FormName="Thêm lý do tư vấn thất bại"
                 MLObjectDefinition={MLObjectDefinition} ƒ
                 listelement={AddElementList}
                 onSubmit={this.handleSubmit}
@@ -83,7 +83,7 @@ class AddCom extends React.Component {
                 IsErrorMessage={this.state.IsCallAPIError}
                 dataSource={dataSource}
                 BackLink={BackLink}
-                // RequirePermission={PACKAGETYPE_ADD}
+                RequirePermission={MD_FAILADVICEREASON_ADD}
                 ref={this.searchref}
             />
         );

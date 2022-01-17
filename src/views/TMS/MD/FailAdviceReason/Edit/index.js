@@ -18,6 +18,7 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
+import { MD_FAILADVICEREASON_UPDATE } from './../../../../../constants/functionLists';
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -35,7 +36,9 @@ class EditCom extends React.Component {
 
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
+
         const id = this.props.match.params.id;
+        
         this.props.callFetchAPI(APIHostName, LoadAPIPath, id).then(apiResult => {
                 if (apiResult.IsError) {
                     this.setState({
@@ -87,7 +90,7 @@ class EditCom extends React.Component {
         if (this.state.IsLoadDataComplete) {
             return (
                 <SimpleForm
-                    FormName="Cập nhật danh sách lý do tư vấn thất bại"
+                    FormName="Cập nhật lý do tư vấn thất bại"
                     MLObjectDefinition={MLObjectDefinition}
                     listelement={EditElementList}
                     onSubmit={this.handleSubmit}
@@ -95,7 +98,7 @@ class EditCom extends React.Component {
                     IsErrorMessage={this.state.IsCallAPIError}
                     dataSource={this.state.DataSource}
                     BackLink={BackLink}
-                    // RequirePermission={PACKAGETYPE_UPDATE}
+                    RequirePermission={MD_FAILADVICEREASON_UPDATE}
                     ref={this.searchref}
                 />
             );

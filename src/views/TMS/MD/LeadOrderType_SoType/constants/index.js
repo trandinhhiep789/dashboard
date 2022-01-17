@@ -55,7 +55,7 @@ export const AddElementList = [
         placeholder: "Loại mối bán hàng",
         value: -1,
         ValueMember: "LeadOrderTypeID",
-        // validatonList: ["Comborequired"],
+        validatonList: ["Comborequired"],
         validatonList: [],
     },
     {
@@ -74,6 +74,20 @@ export const AddElementList = [
         validatonList: ["Comborequired"],
     },
     {
+        type: "text",
+        name: "txtNumberOfExpectDeliveryDay",
+        label: "Số ngày xử lý:",
+        value: "",
+        maxSize: "9",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "NumberOfExpectDeliveryDay",
+        disabled: false,
+        readonly: false,
+        validatonList: ["required", "number"]
+    },
+    {
         type: "checkbox",
         name: "chkIsDefault",
         label: "Mặc định:",
@@ -84,20 +98,6 @@ export const AddElementList = [
         readonly: false,
         validatonList: [],
         DataSourceMember: "IsDefault",
-    },
-    {
-        type: "text",
-        name: "txtNumberOfExpectDeliveryDay",
-        label: "Số ngày sử lý:",
-        value: "",
-        maxSize: "9",
-        placeholder: "",
-        icon: "",
-        listoption: {},
-        DataSourceMember: "NumberOfExpectDeliveryDay",
-        disabled: false,
-        readonly: false,
-        validatonList: ["required", "number"]
     },
     {
         type: "checkbox",
@@ -160,6 +160,21 @@ export const EditElementList = [
         readonly: true,
         disabled: true
     },
+    
+    {
+        type: "text",
+        name: "txtNumberOfExpectDeliveryDay",
+        label: "Số ngày xử lý:",
+        value: "",
+        maxSize: "9",
+        placeholder: "",
+        icon: "",
+        listoption: {},
+        DataSourceMember: "NumberOfExpectDeliveryDay",
+        disabled: false,
+        readonly: false,
+        validatonList: ["required", "number"]
+    },
     {
         type: "checkbox",
         name: "chkIsDefault",
@@ -171,20 +186,6 @@ export const EditElementList = [
         readonly: false,
         validatonList: [],
         DataSourceMember: "IsDefault",
-    },
-    {
-        type: "text",
-        name: "txtNumberOfExpectDeliveryDay",
-        label: "Số ngày sử lý:",
-        value: "",
-        maxSize: "9",
-        placeholder: "",
-        icon: "",
-        listoption: {},
-        DataSourceMember: "NumberOfExpectDeliveryDay",
-        disabled: false,
-        readonly: false,
-        validatonList: ["required", "number"]
     },
     {
         type: "checkbox",

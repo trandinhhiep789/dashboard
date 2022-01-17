@@ -90,7 +90,7 @@ class DetailCom extends React.Component {
                
                 if (apiResult.ResultObject.InventoryRequestDetail) {
                     const dataa = apiResult.ResultObject.InventoryRequestDetail.map(item =>{
-                        let arr = {ProcessInputQuantity : `${item.ProcessInputQuantity}`,ProcessOutputQuantity: `${item.ProcessOutputQuantity}`};
+                        let arr = {ProcessInputQuantity : `${item.ProcessInputQuantity}`,ProcessOutputQuantity: `${item.ProcessOutputQuantity}`, ActualQuantity:`${item.ActualQuantity}`,RecordQuantity:`${item.RecordQuantity}`,UneventQuantity:`${item.UneventQuantity}`};
                         return Object.assign({}, item, arr);
                     });
                     this.setState({InventoryRequestDetail: dataa});
