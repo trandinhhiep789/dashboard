@@ -302,10 +302,10 @@ class DetailCom extends React.Component {
                                 : <div></div>
 
                             }
-                            {(InventoryRequest.IsCreatedOrder == false && InventoryRequest.IsreViewed == true) ?
+                            {/* {(InventoryRequest.IsCreatedOrder == false && InventoryRequest.IsreViewed == true) ?
                                 <button className="btn btn-primary mr-3" type="button" onClick={this.handleSubmitOutputINRequest.bind(this)}>Tạo phiếu xuất</button>
                                 : <button disabled={true} className="btn btn-primary mr-3" type="button">Tạo phiếu xuất</button>
-                            }
+                            } */}
                             <Link to="/InventoryRequest">
                                 <button className="btn btn-sm btn-outline btn-primary" type="button">Quay lại</button>
                             </Link>

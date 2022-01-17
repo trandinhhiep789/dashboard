@@ -155,7 +155,7 @@ class InventoryRequestInfoCom extends Component {
                             </label>
                         </div>
                     </div>
-                    <div className="form-group col-md-2">
+                    {/* <div className="form-group col-md-2">
                         <label className="col-form-label bold">Đã tạo đơn hàng kiểm kê:</label>
                     </div>
                     <div className="form-group col-md-4">
@@ -165,9 +165,9 @@ class InventoryRequestInfoCom extends Component {
                                 </span>
                             </label>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
-                <div className="form-row">
+                {/* <div className="form-row">
 
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Người tạo đơn hàng kiểm kê:</label>
@@ -231,6 +231,7 @@ class InventoryRequestInfoCom extends Component {
                     </div>
 
                 </div>
+         */}
             </React.Fragment>
         );
     }
