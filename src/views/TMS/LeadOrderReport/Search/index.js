@@ -93,7 +93,6 @@ class SearchCom extends React.Component {
 
     getCacheMTG() {
         this.props.callGetCache(ERPCOMMONCACHE_TMSCONFIG).then((result) => {
-            console.log(result)
             if (result && !result.IsError && result.ResultObject) {
                 const _configValue = result.ResultObject.CacheData.find(x => x.TMSConfigID == "TEMPLATE_LEADORDER_REPORT_EXPORT");
 
