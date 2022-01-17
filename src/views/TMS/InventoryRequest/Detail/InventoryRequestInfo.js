@@ -155,8 +155,8 @@ class InventoryRequestInfoCom extends Component {
                             </label>
                         </div>
                     </div>
-                    {/* <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Đã tạo đơn hàng kiểm kê:</label>
+                    <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Đã tạo kiểm kê phía ERP:</label>
                     </div>
                     <div className="form-group col-md-4">
                         <div className="checkbox customCheckbox">
@@ -165,7 +165,7 @@ class InventoryRequestInfoCom extends Component {
                                 </span>
                             </label>
                         </div>
-                    </div> */}
+                    </div>
                 </div>
                 {/* <div className="form-row">
 
