@@ -34,7 +34,7 @@ import { showModal, hideModal } from './../../../../../actions/modal';
 import FormContainer from './../../../../../common/components/FormContainer/index';
 import LeadOrderType_WF_Edit from "../Components/LeadOrderType_WF/Edit";
 import { MD_LEADORDERTYPE_UPDATE } from './../../../../../constants/functionLists';
-
+import { DeleteAPIPath } from "../Components/LeadOrderType_WF/constants"
 
 class EditCom extends React.Component {
     constructor(props) {
@@ -46,6 +46,7 @@ class EditCom extends React.Component {
         this.handleInsertLeadOrderType_WF = this.handleInsertLeadOrderType_WF.bind(this);
         this.handleEditLeadOrderType_WF = this.handleEditLeadOrderType_WF.bind(this);
         this.handleDeleteLeadOrderType_WF = this.handleDeleteLeadOrderType_WF.bind(this);
+        this.handleCloseModal = this.handleCloseModal.bind(this);
 
         this.state = {
             CallAPIMessage: "",
@@ -83,6 +84,14 @@ class EditCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
+        if (MLObject.IsInitStep) {
+            let isExistIsInitStep = this.props.ListLeadOrderType_WFItem.some((item) => item.IsInitStep == true);
+            if (isExistIsInitStep) {
+                this.showMessage("Bước khởi tạo đã tồn tại");
+                return;
+            }
+        }
+
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
 
@@ -100,13 +109,13 @@ class EditCom extends React.Component {
         if (!this.state.IsCallAPIError) this.setState({ IsCloseForm: true });
     }
 
-    showMessage(message) {
+    showMessage(message, onCloseModal = undefined) {
         ModalManager.open(
             <MessageModal
                 title="Thông báo"
                 message={message}
                 onRequestClose={() => true}
-                onCloseModal={this.handleCloseMessage}
+                onCloseModal={onCloseModal}
             />
         );
     }
@@ -123,14 +132,18 @@ class EditCom extends React.Component {
         })
     }
 
+    handleCloseModal() {
+        this.props.hideModal();
+    }
+
     handleInsertLeadOrderType_WF() {
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
             title: 'Thêm mới bước mối bán hàng',
             content: {
                 text: <LeadOrderType_WF_Add
                     LeadOrderTypeID={this.props.match.params.id}
-                    // ListLeadOrderType_WF_Next={this.state.DataSource.ListLeadOrderType_WF_Next}
-                    // handleSetListLeadOrderType_WF_Next={this.handleSetListLeadOrderType_WF_Next}
+                    ListLeadOrderType_WFItem={this.state.DataSource.ListLeadOrderType_WFItem}
+                    handleCloseModal={this.handleCloseModal}
                     handleReloadData={this.handleCallData}
                 />
             },
@@ -146,7 +159,7 @@ class EditCom extends React.Component {
                 text: <LeadOrderType_WF_Edit
                     LeadOrderTypeID={this.props.match.params.id}
                     DataSource={this.state.DataSource.ListLeadOrderType_WFItem[index]}
-                    handleSetListLeadOrderType_WF_Next={this.handleSetListLeadOrderType_WF_Next}
+                    handleCloseModal={this.handleCloseModal}
                     handleReloadData={this.handleCallData}
                 />
             },
@@ -155,28 +168,21 @@ class EditCom extends React.Component {
     }
 
     handleDeleteLeadOrderType_WF(deleteList) {
-        const uptDeteteList = deleteList.map(item => {
-            return {
-                VehicleRentalRequestTypeID: parseInt(this.props.match.params.id),
-                VehicleRentalRequestStepID: item[0].value
-            }
-        })
 
-        this.props.callFetchAPI(APIHostName, DelAPIPath_RentalRequestType_WF, uptDeteteList).then(apiResult => {
-            this.showMessage(apiResult.Message);
-            if (!apiResult.IsError) {
-                this.fetchVehicleRentalRequestTypeInfo();
-            }
-        });
-    }
+        if (!this.state.DataSource.IsSystem) {
+            let deletedUser = this.props.AppInfo.LoginInfo.Username;
+            let loginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
 
-    handleSetListLeadOrderType_WF_Next(lstListLeadOrderType_WF_Next) {
-        let changeState = this.state;
-        let dataSource = changeState.DataSource;
+            let lstRequest = deleteList.reduce((p, c) => ([...p, c.reduce((x, y) => ({ ...x, [y.key]: y.value, DeletedUser: deletedUser, LoginLogID: loginLogID }), {})]), {});
 
-        dataSource = { ...dataSource, ListLeadOrderType_WF_Next: lstListLeadOrderType_WF_Next };
-        changeState = { ...changeState, DataSource: dataSource };
-        this.setState(changeState);
+            this.props.callFetchAPI(APIHostName, DeleteAPIPath, lstRequest).then(apiResult => {
+                this.showMessage(apiResult.Message);
+                if (!apiResult.IsError) {
+                    this.handleCallData();
+                }
+            });
+        }
+
     }
 
     render() {
@@ -226,6 +232,7 @@ class EditCom extends React.Component {
                                 onSubmit={this.handleSubmit}
                                 dataSource={this.state.DataSource}
                                 RequirePermission={MD_LEADORDERTYPE_UPDATE}
+                                IsDisabledSubmitForm
                             >
                                 <FormControl.TextBox
                                     labelcolspan={3}
@@ -238,7 +245,7 @@ class EditCom extends React.Component {
                                     maxSize={150}
                                     value=""
                                     validatonList={["required"]}
-                                    IsSystem={this.state.DataSource.IsSystem}
+                                    readOnly={this.state.DataSource.IsSystem}
                                 />
 
                                 <FormControl.TextBox
@@ -252,7 +259,7 @@ class EditCom extends React.Component {
                                     maxSize={150}
                                     value=""
                                     validatonList={["required"]}
-                                    IsSystem={this.state.DataSource.IsSystem}
+                                    readOnly={this.state.DataSource.IsSystem}
                                 />
 
                                 <FormControl.FormControlComboBox
@@ -272,7 +279,7 @@ class EditCom extends React.Component {
                                     value={""}
                                     valuemember="LeadOrderTypeProcessID"
                                     validatonList={["Comborequired"]}
-                                    IsSystem={this.state.DataSource.IsSystem}
+                                    disabled={this.state.DataSource.IsSystem}
                                 />
 
 
@@ -292,7 +299,7 @@ class EditCom extends React.Component {
                                     value={""}
                                     valuemember="FunctionID"
                                     validatonList={["Comborequired"]}
-                                    IsSystem={this.state.DataSource.IsSystem}
+                                    disabled={this.state.DataSource.IsSystem}
                                 />
 
                                 <FormControl.TextArea
@@ -302,7 +309,7 @@ class EditCom extends React.Component {
                                     datasourcemember="Description"
                                     label="Mô tả"
                                     name="txtDescription"
-                                    IsSystem={this.state.DataSource.IsSystem}
+                                    disabled={this.state.DataSource.IsSystem}
                                 />
 
                                 <FormControl.CheckBox
@@ -312,7 +319,7 @@ class EditCom extends React.Component {
                                     label="Kích hoạt"
                                     name="chkIsActived"
                                     controltype="InputControl"
-                                    IsSystem={this.state.DataSource.IsSystem}
+                                    disabled={this.state.DataSource.IsSystem}
                                 />
 
                                 <FormControl.CheckBox
@@ -322,7 +329,7 @@ class EditCom extends React.Component {
                                     datasourcemember="IsSystem"
                                     label="Hệ thống"
                                     name="chkIsSystem"
-                                    IsSystem={this.state.DataSource.IsSystem}
+                                    disabled={this.state.DataSource.IsSystem}
                                 />
                             </FormContainer>
                         </TabPage>
@@ -336,9 +343,9 @@ class EditCom extends React.Component {
                                 listColumn={LeadOrderType_WFListColumn}
                                 MLObjectDefinition={LeadOrderType_WFMLObjectDefinition}
                                 name="LeadOrderType_WF"
-                                onDeleteClick_Customize={this.handleDeleteLeadOrderType_WF}
-                                onInsertClick={this.handleInsertLeadOrderType_WF}
-                                onInsertClickEdit={this.handleEditLeadOrderType_WF}
+                                onDeleteClick_Customize={this.state.DataSource.IsSystem ? null : this.handleDeleteLeadOrderType_WF}
+                                onInsertClick={this.state.DataSource.IsSystem ? null : this.handleInsertLeadOrderType_WF}
+                                onInsertClickEdit={this.state.DataSource.IsSystem ? null : this.handleEditLeadOrderType_WF}
                                 PKColumnName="LeadOrderTypeID,LeadOrderStepID"
                             />
                         </TabPage>

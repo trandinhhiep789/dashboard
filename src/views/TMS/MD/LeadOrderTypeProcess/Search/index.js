@@ -23,7 +23,7 @@ import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache } from "../../../../../actions/cacheAction";
-import { MD_LEADORDERTYPEPROCESS_VIEW } from './../../../../../constants/functionLists';
+import { MD_LEADORDERTYPEPROCESS_VIEW, MD_LEADORDERTYPEPROCESS_DELETE } from './../../../../../constants/functionLists';
 
 class SearchCom extends React.Component {
     constructor(props) {

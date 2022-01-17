@@ -33,7 +33,7 @@ export const MLObjectDefinitionLeadOrderType_WF = [
         Name: "LeadOrderTypeID",
         DataSourceMember: "LeadOrderTypeID",
         DefaultValue: "",
-        BindControlName: "cbLeadOrderTypeID",
+        BindControlName: "",
     },
     {
         Name: "LeadOrderStepID",
@@ -51,7 +51,7 @@ export const MLObjectDefinitionLeadOrderType_WF = [
         Name: "AutoChangeToStatusID",
         DataSourceMember: "AutoChangeToStatusID",
         DefaultValue: "",
-        BindControlName: "chkAutoChangeToStatusID",
+        BindControlName: "cbAutoChangeToStatusID",
     },
     {
         Name: "AutoChangeStepType",
@@ -71,24 +71,24 @@ export const MLObjectDefinitionLeadOrderType_WF = [
         DefaultValue: "",
         BindControlName: "chkIsFinishStep"
     },
-    {
-        Name: "Description",
-        DataSourceMember: "Description",
-        DefaultValue: "",
-        BindControlName: "txtDescription"
-    },
+    // {
+    //     Name: "Description",
+    //     DataSourceMember: "Description",
+    //     DefaultValue: "",
+    //     BindControlName: "txtDescription"
+    // },
     {
         Name: "IsActived",
         DataSourceMember: "IsActived",
         DefaultValue: "",
         BindControlName: "chkIsActived"
     },
-    {
-        Name: "IsSystem",
-        DataSourceMember: "IsSystem",
-        DefaultValue: "",
-        BindControlName: "chkIsSystem"
-    }
+    // {
+    //     Name: "IsSystem",
+    //     DataSourceMember: "IsSystem",
+    //     DefaultValue: "",
+    //     BindControlName: "chkIsSystem"
+    // }
 ]
 
 export const LeadOrderType_WF_NextListColumn = [

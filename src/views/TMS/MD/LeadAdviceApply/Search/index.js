@@ -28,7 +28,7 @@ import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
 import Add from "../Add";
 import Edit from "../Edit";
 import { hideModal, showModal } from "../../../../../actions/modal";
-import {MD_LEADADVICE_VIEW, MD_LEADADVICE_DELETE } from "../../../../../constants/functionLists";
+import { MD_LEADADVICE_VIEW, MD_LEADADVICE_DELETE } from "../../../../../constants/functionLists";
 
 class SearchCom extends React.Component {
     constructor(props) {

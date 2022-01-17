@@ -56,7 +56,6 @@ export const AddElementList = [
         value: -1,
         ValueMember: "LeadOrderTypeID",
         validatonList: ["Comborequired"],
-        validatonList: [],
     },
     {
         type: "multiselect",
@@ -310,7 +309,7 @@ export const DataGridColumnList = [
     {
         Name: "NumberOfExpectDeliveryDay",
         Type: "text",
-        Caption: "Số ngày sử lý",
+        Caption: "Số ngày xử lý",
         DataSourceMember: "NumberOfExpectDeliveryDay",
         Width:70
     },

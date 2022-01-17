@@ -654,6 +654,8 @@ class FormContainerCom extends Component {
         if (this.props.IsDisabledSubmitForm) {
             isDisabledButtonSubmit = true
         }
+
+
         return (
             <div className="col-lg-12">
                 <form className="card" action="" onSubmit={this.handleSubmit}>
@@ -667,6 +669,9 @@ class FormContainerCom extends Component {
                     <footer className="card-footer text-right" hidden={this.props.IsHideFooter}>
                         {(this.props.isSubmitForm == undefined || this.props.isSubmitForm == true) &&
                             <button className="btn btn-primary mr-3" disabled={isDisabledButtonSubmit} type="submit">{cssSearchButton} Cập nhật</button>
+                        }
+                        {
+                            (this.props.customSubmit == true) && <button ref={this.props.customRef} className="btn btn-primary mr-3" disabled={isDisabledButtonSubmit} type="submit">{cssSearchButton} Cập nhật</button>
                         }
                         {backLinkButton}
                         {closeLinkButton}
