@@ -22,6 +22,7 @@ import FormContainer from './../../../../../common/components/FormContainer/inde
 import ProductComboBox from './../../../../../common/components/FormContainer/FormControl/MultiSelectComboBox/ProductComboBox';
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
 import { ERPCOMMONCACHE_SHIPMENTORDERTYPE, ERPCOMMONCACHE_MAINGROUP, ERPCOMMONCACHE_SUBGROUP } from './../../../../../constants/keyCache';
+import { MD_LEADADVICE_UPDATE } from './../../../../../constants/functionLists';
 
 
 class EditCom extends React.Component {
@@ -71,6 +72,7 @@ class EditCom extends React.Component {
 
                 filterObject = { ...filterObject, GroupValue: groupValue, ArrayProduct: arrValueFilter };
                 changeState = { ...changeState, DataSource: apiResult.ResultObject, FilterObject: filterObject, ValueObject: valueObject };
+               
                 this.setState(changeState);
             }
             this.setState({
@@ -174,6 +176,7 @@ class EditCom extends React.Component {
                     onSubmit={this.handleSubmit}
                     dataSource={this.state.DataSource}
                     IsDisabledSubmitForm={this.state.DataSource.IsSystem}
+                    RequirePermission={MD_LEADADVICE_UPDATE}
                 >
                     <FormControl.TextBox
                         controltype="InputControl"
@@ -204,7 +207,7 @@ class EditCom extends React.Component {
                         valuemember="ShipmentOrderTypeID"
                         validatonList={["Comborequired"]}
                         placeholder="Loại yêu cầu vận chuyển"
-                        disabled={this.state.DataSource.IsSystem}
+                        // disabled={this.state.DataSource.IsSystem}
                     />
                     <FormControl.FormControlComboBox
                         colspan="4"
@@ -223,7 +226,7 @@ class EditCom extends React.Component {
                         valuemember="MainGroupID"
                         validatonList={["Comborequired"]}
                         placeholder="Ngành hàng"
-                        disabled={this.state.DataSource.IsSystem}
+                        // disabled={this.state.DataSource.IsSystem}
                     />
                     <FormControl.FormControlComboBox
                         colspan="4"
@@ -240,6 +243,7 @@ class EditCom extends React.Component {
                         nameMember="SubGroupName"
                         valuemember="SubGroupID"
                         validatonList={["Comborequired"]}
+                        // value={this.state.DataSource.SubGroupID}
                         filterobj="MainGroupID"
                         filterValue={this.state.FilterObject.GroupValue[0]}
                         placeholder="Nhóm hàng"

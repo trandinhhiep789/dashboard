@@ -28,6 +28,7 @@ import { MODAL_TYPE_COMMONTMODALS } from "../../../../../constants/actionTypes";
 import Add from "../Add";
 import Edit from "../Edit";
 import { hideModal, showModal } from "../../../../../actions/modal";
+import {MD_LEADADVICE_VIEW, MD_LEADADVICE_DELETE } from "../../../../../constants/functionLists";
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -68,7 +69,6 @@ class SearchCom extends React.Component {
     handleExportFile(result) {
         this.addNotification(result.Message, result.IsError);
     }
-
 
     handleDelete(deleteList, pkColumnName) {
         let listMLObject = [];
@@ -190,7 +190,7 @@ class SearchCom extends React.Component {
         // }
 
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: 'Thêm danh mục sản phẩm tư vấn ứng với loại yêu cầu vận chuyển (cùng loại)',
+            title: 'Thêm mới sản phẩm tư vấn khác',
             content: {
                 text: (
                     <Add LeadAdviceID={this.props.LeadAdviceID} closePopup={this.onClose} />
@@ -210,7 +210,7 @@ class SearchCom extends React.Component {
         let leadAdviceApplyID = value.pkColumnName[0].value;
 
         this.props.showModal(MODAL_TYPE_COMMONTMODALS, {
-            title: 'Cập nhật danh mục sản phẩm tư vấn ứng với loại yêu cầu vận chuyển (cùng loại)',
+            title: 'Cập nhật sản phẩm tư vấn khác',
             content: {
                 text: (
                     <Edit LeadAdviceID={this.props.LeadAdviceID} LeadAdviceApplyID={leadAdviceApplyID} closePopup={this.onClose} />
@@ -249,9 +249,8 @@ class SearchCom extends React.Component {
                         onInsertClickEdit={this.handleEdit}
                         ref={this.gridref}
                         IsCustomAddLink={true}
-                        // RequirePermission={PACKAGETYPE_VIEW}
-                        // DeletePermission={PACKAGETYPE_DELETE}
-                        // ExportPermission={PACKAGETYPE_EXPORT}
+                        RequirePermission={MD_LEADADVICE_VIEW}
+                        DeletePermission={MD_LEADADVICE_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={10}
                     />

@@ -23,6 +23,7 @@ import { updatePagePath } from "../../../../../actions/pageAction";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { callGetCache } from "../../../../../actions/cacheAction";
+import { MD_LEADORDERTYPEPROCESS_VIEW } from './../../../../../constants/functionLists';
 
 class SearchCom extends React.Component {
     constructor(props) {
@@ -52,7 +53,6 @@ class SearchCom extends React.Component {
     handleExportFile(result) {
         this.addNotification(result.Message, result.IsError);
     }
-
 
     handleDelete(deleteList, pkColumnName) {
         let listMLObject = [];
@@ -167,8 +167,6 @@ class SearchCom extends React.Component {
         });
     }
 
-
-
     render() {
         if (this.state.IsShowForm) {
             return (
@@ -189,17 +187,10 @@ class SearchCom extends React.Component {
                         PKColumnName={PKColumnName}
                         onDeleteClick={this.handleDelete}
                         ref={this.gridref}
-                        // RequirePermission={PACKAGETYPE_VIEW}
-                        // DeletePermission={PACKAGETYPE_DELETE}
-                        // ExportPermission={PACKAGETYPE_EXPORT}
+                        RequirePermission={MD_LEADORDERTYPEPROCESS_VIEW}
+                        DeletePermission={MD_LEADORDERTYPEPROCESS_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={10}
-                        // IsExportFile={true}
-                        // DataExport={this.state.dataExport}
-                        // fileName="Danh sách loại phương tiện vận chuyển"
-                        onExportFile={this.handleExportFile.bind(this)}
-
-
                     />
                 </React.Fragment>
             );

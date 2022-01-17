@@ -12,18 +12,18 @@ export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách bước xử lý của mối bán hàng" }
+    { Link: "", Title: "Danh sách bước xử lý mối bán hàng" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/LeadOrderStep", Title: "Danh sách bước xử lý của mối bán hàng" },
+    { Link: "/LeadOrderStep", Title: "Danh sách bước xử lý mối bán hàng" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/LeadOrderStep", Title: "Danh sách bước xử lý của mối bán hàng" },
+    { Link: "/LeadOrderStep", Title: "Danh sách bước xử lý mối bán hàng" },
     { Link: "", Title: "Thêm" }
 ];
 
@@ -43,10 +43,10 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtLeadOrderStepID",
-        label: "Mã bước xử lý của mối bán hàng",
+        label: "Mã bước xử lý mối bán hàng",
         value: "",
         maxSize: "9",
-        placeholder: "Mã bước xử lý của mối bán hàng",
+        placeholder: "Mã bước xử lý mối bán hàng",
         icon: "",
         listoption: {},
         DataSourceMember: "LeadOrderStepID",
@@ -57,10 +57,10 @@ export const AddElementList = [
     {
         type: "text",
         name: "txtLeadOrderStepName",
-        label: "Tên bước xử lý của mối bán hàng",
+        label: "Tên bước xử lý mối bán hàng",
         value: "",
         maxSize: "150",
-        placeholder: "Tên bước xử lý của mối bán hàng",
+        placeholder: "Tên bước xử lý mối bán hàng",
         icon: "",
         listoption: {},
         DataSourceMember: "LeadOrderStepName",
@@ -111,10 +111,10 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtLeadOrderStepID",
-        label: "Mã bước xử lý của mối bán hàng",
+        label: "Mã bước xử lý mối bán hàng",
         value: "",
         maxSize: "9",
-        placeholder: "Mã bước xử lý của mối bán hàng",
+        placeholder: "Mã bước xử lý mối bán hàng",
         icon: "",
         listoption: {},
         DataSourceMember: "LeadOrderStepID",
@@ -125,10 +125,10 @@ export const EditElementList = [
     {
         type: "text",
         name: "txtLeadOrderStepName",
-        label: "Tên bước xử lý của mối bán hàng",
+        label: "Tên bước xử lý mối bán hàng",
         value: "",
         maxSize: "150",
-        placeholder: "Tên bước xử lý của mối bán hàng",
+        placeholder: "Tên bước xử lý mối bán hàng",
         icon: "",
         listoption: {},
         DataSourceMember: "LeadOrderStepName",
@@ -245,14 +245,14 @@ export const DataGridColumnList = [
     {
         Name: "LeadOrderStepID",
         Type: "text",
-        Caption: "Mã bước xử lý của mối bán hàng",
+        Caption: "Mã bước xử lý mối bán hàng",
         DataSourceMember: "LeadOrderStepID",
         Width: 170,
     },
     {
         Name: "LeadOrderStepName",
         Type: "text",
-        Caption: "Tên bước xử lý của mối bán hàng",
+        Caption: "Tên bước xử lý mối bán hàng",
         DataSourceMember: "LeadOrderStepName",
         Width: 170
     },

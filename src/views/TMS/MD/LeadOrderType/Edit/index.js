@@ -33,6 +33,7 @@ import LeadOrderType_WF_Add from "../Components/LeadOrderType_WF/Add";
 import { showModal, hideModal } from './../../../../../actions/modal';
 import FormContainer from './../../../../../common/components/FormContainer/index';
 import LeadOrderType_WF_Edit from "../Components/LeadOrderType_WF/Edit";
+import { MD_LEADORDERTYPE_UPDATE } from './../../../../../constants/functionLists';
 
 
 class EditCom extends React.Component {
@@ -224,6 +225,7 @@ class EditCom extends React.Component {
                                 MLObjectDefinition={MLObjectDefinition}
                                 onSubmit={this.handleSubmit}
                                 dataSource={this.state.DataSource}
+                                RequirePermission={MD_LEADORDERTYPE_UPDATE}
                             >
                                 <FormControl.TextBox
                                     labelcolspan={3}
@@ -262,7 +264,7 @@ class EditCom extends React.Component {
                                     isautoloaditemfromcache={true}
                                     IsLabelDiv={true}
                                     isMulti={false}
-                                    label="Phương thức xử lý của mối bán hàng"
+                                    label="Phương thức xử lý mối bán hàng"
                                     listoption={[]}
                                     loaditemcachekeyid={ERPCOMMONCACHE_LEADORDERTYPEPROCESS}
                                     name="cbLeadOrderTypeProcessID"

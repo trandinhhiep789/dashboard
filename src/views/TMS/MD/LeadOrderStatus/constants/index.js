@@ -12,18 +12,18 @@ export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh sách Trạng thái của mối bán hàng" }
+    { Link: "", Title: "Danh sách Trạng thái mối bán hàng" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/LeadOrderStatus", Title: "Danh sách Trạng thái của mối bán hàng" },
+    { Link: "/LeadOrderStatus", Title: "Danh sách Trạng thái mối bán hàng" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/LeadOrderStatus", Title: "Danh sách Trạng thái của mối bán hàng" },
+    { Link: "/LeadOrderStatus", Title: "Danh sách Trạng thái mối bán hàng" },
     { Link: "", Title: "Thêm" }
 ];
 
@@ -60,7 +60,7 @@ export const AddElementList = [
         label: "Tên trạng thái mối bán hàng",
         value: "",
         maxSize: "150",
-        placeholder: "Tên trạng thái của mối bán hàng",
+        placeholder: "Tên trạng thái mối bán hàng",
         icon: "",
         listoption: {},
         DataSourceMember: "LeadOrderStatusName",
@@ -114,7 +114,7 @@ export const EditElementList = [
         label: "Mã trạng thái mối bán hàng",
         value: "",
         maxSize: "9",
-        placeholder: "Mã phương thức xử lý của mối bán hàng",
+        placeholder: "Mã phương thức xử lý mối bán hàng",
         icon: "",
         listoption: {},
         DataSourceMember: "LeadOrderStatusID",
@@ -128,7 +128,7 @@ export const EditElementList = [
         label: "Tên trạng thái mối bán hàng",
         value: "",
         maxSize: "150",
-        placeholder: "Tên trạng thái của mối bán hàng",
+        placeholder: "Tên trạng thái mối bán hàng",
         icon: "",
         listoption: {},
         DataSourceMember: "LeadOrderStatusName",
@@ -252,7 +252,7 @@ export const DataGridColumnList = [
     {
         Name: "LeadOrderStatusName",
         Type: "text",
-        Caption: "Tên trạng thái của mối bán hàng",
+        Caption: "Tên trạng thái mối bán hàng",
         DataSourceMember: "LeadOrderStatusName",
         Width: 170
     },
@@ -275,7 +275,7 @@ export const DataGridColumnList = [
         Type: "datetime",
         Caption: "Ngày tạo",
         DataSourceMember: "CreatedDate",
-        Width: 80
+        Width: 130
     },
     {
         Name: "IsActived",

@@ -16,6 +16,7 @@ import {
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
+import { MD_LEADORDERTYPEPROCESS_ADD } from "../../../../../constants/functionLists";
 
 class AddCom extends React.Component {
     constructor(props) {
@@ -71,7 +72,7 @@ class AddCom extends React.Component {
         }
         return (
             <SimpleForm
-                FormName="Thêm danh sách phương thức xử lý của mối bán hàng"
+                FormName="Thêm mới phương thức xử lý của mối bán hàng"
                 MLObjectDefinition={MLObjectDefinition} ƒ
                 listelement={AddElementList}
                 onSubmit={this.handleSubmit}
@@ -79,7 +80,7 @@ class AddCom extends React.Component {
                 IsErrorMessage={this.state.IsCallAPIError}
                 dataSource={dataSource}
                 BackLink={BackLink}
-                // RequirePermission={PACKAGETYPE_ADD}
+                RequirePermission={MD_LEADORDERTYPEPROCESS_ADD}
                 ref={this.searchref}
             />
         );
