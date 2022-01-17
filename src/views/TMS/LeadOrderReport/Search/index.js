@@ -198,9 +198,46 @@ class SearchCom extends React.Component {
             this.setState({
                 listColumn: listColumnTemp
             })
+        } else if (MLObject.IsFaildAdvice == 0) {
+            const listColumnTemp = [
+                ...listColumn,
+                {
+                    Name: "IsCreatedSaleOrder",
+                    Type: "checkicon",
+                    Caption: "Tạo vận đơn tương lai",
+                    DataSourceMember: "IsCreatedSaleOrder",
+                },
+                {
+                    Name: "ShipmentOrderID",
+                    Type: "text",
+                    Caption: "Mã vận đơn tương lai",
+                    DataSourceMember: "ShipmentOrderID",
+                },
+                {
+                    Name: "CreatedSaleOrderDate",
+                    Type: "datetime",
+                    Caption: "Ngày tạo vận đơn tương lai",
+                    DataSourceMember: "CreatedSaleOrderDate",
+                },
+            ]
+            this.setState({
+                listColumn: listColumnTemp
+            })
         } else {
             const listColumnTemp = [
                 ...listColumn,
+                {
+                    Name: "IsFaildAdvice",
+                    Type: "checkicon",
+                    Caption: "Tư vấn thất bại",
+                    DataSourceMember: "IsFaildAdvice",
+                },
+                {
+                    Name: "FailAdviceReasonIDName",
+                    Type: "text",
+                    Caption: "Lý do tư vấn thất bại",
+                    DataSourceMember: "FailAdviceReasonIDName",
+                },
                 {
                     Name: "IsCreatedSaleOrder",
                     Type: "checkicon",
