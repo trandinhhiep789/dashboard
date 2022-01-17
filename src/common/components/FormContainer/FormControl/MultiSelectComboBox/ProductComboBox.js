@@ -71,11 +71,17 @@ class ProductComboBoxCom extends React.Component {
             "IsCompressResultData": false
         }
         this.props.callFetchAPI("ERPAPI", 'api/ProductSearch/Search', listMLObject).then(apiResult => {
+            let dataSource = apiResult.ResultObject;
             let listOptionNew = [{ value: null, label: "------ Chọn ------" }];
             let selectedOption = [];
-            for (let i = 0; i < apiResult.ResultObject.length; i++) {
-                listOptionNew.push({ value: apiResult.ResultObject[i].ProductID, label: apiResult.ResultObject[i].ProductName });
-                selectedOption.push({ value: apiResult.ResultObject[i].ProductID, label: apiResult.ResultObject[i].ProductName });
+
+            if(this.props.isFilter){
+                dataSource=this.handleFilter(dataSource);
+            }
+           
+            for (let i = 0; i < dataSource.length; i++) {
+                listOptionNew.push({ value: dataSource[i].ProductID, label: dataSource[i].ProductName });
+                selectedOption.push({ value:dataSource[i].ProductID, label: dataSource[i].ProductName });
             }
 
             // if (!isFirstLoad) {
@@ -116,12 +122,30 @@ class ProductComboBoxCom extends React.Component {
 
     }
 
+    handleFilter(listOption) {
+        const { isFilter, arrFieldFilter, arrValueFilter } = this.props;
+        let result = [];
+        if (isFilter) {
+            result = listOption.filter(itemSource => {
+                return arrFieldFilter.some(x => {
+                    if (x in itemSource) {
+                        let index = arrFieldFilter.findIndex(f => f == x);
+                        let valueFilter = arrValueFilter[index];
+                        return valueFilter.includes(itemSource[x]);
+                    }
+                })
+            });
+        }
+        return result;
+    }
+
     handleValueonKeyDown(e) {
         let value = e.target.value;
         if (value.length > 2 && e.keyCode != 40 && e.keyCode != 38) {
             this.callSearchData(value);
         }
     }
+
     render() {
 
         const listOption = this.state.ListOption;

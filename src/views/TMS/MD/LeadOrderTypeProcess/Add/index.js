@@ -34,7 +34,6 @@ class AddCom extends React.Component {
         this.props.updatePagePath(AddPagePath);
     }
 
-
     handleSubmit(formData, MLObject) {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;

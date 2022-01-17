@@ -87,7 +87,14 @@ class DetailCom extends React.Component {
 
                     strCurrentReviewLevelName = apiResult.ResultObject.InventoryRequest_RVList.filter(a => a.ReviewLevelID === apiResult.ResultObject.CurrentReviewLevelID)[0].ReviewLevelName;
                 }
-
+               
+                if (apiResult.ResultObject.InventoryRequestDetail) {
+                    const dataa = apiResult.ResultObject.InventoryRequestDetail.map(item =>{
+                        let arr = {ProcessInputQuantity : `${item.ProcessInputQuantity}`,ProcessOutputQuantity: `${item.ProcessOutputQuantity}`};
+                        return Object.assign({}, item, arr);
+                    });
+                    this.setState({InventoryRequestDetail: dataa});
+                }
                 this.setState({
                     IsLoadDataComplete: true,
                     isUserNameReviewLevel: isUserNameReview,
@@ -229,6 +236,7 @@ class DetailCom extends React.Component {
     render() {
         const { IsSystem, InventoryRequest, InventoryRequestRVL, InventoryRequestDetail, isUserNameReviewLevel, CurrentReviewLevelName } = this.state;
         console.log({InventoryRequest});
+        console.log({InventoryRequestDetail});
         if (this.state.IsLoadDataComplete) {
             return (
                 <div className="col-lg-12">
@@ -251,7 +259,7 @@ class DetailCom extends React.Component {
                                         name="lstInventoryRequestDetail"
                                         controltype="GridControl"
                                         listColumn={GirdInventoryRequestDetailColumnList}
-                                        dataSource={InventoryRequest.InventoryRequestDetail}
+                                        dataSource={InventoryRequestDetail}
                                         isHideHeaderToolbar={true}
                                         colspan="12"
                                     />

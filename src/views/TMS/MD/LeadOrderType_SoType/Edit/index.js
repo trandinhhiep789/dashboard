@@ -36,10 +36,24 @@ class EditCom extends React.Component {
     componentDidMount() {
         this.props.updatePagePath(EditPagePath);
 
-        const leadOrderTypedID = this.props.match.params.leadOrderTypedID;
-        const saleOrderTypeID = this.props.match.params.saleOrderTypeID;
+        let dataRequest = {
+            LeadOrderTyped: this.props.match.params.leadOrderTypedID,
+            SaleOrderTypeID: this.props.match.params.saleOrderTypeID,
+            IsDefault: false,
+            NumberOfExpectDeliveryDay: 0,
+            IsActived: 0,
+            IsSystem: 0,
+            CreatedUser: "",
+            CreatedDate: null,
+            UpdatedUser: "",
+            UpdatedDate: null,
+            IsDeleted: false,
+            DeletedNote: "",
+            DeletedUser: "",
+            DeletedDate: null
+        }
 
-        this.props.callFetchAPI(APIHostName, LoadAPIPath, `${leadOrderTypedID},${saleOrderTypeID}`).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, LoadAPIPath, dataRequest).then(apiResult => {
             if (apiResult.IsError) {
                 this.setState({
                     IsCallAPIError: apiResult.IsError

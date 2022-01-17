@@ -58,7 +58,7 @@ class EditCom extends React.Component {
     }
 
     GetInventoryTermData() {
-        let listOption = [{ value: "-1", label: "---Vui lòng chọn---" }];
+        let listOption = [{ value: -1, label: "---Vui lòng chọn---" }];
         let param = {};
         this.props.callFetchAPI(APIHostName, GetInventoryTerm, param).then(apiResult => {
             if (apiResult.IsError) {

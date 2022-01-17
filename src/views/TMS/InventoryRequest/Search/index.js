@@ -49,6 +49,7 @@ class SearchCom extends React.Component {
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
+            listOptionInventoryTerm : [],
             IsCallAPIError: false,
             SearchData: InitSearchParams,
             cssNotification: "",
@@ -80,11 +81,11 @@ class SearchCom extends React.Component {
             }
             else {
                 const dataSource = apiResult.ResultObject.map((item, index) => {
-                    if (item.IsCreatedOrder) {
-                        item.OutputStatusLable = <span className='lblstatus text-success'>Đã xuất</span>;
+                    if (item.IsProcessInventory) {
+                        item.OutputStatusLable = <span className='lblstatus text-success'>Đã xử lý chênh lệch</span>;
                     }
                     else {
-                        item.OutputStatusLable = <span className='lblstatus text-warning'>Chưa xuất</span>;
+                        item.OutputStatusLable = <span className='lblstatus text-warning'>Chưa xử lý chênh lệch</span>;
                     }
                     if (item.IsreViewed) {
                         item.ReviewStatusLable = <span className='lblstatus text-success'>Đã duyệt</span>;
@@ -94,7 +95,11 @@ class SearchCom extends React.Component {
                         item.ReviewStatusLable = <span className='lblstatus text-warning'>Chưa duyệt</span>;
 
                     }
-                    return item;
+                    return {
+                        ...item,
+                        ApproverName: `${item.RequestUser} - ${item.FullName}`,
+                    }
+                    
                 })
                 const tempData = apiResult.ResultObject.map((item, index) => {
                     let element = {
@@ -110,7 +115,7 @@ class SearchCom extends React.Component {
 
                     return element;
                 })
-
+                
                 this.setState({
                     gridDataSource: dataSource,
                     dataExport: tempData,
@@ -121,7 +126,7 @@ class SearchCom extends React.Component {
     }
     GetInventoryTermData() {
         let _SearchElementList = SearchElementList;
-        let listOption = [{ value: "-1", label: "---Vui lòng chọn---" }];
+        let listOption = [{ value: -1, label: "---Vui lòng chọn---" }];
         let param = {};
         this.props.callFetchAPI(APIHostName, GetInventoryTerm, param).then(apiResult => {
             if (apiResult.IsError) {
@@ -129,7 +134,7 @@ class SearchCom extends React.Component {
                 _SearchElementList.forEach(function (objElement) {
                     if (objElement.DataSourceMember == "InventorytermID") {
                         objElement.listoption = listOption;
-                        objElement.value = "1";
+                        objElement.value = -1;
                     }
                 }.bind(this));
             } else {
@@ -141,13 +146,14 @@ class SearchCom extends React.Component {
                 _SearchElementList.forEach(function (objElement) {
                     if (objElement.DataSourceMember == "InventorytermID") {
                         objElement.listoption = listOption;
-                        objElement.value = "1";
+                        objElement.value = -1;
                     }
                 }.bind(this));
             }
            
             this.setState({
-                SearchElementlist: _SearchElementList
+                SearchElementlist: _SearchElementList,
+                listOptionInventoryTerm: listOption
             });
 
            
@@ -155,7 +161,7 @@ class SearchCom extends React.Component {
 
 
     }
-
+    
     showMessage(message) {
         ModalManager.open(
             <MessageModal
@@ -277,6 +283,7 @@ class SearchCom extends React.Component {
 
     render() {
         console.log(this.state.SearchElementlist);
+        console.log(this.state.listOptionInventoryTerm);
         let {SearchElementlist} = this.state;
         if (SearchElementlist == null) {
             return <React.Fragment>Đang tải dữ liệu...</React.Fragment>
