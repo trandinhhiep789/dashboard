@@ -59,12 +59,12 @@ class InventoryRequestInfoCom extends Component {
                             {InventoryRequest.InventoryRequestTypeName}
                         </label>
                     </div>
-                    <div className="form-group col-md-2">
+                    {/* <div className="form-group col-md-2">
                         <label className="col-form-label bold">Tiêu đề yêu cầu kiểm kê:</label>
                     </div>
                     <div className="form-group col-md-4">
                         <label className="col-form-label">{InventoryRequest.InventoryRequestTitle}</label>
-                    </div>
+                    </div> */}
                     
                 </div>
 
@@ -160,7 +160,7 @@ class InventoryRequestInfoCom extends Component {
                     </div>
                     <div className="form-group col-md-4">
                         <div className="checkbox customCheckbox">
-                            <label><input type="checkbox" disabled={true} defaultChecked={InventoryRequest.IsCreatedOrder} />
+                            <label><input type="checkbox" disabled={true} defaultChecked={InventoryRequest.IsCreatederpInventory} />
                                 <span className="cr"><i className="cr-icon fa fa-check"></i>
                                 </span>
                             </label>
