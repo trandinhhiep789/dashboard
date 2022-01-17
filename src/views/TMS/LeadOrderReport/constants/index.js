@@ -233,16 +233,16 @@ export const ListLeadOrderDetailColumn = [
         Caption: "Đơn vị",
         DataSourceMember: "QuantityUnit",
     },
-    {
-        Name: "ExpectedDeliveryDate",
-        Type: "datetime",
-        Caption: "Ngày hẹn giao",
-        DataSourceMember: "ExpectedDeliveryDate",
-    },
+    // {
+    //     Name: "ExpectedDeliveryDate",
+    //     Type: "datetime",
+    //     Caption: "Ngày hẹn giao",
+    //     DataSourceMember: "ExpectedDeliveryDate",
+    // },
     {
         Name: "SaleOrderID",
         Type: "text",
-        Caption: "Mã đơn hàng",
+        Caption: "Mã đơn hàng tương lai",
         DataSourceMember: "SaleOrderID",
     },
     {
