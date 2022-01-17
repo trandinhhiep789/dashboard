@@ -194,7 +194,7 @@ class SearchCom extends React.Component {
                             CurrentStatusIDName: `${item.CurrentStatusID} - ${item.CurrentStatusName}`,
                             CustomerIDName: `${item.CustomerID} - ${item.CustomerName}`,
                             StaffUserIDName: `${item.StaffUser} - ${item.StaffUserName}`,
-                            FailAdviceReasonIDName: `${item.FailAdviceReasonID} - ${item.FailAdviseReasonName}`,
+                            FailAdviceReasonIDName: item.FailAdviceReasonID == 0 ? "" : `${item.FailAdviceReasonID} - ${item.FailAdviseReasonName}`,
                         }
                     })
 
