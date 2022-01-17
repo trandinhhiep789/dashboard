@@ -30,7 +30,8 @@ class SearchCom extends React.Component {
         this.state = {
             gridData: [],
             IsDisabledBtn: false,
-            exportTemplateID: ""
+            exportTemplateID: "",
+            listColumn: listColumn
         };
 
         this.gridref = React.createRef();
@@ -178,6 +179,52 @@ class SearchCom extends React.Component {
             }
         ];
 
+        if (MLObject.IsFaildAdvice == 1) {
+            const listColumnTemp = [
+                ...listColumn,
+                {
+                    Name: "IsFaildAdvice",
+                    Type: "checkicon",
+                    Caption: "Tư vấn thất bại",
+                    DataSourceMember: "IsFaildAdvice",
+                },
+                {
+                    Name: "FailAdviceReasonIDName",
+                    Type: "text",
+                    Caption: "Lý do tư vấn thất bại",
+                    DataSourceMember: "FailAdviceReasonIDName",
+                }
+            ]
+            this.setState({
+                listColumn: listColumnTemp
+            })
+        } else {
+            const listColumnTemp = [
+                ...listColumn,
+                {
+                    Name: "IsCreatedSaleOrder",
+                    Type: "checkicon",
+                    Caption: "Tạo vận đơn tương lai",
+                    DataSourceMember: "IsCreatedSaleOrder",
+                },
+                {
+                    Name: "ShipmentOrderID",
+                    Type: "text",
+                    Caption: "Mã vận đơn tương lai",
+                    DataSourceMember: "ShipmentOrderID",
+                },
+                {
+                    Name: "CreatedSaleOrderDate",
+                    Type: "datetime",
+                    Caption: "Ngày tạo vận đơn tương lai",
+                    DataSourceMember: "CreatedSaleOrderDate",
+                },
+            ]
+            this.setState({
+                listColumn: listColumnTemp
+            })
+        }
+
         this.props.callFetchAPI(APIHostName, APISearchPath, SearchParamList).then(apiResult => {
             if (!apiResult.IsError) {
                 if (apiResult.ResultObject.length == 0) {
@@ -190,7 +237,7 @@ class SearchCom extends React.Component {
                         return {
                             ...item,
                             CoordinatorStoreIDName: `${item.CoordinatorStoreID} - ${item.CoordinatorStoreName}`,
-                            CurrentStatusIDName: `${item.CurrentStatusID} - ${item.CurrentStatusName}`,
+                            CurrentStatusIDName: item.CurrentStatusID == 0 ? "" : `${item.CurrentStatusID} - ${item.CurrentStatusName}`,
                             CustomerIDName: `${item.CustomerID} - ${item.CustomerName}`,
                             StaffUserIDName: `${item.StaffUser} - ${item.StaffUserName}`,
                             FailAdviceReasonIDName: item.FailAdviceReasonID == 0 ? "" : `${item.FailAdviceReasonID} - ${item.FailAdviseReasonName}`,
@@ -257,7 +304,7 @@ class SearchCom extends React.Component {
                     IsExportFile={false}
                     IsShowButtonAdd={false}
                     IsShowButtonDelete={false}
-                    listColumn={listColumn}
+                    listColumn={this.state.listColumn}
                     PKColumnName={"LeadOrderID"}
                     RowsPerPage={20}
                 />

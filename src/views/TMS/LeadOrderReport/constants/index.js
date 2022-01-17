@@ -182,30 +182,44 @@ export const listColumn = [
         Caption: "Ngày tư vấn",
         DataSourceMember: "CreatedDate",
     },
-    {
-        Name: "IsFaildAdvice",
-        Type: "checkicon",
-        Caption: "Tư vấn thất bại",
-        DataSourceMember: "IsFaildAdvice",
-    },
-    {
-        Name: "FailAdviceReasonIDName",
-        Type: "text",
-        Caption: "Lý do tư vấn thất bại",
-        DataSourceMember: "FailAdviceReasonIDName",
-    },
-    {
-        Name: "ExpectedDeliveryDate",
-        Type: "datetime",
-        Caption: "Ngày hẹn giao vận đơn tương lai",
-        DataSourceMember: "ExpectedDeliveryDate",
-    },
-    {
-        Name: "CreatedSaleOrderDate",
-        Type: "datetime",
-        Caption: "Ngày tạo đơn hàng tương lai",
-        DataSourceMember: "CreatedSaleOrderDate",
-    },
+    // {
+    //     Name: "IsFaildAdvice",
+    //     Type: "checkicon",
+    //     Caption: "Tư vấn thất bại",
+    //     DataSourceMember: "IsFaildAdvice",
+    // },
+    // {
+    //     Name: "FailAdviceReasonIDName",
+    //     Type: "text",
+    //     Caption: "Lý do tư vấn thất bại",
+    //     DataSourceMember: "FailAdviceReasonIDName",
+    // },
+
+    // {
+    //     Name: "ExpectedDeliveryDate",
+    //     Type: "datetime",
+    //     Caption: "Ngày hẹn giao vận đơn tương lai",
+    //     DataSourceMember: "ExpectedDeliveryDate",
+    // },
+
+    // {
+    //     Name: "IsCreatedSaleOrder",
+    //     Type: "checkicon",
+    //     Caption: "Tạo vận đơn tương lai",
+    //     DataSourceMember: "IsCreatedSaleOrder",
+    // },
+    // {
+    //     Name: "ShipmentOrderID",
+    //     Type: "text",
+    //     Caption: "Mã vận đơn tương lai",
+    //     DataSourceMember: "ShipmentOrderID",
+    // },
+    // {
+    //     Name: "CreatedSaleOrderDate",
+    //     Type: "datetime",
+    //     Caption: "Ngày tạo vận đơn tương lai",
+    //     DataSourceMember: "CreatedSaleOrderDate",
+    // },
 ]
 
 export const ListLeadOrderDetailColumn = [
