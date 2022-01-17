@@ -1821,9 +1821,9 @@ const AppMenu = [
                 SubMenu: [],
             },
             {
-                MenuName: "LeadOrder",
+                MenuName: "LeadOrderReport",
                 MenuTitle: "Báo cáo mối bán hàng",
-                LinkTo: "/LeadOrder",
+                LinkTo: "/LeadOrderReport",
                 MenuIcon: "",
                 SubMenu: [],
             },

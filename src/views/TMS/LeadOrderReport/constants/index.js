@@ -8,11 +8,11 @@ export const APISearchPath = "api/LeadOrder/Search";
 export const APILoadPath = "api/LeadOrder/Load";
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Mối bán hàng" }
+    { Link: "", Title: "Báo cáo mối bán hàng" }
 ];
 export const DetailPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/LeadOrder", Title: "Mối bán hàng" },
+    { Link: "/LeadOrderReport", Title: "Báo cáo mối bán hàng" },
     { Link: "", Title: "Chi tiết mối bán hàng" }
 ];
 
@@ -32,7 +32,7 @@ export const listElementSearch = [
         colspan: 2,
         DataSourceMember: "FromDate",
         dateFormat: "DD/MM/YYYY",
-        label: "Từ ngày",
+        label: "Từ ngày (Ngày tư vấn)",
         placeholder: "Từ ngày",
         timeFormat: false,
         value: new Date()
@@ -43,7 +43,7 @@ export const listElementSearch = [
         colspan: 2,
         DataSourceMember: "ToDate",
         dateFormat: "DD/MM/YYYY",
-        label: "Đến ngày",
+        label: "Đến ngày (Ngày tư vấn)",
         placeholder: "Đến ngày",
         timeFormat: false,
         value: new Date()
@@ -90,16 +90,16 @@ export const listElementSearch = [
         DataSourceMember: "IsFaildAdvice",
         IsAutoLoadItemFromCache: false,
         isMultiSelect: false,
-        label: "Tư vấn thất bại",
+        label: "Trạng thái tư vấn",
         listoption: [
             { value: -1, label: "--Chọn--" },
-            { value: 1, label: "Có" },
-            { value: 0, label: "Không" },
+            { value: 1, label: "Tư vấn thất bại" },
+            { value: 0, label: "Tư vấn thành công" },
         ],
         LoadItemCacheKeyID: "",
         NameMember: "IsFaildAdvice",
-        placeholder: "Tư vấn thất bại",
-        value: -1,
+        placeholder: "Trạng thái tư vấn",
+        value: 0,
         ValueMember: "IsFaildAdvice",
     }
 ]
@@ -141,20 +141,27 @@ export const listColumn = [
     {
         Name: "LeadOrderID",
         Type: "texttolinkNewBlank",
-        Caption: "Mã khoá chính",
+        Caption: "Mã mối bán hàng",
         DataSourceMember: "LeadOrderID",
-        Link: "/LeadOrder/Detail/",
+        Link: "/LeadOrderReport/Detail/",
     },
     {
-        Name: "CustomerName",
+        Name: "VoucherConcern",
+        Type: "texttolinkNewBlankValue",
+        Caption: "Mã vận đơn gốc",
+        DataSourceMember: "VoucherConcern",
+        Link: "/ShipmentOrder/Detail/",
+    },
+    {
+        Name: "CustomerIDName",
         Type: "text",
-        Caption: "Tên khách hàng",
-        DataSourceMember: "CustomerName",
+        Caption: "Khách hàng",
+        DataSourceMember: "CustomerIDName",
     },
     {
         Name: "StaffUserIDName",
         Type: "text",
-        Caption: "Mã nhân viên tư vấn",
+        Caption: "Nhân viên tư vấn",
         DataSourceMember: "StaffUserIDName",
     },
     {
@@ -170,16 +177,10 @@ export const listColumn = [
         DataSourceMember: "CurrentStatusIDName",
     },
     {
-        Name: "ExpectedDeliveryDate",
+        Name: "CreatedDate",
         Type: "datetime",
-        Caption: "Ngày hẹn giao",
-        DataSourceMember: "ExpectedDeliveryDate",
-    },
-    {
-        Name: "VoucherConcern",
-        Type: "text",
-        Caption: "Mã vận đơn gốc",
-        DataSourceMember: "VoucherConcern",
+        Caption: "Ngày tư vấn",
+        DataSourceMember: "CreatedDate",
     },
     {
         Name: "IsFaildAdvice",
@@ -188,10 +189,16 @@ export const listColumn = [
         DataSourceMember: "IsFaildAdvice",
     },
     {
-        Name: "FailAdviseDescription",
+        Name: "FailAdviceReasonIDName",
         Type: "text",
         Caption: "Lý do tư vấn thất bại",
-        DataSourceMember: "FailAdviseDescription",
+        DataSourceMember: "FailAdviceReasonIDName",
+    },
+    {
+        Name: "ExpectedDeliveryDate",
+        Type: "datetime",
+        Caption: "Ngày hẹn giao vận đơn tương lai",
+        DataSourceMember: "ExpectedDeliveryDate",
     },
     {
         Name: "CreatedSaleOrderDate",

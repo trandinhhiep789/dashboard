@@ -190,9 +190,11 @@ class SearchCom extends React.Component {
                     const uptResultObject = apiResult.ResultObject.map(item => {
                         return {
                             ...item,
-                            StaffUserIDName: `${item.StaffUser} - ${item.StaffUserName}`,
                             CoordinatorStoreIDName: `${item.CoordinatorStoreID} - ${item.CoordinatorStoreName}`,
-                            CurrentStatusIDName: `${item.CurrentStatusID} - ${item.CurrentStatusName}`
+                            CurrentStatusIDName: `${item.CurrentStatusID} - ${item.CurrentStatusName}`,
+                            CustomerIDName: `${item.CustomerID} - ${item.CustomerName}`,
+                            StaffUserIDName: `${item.StaffUser} - ${item.StaffUserName}`,
+                            FailAdviceReasonIDName: `${item.FailAdviceReasonID} - ${item.FailAdviseReasonName}`,
                         }
                     })
 
@@ -258,7 +260,7 @@ class SearchCom extends React.Component {
                     IsShowButtonDelete={false}
                     listColumn={listColumn}
                     PKColumnName={"LeadOrderID"}
-                    RowsPerPage={10}
+                    RowsPerPage={20}
                 />
             </React.Fragment>
         );

@@ -18,8 +18,8 @@ class LeadOrderCom extends React.Component {
     render() {
         return (
             <Switch>
-                <Route exact path="/LeadOrder" component={Search} />
-                <Route exact path="/LeadOrder/Detail/:id" component={Detail} />
+                <Route exact path="/LeadOrderReport" component={Search} />
+                <Route exact path="/LeadOrderReport/Detail/:id" component={Detail} />
                 <Route path="*" component={NotFound} />
             </Switch>
         );
@@ -41,5 +41,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const LeadOrder = connect(mapStateToProps, mapDispatchToProps)(LeadOrderCom);
-export default LeadOrder;
+const LeadOrderReport = connect(mapStateToProps, mapDispatchToProps)(LeadOrderCom);
+export default LeadOrderReport;

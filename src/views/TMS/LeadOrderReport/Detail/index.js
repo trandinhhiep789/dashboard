@@ -1,7 +1,6 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 
 
@@ -27,7 +26,8 @@ class DetailCom extends React.Component {
             CallAPIMessage: "",
             IsCloseForm: false,
             DataSource: null,
-            DataExportLeadOrderDetail: null
+            DataExportLeadOrderDetail: null,
+            ExpectedDeliveryDateOld: null
         };
 
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
@@ -92,6 +92,8 @@ class DetailCom extends React.Component {
 
     }
 
+
+
     render() {
 
         if (this.state.DataSource == null || this.state.DataExportLeadOrderDetail == null) {
@@ -110,44 +112,39 @@ class DetailCom extends React.Component {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
+                                            <span>Mã vận đơn gốc: </span>
+                                            <span>
+                                                <Link
+                                                    className="linktext"
+                                                    target="_blank"
+                                                    to={`/ShipmentOrder/Detail/${this.state.DataSource.VoucherConcern}`}
+                                                >
+                                                    {this.state.DataSource.VoucherConcern}
+                                                </Link>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div className="col-md-6">
+                                        <div className="form-group">
                                             <span>Loại mối bán hàng: </span>
                                             <span>{this.state.DataSource.LeadOrderTypeID} - {this.state.DataSource.LeadOrderTypeName}</span>
                                         </div>
                                     </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Trạng thái hiện tại: </span>
-                                            <span>{this.state.DataSource.CurrentStatusID} - {this.state.DataSource.CurrentStatusName}</span>
-                                        </div>
-                                    </div>
                                 </div>
 
                                 <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span>Ngày hẹn giao: </span>
+                                            <span>{formatDate(this.state.DataSource.ExpectedDeliveryDateOld)}</span>
+                                        </div>
+                                    </div>
+
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <span>Bước hiện tại: </span>
                                             <span>{this.state.DataSource.CurrentLeadOrderStepID} - {this.state.DataSource.CurrentLeadOrderStepName}</span>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Ngày hẹn giao: </span>
-                                            <span>{formatDate(this.state.DataSource.ExpectedDeliveryDate)}</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Mô tả: </span>
-                                            <span>{this.state.DataSource.Description}</span>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Mã vận đơn gốc: </span>
-                                            <span>{this.state.DataSource.VoucherConcern}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -159,12 +156,15 @@ class DetailCom extends React.Component {
                                             <span>{this.state.DataSource.CoordinatorStoreID} - {this.state.DataSource.CoordinatorStoreName}</span>
                                         </div>
                                     </div>
+
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <span>Nhân viên tư vấn: </span>
-                                            <span>{this.state.DataSource.StaffUser} - {this.state.DataSource.StaffUserName}</span>
+                                            <span>Trạng thái hiện tại: </span>
+                                            <span>{this.state.DataSource.CurrentStatusID} - {this.state.DataSource.CurrentStatusName}</span>
                                         </div>
                                     </div>
+
+
                                 </div>
 
                                 <div className="row">
@@ -174,10 +174,31 @@ class DetailCom extends React.Component {
                                             <span>{this.state.DataSource.CustomerID} - {this.state.DataSource.CustomerName}</span>
                                         </div>
                                     </div>
+
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span>Tạo đơn hàng tương lai thành công: </span>
+                                            <label>
+                                                <input name="IsActived" type="checkbox" id="IsActived" checked={this.state.DataSource.IsCreatedSaleOrder} />
+                                            </label>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <span>Giới tính khách hàng: </span>
                                             <span>{this.state.DataSource.CustomerGender ? "Nam" : "Nữ"}</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span>Ngày hẹn giao đơn hàng tương lai: </span>
+                                            <span>{formatDate(this.state.DataSource.ExpectedDeliveryDate)}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -189,34 +210,7 @@ class DetailCom extends React.Component {
                                             <span>{this.state.DataSource.CustomerPhone}</span>
                                         </div>
                                     </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Địa chỉ đầy đủ của khách hàng: </span>
-                                            <span>{this.state.DataSource.CustomerFullAddress}</span>
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <span>Tạo đơn hàng tương lai thành công: </span>
-                                        <label>
-                                            <input name="IsActived" type="checkbox" id="IsActived" checked={this.state.DataSource.IsCreatedSaleOrder} />
-                                        </label>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <span>Mã số thuế của khách hàng: </span>
-                                            <span>{this.state.DataSource.CustomerTaxID}</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <span>Ngày tạo đơn hàng tương lai: </span>
-                                        <span>{formatDate(this.state.DataSource.CreatedSaleOrderDate)}</span>
-                                    </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <span>Người tạo đơn hàng tương lai: </span>
@@ -228,16 +222,66 @@ class DetailCom extends React.Component {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
+                                            <span>Địa chỉ đầy đủ của khách hàng: </span>
+                                            <span>{this.state.DataSource.CustomerFullAddress}</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span>Ngày tạo đơn hàng tương lai: </span>
+                                            <span>{formatDate(this.state.DataSource.CreatedSaleOrderDate)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span>Mã số thuế của khách hàng: </span>
+                                            <span>{this.state.DataSource.CustomerTaxID}</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="col-md-6">
+                                        <div className="form-group">
                                             <span>Tư vấn thất bại: </span>
                                             <label>
                                                 <input name="IsActived" type="checkbox" id="IsActived" checked={this.state.DataSource.IsFaildAdvice} />
                                             </label>
                                         </div>
                                     </div>
+                                </div>
+
+                                <div className="row">
                                     <div className="col-md-6">
-                                        <span>Mô tả lý do tư vấn thất bại: </span>
-                                        <span>{this.state.DataSource.FailAdviseDescription}</span>
+                                        <div className="form-group">
+                                            <span>Nhân viên tư vấn: </span>
+                                            <span>{this.state.DataSource.StaffUser} - {this.state.DataSource.StaffUserName}</span>
+                                        </div>
                                     </div>
+
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span>Lý do: </span>
+                                            <span>{this.state.DataSource.FailAdviceReasonID} - {this.state.DataSource.FailAdviseReasonName}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <span>Mô tả lý do tư vấn thất bại: </span>
+                                            <span>{this.state.DataSource.FailAdviseDescription}</span>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
