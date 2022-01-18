@@ -36,6 +36,9 @@ class EditCom extends React.Component {
             DataSource: this.props.DataSource,
             ListLeadOrderType_WF_NextDeleted: [],
             ListLeadOrderType_WF_NextDataGrid: [],
+            ValidationMessage: {
+                SelectAutoChangeToStepID: ""
+            },
             CacheData: {
                 LeadOrderNextStep: [],
                 FunctionCache: []
@@ -194,7 +197,7 @@ class EditCom extends React.Component {
             return;
         }
 
-        if (this.state.DataSource.LeadOrderStepID == this.state.FormData.LeadOrderNextStepID) {
+        if (this.state.DataSource.LeadOrderStepID != 0 && this.state.FormData.LeadOrderNextStepID != 0 && this.state.DataSource.LeadOrderStepID == this.state.FormData.LeadOrderNextStepID) {
             this.showMessage("Bước kế tiếp không được phép chọn trùng bước xử lý");
             return;
         }
@@ -233,9 +236,20 @@ class EditCom extends React.Component {
     }
 
     handleFormChange(formData, MLObject) {
-
         let changeState = this.state;
-        changeState = { ...changeState, IsDisableAutoChangeStepTypeID: !formData.chkAutoChangeStepType.value };
+        let dataSource = changeState.DataSource;
+
+        dataSource = {
+            AutoChangeToStepID: formData.cbAutoChangeToStepID.value,
+            LeadOrderStepID: formData.cbLeadOrderStepID.value,
+            AutoChangeStepType: formData.chkAutoChangeStepType.value,
+            AutoChangeToStatusID: formData.chkAutoChangeToStatusID.value,
+            IsActived: formData.chkIsActived.value,
+            IsFinishStep: formData.chkIsFinishStep.value,
+            IsInitStep: formData.chkIsInitStep.value
+        }
+
+        changeState = { ...changeState, IsDisableAutoChangeStepTypeID: !formData.chkAutoChangeStepType.value, DataSource: dataSource };
         this.setState(changeState);
     }
 
@@ -245,7 +259,6 @@ class EditCom extends React.Component {
 
         formData_1 = { ...formData_1, LeadOrderNextStepID: formData["cbLeadOrderNextStepID"].value, AddFunctionID: formData["cbAddFunctionID"].value };
 
-
         changeState = { ...changeState, FormData: formData_1 };
 
         this.setState(changeState);
@@ -253,22 +266,20 @@ class EditCom extends React.Component {
 
     handleSubmit(formData, MLObject) {
 
-        if (MLObject.AutoChangeStepType && MLObject.AutoChangeToStepID == 0 || MLObject.AutoChangeToStepID == "") {
-            formData.cbAutoChangeToStepID.ErrorLst.IsValidatonError = true;
-            formData.cbAutoChangeToStepID.ErrorLst.ValidatonErrorMessage = "Vui lòng chọn bước tự động chuyển";
+        if (MLObject.AutoChangeStepType && MLObject.AutoChangeToStepID == 0) {
+            this.addNotification("Vui lòng chọn Bước tự động chuyển", true);
             return;
         }
 
-        if (MLObject.IsInitStep) {
-            let isExistIsInitStep = this.props.ListLeadOrderType_WFItem.some((item) => item.IsInitStep == true);
-            if (isExistIsInitStep) {
-                this.showMessage("Bước khởi tạo đã tồn tại");
-                return;
-            }
+        let isExistIsInitStep = this.props.ListLeadOrderType_WFItem.some((item) => item.IsInitStep == true && item.LeadOrderTypeID != this.props.DataSource.LeadOrderTypeID && item.LeadOrderStepID != this.props.DataSource.LeadOrderStepID);
+        if (isExistIsInitStep) {
+            this.showMessage("Bước khởi tạo đã tồn tại");
+            return;
         }
 
+
         if (MLObject.IsFinishStep) {
-            let isExistIsFinishStep = this.props.ListLeadOrderType_WFItem.some((item) => item.IsFinishStep == true);
+            let isExistIsFinishStep = this.props.ListLeadOrderType_WFItem.some((item) => item.IsFinishStep == true && item.LeadOrderTypeID != this.props.DataSource.LeadOrderTypeID && item.LeadOrderStepID != this.props.DataSource.LeadOrderStepID);
             if (isExistIsFinishStep) {
                 this.showMessage("Bước kết thúc đã tồn tại");
                 return;
@@ -349,6 +360,7 @@ class EditCom extends React.Component {
                             title="Thông tin chung"
                         >
                             <FormContainer
+                                IsCloseModal={true}
                                 IsAutoLayout={true}
                                 listelement={[]}
                                 MLObjectDefinition={MLObjectDefinitionLeadOrderType_WF}
@@ -406,7 +418,7 @@ class EditCom extends React.Component {
                                     name="chkAutoChangeStepType"
                                 />
                                 <FormControl.FormControlComboBox
-                                    key={this.state.IsDisableAutoChangeStepTypeID}
+                                    // key={this.state.IsDisableAutoChangeStepTypeID}
                                     labelcolspan={4}
                                     colspan={8}
                                     rowspan={6}
@@ -415,7 +427,7 @@ class EditCom extends React.Component {
                                     disabled={this.state.IsDisableAutoChangeStepTypeID}
                                     isautoloaditemfromcache={true}
                                     isSystem={false}
-                                    label="Vui lòng chọn bước tự động chuyển"
+                                    label="Bước tự động chuyển"
                                     listoption={[]}
                                     loaditemcachekeyid={ERPCOMMONCACHE_LEADORDERSTEP}
                                     value={""}
@@ -423,7 +435,6 @@ class EditCom extends React.Component {
                                     nameMember="LeadOrderStepName"
                                     valuemember="LeadOrderStepID"
                                     placeholder="Bước tự động chuyển"
-                                    validatonList={!this.state.IsDisableAutoChangeStepTypeID ? ["Comborequired"] : null}
                                 />
                                 <FormControl.CheckBox
                                     labelcolspan={4}
@@ -524,18 +535,28 @@ class EditCom extends React.Component {
                                     </div>
                                 </FormContainer>
                             </div>
-                            <InputGrid
-                                controltype="GridControl"
-                                IDSelectColumnName={IDSelectColumnName}
-                                isUseValueInputControl={true}
-                                listColumn={LeadOrderType_WF_NextListColumn}
-                                dataSource={this.state.ListLeadOrderType_WF_NextDataGrid}
-                                MLObjectDefinition={LeadOrderType_WF_NextMLObjectDefinition}
-                                name=""
-                                onDeleteClick_Customize={this.handleDeleteLeadOrderType_WF_Next}
-                                onInsertClick={this.handleInsertLeadOrderType_WF_Next}
-                                PKColumnName=""
-                            />
+                            <FormContainerAvance
+                                ClosePopup={() => {
+                                    this.props.hideModal();
+                                }}
+                                backLinkButtonText="Đóng"
+                                IsAutoLayout={true}
+                                IsHideFooter={false}
+                                IsDisableButtonSubmit={true}
+                            >
+                                <InputGrid
+                                    key={this.state.ListLeadOrderType_WF_NextDataGrid}
+                                    controltype="GridControl"
+                                    IDSelectColumnName={IDSelectColumnName}
+                                    isUseValueInputControl={true}
+                                    listColumn={LeadOrderType_WF_NextListColumn}
+                                    dataSource={this.state.ListLeadOrderType_WF_NextDataGrid}
+                                    MLObjectDefinition={LeadOrderType_WF_NextMLObjectDefinition}
+                                    onDeleteClick_Customize={this.handleDeleteLeadOrderType_WF_Next}
+                                    onInsertClick={this.handleInsertLeadOrderType_WF_Next}
+                                />
+                            </FormContainerAvance>
+
 
                         </TabPage>
 

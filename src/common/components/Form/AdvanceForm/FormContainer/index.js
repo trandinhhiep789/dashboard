@@ -1081,11 +1081,14 @@ class FormContainerCom extends Component {
                 break;
         }
 
-
+        let backLinkButtonText = "Bỏ qua";
         let backLinkButton = "";
         if (this.props.ClosePopup) {
+            if (this.props.backLinkButtonText) {
+                backLinkButtonText = this.props.backLinkButtonText;
+            }
             backLinkButton = (<Link to={"#"}>
-                <button className="btn btn-sm btn-outline btn-primary" type="button" onClick={this.props.ClosePopup}>Bỏ qua</button></Link>);
+                <button className="btn btn-sm btn-outline btn-primary" type="button" onClick={this.props.ClosePopup}>{backLinkButtonText}</button></Link>);
         }
 
         if (this.props.BackLink != null) {
@@ -1100,6 +1103,10 @@ class FormContainerCom extends Component {
         if (this.props.AppInfo.LoginInfo.Username != "administrator") {
             deActive = (this.props.dataSource ? (this.props.dataSource.IsSystem ? this.props.dataSource.IsSystem : this.state.IsSystem) : this.state.IsSystem);
         }
+        let isDisableButtonSubmit = false;
+        if (this.props.IsDisableButtonSubmit) {
+            isDisableButtonSubmit = true;
+        }
 
         return (
             <div className="col-lg-12">
@@ -1113,7 +1120,8 @@ class FormContainerCom extends Component {
                     </div>
                     <footer className="card-footer text-right" hidden={this.props.IsHideFooter}>
                         {/* <button className="btn btn-primary" type="button" onClick={this.handleFocusTab}>Test Focus Tab</button> */}
-                        <button className={deActive ? "btn btn-primary de-active" : "btn btn-primary"} type="submit">{cssSearchButton} Cập nhật</button> {backLinkButton}
+                        {!isDisableButtonSubmit && <button className={deActive ? "btn btn-primary de-active" : "btn btn-primary"} type="submit">{cssSearchButton} Cập nhật</button>}
+                        {backLinkButton}
                     </footer>
                 </form>
             </div>

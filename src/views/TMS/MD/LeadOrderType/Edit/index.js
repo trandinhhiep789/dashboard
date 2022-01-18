@@ -47,6 +47,7 @@ class EditCom extends React.Component {
         this.handleEditLeadOrderType_WF = this.handleEditLeadOrderType_WF.bind(this);
         this.handleDeleteLeadOrderType_WF = this.handleDeleteLeadOrderType_WF.bind(this);
         this.handleCloseModal = this.handleCloseModal.bind(this);
+        this.handleAvanceFormSubmit = this.handleAvanceFormSubmit.bind(this);
 
         this.state = {
             CallAPIMessage: "",
@@ -56,6 +57,8 @@ class EditCom extends React.Component {
             IsCloseForm: false,
             DataSource: {}
         };
+
+        this.formLeadOrderTypeRef = React.createRef(null);
     }
 
     componentDidMount() {
@@ -83,6 +86,10 @@ class EditCom extends React.Component {
         });
     }
 
+    handleAvanceFormSubmit(FormData, MLObject) {
+        this.formLeadOrderTypeRef.current.click();
+    }
+
     handleSubmit(formData, MLObject) {
         if (MLObject.IsInitStep) {
             let isExistIsInitStep = this.props.ListLeadOrderType_WFItem.some((item) => item.IsInitStep == true);
@@ -101,7 +108,9 @@ class EditCom extends React.Component {
                 // this.handleClearLocalCache();
                 // this.handleSubmitInsertLog(MLObject);
             }
-            this.showMessage(apiResult.Message);
+            this.showMessage(apiResult.Message, () => {
+                this.props.history.push('/LeadOrderType');
+            });
         });
     }
 
@@ -159,6 +168,7 @@ class EditCom extends React.Component {
                 text: <LeadOrderType_WF_Edit
                     LeadOrderTypeID={this.props.match.params.id}
                     DataSource={this.state.DataSource.ListLeadOrderType_WFItem[index]}
+                    ListLeadOrderType_WFItem={this.state.DataSource.ListLeadOrderType_WFItem}
                     handleCloseModal={this.handleCloseModal}
                     handleReloadData={this.handleCallData}
                 />
@@ -226,8 +236,6 @@ class EditCom extends React.Component {
                         >
                             <FormContainer
                                 BackLink={BackLink}
-                                IsAutoLayout={true}
-                                listelement={[]}
                                 MLObjectDefinition={MLObjectDefinition}
                                 onSubmit={this.handleSubmit}
                                 dataSource={this.state.DataSource}
@@ -245,7 +253,6 @@ class EditCom extends React.Component {
                                     maxSize={150}
                                     value=""
                                     validatonList={["required"]}
-                                    readOnly={this.state.DataSource.IsSystem}
                                 />
 
                                 <FormControl.TextBox
@@ -309,6 +316,7 @@ class EditCom extends React.Component {
                                     datasourcemember="Description"
                                     label="Mô tả"
                                     name="txtDescription"
+                                    rows={3}
                                     disabled={this.state.DataSource.IsSystem}
                                 />
 
@@ -335,19 +343,28 @@ class EditCom extends React.Component {
                         </TabPage>
 
                         <TabPage title="Quy trình" name="LeadOrderType_WF">
-                            <InputGrid
-                                controltype="GridControl"
-                                dataSource={this.state.DataSource.ListLeadOrderType_WFItem}
-                                IDSelectColumnName={IDSelectColumnName}
-                                isUseValueInputControl={true}
-                                listColumn={LeadOrderType_WFListColumn}
-                                MLObjectDefinition={LeadOrderType_WFMLObjectDefinition}
-                                name="LeadOrderType_WF"
-                                onDeleteClick_Customize={this.state.DataSource.IsSystem ? null : this.handleDeleteLeadOrderType_WF}
-                                onInsertClick={this.state.DataSource.IsSystem ? null : this.handleInsertLeadOrderType_WF}
-                                onInsertClickEdit={this.state.DataSource.IsSystem ? null : this.handleEditLeadOrderType_WF}
-                                PKColumnName="LeadOrderTypeID,LeadOrderStepID"
-                            />
+                            <FormContainerAvance
+                                BackLink={BackLink}
+                                IsAutoLayout={true}
+                                IsHideFooter={false}
+                                IsDisableButtonSubmit={true}
+                            >
+                                <InputGrid
+                                    controltype="GridControl"
+                                    dataSource={this.state.DataSource.ListLeadOrderType_WFItem}
+                                    IDSelectColumnName={IDSelectColumnName}
+                                    isUseValueInputControl={true}
+                                    listColumn={LeadOrderType_WFListColumn}
+                                    MLObjectDefinition={LeadOrderType_WFMLObjectDefinition}
+                                    name="LeadOrderType_WF"
+                                    // IsDelete={true}
+                                    isSystem={this.state.DataSource.IsSystem}
+                                    onDeleteClick_Customize={this.handleDeleteLeadOrderType_WF}
+                                    onInsertClick={this.handleInsertLeadOrderType_WF}
+                                    onInsertClickEdit={this.handleEditLeadOrderType_WF}
+                                    PKColumnName="LeadOrderTypeID,LeadOrderStepID"
+                                />
+                            </FormContainerAvance>
                         </TabPage>
                     </TabContainer >
                 </FormContainerAvance>

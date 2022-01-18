@@ -37,7 +37,16 @@ class EditCom extends React.Component {
             FormContent: "",
             IsLoadDataComplete: false,
             IsCloseForm: false,
-            DataSource: {},
+            DataSource: {
+                IsActived: true,
+                MainGroupID: "",
+                ProductID: "",
+                ValueProductID: [],
+                ShipmentOrderTypeID: "",
+                SubGroupID: "",
+                IsAdviceOtherProduct: false,
+                IsSystem: false
+            },
             FilterObject: {
                 GroupValue: [-1, -1],
                 ArrayProduct: []
@@ -69,10 +78,12 @@ class EditCom extends React.Component {
                 groupValue[0] = apiResult.ResultObject.MainGroupID;
                 groupValue[1] = apiResult.ResultObject.SubGroupID;
 
+                let dataSource = changeState.DataSource;
+                dataSource = { ...dataSource, ...apiResult.ResultObject, ValueProductID: apiResult.ResultObject.ProductID };
 
                 filterObject = { ...filterObject, GroupValue: groupValue, ArrayProduct: arrValueFilter };
-                changeState = { ...changeState, DataSource: apiResult.ResultObject, FilterObject: filterObject, ValueObject: valueObject };
-               
+                changeState = { ...changeState, DataSource: dataSource, FilterObject: filterObject, ValueObject: valueObject };
+
                 this.setState(changeState);
             }
             this.setState({
@@ -85,8 +96,11 @@ class EditCom extends React.Component {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
 
-        if(MLObject.ProductID!==this.state.DataSource.ProductID){
-            MLObject.ProductID=MLObject.ProductID[0].ProductID
+        if (this.state.DataSource.ValueProductID.length == 0) {
+            MLObject.ProductID = -1;
+        }
+        else {
+            MLObject.ProductID = this.state.DataSource.ValueProductID[0].ProductID;
         }
 
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
@@ -100,9 +114,21 @@ class EditCom extends React.Component {
     }
 
     handleFormChange(formData, MLObject) {
-        let dataSource = this.state.DataSource;
+
+
+
+        // let dataSource = this.state.DataSource;
         let valueMainGroupID = formData.cbMainGroupID.value;
         let valueSubGroupID = formData.cbSubGroupID.value;
+        // let valueProductID = formData.cbValueProductID.value;
+
+        let dataSource = [];
+        for (const [key, values] of Object.entries(formData)) {
+            dataSource.push([values.datasourcemember, values.value]);
+        }
+
+        dataSource = Object.fromEntries(dataSource);
+
         let changeState = this.state;
         let filterObject = changeState.FilterObject;
         let arrProduct = filterObject.ArrayProduct;
@@ -115,18 +141,16 @@ class EditCom extends React.Component {
         filterObject = { ...filterObject, ArrayProduct: arrProduct, GroupValue: groupValue };
 
         if (valueMainGroupID !== this.state.DataSource["MainGroupID"]) {
-            dataSource = { ...dataSource, MainGroupID: valueMainGroupID, SubGroupID: "", ProductID: "" };
+            dataSource = { ...dataSource, MainGroupID: valueMainGroupID, SubGroupID: "", ValueProductID: [] };
             arrProduct[1] = [];
             groupValue[1] = -1;
         }
 
         if (valueSubGroupID !== this.state.DataSource["SubGroupID"]) {
-            dataSource = { ...dataSource, SubGroupID: valueSubGroupID, ProductID: "" };
+            dataSource = { ...dataSource, SubGroupID: valueSubGroupID, ValueProductID: [] };
         }
 
         changeState = { ...changeState, FilterObject: filterObject, DataSource: dataSource };
-
-        console.log(changeState);
         this.setState(changeState);
 
     }
@@ -207,7 +231,7 @@ class EditCom extends React.Component {
                         valuemember="ShipmentOrderTypeID"
                         validatonList={["Comborequired"]}
                         placeholder="Loại yêu cầu vận chuyển"
-                        // disabled={this.state.DataSource.IsSystem}
+                    // disabled={this.state.DataSource.IsSystem}
                     />
                     <FormControl.FormControlComboBox
                         colspan="4"
@@ -226,7 +250,7 @@ class EditCom extends React.Component {
                         valuemember="MainGroupID"
                         validatonList={["Comborequired"]}
                         placeholder="Ngành hàng"
-                        // disabled={this.state.DataSource.IsSystem}
+                    // disabled={this.state.DataSource.IsSystem}
                     />
                     <FormControl.FormControlComboBox
                         colspan="4"
@@ -256,15 +280,15 @@ class EditCom extends React.Component {
                         label="sản phẩm"
                         placeholder="Tên sản phẩm"
                         controltype="InputControl"
-                        datasourcemember="ProductID"
-                        name="cbProductID"
+                        datasourcemember="ValueProductID"
+                        name="cbValueProductID"
                         IsLabelDiv={true}
                         isMulti={false}
                         isFilter={true}
-                        value={this.state.DataSource.ProductID}
+                        value={this.state.DataSource.ValueProductID}
                         arrFieldFilter={['MainGroupID', 'SubGroupID']}
                         arrValueFilter={this.state.FilterObject.ArrayProduct}
-                        validatonList={["Comborequired"]}
+                        // validatonList={["Comborequired"]}
                         disabled={this.state.DataSource.IsSystem}
                     />
                     <FormControl.CheckBox

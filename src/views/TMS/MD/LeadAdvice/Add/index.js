@@ -5,9 +5,6 @@ import { Modal, ModalManager, Effect } from "react-dynamic-modal";
 import SimpleForm from "../../../../../common/components/Form/SimpleForm";
 import { MessageModal } from "../../../../../common/components/Modal";
 import {
-    APIHostName,
-    AddAPIPath,
-    AddElementList,
     MLObjectDefinition,
     BackLink,
     AddPagePath,
@@ -37,8 +34,11 @@ class AddCom extends React.Component {
                 IsActived: true,
                 MainGroupID: "",
                 ProductID: "",
+                ValueProduct: [],
                 ShipmentOrderTypeID: "",
-                SubGroupID: ""
+                SubGroupID: "",
+                IsAdviceOtherProduct: false,
+                IsSystem: false
             },
             FilterObject: {
                 GroupValue: [-1, -1],
@@ -54,7 +54,13 @@ class AddCom extends React.Component {
     handleSubmit(formData, MLObject) {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        MLObject.ProductID = MLObject.ProductID[0].ProductID;
+
+        if (this.state.DataSource.ValueProductID.length == 0) {
+            MLObject.ProductID = -1;
+        }
+        else {
+            MLObject.ProductID = this.state.DataSource.ValueProductID[0].ProductID;
+        }
 
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
@@ -67,8 +73,8 @@ class AddCom extends React.Component {
 
     handleFormChange(formData, MLObject) {
         let dataSource = [];
-        for (const [key, value] of Object.entries(formData)) {
-            dataSource.push([value.datasourcemember, value.value]);
+        for (const [key, values] of Object.entries(formData)) {
+            dataSource.push([values.datasourcemember, values.value]);
         }
 
         dataSource = Object.fromEntries(dataSource);
@@ -86,19 +92,18 @@ class AddCom extends React.Component {
         arrProduct[1] = [valueSubGroupID];
         filterObject = { ...filterObject, ArrayProduct: arrProduct, GroupValue: groupValue };
 
-        if (valueMainGroupID !== this.state.DataSource["MainGroupID"]) {
-            dataSource = { ...dataSource, SubGroupID: "", ProductID: "" };
+        if (valueMainGroupID != this.state.DataSource["MainGroupID"]) {
+            dataSource = { ...dataSource, SubGroupID: "", ValueProductID: "" };
             arrProduct[1] = [];
             groupValue[1] = -1;
         }
 
-        if (valueSubGroupID !== this.state.DataSource["SubGroupID"]) {
-            dataSource = { ...dataSource, ProductID: "" };
+        if (valueSubGroupID != this.state.DataSource["SubGroupID"]) {
+            dataSource = { ...dataSource, ValueProductID: "" };
         }
 
         changeState = { ...changeState, FilterObject: filterObject, DataSource: dataSource };
         this.setState(changeState);
-
     }
 
     handleCloseMessage() {
@@ -211,15 +216,15 @@ class AddCom extends React.Component {
                     label="sản phẩm"
                     placeholder="Tên sản phẩm"
                     controltype="InputControl"
-                    datasourcemember="ProductID"
-                    name="cbProductID"
+                    datasourcemember="ValueProductID"
+                    name="cbValueProductID"
                     IsLabelDiv={true}
                     isMulti={false}
-                    value={""}
+                    value={this.state.DataSource.ProductID}
                     isFilter={true}
                     arrFieldFilter={['MainGroupID', 'SubGroupID']}
                     arrValueFilter={this.state.FilterObject.ArrayProduct}
-                    validatonList={["Comborequired"]}
+                // validatonList={[]}
                 />
                 <FormControl.CheckBox
                     name="chkIsAdviceOtherProduct"

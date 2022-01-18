@@ -655,6 +655,10 @@ class FormContainerCom extends Component {
             isDisabledButtonSubmit = true
         }
 
+        let customButtonSubmitText="";
+         if(this.props.customSubmit){
+             customButtonSubmitText=this.props.customButtonSubmitText;
+         }
 
         return (
             <div className="col-lg-12">
@@ -671,7 +675,7 @@ class FormContainerCom extends Component {
                             <button className="btn btn-primary mr-3" disabled={isDisabledButtonSubmit} type="submit">{cssSearchButton} Cập nhật</button>
                         }
                         {
-                            (this.props.customSubmit == true) && <button ref={this.props.customRef} className="btn btn-primary mr-3" disabled={isDisabledButtonSubmit} type="submit">{cssSearchButton} Cập nhật</button>
+                            (this.props.customSubmit == true) && <button ref={this.props.customRef} hidden={true} className="btn btn-primary mr-3" type="submit">{customButtonSubmitText}</button>
                         }
                         {backLinkButton}
                         {closeLinkButton}
