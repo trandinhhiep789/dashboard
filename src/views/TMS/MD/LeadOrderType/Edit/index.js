@@ -232,7 +232,7 @@ class EditCom extends React.Component {
                                 onSubmit={this.handleSubmit}
                                 dataSource={this.state.DataSource}
                                 RequirePermission={MD_LEADORDERTYPE_UPDATE}
-                                IsDisabledSubmitForm
+                                IsDisabledSubmitForm={this.state.DataSource.IsSystem}
                             >
                                 <FormControl.TextBox
                                     labelcolspan={3}
