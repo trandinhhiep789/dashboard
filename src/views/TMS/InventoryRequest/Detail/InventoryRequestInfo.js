@@ -32,6 +32,23 @@ class InventoryRequestInfoCom extends Component {
         const { InventoryRequest } = this.state;
         return (
             <React.Fragment>
+                 <div className="form-row">
+                    <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Loại yêu cầu kiểm kê:</label>
+                    </div>
+                    <div className="form-group col-md-4">
+                        <label className="col-form-label">
+                            {InventoryRequest.InventoryRequestTypeName}
+                        </label>
+                    </div>
+                    {/* <div className="form-group col-md-2">
+                        <label className="col-form-label bold">Tiêu đề yêu cầu kiểm kê:</label>
+                    </div>
+                    <div className="form-group col-md-4">
+                        <label className="col-form-label">{InventoryRequest.InventoryRequestTitle}</label>
+                    </div> */}
+                    
+                </div>
                 <div className="form-row">
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Mã yêu cầu kiểm kê:</label>
@@ -49,25 +66,6 @@ class InventoryRequestInfoCom extends Component {
                         </label>
                     </div>
                 </div>
-
-                <div className="form-row">
-                    <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Loại yêu cầu kiểm kê:</label>
-                    </div>
-                    <div className="form-group col-md-4">
-                        <label className="col-form-label">
-                            {InventoryRequest.InventoryRequestTypeName}
-                        </label>
-                    </div>
-                    {/* <div className="form-group col-md-2">
-                        <label className="col-form-label bold">Tiêu đề yêu cầu kiểm kê:</label>
-                    </div>
-                    <div className="form-group col-md-4">
-                        <label className="col-form-label">{InventoryRequest.InventoryRequestTitle}</label>
-                    </div> */}
-                    
-                </div>
-
                 <div className="form-row">
                     <div className="form-group col-md-2">
                         <label className="col-form-label bold">Người yêu cầu:</label>
