@@ -14,18 +14,18 @@ export const InitSearchParams = [{ SearchKey: "@Keyword", SearchValue: "" }];
 
 export const PagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "", Title: "Danh mục sản phẩm tư vấn ứng với loại yêu cầu vận chuyển (khác loại )" }
+    { Link: "", Title: "Thông tin sản phẩm tư vấn khác" }
 ];
 
 export const EditPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/LeadAdviceApply", Title: "Danh mục sản phẩm tư vấn ứng với loại yêu cầu vận chuyển (khác loại )" },
+    { Link: "/LeadAdviceApply", Title: "Thông tin sản phẩm tư vấn khác" },
     { Link: "", Title: "Sửa" }
 ];
 
 export const AddPagePath = [
     { Link: "/", Title: "Trang chủ", icon: "fa fa-home" },
-    { Link: "/LeadAdviceApply", Title: "Danh mục sản phẩm tư vấn ứng với loại yêu cầu vận chuyển (khác loại )" },
+    { Link: "/LeadAdviceApply", Title: "Thông tin sản phẩm tư vấn khác" },
     { Link: "", Title: "Thêm" }
 ];
 

@@ -88,7 +88,7 @@ class DetailCom extends React.Component {
                     <div className="col-md-12 col-sm-12 col-xs-12">
                         <div className="x_panel">
                             <div className="x_title">
-                                <h2>Thông tin Danh mục sản phẩm tư vấn ứng với loại yêu cầu vận chuyển (cùng loại)</h2>
+                                <h2>Thông tin sản phẩm tư vấn khác</h2>
                                 <div className="clearfix"></div>
                             </div>
 
