@@ -8,7 +8,9 @@ import {
     MLObjectDefinition,
     BackLink,
     AddPagePath,
-    AddLogAPIPath
+    AddLogAPIPath,
+    APIHostName,
+    AddAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -55,11 +57,23 @@ class AddCom extends React.Component {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
 
+        // if (this.state.DataSource.ValueProductID.length == 0) {
+        //     MLObject.ProductID = -1;
+        // }
+        // else {
+        //     MLObject.ProductID = this.state.DataSource.ValueProductID[0].ProductID;
+        // }
+
         if (this.state.DataSource.ValueProductID.length == 0) {
             MLObject.ProductID = -1;
         }
         else {
-            MLObject.ProductID = this.state.DataSource.ValueProductID[0].ProductID;
+            if (!!this.state.DataSource.ValueProductID[0].ProductID) {
+                MLObject.ProductID = this.state.DataSource.ValueProductID[0].ProductID;
+            }
+            else {
+                MLObject.ProductID = -1;
+            }
         }
 
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {

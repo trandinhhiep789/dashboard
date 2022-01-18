@@ -35,6 +35,7 @@ class AddCom extends React.Component {
                 SubGroupID: "",
                 IsActived: true,
                 IsSystem: false,
+                ValueProduct: [],
                 ProductID: "",
                 CreatedUser: "",
                 LoginLogID: ""
@@ -52,8 +53,20 @@ class AddCom extends React.Component {
     handleSubmit(formData, MLObject) {
         MLObject.CreatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
-        MLObject.ProductID = MLObject.ProductID[0].ProductID;
+        // MLObject.ProductID = MLObject.ProductID[0].ProductID;
         MLObject.LeadAdviceID = this.props.LeadAdviceID;
+
+        if (this.state.DataSource.ValueProductID.length == 0) {
+            MLObject.ProductID = -1;
+        }
+        else {
+            if (!!this.state.DataSource.ValueProductID[0].ProductID) {
+                MLObject.ProductID = this.state.DataSource.ValueProductID[0].ProductID;
+            }
+            else {
+                MLObject.ProductID = -1;
+            }
+        }
 
         this.props.callFetchAPI(APIHostName, AddAPIPath, MLObject).then(apiResult => {
             this.setState({ IsCallAPIError: apiResult.IsError });
@@ -85,13 +98,13 @@ class AddCom extends React.Component {
         filterObject = { ...filterObject, ArrayProduct: arrProduct, GroupValue: groupValue };
 
         if (valueMainGroupID !== this.state.DataSource["MainGroupID"]) {
-            dataSource = { ...dataSource, SubGroupID: "", ProductID: "" };
+            dataSource = { ...dataSource, SubGroupID: "", ValueProductID: "" };
             arrProduct[1] = [];
             groupValue[1] = -1;
         }
 
         if (valueSubGroupID !== this.state.DataSource["SubGroupID"]) {
-            dataSource = { ...dataSource, ProductID: "" };
+            dataSource = { ...dataSource, ValueProductID: "" };
         }
 
         changeState = { ...changeState, FilterObject: filterObject, DataSource: dataSource };
@@ -187,15 +200,15 @@ class AddCom extends React.Component {
                     label="sản phẩm"
                     placeholder="Tên sản phẩm"
                     controltype="InputControl"
-                    datasourcemember="ProductID"
-                    name="cbProductID"
+                    datasourcemember="ValueProductID"
+                    name="cbValueProductID"
                     IsLabelDiv={true}
                     isMulti={false}
-                    value={""}
+                    value={this.state.DataSource.ProductID}
                     isFilter={true}
                     arrFieldFilter={['MainGroupID', 'SubGroupID']}
                     arrValueFilter={this.state.FilterObject.ArrayProduct}
-                    validatonList={["Comborequired"]}
+                    // validatonList={["Comborequired"]}
                 />
                 <FormControl.CheckBox
                     colspan="5"

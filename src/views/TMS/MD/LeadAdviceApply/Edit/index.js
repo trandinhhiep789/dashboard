@@ -23,6 +23,7 @@ import ProductComboBox from './../../../../../common/components/FormContainer/Fo
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
 import { ERPCOMMONCACHE_MAINGROUP, ERPCOMMONCACHE_SUBGROUP } from './../../../../../constants/keyCache';
 import { MD_LEADADVICE_UPDATE } from './../../../../../constants/functionLists';
+
 class EditCom extends React.Component {
     constructor(props) {
         super(props);
@@ -40,7 +41,16 @@ class EditCom extends React.Component {
                 ArrayProduct: []
             },
             ValueObject: [-1, -1],
-            DataSource:{}
+            DataSource: {
+                MainGroupID: "",
+                SubGroupID: "",
+                IsActived: true,
+                IsSystem: false,
+                ValueProduct: [],
+                ProductID: "",
+                CreatedUser: "",
+                LoginLogID: ""
+            },
         };
     }
 
@@ -65,7 +75,11 @@ class EditCom extends React.Component {
                 groupValue[0] = apiResult.ResultObject.MainGroupID;
                 groupValue[1] = apiResult.ResultObject.SubGroupID;
                 filterObject = { ...filterObject, GroupValue: groupValue, ArrayProduct: arrValueFilter };
-                changeState = { ...changeState, DataSource: apiResult.ResultObject, FilterObject: filterObject, ValueObject: valueObject };
+
+                let dataSource = changeState.DataSource;
+                dataSource = { ...dataSource, ...apiResult.ResultObject, ValueProductID: apiResult.ResultObject.ProductID };
+
+                changeState = { ...changeState, DataSource: dataSource, FilterObject: filterObject, ValueObject: valueObject };
                 this.setState(changeState);
             }
 
@@ -82,10 +96,22 @@ class EditCom extends React.Component {
         MLObject.LeadAdviceID = this.props.LeadAdviceID;
         MLObject.LeadAdviceApplyID = this.props.LeadAdviceApplyID;
 
-        if (MLObject.ProductID != this.state.DataSource.ProductID) {
-            MLObject.ProductID = MLObject.ProductID[0].ProductID;
-        } else {
-            MLObject.ProductID = this.state.DataSource.ProductID;
+        // if (MLObject.ProductID != this.state.DataSource.ProductID) {
+        //     MLObject.ProductID = MLObject.ProductID[0].ProductID;
+        // } else {
+        //     MLObject.ProductID = this.state.DataSource.ProductID;
+        // }
+
+        if (this.state.DataSource.ValueProductID.length == 0) {
+            MLObject.ProductID = -1;
+        }
+        else {
+            if (!!this.state.DataSource.ValueProductID[0].ProductID) {
+                MLObject.ProductID = this.state.DataSource.ValueProductID[0].ProductID;
+            }
+            else {
+                MLObject.ProductID = -1;
+            }
         }
 
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
@@ -99,9 +125,16 @@ class EditCom extends React.Component {
     }
 
     handleFormChange(formData, MLObject) {
-        let dataSource = this.state.DataSource;
         let valueMainGroupID = formData.cbMainGroupID.value;
         let valueSubGroupID = formData.cbSubGroupID.value;
+        let dataSource = [];
+
+        for (const [key, values] of Object.entries(formData)) {
+            dataSource.push([values.datasourcemember, values.value]);
+        }
+
+        dataSource = Object.fromEntries(dataSource);
+
         let changeState = this.state;
         let filterObject = changeState.FilterObject;
         let arrProduct = filterObject.ArrayProduct;
@@ -114,17 +147,16 @@ class EditCom extends React.Component {
         filterObject = { ...filterObject, ArrayProduct: arrProduct, GroupValue: groupValue };
 
         if (valueMainGroupID !== this.state.DataSource["MainGroupID"]) {
-            dataSource = { ...dataSource, MainGroupID: valueMainGroupID, SubGroupID: "", ProductID: "" };
+            dataSource = { ...dataSource, MainGroupID: valueMainGroupID, SubGroupID: "", ValueProductID: [] };
             arrProduct[1] = [];
             groupValue[1] = -1;
         }
 
         if (valueSubGroupID !== this.state.DataSource["SubGroupID"]) {
-            dataSource = { ...dataSource, SubGroupID: valueSubGroupID, ProductID: "" };
+            dataSource = { ...dataSource, SubGroupID: valueSubGroupID, ValueProductID: [] };
         }
 
         changeState = { ...changeState, FilterObject: filterObject, DataSource: dataSource };
-
         this.setState(changeState);
 
     }
@@ -229,21 +261,21 @@ class EditCom extends React.Component {
                         disabled={this.state.DataSource.IsSystem}
                     />
                     <ProductComboBox
-                        key={this.state.FilterObject.GroupValue[1]}
+                        // key={this.state.FilterObject.GroupValue[1]}
                         colspan="4"
                         labelcolspan="2"
                         label="sản phẩm"
                         placeholder="Tên sản phẩm"
                         controltype="InputControl"
-                        datasourcemember="ProductID"
-                        name="cbProductID"
+                        datasourcemember="ValueProductID"
+                        name="cbValueProductID"
                         IsLabelDiv={true}
                         isMulti={false}
                         isFilter={true}
-                        value={this.state.DataSource.ProductID}
+                        value={this.state.DataSource.ValueProductID}
                         arrFieldFilter={['MainGroupID', 'SubGroupID']}
                         arrValueFilter={this.state.FilterObject.ArrayProduct}
-                        validatonList={["Comborequired"]}
+                        // validatonList={["Comborequired"]}
                         disabled={this.state.DataSource.IsSystem}
                     />
                     <FormControl.CheckBox

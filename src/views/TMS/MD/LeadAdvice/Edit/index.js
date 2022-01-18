@@ -100,7 +100,12 @@ class EditCom extends React.Component {
             MLObject.ProductID = -1;
         }
         else {
-            MLObject.ProductID = this.state.DataSource.ValueProductID[0].ProductID;
+            if (!!this.state.DataSource.ValueProductID[0].ProductID) {
+                MLObject.ProductID = this.state.DataSource.ValueProductID[0].ProductID;
+            }
+            else {
+                MLObject.ProductID = -1;
+            }
         }
 
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
@@ -114,15 +119,10 @@ class EditCom extends React.Component {
     }
 
     handleFormChange(formData, MLObject) {
-
-
-
-        // let dataSource = this.state.DataSource;
         let valueMainGroupID = formData.cbMainGroupID.value;
         let valueSubGroupID = formData.cbSubGroupID.value;
-        // let valueProductID = formData.cbValueProductID.value;
-
         let dataSource = [];
+
         for (const [key, values] of Object.entries(formData)) {
             dataSource.push([values.datasourcemember, values.value]);
         }
@@ -152,7 +152,6 @@ class EditCom extends React.Component {
 
         changeState = { ...changeState, FilterObject: filterObject, DataSource: dataSource };
         this.setState(changeState);
-
     }
 
     handleCloseMessage() {

@@ -188,7 +188,6 @@ class EditCom extends React.Component {
     }
 
     handleInsertLeadOrderType_WF_Next(MLObject, elementList, dataSource, formData) {
-
         this.formLeadOrderTypeWFNextRef.current.click();
 
         let isExist = this.state.ListLeadOrderType_WF_NextDataGrid.findIndex(x => x.LeadOrderNextStepID == this.state.FormData.LeadOrderNextStepID);
@@ -204,11 +203,17 @@ class EditCom extends React.Component {
 
         let changeState = this.state;
         let lstLeadOrderType_WF_NextDataGrid = changeState.ListLeadOrderType_WF_NextDataGrid;
-
+        let lstLeadOrderType_WF_NextDeleted = changeState.ListLeadOrderType_WF_NextDeleted;
         const { Function, LeadOrderNextStep } = this.handleSearchCache(this.state.FormData.LeadOrderNextStepID, this.state.FormData.AddFunctionID);
+        let isExistDeletedIndex = lstLeadOrderType_WF_NextDeleted.findIndex(x => (x.LeadOrderNextStepID = LeadOrderNextStep.LeadOrderNextStepID) && (x.ChooseFunctionID = Function.ChooseFunctionID));
+
+        if (isExistDeletedIndex != -1) {
+            lstLeadOrderType_WF_NextDeleted.splice(isExistDeletedIndex, 1);
+        }
 
         lstLeadOrderType_WF_NextDataGrid.push({ LeadOrderNextStepID: LeadOrderNextStep.LeadOrderStepID, LeadOrderNextStepName: LeadOrderNextStep.LeadOrderStepName, ChooseFunctionID: Function.FunctionID, ChooseFunctionName: Function.FunctionName });
         changeState.ListLeadOrderType_WF_NextDataGrid = lstLeadOrderType_WF_NextDataGrid;
+        changeState.ListLeadOrderType_WF_NextDeleted = lstLeadOrderType_WF_NextDeleted;
 
         this.setState(changeState);
     }
