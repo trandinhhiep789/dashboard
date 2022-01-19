@@ -146,7 +146,7 @@ class AddCom extends React.Component {
             // />
 
             <FormContainer
-                BackLink={BackLink}
+                IsCloseModal={true}
                 IsAutoLayout={true}
                 listelement={[]}
                 onchange={this.handleFormChange}
@@ -208,7 +208,7 @@ class AddCom extends React.Component {
                     isFilter={true}
                     arrFieldFilter={['MainGroupID', 'SubGroupID']}
                     arrValueFilter={this.state.FilterObject.ArrayProduct}
-                    // validatonList={["Comborequired"]}
+                // validatonList={["Comborequired"]}
                 />
                 <FormControl.CheckBox
                     colspan="5"

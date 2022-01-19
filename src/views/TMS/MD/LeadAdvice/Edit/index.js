@@ -50,7 +50,8 @@ class EditCom extends React.Component {
                 ShipmentOrderTypeID: "",
                 SubGroupID: "",
                 IsAdviceOtherProduct: false,
-                IsSystem: false
+                IsSystem: false,
+                IsSystemForm: false
             },
             FilterObject: {
                 GroupValue: [-1, -1],
@@ -84,7 +85,7 @@ class EditCom extends React.Component {
                 groupValue[1] = apiResult.ResultObject.SubGroupID;
 
                 let dataSource = changeState.DataSource;
-                dataSource = { ...dataSource, ...apiResult.ResultObject, ValueProductID: apiResult.ResultObject.ProductID };
+                dataSource = { ...dataSource, ...apiResult.ResultObject, ValueProductID: apiResult.ResultObject.ProductID == -1 ? "" : apiResult.ResultObject.ProductID, IsSystemForm: apiResult.ResultObject.IsSystem };
 
                 filterObject = { ...filterObject, GroupValue: groupValue, ArrayProduct: arrValueFilter };
                 changeState = { ...changeState, DataSource: dataSource, FilterObject: filterObject, ValueObject: valueObject };
@@ -235,7 +236,7 @@ class EditCom extends React.Component {
                         valuemember="ShipmentOrderTypeID"
                         validatonList={["Comborequired"]}
                         placeholder="Loại yêu cầu vận chuyển"
-                    // disabled={this.state.DataSource.IsSystem}
+                        disabled={this.state.DataSource.IsSystem}
                     />
                     <FormControl.FormControlComboBox
                         colspan="4"
@@ -254,7 +255,7 @@ class EditCom extends React.Component {
                         valuemember="MainGroupID"
                         validatonList={["Comborequired"]}
                         placeholder="Ngành hàng"
-                    // disabled={this.state.DataSource.IsSystem}
+                        disabled={this.state.DataSource.IsSystem}
                     />
                     <FormControl.FormControlComboBox
                         colspan="4"
@@ -332,7 +333,7 @@ class EditCom extends React.Component {
                         controltype="InputControl"
                         value={false}
                         listoption={null}
-                        datasourcemember="IsSystem"
+                        datasourcemember="IsSystemForm"
                         placeholder="---Vui lòng chọn---"
                         isMultiSelect={false}
                         disabled={this.state.DataSource.IsSystem}

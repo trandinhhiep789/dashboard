@@ -317,6 +317,7 @@ class EditCom extends React.Component {
                                     label="Mô tả"
                                     name="txtDescription"
                                     rows={3}
+                                    maxSize={400}
                                     disabled={this.state.DataSource.IsSystem}
                                 />
 
