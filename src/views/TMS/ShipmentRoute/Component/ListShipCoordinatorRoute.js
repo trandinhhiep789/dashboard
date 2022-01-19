@@ -30,11 +30,12 @@ class ListShipCoordinatorRouteCom extends Component {
     this.handleConfirm = this.handleConfirm.bind(this);
     this.handleOnValueChangeselectedOp = this.handleOnValueChangeselectedOp.bind(this);
     this.handleOnValueChangeVehicleDriverUser = this.handleOnValueChangeVehicleDriverUser.bind(this);
-
+    this.handleOnValueChangeRentalType = this.handleOnValueChangeRentalType.bind(this);
     this.state = {
       ShipmentOrder: this.props.InfoCoordinator,
-      objCoordinator: { CarrierPartnerID: -1, CarrierTypeID: 1, IsRoute: true, VehicleID: -1, VehicleDriverUser: {} },
+      objCoordinator: { CarrierPartnerID: -1, CarrierTypeID: 1,RentalTypeID: 1, IsRoute: true, VehicleID: -1, VehicleDriverUser: {} },
       VehicleLst: [],
+      preVehicleLst: [],
       selectedOption: [],
       objDeliverUser: [],
       DeliverUserList: {},
@@ -51,6 +52,8 @@ class ListShipCoordinatorRouteCom extends Component {
       Distances_RouteLst: [],
       girdSlide: false,
       objectDescription: {},
+      selectedOptionRentalType: [],
+      selectedOptionRentalTypeVehicleID: [],
     };
     this.notificationDOMRef = React.createRef();
   }
@@ -208,9 +211,11 @@ class ListShipCoordinatorRouteCom extends Component {
         objVehicleLst.sort(function (a, b) {
           return a.OrderM3 - b.OrderM3;
         });
+
         this.setState({
           objCoordinator: objInfoCoordinator,
           VehicleLst: objVehicleLst,
+          preVehicleLst: objVehicleLst,
         });
       }
     });
@@ -272,6 +277,62 @@ class ListShipCoordinatorRouteCom extends Component {
     });
   }
 
+  handleOnValueChangeRentalType(name, value) {
+    console.log(name, value);
+    if(value != -1){
+      this.setState({selectedOptionRentalType: value});
+      let listVehicleID = []
+      if(this.state.preVehicleLst.length > 0){
+        try{
+          this.props.callFetchAPI(APIHostName, "api/VehicleRentalRequest/LoadByRentalTypeID", value).then(apiResult => {
+            apiResult.ResultObject.map((item, i, row) => {
+              if (i + 1 === row.length) {
+                // Last one.
+                listVehicleID.push(item.VehicleID)
+
+                // filter listVehicleID array unique
+                var newArr = []
+                for (var i = 0; i < listVehicleID.length; i++) {
+                  if (newArr.indexOf(listVehicleID[i]) === -1) {
+                    newArr.push(listVehicleID[i])
+                  }
+                }
+                listVehicleID = newArr
+                console.log(listVehicleID)
+                // this.setState({selectedOptionRentalTypeVehicleID: listVehicleID})
+      
+                var IdVehicleLst = []
+                const objVehicleLstFilter = [...this.state.preVehicleLst]
+                objVehicleLstFilter.map((item, i, row) => {
+                  if (i + 1 === row.length) {
+                    // Last one.
+                    IdVehicleLst.push(item.value)
+                    const listId = listVehicleID.filter(value => IdVehicleLst.includes(value))
+                    
+                    let objVehicleLst = objVehicleLstFilter.filter(function(obj) {
+                      return (listId.includes(obj.value) === true)
+                    });
+                    this.setState({ VehicleLst: objVehicleLst })
+                    console.log("objVehicleLst: ",objVehicleLst)
+                    console.log("this.state.VehicleLst: ",this.state.VehicleLst)
+                  } else {
+                    // Not last one.
+                    IdVehicleLst.push(item.value)
+                  }
+                })
+              }else{
+                listVehicleID.push(item.VehicleID)
+              }
+            })
+          })
+        }catch(err){
+          console.log(err)
+        }
+      }
+    }else{
+      this.setState({ VehicleLst: [...this.state.preVehicleLst] })
+    }
+  }
   handleOnValueChangeselectedOp(name, selectedOption) {
     let { objCoordinator, ShipmentOrder } = this.state;
 
@@ -1039,8 +1100,7 @@ class ListShipCoordinatorRouteCom extends Component {
     const isBelowThreshold = (currentValue) => currentValue.CarrierTypeID == 2;
     let isShow = ShipmentOrder.length === 0 ? false : ShipmentOrder.every(isBelowThreshold);
 
-    console.log({ resultShipmentRoute, resultShipmentRouteSame }, this.state.ShipmentOrderSameLst);
-
+    
     return (
       <React.Fragment>
         <div className="card">
@@ -1067,59 +1127,107 @@ class ListShipCoordinatorRouteCom extends Component {
                   disabled={!this.props.IsCoordinator}
                 />
               </div>
-              <div className="col-md-6">
+              <div className="col-md-6" style={{textAlign: 'right'}}>
                 <div className="item group-status">
-                  <span className="badge badge-secondary mr-20 badge-active motobike-menu" onClick={this.handleChangeCourseALL(1)} style={{ cursor: "pointer", fontSize: "15px" }}>
-                    <i className="fa fa-motorcycle"></i>
+                  <span className="badge badge-secondary mr-20 badge-active motobike-menu" onClick={this.handleChangeCourseALL(1)} style={{ cursor: "pointer", fontSize: "15px", boxShadow: "rgb(0 0 0 / 24%) 0px 3px 8px" }}>
+                    <i className="fa fa-motorcycle"></i>&nbsp;
                     Xe máy
                   </span>
-                  <span className="badge badge-secondary badge-active car-menu" onClick={this.handleChangeCourseALL(2)} style={{ cursor: "pointer", fontSize: "15px" }}>
-                    <i className="fa fa-truck fff"></i>
+                  <span className="badge badge-secondary badge-active car-menu" onClick={this.handleChangeCourseALL(2)} style={{ cursor: "pointer", fontSize: "15px", boxShadow: "rgb(0 0 0 / 24%) 0px 3px 8px" }}>
+                    <i className="fa fa-truck fff"></i>&nbsp;
                     Xe tải
                   </span>
                 </div>
               </div>
             </div>
             {this.state.objCoordinator.CarrierPartnerID == -1 || this.state.objCoordinator.CarrierPartnerID == 0 ? (
-              <MultiSelectComboBox
-                name="ShipmentOrder_DeliverUserList"
-                colspan="10"
-                labelcolspan="2"
-                label="Nhân viên giao"
-                disabled={!this.props.IsUserCoordinator}
-                IsLabelDiv={true}
-                isSelectedOption={true}
-                isautoloaditemfromcache={false}
-                controltype="InputControl"
-                onChange={this.handleValueChange1}
-                value={this.state.selectedOption}
-                listoption={[]}
-                isMultiSelect={true}
-                isPartner={true}
-                datasourcemember="ShipmentOrder_DeliverUserList"
-              />
+              <div className="form-row">
+                <div className="col-md-6">
+                  <MultiSelectComboBox
+                    name="ShipmentOrder_DeliverUserList"
+                    colspan="8"
+                    labelcolspan="4"
+                    label="Nhân viên giao:"
+                    disabled={!this.props.IsUserCoordinator}
+                    IsLabelDiv={true}
+                    isSelectedOption={true}
+                    isautoloaditemfromcache={false}
+                    controltype="InputControl"
+                    onChange={this.handleValueChange1}
+                    value={this.state.selectedOption}
+                    listoption={[]}
+                    isMultiSelect={true}
+                    isPartner={true}
+                    datasourcemember="ShipmentOrder_DeliverUserList"
+                  />
+                </div>
+                <div className="col-md-6">
+                  <FormControl.ComboBoxSelect
+                    name="ShipmentOrder_RentalTypeName"
+                    colspan="8"
+                    labelcolspan="4"
+                    label="Hình thức giao:"
+                    isautoloaditemfromcache={true}
+                    loaditemcachekeyid="ERPCOMMONCACHE.RENTALTYPE"
+                    valuemember="RentalTypeID"
+                    nameMember="RentalTypeName"
+                    controltype="InputControl"
+                    onValueChange={this.handleOnValueChangeRentalType}
+                    value={this.state.selectedOptionRentalType}
+                    listoption={null}
+                    datasourcemember="ShipmentOrder_RentalTypeName"
+                    placeholder="---Vui lòng chọn---"
+                    isMultiSelect={false}
+                    disabled={!this.props.IsCoordinator}
+                  />
+                </div>
+              </div>
             ) : (
-              <FormControl.FormControlComboBoxUser
-                name="ShipmentOrder_DeliverUserList"
-                colspan="10"
-                labelcolspan="2"
-                label="Nhân viên giao"
-                validatonList={["Comborequired"]}
-                isautoloaditemfromcache={true}
-                loaditemcachekeyid="ERPCOMMONCACHE.PARTNERUSER"
-                valuemember="UserName"
-                nameMember="FullName"
-                controltype="InputControl"
-                value={this.state.objDeliverUser}
-                onValueChange={this.handleOnValueChangeDeliverUser}
-                listoption={null}
-                datasourcemember="PartnerID"
-                placeholder="---Vui lòng chọn---"
-                isMultiSelect={true}
-                filterValue={this.state.objCoordinator.CarrierPartnerID}
-                filterobj="PartnerID"
-                disabled={!this.props.IsCoordinator}
-              />
+              <div className="form-row">
+                <div className="col-md-6">
+                <FormControl.FormControlComboBoxUser
+                  name="ShipmentOrder_DeliverUserList"
+                  colspan="8"
+                  labelcolspan="4"
+                  label="Nhân viên giao"
+                  validatonList={["Comborequired"]}
+                  isautoloaditemfromcache={true}
+                  loaditemcachekeyid="ERPCOMMONCACHE.PARTNERUSER"
+                  valuemember="UserName"
+                  nameMember="FullName"
+                  controltype="InputControl"
+                  value={this.state.objDeliverUser}
+                  onValueChange={this.handleOnValueChangeDeliverUser}
+                  listoption={null}
+                  datasourcemember="PartnerID"
+                  placeholder="---Vui lòng chọn---"
+                  isMultiSelect={true}
+                  filterValue={this.state.objCoordinator.CarrierPartnerID}
+                  filterobj="PartnerID"
+                  disabled={!this.props.IsCoordinator}
+                />
+                </div>
+                <div className="col-md-6">
+                <FormControl.ComboBoxSelect
+                    name="ShipmentOrder_RentalTypeName"
+                    colspan="8"
+                    labelcolspan="4"
+                    label="Hình thức giao:"
+                    isautoloaditemfromcache={true}
+                    loaditemcachekeyid="ERPCOMMONCACHE.RENTALTYPE"
+                    valuemember="RentalTypeID"
+                    nameMember="RentalTypeName"
+                    controltype="InputControl"
+                    onValueChange={this.handleOnValueChangeRentalType}
+                    value={this.state.selectedOptionRentalType}
+                    listoption={null}
+                    datasourcemember="ShipmentOrder_RentalTypeName"
+                    placeholder="---Vui lòng chọn---"
+                    isMultiSelect={false}
+                    disabled={!this.props.IsCoordinator}
+                  />
+                </div>
+              </div>
             )}
             {isShow == true ? (
               <div className="form-row">
@@ -1144,9 +1252,9 @@ class ListShipCoordinatorRouteCom extends Component {
                 <div className="col-md-6">
                   <MultiSelectComboBox
                     name="VehicleDriverUser"
-                    colspan="10"
-                    labelcolspan="2"
-                    label="Tài xế"
+                    colspan="8"
+                    labelcolspan="4"
+                    label="Tài xế:"
                     IsLabelDiv={true}
                     isautoloaditemfromcache={false}
                     controltype="InputControl"
@@ -1305,7 +1413,7 @@ class ListShipCoordinatorRouteCom extends Component {
                                               className="badge badge-primary ml-10"
                                               onClick={() => this.handleGetUserAll_1(listOptionUser, item.CarrierPartnerID)}
                                             >
-                                              <i class="fa fa-users"></i>
+                                              <i className="fa fa-users"></i>
                                             </span>
                                           ) : (
                                             <span
@@ -1315,7 +1423,7 @@ class ListShipCoordinatorRouteCom extends Component {
                                               className="badge badge-primary ml-10"
                                               onClick={() => this.handleGetUserAll_2(listOption, item.CarrierPartnerID)}
                                             >
-                                              <i class="fa fa-users"></i>
+                                              <i className="fa fa-users"></i>
                                             </span>
                                           )}
 

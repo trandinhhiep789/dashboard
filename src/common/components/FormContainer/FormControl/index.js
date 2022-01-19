@@ -3229,7 +3229,7 @@ class FormControlComboBoxNoCachedCom extends Component {
         }
         const closeMenuOnSelect = isCloseMenuOnSelect == false ? isCloseMenuOnSelect : true
         const selectedOption = this.state.SelectedOption;
-        let listOption = this.state.Listoption;
+        // let listOption = this.state.Listoption;
         // console.log(this.props.name,listOption)
         return (
             <div className={formRowClassName} >
@@ -3246,7 +3246,7 @@ class FormControlComboBoxNoCachedCom extends Component {
                         name={name}
                         ref={this.props.inputRef}
                         onChange={this.handleValueChange}
-                        options={listOption}
+                        options={listoption}
                         isDisabled={disabled}
                         isMulti={isMultiSelect}
                         isSearchable={true}
