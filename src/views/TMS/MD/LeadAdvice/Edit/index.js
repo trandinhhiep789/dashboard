@@ -25,6 +25,7 @@ import ProductComboBox from './../../../../../common/components/FormContainer/Fo
 import FormControl from "../../../../../common/components/FormContainer/FormControl";
 import { ERPCOMMONCACHE_SHIPMENTORDERTYPE, ERPCOMMONCACHE_MAINGROUP, ERPCOMMONCACHE_SUBGROUP } from './../../../../../constants/keyCache';
 import { MD_LEADADVICE_UPDATE } from './../../../../../constants/functionLists';
+import { isThisSecond } from "date-fns";
 
 
 class EditCom extends React.Component {
@@ -102,16 +103,20 @@ class EditCom extends React.Component {
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
 
-        if (this.state.DataSource.ValueProductID.length == 0) {
-            MLObject.ProductID = -1;
-        }
-        else {
-            if (!!this.state.DataSource.ValueProductID[0].ProductID) {
-                MLObject.ProductID = this.state.DataSource.ValueProductID[0].ProductID;
-            }
-            else {
+        if (this.state.DataSource.ValueProductID !== this.state.DataSource.ProductID) {
+            if (this.state.DataSource.ValueProductID.length == 0) {
                 MLObject.ProductID = -1;
             }
+            else {
+                if (this.state.DataSource.ValueProductID[0].ProductID) {
+                    MLObject.ProductID = this.state.DataSource.ValueProductID[0].ProductID;
+                }
+                else {
+                    MLObject.ProductID = -1;
+                }
+            }
+        } else {
+            MLObject.ProductID = this.state.DataSource.ProductID;
         }
 
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
@@ -134,6 +139,7 @@ class EditCom extends React.Component {
         }
 
         dataSource = Object.fromEntries(dataSource);
+        dataSource = { ...dataSource, ProductID: this.state.DataSource.ProductID };
 
         let changeState = this.state;
         let filterObject = changeState.FilterObject;
