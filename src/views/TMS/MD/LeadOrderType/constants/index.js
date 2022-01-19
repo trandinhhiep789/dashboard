@@ -93,7 +93,7 @@ export const AddElementList = [
         name: "txtDescription",
         label: "Mô tả:",
         value: "",
-        maxSize: "450",
+        maxSize: "400",
         placeholder: "",
         icon: "",
         rows: "6",

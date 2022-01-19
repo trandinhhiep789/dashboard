@@ -276,7 +276,7 @@ class EditCom extends React.Component {
             return;
         }
 
-        let isExistIsInitStep = this.props.ListLeadOrderType_WFItem.some((item) => item.IsInitStep == true && item.LeadOrderTypeID != this.props.DataSource.LeadOrderTypeID && item.LeadOrderStepID != this.props.DataSource.LeadOrderStepID);
+        let isExistIsInitStep = this.props.ListLeadOrderType_WFItem.some((item) => item.IsInitStep == true && item.LeadOrderTypeID == this.props.DataSource.LeadOrderTypeID && item.LeadOrderStepID != this.props.DataSource.LeadOrderStepID);
         if (isExistIsInitStep) {
             this.showMessage("Bước khởi tạo đã tồn tại");
             return;
@@ -284,7 +284,7 @@ class EditCom extends React.Component {
 
 
         if (MLObject.IsFinishStep) {
-            let isExistIsFinishStep = this.props.ListLeadOrderType_WFItem.some((item) => item.IsFinishStep == true && item.LeadOrderTypeID != this.props.DataSource.LeadOrderTypeID && item.LeadOrderStepID != this.props.DataSource.LeadOrderStepID);
+            let isExistIsFinishStep = this.props.ListLeadOrderType_WFItem.some((item) => item.IsFinishStep == true && item.LeadOrderTypeID == this.props.DataSource.LeadOrderTypeID && item.LeadOrderStepID != this.props.DataSource.LeadOrderStepID);
             if (isExistIsFinishStep) {
                 this.showMessage("Bước kết thúc đã tồn tại");
                 return;

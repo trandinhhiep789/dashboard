@@ -49,7 +49,8 @@ class EditCom extends React.Component {
                 ValueProduct: [],
                 ProductID: "",
                 CreatedUser: "",
-                LoginLogID: ""
+                LoginLogID: "",
+                IsSystemForm: false
             },
         };
     }
@@ -77,7 +78,7 @@ class EditCom extends React.Component {
                 filterObject = { ...filterObject, GroupValue: groupValue, ArrayProduct: arrValueFilter };
 
                 let dataSource = changeState.DataSource;
-                dataSource = { ...dataSource, ...apiResult.ResultObject, ValueProductID: apiResult.ResultObject.ProductID };
+                dataSource = { ...dataSource, ...apiResult.ResultObject, ValueProductID: apiResult.ResultObject.ProductID == -1 ? "" : apiResult.ResultObject.ProductID, IsSystemForm: apiResult.ResultObject.IsSystem };
 
                 changeState = { ...changeState, DataSource: dataSource, FilterObject: filterObject, ValueObject: valueObject };
                 this.setState(changeState);
@@ -156,6 +157,7 @@ class EditCom extends React.Component {
             dataSource = { ...dataSource, SubGroupID: valueSubGroupID, ValueProductID: [] };
         }
 
+        dataSource = { ...dataSource, IsSystem: this.state.DataSource.IsSystemForm };
         changeState = { ...changeState, FilterObject: filterObject, DataSource: dataSource };
         this.setState(changeState);
 
@@ -199,7 +201,7 @@ class EditCom extends React.Component {
                 // />
 
                 <FormContainer
-                    // BackLink={BackLink}
+                    IsCloseModal={true}
                     IsAutoLayout={true}
                     listelement={[]}
                     onchange={this.handleFormChange}
@@ -218,7 +220,6 @@ class EditCom extends React.Component {
                         value=""
                         validatonList={["required"]}
                         readOnly={true}
-
                     />
                     <FormControl.FormControlComboBox
                         colspan="4"
@@ -296,7 +297,7 @@ class EditCom extends React.Component {
                         label="Hệ thống:"
                         controltype="InputControl"
                         value={false}
-                        datasourcemember="IsSystem"
+                        datasourcemember="IsSystemForm"
                         placeholder="---Vui lòng chọn---"
                         disabled={this.state.DataSource.IsSystem}
                     />

@@ -17,7 +17,9 @@ import {
     InitSearchParams,
     PagePath,
     AddLogAPIPath,
-    LoadInfoByLeadAdviceIDAPIPath
+    LoadInfoByLeadAdviceIDAPIPath,
+    SchemaMaster,
+    DataMasterTemplateExport
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -39,6 +41,8 @@ class SearchCom extends React.Component {
         this.handleInsert = this.handleInsert.bind(this);
         this.onClose = this.onClose.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
+        this.handleImportFile = this.handleImportFile.bind(this);
+        this.handleExportFileTemplate = this.handleExportFileTemplate.bind(this);
 
         this.state = {
             CallAPIMessage: "",
@@ -47,8 +51,8 @@ class SearchCom extends React.Component {
             SearchData: InitSearchParams,
             cssNotification: "",
             iconNotification: "",
-            dataExport: [],
-            IsInsert: false
+            IsInsert: false,
+            DataMasterTemplateExport: DataMasterTemplateExport
         };
         this.gridref = React.createRef();
         this.searchref = React.createRef();
@@ -107,19 +111,6 @@ class SearchCom extends React.Component {
         this.props.callFetchAPI(APIHostName, LoadInfoByLeadAdviceIDAPIPath, searchData).then(apiResult => {
             //this.searchref.current.changeLoadComplete();
             if (!apiResult.IsError) {
-                // xuất exel
-                // const exelData = apiResult.ResultObject.map((item, index) => {
-                //     let element = {
-                //         "Mã loại đóng gói hàng hóa": item.PackageTypeID,
-                //         "Tên loại đóng gói hàng hóa": item.PackageTypeName,
-                //         "Kích hoạt": item.IsActived ? "Có" : "Không",
-                //         "Ngày cập nhật": formatDate(item.UpdatedDate),
-                //         "Người cập nhật": item.UpdatedUserFullName
-                //     };
-                //     return element;
-
-                // })
-
                 this.setState({
                     gridDataSource: apiResult.ResultObject,
                     IsCallAPIError: apiResult.IsError,
@@ -129,7 +120,6 @@ class SearchCom extends React.Component {
                 this.showMessage(apiResult.Message);
                 this.setState({
                     IsShowForm: false,
-                    dataExport: [],
                     gridDataSource: [],
                 });
             }
@@ -227,6 +217,29 @@ class SearchCom extends React.Component {
         }
     }
 
+    handleExportFileTemplate(result) {
+        console.log("template", result)
+        this.addNotification(result.Message, result.IsError);
+    }
+
+    handleImportFile(resultRows, errors) {
+        let MLObject = {};
+
+        resultRows = resultRows.map(item => ({ ...item, LeadAdviceID: this.props.LeadAdviceID }));
+        MLObject.ListLeadAdviceApply = resultRows;
+
+        this.props.callFetchAPI(APIHostName, "api/LeadAdviceApply/ImportInsert", MLObject).then(apiResult => {
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.Message);
+            }
+            else {
+                this.callSearchData(this.props.LeadAdviceID);
+                this.addNotification(apiResult.Message, apiResult.IsError);
+            }
+        });
+
+    }
+
     render() {
         if (this.state.IsShowForm) {
             return (
@@ -253,6 +266,13 @@ class SearchCom extends React.Component {
                         DeletePermission={MD_LEADADVICE_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={10}
+                        isExportFileTemplate={true}
+                        fileNameTemplate={"Danh sách sản phẩm tư vấn ứng với loại yêu cầu vận chuyển (khác loại)"}
+                        onExportFileTemplate={this.handleExportFileTemplate}
+                        DataTemplateExport={this.state.DataMasterTemplateExport}
+                        IsImportFile={true}
+                        SchemaData={SchemaMaster}
+                        onImportFile={this.handleImportFile}
                     />
                 </React.Fragment>
             );

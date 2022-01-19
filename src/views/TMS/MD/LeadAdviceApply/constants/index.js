@@ -325,3 +325,47 @@ export const DataGridColumnList = [
         Width: 60
     }
 ];
+
+export const SchemaMaster = {
+    'Ngành hàng': {
+        prop: 'MainGroupID',
+        type: String,
+        required: true
+    },
+    'Nhóm hàng': {
+        prop: 'SubGroupID',
+        type: String,
+        required: true
+    },
+    'Sản phẩm': {
+        prop: 'ProductID',
+        type: String,
+        required: false
+    },
+    'Kích hoạt': {
+        prop: 'IsActived',
+        type: Number
+    },
+    'Hệ thống': {
+        prop: 'IsSystem',
+        type: Number
+    },
+}
+
+export const DataMasterTemplateExport = [
+    {
+        "Ngành hàng": "424",
+        "Nhóm hàng": "1412",
+        "Sản phẩm": "4241412000002",
+        "Kích Hoạt": "1",
+        "Hệ Thống": "0",
+    },
+    {
+        "Ngành hàng": "424",
+        "Nhóm hàng": "1412",
+        "Sản phẩm": "",
+        "Kích Hoạt": "1",
+        "Hệ Thống": "0",
+    },
+];
+
