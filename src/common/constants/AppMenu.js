@@ -350,6 +350,63 @@ const AppMenu = [
                     },
                 ],
             },
+            {
+                MenuName: "FutureSalesPartner",
+                MenuTitle: "Mối bán hàng tương lai",
+                LinkTo: "",
+                MenuIcon: "",
+                SubMenu: [
+                    {
+                        MenuName: "LeadOrderType",
+                        MenuTitle: "Loại mối bán hàng",
+                        LinkTo: "/LeadOrderType",
+                        MenuIcon: "",
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: "LeadOrderStep",
+                        MenuTitle: "Bước xử lý mối bán hàng",
+                        LinkTo: "/LeadOrderStep",
+                        MenuIcon: "",
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: "LeadOrderStatus",
+                        MenuTitle: "Trạng thái mối bán hàng",
+                        LinkTo: "/LeadOrderStatus",
+                        MenuIcon: "",
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: "LeadOrderTypeProcess",
+                        MenuTitle: "Phương thức hậu xử lý của mối bán hàng",
+                        LinkTo: "/LeadOrderTypeProcess",
+                        MenuIcon: "",
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: "LeadAdvice",
+                        MenuTitle: "Sản phẩm tư vấn",
+                        LinkTo: "/LeadAdvice",
+                        MenuIcon: "",
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: "LeadOrderTypeSoType",
+                        MenuTitle: "Map loại mối bán hàng - Loại đơn hàng",
+                        LinkTo: "/LeadOrderTypeSoType",
+                        MenuIcon: "",
+                        SubMenu: []
+                    },
+                    {
+                        MenuName: "FailAdviceReason",
+                        MenuTitle: "Lý do tư vấn thất bại",
+                        LinkTo: "/FailAdviceReason",
+                        MenuIcon: "",
+                        SubMenu: []
+                    }
+                ]
+            },
             // {
             //     MenuName: 'Service',
             //     MenuTitle: 'Dịch vụ',

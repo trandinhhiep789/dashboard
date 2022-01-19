@@ -407,3 +407,48 @@ export const DataGridColumnList = [
         LinkText: "Chỉnh sửa"
     }
 ];
+
+export const SchemaMaster = {
+    'Loại Yêu Cầu Vận Chuyển': {
+        prop: 'ShipmentOrderTypeID',
+        type: Number,
+        required: true
+    },
+    'Ngành hàng': {
+        prop: 'MainGroupID',
+        type: Number,
+        required: true
+    },
+    'Nhóm hàng': {
+        prop: 'SubGroupID',
+        type: Number,
+        required: true
+    },
+    'Sản phẩm': {
+        prop: 'ProductID',
+        type: Number,
+        required: true
+    },
+    'Tư vấn sản phẩm khác': {
+        prop: 'IsAdviceOtherProduct',
+        type: Number
+    }
+}
+
+export const DataMasterTemplateExport = [
+    {
+        "Loại Yêu Cầu Vận Chuyển": "1011",
+        "Ngành hàng": "424",
+        "Nhóm hàng": "1412",
+        "Sản phẩm": "4241412000002",
+        "Tư vấn sản phẩm khác": "0",
+    },
+    {
+        "Loại Yêu Cầu Vận Chuyển": "1011",
+        "Ngành hàng": "424",
+        "Nhóm hàng": "1412",
+        "Sản phẩm": "",
+        "Tư vấn sản phẩm khác": "0",
+    },
+];
+

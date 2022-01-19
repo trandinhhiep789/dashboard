@@ -16,7 +16,9 @@ import {
     PKColumnName,
     InitSearchParams,
     PagePath,
-    AddLogAPIPath
+    AddLogAPIPath,
+    SchemaMaster,
+    DataMasterTemplateExport
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -31,7 +33,9 @@ class SearchCom extends React.Component {
         super(props);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
+        this.handleImportFile = this.handleImportFile.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+
         this.state = {
             CallAPIMessage: "",
             gridDataSource: [],
@@ -39,8 +43,9 @@ class SearchCom extends React.Component {
             SearchData: InitSearchParams,
             cssNotification: "",
             iconNotification: "",
-            dataExport: []
+            DataMasterTemplateExport: DataMasterTemplateExport
         };
+
         this.gridref = React.createRef();
         this.searchref = React.createRef();
         this.notificationDOMRef = React.createRef();
@@ -168,13 +173,35 @@ class SearchCom extends React.Component {
         });
     }
 
+    handleExportFileTemplate(result) {
+        console.log("template", result)
+        this.addNotification(result.Message, result.IsError);
+    }
+
+    handleImportFile(resultRows, errors) {
+        let MLObject = {};
+        MLObject.ListLeadAdvice = resultRows;
+
+        this.props.callFetchAPI(APIHostName, "api/LeadAdvice/ImportInsert", MLObject).then(apiResult => {
+            if (apiResult.IsError) {
+                this.showMessage(apiResult.Message);
+                this.callSearchData(this.state.SearchData);
+            }
+            else {
+                this.addNotification(apiResult.Message, apiResult.IsError);
+                this.callSearchData(this.state.SearchData);
+            }
+        });
+
+    }
+
     render() {
         if (this.state.IsShowForm) {
             return (
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
                     <SearchForm
-                        FormName="Tìm kiếm danh mục sản phẩm tư vấn ứng với loại yêu cầu vận chuyển (cùng loại )"
+                        FormName="Tìm kiếm sản phẩm tư vấn ứng với loại yêu cầu vận chuyển (cùng loại)"
                         MLObjectDefinition={SearchMLObjectDefinition}
                         listelement={SearchElementList}
                         onSubmit={this.handleSearchSubmit}
@@ -192,6 +219,13 @@ class SearchCom extends React.Component {
                         DeletePermission={MD_LEADADVICE_DELETE}
                         IsAutoPaging={true}
                         RowsPerPage={10}
+                        isExportFileTemplate={true}
+                        fileNameTemplate={"Danh sách sản phẩm tư vấn ứng với loại yêu cầu vận chuyển (cùng loại)"}
+                        onExportFileTemplate={this.handleExportFileTemplate}
+                        DataTemplateExport={this.state.DataMasterTemplateExport}
+                        IsImportFile={true}
+                        SchemaData={SchemaMaster}
+                        onImportFile={this.handleImportFile}
                     />
                 </React.Fragment>
             );

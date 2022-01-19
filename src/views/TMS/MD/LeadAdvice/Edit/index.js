@@ -13,7 +13,9 @@ import {
     MLObjectDefinition,
     BackLink,
     EditPagePath,
-    AddLogAPIPath
+    AddLogAPIPath,
+    InitSearchParams,
+    SearchAPIPath
 } from "../constants";
 import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
@@ -31,12 +33,15 @@ class EditCom extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleFormChange = this.handleFormChange.bind(this);
         this.handleCloseMessage = this.handleCloseMessage.bind(this);
+
         this.state = {
             CallAPIMessage: "",
             IsCallAPIError: false,
             FormContent: "",
             IsLoadDataComplete: false,
             IsCloseForm: false,
+            SearchData: InitSearchParams,
+            ListDataSource: [],
             DataSource: {
                 IsActived: true,
                 MainGroupID: "",
