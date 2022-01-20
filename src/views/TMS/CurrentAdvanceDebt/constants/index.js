@@ -1,5 +1,5 @@
 export const APIHostName = "TMSAPI";
-export const SearchAPIPath = "api/CurrentAdvanceDebt/GetListByUser";
+export const SearchAPIPath = "api/CurrentAdvanceDebt/Search";
 export const SearchExportAPIPath = "api/CurrentAdvanceDebt/ExportByUser";
 export const SearchHistoryAPIPath = "api/AdvanceDebtFlow/GetListHistory";
 
@@ -14,6 +14,11 @@ export const PagePath = [
 
 export const SearchMLObjectDefinition = [
     {
+        Name: "Keyword",
+        DefaultValue: "",
+        BindControlName: "txtKeyword"
+    },
+    {
         Name: "UserName",
         DefaultValue: "",
         BindControlName: "cbUserName"
@@ -21,7 +26,15 @@ export const SearchMLObjectDefinition = [
 ]
 
 export const SearchElementList = [
-
+    {
+        type: "text",
+        name: "txtKeyword",
+        label: "Từ khóa:",
+        value: "",
+        placeholder: "",
+        icon: "",
+        listoption: {}
+    },
     {
         type: "MultiSelectUser",
         name: "cbUserName",
