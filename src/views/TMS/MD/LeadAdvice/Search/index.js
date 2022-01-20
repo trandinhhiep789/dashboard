@@ -179,10 +179,7 @@ class SearchCom extends React.Component {
     }
 
     handleImportFile(resultRows, errors) {
-        let MLObject = {};
-        MLObject.ListLeadAdvice = resultRows;
-
-        this.props.callFetchAPI(APIHostName, "api/LeadAdvice/ImportInsert", MLObject).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, "api/LeadAdvice/InsertList", resultRows).then(apiResult => {
             if (apiResult.IsError) {
                 this.showMessage(apiResult.Message);
                 this.callSearchData(this.state.SearchData);
