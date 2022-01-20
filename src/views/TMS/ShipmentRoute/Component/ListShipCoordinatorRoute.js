@@ -330,6 +330,7 @@ class ListShipCoordinatorRouteCom extends Component {
         }
       }
     }else{
+      this.setState({selectedOptionRentalType: value});
       this.setState({ VehicleLst: [...this.state.preVehicleLst] })
     }
   }
