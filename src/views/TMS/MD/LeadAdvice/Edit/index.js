@@ -116,7 +116,7 @@ class EditCom extends React.Component {
                 }
             }
         } else {
-            MLObject.ProductID = this.state.DataSource.ProductID;
+            MLObject.ProductID = this.state.DataSource.ProductID == "" ? -1 : this.state.DataSource.ProductID;
         }
 
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {

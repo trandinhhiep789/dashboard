@@ -223,12 +223,9 @@ class SearchCom extends React.Component {
     }
 
     handleImportFile(resultRows, errors) {
-        let MLObject = {};
-
         resultRows = resultRows.map(item => ({ ...item, LeadAdviceID: this.props.LeadAdviceID }));
-        MLObject.ListLeadAdviceApply = resultRows;
 
-        this.props.callFetchAPI(APIHostName, "api/LeadAdviceApply/ImportInsert", MLObject).then(apiResult => {
+        this.props.callFetchAPI(APIHostName, "api/LeadAdviceApply/InsertList", resultRows).then(apiResult => {
             if (apiResult.IsError) {
                 this.showMessage(apiResult.Message);
             }
