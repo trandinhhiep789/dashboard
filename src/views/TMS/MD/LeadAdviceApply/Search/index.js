@@ -245,35 +245,32 @@ class SearchCom extends React.Component {
             return (
                 <React.Fragment>
                     <ReactNotification ref={this.notificationDOMRef} />
-                    {/* <SearchForm
-                        FormName="Tìm kiếm danh mục sản phẩm tư vấn ứng với loại yêu cầu vận chuyển (cùng loại )"
-                        MLObjectDefinition={SearchMLObjectDefinition}
-                        listelement={SearchElementList}
-                        onSubmit={this.handleSearchSubmit}
-                        ref={this.searchref}
-                    /> */}
-                    <DataGrid
-                        listColumn={DataGridColumnList}
-                        dataSource={this.state.gridDataSource}
-                        onInsertClick={this.handleInsert}
-                        IDSelectColumnName={IDSelectColumnName}
-                        PKColumnName={PKColumnName}
-                        onDeleteClick={this.handleDelete}
-                        onInsertClickEdit={this.handleEdit}
-                        ref={this.gridref}
-                        IsCustomAddLink={true}
-                        RequirePermission={MD_LEADADVICE_VIEW}
-                        DeletePermission={MD_LEADADVICE_DELETE}
-                        IsAutoPaging={true}
-                        RowsPerPage={10}
-                        isExportFileTemplate={true}
-                        fileNameTemplate={"Danh sách sản phẩm tư vấn ứng với loại yêu cầu vận chuyển (khác loại)"}
-                        onExportFileTemplate={this.handleExportFileTemplate}
-                        DataTemplateExport={this.state.DataMasterTemplateExport}
-                        IsImportFile={true}
-                        SchemaData={SchemaMaster}
-                        onImportFile={this.handleImportFile}
-                    />
+                    {
+                        this.props.IsAdviceOtherProduct && (
+                            <DataGrid
+                                listColumn={DataGridColumnList}
+                                dataSource={this.state.gridDataSource}
+                                onInsertClick={this.handleInsert}
+                                IDSelectColumnName={IDSelectColumnName}
+                                PKColumnName={PKColumnName}
+                                onDeleteClick={this.handleDelete}
+                                onInsertClickEdit={this.handleEdit}
+                                ref={this.gridref}
+                                IsCustomAddLink={true}
+                                RequirePermission={MD_LEADADVICE_VIEW}
+                                DeletePermission={MD_LEADADVICE_DELETE}
+                                IsAutoPaging={true}
+                                RowsPerPage={10}
+                                isExportFileTemplate={true}
+                                fileNameTemplate={"Danh sách sản phẩm tư vấn ứng với loại yêu cầu vận chuyển (khác loại)"}
+                                onExportFileTemplate={this.handleExportFileTemplate}
+                                DataTemplateExport={this.state.DataMasterTemplateExport}
+                                IsImportFile={true}
+                                SchemaData={SchemaMaster}
+                                onImportFile={this.handleImportFile}
+                            />
+                        )
+                    }
                 </React.Fragment>
             );
         }

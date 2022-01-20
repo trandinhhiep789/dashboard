@@ -15,7 +15,7 @@ import { callFetchAPI } from "../../../../../actions/fetchAPIAction";
 import { updatePagePath } from "../../../../../actions/pageAction";
 import { callGetCache } from "../../../../../actions/cacheAction";
 import { formatDate } from "../../../../../common/library/CommonLib";
- import LeadAdviceApplySearch from "../../LeadAdviceApply/Search"
+import LeadAdviceApplySearch from "../../LeadAdviceApply/Search"
 
 
 
@@ -84,14 +84,12 @@ class DetailCom extends React.Component {
         if (this.state.IsLoadDataComplete && !this.state.IsCallAPIError) {
             return (
                 <React.Fragment>
-
                     <div className="col-md-12 col-sm-12 col-xs-12">
                         <div className="x_panel">
                             <div className="x_title">
                                 <h2>Thông tin sản phẩm tư vấn khác</h2>
                                 <div className="clearfix"></div>
                             </div>
-
                             <div className="x_content col-md-12">
                                 <div className="row">
                                     <div className="col-md-6">
@@ -107,7 +105,6 @@ class DetailCom extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
@@ -122,8 +119,6 @@ class DetailCom extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-
-
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
@@ -161,8 +156,6 @@ class DetailCom extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-
-
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
@@ -181,7 +174,7 @@ class DetailCom extends React.Component {
                         </div>
                     </div>
 
-                    <LeadAdviceApplySearch LeadAdviceID={this.props.match.params.id} />
+                    <LeadAdviceApplySearch IsAdviceOtherProduct={this.state.DataSource.IsAdviceOtherProduct} LeadAdviceID={this.props.match.params.id} />
                 </React.Fragment >
             );
         }
