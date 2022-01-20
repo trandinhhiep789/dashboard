@@ -443,27 +443,33 @@ class SearchCom extends Component {
         dataResultObject.forEach((item) => {
             const uptExpectedDeliveryDate = new Date(item.ExpectedDeliveryDate);
             let hour = uptExpectedDeliveryDate.getHours();
+            let minutes = uptExpectedDeliveryDate.getMinutes();
 
             switch (true) {
-                case hour >= 8 && hour < 10:
+                // case hour >= 8 && (hour <= 10 && minutes == 0):
+                case (hour >= 8 && minutes >= 1 && hour < 10) || (hour > 8 && hour <= 10 && minutes < 1):
                     TimeFrame8to10.push(item);
                     break;
-                case hour >= 10 && hour < 12:
+                // case hour >= 10 && hour < 12 || (hour <= 12 && minutes < 1):
+                case (hour >= 10 && minutes >= 1 && hour < 12) || (hour > 10 && hour <= 12 && minutes < 1):
                     TimeFrame10to12.push(item);
                     break;
-                case hour >= 12 && hour < 14:
+                // case hour >= 12 && hour < 14 || (hour <= 14 && minutes < 1):
+                case (hour >= 12 && minutes >= 1 && hour < 14) || (hour > 12 && hour <= 14 && minutes < 1):
                     TimeFrame12to14.push(item);
                     break;
-                case hour >= 14 && hour < 16:
+                // case hour >= 14 && hour < 16 || (hour <= 16 && minutes < 1):
+                case (hour >= 14 && minutes >= 1 && hour < 16) || (hour > 14 && hour <= 16 && minutes < 1):
                     TimeFrame14to16.push(item);
                     break;
-                case hour >= 17 && hour < 19:
+                // case hour >= 17 && hour < 19 || (hour <= 19 && minutes < 1):
+                case (hour >= 17 && minutes >= 1 && hour < 19) || (hour > 17 && hour <= 19 && minutes < 1):
                     TimeFrame17to19.push(item);
                     break;
-                case hour >= 19 && hour < 21:
+                // case hour >= 19 && hour < 21 || (hour <= 21 && minutes < 1):
+                case (hour >= 19 && minutes >= 1 && hour < 21) || (hour > 19 && hour <= 21 && minutes < 1):
                     TimeFrame19to21.push(item);
                     break;
-
                 default:
                     diffTimeFrame.push(item);
                     break;
