@@ -86,7 +86,12 @@ class SearchCom extends React.Component {
     }
 
     handleGetDatat(id) {
-        this.props.callFetchAPI(APIHostName, SearchAPIPath, id).then(apiResult => {//MLObject.UserName.value
+        const postData = [
+            { SearchKey: "@Keyword", SearchValue: "" },
+            { SearchKey: "@USERNAME", SearchValue: id }
+        
+        ];
+        this.props.callFetchAPI(APIHostName, SearchAPIPath, postData).then(apiResult => {//MLObject.UserName.value
             // console.log("apiResult", apiResult)
             if (apiResult.IsError) {
                 this.setState({
@@ -122,7 +127,13 @@ class SearchCom extends React.Component {
     }
 
     handleSearchSubmit(formData, MLObject) {
-        const postData = MLObject.UserName == -1 ? MLObject.UserName : MLObject.UserName.value
+        const id = MLObject.UserName == -1 ? MLObject.UserName : MLObject.UserName.value;
+        const postData = [
+            { SearchKey: "@Keyword", SearchValue: MLObject.Keyword },
+            { SearchKey: "@USERNAME", SearchValue: id }
+        
+        ];
+        
         this.props.callFetchAPI(APIHostName, SearchAPIPath, postData).then(apiResult => {//MLObject.UserName.value
             // console.log("apiResult", apiResult)
             if (apiResult.IsError) {
@@ -330,7 +341,7 @@ class SearchCom extends React.Component {
                     ref={this.searchref}
                     className="multiple"
                     classNamebtnSearch="groupAction"
-                    colGroupAction={8}
+                    colGroupAction={6}
 
                 />
                 <DataGrid
