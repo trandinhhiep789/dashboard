@@ -159,7 +159,7 @@ class ListShipCoordinatorRouteCom extends Component {
     this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetVehicleWorkingPlan", objRouteVehicleRequset).then((apiResult) => {
       if (!apiResult.IsError) {
         apiResult.ResultObject.map((item) => {
-          if ((item.Volume > item.TotalVolume + item.TotalShipmentVolume && item.Weight > item.TotalWeight + item.TotalShipmentWeight) || item.VehicleID == this.state.objCoordinator.VehicleID) {
+          if ((item.Volume > item.TotalVolume + item.TotalShipmentVolume && item.Weight >= item.TotalWeight + item.TotalShipmentWeight) || item.VehicleID == this.state.objCoordinator.VehicleID) {
             var m3 = item.Volume - (item.TotalVolume + item.TotalShipmentVolume);
 
             let objVehicle = {
@@ -339,6 +339,7 @@ class ListShipCoordinatorRouteCom extends Component {
       this.setState({ VehicleLst: [...this.state.preVehicleLst] })
     }
   }
+
   handleOnValueChangeselectedOp(name, selectedOption) {
     let { objCoordinator, ShipmentOrder } = this.state;
 
@@ -720,7 +721,7 @@ class ListShipCoordinatorRouteCom extends Component {
       this.state.ShipmentOrder[indexRow].OrderIndex = indexRow;
       this.state.ShipmentOrder[indexRow].DeliverUserLst = elementDeliverUserList.join();
       this.state.ShipmentOrder[indexRow].DeliverUserFullNameList = elementDeliverUserFullList.join();
-      if (this.state.objCoordinator.VehicleDriverUservalue) {
+      if (this.state.objCoordinator.VehicleDriverUser.value) {
         this.state.ShipmentOrder[indexRow].DriverUser = this.state.objCoordinator.VehicleDriverUser.value;
       }
       this.state.ShipmentOrder[indexRow].VehicleID = this.state.objCoordinator.VehicleID;
