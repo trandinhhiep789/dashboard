@@ -213,6 +213,10 @@ class ListShipCoordinatorRouteCom extends Component {
           return a.OrderM3 - b.OrderM3;
         });
 
+        if (objInfoCoordinator.RentalTypeID == -1) {
+          objVehicleLst = objVehicleLst.filter(item => item.RentalTypeID == objInfoCoordinator.RentalTypeID);
+        }
+
         this.setState({
           objCoordinator: objInfoCoordinator,
           VehicleLst: objVehicleLst,
