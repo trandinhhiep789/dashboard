@@ -281,7 +281,7 @@ class ListShipCoordinatorRouteCom extends Component {
     // console.log(name, value);
     if (value != -1) {
       this.setState({
-        objCoordinator: { ...this.state.objCoordinator, RentalTypeID: value }
+        objCoordinator: { ...this.state.objCoordinator, RentalTypeID: value, VehicleID: "", VehicleDriverUser:"" }
       });
       let listVehicleID = []
       if (this.state.preVehicleLst.length > 0) {
@@ -333,7 +333,7 @@ class ListShipCoordinatorRouteCom extends Component {
       }
     } else {
       this.setState({
-        objCoordinator: { ...this.state.objCoordinator, RentalTypeID: value }
+        objCoordinator: { ...this.state.objCoordinator, RentalTypeID: value, VehicleID: "", VehicleDriverUser:"" }
       });
       this.setState({ VehicleLst: [...this.state.preVehicleLst] })
     }
@@ -1172,7 +1172,7 @@ class ListShipCoordinatorRouteCom extends Component {
                       name="RentalTypeID"
                       colspan="8"
                       labelcolspan="4"
-                      label="Hình thức thuê"
+                      label="Hình thức thuê:"
                       isautoloaditemfromcache={true}
                       loaditemcachekeyid="ERPCOMMONCACHE.RENTALTYPE"
                       valuemember="RentalTypeID"
@@ -1220,7 +1220,7 @@ class ListShipCoordinatorRouteCom extends Component {
                       name="RentalTypeID"
                       colspan="8"
                       labelcolspan="4"
-                      label="Hình thức thuê"
+                      label="Hình thức thuê:"
                       isautoloaditemfromcache={true}
                       loaditemcachekeyid="ERPCOMMONCACHE.RENTALTYPE"
                       valuemember="RentalTypeID"
