@@ -159,7 +159,7 @@ class ListShipCoordinatorRouteCom extends Component {
     this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetVehicleWorkingPlan", objRouteVehicleRequset).then((apiResult) => {
       if (!apiResult.IsError) {
         apiResult.ResultObject.map((item) => {
-          if ((item.Volume > item.TotalVolume + item.TotalShipmentVolume && item.Weight > item.TotalWeight + item.TotalShipmentWeight) || item.VehicleID == this.state.objCoordinator.VehicleID) {
+          if ((item.Volume > item.TotalVolume + item.TotalShipmentVolume && item.Weight >= item.TotalWeight + item.TotalShipmentWeight) || item.VehicleID == this.state.objCoordinator.VehicleID) {
             var m3 = item.Volume - (item.TotalVolume + item.TotalShipmentVolume);
 
             let objVehicle = {
@@ -334,12 +334,13 @@ class ListShipCoordinatorRouteCom extends Component {
       this.setState({ VehicleLst: [...this.state.preVehicleLst] })
     }
   }
+
   handleOnValueChangeselectedOp(name, selectedOption) {
+
+    console.log("selectedOption", selectedOption);
+
     let { objCoordinator, ShipmentOrder } = this.state;
 
-    console.log(name);
-    console.log(selectedOption);
-    console.log(objCoordinator);
     if (selectedOption.TotalAbilityVolume >= selectedOption.TotalShipmentVolume + selectedOption.TotalVolume) {
       this.addNotification(
         "Tổng thể tích tối thiểu cần cho xe tải là " + selectedOption.TotalAbilityVolume + " Hiện tại chỉ có " + (selectedOption.TotalShipmentVolume + selectedOption.TotalVolume),
@@ -364,8 +365,9 @@ class ListShipCoordinatorRouteCom extends Component {
       }
     });
 
+
     // console.log({ name });
-    // console.log({ objCoordinator });
+    console.log({ objCoordinator });
     // console.log(this.state.VehicleLst);
 
     this.setState({
@@ -720,7 +722,7 @@ class ListShipCoordinatorRouteCom extends Component {
       this.state.ShipmentOrder[indexRow].OrderIndex = indexRow;
       this.state.ShipmentOrder[indexRow].DeliverUserLst = elementDeliverUserList.join();
       this.state.ShipmentOrder[indexRow].DeliverUserFullNameList = elementDeliverUserFullList.join();
-      if (this.state.objCoordinator.VehicleDriverUservalue) {
+      if (this.state.objCoordinator.VehicleDriverUser.value) {
         this.state.ShipmentOrder[indexRow].DriverUser = this.state.objCoordinator.VehicleDriverUser.value;
       }
       this.state.ShipmentOrder[indexRow].VehicleID = this.state.objCoordinator.VehicleID;
@@ -1243,7 +1245,7 @@ class ListShipCoordinatorRouteCom extends Component {
                     isselectedOp={true}
                     controltype="InputControl"
                     value={this.state.objCoordinator.VehicleID}
-                    onValueChange={this.handleOnValueChangeselectedOp.bind(this)}
+                    onValueChange={this.handleOnValueChangeselectedOp}
                     listoption={VehicleLst}
                     datasourcemember="VehicleID"
                     placeholder="---Vui lòng chọn---"
