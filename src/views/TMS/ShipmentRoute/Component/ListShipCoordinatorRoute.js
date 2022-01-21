@@ -171,6 +171,7 @@ class ListShipCoordinatorRouteCom extends Component {
               TotalShipmentVolume: item.TotalShipmentVolume,
               TotalAbilityVolume: item.TotalAbilityVolume,
               OrderM3: parseFloat(m3.toFixed(3)),
+              RentalTypeID: item.RentalTypeID
             };
             objVehicleLst.push(objVehicle);
           }
@@ -281,7 +282,7 @@ class ListShipCoordinatorRouteCom extends Component {
     // console.log(name, value);
     if (value != -1) {
       this.setState({
-        objCoordinator: { ...this.state.objCoordinator, RentalTypeID: value, VehicleID: "", VehicleDriverUser:"" }
+        objCoordinator: { ...this.state.objCoordinator, RentalTypeID: value, VehicleID: "", VehicleDriverUser: "" }
       });
       let listVehicleID = []
       if (this.state.preVehicleLst.length > 0) {
@@ -333,7 +334,7 @@ class ListShipCoordinatorRouteCom extends Component {
       }
     } else {
       this.setState({
-        objCoordinator: { ...this.state.objCoordinator, RentalTypeID: value, VehicleID: "", VehicleDriverUser:"" }
+        objCoordinator: { ...this.state.objCoordinator, RentalTypeID: value, VehicleID: "", VehicleDriverUser: "" }
       });
       this.setState({ VehicleLst: [...this.state.preVehicleLst] })
     }
@@ -342,9 +343,6 @@ class ListShipCoordinatorRouteCom extends Component {
   handleOnValueChangeselectedOp(name, selectedOption) {
     let { objCoordinator, ShipmentOrder } = this.state;
 
-    // console.log(name);
-    // console.log(selectedOption);
-    // console.log(objCoordinator);
     if (selectedOption.TotalAbilityVolume >= selectedOption.TotalShipmentVolume + selectedOption.TotalVolume) {
       this.addNotification(
         "Tổng thể tích tối thiểu cần cho xe tải là " + selectedOption.TotalAbilityVolume + " Hiện tại chỉ có " + (selectedOption.TotalShipmentVolume + selectedOption.TotalVolume),
@@ -369,9 +367,7 @@ class ListShipCoordinatorRouteCom extends Component {
       }
     });
 
-    // console.log({ name });
-    // console.log({ objCoordinator });
-    // console.log(this.state.VehicleLst);
+    objCoordinator.RentalTypeID = selectedOption.RentalTypeID;
 
     this.setState({
       objCoordinator: objCoordinator,
