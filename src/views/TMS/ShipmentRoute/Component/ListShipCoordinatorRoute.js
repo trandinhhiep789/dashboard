@@ -33,7 +33,7 @@ class ListShipCoordinatorRouteCom extends Component {
     this.handleOnValueChangeRentalType = this.handleOnValueChangeRentalType.bind(this);
     this.state = {
       ShipmentOrder: this.props.InfoCoordinator,
-      objCoordinator: { CarrierPartnerID: -1, CarrierTypeID: 1, RentalTypeID: 1, IsRoute: true, VehicleID: -1, VehicleDriverUser: {} },
+      objCoordinator: { CarrierPartnerID: -1, CarrierTypeID: 1, RentalTypeID: -1, IsRoute: true, VehicleID: -1, VehicleDriverUser: {} },
       VehicleLst: [],
       preVehicleLst: [],
       selectedOption: [],
@@ -51,9 +51,7 @@ class ListShipCoordinatorRouteCom extends Component {
       ShipmentRouteSameLst: [],
       Distances_RouteLst: [],
       girdSlide: false,
-      objectDescription: {},
-      selectedOptionRentalType: [],
-      selectedOptionRentalTypeVehicleID: [],
+      objectDescription: {}
     };
     this.notificationDOMRef = React.createRef();
   }
@@ -115,6 +113,7 @@ class ListShipCoordinatorRouteCom extends Component {
             value: objRoute.DriverUser == "" ? -1 : objRoute.DriverUser,
             label: objRoute.DriverUser == "" || objRoute.DriverUserFull == "" ? objRoute.DriverUser + "-" + objRoute.DriverUserFull : "",
           },
+          RentalTypeID: objRoute.RentalTypeID
         };
         // objInfoCoordinator = {
         //   CarrierPartnerID: objRoute.CarrierPartnerID,
@@ -129,6 +128,7 @@ class ListShipCoordinatorRouteCom extends Component {
           IsRoute: true,
           VehicleID: objRoute.VehicleID == 0 ? -1 : objRoute.VehicleID,
           VehicleDriverUser: {},
+          RentalTypeID: objRoute.RentalTypeID
         };
       }
 
@@ -280,7 +280,9 @@ class ListShipCoordinatorRouteCom extends Component {
   handleOnValueChangeRentalType(name, value) {
     // console.log(name, value);
     if (value != -1) {
-      this.setState({ selectedOptionRentalType: value });
+      this.setState({
+        objCoordinator: { ...this.state.objCoordinator, RentalTypeID: value }
+      });
       let listVehicleID = []
       if (this.state.preVehicleLst.length > 0) {
         try {
@@ -299,7 +301,7 @@ class ListShipCoordinatorRouteCom extends Component {
                 }
                 listVehicleID = newArr
                 // console.log(listVehicleID)
-                // this.setState({selectedOptionRentalTypeVehicleID: listVehicleID})
+
 
                 var IdVehicleLst = []
                 const objVehicleLstFilter = [...this.state.preVehicleLst]
@@ -330,7 +332,9 @@ class ListShipCoordinatorRouteCom extends Component {
         }
       }
     } else {
-      this.setState({ selectedOptionRentalType: value });
+      this.setState({
+        objCoordinator: { ...this.state.objCoordinator, RentalTypeID: value }
+      });
       this.setState({ VehicleLst: [...this.state.preVehicleLst] })
     }
   }
@@ -1165,7 +1169,7 @@ class ListShipCoordinatorRouteCom extends Component {
                 {
                   isShow && <div className="col-md-6">
                     <FormControl.ComboBoxSelect
-                      name="ShipmentOrder_RentalTypeName"
+                      name="RentalTypeID"
                       colspan="8"
                       labelcolspan="4"
                       label="Hình thức thuê"
@@ -1175,9 +1179,9 @@ class ListShipCoordinatorRouteCom extends Component {
                       nameMember="RentalTypeName"
                       controltype="InputControl"
                       onValueChange={this.handleOnValueChangeRentalType}
-                      value={this.state.selectedOptionRentalType}
+                      value={this.state.objCoordinator.RentalTypeID}
                       listoption={null}
-                      datasourcemember="ShipmentOrder_RentalTypeName"
+                      datasourcemember="RentalTypeID"
                       placeholder="---Vui lòng chọn---"
                       isMultiSelect={false}
                       disabled={!this.props.IsCoordinator}
@@ -1213,7 +1217,7 @@ class ListShipCoordinatorRouteCom extends Component {
                 {
                   isShow && <div className="col-md-6">
                     <FormControl.ComboBoxSelect
-                      name="ShipmentOrder_RentalTypeName"
+                      name="RentalTypeID"
                       colspan="8"
                       labelcolspan="4"
                       label="Hình thức thuê"
@@ -1223,9 +1227,9 @@ class ListShipCoordinatorRouteCom extends Component {
                       nameMember="RentalTypeName"
                       controltype="InputControl"
                       onValueChange={this.handleOnValueChangeRentalType}
-                      value={this.state.selectedOptionRentalType}
+                      value={this.state.objCoordinator.RentalTypeID}
                       listoption={null}
-                      datasourcemember="ShipmentOrder_RentalTypeName"
+                      datasourcemember="RentalTypeID"
                       placeholder="---Vui lòng chọn---"
                       isMultiSelect={false}
                       disabled={!this.props.IsCoordinator}
