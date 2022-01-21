@@ -276,12 +276,13 @@ class EditCom extends React.Component {
             return;
         }
 
-        let isExistIsInitStep = this.props.ListLeadOrderType_WFItem.some((item) => item.IsInitStep == true && item.LeadOrderTypeID == this.props.DataSource.LeadOrderTypeID && item.LeadOrderStepID != this.props.DataSource.LeadOrderStepID);
-        if (isExistIsInitStep) {
-            this.showMessage("Bước khởi tạo đã tồn tại");
-            return;
+        if (MLObject.IsInitStep) {
+            let isExistIsInitStep = this.props.ListLeadOrderType_WFItem.some((item) => item.IsInitStep == true && item.LeadOrderTypeID == this.props.DataSource.LeadOrderTypeID && item.LeadOrderStepID != this.props.DataSource.LeadOrderStepID);
+            if (isExistIsInitStep) {
+                this.showMessage("Bước khởi tạo đã tồn tại");
+                return;
+            }
         }
-
 
         if (MLObject.IsFinishStep) {
             let isExistIsFinishStep = this.props.ListLeadOrderType_WFItem.some((item) => item.IsFinishStep == true && item.LeadOrderTypeID == this.props.DataSource.LeadOrderTypeID && item.LeadOrderStepID != this.props.DataSource.LeadOrderStepID);
