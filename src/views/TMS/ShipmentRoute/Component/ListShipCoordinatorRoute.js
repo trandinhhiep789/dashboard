@@ -33,7 +33,7 @@ class ListShipCoordinatorRouteCom extends Component {
     this.handleOnValueChangeRentalType = this.handleOnValueChangeRentalType.bind(this);
     this.state = {
       ShipmentOrder: this.props.InfoCoordinator,
-      objCoordinator: { CarrierPartnerID: -1, CarrierTypeID: 1,RentalTypeID: 1, IsRoute: true, VehicleID: -1, VehicleDriverUser: {} },
+      objCoordinator: { CarrierPartnerID: -1, CarrierTypeID: 1, RentalTypeID: -1, IsRoute: true, VehicleID: -1, VehicleDriverUser: {} },
       VehicleLst: [],
       preVehicleLst: [],
       selectedOption: [],
@@ -51,15 +51,13 @@ class ListShipCoordinatorRouteCom extends Component {
       ShipmentRouteSameLst: [],
       Distances_RouteLst: [],
       girdSlide: false,
-      objectDescription: {},
-      selectedOptionRentalType: [],
-      selectedOptionRentalTypeVehicleID: [],
+      objectDescription: {}
     };
     this.notificationDOMRef = React.createRef();
   }
 
   componentDidMount() {
-    console.log(this.props.ShipmentRouteID);
+    // console.log(this.props.ShipmentRouteID);
 
     this.handleMapObjectDescription();
 
@@ -115,6 +113,7 @@ class ListShipCoordinatorRouteCom extends Component {
             value: objRoute.DriverUser == "" ? -1 : objRoute.DriverUser,
             label: objRoute.DriverUser == "" || objRoute.DriverUserFull == "" ? objRoute.DriverUser + "-" + objRoute.DriverUserFull : "",
           },
+          RentalTypeID: objRoute.RentalTypeID
         };
         // objInfoCoordinator = {
         //   CarrierPartnerID: objRoute.CarrierPartnerID,
@@ -129,6 +128,7 @@ class ListShipCoordinatorRouteCom extends Component {
           IsRoute: true,
           VehicleID: objRoute.VehicleID == 0 ? -1 : objRoute.VehicleID,
           VehicleDriverUser: {},
+          RentalTypeID: objRoute.RentalTypeID
         };
       }
 
@@ -159,7 +159,7 @@ class ListShipCoordinatorRouteCom extends Component {
     this.props.callFetchAPI(APIHostName, "api/ShipmentRoute/GetVehicleWorkingPlan", objRouteVehicleRequset).then((apiResult) => {
       if (!apiResult.IsError) {
         apiResult.ResultObject.map((item) => {
-          if ((item.Volume > item.TotalVolume + item.TotalShipmentVolume && item.Weight >= item.TotalWeight + item.TotalShipmentWeight) || item.VehicleID == this.state.objCoordinator.VehicleID) {
+          if ((item.Volume > item.TotalVolume + item.TotalShipmentVolume && item.Weight > item.TotalWeight + item.TotalShipmentWeight) || item.VehicleID == this.state.objCoordinator.VehicleID) {
             var m3 = item.Volume - (item.TotalVolume + item.TotalShipmentVolume);
 
             let objVehicle = {
@@ -278,12 +278,14 @@ class ListShipCoordinatorRouteCom extends Component {
   }
 
   handleOnValueChangeRentalType(name, value) {
-    console.log(name, value);
-    if(value != -1){
-      this.setState({selectedOptionRentalType: value});
+    // console.log(name, value);
+    if (value != -1) {
+      this.setState({
+        objCoordinator: { ...this.state.objCoordinator, RentalTypeID: value, VehicleID: "", VehicleDriverUser:"" }
+      });
       let listVehicleID = []
-      if(this.state.preVehicleLst.length > 0){
-        try{
+      if (this.state.preVehicleLst.length > 0) {
+        try {
           this.props.callFetchAPI(APIHostName, "api/VehicleRentalRequest/LoadByRentalTypeID", value).then(apiResult => {
             apiResult.ResultObject.map((item, i, row) => {
               if (i + 1 === row.length) {
@@ -298,9 +300,9 @@ class ListShipCoordinatorRouteCom extends Component {
                   }
                 }
                 listVehicleID = newArr
-                console.log(listVehicleID)
-                // this.setState({selectedOptionRentalTypeVehicleID: listVehicleID})
-      
+                // console.log(listVehicleID)
+
+
                 var IdVehicleLst = []
                 const objVehicleLstFilter = [...this.state.preVehicleLst]
                 objVehicleLstFilter.map((item, i, row) => {
@@ -308,39 +310,40 @@ class ListShipCoordinatorRouteCom extends Component {
                     // Last one.
                     IdVehicleLst.push(item.value)
                     const listId = listVehicleID.filter(value => IdVehicleLst.includes(value))
-                    
-                    let objVehicleLst = objVehicleLstFilter.filter(function(obj) {
+
+                    let objVehicleLst = objVehicleLstFilter.filter(function (obj) {
                       return (listId.includes(obj.value) === true)
                     });
                     this.setState({ VehicleLst: objVehicleLst })
-                    console.log("objVehicleLst: ",objVehicleLst)
-                    console.log("this.state.VehicleLst: ",this.state.VehicleLst)
+                    // console.log("objVehicleLst: ", objVehicleLst)
+                    // console.log("this.state.VehicleLst: ", this.state.VehicleLst)
                   } else {
                     // Not last one.
                     IdVehicleLst.push(item.value)
                   }
                 })
-              }else{
+              } else {
                 listVehicleID.push(item.VehicleID)
               }
             })
           })
-        }catch(err){
+        } catch (err) {
           console.log(err)
         }
       }
-    }else{
-      this.setState({selectedOptionRentalType: value});
+    } else {
+      this.setState({
+        objCoordinator: { ...this.state.objCoordinator, RentalTypeID: value, VehicleID: "", VehicleDriverUser:"" }
+      });
       this.setState({ VehicleLst: [...this.state.preVehicleLst] })
     }
   }
-
   handleOnValueChangeselectedOp(name, selectedOption) {
-
-    console.log("selectedOption", selectedOption);
-
     let { objCoordinator, ShipmentOrder } = this.state;
 
+    // console.log(name);
+    // console.log(selectedOption);
+    // console.log(objCoordinator);
     if (selectedOption.TotalAbilityVolume >= selectedOption.TotalShipmentVolume + selectedOption.TotalVolume) {
       this.addNotification(
         "Tổng thể tích tối thiểu cần cho xe tải là " + selectedOption.TotalAbilityVolume + " Hiện tại chỉ có " + (selectedOption.TotalShipmentVolume + selectedOption.TotalVolume),
@@ -365,9 +368,8 @@ class ListShipCoordinatorRouteCom extends Component {
       }
     });
 
-
     // console.log({ name });
-    console.log({ objCoordinator });
+    // console.log({ objCoordinator });
     // console.log(this.state.VehicleLst);
 
     this.setState({
@@ -377,7 +379,7 @@ class ListShipCoordinatorRouteCom extends Component {
   }
 
   handleValueChange1(e, selectedOption1, CarrierPartnerID) {
-    console.log("handleValueChange1_CarrierPartnerID", CarrierPartnerID);
+    // console.log("handleValueChange1_CarrierPartnerID", CarrierPartnerID);
 
     let objDeliverUser = [];
     let listStaffDebtObject = [];
@@ -396,7 +398,7 @@ class ListShipCoordinatorRouteCom extends Component {
         if (!apiResult.IsError) {
           this.state.ShipmentOrder.map((row, indexRow) => {
             if (CarrierPartnerID) {
-              console.log("OKKKKKKKKKKK");
+              // console.log("OKKKKKKKKKKK");
               if ((this.state.objCoordinator.IsRoute == true || !row.IsCoordinator) && row.IsPermission == true) {
                 row["ShipmentOrder_DeliverUserList"] = objDeliverUser || [];
                 row["CarrierPartnerID"] = CarrierPartnerID;
@@ -427,7 +429,7 @@ class ListShipCoordinatorRouteCom extends Component {
     let objMultiDeliverUser = [];
     let listStaffDebtObject = [];
 
-    console.log(value, selectedOption, CarrierPartnerID);
+    // console.log(value, selectedOption, CarrierPartnerID);
 
     selectedOption &&
       selectedOption.map((item, index) => {
@@ -469,7 +471,7 @@ class ListShipCoordinatorRouteCom extends Component {
     }
   }
 
-  handleOnValueChangeVehicleDriverUser(name, value, selectedOption) {}
+  handleOnValueChangeVehicleDriverUser(name, value, selectedOption) { }
 
   //thông báo
   handleCloseMessage() {
@@ -612,7 +614,7 @@ class ListShipCoordinatorRouteCom extends Component {
   }
 
   onValueChangeComboUser(rowname, rowvalue, rowIndex) {
-    console.log("onValueChangeComboUser", rowname, rowvalue, rowIndex);
+    // console.log("onValueChangeComboUser", rowname, rowvalue, rowIndex);
   }
 
   handleGetUserAll_1 = (listOption, CarrierPartnerID) => {
@@ -722,7 +724,7 @@ class ListShipCoordinatorRouteCom extends Component {
       this.state.ShipmentOrder[indexRow].OrderIndex = indexRow;
       this.state.ShipmentOrder[indexRow].DeliverUserLst = elementDeliverUserList.join();
       this.state.ShipmentOrder[indexRow].DeliverUserFullNameList = elementDeliverUserFullList.join();
-      if (this.state.objCoordinator.VehicleDriverUser.value) {
+      if (this.state.objCoordinator.VehicleDriverUservalue) {
         this.state.ShipmentOrder[indexRow].DriverUser = this.state.objCoordinator.VehicleDriverUser.value;
       }
       this.state.ShipmentOrder[indexRow].VehicleID = this.state.objCoordinator.VehicleID;
@@ -1103,7 +1105,7 @@ class ListShipCoordinatorRouteCom extends Component {
     const isBelowThreshold = (currentValue) => currentValue.CarrierTypeID == 2;
     let isShow = ShipmentOrder.length === 0 ? false : ShipmentOrder.every(isBelowThreshold);
 
-    
+
     return (
       <React.Fragment>
         <div className="card">
@@ -1130,7 +1132,7 @@ class ListShipCoordinatorRouteCom extends Component {
                   disabled={!this.props.IsCoordinator}
                 />
               </div>
-              <div className="col-md-6" style={{textAlign: 'right'}}>
+              <div className="col-md-6" style={{ textAlign: 'right' }}>
                 <div className="item group-status">
                   <span className="badge badge-secondary mr-20 badge-active motobike-menu" onClick={this.handleChangeCourseALL(1)} style={{ cursor: "pointer", fontSize: "15px", boxShadow: "rgb(0 0 0 / 24%) 0px 3px 8px" }}>
                     <i className="fa fa-motorcycle"></i>&nbsp;
@@ -1164,72 +1166,76 @@ class ListShipCoordinatorRouteCom extends Component {
                     datasourcemember="ShipmentOrder_DeliverUserList"
                   />
                 </div>
-                <div className="col-md-6">
-                  <FormControl.ComboBoxSelect
-                    name="ShipmentOrder_RentalTypeName"
-                    colspan="8"
-                    labelcolspan="4"
-                    label="Hình thức giao:"
-                    isautoloaditemfromcache={true}
-                    loaditemcachekeyid="ERPCOMMONCACHE.RENTALTYPE"
-                    valuemember="RentalTypeID"
-                    nameMember="RentalTypeName"
-                    controltype="InputControl"
-                    onValueChange={this.handleOnValueChangeRentalType}
-                    value={this.state.selectedOptionRentalType}
-                    listoption={null}
-                    datasourcemember="ShipmentOrder_RentalTypeName"
-                    placeholder="---Vui lòng chọn---"
-                    isMultiSelect={false}
-                    disabled={!this.props.IsCoordinator}
-                  />
-                </div>
+                {
+                  isShow && <div className="col-md-6">
+                    <FormControl.ComboBoxSelect
+                      name="RentalTypeID"
+                      colspan="8"
+                      labelcolspan="4"
+                      label="Hình thức thuê:"
+                      isautoloaditemfromcache={true}
+                      loaditemcachekeyid="ERPCOMMONCACHE.RENTALTYPE"
+                      valuemember="RentalTypeID"
+                      nameMember="RentalTypeName"
+                      controltype="InputControl"
+                      onValueChange={this.handleOnValueChangeRentalType}
+                      value={this.state.objCoordinator.RentalTypeID}
+                      listoption={null}
+                      datasourcemember="RentalTypeID"
+                      placeholder="---Vui lòng chọn---"
+                      isMultiSelect={false}
+                      disabled={!this.props.IsCoordinator}
+                    />
+                  </div>
+                }
               </div>
             ) : (
               <div className="form-row">
                 <div className="col-md-6">
-                <FormControl.FormControlComboBoxUser
-                  name="ShipmentOrder_DeliverUserList"
-                  colspan="8"
-                  labelcolspan="4"
-                  label="Nhân viên giao"
-                  validatonList={["Comborequired"]}
-                  isautoloaditemfromcache={true}
-                  loaditemcachekeyid="ERPCOMMONCACHE.PARTNERUSER"
-                  valuemember="UserName"
-                  nameMember="FullName"
-                  controltype="InputControl"
-                  value={this.state.objDeliverUser}
-                  onValueChange={this.handleOnValueChangeDeliverUser}
-                  listoption={null}
-                  datasourcemember="PartnerID"
-                  placeholder="---Vui lòng chọn---"
-                  isMultiSelect={true}
-                  filterValue={this.state.objCoordinator.CarrierPartnerID}
-                  filterobj="PartnerID"
-                  disabled={!this.props.IsCoordinator}
-                />
-                </div>
-                <div className="col-md-6">
-                <FormControl.ComboBoxSelect
-                    name="ShipmentOrder_RentalTypeName"
+                  <FormControl.FormControlComboBoxUser
+                    name="ShipmentOrder_DeliverUserList"
                     colspan="8"
                     labelcolspan="4"
-                    label="Hình thức giao:"
+                    label="Nhân viên giao"
+                    validatonList={["Comborequired"]}
                     isautoloaditemfromcache={true}
-                    loaditemcachekeyid="ERPCOMMONCACHE.RENTALTYPE"
-                    valuemember="RentalTypeID"
-                    nameMember="RentalTypeName"
+                    loaditemcachekeyid="ERPCOMMONCACHE.PARTNERUSER"
+                    valuemember="UserName"
+                    nameMember="FullName"
                     controltype="InputControl"
-                    onValueChange={this.handleOnValueChangeRentalType}
-                    value={this.state.selectedOptionRentalType}
+                    value={this.state.objDeliverUser}
+                    onValueChange={this.handleOnValueChangeDeliverUser}
                     listoption={null}
-                    datasourcemember="ShipmentOrder_RentalTypeName"
+                    datasourcemember="PartnerID"
                     placeholder="---Vui lòng chọn---"
-                    isMultiSelect={false}
+                    isMultiSelect={true}
+                    filterValue={this.state.objCoordinator.CarrierPartnerID}
+                    filterobj="PartnerID"
                     disabled={!this.props.IsCoordinator}
                   />
                 </div>
+                {
+                  isShow && <div className="col-md-6">
+                    <FormControl.ComboBoxSelect
+                      name="RentalTypeID"
+                      colspan="8"
+                      labelcolspan="4"
+                      label="Hình thức thuê:"
+                      isautoloaditemfromcache={true}
+                      loaditemcachekeyid="ERPCOMMONCACHE.RENTALTYPE"
+                      valuemember="RentalTypeID"
+                      nameMember="RentalTypeName"
+                      controltype="InputControl"
+                      onValueChange={this.handleOnValueChangeRentalType}
+                      value={this.state.objCoordinator.RentalTypeID}
+                      listoption={null}
+                      datasourcemember="RentalTypeID"
+                      placeholder="---Vui lòng chọn---"
+                      isMultiSelect={false}
+                      disabled={!this.props.IsCoordinator}
+                    />
+                  </div>
+                }
               </div>
             )}
             {isShow == true ? (
@@ -1245,7 +1251,7 @@ class ListShipCoordinatorRouteCom extends Component {
                     isselectedOp={true}
                     controltype="InputControl"
                     value={this.state.objCoordinator.VehicleID}
-                    onValueChange={this.handleOnValueChangeselectedOp}
+                    onValueChange={this.handleOnValueChangeselectedOp.bind(this)}
                     listoption={VehicleLst}
                     datasourcemember="VehicleID"
                     placeholder="---Vui lòng chọn---"
@@ -1273,9 +1279,9 @@ class ListShipCoordinatorRouteCom extends Component {
               ""
             )}
             <div className="row lstProductSelect">
-              <div className="col-12 group-shipingorder " style={{height: '265px'}}>
+              <div className="col-12 group-shipingorder " style={{ height: '265px' }}>
                 <div className="jsgrid">
-                  <div className="jsgrid-grid-body" style={{height: '265px', borderRadius: '5px', border: '1px solid #808080a3', overflow: 'auto'}}>
+                  <div className="jsgrid-grid-body" style={{ height: '265px', borderRadius: '5px', border: '1px solid #808080a3', overflow: 'auto' }}>
                     <table className="jsgrid-table">
                       <tbody>
                         {ShipmentOrder &&
@@ -1400,11 +1406,11 @@ class ListShipCoordinatorRouteCom extends Component {
                                         <div className="ml-10" style={{ textAlign: "left" }}>
                                           {FullNameDeliverUser != ""
                                             ? FullNameDeliverUser.map((s) => (
-                                                <React.Fragment>
-                                                  {s}
-                                                  <br />
-                                                </React.Fragment>
-                                              ))
+                                              <React.Fragment>
+                                                {s}
+                                                <br />
+                                              </React.Fragment>
+                                            ))
                                             : ""}
                                         </div>
                                         <div className="ml-10" style={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
@@ -1537,7 +1543,7 @@ class ListShipCoordinatorRouteCom extends Component {
                     )}
                   </ul>
                 </div>
-                <div className="nav-group-action" style={{display: 'block', height: '0', position: 'absolute', top: '-14px', right: '10px'}}>
+                <div className="nav-group-action" style={{ display: 'block', height: '0', position: 'absolute', top: '-14px', right: '10px' }}>
                   {ShipmentOrder.length > 1 ? (
                     <button className="btn btn-w-md btn-round btn-info" type="button" onClick={this.handleDistances.bind(this)}>
                       Tính khoảng cách
@@ -1545,10 +1551,10 @@ class ListShipCoordinatorRouteCom extends Component {
                   ) : (
                     ""
                   )}
-                  <button style={{boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px'}} type="button" onClick={() => this.HandleChangeGird(1)}>
+                  <button style={{ boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px' }} type="button" onClick={() => this.HandleChangeGird(1)}>
                     <i className="ti-menu-alt"></i>
                   </button>
-                  <button style={{boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px'}} type="button" onClick={() => this.HandleChangeGird(2)}>
+                  <button style={{ boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px' }} type="button" onClick={() => this.HandleChangeGird(2)}>
                     <i className="ti-menu"></i>
                   </button>
                 </div>
@@ -1561,7 +1567,7 @@ class ListShipCoordinatorRouteCom extends Component {
                         {resultShipmentRoute.map((item, index) => {
                           return (
                             <div key={"Route" + index} className="col-md-6 col-lg-4 each-slide">
-                              <div className="card card-secondary" style={{boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px'}}>
+                              <div className="card card-secondary" style={{ boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px' }}>
                                 <div className="card-body">
                                   <ul onClick={this.handleClickRoute(item.ShipmentRouteID)}>
                                     <li className="item infoOder">
@@ -1599,7 +1605,7 @@ class ListShipCoordinatorRouteCom extends Component {
                         {resultShipmentRouteSame.map((item, index) => {
                           return (
                             <div key={"Route" + index} className="col-md-6 col-lg-4 each-slide">
-                              <div className="card card-secondary" style={{boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px'}}>
+                              <div className="card card-secondary" style={{ boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px' }}>
                                 <div className="card-body">
                                   <ul onClick={this.handleClickRoute(item.ShipmentRouteID)}>
                                     <li className="item infoOder">
@@ -1639,7 +1645,7 @@ class ListShipCoordinatorRouteCom extends Component {
                           if (resultdd == undefined) {
                             return (
                               <div key={"Same" + index} className="col-md-6 col-lg-4 each-slide">
-                                <div className="card card-secondary" style={{boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px'}}>
+                                <div className="card card-secondary" style={{ boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px' }}>
                                   <div className="card-body">
                                     <ul onClick={this.handleClickShipmentOrderSame(item.ShipmentOrderID)}>
                                       <li className="item infoOder">

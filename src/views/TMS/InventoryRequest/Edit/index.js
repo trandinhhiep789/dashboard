@@ -238,7 +238,7 @@ class EditCom extends React.Component {
                                     labelcolspan="4"
                                     label="kho yêu cầu"
                                     disabled={true}
-                                    validatonList={["Comborequired"]}
+                                    //validatonList={["Comborequired"]}
                                     placeholder="-- Vui lòng chọn --"
                                     isautoloaditemfromcache={true}
                                     loaditemcachekeyid="ERPCOMMONCACHE.USER_COOSTORE_BYUSER"

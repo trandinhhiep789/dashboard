@@ -43,7 +43,7 @@ class InventoryRequestDetailListCom extends Component {
                                 <th className="jsgrid-header-cell">Nhóm vật tư</th>
                                 <th className="jsgrid-header-cell">Mã sản phẩm</th>
                                 <th className="jsgrid-header-cell">Tên sản phẩm</th>
-                                <th className="jsgrid-header-cell">Số lượng sổ sách</th>
+                                <th className="jsgrid-header-cell">Số lượng hệ thống</th>
                                 <th className="jsgrid-header-cell">Số lượng thực tế</th>
                                 <th className="jsgrid-header-cell">Chênh lệch</th>
                             </tr>
