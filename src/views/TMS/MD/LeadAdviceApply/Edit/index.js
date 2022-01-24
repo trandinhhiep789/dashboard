@@ -91,28 +91,25 @@ class EditCom extends React.Component {
     }
 
     handleSubmit(formData, MLObject) {
-
         MLObject.UpdatedUser = this.props.AppInfo.LoginInfo.Username;
         MLObject.LoginLogID = JSON.parse(this.props.AppInfo.LoginInfo.TokenString).AuthenLogID;
         MLObject.LeadAdviceID = this.props.LeadAdviceID;
         MLObject.LeadAdviceApplyID = this.props.LeadAdviceApplyID;
 
-        // if (MLObject.ProductID != this.state.DataSource.ProductID) {
-        //     MLObject.ProductID = MLObject.ProductID[0].ProductID;
-        // } else {
-        //     MLObject.ProductID = this.state.DataSource.ProductID;
-        // }
-
-        if (this.state.DataSource.ValueProductID.length == 0) {
-            MLObject.ProductID = -1;
-        }
-        else {
-            if (!!this.state.DataSource.ValueProductID[0].ProductID) {
-                MLObject.ProductID = this.state.DataSource.ValueProductID[0].ProductID;
-            }
-            else {
+        if (this.state.DataSource.ValueProductID !== this.state.DataSource.ProductID) {
+            if (this.state.DataSource.ValueProductID.length == 0) {
                 MLObject.ProductID = -1;
             }
+            else {
+                if (!!this.state.DataSource.ValueProductID[0].ProductID) {
+                    MLObject.ProductID = this.state.DataSource.ValueProductID[0].ProductID;
+                }
+                else {
+                    MLObject.ProductID = -1;
+                }
+            }
+        } else {
+            MLObject.ProductID = this.state.DataSource.ProductID == "" ? -1 : this.state.DataSource.ProductID;
         }
 
         this.props.callFetchAPI(APIHostName, UpdateAPIPath, MLObject).then(apiResult => {
@@ -135,6 +132,7 @@ class EditCom extends React.Component {
         }
 
         dataSource = Object.fromEntries(dataSource);
+        dataSource = { ...dataSource, ProductID: this.state.DataSource.ProductID };
 
         let changeState = this.state;
         let filterObject = changeState.FilterObject;
@@ -160,7 +158,6 @@ class EditCom extends React.Component {
         dataSource = { ...dataSource, IsSystem: this.state.DataSource.IsSystemForm };
         changeState = { ...changeState, FilterObject: filterObject, DataSource: dataSource };
         this.setState(changeState);
-
     }
 
     handleCloseMessage() {

@@ -1109,7 +1109,7 @@ class ListShipCoordinatorRouteCom extends Component {
 
     return (
       <React.Fragment>
-        <div className="card">
+        <div className="card" style={{height: "90vh"}}>
           <ReactNotification ref={this.notificationDOMRef} />
           <div className="card-body" style={{ backgroundColor: "aliceblue", padding: "10px" }}>
             <div className="form-row">
