@@ -264,7 +264,7 @@ class DetailCom extends React.Component {
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <span>Ngày hẹn giao đơn hàng tương lai: </span>
-                                            <span>{formatDate(this.state.DataSource.ExpectedDeliveryDate)}</span>
+                                            <span>{this.state.DataSource.IsFaildAdvice ? "" : formatDate(this.state.DataSource.ExpectedDeliveryDate)}</span>
                                         </div>
                                     </div>
                                 </div>
