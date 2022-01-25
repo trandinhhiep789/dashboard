@@ -204,19 +204,19 @@ class SearchCom extends React.Component {
                 {
                     Name: "IsCreatedSaleOrder",
                     Type: "checkicon",
-                    Caption: "Tạo vận đơn tương lai",
+                    Caption: "Tạo vđ tương lai",
                     DataSourceMember: "IsCreatedSaleOrder",
                 },
                 {
                     Name: "ShipmentOrderID",
                     Type: "text",
-                    Caption: "Mã vận đơn tương lai",
+                    Caption: "Mã vđ tương lai",
                     DataSourceMember: "ShipmentOrderID",
                 },
                 {
                     Name: "CreatedSaleOrderDate",
                     Type: "datetime",
-                    Caption: "Ngày tạo vận đơn tương lai",
+                    Caption: "Ngày tạo vđ tương lai",
                     DataSourceMember: "CreatedSaleOrderDate",
                 },
             ]

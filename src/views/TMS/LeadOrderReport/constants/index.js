@@ -144,6 +144,7 @@ export const listColumn = [
         Caption: "Mã mối bán hàng",
         DataSourceMember: "LeadOrderID",
         Link: "/LeadOrderReport/Detail/",
+
     },
     {
         Name: "VoucherConcern",
@@ -157,6 +158,7 @@ export const listColumn = [
         Type: "text",
         Caption: "Khách hàng",
         DataSourceMember: "CustomerIDName",
+        Width: 150
     },
     {
         Name: "StaffUserIDName",
