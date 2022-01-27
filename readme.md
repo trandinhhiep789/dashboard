@@ -3,7 +3,6 @@
 <a name="top"/>
 
 <details>
-  <summary>Table of Contents</summary>
   
   * [Variable and Component rule](#Variable-and-Component-rule)
     * [Case styles](#Case-styles)
