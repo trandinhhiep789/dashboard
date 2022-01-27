@@ -1,12 +1,20 @@
-# Table of Contents  
-* [Variable and Component rule](#Variable-and-Component-rule)
-  * [Case styles](#Case-styles)
-  * [Naming folders](#Naming-folders)
-  * [Variable declaration](#Variable-declaration)
-  * [Variable naming conventions](#Variable-naming-conventions)
-* [Variable scss rule](#Variable-scss-rule)
-  * [BEM](#BEM)
-  * [Grouped-by-type](#Grouped-by-type)
+
+
+<a name="top"/>
+
+<details>
+  <summary>Table of Contents</summary>
+  
+  * [Variable and Component rule](#Variable-and-Component-rule)
+    * [Case styles](#Case-styles)
+    * [Naming folders](#Naming-folders)
+    * [Variable declaration](#Variable-declaration)
+    * [Variable naming conventions](#Variable-naming-conventions)
+  * [Variable scss rule](#Variable-scss-rule)
+    * [BEM](#BEM)
+    * [Grouped-by-type](#Grouped-by-type)
+</details>
+
   
 
 <a name="Variable-and-Component-rule"/>
@@ -23,6 +31,8 @@
 |  2 |    **camelCase**  | identifier (let name, func name) | ex: let **student**, const **studentList**
 |  3 |    **UPPER_CASE**  | constants | ex: const **PI = 3.14**, const **API_URL = "/api/..."**|
 
+
+
 <a name="Naming-folders"/>
 
 ## Naming folders
@@ -35,6 +45,7 @@
 
 ## Variable declaration
 > TIP: Always use ```const``` until needed ```let``` (since ES6)
+
 
 <a name="Variable-naming-conventions"/>
 
@@ -63,6 +74,9 @@ let hasValidItem = true
 const students = [].map(student => console.log(student.name)    // NOT GOOD
 const studentList = [].map(student => console.log(student.name) // GOOD
 ```
+
+<p align="right"> <a  href="#top">Back to top</a> </p>
+
 <a name="Variable-scss-rule"/>
 
 # Variable scss rule :white_check_mark: 
@@ -110,6 +124,8 @@ GOOD ✔️
 ```
 
 <a name="Grouped-by-type"/>
+
+ <p align="right"> <a  href="#top">Back to top</a> </p>
 
 ## 2. SCSS (Grouped by type)
 
@@ -171,3 +187,6 @@ GOOD ✔️
   cursor: pointer;
 }
 ```
+
+
+ <p align="right"> <a  href="#top">Back to top</a> </p>
