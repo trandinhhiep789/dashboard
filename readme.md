@@ -1,26 +1,44 @@
+# Table of Contents  
+* [Variable and Component rule](#Variable-and-Component-rule)
+  * [Case styles](#Case-styles)
+  * [Naming folders](#Naming-folders)
+  * [Variable declaration](#Variable-declaration)
+  * [Variable naming conventions](#Variable-naming-conventions)
+* [Variable scss rule](#Variable-scss-rule)
+  * [BEM](#BEM)
+  * [Grouped-by-type](#Grouped-by-type)
+  
+
+<a name="Variable-and-Component-rule"/>
+
 # Variable and Component rule :white_check_mark: 
 
 
+<a name="Case-styles"/>
 
-**Case styles**
+## Case styles
 | #           |      Style    |    Used for   |    Example    |
 |-------------|---------------|---------------|---------------|
 |  1 |    **PascalCase**  | identifier (**Component** or **Class**) | ex: ProductList, Sidebar, Menu
 |  2 |    **camelCase**  | identifier (let name, func name) | ex: let **student**, const **studentList**
 |  3 |    **UPPER_CASE**  | constants | ex: const **PI = 3.14**, const **API_URL = "/api/..."**|
 
+<a name="Naming-folders"/>
 
-**Naming folders**
+## Naming folders
+
 ```diff 
 ! Folder name must be lowercase
 ```
 
+<a name="Variable-declaration"/>
 
-**Variable Declaration**
+## Variable declaration
 > TIP: Always use ```const``` until needed ```let``` (since ES6)
 
+<a name="Variable-naming-conventions"/>
 
-**Variable Naming Conventions**
+## Variable naming conventions
 
 BAD  :x:
 ```js
@@ -45,9 +63,12 @@ let hasValidItem = true
 const students = [].map(student => console.log(student.name)    // NOT GOOD
 const studentList = [].map(student => console.log(student.name) // GOOD
 ```
+<a name="Variable-scss-rule"/>
 
 # Variable scss rule :white_check_mark: 
 ![image](https://user-images.githubusercontent.com/62045359/151298857-dff00240-11d0-4506-ab3b-770543782535.png)
+
+<a name="BEM"/>
 
 ## 1. BEM
 syntax: BEM ```Block``` ```Element``` ```Modifier```
@@ -87,6 +108,8 @@ GOOD ✔️
   <div className="card__btn"> Ok, cool </div>
 </div>
 ```
+
+<a name="Grouped-by-type"/>
 
 ## 2. SCSS (Grouped by type)
 
