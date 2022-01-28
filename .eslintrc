@@ -1,0 +1,22 @@
+{
+  // "extends": ["react-app", "prettier"],
+  "extends": ["eslint:recommended"],
+  "plugins": ["react", "prettier"],
+  "parser": "babel-eslint",
+  "rules": {
+    "prettier/prettier": [
+      "warn",
+      {
+        "arrowParens": "always",
+        "semi": true,
+        "trailingComma": "none",
+        "endOfLine": "lf",
+        "tabWidth": 2,
+        "useTabs": false,
+        "singleQuote": true,
+        "printWidth": 120,
+        "jsxSingleQuote": false
+      }
+    ]
+  }
+}
