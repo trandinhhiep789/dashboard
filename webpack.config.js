@@ -1,5 +1,4 @@
 'use strict'
-
 module.exports = {
   entry: ['./src/app.js'],
   mode: 'development',
@@ -35,11 +34,10 @@ module.exports = {
       },
 
       {
-        // test: /\.css$/,
-        // use: ['style-loader', 'css-loader']
-        test: /\.(s*)css$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
+        test: /\.css$/,
+        use: [{ loader: 'style-loader' }, { loader: 'css-loader' }, { loader: 'sass-loader' }]
       },
+
       {
         test: /.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/,
         use: 'url-loader?limit=100000'

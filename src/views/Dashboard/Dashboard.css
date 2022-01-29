@@ -1,0 +1,13 @@
+.dashboard {
+  min-height: 100vh;
+  display: flex;
+}
+
+.dashboard__mainMenuLeft {
+}
+
+.dashboard__contentRight {
+  background-color: rgb(223, 160, 160);
+  min-height: 100vh;
+  width: 100%;
+}

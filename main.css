@@ -1,9 +1,9 @@
 @media print {
-    body * {
-        display: none
-    }
+  body * {
+    display: none;
+  }
 
-    #print {
-        display: block !important
-    }
+  #print {
+    display: block !important;
+  }
 }
