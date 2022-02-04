@@ -3,15 +3,17 @@ import React, { memo, useState } from 'react'
 import MainMenuLeft from '../Layout/menu/MainMenuLeft'
 import MainMenuLeftNhatCuong from '../Layout/menu/MainMenuLeftNhatCuong'
 import HeaderMainMenuLeft from '../Layout/header/HeaderMainMenuLeft'
+import { MenuOutlined } from '@ant-design/icons'
+
 import './Dashboard.css'
 import '../Layout/menu/MainMenuLeftNhatCuong.css'
 import '../../css/animation.css'
 
-import { MenuOutlined } from '@ant-design/icons'
 import CollapseMainMenuLeft from '../Layout/menu/collapse/CollapseMainMenuLeft'
 
 export default memo(function Dashboard() {
   const [isExpandWidthMenuLeft, setIsExpandWidthMenuLeft] = useState(false)
+
   return (
     <div className="dashboard">
       <div className="dashboard__header animated fadeInDown">
@@ -30,14 +32,11 @@ export default memo(function Dashboard() {
               <MenuOutlined />
             </div>
           </div>
-          {/* <MainMenuLeft isExpandWidthMenuLeft={isExpandWidthMenuLeft} /> */}
           <div className="mainMenuLeft">
             <MainMenuLeftNhatCuong setIsExpandWidthMenuLeft={setIsExpandWidthMenuLeft} />
           </div>
         </div>
-        <div className="dashboard__contentRight">
-          <CollapseMainMenuLeft />
-        </div>
+        <div className="dashboard__contentRight">display child components</div>
       </div>
     </div>
   )

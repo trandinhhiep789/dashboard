@@ -1,97 +1,80 @@
 import PropTypes from 'prop-types'
-import React, { memo, useState } from 'react'
+import React, { memo, useState, useCallback } from 'react'
 import { NavLink } from 'react-router-dom'
+import MenuItem from '../../Dashboard/menu-items/index'
 
 import 'antd/dist/antd.css'
-import { SettingOutlined, RightOutlined } from '@ant-design/icons'
+import { RightOutlined } from '@ant-design/icons'
 import './MainMenuLeftNhatCuong.css'
+import { Tooltip } from 'antd'
 
 import CollapseMainMenuLeft from './collapse/CollapseMainMenuLeft'
-
 const MainMenuLeftNhatCuong = memo(function MainMenuLeftNhatCuong(props) {
   const [selected, setSelected] = useState(null)
-
-  const toggle = i => {
-    if (i === selected) {
-      props.setIsExpandWidthMenuLeft(false)
-      return setSelected(null)
-    }
-    setSelected(i)
-    props.setIsExpandWidthMenuLeft(true)
-  }
+  const toggle = useCallback(
+    i => {
+      if (i === selected) {
+        props.setIsExpandWidthMenuLeft(false)
+        return setSelected(null)
+      }
+      setSelected(i)
+      props.setIsExpandWidthMenuLeft(true)
+    },
+    [selected]
+  )
 
   return (
     <div>
-      <div className="mainMenuLeftNhatCuong">
-        <div className="mainMenuLeftNhatCuong__item" onClick={() => toggle(1)}>
-          <div className="mainMenuLeftNhatCuong__item--center">
-            <div className="mainMenuLeftNhatCuong__item__icon">
-              <SettingOutlined />
+      {MenuItem &&
+        MenuItem.map((menu, i) => (
+          <div className="mainMenuLeftNhatCuong" key={i}>
+            {menu.SubMenu.length > 0 ? (
+              <div className="mainMenuLeftNhatCuong__item" onClick={() => toggle(i)}>
+                <div className="mainMenuLeftNhatCuong__item--center">
+                  <div className="mainMenuLeftNhatCuong__item__icon">{menu.MenuIcon}</div>
+                  <Tooltip color={'blue'} placement="rightTop" title={menu.MenuTitle}>
+                    <div className="mainMenuLeftNhatCuong__item__title">{menu.MenuTitle.slice(0, 12)}</div>
+                  </Tooltip>
+                </div>
+                <div className="mainMenuLeftNhatCuong__item__iconDrop">
+                  <RightOutlined />
+                </div>
+              </div>
+            ) : (
+              <NavLink to="#">
+                <div className="mainMenuLeftNhatCuong__item">
+                  <div className="mainMenuLeftNhatCuong__item--center">
+                    <div className="mainMenuLeftNhatCuong__item__icon">{menu.MenuIcon}</div>
+                    <Tooltip color={'blue'} placement="rightTop" title={menu.MenuTitle}>
+                      <div className="mainMenuLeftNhatCuong__item__title">{menu.MenuTitle.slice(0, 12)}</div>
+                    </Tooltip>
+                  </div>
+                </div>
+              </NavLink>
+            )}
+            <div
+              className={
+                selected == i ? 'mainMenuLeftNhatCuong__item__content--show' : 'mainMenuLeftNhatCuong__item__content'
+              }
+            >
+              {menu.SubMenu.map((sub, i) => {
+                return (
+                  <div key={i}>
+                    {sub.SubMenu.length > 0 ? (
+                      <CollapseMainMenuLeft menuItem={sub} />
+                    ) : (
+                      <div className="mainMenuLeftNhatCuong__item__content__title">
+                        <NavLink className="mainMenuLeftNhatCuong__item__content__title__navlink" to="#">
+                          {sub.MenuTitle}
+                        </NavLink>
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
             </div>
-            <div className="mainMenuLeftNhatCuong__item__title">VP điện tử</div>
           </div>
-          <div className="mainMenuLeftNhatCuong__item__iconDrop">
-            <RightOutlined />
-          </div>
-        </div>
-        <div
-          className={
-            selected == 1 ? 'mainMenuLeftNhatCuong__item__content--show' : 'mainMenuLeftNhatCuong__item__content'
-          }
-        >
-          <div className="mainMenuLeftNhatCuong__item__content__title">
-            <NavLink className="mainMenuLeftNhatCuong__item__content__title__navlink" to="#">
-              Hộp thư nội bộ
-            </NavLink>
-          </div>
-          <div className="mainMenuLeftNhatCuong__item__content__title">
-            <NavLink className="mainMenuLeftNhatCuong__item__content__title__navlink" to="#">
-              Thông báo
-            </NavLink>
-          </div>
-          <CollapseMainMenuLeft />
-          <div className="mainMenuLeftNhatCuong__item__content__title">
-            <NavLink className="mainMenuLeftNhatCuong__item__content__title__navlink" to="#">
-              Công việc cần làm
-            </NavLink>
-          </div>
-        </div>
-      </div>
-      <div className="mainMenuLeftNhatCuong">
-        <div className="mainMenuLeftNhatCuong__item" onClick={() => toggle(2)}>
-          <div className="mainMenuLeftNhatCuong__item--center">
-            <div className="mainMenuLeftNhatCuong__item__icon">
-              <SettingOutlined />
-            </div>
-            <div className="mainMenuLeftNhatCuong__item__title">VP điện tử</div>
-          </div>
-          <div className="mainMenuLeftNhatCuong__item__iconDrop">
-            <RightOutlined />
-          </div>
-        </div>
-        <div
-          className={
-            selected == 2 ? 'mainMenuLeftNhatCuong__item__content--show' : 'mainMenuLeftNhatCuong__item__content'
-          }
-        >
-          <div className="mainMenuLeftNhatCuong__item__content__title">
-            <NavLink className="mainMenuLeftNhatCuong__item__content__title__navlink" to="#">
-              Hộp thư nội bộ
-            </NavLink>
-          </div>
-          <div className="mainMenuLeftNhatCuong__item__content__title">
-            <NavLink className="mainMenuLeftNhatCuong__item__content__title__navlink" to="#">
-              Thông báo
-            </NavLink>
-          </div>
-          <CollapseMainMenuLeft />
-          <div className="mainMenuLeftNhatCuong__item__content__title">
-            <NavLink className="mainMenuLeftNhatCuong__item__content__title__navlink" to="#">
-              Công việc cần làm
-            </NavLink>
-          </div>
-        </div>
-      </div>
+        ))}
     </div>
   )
 })
