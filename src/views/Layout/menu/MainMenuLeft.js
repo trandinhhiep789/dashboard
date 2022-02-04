@@ -1,31 +1,25 @@
-import React, { useState } from 'react'
+import PropTypes from 'prop-types'
+import React, { memo, useState } from 'react'
+
 import { Menu, Switch } from 'antd'
 import 'antd/dist/antd.css'
 import { MailOutlined, AppstoreOutlined, SettingOutlined } from '@ant-design/icons'
 const { SubMenu } = Menu
 
-const MainMenuLeft = openWidthMenuLeft => {
-  const [theme, setThem] = useState('dark')
+const MainMenuLeft = memo(function MainMenuLeft(props) {
   const [current, setCurrent] = useState('1')
-
-  const changeTheme = value => {
-    setThem(value ? 'dark' : 'light')
-  }
 
   const handleClick = e => {
     setCurrent(e.key)
   }
   return (
     <div>
-      <Switch checked={theme === 'dark'} onChange={changeTheme} checkedChildren="Dark" unCheckedChildren="Light" />
-      <br />
       <Menu
-        theme={theme}
+        theme={'light'}
         onClick={handleClick}
-        // defaultOpenKeys={['sub1']}
         selectedKeys={[current]}
+        inlineCollapsed={props.isExpandWidthMenuLeft}
         mode="inline"
-        inlineCollapsed={openWidthMenuLeft}
       >
         <SubMenu key="sub1" icon={<MailOutlined />} title="Navigation One">
           <Menu.Item key="1">Option 1</Menu.Item>
@@ -50,6 +44,10 @@ const MainMenuLeft = openWidthMenuLeft => {
       </Menu>
     </div>
   )
+})
+
+MainMenuLeft.propTypes = {
+  isExpandWidthMenuLeft: PropTypes.bool
 }
 
 export default MainMenuLeft

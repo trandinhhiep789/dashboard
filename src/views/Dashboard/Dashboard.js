@@ -1,23 +1,44 @@
-import React, { useState } from 'react'
+import React, { memo, useState } from 'react'
 
-import MainMenuLeft from '../Layout/MainMenuLeft'
+import MainMenuLeft from '../Layout/menu/MainMenuLeft'
+import MainMenuLeftNhatCuong from '../Layout/menu/MainMenuLeftNhatCuong'
+import HeaderMainMenuLeft from '../Layout/header/HeaderMainMenuLeft'
 import './Dashboard.css'
+import '../Layout/menu/MainMenuLeftNhatCuong.css'
+import '../../css/animation.css'
 
-const Dashboard = () => {
-  const [openWidthMenuLeft, setOpenWidthMenuLeft] = useState(false)
-  const expandWidthMenuLeft = () => {
-    setOpenWidthMenuLeft(!openWidthMenuLeft)
-    console.log('openWidthMenuLeft: ', openWidthMenuLeft)
-  }
+import { MenuOutlined } from '@ant-design/icons'
+import CollapseMainMenuLeft from '../Layout/menu/collapse/CollapseMainMenuLeft'
 
+export default memo(function Dashboard() {
+  const [isExpandWidthMenuLeft, setIsExpandWidthMenuLeft] = useState(false)
   return (
     <div className="dashboard">
-      <div className="dashboard__mainMenuLeft" onMouseOver={expandWidthMenuLeft} onMouseOut={expandWidthMenuLeft}>
-        <MainMenuLeft openWidthMenuLeft={openWidthMenuLeft} />
+      <div className="dashboard__header animated fadeInDown">
+        <HeaderMainMenuLeft />
       </div>
-      <div className="dashboard__contentRight"></div>
+      <div className="dashboard--dflex">
+        <div
+          className={
+            isExpandWidthMenuLeft
+              ? 'dashboard__mainMenuLeft animated fadeInLeftBig'
+              : 'dashboard__mainMenuLeft--hover animated fadeInLeftBig'
+          }
+        >
+          <div className="dashboard__mainMenuLeft--iconMenu">
+            <div>
+              <MenuOutlined />
+            </div>
+          </div>
+          {/* <MainMenuLeft isExpandWidthMenuLeft={isExpandWidthMenuLeft} /> */}
+          <div className="mainMenuLeft">
+            <MainMenuLeftNhatCuong setIsExpandWidthMenuLeft={setIsExpandWidthMenuLeft} />
+          </div>
+        </div>
+        <div className="dashboard__contentRight">
+          <CollapseMainMenuLeft />
+        </div>
+      </div>
     </div>
   )
-}
-
-export default Dashboard
+})
