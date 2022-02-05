@@ -21,6 +21,8 @@
  
  How to create: use command prompt syntax ```rmcp``` (In extension **ES7+ React/Redux/React-Native snippets**) to generate!
  
+ ```rmcp```: Create a React Memo Function Component with ES7 module system with PropTypes  
+ 
  Example of **React Memo** and **propTypes**:
  
  ![image](https://user-images.githubusercontent.com/62045359/152634546-80ce75aa-3380-475a-ac2a-b5edd148bd5a.png)
