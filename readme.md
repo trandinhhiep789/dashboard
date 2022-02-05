@@ -14,7 +14,23 @@
     * [Grouped-by-type](#Grouped-by-type)
 </details>
 
-  
+ ## Quý tắc đặt tên, tạo một Component
+ 1. Styles : **PascalCase**, Ex: **ProductList**, **MainMenu**, . . .
+ 2. Sử dụng React Memo để tạo Component
+ 3. Mỗi Component phải có **propTypes** để ```định nghĩa, quản lý các props truyền vào Component```
+ 
+ Cách tạo: sử dụng cú pháp nhắc lệnh ```rmcp``` (Trong extension **ES7+ React/Redux/React-Native snippets**) để tạo!
+ 
+ ![image](https://user-images.githubusercontent.com/62045359/152634546-80ce75aa-3380-475a-ac2a-b5edd148bd5a.png)
+
+
+ ## Quý tắc đặt tên, tạo một Function
+ 1. Styles : **camelCase**, những Function nào trực tiếp xử lý logic thì phải có chữ **handle...** phía trước! Ex: **handleFilterProductList**, **handleCalculate**, . . .
+ 2. Tất cả Function đều phải được tạo theo kiểu hook **useCallback()**
+
+![image](https://user-images.githubusercontent.com/62045359/152634305-b511a817-6af5-40e9-87a9-9452aff6baac.png)
+
+
 
 <a name="Variable-and-Component-rule"/>
 
