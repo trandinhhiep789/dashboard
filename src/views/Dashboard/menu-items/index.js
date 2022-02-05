@@ -5,7 +5,15 @@ import {
   SettingOutlined,
   PropertySafetyOutlined,
   SlidersOutlined,
-  UserOutlined
+  UserOutlined,
+  FormOutlined,
+  UnorderedListOutlined,
+  WindowsOutlined,
+  EditOutlined,
+  DingdingOutlined,
+  AliwangwangOutlined,
+  AppleOutlined,
+  AndroidOutlined
 } from '@ant-design/icons'
 
 const MenuItem = [
@@ -29,6 +37,21 @@ const MenuItem = [
         SubMenu: []
       },
       {
+        id: 'lichlamviec',
+        MenuTitle: 'Lịch làm việc',
+        LinkTo: '',
+        MenuIcon: '',
+        SubMenu: [
+          {
+            id: 'quanlylichlamviec',
+            MenuTitle: 'Quản lý lịch làm việc',
+            LinkTo: '',
+            MenuIcon: '',
+            SubMenu: []
+          }
+        ]
+      },
+      {
         id: 'congvieccanhotro',
         MenuTitle: 'Công việc cần hỗ trợ',
         LinkTo: '',
@@ -50,21 +73,6 @@ const MenuItem = [
           {
             id: 'quanlythongbao',
             MenuTitle: 'Quản lý thông báo',
-            LinkTo: '',
-            MenuIcon: '',
-            SubMenu: []
-          }
-        ]
-      },
-      {
-        id: 'lichlamviec',
-        MenuTitle: 'Lịch làm việc',
-        LinkTo: '',
-        MenuIcon: '',
-        SubMenu: [
-          {
-            id: 'quanlylichlamviec',
-            MenuTitle: 'Quản lý lịch làm việc',
             LinkTo: '',
             MenuIcon: '',
             SubMenu: []
@@ -128,6 +136,62 @@ const MenuItem = [
     MenuTitle: 'Tài liệu',
     LinkTo: '',
     MenuIcon: <PaperClipOutlined />,
+    SubMenu: []
+  },
+  {
+    id: 'elearning',
+    MenuTitle: 'Elearning',
+    LinkTo: '',
+    MenuIcon: <FormOutlined />,
+    SubMenu: []
+  },
+  {
+    id: 'danhmuc',
+    MenuTitle: 'Danh mục',
+    LinkTo: '',
+    MenuIcon: <UnorderedListOutlined />,
+    SubMenu: []
+  },
+  {
+    id: 'hethong',
+    MenuTitle: 'Hệ thông',
+    LinkTo: '',
+    MenuIcon: <WindowsOutlined />,
+    SubMenu: []
+  },
+  {
+    id: 'gopy',
+    MenuTitle: 'Góp ý',
+    LinkTo: '',
+    MenuIcon: <EditOutlined />,
+    SubMenu: []
+  },
+  {
+    id: 'nguoidung',
+    MenuTitle: 'Người dùng',
+    LinkTo: '',
+    MenuIcon: <DingdingOutlined />,
+    SubMenu: []
+  },
+  {
+    id: 'thumuc',
+    MenuTitle: 'Thư mục',
+    LinkTo: '',
+    MenuIcon: <AliwangwangOutlined />,
+    SubMenu: []
+  },
+  {
+    id: 'androi',
+    MenuTitle: 'Androi',
+    LinkTo: '',
+    MenuIcon: <AndroidOutlined />,
+    SubMenu: []
+  },
+  {
+    id: 'ios',
+    MenuTitle: 'IOS',
+    LinkTo: '',
+    MenuIcon: <AppleOutlined />,
     SubMenu: []
   }
 ]

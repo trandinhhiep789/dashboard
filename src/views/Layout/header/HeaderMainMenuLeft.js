@@ -2,8 +2,8 @@ import PropTypes from 'prop-types'
 import React, { memo } from 'react'
 import './HeaderMainMenuLeft.css'
 
-import { Menu, Dropdown, Collapse } from 'antd'
-import { DownOutlined, PlusSquareOutlined, CaretRightOutlined } from '@ant-design/icons'
+import { Menu, Dropdown, Collapse, Switch, Avatar } from 'antd'
+import { DownOutlined, PlusSquareOutlined, CaretRightOutlined, UserOutlined } from '@ant-design/icons'
 import 'antd/dist/antd.css'
 
 import logo from '../../../img/eoffice-logo.png'
@@ -32,9 +32,20 @@ const HeaderMainMenuLeft = memo(function HeaderMainMenuLeft(props) {
       </Collapse>
     </Menu>
   )
+
+  const userAccount = (
+    <Menu>
+      <div style={{ padding: '10px' }}>
+        <p style={{ fontWeight: '500' }}>CHUYÊN VIÊN QUẢN TRỊ WEB VÀ AN TOÀN MẠNG</p>
+        <hr />
+        <div>Trang có nhân</div>
+        <div>Đổi mật khẩu</div>
+        <div>Đăng suất</div>
+      </div>
+    </Menu>
+  )
   return (
     <div className="headerMainMenuLeft">
-      <div></div>
       <div className="headerMainMenuLeft--dflex">
         <div>
           <img className="logo_eoffice" src={logo} alt="../../../img/eoffice-logo.png" />
@@ -52,6 +63,21 @@ const HeaderMainMenuLeft = memo(function HeaderMainMenuLeft(props) {
               <div>
                 Công việc CHT <DownOutlined />
               </div>
+            </Dropdown>
+          </div>
+          &emsp;
+          <div className="headerMainMenuLeft__listItem__item--center">
+            <Switch checkedChildren="Vie" unCheckedChildren="Eng" defaultChecked />
+          </div>
+          &ensp;
+          <div className="headerMainMenuLeft__listItem__item--center">
+            <Dropdown overlay={userAccount} trigger={['click']}>
+              <Avatar
+                style={{
+                  backgroundColor: '#87d068'
+                }}
+                icon={<UserOutlined />}
+              />
             </Dropdown>
           </div>
         </div>

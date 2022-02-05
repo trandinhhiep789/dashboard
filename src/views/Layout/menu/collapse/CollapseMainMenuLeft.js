@@ -24,7 +24,6 @@ const CollapseMainMenuLeft = memo(function CollapseMainMenuLeft(props) {
           {selected === 1 ? <MinusOutlined size="small" /> : <PlusOutlined />}
         </div>
       </div>
-      {console.log('Dsaaaaaa')}
       {props.menuItem.SubMenu.map((menu, i) => {
         return (
           <div
@@ -43,6 +42,8 @@ const CollapseMainMenuLeft = memo(function CollapseMainMenuLeft(props) {
   )
 })
 
-CollapseMainMenuLeft.propTypes = {}
+CollapseMainMenuLeft.propTypes = {
+  menuItem: PropTypes.object.isRequired
+}
 
 export default CollapseMainMenuLeft

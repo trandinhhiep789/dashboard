@@ -3,8 +3,8 @@ import React, { memo, useState } from 'react'
 import MainMenuLeft from '../Layout/menu/MainMenuLeft'
 import MainMenuLeftNhatCuong from '../Layout/menu/MainMenuLeftNhatCuong'
 import HeaderMainMenuLeft from '../Layout/header/HeaderMainMenuLeft'
-import { MenuOutlined } from '@ant-design/icons'
 
+import { MenuOutlined } from '@ant-design/icons'
 import './Dashboard.css'
 import '../Layout/menu/MainMenuLeftNhatCuong.css'
 import '../../css/animation.css'
@@ -19,7 +19,17 @@ export default memo(function Dashboard() {
       <div className="dashboard__header animated fadeInDown">
         <HeaderMainMenuLeft />
       </div>
+      {/* <div className="dashboard__mainMenuLeft--iconMenu">
+        <div>
+          <MenuOutlined />
+        </div>
+      </div> */}
       <div className="dashboard--dflex">
+        <div className="dashboard__mainMenuLeft--iconMenu">
+          <div>
+            <MenuOutlined />
+          </div>
+        </div>
         <div
           className={
             isExpandWidthMenuLeft
@@ -27,11 +37,6 @@ export default memo(function Dashboard() {
               : 'dashboard__mainMenuLeft--hover animated fadeInLeftBig'
           }
         >
-          <div className="dashboard__mainMenuLeft--iconMenu">
-            <div>
-              <MenuOutlined />
-            </div>
-          </div>
           <div className="mainMenuLeft">
             <MainMenuLeftNhatCuong setIsExpandWidthMenuLeft={setIsExpandWidthMenuLeft} />
           </div>

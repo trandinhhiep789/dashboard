@@ -32,9 +32,13 @@ const MainMenuLeftNhatCuong = memo(function MainMenuLeftNhatCuong(props) {
               <div className="mainMenuLeftNhatCuong__item" onClick={() => toggle(i)}>
                 <div className="mainMenuLeftNhatCuong__item--center">
                   <div className="mainMenuLeftNhatCuong__item__icon">{menu.MenuIcon}</div>
-                  <Tooltip color={'blue'} placement="rightTop" title={menu.MenuTitle}>
-                    <div className="mainMenuLeftNhatCuong__item__title">{menu.MenuTitle.slice(0, 12)}</div>
-                  </Tooltip>
+                  {menu.MenuTitle.length > 10 ? (
+                    <Tooltip color={'blue'} placement="rightTop" title={menu.MenuTitle}>
+                      <div className="mainMenuLeftNhatCuong__item__title">{menu.MenuTitle.slice(0, 10)}</div>
+                    </Tooltip>
+                  ) : (
+                    <div className="mainMenuLeftNhatCuong__item__title">{menu.MenuTitle.slice(0, 10)}</div>
+                  )}
                 </div>
                 <div className="mainMenuLeftNhatCuong__item__iconDrop">
                   <RightOutlined />
@@ -45,9 +49,13 @@ const MainMenuLeftNhatCuong = memo(function MainMenuLeftNhatCuong(props) {
                 <div className="mainMenuLeftNhatCuong__item">
                   <div className="mainMenuLeftNhatCuong__item--center">
                     <div className="mainMenuLeftNhatCuong__item__icon">{menu.MenuIcon}</div>
-                    <Tooltip color={'blue'} placement="rightTop" title={menu.MenuTitle}>
-                      <div className="mainMenuLeftNhatCuong__item__title">{menu.MenuTitle.slice(0, 12)}</div>
-                    </Tooltip>
+                    {menu.MenuTitle.length > 10 ? (
+                      <Tooltip color={'blue'} placement="rightTop" title={menu.MenuTitle}>
+                        <div className="mainMenuLeftNhatCuong__item__title">{menu.MenuTitle.slice(0, 10)}</div>
+                      </Tooltip>
+                    ) : (
+                      <div className="mainMenuLeftNhatCuong__item__title">{menu.MenuTitle.slice(0, 10)}</div>
+                    )}
                   </div>
                 </div>
               </NavLink>
@@ -79,6 +87,8 @@ const MainMenuLeftNhatCuong = memo(function MainMenuLeftNhatCuong(props) {
   )
 })
 
-MainMenuLeftNhatCuong.propTypes = {}
+MainMenuLeftNhatCuong.propTypes = {
+  setIsExpandWidthMenuLeft: PropTypes.func
+}
 
 export default MainMenuLeftNhatCuong

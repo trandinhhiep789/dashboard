@@ -2,16 +2,33 @@
   min-height: 100vh;
 }
 
+.dashboard__header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+}
+
 .dashboard--dflex {
   display: flex;
   width: 100%;
+  margin-top: 52px;
+}
+
+.mainMenuLeft {
+  height: 100vh;
+  overflow: hidden;
+  transition: all 0.5;
+  padding-bottom: 250px;
+}
+.mainMenuLeft:hover {
+  overflow: auto;
 }
 
 .dashboard__mainMenuLeft {
   height: 100vh;
   box-shadow: 3px 0px 41px 0px #488bd82e;
   width: 75px;
-  transition: all 0.25s;
 }
 
 .dashboard__mainMenuLeft--hover {
@@ -47,12 +64,16 @@
 }
 
 .dashboard__mainMenuLeft--iconMenu {
+  z-index: 10;
+  position: fixed !important;
+  cursor: pointer;
+
   display: flex;
   justify-content: center;
   align-items: center;
   width: 52px;
 
-  background-color: #0b284a;
+  background-color: #031627;
   color: white;
   padding: 10px 0;
   margin-top: -52px;
@@ -62,5 +83,21 @@
 .dashboard__contentRight {
   background-color: #f2f2f2;
   min-height: 100vh;
-  width: 80%;
+  width: 100%;
+}
+
+/* Mobie */
+@media (max-width: 740px) {
+  /* .dashboard__mainMenuLeft {
+    display: none;
+  }
+  .dashboard__mainMenuLeft--hover {
+    display: none;
+  }
+  .dashboard__mainMenuLeft--iconMenu:hover + .dashboard__mainMenuLeft--hover {
+    display: block;
+  }
+  .dashboard__mainMenuLeft--iconMenu:hover + .dashboard__mainMenuLeft {
+    display: block;
+  } */
 }

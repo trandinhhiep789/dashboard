@@ -1,8 +1,10 @@
-/* .headerMainMenuLeft {
+.headerMainMenuLeft {
   background-color: #0b284a;
   padding: 10px;
   margin-left: 52px;
   box-shadow: 0px 3px 41px 0px #488bd82e;
+
+  height: 51px;
 }
 
 .headerMainMenuLeft--dflex {
@@ -12,6 +14,13 @@
 
 .headerMainMenuLeft__listItem {
   display: flex;
+}
+
+.headerMainMenuLeft__listItem__item--center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
 .headerMainMenuLeft__listItem__item {
@@ -33,7 +42,7 @@
   width: 90px;
 }
 
-.ant-dropdown-menu {
+/* .ant-dropdown-menu {
   background-color: #496484;
 }
 
@@ -60,3 +69,10 @@
   padding: 10px 17px;
   color: #fff;
 } */
+
+/* Mobie */
+@media (max-width: 740px) {
+  .logo_eoffice {
+    display: none;
+  }
+}
