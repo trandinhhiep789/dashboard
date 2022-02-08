@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { memo, useState, useCallback } from 'react'
 import { NavLink } from 'react-router-dom'
-import MenuItem from '../../Dashboard/menu-items/index'
+import useMenuItem from '../../Dashboard/menu-items/useMenuItem'
 
 import 'antd/dist/antd.css'
 import { RightOutlined } from '@ant-design/icons'
@@ -10,6 +10,7 @@ import { Tooltip } from 'antd'
 
 import CollapseMainMenuLeft from './collapse/CollapseMainMenuLeft'
 const MainMenuLeftNhatCuong = memo(function MainMenuLeftNhatCuong(props) {
+  const { MenuItem } = useMenuItem()
   const [selected, setSelected] = useState(null)
   const toggle = useCallback(
     i => {
@@ -22,7 +23,6 @@ const MainMenuLeftNhatCuong = memo(function MainMenuLeftNhatCuong(props) {
     },
     [selected]
   )
-
   return (
     <div>
       {MenuItem &&

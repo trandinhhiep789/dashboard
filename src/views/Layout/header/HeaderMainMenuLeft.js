@@ -5,12 +5,14 @@ import './HeaderMainMenuLeft.css'
 import { Menu, Dropdown, Collapse, Switch, Avatar } from 'antd'
 import { DownOutlined, PlusSquareOutlined, CaretRightOutlined, UserOutlined } from '@ant-design/icons'
 import 'antd/dist/antd.css'
+import { useTranslation } from 'react-i18next'
 
 import logo from '../../../img/eoffice-logo.png'
 
 const { Panel } = Collapse
 
 const HeaderMainMenuLeft = memo(function HeaderMainMenuLeft(props) {
+  const { i18n } = useTranslation()
   const menu = (
     <Menu>
       {/* <Menu.Item key="3">3rd menu item</Menu.Item> */}
@@ -44,6 +46,14 @@ const HeaderMainMenuLeft = memo(function HeaderMainMenuLeft(props) {
       </div>
     </Menu>
   )
+
+  const handleChangeLangChange = value => {
+    if (value) {
+      return i18n.changeLanguage('en')
+    }
+    i18n.changeLanguage('vi')
+  }
+
   return (
     <div className="headerMainMenuLeft">
       <div className="headerMainMenuLeft--dflex">
@@ -67,7 +77,7 @@ const HeaderMainMenuLeft = memo(function HeaderMainMenuLeft(props) {
           </div>
           &emsp;
           <div className="headerMainMenuLeft__listItem__item--center">
-            <Switch checkedChildren="Vie" unCheckedChildren="Eng" defaultChecked />
+            <Switch checkedChildren="Eng" unCheckedChildren="Vie" onChange={handleChangeLangChange} />
           </div>
           &ensp;
           <div className="headerMainMenuLeft__listItem__item--center">
