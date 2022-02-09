@@ -13,27 +13,6 @@ const { Panel } = Collapse
 
 const HeaderMainMenuLeft = memo(function HeaderMainMenuLeft(props) {
   const { i18n } = useTranslation()
-  const menu = (
-    <Menu>
-      {/* <Menu.Item key="3">3rd menu item</Menu.Item> */}
-      <Collapse expandIcon={({ isActive }) => <PlusSquareOutlined rotate={isActive ? 90 : 0} />} ghost>
-        <Panel header="This is panel header 1" key="1">
-          hahahaah
-          <Collapse expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />} ghost>
-            <Panel header="This is panel header 2" key="2">
-              hahahaah
-            </Panel>
-          </Collapse>
-        </Panel>
-        <Panel header="This is panel header 2" key="2">
-          hahahaah
-        </Panel>
-        <Panel header="This is panel header 3" key="3">
-          hahahaah
-        </Panel>
-      </Collapse>
-    </Menu>
-  )
 
   const userAccount = (
     <Menu>
@@ -61,20 +40,8 @@ const HeaderMainMenuLeft = memo(function HeaderMainMenuLeft(props) {
           <img className="logo_eoffice" src={logo} alt="../../../img/eoffice-logo.png" />
         </div>
         <div className="headerMainMenuLeft__listItem">
-          <div className="headerMainMenuLeft__listItem__item">
-            <Dropdown overlay={menu} trigger={['click']}>
-              <div>
-                Công việc CHT <DownOutlined />
-              </div>
-            </Dropdown>
-          </div>
-          <div className="headerMainMenuLeft__listItem__item">
-            <Dropdown overlay={menu} trigger={['click']}>
-              <div>
-                Công việc CHT <DownOutlined />
-              </div>
-            </Dropdown>
-          </div>
+          <div className="headerMainMenuLeft__listItem__item"></div>
+          <div className="headerMainMenuLeft__listItem__item"></div>
           &emsp;
           <div className="headerMainMenuLeft__listItem__item--center">
             <Switch checkedChildren="Eng" unCheckedChildren="Vie" onChange={handleChangeLangChange} />

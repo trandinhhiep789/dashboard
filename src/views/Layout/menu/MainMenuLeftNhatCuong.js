@@ -34,7 +34,7 @@ const MainMenuLeftNhatCuong = memo(function MainMenuLeftNhatCuong(props) {
                   <div className="mainMenuLeftNhatCuong__item__icon">{menu.MenuIcon}</div>
                   {menu.MenuTitle.length > 10 ? (
                     <Tooltip color={'blue'} placement="rightTop" title={menu.MenuTitle}>
-                      <div className="mainMenuLeftNhatCuong__item__title">{menu.MenuTitle.slice(0, 10)}</div>
+                      <div className="mainMenuLeftNhatCuong__item__title">{menu.MenuTitle.slice(0, 7)}...</div>
                     </Tooltip>
                   ) : (
                     <div className="mainMenuLeftNhatCuong__item__title">{menu.MenuTitle.slice(0, 10)}</div>
@@ -51,7 +51,7 @@ const MainMenuLeftNhatCuong = memo(function MainMenuLeftNhatCuong(props) {
                     <div className="mainMenuLeftNhatCuong__item__icon">{menu.MenuIcon}</div>
                     {menu.MenuTitle.length > 10 ? (
                       <Tooltip color={'blue'} placement="rightTop" title={menu.MenuTitle}>
-                        <div className="mainMenuLeftNhatCuong__item__title">{menu.MenuTitle.slice(0, 10)}</div>
+                        <div className="mainMenuLeftNhatCuong__item__title">{menu.MenuTitle.slice(0, 7)}...</div>
                       </Tooltip>
                     ) : (
                       <div className="mainMenuLeftNhatCuong__item__title">{menu.MenuTitle.slice(0, 10)}</div>
