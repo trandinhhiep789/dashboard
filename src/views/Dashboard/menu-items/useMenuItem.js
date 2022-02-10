@@ -23,7 +23,7 @@ const useMenuItem = () => {
     {
       id: 'dashboard',
       MenuTitle: t('menuItem.dashboard__title'),
-      LinkTo: '',
+      LinkTo: '/dashboard',
       MenuIcon: <SettingOutlined />,
       SubMenu: []
     },
@@ -36,7 +36,7 @@ const useMenuItem = () => {
         {
           id: 'hopthu',
           MenuTitle: t('menuItem.task__subMenu.task__child__1__title'),
-          LinkTo: '',
+          LinkTo: '/hopthu',
           SubMenu: []
         },
         {
@@ -48,7 +48,7 @@ const useMenuItem = () => {
             {
               id: 'quanlylichlamviec',
               MenuTitle: t('menuItem.task__subMenu.task__child__2__subMenu.task__child__2.1__title'),
-              LinkTo: '',
+              LinkTo: 'quanlylichlamviec',
               MenuIcon: '',
               SubMenu: []
             }
@@ -57,7 +57,7 @@ const useMenuItem = () => {
         {
           id: 'congvieccanhotro',
           MenuTitle: t('menuItem.task__subMenu.task__child__3__title'),
-          LinkTo: '',
+          LinkTo: '/congvieccanhotro',
           SubMenu: []
         },
         {
@@ -69,14 +69,14 @@ const useMenuItem = () => {
             {
               id: 'xemthongbao',
               MenuTitle: t('menuItem.task__subMenu.task__child__4__subMenu.task__child__4.1__title'),
-              LinkTo: '',
+              LinkTo: '/xemthongbao',
               MenuIcon: '',
               SubMenu: []
             },
             {
               id: 'quanlythongbao',
               MenuTitle: t('menuItem.task__subMenu.task__child__4__subMenu.task__child__4.2__title'),
-              LinkTo: '',
+              LinkTo: '/quanlythongbao',
               MenuIcon: '',
               SubMenu: []
             }
@@ -93,21 +93,21 @@ const useMenuItem = () => {
         {
           id: 'lichlamviec',
           MenuTitle: t('menuItem.news__subMenu.news__child__1__title'),
-          LinkTo: '',
+          LinkTo: '/lichlamviec',
           MenuIcon: '',
           SubMenu: []
         },
         {
           id: 'quanlyduan',
           MenuTitle: t('menuItem.news__subMenu.news__child__2__title'),
-          LinkTo: '',
+          LinkTo: '/quanlyduan',
           MenuIcon: '',
           SubMenu: []
         },
         {
           id: 'chungtudientu',
           MenuTitle: t('menuItem.news__subMenu.news__child__3__title'),
-          LinkTo: '',
+          LinkTo: '/chungtudientu',
           MenuIcon: '',
           SubMenu: []
         }
@@ -116,84 +116,84 @@ const useMenuItem = () => {
     {
       id: 'nhansu',
       MenuTitle: t('menuItem.humanResource__title'),
-      LinkTo: '',
+      LinkTo: '/nhansu',
       MenuIcon: <UserOutlined />,
       SubMenu: []
     },
     {
       id: 'cms',
       MenuTitle: t('menuItem.cms__title'),
-      LinkTo: '',
+      LinkTo: '/cms',
       MenuIcon: <SlidersOutlined />,
       SubMenu: []
     },
     {
       id: 'lichhop',
       MenuTitle: t('menuItem.calendar__title'),
-      LinkTo: '',
+      LinkTo: '/lichhop',
       MenuIcon: <CalendarOutlined />,
       SubMenu: []
     },
     {
-      id: 'tailiey',
+      id: 'tailieu',
       MenuTitle: t('menuItem.docs__title'),
-      LinkTo: '',
+      LinkTo: '/tailieu',
       MenuIcon: <PaperClipOutlined />,
       SubMenu: []
     },
     {
       id: 'elearning',
       MenuTitle: t('menuItem.elearning__title'),
-      LinkTo: '',
+      LinkTo: '/elearning',
       MenuIcon: <FormOutlined />,
       SubMenu: []
     },
     {
       id: 'danhmuc',
       MenuTitle: t('menuItem.category__title'),
-      LinkTo: '',
+      LinkTo: '/danhmuc',
       MenuIcon: <UnorderedListOutlined />,
       SubMenu: []
     },
     {
       id: 'hethong',
       MenuTitle: t('menuItem.system__title'),
-      LinkTo: '',
+      LinkTo: '/hethong',
       MenuIcon: <WindowsOutlined />,
       SubMenu: []
     },
     {
       id: 'gopy',
       MenuTitle: t('menuItem.feedback__title'),
-      LinkTo: '',
+      LinkTo: '/gopy',
       MenuIcon: <EditOutlined />,
       SubMenu: []
     },
     {
       id: 'nguoidung',
       MenuTitle: t('menuItem.users__title'),
-      LinkTo: '',
+      LinkTo: '/nguoidung',
       MenuIcon: <DingdingOutlined />,
       SubMenu: []
     },
     {
       id: 'thumuc',
       MenuTitle: t('menuItem.folder__title'),
-      LinkTo: '',
+      LinkTo: '/thumuc',
       MenuIcon: <AliwangwangOutlined />,
       SubMenu: []
     },
     {
       id: 'androi',
       MenuTitle: t('menuItem.androi__title'),
-      LinkTo: '',
+      LinkTo: '/androi',
       MenuIcon: <AndroidOutlined />,
       SubMenu: []
     },
     {
       id: 'ios',
       MenuTitle: t('menuItem.ios__title'),
-      LinkTo: '',
+      LinkTo: '/ios',
       MenuIcon: <AppleOutlined />,
       SubMenu: []
     }

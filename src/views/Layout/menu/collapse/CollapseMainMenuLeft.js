@@ -31,7 +31,7 @@ const CollapseMainMenuLeft = memo(function CollapseMainMenuLeft(props) {
             className={`${selected === 1 ? 'collapseMainMenuLeft__content--show' : 'collapseMainMenuLeft__content'}`}
           >
             <div className="collapseMainMenuLeft__content__item">
-              <NavLink className="collapseMainMenuLeft__content__item__navlink" to="#">
+              <NavLink className="collapseMainMenuLeft__content__item__navlink" to={menu.LinkTo}>
                 {menu.MenuTitle}
               </NavLink>
             </div>

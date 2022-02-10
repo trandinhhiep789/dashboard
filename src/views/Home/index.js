@@ -66,27 +66,12 @@ class HomeCom extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // if (JSON.stringify(this.props.AuthenticationInfo) !== JSON.stringify(nextProps.AuthenticationInfo)) {
-    //     const LoginInfo = localStorage.getItem('LoginInfo');
-    //     if (!this.props.AuthenticationInfo.LoginInfo.IsLoginSuccess) {
-    //         if (LoginInfo) {
-    //             const LoginInfo1 = JSON.parse(LoginInfo)
-    //             this.props.loginSuccess(LoginInfo1.LoginUserInfo, LoginInfo1.TokenString, LoginInfo1.Password);
-    //             this.setState({ isLoggedIn: true })
-    //         }
-    //         else {
-    //             this.setState({ isLoggedIn: false })
-    //         }
-    //     }
-    // }
-
     this.handleIsShowAppPath()
   }
 
   callLoadCacheList(userName) {
     const APIHostName = 'CacheAPI'
     this.props.callFetchAPI(APIHostName, 'api/Cache/GetCacheList', userName).then(apiResult => {
-      //console.log("callLoadCacheList", apiResult);
       if (!apiResult.IsError) {
         const listCacheItem = apiResult.ResultObject.ListCacheItem
         listCacheItem.map(cacheItem => {
@@ -135,8 +120,6 @@ class HomeCom extends React.Component {
               {isShowAppPath && <AppPath />}
 
               <div className="row">
-                {/* {this.props.AuthenticationInfo.FetchAPIInfo.IsFetchAPICompleted === false && this.props.AuthenticationInfo.FetchAPIInfo.HostURL ? <div className="preloader"><div className="spinner-linear"><div className="line"></div></div></div> : ''} */}
-
                 <Switch>
                   <PrivateRoute exact path="/" component={Dashboard} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
                   <PrivateRoute

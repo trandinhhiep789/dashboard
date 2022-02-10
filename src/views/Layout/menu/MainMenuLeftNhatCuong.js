@@ -12,6 +12,7 @@ import CollapseMainMenuLeft from './collapse/CollapseMainMenuLeft'
 const MainMenuLeftNhatCuong = memo(function MainMenuLeftNhatCuong(props) {
   const { MenuItem } = useMenuItem()
   const [selected, setSelected] = useState(null)
+  const [isActiveNavLink, setIsActiveNavLink] = useState(null)
   const toggle = useCallback(
     i => {
       if (i === selected) {
@@ -22,6 +23,15 @@ const MainMenuLeftNhatCuong = memo(function MainMenuLeftNhatCuong(props) {
       props.setIsExpandWidthMenuLeft(true)
     },
     [selected]
+  )
+  const handleActiveNaLink = useCallback(
+    i => {
+      if (i === isActiveNavLink) {
+        return setIsActiveNavLink(null)
+      }
+      setIsActiveNavLink(i)
+    },
+    [isActiveNavLink]
   )
   return (
     <div>
@@ -45,8 +55,11 @@ const MainMenuLeftNhatCuong = memo(function MainMenuLeftNhatCuong(props) {
                 </div>
               </div>
             ) : (
-              <NavLink to="#">
-                <div className="mainMenuLeftNhatCuong__item">
+              <NavLink to={menu.LinkTo}>
+                <div
+                  className={isActiveNavLink == i ? 'mainMenuLeftNhatCuong__itemActive' : 'mainMenuLeftNhatCuong__item'}
+                  onClick={() => handleActiveNaLink(i)}
+                >
                   <div className="mainMenuLeftNhatCuong__item--center">
                     <div className="mainMenuLeftNhatCuong__item__icon">{menu.MenuIcon}</div>
                     {menu.MenuTitle.length > 10 ? (
@@ -72,7 +85,7 @@ const MainMenuLeftNhatCuong = memo(function MainMenuLeftNhatCuong(props) {
                       <CollapseMainMenuLeft menuItem={sub} />
                     ) : (
                       <div className="mainMenuLeftNhatCuong__item__content__title">
-                        <NavLink className="mainMenuLeftNhatCuong__item__content__title__navlink" to="#">
+                        <NavLink className="mainMenuLeftNhatCuong__item__content__title__navlink" to={sub.LinkTo}>
                           {sub.MenuTitle}
                         </NavLink>
                       </div>

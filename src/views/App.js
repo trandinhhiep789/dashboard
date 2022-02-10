@@ -31,7 +31,8 @@ class AppCom extends React.Component {
             <Route exact path="/" component={Dashboard} />
             <Route path="/login" component={Login} />
             <Route path="/logout" component={Logout} />
-            <Route path="*" component={Home} />
+            <Route path="*" component={Dashboard} />
+            {/* <Route path="*" component={Home} /> */}
           </Switch>
         </div>
         {/* </React.Suspense> */}
