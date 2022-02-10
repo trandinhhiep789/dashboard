@@ -17,18 +17,18 @@ const MainMenuLeftNhatCuong = memo(function MainMenuLeftNhatCuong(props) {
     i => {
       if (i === selected) {
         props.setIsExpandWidthMenuLeft(false)
+        setIsActiveNavLink(null)
         return setSelected(null)
       }
       setSelected(i)
       props.setIsExpandWidthMenuLeft(true)
+      setIsActiveNavLink(null)
     },
     [selected]
   )
   const handleActiveNaLink = useCallback(
     i => {
-      if (i === isActiveNavLink) {
-        return setIsActiveNavLink(null)
-      }
+      setSelected(null)
       setIsActiveNavLink(i)
     },
     [isActiveNavLink]
