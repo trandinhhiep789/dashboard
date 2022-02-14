@@ -1,0 +1,22 @@
+.NotFoundCom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 70vh;
+  width: 100%;
+}
+
+.NotFoundCom--dflex {
+  display: flex;
+}
+
+.NotFoundCom__content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text404 {
+  color: brown;
+}
