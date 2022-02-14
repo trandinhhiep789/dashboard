@@ -20,3 +20,10 @@
 .text404 {
   color: brown;
 }
+
+/* Mobie */
+@media (max-width: 740px) {
+  .NotFoundCom--dflex {
+    display: block;
+  }
+}
