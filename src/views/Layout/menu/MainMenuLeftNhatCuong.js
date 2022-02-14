@@ -12,7 +12,7 @@ import CollapseMainMenuLeft from './collapse/CollapseMainMenuLeft'
 const MainMenuLeftNhatCuong = memo(function MainMenuLeftNhatCuong(props) {
   const { MenuItem } = useMenuItem()
   const [selected, setSelected] = useState(null)
-  const [isActiveNavLink, setIsActiveNavLink] = useState(null)
+  const [isActiveNavLink, setIsActiveNavLink] = useState(0)
   const toggle = useCallback(
     i => {
       if (i === selected) {
@@ -29,6 +29,7 @@ const MainMenuLeftNhatCuong = memo(function MainMenuLeftNhatCuong(props) {
   const handleActiveNaLink = useCallback(
     i => {
       setSelected(null)
+      props.setIsExpandWidthMenuLeft(false)
       setIsActiveNavLink(i)
     },
     [isActiveNavLink]

@@ -2,14 +2,12 @@ import PropTypes from 'prop-types'
 import React, { memo } from 'react'
 import './HeaderMainMenuLeft.css'
 
-import { Menu, Dropdown, Collapse, Switch, Avatar } from 'antd'
-import { DownOutlined, PlusSquareOutlined, CaretRightOutlined, UserOutlined } from '@ant-design/icons'
+import { Menu, Collapse, Switch } from 'antd'
 import 'antd/dist/antd.css'
 import { useTranslation } from 'react-i18next'
+import ProfileBox from '../ProfileBox'
 
 import logo from '../../../img/eoffice-logo.png'
-
-const { Panel } = Collapse
 
 const HeaderMainMenuLeft = memo(function HeaderMainMenuLeft(props) {
   const { i18n } = useTranslation()
@@ -44,18 +42,11 @@ const HeaderMainMenuLeft = memo(function HeaderMainMenuLeft(props) {
           <div className="headerMainMenuLeft__listItem__item"></div>
           &emsp;
           <div className="headerMainMenuLeft__listItem__item--center">
-            <Switch checkedChildren="Eng" unCheckedChildren="Vie" onChange={handleChangeLangChange} />
+            <Switch checkedChildren="English" unCheckedChildren="Vietnamese" onChange={handleChangeLangChange} />
           </div>
           &ensp;
           <div className="headerMainMenuLeft__listItem__item--center">
-            <Dropdown overlay={userAccount} trigger={['click']}>
-              <Avatar
-                style={{
-                  backgroundColor: '#87d068'
-                }}
-                icon={<UserOutlined />}
-              />
-            </Dropdown>
+            <ProfileBox />
           </div>
         </div>
       </div>
