@@ -112,12 +112,6 @@ export default memo(function Dashboard(props) {
         <div className="dashboard--dflex">
           {/* main menu left */}
           <div className="dashboard__mainMenuLeft__div">
-            {/* icon menu */}
-            <div className="dashboard__mainMenuLeft--iconMenu">
-              <div>
-                <MenuOutlined />
-              </div>
-            </div>
             <div
               className={
                 isExpandWidthMenuLeft
@@ -125,6 +119,12 @@ export default memo(function Dashboard(props) {
                   : 'dashboard__mainMenuLeft--hover animated fadeInLeftBig'
               }
             >
+              {/* icon menu */}
+              <div className="dashboard__mainMenuLeft--iconMenu">
+                <div>
+                  <MenuOutlined />
+                </div>
+              </div>
               <div className="mainMenuLeft">
                 <MainMenuLeftNhatCuong setIsExpandWidthMenuLeft={setIsExpandWidthMenuLeft} />
               </div>
