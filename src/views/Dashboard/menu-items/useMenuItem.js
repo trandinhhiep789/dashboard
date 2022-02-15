@@ -23,7 +23,7 @@ const useMenuItem = () => {
     {
       id: 'dashboard',
       MenuTitle: t('menuItem.dashboard__title'),
-      LinkTo: '/dashboard',
+      LinkTo: '/',
       MenuIcon: <SettingOutlined />,
       SubMenu: []
     },

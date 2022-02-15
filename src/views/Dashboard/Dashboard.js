@@ -38,7 +38,7 @@ import NotFound from '../NotFound'
 import { PagePath, HiddenAppPath } from '../Home/constants/index'
 import PrivateRoute from '../../route/PrivateRoute'
 import { getCookie } from '../../common/library/CommonLib.js'
-import { Spin } from 'antd'
+import { Spin, Divider } from 'antd'
 
 import { MenuOutlined } from '@ant-design/icons'
 
@@ -86,12 +86,10 @@ export default memo(function Dashboard(props) {
   const callLoadCacheList = async userName => {
     const APIHostName = 'CacheAPI'
     const apiResult = await dispatch(callFetchAPI(APIHostName, 'api/Cache/GetCacheList', userName))
-    console.log('apiResult: ', apiResult)
     if (!apiResult.IsError) {
       const listCacheItem = apiResult.ResultObject.ListCacheItem
       listCacheItem.map(async cacheItem => {
         let cacheItemLocal = await dispatch(callGetCacheFromLocal(cacheItem.CacheKeyID))
-        console.log('cacheItemLocal: ', cacheItemLocal)
 
         if (cacheItemLocal != null) {
           if (cacheItemLocal.CreatedDate < cacheItem.CacheVersionDate) {
@@ -136,6 +134,7 @@ export default memo(function Dashboard(props) {
           {/* child component will appear here */}
           <div className="dashboard__contentRight">
             {isShowAppPath && <AppPath />}
+            <Divider />
             <Switch>
               <PrivateRoute exact path="/" component={Home} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
               <PrivateRoute path="/accountinfo" component={AccountInfo} isLoggedIn={isLoggedIn} isRelogin={isRelogin} />
