@@ -1,259 +1,238 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Hệ Thống Quản Lý Tận Tâm</title>
-	<script type="text/javascript" src="/src/scripts/System.debug.js"></script>
-	<script type="text/javascript" src="/src/scripts/System.IO.debug.js"></script>
-	<script type="text/javascript" src="/src/scripts/System.Text.debug.js"></script>
-	<script type="text/javascript" src="/src/scripts/System.Convert.debug.js"></script>
-	<script type="text/javascript" src="/src/scripts/System.BitConverter.debug.js"></script>
-	<script type="text/javascript" src="/src/scripts/System.BigInt.debug.js"></script>
-	<script type="text/javascript" src="/src/scripts/System.Security.Cryptography.SHA1.debug.js"></script>
-	<script type="text/javascript" src="/src/scripts/System.Security.Cryptography.MD5.debug.js"></script>
-	<script type="text/javascript" src="/src/scripts/System.Security.Cryptography.HMACMD5.debug.js"></script>
-	<script type="text/javascript" src="/src/scripts/System.Security.Cryptography.debug.js"></script>
-	<script type="text/javascript" src="/src/scripts/System.Security.Cryptography.RSA.debug.js"></script>
-	<script type="text/javascript" src="/src/js/jquery.js"></script>
-	<!-- <script type="text/javascript" src="/src/scripts/vietbandomapsapi.js"></script> -->
-	<!-- <script type="text/javascript" src="/src/scripts/ContextMenu.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Hệ Thống Quản Lý Tận Tâm</title>
+    <script type="text/javascript" src="/src/scripts/System.debug.js"></script>
+    <script type="text/javascript" src="/src/scripts/System.IO.debug.js"></script>
+    <script type="text/javascript" src="/src/scripts/System.Text.debug.js"></script>
+    <script type="text/javascript" src="/src/scripts/System.Convert.debug.js"></script>
+    <script type="text/javascript" src="/src/scripts/System.BitConverter.debug.js"></script>
+    <script type="text/javascript" src="/src/scripts/System.BigInt.debug.js"></script>
+    <script type="text/javascript" src="/src/scripts/System.Security.Cryptography.SHA1.debug.js"></script>
+    <script type="text/javascript" src="/src/scripts/System.Security.Cryptography.MD5.debug.js"></script>
+    <script type="text/javascript" src="/src/scripts/System.Security.Cryptography.HMACMD5.debug.js"></script>
+    <script type="text/javascript" src="/src/scripts/System.Security.Cryptography.debug.js"></script>
+    <script type="text/javascript" src="/src/scripts/System.Security.Cryptography.RSA.debug.js"></script>
+    <script type="text/javascript" src="/src/js/jquery.js"></script>
+    <!-- <script type="text/javascript" src="/src/scripts/vietbandomapsapi.js"></script> -->
+    <!-- <script type="text/javascript" src="/src/scripts/ContextMenu.js"></script>
 	<script type="text/javascript" src="/src/scripts/Direction.js"></script> -->
 
+    <script type="text/javascript">
+      function GetNewRsaProvider(dwKeySize) {
+        // Create a new instance of RSACryptoServiceProvider.
+        if (!dwKeySize) dwKeySize = 512
+        return new System.Security.Cryptography.RSACryptoServiceProvider(dwKeySize)
+      }
+      function GenRSAKey(dwKeySize) {
+        //var keySize = Number(document.frmTestRSA.cboRSAKeySize.value);
+        var rsa = GetNewRsaProvider(dwKeySize)
+        const publicKey = rsa.ToXmlString(false)
+        const privateKey = rsa.ToXmlString(true)
+        return { PublicKey: publicKey, PrivateKey: privateKey }
+      }
+      function GetRSAKey(rsaKey, includePrivateParameters) {
+        var rsa = GetNewRsaProvider()
+        // Import parameters from xml.
+        rsa.FromXmlString(rsaKey)
+        // Export RSA key to RSAParameters and include:
+        //    false - Only public key required for encryption.
+        //    true  - Private key required for decryption.
+        return rsa.ExportParameters(includePrivateParameters)
+      }
 
-	<script type="text/javascript">
+      function encryptData(rsaKey, dwKeySize, plainText) {
+        //var plainText = document.frmTestRSA.txtPlainText.value;
+        var decryptedBytes = System.Text.Encoding.Unicode.GetBytes(plainText)
+        console.log('Plain text byte1')
+        console.log(decryptedBytes)
 
-		function GetNewRsaProvider(dwKeySize) {
-			// Create a new instance of RSACryptoServiceProvider.
-			if (!dwKeySize) dwKeySize = 512;
-			return new System.Security.Cryptography.RSACryptoServiceProvider(dwKeySize);
-		}
-		function GenRSAKey(dwKeySize) {
-			//var keySize = Number(document.frmTestRSA.cboRSAKeySize.value);
-			var rsa = GetNewRsaProvider(dwKeySize);
-			const publicKey = rsa.ToXmlString(false);
-			const privateKey = rsa.ToXmlString(true);
-			return { PublicKey: publicKey, PrivateKey: privateKey };
+        var doOaepPadding = true
+        // ------------------------------------------------
+        // Encrypt
+        // ------------------------------------------------
+        var rsa = GetNewRsaProvider()
+        // Import the RSA Key information.
+        rsa.ImportParameters(GetRSAKey(rsaKey, false))
+        // Encrypt the passed byte array and specify OAEP padding.
+        var encryptedBytes = rsa.Encrypt(decryptedBytes, doOaepPadding)
+        var encryptedString = System.Convert.ToBase64String(encryptedBytes)
+        // ------------------------------------------------
+        // Display the encrypted data.
+        //var encryptedString = System.BitConverter.ToString(encryptedBytes, "");
+        return encryptedString
+      }
 
-		}
-		function GetRSAKey(rsaKey, includePrivateParameters) {
+      function decryptData(rsaKey, dwKeySize, encryptedText) {
+        //var encryptedBytes = System.Convert.HexStringToBytes($("EncryptedTextBox").value);
+        //var encryptData = document.frmTestRSA.txtEncryptedText.value;
+        var encryptedBytes = System.Convert.FromBase64String(encryptedText)
+        console.log('encrypted text byte1')
+        console.log(encryptedBytes)
+        var doOaepPadding = true
+        // ------------------------------------------------
+        // Decrypt
+        // ------------------------------------------------
+        var rsa = GetNewRsaProvider()
+        // Import the RSA Key information.
+        rsa.ImportParameters(GetRSAKey(rsaKey, true))
+        // Decrypt the passed byte array and specify OAEP padding.
+        var decryptedBytes = rsa.Decrypt(encryptedBytes, doOaepPadding)
+        // ------------------------------------------------
+        // Display the decrypted data.
+        var decryptedString = System.Text.Encoding.Unicode.GetString(decryptedBytes)
+        return decryptedString
+      }
 
-			var rsa = GetNewRsaProvider();
-			// Import parameters from xml.
-			rsa.FromXmlString(rsaKey);
-			// Export RSA key to RSAParameters and include:
-			//    false - Only public key required for encryption.
-			//    true  - Private key required for decryption.
-			return rsa.ExportParameters(includePrivateParameters);
-		}
+      function encryptData2(rsaKey, dwKeySize, plainText) {
+        //var plainText = document.frmTestRSA.txtPlainText.value;
+        var bytes = System.Text.Encoding.Unicode.GetBytes(plainText)
+        //console.log('plain text byte2');
+        //console.log(bytes);
+        var doOaepPadding = true
+        // ------------------------------------------------
+        // Encrypt
+        // ------------------------------------------------
+        var rsa = GetNewRsaProvider()
+        // Import the RSA Key information.
+        rsa.ImportParameters(GetRSAKey(rsaKey, false))
+        const keySize = dwKeySize / 8
+        const maxLength = keySize - 42
+        const dataLength = bytes.length
+        const iterations = dataLength / maxLength
+        var sb = new System.Text.StringBuilder()
+        //console.log(maxLength);
+        for (let i = 0; i <= iterations; i++) {
+          const tempLength = dataLength - maxLength * i > maxLength ? maxLength : dataLength - maxLength * i
+          //console.log(tempLength);
+          var tempBytes = new Array(tempLength)
+          //console.log(tempBytes.length);
+          System.Buffer.BlockCopy(bytes, maxLength * i, tempBytes, 0, tempBytes.length)
+          //console.log('tempBytes');
+          //console.log(tempBytes);
+          let encryptedBytes = rsa.Encrypt(tempBytes, doOaepPadding)
+          //console.log('encrypted text byte2');
+          //console.log(encryptedBytes);
 
+          System.Array.Reverse(encryptedBytes)
+          //console.log('encrypted text byte2 Reverse');
+          //console.log(encryptedBytes);
 
-		function encryptData(rsaKey, dwKeySize, plainText) {
-			//var plainText = document.frmTestRSA.txtPlainText.value;
-			var decryptedBytes = System.Text.Encoding.Unicode.GetBytes(plainText);
-			console.log('Plain text byte1');
-			console.log(decryptedBytes);
+          sb.Append(System.Convert.ToBase64String(encryptedBytes))
+        }
 
-			var doOaepPadding = true;
-			// ------------------------------------------------
-			// Encrypt
-			// ------------------------------------------------
-			var rsa = GetNewRsaProvider();
-			// Import the RSA Key information.
-			rsa.ImportParameters(GetRSAKey(rsaKey, false));
-			// Encrypt the passed byte array and specify OAEP padding.
-			var encryptedBytes = rsa.Encrypt(decryptedBytes, doOaepPadding);
-			var encryptedString = System.Convert.ToBase64String(encryptedBytes)
-			// ------------------------------------------------
-			// Display the encrypted data.
-			//var encryptedString = System.BitConverter.ToString(encryptedBytes, "");
-			return encryptedString;
+        return sb.ToString()
+      }
 
-		}
+      function decryptData2(rsaKey, dwKeySize, encryptedText) {
+        //var encryptedBytes = System.Convert.HexStringToBytes($("EncryptedTextBox").value);
+        //var encryptData = document.frmTestRSA.txtEncryptedText.value;
+        var rsa = GetNewRsaProvider()
+        // Import the RSA Key information.
+        rsa.ImportParameters(GetRSAKey(rsaKey, true))
+        const doOaepPadding = true
+        //const base64BlockSize = parseInt(((dwKeySize / 8) % 3 != 0) ? (((dwKeySize / 8) / 3) * 4) + 4 : ((dwKeySize / 8) / 3) * 4);
+        const base64BlockSize = parseInt(
+          Math.floor(dwKeySize / 8) % 3 != 0
+            ? Math.floor(Math.floor(dwKeySize / 8) / 3) * 4 + 4
+            : Math.floor(Math.floor(dwKeySize / 8) / 3) * 4
+        )
 
-		function decryptData(rsaKey, dwKeySize, encryptedText) {
+        //const base64BlockSize1 = parseInt(((Math.floor(dwKeySize / 8) % 3 != 0) ? (((Math.floor(dwKeySize / 8)) / 3) * 4) + 4 : ((Math.floor(dwKeySize / 8)) / 3) * 4);
 
-			//var encryptedBytes = System.Convert.HexStringToBytes($("EncryptedTextBox").value);
-			//var encryptData = document.frmTestRSA.txtEncryptedText.value;
-			var encryptedBytes = System.Convert.FromBase64String(encryptedText);
-			console.log('encrypted text byte1');
-			console.log(encryptedBytes);
-			var doOaepPadding = true;
-			// ------------------------------------------------
-			// Decrypt
-			// ------------------------------------------------
-			var rsa = GetNewRsaProvider();
-			// Import the RSA Key information.
-			rsa.ImportParameters(GetRSAKey(rsaKey, true));
-			// Decrypt the passed byte array and specify OAEP padding.
-			var decryptedBytes = rsa.Decrypt(encryptedBytes, doOaepPadding);
-			// ------------------------------------------------
-			// Display the decrypted data.
-			var decryptedString = System.Text.Encoding.Unicode.GetString(decryptedBytes);
-			return decryptedString;
-
-		}
-
-
-		function encryptData2(rsaKey, dwKeySize, plainText) {
-			//var plainText = document.frmTestRSA.txtPlainText.value;
-			var bytes = System.Text.Encoding.Unicode.GetBytes(plainText);
-			//console.log('plain text byte2');
-			//console.log(bytes);
-			var doOaepPadding = true;
-			// ------------------------------------------------
-			// Encrypt
-			// ------------------------------------------------
-			var rsa = GetNewRsaProvider();
-			// Import the RSA Key information.
-			rsa.ImportParameters(GetRSAKey(rsaKey, false));
-			const keySize = dwKeySize / 8;
-			const maxLength = keySize - 42;
-			const dataLength = bytes.length;
-			const iterations = dataLength / maxLength;
-			var sb = new System.Text.StringBuilder();
-			//console.log(maxLength);
-			for (let i = 0; i <= iterations; i++) {
-				const tempLength = (dataLength - maxLength * i > maxLength) ? maxLength : dataLength - maxLength * i;
-				//console.log(tempLength);
-				var tempBytes = new Array(tempLength);
-				//console.log(tempBytes.length); 
-				System.Buffer.BlockCopy(bytes, maxLength * i, tempBytes, 0, tempBytes.length);
-				//console.log('tempBytes');
-				//console.log(tempBytes);
-				let encryptedBytes = rsa.Encrypt(tempBytes, doOaepPadding);
-				//console.log('encrypted text byte2');
-				//console.log(encryptedBytes);
-
-				System.Array.Reverse(encryptedBytes);
-				//console.log('encrypted text byte2 Reverse');
-				//console.log(encryptedBytes);
-
-				sb.Append(System.Convert.ToBase64String(encryptedBytes));
-			}
-
-
-			return sb.ToString();
-
-		}
-
-		function decryptData2(rsaKey, dwKeySize, encryptedText) {
-
-			//var encryptedBytes = System.Convert.HexStringToBytes($("EncryptedTextBox").value);
-			//var encryptData = document.frmTestRSA.txtEncryptedText.value;
-			var rsa = GetNewRsaProvider();
-			// Import the RSA Key information.
-			rsa.ImportParameters(GetRSAKey(rsaKey, true));
-			const doOaepPadding = true;
-			//const base64BlockSize = parseInt(((dwKeySize / 8) % 3 != 0) ? (((dwKeySize / 8) / 3) * 4) + 4 : ((dwKeySize / 8) / 3) * 4);
-			const base64BlockSize = parseInt(((Math.floor(dwKeySize / 8)) % 3 != 0) ? ((Math.floor((Math.floor(dwKeySize / 8)) / 3)) * 4) + 4 : (Math.floor((Math.floor(dwKeySize / 8)) / 3)) * 4);
-
-			//const base64BlockSize1 = parseInt(((Math.floor(dwKeySize / 8) % 3 != 0) ? (((Math.floor(dwKeySize / 8)) / 3) * 4) + 4 : ((Math.floor(dwKeySize / 8)) / 3) * 4);
-
-			//console.log(encryptedText.length);
-			/*if(base64BlockSize > encryptedText.length )
+        //console.log(encryptedText.length);
+        /*if(base64BlockSize > encryptedText.length )
 				base64BlockSize = encryptedText.length;*/
-			//console.log(base64BlockSize1);
-			//console.log(base64BlockSize);
-			const iterations = encryptedText.length / base64BlockSize;
-			//console.log(iterations);
-			//console.log("encryptedText.length:  " + encryptedText.length.toString());
-			let lstencryptedBytes = new Array(0);
-			for (let i = 0; i < iterations; i++) {
-				const startIndex = base64BlockSize * i;
-				let tempText = encryptedText.substr(startIndex, base64BlockSize);
+        //console.log(base64BlockSize1);
+        //console.log(base64BlockSize);
+        const iterations = encryptedText.length / base64BlockSize
+        //console.log(iterations);
+        //console.log("encryptedText.length:  " + encryptedText.length.toString());
+        let lstencryptedBytes = new Array(0)
+        for (let i = 0; i < iterations; i++) {
+          const startIndex = base64BlockSize * i
+          let tempText = encryptedText.substr(startIndex, base64BlockSize)
 
-				//console.log('----');
-				//console.log("i: " + i.toString() + " - Start Index: " + startIndex.toString() +  " - tempText length: "+ tempText.length.ToString() + " -base64BlockSize: " + base64BlockSize.toString());
-				//console.log('TextText:' + tempText) ;
-				//console.log('----');
+          //console.log('----');
+          //console.log("i: " + i.toString() + " - Start Index: " + startIndex.toString() +  " - tempText length: "+ tempText.length.ToString() + " -base64BlockSize: " + base64BlockSize.toString());
+          //console.log('TextText:' + tempText) ;
+          //console.log('----');
 
-				let encryptedBytes = System.Convert.FromBase64String(tempText);
-				//console.log('encrypted text byte2');
-				//console.log(encryptedBytes);
-				System.Array.Reverse(encryptedBytes);
-				//console.log('encrypted text byte2 Reverse');
-				//console.log(encryptedBytes);
-				let decryptedBytes = rsa.Decrypt(encryptedBytes, doOaepPadding);
-				//console.log('decryptedBytes');
-				//console.log(decryptedBytes);
-				lstencryptedBytes = lstencryptedBytes.concat(decryptedBytes);
-				//console.log('lstencryptedBytes');
-				//console.log(lstencryptedBytes);
-			}
+          let encryptedBytes = System.Convert.FromBase64String(tempText)
+          //console.log('encrypted text byte2');
+          //console.log(encryptedBytes);
+          System.Array.Reverse(encryptedBytes)
+          //console.log('encrypted text byte2 Reverse');
+          //console.log(encryptedBytes);
+          let decryptedBytes = rsa.Decrypt(encryptedBytes, doOaepPadding)
+          //console.log('decryptedBytes');
+          //console.log(decryptedBytes);
+          lstencryptedBytes = lstencryptedBytes.concat(decryptedBytes)
+          //console.log('lstencryptedBytes');
+          //console.log(lstencryptedBytes);
+        }
 
+        const decryptedString = System.Text.Encoding.Unicode.GetString(lstencryptedBytes)
+        return decryptedString
+      }
+    </script>
 
+    <script type="text/javascript">
+      // Open sidebar when backdrop touches
+      $(document).on('click', '.topbar-menu-toggler-mobile', function () {
+        $('body').addClass('pace-done sidebar-open').prepend('<div class="app-backdrop backdrop-sidebar"></div>')
+      })
+      // Close sidebar when backdrop touches
+      //
+      $(document).on('click', '.backdrop-sidebar', function () {
+        $('body').removeClass('pace-done  sidebar-open')
+        $('.backdrop-sidebar').remove()
+      })
 
+      // Open sidebar submenu when backdrop touches
 
-			const decryptedString = System.Text.Encoding.Unicode.GetString(lstencryptedBytes);
-			return decryptedString;
+      $(document).on('click', '.sidebar .menu-link', function () {
+        var $submenu = $(this).next('.menu-submenu')
+        if ($submenu.length < 1) return
+        if ($submenu.is(':visible')) {
+          $submenu.slideUp(function () {
+            $('.sidebar .menu-item.open').removeClass('open')
+          })
+          $(this).removeClass('open')
+          return
+        }
+        $('.sidebar .menu-submenu:visible').slideUp()
+        $('.sidebar .menu-link').removeClass('open')
+        $submenu.slideToggle(function () {
+          $('.sidebar .menu-item.open').removeClass('open')
+        })
+        $(this).addClass('open')
+      })
 
-		}
+      // Open sidebar submenu 2 when backdrop touches
 
-
-	</script>
-
-	<script type="text/javascript">
-		// Open sidebar when backdrop touches
-		$(document).on('click', '.topbar-menu-toggler-mobile', function () {
-			$('body').addClass('pace-done sidebar-open').prepend('<div class="app-backdrop backdrop-sidebar"></div>');
-		});
-		// Close sidebar when backdrop touches
-		//
-		$(document).on('click', '.backdrop-sidebar', function () {
-			$('body').removeClass('pace-done  sidebar-open');
-			$('.backdrop-sidebar').remove();
-		});
-
-		// Open sidebar submenu when backdrop touches
-
-		$(document).on('click', '.sidebar .menu-link', function () {
-
-			var $submenu = $(this).next('.menu-submenu');
-			if ($submenu.length < 1)
-				return;
-			if ($submenu.is(":visible")) {
-				$submenu.slideUp(function () {
-					$('.sidebar .menu-item.open').removeClass('open');
-				});
-				$(this).removeClass('open');
-				return;
-			}
-			$('.sidebar .menu-submenu:visible').slideUp();
-			$('.sidebar .menu-link').removeClass('open');
-			$submenu.slideToggle(function () {
-				$('.sidebar .menu-item.open').removeClass('open');
-			});
-			$(this).addClass('open');
-		});
-
-		// Open sidebar submenu 2 when backdrop touches
-
-		$(document).on('click', '.sidebar .menu-submenu .menu-link', function () {
-
-			var $submenu = $(this).next('.menu-sub-submenu');
-			if ($submenu.length < 1)
-				return;
-			if ($submenu.is(":visible")) {
-				$submenu.slideUp(function () {
-					$('.sidebar .menu-submenu .menu-item.open').removeClass('open');
-				});
-				$(this).removeClass('open');
-				return;
-			}
-			$('.sidebar .menu-submenu .menu-sub-submenu:visible').slideUp();
-			$('.sidebar .menu-submenu .menu-link').removeClass('open');
-			$submenu.slideToggle(function () {
-				$('.sidebar .menu-submenu .menu-item.open').removeClass('open');
-			});
-			$(this).addClass('open');
-		});
-
-
-	</script>
-	<!-- <script type="text/javascript">
+      $(document).on('click', '.sidebar .menu-submenu .menu-link', function () {
+        var $submenu = $(this).next('.menu-sub-submenu')
+        if ($submenu.length < 1) return
+        if ($submenu.is(':visible')) {
+          $submenu.slideUp(function () {
+            $('.sidebar .menu-submenu .menu-item.open').removeClass('open')
+          })
+          $(this).removeClass('open')
+          return
+        }
+        $('.sidebar .menu-submenu .menu-sub-submenu:visible').slideUp()
+        $('.sidebar .menu-submenu .menu-link').removeClass('open')
+        $submenu.slideToggle(function () {
+          $('.sidebar .menu-submenu .menu-item.open').removeClass('open')
+        })
+        $(this).addClass('open')
+      })
+    </script>
+    <!-- <script type="text/javascript">
 		function createLi(label, container) {
 			var li = vbd.DomUtil.create('li', '', container);
 			var a = vbd.DomUtil.create('a', '', li);
@@ -354,19 +333,16 @@
 		}
 	</script> -->
 
-
-	<!-- <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,300i" rel="stylesheet"> -->
-	<!-- <link href="/src/css/core.min.css" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,300i" rel="stylesheet"> -->
+    <!-- <link href="/src/css/core.min.css" rel="stylesheet">
 	<link href="/src/css/app.min.css" rel="stylesheet"> -->
-	<!-- <link href="/src/css/style.min.css" rel="stylesheet">
+    <!-- <link href="/src/css/style.min.css" rel="stylesheet">
 	<link href="/src/css/site.css" rel="stylesheet"> -->
-</head>
+  </head>
 
-<body>
-	<section id="index"></section>
-	
-	<script src="/bundle.js"></script>
+  <body>
+    <section id="index"></section>
 
-</body>
-
+    <script src="/bundle.js"></script>
+  </body>
 </html>

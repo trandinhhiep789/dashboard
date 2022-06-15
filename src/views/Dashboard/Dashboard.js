@@ -40,7 +40,7 @@ import PrivateRoute from '../../route/PrivateRoute'
 import { getCookie } from '../../common/library/CommonLib.js'
 import { Spin, Divider } from 'antd'
 
-import { MenuOutlined } from '@ant-design/icons'
+import { MenuOutlined, RedoOutlined } from '@ant-design/icons'
 
 import './Dashboard.css'
 import '../Layout/menu/MainMenuLeftNhatCuong.css'
@@ -105,7 +105,20 @@ export default memo(function Dashboard(props) {
   const HostURL = useSelector(state => state.FetchAPIInfo.HostURL)
   return (
     <div className="dashboard">
-      <Spin className="ant-spin-custom" spinning={IsFetchAPICompleted === false && HostURL} size="large">
+      <Spin
+        className="ant-spin-custom"
+        spinning={IsFetchAPICompleted === false && HostURL}
+        size="large"
+        indicator={
+          <RedoOutlined
+            style={{
+              fontSize: 30,
+              color: 'green'
+            }}
+            spin
+          />
+        }
+      >
         <div className="dashboard__header animated fadeInDown">
           <HeaderMainMenuLeft />
         </div>
@@ -130,6 +143,7 @@ export default memo(function Dashboard(props) {
               </div>
             </div>
           </div>
+
           <div className="dashboard__mainMenuLeft__div__overlay"></div>
           {/* child component will appear here */}
           <div className="dashboard__contentRight">
